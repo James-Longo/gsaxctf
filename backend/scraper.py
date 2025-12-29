@@ -19,6 +19,8 @@ TEAM_MAPPING = {
     "George Steve": "George Stevens Academy",
     "George Stevens": "George Stevens Academy",
     "GSA": "George Stevens Academy",
+    "Blue Hill Ha": "George Stevens Academy",
+    "Blue Hill Harbor": "George Stevens Academy",
     "Mt. Desert I": "Mt. Desert Island High School",
     "MDI": "Mt. Desert Island High School",
     "Mt. Ararat H": "Mt. Ararat High School",

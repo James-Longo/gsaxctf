@@ -134,6 +134,11 @@ class Sub5ColumnParser:
         current_event = None
         
         for i, line in enumerate(lines):
+            # Check for end of results / start of team rankings
+            if "Team Rankings" in line and ("Men" in line or "Women" in line or "Boys" in line or "Girls" in line):
+                # Stop parsing as we hit the team scores summary
+                break
+
             # Header pattern: "Event 1  Girls 4x800 Meter Relay" or "Girls 55 Meter Dash"
             m_event = re.search(r'Event\s+\d+\s+(Girls|Boys)\s+(.*)', line, re.IGNORECASE)
             m_no_event = re.match(r'^\s*(Girls|Boys)\s+(.*)$', line, re.IGNORECASE)
@@ -242,6 +247,13 @@ class Sub5ColumnParser:
         for line in lines[start_idx:]:
             if not line.strip() or "---" in line: continue
             
+            if "Team Rankings" in line:
+                 break
+            
+            # Skip lines that look like Team Rankings items (e.g., "1) York High School 48")
+            if re.match(r'^\s*\d+\)\s+[A-Za-z]', line):
+                continue
+            
             if not is_relay:
                 # Check for split line pattern: "36.264 (36.264)" or "1:11.703 (35.439)"
                 # This must happen before ignoring short lines, as splits can be shorter than the full result row
@@ -328,8 +340,15 @@ class Sub5ColumnParser:
                             name_clean = re.sub(r'^\s*(?:#|--|\d+)\s+', '', line[:school_idx]).strip()
                             name_val = re.split(r'\s{2,}', name_clean)[0].strip()
                             if name_val.isdigit() or not name_val: continue
+                            
+                            # Skip if name is actually a status code (e.g. line is just "FOUL   14-06")
+                            if name_val.upper() in ["FOUL", "DNS", "DNF", "DQ", "NM", "SCR", "NH"]:
+                                continue
+
                             # Skip garbage lines (field series) where name looks like a mark
-                            if re.match(r'^[0-9.-]+$', name_val) or (re.search(r'\d', name_val) and len(name_val) < 10):
+                            # Skip garbage lines (field series) where name looks like a mark
+                            # Updated to include spaces for series like "3-08 3-10 ..."
+                            if re.match(r'^[0-9\s.-]+$', name_val) or (re.search(r'\d', name_val) and len(name_val) < 10):
                                 continue
                             
                             # Extract school
