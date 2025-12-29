@@ -270,7 +270,47 @@ class Sub5ColumnParser:
                     # Truncate line at the right boundary to avoid reading Heat# or Points
                     sub = line[:right_boundary].rstrip()
                     if sub:
-                        res_val = sub.split()[-1]
+                        raw_candidate = sub.split()[-1]
+                        res_val = raw_candidate
+
+                        # FIX: Check for smashed results (e.g. "19-05.5019-01") where Seed + Result merged
+                        # If it fits pattern: [digits/.-]+ [digits/.-]+
+                        # We try to split it.
+                        if len(raw_candidate) > 8 and re.search(r'\d', raw_candidate):
+                            # Look for a digit transition that signifies a new number starting
+                            # e.g. "5019" -> "50" "19". 
+                            # But formatted marks are X-Y.Z.
+                            # Regex: Look for a boundary where a new number clearly starts?
+                            # Hard to do reliably without context.
+                            # Alternative: Use anchor_col to re-slice the line if possible.
+                            pass
+
+                        # Improved Logic: Search Zone around Anchor Column
+                        if anchor_col != -1:
+                             # Ideally, the result starts near anchor_col
+                             # Find token closest to anchor_col
+                             parts = sub.split()
+                             best_part = None
+                             min_dist = 999
+                             
+                             curr_idx = 0
+                             for p in parts:
+                                 # Find location of p in sub
+                                 loc = sub.find(p, curr_idx)
+                                 if loc != -1:
+                                     curr_idx = loc + len(p)
+                                     # Distance from start of token to anchor_col
+                                     dist = abs(loc - anchor_col)
+                                     # Result usually starts AT or BEFORE anchor_col (since anchor is "Finals")
+                                     # "Finals" header is often right-aligned or centered? No, usually Left.
+                                     
+                                     if re.search(r'\d', p) or p.upper() in ["DQ", "DNS", "NH", "FOUL", "DNF"]:
+                                         if dist < min_dist:
+                                            min_dist = dist
+                                            best_part = p
+                             
+                             if best_part and min_dist < 20:
+                                 res_val = best_part
                         
                         # Handle Exhibition marks (prefixed with X)
                         if res_val.upper().startswith('X') and len(res_val) > 1:
@@ -288,6 +328,9 @@ class Sub5ColumnParser:
                             name_clean = re.sub(r'^\s*(?:#|--|\d+)\s+', '', line[:school_idx]).strip()
                             name_val = re.split(r'\s{2,}', name_clean)[0].strip()
                             if name_val.isdigit() or not name_val: continue
+                            # Skip garbage lines (field series) where name looks like a mark
+                            if re.match(r'^[0-9.-]+$', name_val) or (re.search(r'\d', name_val) and len(name_val) < 10):
+                                continue
                             
                             # Extract school
                             area_start = max(0, school_idx - 5)
@@ -316,6 +359,12 @@ class Sub5ColumnParser:
                                         warnings.append(f"Original result: {original_res}")
                                     else:
                                         warnings.append(f"Result contains unusual characters: {original_res}")
+
+                                # NEW: Check for numbers in Athlete/School
+                                if re.search(r'\d', name_val):
+                                    warnings.append(f"Athlete name contains numbers: {name_val}")
+                                if re.search(r'\d', school_val):
+                                    warnings.append(f"School name contains numbers: {school_val}")
                                 
                                 entry = {
                                     "athlete": name_val,
