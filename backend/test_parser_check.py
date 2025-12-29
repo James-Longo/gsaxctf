@@ -3,7 +3,7 @@ import json
 import os
 import re
 
-source_file = "backend/data/sub5_archive/2025/Class-B-boys-results.htm"
+source_file = "backend/data/sub5_archive/2023/Class-B-Boys-results-1.htm"
 output_file = "backend/debug_new_parser.json"
 
 if os.path.exists(source_file):
