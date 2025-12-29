@@ -1,0 +1,22 @@
+# Python
+.venv/
+__pycache__/
+*.pyc
+
+# Data (Keep track_app.db but ignore raw files to save space)
+backend/data/sub5_archive/
+backend/data/parsed_results/
+
+# Frontend
+ui/node_modules/
+ui/dist/
+ui/.env
+.DS_Store
+
+# Backend Output
+backend/requirements_current.txt
+result.txt
+leigh_out.txt
+leigh_data.json
+debug_data.py
+backend/debug_leigh.py

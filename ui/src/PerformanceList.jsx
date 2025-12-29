@@ -1,0 +1,480 @@
+import { useState, useMemo } from 'react'
+import './App.css'
+
+function PVCSimulator({ performances, isBetter }) {
+    const [filterYear, setFilterYear] = useState('All')
+    const [filterSeason, setFilterSeason] = useState('All')
+    const [filterEvent, setFilterEvent] = useState('All')
+    const [showSimulation, setShowSimulation] = useState(false)
+    const [expandedTeams, setExpandedTeams] = useState({}) // { 'teamName-boys': true }
+
+    // Constants for PVC Small Schools (as used in previous analyzer)
+    const PVC_SMALL_SCHOOLS = {
+        "Orono": "Orono High School",
+        "George Steve": "George Stevens Academy",
+        "Bucksport": "Bucksport High School",
+        "Sumner": "Sumner/Narragaugus",
+        "Central": "Central High School",
+        "Foxcroft": "Foxcroft Academy",
+        "Dexter": "Dexter Regional High School",
+        "Piscataquis": "Piscataquis Community High School",
+        "Penquis": "Penquis Valley High School",
+        "Searsport": "Searsport District High School",
+        "Mattanawcook": "Mattanawcook Academy",
+        "Lee Academy": "Lee Academy",
+        "Deer Isle": "Deer Isle-Stonington High School",
+        "Bangor Chris": "Bangor Christian Schools",
+        "Penobscot": "Penobscot Valley High School",
+        "Greenville": "Greenville High School",
+        "Narraguagus": "Sumner/Narragaugus",
+        "Washington Acad": "Washington Academy",
+        "Calais": "Calais High School",
+        "Shead": "Shead High School",
+        "Fort Kent": "Fort Kent Community High School",
+        "Caribou Hig": "Caribou High School",
+        "Presque Isle": "Presque Isle High School",
+        "Houlton": "Houlton High School"
+    };
+
+    const { filteredData, years, seasons, events } = useMemo(() => {
+        if (!performances) return { filteredData: [], years: [], seasons: [], events: [] };
+
+        // Process performances to match the expected format and normalize team names for PVC schools
+        const processed = performances.map(p => {
+            let year = p.year;
+            let type = p.season;
+            if (p.season && p.season.match(/^\d{4}/)) {
+                const m = p.season.match(/^(\d{4})\s+(.*)$/);
+                year = m[1];
+                type = m[2];
+            }
+
+            // Detect PVC Team
+            let pvcTeam = null;
+            for (const [key, val] of Object.entries(PVC_SMALL_SCHOOLS)) {
+                if (p.team.toLowerCase().includes(key.toLowerCase()) || p.team.toLowerCase().includes(val.toLowerCase())) {
+                    pvcTeam = val;
+                    break;
+                }
+            }
+
+            return {
+                ...p,
+                derivedYear: year,
+                derivedType: type,
+                pvcTeam: pvcTeam,
+                isRelay: p.event.toLowerCase().includes('relay') || p.event.toLowerCase().includes('4x')
+            };
+        }).filter(p => p.pvcTeam); // Only include PVC small schools
+
+        const matches = (p, filters) => {
+            const { year, season, event } = filters;
+            return (year === 'All' || p.derivedYear === year) &&
+                (season === 'All' || p.derivedType === season) &&
+                (event === 'All' || p.event === event);
+        };
+
+        const avYears = Array.from(new Set(processed.map(p => p.derivedYear))).sort((a, b) => b - a);
+        const avSeasons = Array.from(new Set(processed.map(p => p.derivedType))).sort();
+        const avEvents = Array.from(new Set(processed.map(p => p.event))).sort();
+
+        const filtered = processed.filter(p => matches(p, { year: filterYear, season: filterSeason, event: filterEvent }));
+
+        return {
+            filteredData: filtered,
+            years: avYears,
+            seasons: avSeasons,
+            events: avEvents
+        };
+    }, [performances, filterYear, filterSeason, filterEvent]);
+
+    // Group by Event, Season, and Year for context-specific ranking
+    const groupedData = useMemo(() => {
+        const groups = {};
+
+        filteredData.forEach(curr => {
+            const groupKey = `${curr.event} (${curr.derivedType} ${curr.derivedYear})`;
+            if (!groups[groupKey]) groups[groupKey] = {};
+
+            // For Relays, use team as key. For Individual, use athlete_id
+            const athleteKey = curr.isRelay ? curr.pvcTeam : `${curr.athlete_id}|${curr.pvcTeam}`;
+            if (!groups[groupKey][athleteKey] || isBetter(curr.mark, groups[groupKey][athleteKey].mark)) {
+                groups[groupKey][athleteKey] = curr;
+            }
+        });
+
+        const finalGroups = {};
+        Object.entries(groups).forEach(([groupKey, itemMap]) => {
+            const results = Object.values(itemMap);
+
+            results.sort((a, b) => {
+                if (isBetter(a.mark, b.mark)) return -1;
+                if (isBetter(b.mark, a.mark)) return 1;
+                return 0;
+            });
+
+            let currentRank = 1;
+            for (let i = 0; i < results.length; i++) {
+                if (i > 0 && results[i].mark !== results[i - 1].mark) {
+                    currentRank = i + 1;
+                }
+                results[i].calculatedRank = currentRank;
+            }
+            finalGroups[groupKey] = results;
+        });
+
+        return finalGroups;
+    }, [filteredData, isBetter]);
+
+    const optimizedData = useMemo(() => {
+        if (!showSimulation || filterYear === 'All' || filterSeason === 'All' || Object.keys(groupedData).length === 0) {
+            return groupedData;
+        }
+
+        const scoringRules = [10, 8, 6, 5, 4, 3, 2, 1];
+
+        // 1. Extract all entries
+        let individualEntries = [];
+        let relayEntries = [];
+
+        Object.entries(groupedData).forEach(([groupTitle, results]) => {
+            results.forEach(res => {
+                const entry = { ...res, groupTitle };
+                if (res.isRelay) relayEntries.push(entry);
+                else individualEntries.push(entry);
+            });
+        });
+
+        // 2. Initial Potential Score Pass
+        const calculatePoints = (entries) => {
+            const groups = {};
+            entries.forEach(e => {
+                if (!groups[e.groupTitle]) groups[e.groupTitle] = [];
+                groups[e.groupTitle].push(e);
+            });
+
+            Object.values(groups).forEach(results => {
+                results.sort((a, b) => isBetter(a.mark, b.mark) ? -1 : isBetter(b.mark, a.mark) ? 1 : 0);
+                let currentRank = 1;
+                for (let i = 0; i < results.length; i++) {
+                    if (i > 0 && results[i].mark !== results[i - 1].mark) currentRank = i + 1;
+                    results[i].tempRank = currentRank;
+                    results[i].potentialPts = currentRank <= 8 ? scoringRules[currentRank - 1] : 0;
+                }
+            });
+        };
+
+        calculatePoints([...individualEntries, ...relayEntries]);
+
+        // 3. Optimization Logic (3 event limit)
+        // An athlete's event count = sum(individual events) + sum(relay participations)
+        const athleteCounts = {}; // athlete_name -> count
+        const athleteEntries = {}; // athlete_name -> [ {entry, pts} ]
+
+        individualEntries.forEach(e => {
+            const name = e.athlete_name || "Unknown";
+            if (!athleteEntries[name]) athleteEntries[name] = [];
+            athleteEntries[name].push(e);
+        });
+
+        relayEntries.forEach(e => {
+            // Relays usually have athlete names like "A, B, C, D"
+            const nameStr = e.athlete_name || "";
+            const members = nameStr.split(',').map(n => n.trim()).filter(Boolean);
+            members.forEach(m => {
+                if (!athleteEntries[m]) athleteEntries[m] = [];
+                athleteEntries[m].push({ ...e, isRelayLeg: true, relayRef: e });
+            });
+        });
+
+        // Greedy Selection: Keep picking top entries until limits hit or no more points possible
+        const selectedEntries = new Set(); // entry id or unique key
+        const athleteUsage = {}; // name -> count
+
+        // Combine all things an athlete can score in
+        const allPossibleScoringActions = [];
+        individualEntries.forEach(e => {
+            if (e.potentialPts > 0) allPossibleScoringActions.push({ type: 'ind', entry: e, pts: e.potentialPts, athlete: e.athlete_name });
+        });
+        relayEntries.forEach(e => {
+            if (e.potentialPts > 0) {
+                const nameStr = e.athlete_name || "";
+                const members = nameStr.split(',').map(n => n.trim()).filter(Boolean);
+                allPossibleScoringActions.push({ type: 'rel', entry: e, pts: e.potentialPts, athletes: members });
+            }
+        });
+
+        // Sort actions by points descending
+        allPossibleScoringActions.sort((a, b) => b.pts - a.pts);
+
+        const activeIndividualChoices = [];
+        const activeRelayChoices = [];
+
+        allPossibleScoringActions.forEach(action => {
+            if (action.type === 'ind') {
+                const usage = athleteUsage[action.athlete] || 0;
+                if (usage < 3) {
+                    athleteUsage[action.athlete] = usage + 1;
+                    activeIndividualChoices.push(action.entry);
+                }
+            } else {
+                // Relay optimization is tricky. We'll simplify: 
+                // A relay is "locked in" if all participants (if known) have slots.
+                // If participants are unknown (just school name), we assume slots available.
+                const members = action.athletes.filter(m => m && !m.includes('Relay'));
+                let canFit = true;
+                members.forEach(m => {
+                    const usage = athleteUsage[m] || 0;
+                    if (usage >= 3) canFit = false;
+                });
+
+                if (canFit) {
+                    members.forEach(m => {
+                        athleteUsage[m] = (athleteUsage[m] || 0) + 1;
+                    });
+                    activeRelayChoices.push(action.entry);
+                }
+            }
+        });
+
+        // 4. Re-rank based on optimized selections
+        const finalEntries = [...activeIndividualChoices, ...activeRelayChoices];
+        const finalGroups = {};
+        finalEntries.forEach(e => {
+            if (!finalGroups[e.groupTitle]) finalGroups[e.groupTitle] = [];
+            finalGroups[e.groupTitle].push(e);
+        });
+
+        Object.entries(finalGroups).forEach(([title, results]) => {
+            results.sort((a, b) => isBetter(a.mark, b.mark) ? -1 : isBetter(b.mark, a.mark) ? 1 : 0);
+            let currentRank = 1;
+            for (let i = 0; i < results.length; i++) {
+                if (i > 0 && results[i].mark !== results[i - 1].mark) currentRank = i + 1;
+                results[i].calculatedRank = currentRank;
+                if (currentRank <= 8) {
+                    // Tie splitting logic
+                    let tieCount = 1;
+                    let j = i + 1;
+                    while (j < results.length && results[j].mark === results[i].mark) { tieCount++; j++; }
+                    let pointSum = 0;
+                    for (let k = currentRank - 1; k < Math.min(8, currentRank - 1 + tieCount); k++) pointSum += scoringRules[k];
+                    const perAthlete = pointSum / tieCount;
+                    for (let k = i; k < i + tieCount; k++) results[k].optimizedPts = perAthlete;
+                    i += (tieCount - 1);
+                } else {
+                    results[i].optimizedPts = 0;
+                }
+            }
+        });
+
+        return finalGroups;
+    }, [groupedData, showSimulation, filterYear, filterSeason, isBetter]);
+
+    const optimizedTeamScores = useMemo(() => {
+        if (!showSimulation) return null;
+        if (filterYear === 'All' || filterSeason === 'All') return { incomplete: true };
+
+        const scores = { boys: {}, girls: {} };
+
+        Object.entries(optimizedData).forEach(([groupTitle, results]) => {
+            if (results.length === 0) return;
+            // Derive gender from event name if not present
+            const eventName = results[0].event || "";
+            const gender = eventName.toLowerCase().includes('girls') ? 'girls' : 'boys';
+
+            results.forEach(res => {
+                if (res.optimizedPts > 0) {
+                    const team = res.pvcTeam;
+                    if (!scores[gender][team]) scores[gender][team] = { total: 0, breakdown: [] };
+                    scores[gender][team].total += res.optimizedPts;
+                    scores[gender][team].breakdown.push({
+                        event: res.event,
+                        athlete: res.athlete_name || "Unknown",
+                        mark: res.mark,
+                        pts: res.optimizedPts
+                    });
+                }
+            });
+        });
+
+        const formatScores = (scoreMap) => Object.entries(scoreMap)
+            .sort((a, b) => b[1].total - a[1].total)
+            .map(([team, data]) => ({
+                team,
+                pts: data.total,
+                breakdown: data.breakdown.sort((a, b) => b.pts - a.pts)
+            }));
+
+        return {
+            boys: formatScores(scores.boys),
+            girls: formatScores(scores.girls)
+        };
+    }, [optimizedData, showSimulation, filterYear, filterSeason]);
+
+    return (
+        <div className="analyzer-container">
+            <div className="analyzer-header">
+                <h2>PVC Championships Simulator</h2>
+                <p className="subtitle">Simulating PVC Small Schools Championships using all-time best performances</p>
+            </div>
+
+            <div className="analyzer-controls">
+                <div className="filter-bar analyzer-filters">
+                    <div className="filter-group">
+                        <label>Year</label>
+                        <select value={filterYear} onChange={e => setFilterYear(e.target.value)}>
+                            <option value="All">All Years</option>
+                            {years.map(y => <option key={y} value={y}>{y}</option>)}
+                        </select>
+                    </div>
+                    <div className="filter-group">
+                        <label>Season</label>
+                        <select value={filterSeason} onChange={e => setFilterSeason(e.target.value)}>
+                            <option value="All">All Seasons</option>
+                            {seasons.map(s => <option key={s} value={s}>{s}</option>)}
+                        </select>
+                    </div>
+                    <div className="filter-group">
+                        <label>Event</label>
+                        <select value={filterEvent} onChange={e => setFilterEvent(e.target.value)}>
+                            <option value="All">All Events</option>
+                            {events.map(ev => <option key={ev} value={ev}>{ev}</option>)}
+                        </select>
+                    </div>
+                    <div className="simulation-toggle">
+                        <label className="switch">
+                            <input
+                                type="checkbox"
+                                checked={showSimulation}
+                                onChange={e => setShowSimulation(e.target.checked)}
+                            />
+                            <span className="slider round"></span>
+                        </label>
+                        <span className="toggle-label">Simulate Meet</span>
+                    </div>
+                    <div className="record-count">{filteredData.length} Results</div>
+                </div>
+            </div>
+
+            {showSimulation && optimizedTeamScores && (
+                <div className="simulation-overlay">
+                    {optimizedTeamScores.incomplete ? (
+                        <div className="meet-leaderboard warn">
+                            <p>⚠️ <strong>Please select a specific Year and Season</strong> to view the Meet Simulation.</p>
+                        </div>
+                    ) : (
+                        <div className="leaderboards-container">
+                            <div className="meet-leaderboard boys">
+                                <h3>🏃‍♂️ Boys Team Standings</h3>
+                                <div className="leaderboard-grid">
+                                    {optimizedTeamScores.boys.map((ts, idx) => (
+                                        <div key={ts.team} className="leaderboard-wrapper">
+                                            <div
+                                                className={`leaderboard-item rank-${idx + 1} ${expandedTeams[`${ts.team}-boys`] ? 'expanded' : ''}`}
+                                                onClick={() => setExpandedTeams(prev => ({ ...prev, [`${ts.team}-boys`]: !expandedTeams[`${ts.team}-boys`] }))}
+                                            >
+                                                <span className="team-rank">{idx + 1}</span>
+                                                <span className="team-name">{ts.team}</span>
+                                                <span className="team-points">{ts.pts.toFixed(1)}</span>
+                                                <span className="expand-icon">{expandedTeams[`${ts.team}-boys`] ? '▼' : '▶'}</span>
+                                            </div>
+                                            {expandedTeams[`${ts.team}-boys`] && (
+                                                <div className="team-breakdown">
+                                                    {ts.breakdown.map((item, i) => (
+                                                        <div key={i} className="breakdown-row">
+                                                            <span className="b-event">{item.event}</span>
+                                                            <span className="b-athlete">{item.athlete}</span>
+                                                            <span className="b-pts">+{item.pts.toFixed(1)}</span>
+                                                        </div>
+                                                    ))}
+                                                </div>
+                                            )}
+                                        </div>
+                                    ))}
+                                    {optimizedTeamScores.boys.length === 0 && <p className="empty-scores">No results.</p>}
+                                </div>
+                            </div>
+                            <div className="meet-leaderboard girls">
+                                <h3>🏃‍♀️ Girls Team Standings</h3>
+                                <div className="leaderboard-grid">
+                                    {optimizedTeamScores.girls.map((ts, idx) => (
+                                        <div key={ts.team} className="leaderboard-wrapper">
+                                            <div
+                                                className={`leaderboard-item rank-${idx + 1} ${expandedTeams[`${ts.team}-girls`] ? 'expanded' : ''}`}
+                                                onClick={() => setExpandedTeams(prev => ({ ...prev, [`${ts.team}-girls`]: !expandedTeams[`${ts.team}-girls`] }))}
+                                            >
+                                                <span className="team-rank">{idx + 1}</span>
+                                                <span className="team-name">{ts.team}</span>
+                                                <span className="team-points">{ts.pts.toFixed(1)}</span>
+                                                <span className="expand-icon">{expandedTeams[`${ts.team}-girls`] ? '▼' : '▶'}</span>
+                                            </div>
+                                            {expandedTeams[`${ts.team}-girls`] && (
+                                                <div className="team-breakdown">
+                                                    {ts.breakdown.map((item, i) => (
+                                                        <div key={i} className="breakdown-row">
+                                                            <span className="b-event">{item.event}</span>
+                                                            <span className="b-athlete">{item.athlete}</span>
+                                                            <span className="b-pts">+{item.pts.toFixed(1)}</span>
+                                                        </div>
+                                                    ))}
+                                                </div>
+                                            )}
+                                        </div>
+                                    ))}
+                                    {optimizedTeamScores.girls.length === 0 && <p className="empty-scores">No results.</p>}
+                                </div>
+                            </div>
+                        </div>
+                    )}
+                </div>
+            )}
+
+            <div className="analyzer-results">
+                {Object.keys(optimizedData).length > 0 ? (
+                    Object.entries(optimizedData).map(([groupTitle, results]) => (
+                        <div key={groupTitle} className="event-section">
+                            <h3 className="event-title">
+                                {results[0].event}
+                                <span className="event-meta">{results[0].derivedType} {results[0].derivedYear}</span>
+                            </h3>
+                            <table className="performance-table">
+                                <thead>
+                                    <tr>
+                                        <th>Rank</th>
+                                        <th>Name</th>
+                                        <th>Team</th>
+                                        <th>Mark</th>
+                                        <th>Date</th>
+                                        {showSimulation && <th>Points</th>}
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {results.map((res, idx) => (
+                                        <tr key={idx}>
+                                            <td>{res.calculatedRank}</td>
+                                            <td className="athlete-name-cell">{res.athlete_name}</td>
+                                            <td>{res.pvcTeam}</td>
+                                            <td className="mark-cell">{res.mark}</td>
+                                            <td>{res.date ? res.date.split('T')[0] : 'N/A'}</td>
+                                            {showSimulation && (
+                                                <td className="points-cell">
+                                                    {res.optimizedPts > 0 ? `+${res.optimizedPts.toFixed(1)}` : '-'}
+                                                </td>
+                                            )}
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </table>
+                        </div>
+                    ))
+                ) : (
+                    <div className="empty-state">
+                        <p>No results match your filters.</p>
+                    </div>
+                )}
+            </div>
+        </div>
+    );
+}
+
+export default PVCSimulator;
