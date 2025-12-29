@@ -8,38 +8,79 @@ function PVCSimulator({ performances, isBetter }) {
     const [showSimulation, setShowSimulation] = useState(false)
     const [expandedTeams, setExpandedTeams] = useState({}) // { 'teamName-boys': true }
 
-    // Constants for PVC Small Schools (as used in previous analyzer)
-    const PVC_SMALL_SCHOOLS = {
-        "Orono": "Orono High School",
-        "George Steve": "George Stevens Academy",
-        "Bucksport": "Bucksport High School",
-        "Sumner": "Sumner/Narragaugus",
-        "Central": "Central High School",
-        "Foxcroft": "Foxcroft Academy",
-        "Dexter": "Dexter Regional High School",
-        "Piscataquis": "Piscataquis Community High School",
-        "Penquis": "Penquis Valley High School",
-        "Searsport": "Searsport District High School",
-        "Mattanawcook": "Mattanawcook Academy",
-        "Lee Academy": "Lee Academy",
-        "Deer Isle": "Deer Isle-Stonington High School",
-        "Bangor Chris": "Bangor Christian Schools",
-        "Penobscot": "Penobscot Valley High School",
-        "Greenville": "Greenville High School",
-        "Narraguagus": "Sumner/Narragaugus",
-        "Washington Acad": "Washington Academy",
-        "Calais": "Calais High School",
-        "Shead": "Shead High School",
-        "Fort Kent": "Fort Kent Community High School",
-        "Caribou Hig": "Caribou High School",
-        "Presque Isle": "Presque Isle High School",
-        "Houlton": "Houlton High School"
+    // Configuration for PVC Small Schools
+    const getPVCSchools = (year, season) => {
+        // Specific Rule for Indoor 2026
+        if (year === '2026' && season === 'Indoor') {
+            return {
+                "Bangor Christian": "Bangor Christian Schools",
+                "Bucksport": "Bucksport High School",
+                "Central": "Central High School",
+                "Foxcroft": "Foxcroft Academy",
+                "George Stevens": "George Stevens Academy",
+                "Orono": "Orono High School",
+                "PCHS": "Piscataquis Community High School",
+                "Sumner": "Sumner/Narragaugus"
+            };
+        }
+
+        // Default / Legacy List
+        return {
+            "Orono": "Orono High School",
+            "George Steve": "George Stevens Academy",
+            "Bucksport": "Bucksport High School",
+            "Sumner": "Sumner/Narragaugus",
+            "Central": "Central High School",
+            "Foxcroft": "Foxcroft Academy",
+            "Dexter": "Dexter Regional High School",
+            "Piscataquis": "Piscataquis Community High School",
+            "Penquis": "Penquis Valley High School",
+            "Searsport": "Searsport District High School",
+            "Mattanawcook": "Mattanawcook Academy",
+            "Lee Academy": "Lee Academy",
+            "Deer Isle": "Deer Isle-Stonington High School",
+            "Bangor Chris": "Bangor Christian Schools",
+            "Penobscot": "Penobscot Valley High School",
+            "Greenville": "Greenville High School",
+            "Narraguagus": "Sumner/Narragaugus",
+            "Washington Acad": "Washington Academy",
+            "Calais": "Calais High School",
+            "Shead": "Shead High School",
+            "Fort Kent": "Fort Kent Community High School",
+            "Caribou Hig": "Caribou High School",
+            "Presque Isle": "Presque Isle High School",
+            "Houlton": "Houlton High School"
+        };
     };
 
     const { filteredData, years, seasons, events } = useMemo(() => {
         if (!performances) return { filteredData: [], years: [], seasons: [], events: [] };
 
-        // Process performances to match the expected format and normalize team names for PVC schools
+        // 1. Calculate available Years and Seasons first (from raw data)
+        const rawYears = new Set();
+        const rawSeasons = new Set();
+        performances.forEach(p => {
+            if (p.year) rawYears.add(p.year);
+            if (p.season) {
+                const m = p.season.match(/^(\d{4})\s+(.*)$/);
+                if (m) rawSeasons.add(m[2]);
+                else rawSeasons.add(p.season);
+            }
+        });
+
+        // 2. If filters are not set, return empty data but populated options
+        if (filterYear === 'All' || filterSeason === 'All') {
+            return {
+                filteredData: [],
+                years: Array.from(rawYears).sort((a, b) => b - a),
+                seasons: Array.from(rawSeasons).sort(),
+                events: []
+            }
+        }
+
+        // 3. Get the specific team list for this context
+        const activeSchools = getPVCSchools(filterYear, filterSeason);
+
         const processed = performances.map(p => {
             let year = p.year;
             let type = p.season;
@@ -49,13 +90,19 @@ function PVCSimulator({ performances, isBetter }) {
                 type = m[2];
             }
 
-            // Detect PVC Team
+            // Detect PVC Team based on ACTIVE list
             let pvcTeam = null;
-            for (const [key, val] of Object.entries(PVC_SMALL_SCHOOLS)) {
-                if (p.team.toLowerCase().includes(key.toLowerCase()) || p.team.toLowerCase().includes(val.toLowerCase())) {
+            for (const [key, val] of Object.entries(activeSchools)) {
+                // Check against key (short) and val (long)
+                if (p.team.toLowerCase().includes(key.toLowerCase()) || p.team.toLowerCase() === val.toLowerCase()) {
                     pvcTeam = val;
                     break;
                 }
+            }
+
+            // Special check for PCHS acronym
+            if (!pvcTeam && activeSchools["PCHS"] && (p.team === "PCHS" || p.team.includes("Piscataquis"))) {
+                pvcTeam = activeSchools["PCHS"];
             }
 
             return {
@@ -65,7 +112,7 @@ function PVCSimulator({ performances, isBetter }) {
                 pvcTeam: pvcTeam,
                 isRelay: p.event.toLowerCase().includes('relay') || p.event.toLowerCase().includes('4x')
             };
-        }).filter(p => p.pvcTeam); // Only include PVC small schools
+        }).filter(p => p.pvcTeam); // Only include valid schools for THIS season
 
         const matches = (p, filters) => {
             const { year, season, event } = filters;
