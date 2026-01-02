@@ -42,10 +42,80 @@ export default function MeetSheet() {
     const [isChampionship, setIsChampionship] = useState(false);
 
     useEffect(() => {
-        fetch('http://localhost:8000/meet-data')
-            .then(res => res.json())
-            .then(data => {
-                setData(data);
+        const sheet_url = "https://docs.google.com/spreadsheets/d/1iWUERpoQgetunqBOCZM2ep8HOhdX1RcLw59uJaA5hCY/export?format=csv";
+        fetch(sheet_url)
+            .then(res => res.text())
+            .then(csv_data => {
+                const lines = csv_data.split('\n');
+
+                const event_map = {
+                    "4x8": "4X800m Relay",
+                    "55H": "55 M. Hurdles",
+                    "55": "55 M. Dash",
+                    "1mi": "One Mile",
+                    "400": "400 M. Run",
+                    "800": "800 M. Run",
+                    "200": "200 M. Dash",
+                    "2mi": "Two Mile Run",
+                    "4x2": "4X200m Relay",
+                    "LJ": "Long Jump",
+                    "TJ": "Triple Jump",
+                    "HJ": "High Jump",
+                    "PV": "Pole Vault",
+                    "SP": "Shot Put"
+                };
+
+                const parseTable = (linesChunk) => {
+                    if (!linesChunk) return [];
+                    let header = null;
+                    let dataStart = 0;
+                    for (let i = 0; i < linesChunk.length; i++) {
+                        if (linesChunk[i].includes("4x8") && linesChunk[i].includes("55H")) {
+                            header = linesChunk[i].split(',');
+                            dataStart = i + 1;
+                            break;
+                        }
+                    }
+                    if (!header) return [];
+                    const results = [];
+                    for (let i = dataStart; i < linesChunk.length; i++) {
+                        const cols = linesChunk[i].split(',');
+                        if (!cols || !cols[0].trim() || cols[0].trim() === "Total") continue;
+                        const athleteName = cols[0].trim();
+                        const athleteEvents = [];
+                        for (let j = 1; j < header.length; j++) {
+                            if (j >= cols.length) continue;
+                            const val = cols[j].trim().toLowerCase();
+                            if (["x", "y", "?", "(y)"].includes(val)) {
+                                const eventAbbrev = header[j].trim();
+                                if (event_map[eventAbbrev]) {
+                                    athleteEvents.push(event_map[eventAbbrev]);
+                                }
+                            }
+                        }
+                        if (athleteEvents.length > 0) {
+                            results.push({ name: athleteName, events: athleteEvents });
+                        }
+                    }
+                    return results;
+                };
+
+                let girlsChunk = [];
+                let boysChunk = [];
+                let currentChunk = girlsChunk;
+                let seenFirstTable = false;
+                lines.forEach(line => {
+                    if (line.includes("4x8") && line.includes("55H")) {
+                        if (seenFirstTable) currentChunk = boysChunk;
+                        seenFirstTable = true;
+                    }
+                    currentChunk.push(line);
+                });
+
+                setData({
+                    girls: parseTable(girlsChunk),
+                    boys: parseTable(boysChunk)
+                });
                 setLoading(false);
             })
             .catch(err => {
