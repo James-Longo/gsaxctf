@@ -278,6 +278,7 @@ class Sub5Scraper:
                     year TEXT,
                     meet_name TEXT,
                     meet_url TEXT,
+                    splits TEXT,
                     FOREIGN KEY(athlete_id) REFERENCES athletes(id)
                 )
             ''')
@@ -387,9 +388,9 @@ class Sub5Scraper:
             output_path = os.path.join(json_dir, output_filename)
             
             try:
-                # Skip if already parsed
-                if os.path.exists(output_path):
-                    continue
+                # Skip if already parsed (Always re-parse for now)
+                # if os.path.exists(output_path):
+                #     continue
 
                 parser = Sub5ColumnParser(input_path)
                 events = parser.parse()
@@ -589,6 +590,9 @@ class Sub5Scraper:
                             else:
                                 performance_date = f"{date}T12:00:00"
 
+                        # Handle Splits
+                        splits_json = json.dumps(r.get("splits", []))
+
                         # Insert Performance
                         # Deduplication check?
                         cursor.execute('''
@@ -599,9 +603,9 @@ class Sub5Scraper:
                         if not cursor.fetchone():
                             cursor.execute('''
                                 INSERT INTO performances 
-                                (athlete_id, event, mark, team, date, season, year, meet_name, meet_url)
-                                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
-                            ''', (athlete_id, full_event, mark, team_norm, performance_date, season, year, meet_name, ""))
+                                (athlete_id, event, mark, team, date, season, year, meet_name, meet_url, splits)
+                                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                            ''', (athlete_id, full_event, mark, team_norm, performance_date, season, year, meet_name, "", splits_json))
                             total_performances += 1
                             
                 if i % 10 == 0 or i == total - 1:

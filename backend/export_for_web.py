@@ -21,7 +21,17 @@ def export_data():
     '''
     performances = cursor.execute(query).fetchall()
     
-    data = [dict(ix) for ix in performances]
+    data = []
+    for row in performances:
+        p = dict(row)
+        if p.get('splits'):
+            try:
+                p['splits'] = json.loads(p['splits'])
+            except:
+                p['splits'] = []
+        else:
+            p['splits'] = []
+        data.append(p)
     
     print(f"Exporting {len(data)} records to {output_path}...")
     

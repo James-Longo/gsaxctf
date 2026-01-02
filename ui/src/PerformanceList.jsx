@@ -265,21 +265,30 @@ function PVCSimulator({ performances, isBetter }) {
                     activeIndividualChoices.push(action.entry);
                 }
             } else {
-                // Relay optimization is tricky. We'll simplify: 
-                // A relay is "locked in" if all participants (if known) have slots.
-                // If participants are unknown (just school name), we assume slots available.
-                const members = action.athletes.filter(m => m && !m.includes('Relay'));
-                let canFit = true;
-                members.forEach(m => {
-                    const usage = athleteUsage[m] || 0;
-                    if (usage >= 3) canFit = false;
-                });
+                // Relay Logic:
+                // 1. Identify members. If empty or generic, we might assume free slots (or ignore).
+                //    Here we assume if we have names, we MUST check them.
+                const members = action.athletes.filter(m => m && !m.toLowerCase().includes('school') && !m.toLowerCase().includes('relay'));
 
-                if (canFit) {
-                    members.forEach(m => {
-                        athleteUsage[m] = (athleteUsage[m] || 0) + 1;
-                    });
+                // If we have no named members (e.g. just "Orono High School"), we let it pass 
+                // effectively "free" points because we can't attribute the load.
+                if (members.length === 0) {
                     activeRelayChoices.push(action.entry);
+                } else {
+                    // Check if ALL members have space
+                    let canFit = true;
+                    members.forEach(m => {
+                        const usage = athleteUsage[m] || 0;
+                        if (usage >= 3) canFit = false;
+                    });
+
+                    if (canFit) {
+                        // Book it!
+                        members.forEach(m => {
+                            athleteUsage[m] = (athleteUsage[m] || 0) + 1;
+                        });
+                        activeRelayChoices.push(action.entry);
+                    }
                 }
             }
         });
@@ -381,23 +390,13 @@ function PVCSimulator({ performances, isBetter }) {
                             {seasons.map(s => <option key={s} value={s}>{s}</option>)}
                         </select>
                     </div>
-                    <div className="filter-group">
-                        <label>Event</label>
-                        <select value={filterEvent} onChange={e => setFilterEvent(e.target.value)}>
-                            <option value="All">All Events</option>
-                            {events.map(ev => <option key={ev} value={ev}>{ev}</option>)}
-                        </select>
-                    </div>
-                    <div className="simulation-toggle">
-                        <label className="switch">
-                            <input
-                                type="checkbox"
-                                checked={showSimulation}
-                                onChange={e => setShowSimulation(e.target.checked)}
-                            />
-                            <span className="slider round"></span>
-                        </label>
-                        <span className="toggle-label">Simulate Meet</span>
+                    <div className="simulation-actions">
+                        <button
+                            className={`simulate-btn ${showSimulation ? 'active' : ''}`}
+                            onClick={() => setShowSimulation(!showSimulation)}
+                        >
+                            {showSimulation ? '📊 Show Raw Results' : '🏆 Simulate Meet'}
+                        </button>
                     </div>
                     <div className="record-count">{filteredData.length} Results</div>
                 </div>

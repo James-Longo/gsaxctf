@@ -251,7 +251,8 @@ class Sub5ColumnParser:
                  break
             
             # Skip lines that look like Team Rankings items (e.g., "1) York High School 48")
-            if re.match(r'^\s*\d+\)\s+[A-Za-z]', line):
+            # BUT only for individual events. Relay runner lines look like "1) Name..."
+            if not is_relay and re.match(r'^\s*\d+\)\s+[A-Za-z]', line):
                 continue
             
             if not is_relay:

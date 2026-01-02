@@ -1,5 +1,5 @@
 
-import { useState, useEffect, useMemo } from 'react'
+import React, { useState, useEffect, useMemo } from 'react'
 import { isBetter } from './utils'
 import PerformanceList from './PerformanceList'
 import PRPopCalculator from './PRPopCalculator'
@@ -8,6 +8,9 @@ import './App.css'
 const ALL_ATHLETES = { id: 'all', name: 'All Athletes' }
 const PERFORMANCE_ANALYZER = { id: 'analyzer', name: 'Performance Analyzer' }
 const PR_POP_CALCULATOR = { id: 'pr-pop', name: 'PR Pop Calculator' }
+const MEET_SHEET = { id: 'meet-sheet', name: 'Meet Sheet' }
+
+import MeetSheet from './MeetSheet'
 
 function App() {
   const [allPerformances, setAllPerformances] = useState([])
@@ -15,6 +18,8 @@ function App() {
 
   const [selectedTeam, setSelectedTeam] = useState('George Stevens Academy')
   const [selectedAthlete, setSelectedAthlete] = useState(ALL_ATHLETES)
+
+  const [expandedSplits, setExpandedSplits] = useState(new Set())
 
   // Filter states
   const [filterYear, setFilterYear] = useState('All')
@@ -24,7 +29,7 @@ function App() {
   const [showPRsOnly, setShowPRsOnly] = useState(false)
 
   // Sort states
-  const [sortField, setSortField] = useState('date') // 'date' or 'mark'
+  const [sortField, setSortField] = useState('date') // 'date' or 'mark/result'
   const [sortDirection, setSortDirection] = useState('desc')
 
   // Load static data on mount
@@ -133,6 +138,7 @@ function App() {
     setFilterMeet('All')
     setSortField('date')
     setSortDirection('desc')
+    setExpandedSplits(new Set())
   }, [selectedAthlete, selectedTeam])
 
 
@@ -271,7 +277,7 @@ function App() {
       let comparison = 0
       if (sortField === 'date') {
         comparison = new Date(a.date) - new Date(b.date)
-      } else if (sortField === 'mark') {
+      } else if (sortField === 'mark' || sortField === 'result') {
         if (isBetter(a.mark, b.mark)) comparison = 1
         else if (isBetter(b.mark, a.mark)) comparison = -1
         else comparison = 0
@@ -296,12 +302,22 @@ function App() {
   }, [performances, filterYear, filterSeasonType, filterEvent, filterMeet, selectedTeam, showPRsOnly, sortField, sortDirection])
 
   const handleSort = (field) => {
-    if (sortField === field) {
+    const canonicalField = field === 'result' ? 'mark' : field
+    if (sortField === canonicalField) {
       setSortDirection(prev => prev === 'asc' ? 'desc' : 'asc')
     } else {
-      setSortField(field)
+      setSortField(canonicalField)
       setSortDirection('desc') // Default to best/latest at top
     }
+  }
+
+  const toggleSplits = (id) => {
+    setExpandedSplits(prev => {
+      const next = new Set(prev)
+      if (next.has(id)) next.delete(id)
+      else next.add(id)
+      return next
+    })
   }
 
   const renderSortIcon = (field) => {
@@ -315,60 +331,67 @@ function App() {
 
       <div className="dashboard-layout">
         <div className="sidebar">
-          <h2>Dashboard</h2>
-          <ul>
-            <li
+          {/* Main Navigation / Mode Switching */}
+          <div className="nav-buttons">
+            <button
               onClick={() => setSelectedAthlete(ALL_ATHLETES)}
-              className={selectedAthlete?.id === 'all' ? 'active all-athletes' : 'all-athletes'}
+              className={`nav-btn ${selectedAthlete && selectedAthlete.id !== 'analyzer' && selectedAthlete.id !== 'pr-pop' ? 'active' : ''}`}
             >
-              All Athletes
-            </li>
-            <li
-              className={selectedAthlete?.id === 'analyzer' ? 'active' : ''}
-              onClick={() => {
-                setSelectedAthlete({ id: 'analyzer', name: 'PVC Championships Simulator' });
-              }}
+              🏃‍♂️ Performance History
+            </button>
+            <button
+              onClick={() => setSelectedAthlete(PERFORMANCE_ANALYZER)}
+              className={`nav-btn ${selectedAthlete?.id === 'analyzer' ? 'active' : ''}`}
             >
-              PVC Championships Simulator
-            </li>
-            <li
+              📊 PVC Simulator
+            </button>
+            <button
               onClick={() => setSelectedAthlete(PR_POP_CALCULATOR)}
-              className={selectedAthlete?.id === 'pr-pop' ? 'active pr-pop-link' : 'pr-pop-link'}
+              className={`nav-btn ${selectedAthlete?.id === 'pr-pop' ? 'active' : ''}`}
             >
-              PR Pop Calculator
-            </li>
-            {isLocalDev && (
-              <li>
-                <div className="action-buttons">
-                  <button
-                    className={`update-btn ${isScraping ? 'loading' : ''}`}
-                    onClick={() => handleScrape(false)}
-                    disabled={isScraping}
-                  >
-                    {isScraping ? 'Updating...' : 'Update Data'}
-                  </button>
-                  <div
-                    className="full-rescrape-link"
-                    onClick={() => {
-                      if (window.confirm("This will wipe all currently saved data and re-download everything. Proceed?")) {
-                        handleScrape(true);
-                      }
-                    }}
-                    style={{
-                      fontSize: '0.7rem',
-                      color: '#a0aec0',
-                      cursor: 'pointer',
-                      marginTop: '4px',
-                      textAlign: 'center',
-                      textDecoration: 'underline'
-                    }}
-                  >
-                    Full Rescrape
-                  </div>
+              🚀 PR Pop Calculator
+            </button>
+            <button
+              onClick={() => setSelectedAthlete(MEET_SHEET)}
+              className={`nav-btn ${selectedAthlete?.id === 'meet-sheet' ? 'active' : ''}`}
+            >
+              📋 Create Meet Sheet
+            </button>
+          </div>
+
+          {isLocalDev && (
+            <div className="dev-controls">
+              <h3>Dev Controls</h3>
+              <div className="action-buttons">
+                <button
+                  className={`update-btn ${isScraping ? 'loading' : ''}`}
+                  onClick={() => handleScrape(false)}
+                  disabled={isScraping}
+                >
+                  {isScraping ? 'Updating...' : 'Update Data'}
+                </button>
+                <div
+                  className="full-rescrape-link"
+                  onClick={() => {
+                    if (window.confirm("This will wipe all currently saved data and re-download everything. Proceed?")) {
+                      handleScrape(true);
+                    }
+                  }}
+                  style={{
+                    fontSize: '0.7rem',
+                    color: '#a0aec0',
+                    cursor: 'pointer',
+                    marginTop: '4px',
+                    textAlign: 'center',
+                    textDecoration: 'underline'
+                  }}
+                >
+                  Full Rescrape
                 </div>
-              </li>
-            )}
-          </ul>
+              </div>
+            </div>
+          )}
+
           {isScraping && (
             <div className="progress-container">
               <div className="progress-bar-bg">
@@ -383,45 +406,7 @@ function App() {
               </div>
             </div>
           )}
-          <div className="debug-stats" style={{ marginTop: '20px', padding: '10px', fontSize: '0.7rem', color: '#666', borderTop: '1px solid #ddd' }}>
-            <strong>Debug Stats</strong><br />
-            Performances: {performances.length}<br />
-            Years: {years.join(', ')}<br />
-            Meets: {meets.length}
-          </div>
 
-          <div className="team-selector">
-            <h3>Filter by Team</h3>
-            <select
-              value={selectedTeam}
-              onChange={e => setSelectedTeam(e.target.value)}
-              className="team-dropdown"
-            >
-              <option value="All">All Teams</option>
-              {teams.map(team => (
-                <option key={team} value={team}>{team}</option>
-              ))}
-            </select>
-          </div>
-
-          <h2>{selectedTeam === 'All' ? 'Athlete List' : `${selectedTeam} Athletes`}</h2>
-          <ul>
-            <li
-              onClick={() => setSelectedAthlete(ALL_ATHLETES)}
-              className={selectedAthlete?.id === 'all' ? 'active' : ''}
-            >
-              All {selectedTeam === 'All' ? '' : selectedTeam} Athletes
-            </li>
-            {athletes.map(athlete => (
-              <li
-                key={athlete.id}
-                onClick={() => setSelectedAthlete(athlete)}
-                className={selectedAthlete?.id === athlete.id ? 'active' : ''}
-              >
-                {athlete.name}
-              </li>
-            ))}
-          </ul>
         </div>
 
         <div className="main-content">
@@ -429,11 +414,29 @@ function App() {
             <PerformanceList performances={performances} isBetter={isBetter} />
           ) :
             selectedAthlete?.id === 'pr-pop' ? (
-              <PRPopCalculator
-                performances={performances}
-                selectedTeam={selectedTeam}
-                isBetter={isBetter}
-              />
+              <>
+                <div className="filter-bar">
+                  <div className="filter-group">
+                    <label>Team</label>
+                    <select
+                      value={selectedTeam}
+                      onChange={e => setSelectedTeam(e.target.value)}
+                    >
+                      <option value="All">All Teams</option>
+                      {teams.map(team => (
+                        <option key={team} value={team}>{team}</option>
+                      ))}
+                    </select>
+                  </div>
+                </div>
+                <PRPopCalculator
+                  performances={performances}
+                  selectedTeam={selectedTeam}
+                  isBetter={isBetter}
+                />
+              </>
+            ) : selectedAthlete?.id === 'meet-sheet' ? (
+              <MeetSheet />
             ) : selectedAthlete && selectedAthlete.id !== 'analyzer' ? (
               <>
                 <div className="header-row">
@@ -442,6 +445,39 @@ function App() {
                 </div>
 
                 <div className="filter-bar">
+                  <div className="filter-group">
+                    <label>Team</label>
+                    <select
+                      value={selectedTeam}
+                      onChange={e => setSelectedTeam(e.target.value)}
+                    >
+                      <option value="All">All Teams</option>
+                      {teams.map(team => (
+                        <option key={team} value={team}>{team}</option>
+                      ))}
+                    </select>
+                  </div>
+
+                  <div className="filter-group">
+                    <label>Athlete</label>
+                    <select
+                      value={selectedAthlete ? selectedAthlete.id : 'all'}
+                      onChange={(e) => {
+                        const val = e.target.value;
+                        if (val === 'all') setSelectedAthlete(ALL_ATHLETES);
+                        else {
+                          const ath = athletes.find(a => String(a.id) === val);
+                          if (ath) setSelectedAthlete(ath);
+                        }
+                      }}
+                    >
+                      <option value="all">All Athletes</option>
+                      {athletes.map(athlete => (
+                        <option key={athlete.id} value={athlete.id}>{athlete.name}</option>
+                      ))}
+                    </select>
+                  </div>
+
                   <div className="filter-group">
                     <label>Year</label>
                     <select value={filterYear} onChange={e => setFilterYear(e.target.value)}>
@@ -493,32 +529,63 @@ function App() {
                       <tr>
                         <th onClick={() => handleSort('date')} className="sortable">Date {renderSortIcon('date')}</th>
                         {selectedAthlete.id === 'all' && <th>Athlete</th>}
-                        <th>Season</th>
-                        <th>Event</th>
-                        <th onClick={() => handleSort('mark')} className="sortable">Mark {renderSortIcon('mark')}</th>
-                        <th>Meet</th>
+                        {selectedTeam === 'All' && <th>Team</th>}
+                        {filterSeasonType === 'All' && <th>Season</th>}
+                        {filterEvent === 'All' && <th>Event</th>}
+                        <th onClick={() => handleSort('result')} className="sortable">Result {renderSortIcon('mark')}</th>
+                        {filterMeet === 'All' && <th>Meet</th>}
                       </tr>
                     </thead>
                     <tbody>
                       {filteredPerformances.length > 0 ? (
                         filteredPerformances.map(perf => (
-                          <tr key={perf.id} className={perf.isCalculatedPR ? 'pr-row' : ''}>
-                            <td>{perf.date.split('T')[0]}</td>
-                            {selectedAthlete.id === 'all' && <td className="athlete-name-cell">{perf.athlete_name}</td>}
-                            <td>{perf.season}</td>
-                            <td>{perf.event}</td>
-                            <td>
-                              {perf.mark}
-                              {!!perf.isCalculatedPR && <span className="badge pr">PR</span>}
-                              {!!perf.isCalculatedSB && <span className="badge sb">SB</span>}
-                              {!!perf.isFirstTime && <span className="badge first">*</span>}
-                            </td>
-                            <td>{perf.meetWithYear}</td>
-                          </tr>
+                          <React.Fragment key={perf.id}>
+                            <tr className={perf.isCalculatedPR ? 'pr-row' : ''}>
+                              <td>{perf.date.split('T')[0]}</td>
+                              {selectedAthlete.id === 'all' && <td className="athlete-name-cell">{perf.athlete_name}</td>}
+                              {selectedTeam === 'All' && <td>{perf.team}</td>}
+                              {filterSeasonType === 'All' && <td>{perf.season}</td>}
+                              {filterEvent === 'All' && <td>{perf.event}</td>}
+                              <td>
+                                <div className="result-cell-content">
+                                  <span className="result-val">{perf.mark}</span>
+                                  {!!perf.isCalculatedPR && <span className="badge pr">PR</span>}
+                                  {!!perf.isCalculatedSB && <span className="badge sb">SB</span>}
+                                  {!!perf.isFirstTime && <span className="badge first">*</span>}
+                                  {perf.splits && perf.splits.length > 0 && (
+                                    <button
+                                      className="splits-toggle-btn"
+                                      onClick={() => toggleSplits(perf.id)}
+                                    >
+                                      {expandedSplits.has(perf.id) ? 'Hide Splits' : 'Show Splits'}
+                                    </button>
+                                  )}
+                                </div>
+                              </td>
+                              {filterMeet === 'All' && <td>{perf.meetWithYear}</td>}
+                            </tr>
+                            {expandedSplits.has(perf.id) && (
+                              <tr className="splits-row">
+                                <td colSpan="10">
+                                  <div className="splits-container">
+                                    <div className="splits-label">Splits:</div>
+                                    <div className="splits-list">
+                                      {perf.splits.map((s, idx) => (
+                                        <div key={idx} className="split-item">
+                                          <span className="split-index">{idx + 1}:</span>
+                                          <span className="split-val">{s}</span>
+                                        </div>
+                                      ))}
+                                    </div>
+                                  </div>
+                                </td>
+                              </tr>
+                            )}
+                          </React.Fragment>
                         ))
                       ) : (
                         <tr>
-                          <td colSpan={selectedAthlete.id === 'all' ? "7" : "6"} className="no-results">No results match your filters</td>
+                          <td colSpan="10" className="no-results">No results match your filters</td>
                         </tr>
                       )}
                     </tbody>
@@ -532,7 +599,7 @@ function App() {
             )}
         </div>
       </div>
-    </div>
+    </div >
   )
 }
 
