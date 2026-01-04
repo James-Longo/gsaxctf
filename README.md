@@ -13,6 +13,10 @@ This app allows you to parse athletic.net pages and view athlete performance his
 - **`track_app.db`**: The SQLite database storing all athlete data.
 - **`backend/`**: FastAPI server.
 - **`ui/`**: React frontend.
+- **`AGENT_INSTRUCTIONS.md`**: Critical context and deployment guides for AI agents.
+
+## Deployment & Maintenance
+For details on how to sync data and deploy to production, please refer to **`AGENT_INSTRUCTIONS.md`**.
 
 ## Requirements
 - Python 3.x

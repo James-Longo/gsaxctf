@@ -1,4 +1,5 @@
 import { useState, useMemo } from 'react'
+import { parseMark } from './utils'
 import './App.css'
 
 function PVCSimulator({ performances, isBetter }) {
@@ -7,6 +8,14 @@ function PVCSimulator({ performances, isBetter }) {
     const [filterEvent, setFilterEvent] = useState('All')
     const [showSimulation, setShowSimulation] = useState(false)
     const [expandedTeams, setExpandedTeams] = useState({}) // { 'teamName-boys': true }
+
+    const scrollToEvent = (groupTitle) => {
+        const targetId = `event-${groupTitle.replace(/[^a-z0-9]/gi, '-')}`;
+        const element = document.getElementById(targetId);
+        if (element) {
+            element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+    };
 
     // Configuration for PVC Small Schools
     const getPVCSchools = (year, season) => {
@@ -178,7 +187,7 @@ function PVCSimulator({ performances, isBetter }) {
             return groupedData;
         }
 
-        const scoringRules = [10, 8, 6, 5, 4, 3, 2, 1];
+        const scoringRules = [10, 8, 6, 4, 2, 1];
 
         // 1. Extract all entries
         let individualEntries = [];
@@ -202,11 +211,28 @@ function PVCSimulator({ performances, isBetter }) {
 
             Object.values(groups).forEach(results => {
                 results.sort((a, b) => isBetter(a.mark, b.mark) ? -1 : isBetter(b.mark, a.mark) ? 1 : 0);
-                let currentRank = 1;
+
+                let effectiveRank = 1;
+                let validCount = 0;
+                let lastValidMark = null;
+
                 for (let i = 0; i < results.length; i++) {
-                    if (i > 0 && results[i].mark !== results[i - 1].mark) currentRank = i + 1;
-                    results[i].tempRank = currentRank;
-                    results[i].potentialPts = currentRank <= 8 ? scoringRules[currentRank - 1] : 0;
+                    const p = parseMark(results[i].mark);
+                    if (!p.valid) {
+                        results[i].tempRank = null;
+                        results[i].potentialPts = 0;
+                        continue;
+                    }
+
+                    if (validCount > 0 && results[i].mark !== lastValidMark) {
+                        effectiveRank = validCount + 1;
+                    }
+
+                    results[i].tempRank = effectiveRank;
+                    results[i].potentialPts = effectiveRank <= scoringRules.length ? scoringRules[effectiveRank - 1] : 0;
+
+                    lastValidMark = results[i].mark;
+                    validCount++;
                 }
             });
         };
@@ -303,22 +329,55 @@ function PVCSimulator({ performances, isBetter }) {
 
         Object.entries(finalGroups).forEach(([title, results]) => {
             results.sort((a, b) => isBetter(a.mark, b.mark) ? -1 : isBetter(b.mark, a.mark) ? 1 : 0);
-            let currentRank = 1;
+
+            let effectiveRank = 1;
+            let validCount = 0;
+            let lastValidMark = null;
+
             for (let i = 0; i < results.length; i++) {
-                if (i > 0 && results[i].mark !== results[i - 1].mark) currentRank = i + 1;
-                results[i].calculatedRank = currentRank;
-                if (currentRank <= 8) {
+                const p = parseMark(results[i].mark);
+                if (!p.valid) {
+                    results[i].calculatedRank = null;
+                    results[i].optimizedPts = 0;
+                    continue;
+                }
+
+                if (validCount > 0 && results[i].mark !== lastValidMark) {
+                    effectiveRank = validCount + 1;
+                }
+
+                results[i].calculatedRank = effectiveRank;
+
+                if (effectiveRank <= scoringRules.length) {
                     // Tie splitting logic
                     let tieCount = 1;
                     let j = i + 1;
-                    while (j < results.length && results[j].mark === results[i].mark) { tieCount++; j++; }
+                    // Only count ties for VALID marks
+                    while (j < results.length && results[j].mark === results[i].mark && parseMark(results[j].mark).valid) {
+                        tieCount++;
+                        j++;
+                    }
+
                     let pointSum = 0;
-                    for (let k = currentRank - 1; k < Math.min(8, currentRank - 1 + tieCount); k++) pointSum += scoringRules[k];
+                    for (let k = effectiveRank - 1; k < Math.min(scoringRules.length, effectiveRank - 1 + tieCount); k++) {
+                        pointSum += scoringRules[k];
+                    }
+
                     const perAthlete = pointSum / tieCount;
-                    for (let k = i; k < i + tieCount; k++) results[k].optimizedPts = perAthlete;
-                    i += (tieCount - 1);
+                    for (let k = i; k < i + tieCount; k++) {
+                        results[k].optimizedPts = perAthlete;
+                    }
+
+                    // Increment loop index and validCount by the number of people tied
+                    // but we need to handle the loop index increment correctly
+                    const jump = tieCount - 1;
+                    lastValidMark = results[i].mark;
+                    validCount += tieCount;
+                    i += jump;
                 } else {
                     results[i].optimizedPts = 0;
+                    lastValidMark = results[i].mark;
+                    validCount++;
                 }
             }
         });
@@ -347,7 +406,8 @@ function PVCSimulator({ performances, isBetter }) {
                         event: res.event,
                         athlete: res.athlete_name || "Unknown",
                         mark: res.mark,
-                        pts: res.optimizedPts
+                        pts: res.optimizedPts,
+                        groupTitle: groupTitle
                     });
                 }
             });
@@ -428,7 +488,16 @@ function PVCSimulator({ performances, isBetter }) {
                                                 <div className="team-breakdown">
                                                     {ts.breakdown.map((item, i) => (
                                                         <div key={i} className="breakdown-row">
-                                                            <span className="b-event">{item.event}</span>
+                                                            <span
+                                                                className="b-event clickable-event"
+                                                                onClick={(e) => {
+                                                                    e.stopPropagation();
+                                                                    scrollToEvent(item.groupTitle);
+                                                                }}
+                                                                title={`Click to view results for ${item.event}`}
+                                                            >
+                                                                {item.event}
+                                                            </span>
                                                             <span className="b-athlete">{item.athlete}</span>
                                                             <span className="b-pts">+{item.pts.toFixed(1)}</span>
                                                         </div>
@@ -458,7 +527,16 @@ function PVCSimulator({ performances, isBetter }) {
                                                 <div className="team-breakdown">
                                                     {ts.breakdown.map((item, i) => (
                                                         <div key={i} className="breakdown-row">
-                                                            <span className="b-event">{item.event}</span>
+                                                            <span
+                                                                className="b-event clickable-event"
+                                                                onClick={(e) => {
+                                                                    e.stopPropagation();
+                                                                    scrollToEvent(item.groupTitle);
+                                                                }}
+                                                                title={`Click to view results for ${item.event}`}
+                                                            >
+                                                                {item.event}
+                                                            </span>
                                                             <span className="b-athlete">{item.athlete}</span>
                                                             <span className="b-pts">+{item.pts.toFixed(1)}</span>
                                                         </div>
@@ -478,7 +556,7 @@ function PVCSimulator({ performances, isBetter }) {
             <div className="analyzer-results">
                 {Object.keys(optimizedData).length > 0 ? (
                     Object.entries(optimizedData).map(([groupTitle, results]) => (
-                        <div key={groupTitle} className="event-section">
+                        <div key={groupTitle} id={`event-${groupTitle.replace(/[^a-z0-9]/gi, '-')}`} className="event-section">
                             <h3 className="event-title">
                                 {results[0].event}
                                 <span className="event-meta">{results[0].derivedType} {results[0].derivedYear}</span>

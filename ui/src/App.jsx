@@ -327,7 +327,7 @@ function App() {
 
   return (
     <div className="container">
-      <h1>Track & Field Dashboard</h1>
+      <h1 className="no-print">Track & Field Dashboard</h1>
 
       <div className="dashboard-layout">
         <div className="sidebar">
