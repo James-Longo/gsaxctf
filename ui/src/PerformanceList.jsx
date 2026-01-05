@@ -239,7 +239,7 @@ function PVCSimulator({ performances, isBetter }) {
 
         calculatePoints([...individualEntries, ...relayEntries]);
 
-        // 3. Optimization Logic (3 event limit)
+        // 3. Optimization Logic (4 event limit)
         // An athlete's event count = sum(individual events) + sum(relay participations)
         const athleteCounts = {}; // athlete_name -> count
         const athleteEntries = {}; // athlete_name -> [ {entry, pts} ]
@@ -267,26 +267,40 @@ function PVCSimulator({ performances, isBetter }) {
         // Combine all things an athlete can score in
         const allPossibleScoringActions = [];
         individualEntries.forEach(e => {
-            if (e.potentialPts > 0) allPossibleScoringActions.push({ type: 'ind', entry: e, pts: e.potentialPts, athlete: e.athlete_name });
+            allPossibleScoringActions.push({
+                type: 'ind',
+                entry: e,
+                pts: e.potentialPts,
+                athlete: e.athlete_name,
+                rank: e.tempRank || 999
+            });
         });
         relayEntries.forEach(e => {
-            if (e.potentialPts > 0) {
-                const nameStr = e.athlete_name || "";
-                const members = nameStr.split(',').map(n => n.trim()).filter(Boolean);
-                allPossibleScoringActions.push({ type: 'rel', entry: e, pts: e.potentialPts, athletes: members });
-            }
+            const nameStr = e.athlete_name || "";
+            const members = nameStr.split(',').map(n => n.trim()).filter(Boolean);
+            allPossibleScoringActions.push({
+                type: 'rel',
+                entry: e,
+                pts: e.potentialPts,
+                athletes: members,
+                rank: e.tempRank || 999
+            });
         });
 
-        // Sort actions by points descending
-        allPossibleScoringActions.sort((a, b) => b.pts - a.pts);
+        // Sort actions by points descending, then by rank ascending
+        allPossibleScoringActions.sort((a, b) => {
+            if (b.pts !== a.pts) return b.pts - a.pts;
+            return a.rank - b.rank;
+        });
 
         const activeIndividualChoices = [];
         const activeRelayChoices = [];
+        const eventLimit = 4; // Standard NFHS/MPA rule is 4 events
 
         allPossibleScoringActions.forEach(action => {
             if (action.type === 'ind') {
                 const usage = athleteUsage[action.athlete] || 0;
-                if (usage < 3) {
+                if (usage < eventLimit) {
                     athleteUsage[action.athlete] = usage + 1;
                     activeIndividualChoices.push(action.entry);
                 }
@@ -305,7 +319,7 @@ function PVCSimulator({ performances, isBetter }) {
                     let canFit = true;
                     members.forEach(m => {
                         const usage = athleteUsage[m] || 0;
-                        if (usage >= 3) canFit = false;
+                        if (usage >= eventLimit) canFit = false;
                     });
 
                     if (canFit) {
