@@ -164,7 +164,10 @@ function PVCSimulator({ performances, isBetter }) {
 
         filteredData.forEach(curr => {
             // Filter non-PVC events
-            if (!ALLOWED_EVENTS.some(allowed => curr.event.includes(allowed)) || curr.event.includes("Pentathlon")) {
+            const isAllowed = ALLOWED_EVENTS.some(allowed => curr.event.toLowerCase().includes(allowed.toLowerCase()));
+            const isExcluded = curr.event.toLowerCase().includes("pentathlon");
+
+            if (!isAllowed || isExcluded) {
                 return;
             }
 
@@ -494,6 +497,28 @@ function PVCSimulator({ performances, isBetter }) {
                         </div>
                     ) : (
                         <div className="leaderboards-container">
+                            {(() => {
+                                const foundEvents = new Set();
+                                Object.values(optimizedData).forEach(r => {
+                                    if (r.length > 0) foundEvents.add(r[0].event);
+                                });
+
+                                // Group expected events by likely gender if possible, but simplest is just check existence
+                                // We'll just look for missing generic event types
+                                const missingEvents = ALLOWED_EVENTS.filter(ev => {
+                                    // Check if ANY found event includes this allowed event name
+                                    return !Array.from(foundEvents).some(found => found.toLowerCase().includes(ev.toLowerCase()));
+                                });
+
+                                if (missingEvents.length > 0) {
+                                    return (
+                                        <div className="missing-events-warning" style={{ gridColumn: '1 / -1', marginBottom: '1rem', padding: '1rem', background: '#fff3cd', borderRadius: '8px', border: '1px solid #ffeeba', color: '#856404' }}>
+                                            ⚠️ <strong>Missing Events:</strong> No results found for: {missingEvents.join(', ')}.
+                                        </div>
+                                    );
+                                }
+                                return null;
+                            })()}
                             <div className="meet-leaderboard boys">
                                 <h3>🏃‍♂️ Boys Team Standings</h3>
                                 <div className="leaderboard-grid">
