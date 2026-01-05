@@ -1,6 +1,21 @@
-import { useState, useMemo } from 'react'
-import { parseMark } from './utils'
 import './App.css'
+
+const PVC_EVENTS_INDOOR = [
+    "Girls 55 Meter Dash", "Boys 55 Meter Dash",
+    "Girls 55 Meter Hurdles", "Boys 55 Meter Hurdles",
+    "Girls 200 Meter Dash", "Boys 200 Meter Dash",
+    "Girls 400 Meter Dash", "Boys 400 Meter Dash",
+    "Girls 800 Meter Run", "Boys 800 Meter Run",
+    "Girls 1 Mile Run", "Boys 1 Mile Run",
+    "Girls 2 Mile Run", "Boys 2 Mile Run",
+    "Girls 4x200 Meter Relay", "Boys 4x200 Meter Relay",
+    "Girls 4x800 Meter Relay", "Boys 4x800 Meter Relay",
+    "Girls High Jump", "Boys High Jump",
+    "Girls Long Jump", "Boys Long Jump",
+    "Girls Triple Jump", "Boys Triple Jump",
+    "Girls Shot Put", "Boys Shot Put",
+    "Girls Pole Vault", "Boys Pole Vault"
+];
 
 function PVCSimulator({ performances, isBetter }) {
     const [filterYear, setFilterYear] = useState('All')
@@ -19,47 +34,42 @@ function PVCSimulator({ performances, isBetter }) {
 
     // Configuration for PVC Small Schools
     const getPVCSchools = (year, season) => {
-        // Specific Rule for Indoor 2026
+        const schools = {
+            "Bangor Christian": { name: "Bangor Christian Schools", aliases: ["Bangor Chris", "Bangor Christian"] },
+            "Bucksport": { name: "Bucksport High School", aliases: ["Bucksport"] },
+            "Central": { name: "Central High School", aliases: ["Central High", "Central Hig", "Central"] },
+            "Foxcroft": { name: "Foxcroft Academy", aliases: ["Foxcroft"] },
+            "George Stevens": { name: "George Stevens Academy", aliases: ["George Steve", "GSA", "Blue Hill"] },
+            "Orono": { name: "Orono High School", aliases: ["Orono"] },
+            "PCHS": { name: "Piscataquis Community High School", aliases: ["PCHS", "Piscataquis"] },
+            "Sumner": { name: "Sumner/Narragaugus", aliases: ["Sumner"] },
+            "Dexter": { name: "Dexter Regional High School", aliases: ["Dexter"] },
+            "Penquis": { name: "Penquis Valley High School", aliases: ["Penquis"] },
+            "Searsport": { name: "Searsport District High School", aliases: ["Searsport"] },
+            "Mattanawcook": { name: "Mattanawcook Academy", aliases: ["Mattanawcook"] },
+            "Lee Academy": { name: "Lee Academy", aliases: ["Lee"] },
+            "Deer Isle": { name: "Deer Isle-Stonington High School", aliases: ["Deer Isle"] },
+            "Penobscot": { name: "Penobscot Valley High School", aliases: ["Penobscot"] },
+            "Greenville": { name: "Greenville High School", aliases: ["Greenville"] },
+            "Narraguagus": { name: "Sumner/Narragaugus", aliases: ["Narraguagus"] },
+            "Washington Acad": { name: "Washington Academy", aliases: ["Washington"] },
+            "Calais": { name: "Calais High School", aliases: ["Calais"] },
+            "Shead": { name: "Shead High School", aliases: ["Shead"] },
+            "Fort Kent": { name: "Fort Kent Community High School", aliases: ["Fort Kent"] },
+            "Caribou": { name: "Caribou High School", aliases: ["Caribou"] },
+            "Presque Isle": { name: "Presque Isle High School", aliases: ["Presque Isle"] },
+            "Houlton": { name: "Houlton High School", aliases: ["Houlton"] }
+        };
+
+        // If Indoor 2026, the list is restricted
         if (year === '2026' && season === 'Indoor') {
-            return {
-                "Bangor Christian": "Bangor Christian Schools",
-                "Bucksport": "Bucksport High School",
-                "Central": "Central High School",
-                "Foxcroft": "Foxcroft Academy",
-                "George Stevens": "George Stevens Academy",
-                "Orono": "Orono High School",
-                "PCHS": "Piscataquis Community High School",
-                "Sumner": "Sumner/Narragaugus"
-            };
+            const currentYearSchools = ["Bangor Christian", "Bucksport", "Central", "Foxcroft", "George Stevens", "Orono", "PCHS", "Sumner"];
+            const filtered = {};
+            currentYearSchools.forEach(s => filtered[s] = schools[s]);
+            return filtered;
         }
 
-        // Default / Legacy List
-        return {
-            "Orono": "Orono High School",
-            "George Steve": "George Stevens Academy",
-            "Bucksport": "Bucksport High School",
-            "Sumner": "Sumner/Narragaugus",
-            "Central": "Central High School",
-            "Foxcroft": "Foxcroft Academy",
-            "Dexter": "Dexter Regional High School",
-            "Piscataquis": "Piscataquis Community High School",
-            "Penquis": "Penquis Valley High School",
-            "Searsport": "Searsport District High School",
-            "Mattanawcook": "Mattanawcook Academy",
-            "Lee Academy": "Lee Academy",
-            "Deer Isle": "Deer Isle-Stonington High School",
-            "Bangor Chris": "Bangor Christian Schools",
-            "Penobscot": "Penobscot Valley High School",
-            "Greenville": "Greenville High School",
-            "Narraguagus": "Sumner/Narragaugus",
-            "Washington Acad": "Washington Academy",
-            "Calais": "Calais High School",
-            "Shead": "Shead High School",
-            "Fort Kent": "Fort Kent Community High School",
-            "Caribou Hig": "Caribou High School",
-            "Presque Isle": "Presque Isle High School",
-            "Houlton": "Houlton High School"
-        };
+        return schools;
     };
 
     const { filteredData, years, seasons, events } = useMemo(() => {
@@ -101,17 +111,22 @@ function PVCSimulator({ performances, isBetter }) {
 
             // Detect PVC Team based on ACTIVE list
             let pvcTeam = null;
-            for (const [key, val] of Object.entries(activeSchools)) {
-                // Check against key (short) and val (long)
-                if (p.team.toLowerCase().includes(key.toLowerCase()) || p.team.toLowerCase() === val.toLowerCase()) {
-                    pvcTeam = val;
+            for (const [key, config] of Object.entries(activeSchools)) {
+                const teamLower = p.team.toLowerCase();
+                const matchedAlias = config.aliases.some(alias => {
+                    const aliasLower = alias.toLowerCase();
+                    // Avoid matching "Central" with "Maine Central Institute"
+                    if (aliasLower === "central") {
+                        // Strict check: Must be "Central" or "Central High"
+                        return teamLower === "central" || teamLower === "central high school" || teamLower.startsWith("central hig");
+                    }
+                    return teamLower === aliasLower || teamLower.startsWith(aliasLower + " ");
+                });
+
+                if (matchedAlias) {
+                    pvcTeam = config.name;
                     break;
                 }
-            }
-
-            // Special check for PCHS acronym
-            if (!pvcTeam && activeSchools["PCHS"] && (p.team === "PCHS" || p.team.includes("Piscataquis"))) {
-                pvcTeam = activeSchools["PCHS"];
             }
 
             return {
@@ -122,6 +137,12 @@ function PVCSimulator({ performances, isBetter }) {
                 isRelay: p.event.toLowerCase().includes('relay') || p.event.toLowerCase().includes('4x')
             };
         }).filter(p => p.pvcTeam); // Only include valid schools for THIS season
+
+        // 4. Additional Filter: Official PVC Events only (if simulating)
+        let simulatorFiltered = processed;
+        if (showSimulation) {
+            simulatorFiltered = processed.filter(p => PVC_EVENTS_INDOOR.includes(p.event));
+        }
 
         const matches = (p, filters) => {
             const { year, season, event } = filters;
@@ -134,7 +155,7 @@ function PVCSimulator({ performances, isBetter }) {
         const avSeasons = Array.from(new Set(processed.map(p => p.derivedType))).sort();
         const avEvents = Array.from(new Set(processed.map(p => p.event))).sort();
 
-        const filtered = processed.filter(p => matches(p, { year: filterYear, season: filterSeason, event: filterEvent }));
+        const filtered = simulatorFiltered.filter(p => matches(p, { year: filterYear, season: filterSeason, event: filterEvent }));
 
         return {
             filteredData: filtered,
