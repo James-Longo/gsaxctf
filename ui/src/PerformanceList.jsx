@@ -1,21 +1,6 @@
+import { useState, useMemo } from 'react'
+import { parseMark } from './utils'
 import './App.css'
-
-const PVC_EVENTS_INDOOR = [
-    "Girls 55 Meter Dash", "Boys 55 Meter Dash",
-    "Girls 55 Meter Hurdles", "Boys 55 Meter Hurdles",
-    "Girls 200 Meter Dash", "Boys 200 Meter Dash",
-    "Girls 400 Meter Dash", "Boys 400 Meter Dash",
-    "Girls 800 Meter Run", "Boys 800 Meter Run",
-    "Girls 1 Mile Run", "Boys 1 Mile Run",
-    "Girls 2 Mile Run", "Boys 2 Mile Run",
-    "Girls 4x200 Meter Relay", "Boys 4x200 Meter Relay",
-    "Girls 4x800 Meter Relay", "Boys 4x800 Meter Relay",
-    "Girls High Jump", "Boys High Jump",
-    "Girls Long Jump", "Boys Long Jump",
-    "Girls Triple Jump", "Boys Triple Jump",
-    "Girls Shot Put", "Boys Shot Put",
-    "Girls Pole Vault", "Boys Pole Vault"
-];
 
 function PVCSimulator({ performances, isBetter }) {
     const [filterYear, setFilterYear] = useState('All')
@@ -34,42 +19,47 @@ function PVCSimulator({ performances, isBetter }) {
 
     // Configuration for PVC Small Schools
     const getPVCSchools = (year, season) => {
-        const schools = {
-            "Bangor Christian": { name: "Bangor Christian Schools", aliases: ["Bangor Chris", "Bangor Christian"] },
-            "Bucksport": { name: "Bucksport High School", aliases: ["Bucksport"] },
-            "Central": { name: "Central High School", aliases: ["Central High", "Central Hig", "Central"] },
-            "Foxcroft": { name: "Foxcroft Academy", aliases: ["Foxcroft"] },
-            "George Stevens": { name: "George Stevens Academy", aliases: ["George Steve", "GSA", "Blue Hill"] },
-            "Orono": { name: "Orono High School", aliases: ["Orono"] },
-            "PCHS": { name: "Piscataquis Community High School", aliases: ["PCHS", "Piscataquis"] },
-            "Sumner": { name: "Sumner/Narragaugus", aliases: ["Sumner"] },
-            "Dexter": { name: "Dexter Regional High School", aliases: ["Dexter"] },
-            "Penquis": { name: "Penquis Valley High School", aliases: ["Penquis"] },
-            "Searsport": { name: "Searsport District High School", aliases: ["Searsport"] },
-            "Mattanawcook": { name: "Mattanawcook Academy", aliases: ["Mattanawcook"] },
-            "Lee Academy": { name: "Lee Academy", aliases: ["Lee"] },
-            "Deer Isle": { name: "Deer Isle-Stonington High School", aliases: ["Deer Isle"] },
-            "Penobscot": { name: "Penobscot Valley High School", aliases: ["Penobscot"] },
-            "Greenville": { name: "Greenville High School", aliases: ["Greenville"] },
-            "Narraguagus": { name: "Sumner/Narragaugus", aliases: ["Narraguagus"] },
-            "Washington Acad": { name: "Washington Academy", aliases: ["Washington"] },
-            "Calais": { name: "Calais High School", aliases: ["Calais"] },
-            "Shead": { name: "Shead High School", aliases: ["Shead"] },
-            "Fort Kent": { name: "Fort Kent Community High School", aliases: ["Fort Kent"] },
-            "Caribou": { name: "Caribou High School", aliases: ["Caribou"] },
-            "Presque Isle": { name: "Presque Isle High School", aliases: ["Presque Isle"] },
-            "Houlton": { name: "Houlton High School", aliases: ["Houlton"] }
-        };
-
-        // If Indoor 2026, the list is restricted
+        // Specific Rule for Indoor 2026
         if (year === '2026' && season === 'Indoor') {
-            const currentYearSchools = ["Bangor Christian", "Bucksport", "Central", "Foxcroft", "George Stevens", "Orono", "PCHS", "Sumner"];
-            const filtered = {};
-            currentYearSchools.forEach(s => filtered[s] = schools[s]);
-            return filtered;
+            return {
+                "Bangor Christian": "Bangor Christian Schools",
+                "Bucksport": "Bucksport High School",
+                "Central": "Central High School",
+                "Foxcroft": "Foxcroft Academy",
+                "George Stevens": "George Stevens Academy",
+                "Orono": "Orono High School",
+                "PCHS": "Piscataquis Community High School",
+                "Sumner": "Sumner/Narragaugus"
+            };
         }
 
-        return schools;
+        // Default / Legacy List
+        return {
+            "Orono": "Orono High School",
+            "George Steve": "George Stevens Academy",
+            "Bucksport": "Bucksport High School",
+            "Sumner": "Sumner/Narragaugus",
+            "Central": "Central High School",
+            "Foxcroft": "Foxcroft Academy",
+            "Dexter": "Dexter Regional High School",
+            "Piscataquis": "Piscataquis Community High School",
+            "Penquis": "Penquis Valley High School",
+            "Searsport": "Searsport District High School",
+            "Mattanawcook": "Mattanawcook Academy",
+            "Lee Academy": "Lee Academy",
+            "Deer Isle": "Deer Isle-Stonington High School",
+            "Bangor Chris": "Bangor Christian Schools",
+            "Penobscot": "Penobscot Valley High School",
+            "Greenville": "Greenville High School",
+            "Narraguagus": "Sumner/Narragaugus",
+            "Washington Acad": "Washington Academy",
+            "Calais": "Calais High School",
+            "Shead": "Shead High School",
+            "Fort Kent": "Fort Kent Community High School",
+            "Caribou Hig": "Caribou High School",
+            "Presque Isle": "Presque Isle High School",
+            "Houlton": "Houlton High School"
+        };
     };
 
     const { filteredData, years, seasons, events } = useMemo(() => {
@@ -111,22 +101,25 @@ function PVCSimulator({ performances, isBetter }) {
 
             // Detect PVC Team based on ACTIVE list
             let pvcTeam = null;
-            for (const [key, config] of Object.entries(activeSchools)) {
+            for (const [key, val] of Object.entries(activeSchools)) {
+                // Check against key (short) and val (long)
                 const teamLower = p.team.toLowerCase();
-                const matchedAlias = config.aliases.some(alias => {
-                    const aliasLower = alias.toLowerCase();
-                    // Avoid matching "Central" with "Maine Central Institute"
-                    if (aliasLower === "central") {
-                        // Strict check: Must be "Central" or "Central High"
-                        return teamLower === "central" || teamLower === "central high school" || teamLower.startsWith("central hig");
-                    }
-                    return teamLower === aliasLower || teamLower.startsWith(aliasLower + " ");
-                });
+                const filterKey = key.toLowerCase();
 
-                if (matchedAlias) {
-                    pvcTeam = config.name;
+                // Specific fix for "Central" to avoid matching "Maine Central Institute"
+                if (key === "Central" && teamLower.includes("maine")) {
+                    continue;
+                }
+
+                if (teamLower.includes(filterKey) || teamLower === val.toLowerCase()) {
+                    pvcTeam = val;
                     break;
                 }
+            }
+
+            // Special check for PCHS acronym
+            if (!pvcTeam && activeSchools["PCHS"] && (p.team === "PCHS" || p.team.includes("Piscataquis"))) {
+                pvcTeam = activeSchools["PCHS"];
             }
 
             return {
@@ -137,12 +130,6 @@ function PVCSimulator({ performances, isBetter }) {
                 isRelay: p.event.toLowerCase().includes('relay') || p.event.toLowerCase().includes('4x')
             };
         }).filter(p => p.pvcTeam); // Only include valid schools for THIS season
-
-        // 4. Additional Filter: Official PVC Events only (if simulating)
-        let simulatorFiltered = processed;
-        if (showSimulation) {
-            simulatorFiltered = processed.filter(p => PVC_EVENTS_INDOOR.includes(p.event));
-        }
 
         const matches = (p, filters) => {
             const { year, season, event } = filters;
@@ -155,7 +142,7 @@ function PVCSimulator({ performances, isBetter }) {
         const avSeasons = Array.from(new Set(processed.map(p => p.derivedType))).sort();
         const avEvents = Array.from(new Set(processed.map(p => p.event))).sort();
 
-        const filtered = simulatorFiltered.filter(p => matches(p, { year: filterYear, season: filterSeason, event: filterEvent }));
+        const filtered = processed.filter(p => matches(p, { year: filterYear, season: filterSeason, event: filterEvent }));
 
         return {
             filteredData: filtered,
@@ -165,11 +152,22 @@ function PVCSimulator({ performances, isBetter }) {
         };
     }, [performances, filterYear, filterSeason, filterEvent]);
 
+    const ALLOWED_EVENTS = [
+        "55m Dash", "200m Dash", "400m Dash", "800m Run", "1 Mile Run", "2 Mile Run", "55m Hurdles",
+        "4x200m Relay", "4x800m Relay",
+        "High Jump", "Pole Vault", "Long Jump", "Triple Jump", "Shot Put"
+    ];
+
     // Group by Event, Season, and Year for context-specific ranking
     const groupedData = useMemo(() => {
         const groups = {};
 
         filteredData.forEach(curr => {
+            // Filter non-PVC events
+            if (!ALLOWED_EVENTS.some(allowed => curr.event.includes(allowed)) || curr.event.includes("Pentathlon")) {
+                return;
+            }
+
             const groupKey = `${curr.event} (${curr.derivedType} ${curr.derivedYear})`;
             if (!groups[groupKey]) groups[groupKey] = {};
 
@@ -262,57 +260,36 @@ function PVCSimulator({ performances, isBetter }) {
 
         // 3. Optimization Logic (3 event limit)
         const eventLimit = 3;
+        // An athlete's event count = sum(individual events) + sum(relay participations)
+        const athleteCounts = {}; // athlete_name -> count
+        const athleteEntries = {}; // athlete_name -> [ {entry, pts} ]
 
-        // Group the initial pass by event for marginal value calculation
-        const groupMap = {};
-        [...individualEntries, ...relayEntries].forEach(e => {
-            if (!groupMap[e.groupTitle]) groupMap[e.groupTitle] = [];
-            groupMap[e.groupTitle].push(e);
+        individualEntries.forEach(e => {
+            const name = e.athlete_name || "Unknown";
+            if (!athleteEntries[name]) athleteEntries[name] = [];
+            athleteEntries[name].push(e);
         });
 
-        const getMarginalValue = (entry) => {
-            const team = entry.pvcTeam;
-            const results = groupMap[entry.groupTitle];
-
-            // Naive team points with this entry (from potentialPts)
-            let teamPtsWith = 0;
-            results.forEach(r => {
-                if (r.pvcTeam === team) teamPtsWith += (r.potentialPts || 0);
+        relayEntries.forEach(e => {
+            // Relays usually have athlete names like "A, B, C, D"
+            const nameStr = e.athlete_name || "";
+            const members = nameStr.split(',').map(n => n.trim()).filter(Boolean);
+            members.forEach(m => {
+                if (!athleteEntries[m]) athleteEntries[m] = [];
+                athleteEntries[m].push({ ...e, isRelayLeg: true, relayRef: e });
             });
+        });
 
-            // Predicted team points if this entry is removed (others move up)
-            let teamPtsWithout = 0;
-            const resultsWithout = results.filter(r => r !== entry);
+        // Greedy Selection: Keep picking top entries until limits hit or no more points possible
+        const selectedEntries = new Set(); // entry id or unique key
+        // const athleteUsage = {}; // name -> count -- merged below
 
-            let effectiveRank = 1;
-            let validCount = 0;
-            let lastValidMark = null;
-
-            for (let i = 0; i < resultsWithout.length; i++) {
-                const p = parseMark(resultsWithout[i].mark);
-                if (!p.valid) continue;
-
-                if (validCount > 0 && resultsWithout[i].mark !== lastValidMark) {
-                    effectiveRank = validCount + 1;
-                }
-
-                if (effectiveRank <= scoringRules.length && resultsWithout[i].pvcTeam === team) {
-                    teamPtsWithout += scoringRules[effectiveRank - 1];
-                }
-
-                lastValidMark = resultsWithout[i].mark;
-                validCount++;
-            }
-
-            return teamPtsWith - teamPtsWithout;
-        };
 
         const allPossibleScoringActions = [];
         individualEntries.forEach(e => {
             allPossibleScoringActions.push({
                 type: 'ind',
                 entry: e,
-                mv: getMarginalValue(e),
                 pts: e.potentialPts,
                 athlete: e.athlete_name,
                 rank: e.tempRank || 999
@@ -324,16 +301,14 @@ function PVCSimulator({ performances, isBetter }) {
             allPossibleScoringActions.push({
                 type: 'rel',
                 entry: e,
-                mv: getMarginalValue(e),
                 pts: e.potentialPts,
                 athletes: members,
                 rank: e.tempRank || 999
             });
         });
 
-        // Sort by Marginal Value (Maximize team gain), then Points, then Rank
+        // Sort actions by points descending, then by rank ascending
         allPossibleScoringActions.sort((a, b) => {
-            if (b.mv !== a.mv) return b.mv - a.mv;
             if (b.pts !== a.pts) return b.pts - a.pts;
             return a.rank - b.rank;
         });
