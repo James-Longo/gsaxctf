@@ -239,37 +239,59 @@ function PVCSimulator({ performances, isBetter }) {
 
         calculatePoints([...individualEntries, ...relayEntries]);
 
-        // 3. Optimization Logic (4 event limit)
-        // An athlete's event count = sum(individual events) + sum(relay participations)
-        const athleteCounts = {}; // athlete_name -> count
-        const athleteEntries = {}; // athlete_name -> [ {entry, pts} ]
+        // 3. Optimization Logic (3 event limit)
+        const eventLimit = 3;
 
-        individualEntries.forEach(e => {
-            const name = e.athlete_name || "Unknown";
-            if (!athleteEntries[name]) athleteEntries[name] = [];
-            athleteEntries[name].push(e);
+        // Group the initial pass by event for marginal value calculation
+        const groupMap = {};
+        [...individualEntries, ...relayEntries].forEach(e => {
+            if (!groupMap[e.groupTitle]) groupMap[e.groupTitle] = [];
+            groupMap[e.groupTitle].push(e);
         });
 
-        relayEntries.forEach(e => {
-            // Relays usually have athlete names like "A, B, C, D"
-            const nameStr = e.athlete_name || "";
-            const members = nameStr.split(',').map(n => n.trim()).filter(Boolean);
-            members.forEach(m => {
-                if (!athleteEntries[m]) athleteEntries[m] = [];
-                athleteEntries[m].push({ ...e, isRelayLeg: true, relayRef: e });
+        const getMarginalValue = (entry) => {
+            const team = entry.pvcTeam;
+            const results = groupMap[entry.groupTitle];
+
+            // Naive team points with this entry (from potentialPts)
+            let teamPtsWith = 0;
+            results.forEach(r => {
+                if (r.pvcTeam === team) teamPtsWith += (r.potentialPts || 0);
             });
-        });
 
-        // Greedy Selection: Keep picking top entries until limits hit or no more points possible
-        const selectedEntries = new Set(); // entry id or unique key
-        const athleteUsage = {}; // name -> count
+            // Predicted team points if this entry is removed (others move up)
+            let teamPtsWithout = 0;
+            const resultsWithout = results.filter(r => r !== entry);
 
-        // Combine all things an athlete can score in
+            let effectiveRank = 1;
+            let validCount = 0;
+            let lastValidMark = null;
+
+            for (let i = 0; i < resultsWithout.length; i++) {
+                const p = parseMark(resultsWithout[i].mark);
+                if (!p.valid) continue;
+
+                if (validCount > 0 && resultsWithout[i].mark !== lastValidMark) {
+                    effectiveRank = validCount + 1;
+                }
+
+                if (effectiveRank <= scoringRules.length && resultsWithout[i].pvcTeam === team) {
+                    teamPtsWithout += scoringRules[effectiveRank - 1];
+                }
+
+                lastValidMark = resultsWithout[i].mark;
+                validCount++;
+            }
+
+            return teamPtsWith - teamPtsWithout;
+        };
+
         const allPossibleScoringActions = [];
         individualEntries.forEach(e => {
             allPossibleScoringActions.push({
                 type: 'ind',
                 entry: e,
+                mv: getMarginalValue(e),
                 pts: e.potentialPts,
                 athlete: e.athlete_name,
                 rank: e.tempRank || 999
@@ -281,21 +303,23 @@ function PVCSimulator({ performances, isBetter }) {
             allPossibleScoringActions.push({
                 type: 'rel',
                 entry: e,
+                mv: getMarginalValue(e),
                 pts: e.potentialPts,
                 athletes: members,
                 rank: e.tempRank || 999
             });
         });
 
-        // Sort actions by points descending, then by rank ascending
+        // Sort by Marginal Value (Maximize team gain), then Points, then Rank
         allPossibleScoringActions.sort((a, b) => {
+            if (b.mv !== a.mv) return b.mv - a.mv;
             if (b.pts !== a.pts) return b.pts - a.pts;
             return a.rank - b.rank;
         });
 
         const activeIndividualChoices = [];
         const activeRelayChoices = [];
-        const eventLimit = 4; // Standard NFHS/MPA rule is 4 events
+        const athleteUsage = {}; // name -> count
 
         allPossibleScoringActions.forEach(action => {
             if (action.type === 'ind') {
@@ -305,25 +329,15 @@ function PVCSimulator({ performances, isBetter }) {
                     activeIndividualChoices.push(action.entry);
                 }
             } else {
-                // Relay Logic:
-                // 1. Identify members. If empty or generic, we might assume free slots (or ignore).
-                //    Here we assume if we have names, we MUST check them.
                 const members = action.athletes.filter(m => m && !m.toLowerCase().includes('school') && !m.toLowerCase().includes('relay'));
-
-                // If we have no named members (e.g. just "Orono High School"), we let it pass 
-                // effectively "free" points because we can't attribute the load.
                 if (members.length === 0) {
                     activeRelayChoices.push(action.entry);
                 } else {
-                    // Check if ALL members have space
                     let canFit = true;
                     members.forEach(m => {
-                        const usage = athleteUsage[m] || 0;
-                        if (usage >= eventLimit) canFit = false;
+                        if ((athleteUsage[m] || 0) >= eventLimit) canFit = false;
                     });
-
                     if (canFit) {
-                        // Book it!
                         members.forEach(m => {
                             athleteUsage[m] = (athleteUsage[m] || 0) + 1;
                         });
