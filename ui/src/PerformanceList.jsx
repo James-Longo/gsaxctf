@@ -32,7 +32,6 @@ function PVCSimulator({ performances, isBetter }) {
                 "Orono": "Orono High School",
                 "PCHS": "Piscataquis Community High School",
                 "Penquis": "Penquis Valley High School",
-                "Penobscot": "Penobscot Valley High School",
                 "Searsport": "Searsport District High School",
                 "Sumner": "Sumner/Narragaugus"
             };
@@ -53,8 +52,7 @@ function PVCSimulator({ performances, isBetter }) {
             "Mattanawcook": "Mattanawcook Academy",
             "Lee Academy": "Lee Academy",
             "Deer Isle": "Deer Isle-Stonington High School",
-            "Bangor Christian": "Bangor Christian Schools",
-            "Penobscot": "Penobscot Valley High School",
+            "Bangor Chris": "Bangor Christian Schools",
             "Greenville": "Greenville High School",
             "Narraguagus": "Sumner/Narragaugus",
             "Washington Acad": "Washington Academy",
