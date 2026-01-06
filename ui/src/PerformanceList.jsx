@@ -22,13 +22,18 @@ function PVCSimulator({ performances, isBetter }) {
         // Specific Rule for Indoor 2026
         if (year === '2026' && season === 'Indoor') {
             return {
-                "Bangor Christian": "Bangor Christian Schools",
+                "Bangor Chris": "Bangor Christian Schools",
                 "Bucksport": "Bucksport High School",
                 "Central": "Central High School",
+                "Dexter": "Dexter Regional High School",
                 "Foxcroft": "Foxcroft Academy",
                 "George Stevens": "George Stevens Academy",
+                "Mattanawcook": "Mattanawcook Academy",
                 "Orono": "Orono High School",
                 "PCHS": "Piscataquis Community High School",
+                "Penquis": "Penquis Valley High School",
+                "Penobscot": "Penobscot Valley High School",
+                "Searsport": "Searsport District High School",
                 "Sumner": "Sumner/Narragaugus"
             };
         }
@@ -48,7 +53,7 @@ function PVCSimulator({ performances, isBetter }) {
             "Mattanawcook": "Mattanawcook Academy",
             "Lee Academy": "Lee Academy",
             "Deer Isle": "Deer Isle-Stonington High School",
-            "Bangor Chris": "Bangor Christian Schools",
+            "Bangor Christian": "Bangor Christian Schools",
             "Penobscot": "Penobscot Valley High School",
             "Greenville": "Greenville High School",
             "Narraguagus": "Sumner/Narragaugus",
