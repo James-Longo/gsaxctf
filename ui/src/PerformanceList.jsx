@@ -152,11 +152,22 @@ function PVCSimulator({ performances, isBetter }) {
         };
     }, [performances, filterYear, filterSeason, filterEvent]);
 
-    const ALLOWED_EVENTS = [
-        "55m Dash", "200m Dash", "400m Dash", "800m Run", "1 Mile Run", "2 Mile Run", "55m Hurdles",
-        "4x200m Relay", "4x800m Relay",
-        "High Jump", "Pole Vault", "Long Jump", "Triple Jump", "Shot Put"
-    ];
+    const EVENT_ALIASES = {
+        "55m Dash": ["55m Dash", "55 Meter Dash"],
+        "200m Dash": ["200m Dash", "200 Meter Dash"],
+        "400m Dash": ["400m Dash", "400 Meter Dash"],
+        "800m Run": ["800m Run", "800 Meter Run"],
+        "1 Mile Run": ["1 Mile Run"],
+        "2 Mile Run": ["2 Mile Run"],
+        "55m Hurdles": ["55m Hurdles", "55 Meter Hurdles"],
+        "4x200m Relay": ["4x200m", "4x200 Meter"],
+        "4x800m Relay": ["4x800m", "4x800 Meter"],
+        "High Jump": ["High Jump"],
+        "Pole Vault": ["Pole Vault"],
+        "Long Jump": ["Long Jump"],
+        "Triple Jump": ["Triple Jump"],
+        "Shot Put": ["Shot Put"]
+    };
 
     // Group by Event, Season, and Year for context-specific ranking
     const groupedData = useMemo(() => {
@@ -164,8 +175,18 @@ function PVCSimulator({ performances, isBetter }) {
 
         filteredData.forEach(curr => {
             // Filter non-PVC events
-            const isAllowed = ALLOWED_EVENTS.some(allowed => curr.event.toLowerCase().includes(allowed.toLowerCase()));
-            const isExcluded = curr.event.toLowerCase().includes("pentathlon");
+            const eventLower = curr.event.toLowerCase();
+            let isAllowed = false;
+
+            // Check if current event matches any allowed alias
+            for (const aliases of Object.values(EVENT_ALIASES)) {
+                if (aliases.some(alias => eventLower.includes(alias.toLowerCase()))) {
+                    isAllowed = true;
+                    break;
+                }
+            }
+
+            const isExcluded = eventLower.includes("pentathlon");
 
             if (!isAllowed || isExcluded) {
                 return;
@@ -505,10 +526,12 @@ function PVCSimulator({ performances, isBetter }) {
 
                                 // Group expected events by likely gender if possible, but simplest is just check existence
                                 // We'll just look for missing generic event types
-                                const missingEvents = ALLOWED_EVENTS.filter(ev => {
-                                    // Check if ANY found event includes this allowed event name
-                                    return !Array.from(foundEvents).some(found => found.toLowerCase().includes(ev.toLowerCase()));
-                                });
+                                const missingEvents = Object.entries(EVENT_ALIASES).filter(([canonical, aliases]) => {
+                                    // Return true if NONE of the aliases are found in 'foundEvents'
+                                    return !aliases.some(alias => {
+                                        return Array.from(foundEvents).some(found => found.toLowerCase().includes(alias.toLowerCase()));
+                                    });
+                                }).map(([canonical]) => canonical);
 
                                 if (missingEvents.length > 0) {
                                     return (
