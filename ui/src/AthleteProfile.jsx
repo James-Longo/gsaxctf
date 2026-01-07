@@ -88,7 +88,7 @@ const AthleteProfile = ({ performances, selectedAthlete }) => {
 
     const COLORS = ['#3182ce', '#38a169', '#d53f8c', '#805ad5', '#dd6b20', '#319795', '#e53e3e'];
 
-    if (!selectedAthlete || selectedAthlete.id === 'all') {
+    if (!selectedAthlete) {
         return (
             <div className="empty-state">
                 <p>Please select a specific athlete to view their profile.</p>
@@ -109,7 +109,7 @@ const AthleteProfile = ({ performances, selectedAthlete }) => {
                         <h3>{event}</h3>
                         <div className="event-stats-grid">
                             <div className="stat-item">
-                                <span className="stat-label">Personal Best</span>
+                                <span className="stat-label">Best</span>
                                 <span className="stat-value highlight">{group.stats.best}</span>
                             </div>
                             <div className="stat-item">

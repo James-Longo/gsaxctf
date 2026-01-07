@@ -20,6 +20,7 @@ function App() {
 
   const [selectedTeam, setSelectedTeam] = useState('George Stevens Academy')
   const [selectedAthlete, setSelectedAthlete] = useState(ALL_ATHLETES)
+  const [activeTab, setActiveTab] = useState('history') // 'history', 'analyzer', 'pr-pop', 'meet-sheet', 'athlete-profile'
 
   const [expandedSplits, setExpandedSplits] = useState(new Set())
 
@@ -81,7 +82,7 @@ function App() {
   // Current performances to display (subset of allPerformances based on selectedAthlete)
   const performances = useMemo(() => {
     if (!selectedAthlete) return []
-    if (selectedAthlete.id === 'all' || selectedAthlete.id === 'pr-pop' || selectedAthlete.id === 'analyzer' || selectedAthlete.id === 'athlete-profile') {
+    if (selectedAthlete.id === 'all') {
       return allPerformances
     }
     return allPerformances.filter(p => p.athlete_id === selectedAthlete.id)
@@ -336,32 +337,32 @@ function App() {
           {/* Main Navigation / Mode Switching */}
           <div className="nav-buttons">
             <button
-              onClick={() => setSelectedAthlete(ALL_ATHLETES)}
-              className={`nav-btn ${selectedAthlete && selectedAthlete.id !== 'analyzer' && selectedAthlete.id !== 'pr-pop' ? 'active' : ''}`}
+              onClick={() => setActiveTab('history')}
+              className={`nav-btn ${activeTab === 'history' ? 'active' : ''}`}
             >
               🏃‍♂️ Performance History
             </button>
             <button
-              onClick={() => setSelectedAthlete(PERFORMANCE_ANALYZER)}
-              className={`nav-btn ${selectedAthlete?.id === 'analyzer' ? 'active' : ''}`}
+              onClick={() => setActiveTab('analyzer')}
+              className={`nav-btn ${activeTab === 'analyzer' ? 'active' : ''}`}
             >
               📊 PVC Simulator
             </button>
             <button
-              onClick={() => setSelectedAthlete(PR_POP_CALCULATOR)}
-              className={`nav-btn ${selectedAthlete?.id === 'pr-pop' ? 'active' : ''}`}
+              onClick={() => setActiveTab('pr-pop')}
+              className={`nav-btn ${activeTab === 'pr-pop' ? 'active' : ''}`}
             >
               🚀 PR Pop Calculator
             </button>
             <button
-              onClick={() => setSelectedAthlete(MEET_SHEET)}
-              className={`nav-btn ${selectedAthlete?.id === 'meet-sheet' ? 'active' : ''}`}
+              onClick={() => setActiveTab('meet-sheet')}
+              className={`nav-btn ${activeTab === 'meet-sheet' ? 'active' : ''}`}
             >
               📋 Create Meet Sheet
             </button>
             <button
-              onClick={() => setSelectedAthlete(ATHLETE_PROFILE)}
-              className={`nav-btn ${selectedAthlete?.id === 'athlete-profile' ? 'active' : ''}`}
+              onClick={() => setActiveTab('athlete-profile')}
+              className={`nav-btn ${activeTab === 'athlete-profile' ? 'active' : ''}`}
             >
               👤 Athlete Profile
             </button>
@@ -418,10 +419,10 @@ function App() {
         </div>
 
         <div className="main-content">
-          {selectedAthlete?.id === 'analyzer' ? (
+          {activeTab === 'analyzer' ? (
             <PerformanceList performances={performances} isBetter={isBetter} />
           ) :
-            selectedAthlete?.id === 'pr-pop' ? (
+            activeTab === 'pr-pop' ? (
               <>
                 <div className="filter-bar">
                   <div className="filter-group">
@@ -443,17 +444,12 @@ function App() {
                   isBetter={isBetter}
                 />
               </>
-            ) : selectedAthlete?.id === 'meet-sheet' ? (
+            ) : activeTab === 'meet-sheet' ? (
               <MeetSheet />
-            ) : selectedAthlete?.id === 'athlete-profile' ? (
-              <AthleteProfile
-                performances={performances}
-                selectedAthlete={selectedAthlete}
-              />
-            ) : selectedAthlete && selectedAthlete.id !== 'analyzer' ? (
+            ) : (activeTab === 'history' || activeTab === 'athlete-profile') ? (
               <>
                 <div className="header-row">
-                  <h2>{selectedAthlete.name} - Performance History</h2>
+                  <h2>{activeTab === 'history' ? (selectedAthlete.name + ' - Performance History') : (selectedAthlete.name + ' - Athlete Profile')}</h2>
                   <div className="record-count">{filteredPerformances.length} Results</div>
                 </div>
 
@@ -491,119 +487,130 @@ function App() {
                     </select>
                   </div>
 
-                  <div className="filter-group">
-                    <label>Year</label>
-                    <select value={filterYear} onChange={e => setFilterYear(e.target.value)}>
-                      <option value="All">All Years</option>
-                      {years.map(y => <option key={y} value={y}>{y}</option>)}
-                    </select>
-                  </div>
+                  {activeTab === 'history' && (
+                    <>
+                      <div className="filter-group">
+                        <label>Year</label>
+                        <select value={filterYear} onChange={e => setFilterYear(e.target.value)}>
+                          <option value="All">All Years</option>
+                          {years.map(y => <option key={y} value={y}>{y}</option>)}
+                        </select>
+                      </div>
 
-                  <div className="filter-group">
-                    <label>Season</label>
-                    <select value={filterSeasonType} onChange={e => setFilterSeasonType(e.target.value)}>
-                      <option value="All">All Seasons</option>
-                      {seasonTypes.map(t => <option key={t} value={t}>{t}</option>)}
-                    </select>
-                  </div>
+                      <div className="filter-group">
+                        <label>Season</label>
+                        <select value={filterSeasonType} onChange={e => setFilterSeasonType(e.target.value)}>
+                          <option value="All">All Seasons</option>
+                          {seasonTypes.map(t => <option key={t} value={t}>{t}</option>)}
+                        </select>
+                      </div>
 
-                  <div className="filter-group">
-                    <label>Event</label>
-                    <select value={filterEvent} onChange={e => setFilterEvent(e.target.value)}>
-                      <option value="All">All Events</option>
-                      {events.map(ev => <option key={ev} value={ev}>{ev}</option>)}
-                    </select>
-                  </div>
+                      <div className="filter-group">
+                        <label>Event</label>
+                        <select value={filterEvent} onChange={e => setFilterEvent(e.target.value)}>
+                          <option value="All">All Events</option>
+                          {events.map(ev => <option key={ev} value={ev}>{ev}</option>)}
+                        </select>
+                      </div>
 
-                  <div className="filter-group">
-                    <label>Meet</label>
-                    <select value={filterMeet} onChange={e => setFilterMeet(e.target.value)}>
-                      <option value="All">All Meets</option>
-                      {meets.map(m => <option key={m} value={m}>{m}</option>)}
-                    </select>
-                  </div>
+                      <div className="filter-group">
+                        <label>Meet</label>
+                        <select value={filterMeet} onChange={e => setFilterMeet(e.target.value)}>
+                          <option value="All">All Meets</option>
+                          {meets.map(m => <option key={m} value={m}>{m}</option>)}
+                        </select>
+                      </div>
 
-                  <div className="simulation-toggle">
-                    <label className="switch">
-                      <input
-                        type="checkbox"
-                        checked={showPRsOnly}
-                        onChange={e => setShowPRsOnly(e.target.checked)}
-                      />
-                      <span className="slider round"></span>
-                    </label>
-                    <span className="toggle-label">PRs Only</span>
-                  </div>
+                      <div className="simulation-toggle">
+                        <label className="switch">
+                          <input
+                            type="checkbox"
+                            checked={showPRsOnly}
+                            onChange={e => setShowPRsOnly(e.target.checked)}
+                          />
+                          <span className="slider round"></span>
+                        </label>
+                        <span className="toggle-label">PRs Only</span>
+                      </div>
+                    </>
+                  )}
                 </div>
 
-                <div className="table-container">
-                  <table className="performance-table">
-                    <thead>
-                      <tr>
-                        <th onClick={() => handleSort('date')} className="sortable">Date {renderSortIcon('date')}</th>
-                        {selectedAthlete.id === 'all' && <th>Athlete</th>}
-                        {selectedTeam === 'All' && <th>Team</th>}
-                        {filterSeasonType === 'All' && <th>Season</th>}
-                        {filterEvent === 'All' && <th>Event</th>}
-                        <th onClick={() => handleSort('result')} className="sortable">Result {renderSortIcon('mark')}</th>
-                        {filterMeet === 'All' && <th>Meet</th>}
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {filteredPerformances.length > 0 ? (
-                        filteredPerformances.map(perf => (
-                          <React.Fragment key={perf.id}>
-                            <tr className={perf.isCalculatedPR ? 'pr-row' : ''}>
-                              <td>{perf.date.split('T')[0]}</td>
-                              {selectedAthlete.id === 'all' && <td className="athlete-name-cell">{perf.athlete_name}</td>}
-                              {selectedTeam === 'All' && <td>{perf.team}</td>}
-                              {filterSeasonType === 'All' && <td>{perf.season}</td>}
-                              {filterEvent === 'All' && <td>{perf.event}</td>}
-                              <td>
-                                <div className="result-cell-content">
-                                  <span className="result-val">{perf.mark}</span>
-                                  {!!perf.isCalculatedPR && <span className="badge pr">PR</span>}
-                                  {!!perf.isCalculatedSB && <span className="badge sb">SB</span>}
-                                  {!!perf.isFirstTime && <span className="badge first">*</span>}
-                                  {perf.splits && perf.splits.length > 0 && (
-                                    <button
-                                      className="splits-toggle-btn"
-                                      onClick={() => toggleSplits(perf.id)}
-                                    >
-                                      {expandedSplits.has(perf.id) ? 'Hide Splits' : 'Show Splits'}
-                                    </button>
-                                  )}
-                                </div>
-                              </td>
-                              {filterMeet === 'All' && <td>{perf.meetWithYear}</td>}
-                            </tr>
-                            {expandedSplits.has(perf.id) && (
-                              <tr className="splits-row">
-                                <td colSpan="10">
-                                  <div className="splits-container">
-                                    <div className="splits-label">Splits:</div>
-                                    <div className="splits-list">
-                                      {perf.splits.map((s, idx) => (
-                                        <div key={idx} className="split-item">
-                                          <span className="split-index">{idx + 1}:</span>
-                                          <span className="split-val">{s}</span>
-                                        </div>
-                                      ))}
-                                    </div>
+                {activeTab === 'history' ? (
+                  <div className="table-container">
+                    <table className="performance-table">
+                      <thead>
+                        <tr>
+                          <th onClick={() => handleSort('date')} className="sortable">Date {renderSortIcon('date')}</th>
+                          {selectedAthlete.id === 'all' && <th>Athlete</th>}
+                          {selectedTeam === 'All' && <th>Team</th>}
+                          {filterSeasonType === 'All' && <th>Season</th>}
+                          {filterEvent === 'All' && <th>Event</th>}
+                          <th onClick={() => handleSort('result')} className="sortable">Result {renderSortIcon('mark')}</th>
+                          {filterMeet === 'All' && <th>Meet</th>}
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {filteredPerformances.length > 0 ? (
+                          filteredPerformances.map(perf => (
+                            <React.Fragment key={perf.id}>
+                              <tr className={perf.isCalculatedPR ? 'pr-row' : ''}>
+                                <td>{perf.date.split('T')[0]}</td>
+                                {selectedAthlete.id === 'all' && <td className="athlete-name-cell">{perf.athlete_name}</td>}
+                                {selectedTeam === 'All' && <td>{perf.team}</td>}
+                                {filterSeasonType === 'All' && <td>{perf.season}</td>}
+                                {filterEvent === 'All' && <td>{perf.event}</td>}
+                                <td>
+                                  <div className="result-cell-content">
+                                    <span className="result-val">{perf.mark}</span>
+                                    {!!perf.isCalculatedPR && <span className="badge pr">PR</span>}
+                                    {!!perf.isCalculatedSB && <span className="badge sb">SB</span>}
+                                    {!!perf.isFirstTime && <span className="badge first">*</span>}
+                                    {perf.splits && perf.splits.length > 0 && (
+                                      <button
+                                        className="splits-toggle-btn"
+                                        onClick={() => toggleSplits(perf.id)}
+                                      >
+                                        {expandedSplits.has(perf.id) ? 'Hide Splits' : 'Show Splits'}
+                                      </button>
+                                    )}
                                   </div>
                                 </td>
+                                {filterMeet === 'All' && <td>{perf.meetWithYear}</td>}
                               </tr>
-                            )}
-                          </React.Fragment>
-                        ))
-                      ) : (
-                        <tr>
-                          <td colSpan="10" className="no-results">No results match your filters</td>
-                        </tr>
-                      )}
-                    </tbody>
-                  </table>
-                </div>
+                              {expandedSplits.has(perf.id) && (
+                                <tr className="splits-row">
+                                  <td colSpan="10">
+                                    <div className="splits-container">
+                                      <div className="splits-label">Splits:</div>
+                                      <div className="splits-list">
+                                        {perf.splits.map((s, idx) => (
+                                          <div key={idx} className="split-item">
+                                            <span className="split-index">{idx + 1}:</span>
+                                            <span className="split-val">{s}</span>
+                                          </div>
+                                        ))}
+                                      </div>
+                                    </div>
+                                  </td>
+                                </tr>
+                              )}
+                            </React.Fragment>
+                          ))
+                        ) : (
+                          <tr>
+                            <td colSpan="10" className="no-results">No results match your filters</td>
+                          </tr>
+                        )}
+                      </tbody>
+                    </table>
+                  </div>
+                ) : (
+                  <AthleteProfile
+                    performances={performances}
+                    selectedAthlete={selectedAthlete}
+                  />
+                )}
               </>
             ) : (
               <div className="empty-state">
