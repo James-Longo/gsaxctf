@@ -14,7 +14,10 @@ The PVC Simulator predicts the scoring of a "PVC Small Schools" championship mee
 2.  **Event Normalization**: Only events matching keys in `EVENT_ALIASES` are counted. This avoids scoring non-championship events (like the Pentathlon).
 3.  **Grouping**: Data is grouped by event. Only the absolute best performance for each athlete (individual) or team (relay) in that specific event/season/year is kept.
 4.  **Simulation / Optimization**:
-    - **Event Limit**: Maine Track & Field rules limit athletes to 3 events total (including relays). The simulator uses a **Greedy Algorithm** to pick an athlete's 3 highest-scoring events.
+    - **Event Limit (Greedy Selection)**: Maine Track & Field rules limit athletes to 3 events total (including relays). The simulator uses a **Greedy Algorithm** to optimize team scores:
+        1. All possible scoring "actions" (individual results and relay results) are pooled and sorted by points (highest first).
+        2. The simulator iterates through this list, selecting events until an athlete hits their 3-event limit.
+        3. **Relay Decision**: A relay is only selected if **every identified member** on that relay team has fewer than 3 events already assigned. If even one member has already been assigned 3 higher-scoring events, the entire relay is skipped for that team.
     - **Scoring**: Standard 10-8-6-4-2-1 scoring.
     - **Tie Splitting**: Points are automatically split for ties (e.g., if two athletes tie for 1st, they each get 9 points `(10+8)/2`).
 

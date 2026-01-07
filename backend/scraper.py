@@ -33,6 +33,8 @@ TEAM_MAPPING = {
     "John Bapst": "John Bapst Memorial High School",
     "Hampden Acad": "Hampden Academy",
     "Hampden": "Hampden Academy",
+    "Bangor Christian": "Bangor Christian Schools",
+    "Bangor Chris": "Bangor Christian Schools",
     "Bangor High": "Bangor High School",
     "Bangor Hig": "Bangor High School",
     "Bangor": "Bangor High School",
