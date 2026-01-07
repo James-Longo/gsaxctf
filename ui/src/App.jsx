@@ -9,8 +9,10 @@ const ALL_ATHLETES = { id: 'all', name: 'All Athletes' }
 const PERFORMANCE_ANALYZER = { id: 'analyzer', name: 'Performance Analyzer' }
 const PR_POP_CALCULATOR = { id: 'pr-pop', name: 'PR Pop Calculator' }
 const MEET_SHEET = { id: 'meet-sheet', name: 'Meet Sheet' }
+const ATHLETE_PROFILE = { id: 'athlete-profile', name: 'Athlete Profile' }
 
 import MeetSheet from './MeetSheet'
+import AthleteProfile from './AthleteProfile'
 
 function App() {
   const [allPerformances, setAllPerformances] = useState([])
@@ -79,7 +81,7 @@ function App() {
   // Current performances to display (subset of allPerformances based on selectedAthlete)
   const performances = useMemo(() => {
     if (!selectedAthlete) return []
-    if (selectedAthlete.id === 'all' || selectedAthlete.id === 'pr-pop' || selectedAthlete.id === 'analyzer') {
+    if (selectedAthlete.id === 'all' || selectedAthlete.id === 'pr-pop' || selectedAthlete.id === 'analyzer' || selectedAthlete.id === 'athlete-profile') {
       return allPerformances
     }
     return allPerformances.filter(p => p.athlete_id === selectedAthlete.id)
@@ -357,6 +359,12 @@ function App() {
             >
               📋 Create Meet Sheet
             </button>
+            <button
+              onClick={() => setSelectedAthlete(ATHLETE_PROFILE)}
+              className={`nav-btn ${selectedAthlete?.id === 'athlete-profile' ? 'active' : ''}`}
+            >
+              👤 Athlete Profile
+            </button>
           </div>
 
           {isLocalDev && (
@@ -437,6 +445,11 @@ function App() {
               </>
             ) : selectedAthlete?.id === 'meet-sheet' ? (
               <MeetSheet />
+            ) : selectedAthlete?.id === 'athlete-profile' ? (
+              <AthleteProfile
+                performances={performances}
+                selectedAthlete={selectedAthlete}
+              />
             ) : selectedAthlete && selectedAthlete.id !== 'analyzer' ? (
               <>
                 <div className="header-row">
