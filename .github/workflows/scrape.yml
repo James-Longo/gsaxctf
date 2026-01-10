@@ -1,4 +1,4 @@
-name: Scrape and Publish
+name: Update Results and Deploy
 
 on:
   schedule:
@@ -9,7 +9,7 @@ permissions:
   contents: write
 
 jobs:
-  scrape:
+  scrape-and-deploy:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repo
@@ -21,18 +21,30 @@ jobs:
           python-version: '3.11'
           cache: 'pip'
 
-      - name: Install dependencies
+      - name: Install Python dependencies
         run: pip install -r backend/requirements.txt
 
       - name: Run Scraper (Incremental)
-        # Running from root, using the helper script
         run: python backend/run_update.py
 
       - name: Export Data for Web
         run: python backend/export_for_web.py
 
-      - name: Commit and Push
+      - name: Commit and Push Data Updates
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
-          commit_message: "Automated Data Update"
-          file_pattern: "backend/track_app.db ui/public/data.json"
+          commit_message: "chore: automated backend rescrape and data update [skip ci]"
+          file_pattern: "track_app.db ui/public/data.json backend/data/"
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Deploy to Vercel
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+        run: |
+          npx vercel --prod --token $VERCEL_TOKEN --yes
