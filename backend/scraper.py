@@ -108,6 +108,22 @@ class Sub5Scraper:
         self.manual_fixes = self.load_manual_fixes()
         self.web_date_mapping = self.load_web_date_mapping()
         self.progress_callback = progress_callback
+        self.session = requests.Session()
+        self.session.headers.update(self.headers)
+
+    def _get_with_retry(self, url, max_retries=3):
+        for i in range(max_retries):
+            try:
+                response = self.session.get(url, timeout=30)
+                response.raise_for_status()
+                return response
+            except Exception as e:
+                if i == max_retries - 1:
+                    print(f"Failed to fetch {url} after {max_retries} attempts: {e}")
+                    raise
+                import time
+                time.sleep(2 ** i) # Exponential backoff
+        return None
 
     def report_progress(self, message, progress=None):
         if self.progress_callback:
@@ -306,8 +322,7 @@ class Sub5Scraper:
     def get_meet_links(self, year_url):
         print(f"Fetching meet links from: {year_url}")
         try:
-            response = requests.get(year_url, headers=self.headers)
-            response.raise_for_status()
+            response = self._get_with_retry(year_url)
             soup = BeautifulSoup(response.text, 'html.parser')
             links = []
             
@@ -362,8 +377,7 @@ class Sub5Scraper:
             if not os.path.exists(save_path):
                 print(f"Downloading {filename}...")
                 try:
-                    res = requests.get(link, headers=self.headers)
-                    res.raise_for_status()
+                    res = self._get_with_retry(link)
                     with open(save_path, 'wb') as f:
                         f.write(res.content)
                     saved_files.append(save_path)

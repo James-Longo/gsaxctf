@@ -8,5 +8,12 @@ from backend.scraper import Sub5Scraper
 
 if __name__ == "__main__":
     print("Starting Incremental Update via GitHub Actions...")
-    scraper = Sub5Scraper()
-    scraper.run_full_scrape(wipe=False)
+    try:
+        scraper = Sub5Scraper()
+        scraper.run_full_scrape(wipe=False)
+        print("Incremental Update Successful!")
+    except Exception as e:
+        print(f"ERROR: Scraper failed with: {e}")
+        import traceback
+        traceback.print_exc()
+        sys.exit(1)

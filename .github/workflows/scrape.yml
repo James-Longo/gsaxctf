@@ -20,21 +20,40 @@ jobs:
         with:
           python-version: '3.11'
           cache: 'pip'
+          cache-dependency-path: backend/requirements.txt
 
       - name: Install Python dependencies
         run: pip install -r backend/requirements.txt
 
+      - name: Configure Git for large files
+        run: |
+          git config --global http.postBuffer 524288000
+          git config --global core.compression 0
+
       - name: Run Scraper (Incremental)
-        run: python backend/run_update.py
+        run: |
+          echo "Starting scraper..."
+          python backend/run_update.py
+        continue-on-error: false
 
       - name: Export Data for Web
-        run: python backend/export_for_web.py
+        run: |
+          echo "Exporting data to JSON..."
+          python backend/export_for_web.py
+
+      - name: Check Database Size
+        run: |
+          ls -lh track_app.db
+          ls -lh ui/public/data.json
 
       - name: Commit and Push Data Updates
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
           commit_message: "chore: automated backend rescrape and data update [skip ci]"
-          file_pattern: "track_app.db ui/public/data.json backend/data/"
+          file_pattern: |
+            track_app.db
+            ui/public/data.json
+          disable_globbing: false
 
       - name: Set up Node.js
         uses: actions/setup-node@v4
@@ -47,4 +66,13 @@ jobs:
           VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
           VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
         run: |
-          npx vercel --prod --token $VERCEL_TOKEN --yes
+          if [ -z "$VERCEL_TOKEN" ]; then
+            echo "::error::VERCEL_TOKEN is missing. Please add it to your GitHub Secrets."
+            exit 1
+          fi
+          if [ -z "$VERCEL_ORG_ID" ] || [ -z "$VERCEL_PROJECT_ID" ]; then
+            echo "::error::VERCEL_ORG_ID or VERCEL_PROJECT_ID is missing. Please add them to your GitHub Secrets."
+            exit 1
+          fi
+          echo "Deploying to Vercel..."
+          npx vercel --prod --yes --token=$VERCEL_TOKEN
