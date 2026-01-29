@@ -223,9 +223,15 @@ class Sub5Scraper:
     def normalize_team_name(self, name, all_teams=None):
         if not name: return "Unknown"
         name = name.strip()
+        
+        # Pre-process: strip common prefixes
+        # (Case-insensitive removal of "M " and "JR ")
+        name = re.sub(r'^(M|JR)\s+', '', name, flags=re.IGNORECASE)
+        
+        # Clean up any suffix artifacts
         name = re.sub(r'\s+J[\d\.\-\':]+.*', '', name)
         
-        # 1. Manual Mappings take priority (shorthands like GSA, MDI)
+        name = name.strip()
         for key, val in TEAM_MAPPING.items():
             if name.lower().startswith(key.lower()):
                 return val
