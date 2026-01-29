@@ -130,6 +130,23 @@ TEAM_MAPPING = {
     "Windham High": "Windham High School",
     "Yarmouth High": "Yarmouth High School",
     "York High": "York High School",
+    "Boothbay/Wis": "Boothbay/Wiscasset",
+    "Boothbay/Wiscasset": "Boothbay/Wiscasset",
+    "Boothbay Reg": "Boothbay/Wiscasset",
+    "Lake Region": "Lake Region High School",
+    "Camden Hills": "Camden Hills Regional High School",
+    "Gray New Glo": "Gray New Gloucester High School",
+    "Oxford Hills": "Oxford Hills Comprehensive High School",
+    "Poland Regio": "Poland Regional High School",
+    "Sacopee Vall": "Sacopee Valley High School",
+    "St. Dominic": "St. Dominic Regional High School",
+    "Thornton Academy MS": "Thornton Academy",
+    "Winthrop Hig": "Winthrop High School",
+    "Wiscasset Hi": "Boothbay/Wiscasset",
+    "York High Sc": "York High School",
+    "Medomak Vall": "Medomak Valley High School",
+    "Mountain Val": "Mountain Valley High School",
+    "Traip Academ": "Traip Academy",
 }
 
 try:
