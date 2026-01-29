@@ -15,6 +15,425 @@ function PVCSimulator({ performances, isBetter }) {
     const [simIterations, setSimIterations] = useState(50);
     const [strategicLog, setStrategicLog] = useState([]);
 
+    // Configuration for PVC Small Schools
+    const getPVCSchools = (year, season) => {
+        // Specific Rule for Indoor 2026
+        if (year === '2026' && season === 'Indoor') {
+            return {
+                "Bangor Chris": "Bangor Christian Schools",
+                "Bucksport": "Bucksport High School",
+                "Central": "Central High School",
+                "Dexter": "Dexter Regional High School",
+                "Foxcroft": "Foxcroft Academy",
+                "George Stevens": "George Stevens Academy",
+                "Mattanawcook": "Mattanawcook Academy",
+                "Orono": "Orono High School",
+                "PCHS": "Piscataquis Community High School",
+                "Penquis": "Penquis Valley High School",
+                "Searsport": "Searsport District High School",
+                "Sumner": "Sumner/Narragaugus"
+            };
+        }
+
+        // Default / Legacy List
+        return {
+            "Orono": "Orono High School",
+            "George Steve": "George Stevens Academy",
+            "Bucksport": "Bucksport High School",
+            "Sumner": "Sumner/Narragaugus",
+            "Central": "Central High School",
+            "Foxcroft": "Foxcroft Academy",
+            "Dexter": "Dexter Regional High School",
+            "Piscataquis": "Piscataquis Community High School",
+            "Penquis": "Penquis Valley High School",
+            "Searsport": "Searsport District High School",
+            "Mattanawcook": "Mattanawcook Academy",
+            "Lee Academy": "Lee Academy",
+            "Deer Isle": "Deer Isle-Stonington High School",
+            "Bangor Chris": "Bangor Christian Schools",
+            "Greenville": "Greenville High School",
+            "Narraguagus": "Sumner/Narragaugus",
+            "Washington Acad": "Washington Academy",
+            "Calais": "Calais High School",
+            "Shead": "Shead High School",
+            "Fort Kent": "Fort Kent Community High School",
+            "Caribou Hig": "Caribou High School",
+            "Presque Isle": "Presque Isle High School",
+            "Houlton": "Houlton High School"
+        };
+    };
+
+    const { filteredData, years, seasons, events } = useMemo(() => {
+        if (!performances) return { filteredData: [], years: [], seasons: [], events: [] };
+
+        // 1. Calculate available Years and Seasons first (from raw data)
+        const rawYears = new Set();
+        const rawSeasons = new Set();
+        performances.forEach(p => {
+            if (p.year) rawYears.add(p.year);
+            if (p.season) {
+                const m = p.season.match(/^(\d{4})\s+(.*)$/);
+                if (m) rawSeasons.add(m[2]);
+                else rawSeasons.add(p.season);
+            }
+        });
+
+        // 2. If filters are not set, return empty data but populated options
+        if (filterYear === 'All' || filterSeason === 'All') {
+            return {
+                filteredData: [],
+                years: Array.from(rawYears).sort((a, b) => b - a),
+                seasons: Array.from(rawSeasons).sort(),
+                events: []
+            }
+        }
+
+        // 3. Get the specific team list for this context
+        const activeSchools = getPVCSchools(filterYear, filterSeason);
+
+        const processed = performances.map(p => {
+            let year = p.year;
+            let type = p.season;
+            if (p.season && p.season.match(/^\d{4}/)) {
+                const m = p.season.match(/^(\d{4})\s+(.*)$/);
+                year = m[1];
+                type = m[2];
+            }
+
+            // Detect PVC Team based on ACTIVE list
+            let pvcTeam = null;
+            for (const [key, val] of Object.entries(activeSchools)) {
+                // Check against key (short) and val (long)
+                const teamLower = p.team.toLowerCase();
+                const filterKey = key.toLowerCase();
+
+                // Specific fix for "Central" to avoid matching "Maine Central Institute"
+                if (key === "Central" && teamLower.includes("maine")) {
+                    continue;
+                }
+
+                if (teamLower.includes(filterKey) || teamLower === val.toLowerCase()) {
+                    pvcTeam = val;
+                    break;
+                }
+            }
+
+            // Special check for PCHS acronym
+            if (!pvcTeam && activeSchools["PCHS"] && (p.team === "PCHS" || p.team.includes("Piscataquis"))) {
+                pvcTeam = activeSchools["PCHS"];
+            }
+
+            return {
+                ...p,
+                derivedYear: year,
+                derivedType: type,
+                pvcTeam: pvcTeam,
+                isRelay: p.event.toLowerCase().includes('relay') || p.event.toLowerCase().includes('4x')
+            };
+        }).filter(p => p.pvcTeam); // Only include valid schools for THIS season
+
+        const matches = (p, filters) => {
+            const { year, season, event } = filters;
+            return (year === 'All' || p.derivedYear === year) &&
+                (season === 'All' || p.derivedType === season) &&
+                (event === 'All' || p.event === event);
+        };
+
+        const avYears = Array.from(new Set(processed.map(p => p.derivedYear))).sort((a, b) => b - a);
+        const avSeasons = Array.from(new Set(processed.map(p => p.derivedType))).sort();
+        const avEvents = Array.from(new Set(processed.map(p => p.event))).sort();
+
+        const filtered = processed.filter(p => matches(p, { year: filterYear, season: filterSeason, event: filterEvent }));
+
+        return {
+            filteredData: filtered,
+            years: avYears,
+            seasons: avSeasons,
+            events: avEvents
+        };
+    }, [performances, filterYear, filterSeason, filterEvent]);
+
+    const teamPools = useMemo(() => {
+        const pools = {};
+        if (!performances) return pools; // Use performances or filteredData? filteredData is derived in render? No, let's verify. filteredData is likely derived.
+        // Wait, filteredData is a prop or state? Check lines 1-10. Not in view.
+        // Assuming filteredData is available in scope.
+
+        // Actually, filteredData is usually derived inside the component body.
+        // Let's use filteredData if it is available in scope.
+        // Based on previous reads, filteredData seems to be derived.
+        // I will use `filteredData` in the dependency array. 
+
+        // Re-implementing logic:
+        (filteredData || []).forEach(p => {
+            const markUpper = (p.mark || "").toUpperCase();
+            if (['DQ', 'DNF', 'NH'].includes(markUpper)) return;
+
+            const team = p.pvcTeam;
+            if (!pools[team]) pools[team] = {};
+
+            const isRelay = p.isRelay;
+            const athleteKey = isRelay ? `relay_${p.event}` : p.athlete_id;
+
+            if (!pools[team][athleteKey]) pools[team][athleteKey] = [];
+
+            const existing = pools[team][athleteKey].find(x => x.event === p.event);
+            if (!existing || isBetter(p.mark, existing.mark)) {
+                if (existing) {
+                    pools[team][athleteKey] = pools[team][athleteKey].filter(x => x.event !== p.event);
+                }
+                pools[team][athleteKey].push(p);
+            }
+        });
+        return pools;
+    }, [filteredData, isBetter]);
+
+    // Simulation Helpers and Core Logic
+    const SCORING_RULES = [10, 8, 6, 4, 2, 1];
+    const EVENT_LIMIT = 3;
+
+    const getMembers = (p) => {
+        const name = p.athlete_name || "";
+        if (p.isRelay) {
+            return name.split(',').map(n => n.trim()).filter(n => n && !n.toLowerCase().includes('relay'));
+        }
+        return [name];
+    };
+
+    const simulateSingleMeet = (allEntries) => {
+        const eventGroups = {};
+        allEntries.forEach(e => {
+            if (!eventGroups[e.event]) eventGroups[e.event] = [];
+            eventGroups[e.event].push(e);
+        });
+
+        const scores = {};
+        Object.entries(eventGroups).forEach(([event, entries]) => {
+            entries.sort((a, b) => isBetter(a.mark, b.mark) ? -1 : isBetter(b.mark, a.mark) ? 1 : 0);
+            for (let i = 0; i < Math.min(entries.length, SCORING_RULES.length); i++) {
+                const team = entries[i].pvcTeam;
+                scores[team] = (scores[team] || 0) + SCORING_RULES[i];
+            }
+        });
+        return scores;
+    };
+
+    const getGreedyEntries = (pool) => {
+        const entries = [];
+        Object.values(pool).forEach(athPerfs => {
+            athPerfs.sort((a, b) => isBetter(a.mark, b.mark) ? -1 : 1);
+            entries.push(...athPerfs.slice(0, EVENT_LIMIT));
+        });
+        return entries;
+    };
+
+    // Core Optimization Logic (Reusable)
+    const optimizeTeamStrategy = async ({
+        teamName,
+        gender,
+        progressStart,
+        progressRange,
+        fixedOpponentLineups = null
+    }) => {
+        const isGender = (p) => {
+            const g = p.event.toLowerCase().includes('girls');
+            return gender === 'girls' ? g : !g;
+        };
+
+        const genderTeamPools = {};
+        Object.entries(teamPools).forEach(([team, pool]) => {
+            const newPool = {};
+            Object.entries(pool).forEach(([key, athPerfs]) => {
+                const valid = athPerfs.filter(isGender);
+                if (valid.length > 0) newPool[key] = valid;
+            });
+            if (Object.keys(newPool).length > 0) genderTeamPools[team] = newPool;
+        });
+
+        const genderTargetPool = genderTeamPools[teamName] || {};
+        const genderOpponentPools = { ...genderTeamPools };
+        delete genderOpponentPools[teamName];
+
+        const genderPossibleEntries = Object.values(genderTargetPool).flat();
+        if (genderPossibleEntries.length === 0) return { avg: 0, entries: [], stats: [], scenarios: [] };
+
+        // Generate Scenarios
+        let scenarios = [];
+        if (fixedOpponentLineups) {
+            const sc = {};
+            Object.entries(fixedOpponentLineups).forEach(([t, entries]) => {
+                if (t !== teamName) {
+                    sc[t] = entries.filter(isGender);
+                }
+            });
+            scenarios = [sc];
+        } else {
+            for (let i = 0; i < simIterations; i++) {
+                if (i % 10 === 0) {
+                    setSimProgress(progressStart + Math.floor((i / simIterations) * (progressRange * 0.2)));
+                    await new Promise(r => setTimeout(r, 0));
+                }
+                const sc = {};
+                Object.entries(genderOpponentPools).forEach(([team, pool]) => {
+                    const entries = [];
+                    Object.values(pool).forEach(athPerfs => {
+                        const sorted = [...athPerfs].sort((a, b) => isBetter(a.mark, b.mark) ? -1 : 1);
+                        const topX = sorted.slice(0, 5);
+                        for (let j = 0; j < EVENT_LIMIT && topX.length > 0; j++) {
+                            const idx = Math.floor(Math.random() * topX.length);
+                            entries.push(topX.splice(idx, 1)[0]);
+                        }
+                    });
+                    sc[team] = entries;
+                });
+                scenarios.push(sc);
+            }
+        }
+
+        const evaluateLocal = (indices) => {
+            const usage = {};
+            const selected = [];
+            indices.forEach(idx => {
+                const p = genderPossibleEntries[idx];
+                const members = getMembers(p);
+                const canFit = members.every(m => (usage[m] || 0) < EVENT_LIMIT);
+                if (canFit) {
+                    selected.push(p);
+                    members.forEach(m => usage[m] = (usage[m] || 0) + 1);
+                }
+            });
+
+            const res = [];
+            scenarios.forEach(oppEntries => {
+                const fullMeet = [...selected];
+                Object.values(oppEntries).forEach(opps => fullMeet.push(...opps));
+                res.push(simulateSingleMeet(fullMeet));
+            });
+            return { avg: res.reduce((s, r) => s + (r[teamName] || 0), 0) / scenarios.length, entries: selected, scenarios: scenarios };
+        };
+
+        // GA
+        let population = [];
+        const popSize = 20;
+        const maxEntries = Object.keys(genderTargetPool).length * EVENT_LIMIT;
+
+        for (let i = 0; i < popSize; i++) {
+            const size = Math.min(genderPossibleEntries.length, Math.floor(Math.random() * maxEntries));
+            const ind = [];
+            while (ind.length < size) {
+                const r = Math.floor(Math.random() * genderPossibleEntries.length);
+                if (!ind.includes(r)) ind.push(r);
+            }
+            population.push(ind);
+        }
+
+        const generations = 40;
+        for (let iter = 0; iter < generations; iter++) {
+            if (!fixedOpponentLineups && iter % 5 === 0) {
+                setSimProgress(progressStart + (progressRange * 0.2) + Math.floor((iter / generations) * (progressRange * 0.6)));
+                await new Promise(r => setTimeout(r, 0));
+            }
+            population.sort((a, b) => evaluateLocal(b).avg - evaluateLocal(a).avg);
+            const nextPop = population.slice(0, 5);
+            while (nextPop.length < popSize) {
+                const p1 = population[Math.floor(Math.random() * 10)];
+                const p2 = population[Math.floor(Math.random() * 10)];
+                const split = Math.floor(Math.random() * Math.min(p1.length, p2.length));
+                let child = Array.from(new Set([...p1.slice(0, split), ...p2.slice(split)]));
+                if (Math.random() < 0.2) {
+                    if (Math.random() < 0.5 && child.length > 0) child.splice(Math.floor(Math.random() * child.length), 1);
+                    else child.push(Math.floor(Math.random() * genderPossibleEntries.length));
+                    child = Array.from(new Set(child));
+                }
+                nextPop.push(child);
+            }
+            population = nextPop;
+        }
+
+        population.sort((a, b) => evaluateLocal(b).avg - evaluateLocal(a).avg);
+        const bestRes = evaluateLocal(population[0]);
+
+        // Calculate Stats
+        if (!fixedOpponentLineups) {
+            setSimProgress(progressStart + progressRange * 0.9);
+            await new Promise(r => setTimeout(r, 0));
+        }
+
+        const statsByTeam = {};
+        const entryScoresMap = new Map();
+        bestRes.entries.forEach(e => entryScoresMap.set(e, []));
+
+        scenarios.forEach((oppEntries, i) => {
+            const fullMeet = [...bestRes.entries];
+            Object.values(oppEntries).forEach(opps => fullMeet.push(...opps));
+            const meetScores = simulateSingleMeet(fullMeet);
+            Object.entries(meetScores).forEach(([team, score]) => {
+                if (!statsByTeam[team]) statsByTeam[team] = [];
+                statsByTeam[team].push(score);
+            });
+
+            const eventGroups = {};
+            fullMeet.forEach(e => {
+                if (!eventGroups[e.event]) eventGroups[e.event] = [];
+                eventGroups[e.event].push(e);
+            });
+
+            const scoredEntries = new Set();
+            Object.values(eventGroups).forEach(entries => {
+                entries.sort((a, b) => isBetter(a.mark, b.mark) ? -1 : isBetter(b.mark, a.mark) ? 1 : 0);
+                for (let r = 0; r < Math.min(entries.length, SCORING_RULES.length); r++) {
+                    const entry = entries[r];
+                    if (entryScoresMap.has(entry)) {
+                        const pts = SCORING_RULES[r];
+                        entryScoresMap.get(entry).push(pts);
+                        scoredEntries.add(entry);
+                    }
+                }
+            });
+
+            bestRes.entries.forEach(e => {
+                if (!scoredEntries.has(e)) {
+                    entryScoresMap.get(e).push(0);
+                }
+            });
+        });
+
+        const enhancedEntries = bestRes.entries.map(e => {
+            const scores = entryScoresMap.get(e) || [];
+            if (scores.length === 0) return { ...e, pointsAvg: 0, pointsMin: 0, pointsMax: 0 };
+            const sorted = [...scores].sort((a, b) => a - b);
+            return {
+                ...e,
+                pointsAvg: sorted.reduce((a, b) => a + b, 0) / scores.length,
+                pointsMin: sorted[0],
+                pointsMax: sorted[sorted.length - 1]
+            };
+        });
+
+        const finalStats = Object.entries(statsByTeam).map(([name, scores]) => {
+            const sorted = scores.sort((a, b) => a - b);
+            return {
+                name,
+                avg: sorted.reduce((a, b) => a + b, 0) / scenarios.length,
+                min: sorted[0],
+                max: sorted[sorted.length - 1],
+                scores: sorted
+            };
+        }).sort((a, b) => b.avg - a.avg);
+
+        return { avg: bestRes.avg, entries: enhancedEntries, stats: finalStats };
+    };
+
+    // Wrapper
+    const optimizeForGender = async (gender, progressStart, progressRange) => {
+        return optimizeTeamStrategy({
+            teamName: targetTeam,
+            gender,
+            progressStart,
+            progressRange
+        });
+    };
+
     const runRobustSimulation = async () => {
         if (filterYear === 'All' || filterSeason === 'All') {
             alert("Please select a Year and Season first.");
@@ -25,276 +444,9 @@ function PVCSimulator({ performances, isBetter }) {
         // Run in a timeout to allow UI to show loading state
         setTimeout(async () => {
             try {
-                // 1. Prepare Data
-                // Group by Team -> Athlete -> [Best Performances]
-                const teamPools = {};
-                filteredData.forEach(p => {
-                    const markUpper = (p.mark || "").toUpperCase();
-                    if (['DQ', 'DNF', 'NH'].includes(markUpper)) return;
+                // 1. Prepare Data - Now handled by useMemo
 
-                    const team = p.pvcTeam;
-                    if (!teamPools[team]) teamPools[team] = {};
 
-                    const isRelay = p.isRelay;
-                    const athleteKey = isRelay ? `relay_${p.event}` : p.athlete_id;
-
-                    if (!teamPools[team][athleteKey]) teamPools[team][athleteKey] = [];
-                    // We only want the BEST performance for each athlete in each event
-                    // filteredData might have multiple if we didn't dedup earlier, but groupedData does.
-                    // Actually, let's just use the best mark seen here.
-                    const existing = teamPools[team][athleteKey].find(x => x.event === p.event);
-                    if (!existing || isBetter(p.mark, existing.mark)) {
-                        if (existing) {
-                            teamPools[team][athleteKey] = teamPools[team][athleteKey].filter(x => x.event !== p.event);
-                        }
-                        teamPools[team][athleteKey].push(p);
-                    }
-                });
-
-                const SCORING_RULES = [10, 8, 6, 4, 2, 1];
-                const EVENT_LIMIT = 3;
-
-                const getMembers = (p) => {
-                    const name = p.athlete_name || "";
-                    if (p.isRelay) {
-                        return name.split(',').map(n => n.trim()).filter(n => n && !n.toLowerCase().includes('relay'));
-                    }
-                    return [name];
-                };
-
-                const simulateSingleMeet = (allEntries) => {
-                    const eventGroups = {};
-                    allEntries.forEach(e => {
-                        if (!eventGroups[e.event]) eventGroups[e.event] = [];
-                        eventGroups[e.event].push(e);
-                    });
-
-                    const scores = {};
-                    Object.entries(eventGroups).forEach(([event, entries]) => {
-                        entries.sort((a, b) => isBetter(a.mark, b.mark) ? -1 : isBetter(b.mark, a.mark) ? 1 : 0);
-                        for (let i = 0; i < Math.min(entries.length, SCORING_RULES.length); i++) {
-                            const team = entries[i].pvcTeam;
-                            scores[team] = (scores[team] || 0) + SCORING_RULES[i];
-                        }
-                    });
-                    return scores;
-                };
-
-                const getGreedyEntries = (pool) => {
-                    const entries = [];
-                    Object.values(pool).forEach(athPerfs => {
-                        athPerfs.sort((a, b) => isBetter(a.mark, b.mark) ? -1 : 1);
-                        entries.push(...athPerfs.slice(0, EVENT_LIMIT));
-                    });
-                    return entries;
-                };
-
-                // Core Optimization Logic (Reusable)
-                const optimizeTeamStrategy = async ({
-                    teamName,
-                    gender,
-                    progressStart,
-                    progressRange,
-                    fixedOpponentLineups = null
-                }) => {
-                    const isGender = (p) => {
-                        const g = p.event.toLowerCase().includes('girls');
-                        return gender === 'girls' ? g : !g;
-                    };
-
-                    const genderTeamPools = {};
-                    Object.entries(teamPools).forEach(([team, pool]) => {
-                        const newPool = {};
-                        Object.entries(pool).forEach(([key, athPerfs]) => {
-                            const valid = athPerfs.filter(isGender);
-                            if (valid.length > 0) newPool[key] = valid;
-                        });
-                        if (Object.keys(newPool).length > 0) genderTeamPools[team] = newPool;
-                    });
-
-                    const genderTargetPool = genderTeamPools[teamName] || {};
-                    const genderOpponentPools = { ...genderTeamPools };
-                    delete genderOpponentPools[teamName];
-
-                    const genderPossibleEntries = Object.values(genderTargetPool).flat();
-                    if (genderPossibleEntries.length === 0) return { avg: 0, entries: [], stats: [], scenarios: [] };
-
-                    // Generate Scenarios
-                    let scenarios = [];
-                    if (fixedOpponentLineups) {
-                        const sc = {};
-                        Object.entries(fixedOpponentLineups).forEach(([t, entries]) => {
-                            if (t !== teamName) {
-                                sc[t] = entries.filter(isGender);
-                            }
-                        });
-                        scenarios = [sc];
-                    } else {
-                        for (let i = 0; i < simIterations; i++) {
-                            if (i % 10 === 0) {
-                                setSimProgress(progressStart + Math.floor((i / simIterations) * (progressRange * 0.2)));
-                                await new Promise(r => setTimeout(r, 0));
-                            }
-                            const sc = {};
-                            Object.entries(genderOpponentPools).forEach(([team, pool]) => {
-                                const entries = [];
-                                Object.values(pool).forEach(athPerfs => {
-                                    const sorted = [...athPerfs].sort((a, b) => isBetter(a.mark, b.mark) ? -1 : 1);
-                                    const topX = sorted.slice(0, 5);
-                                    for (let j = 0; j < EVENT_LIMIT && topX.length > 0; j++) {
-                                        const idx = Math.floor(Math.random() * topX.length);
-                                        entries.push(topX.splice(idx, 1)[0]);
-                                    }
-                                });
-                                sc[team] = entries;
-                            });
-                            scenarios.push(sc);
-                        }
-                    }
-
-                    const evaluateLocal = (indices) => {
-                        const usage = {};
-                        const selected = [];
-                        indices.forEach(idx => {
-                            const p = genderPossibleEntries[idx];
-                            const members = getMembers(p);
-                            const canFit = members.every(m => (usage[m] || 0) < EVENT_LIMIT);
-                            if (canFit) {
-                                selected.push(p);
-                                members.forEach(m => usage[m] = (usage[m] || 0) + 1);
-                            }
-                        });
-
-                        const res = [];
-                        scenarios.forEach(oppEntries => {
-                            const fullMeet = [...selected];
-                            Object.values(oppEntries).forEach(opps => fullMeet.push(...opps));
-                            res.push(simulateSingleMeet(fullMeet));
-                        });
-                        return { avg: res.reduce((s, r) => s + (r[teamName] || 0), 0) / scenarios.length, entries: selected, scenarios: scenarios };
-                    };
-
-                    // GA
-                    let population = [];
-                    const popSize = 20;
-                    const maxEntries = Object.keys(genderTargetPool).length * EVENT_LIMIT;
-
-                    for (let i = 0; i < popSize; i++) {
-                        const size = Math.min(genderPossibleEntries.length, Math.floor(Math.random() * maxEntries));
-                        const ind = [];
-                        while (ind.length < size) {
-                            const r = Math.floor(Math.random() * genderPossibleEntries.length);
-                            if (!ind.includes(r)) ind.push(r);
-                        }
-                        population.push(ind);
-                    }
-
-                    const generations = 40;
-                    for (let iter = 0; iter < generations; iter++) {
-                        if (!fixedOpponentLineups && iter % 5 === 0) {
-                            setSimProgress(progressStart + (progressRange * 0.2) + Math.floor((iter / generations) * (progressRange * 0.6)));
-                            await new Promise(r => setTimeout(r, 0));
-                        }
-                        population.sort((a, b) => evaluateLocal(b).avg - evaluateLocal(a).avg);
-                        const nextPop = population.slice(0, 5);
-                        while (nextPop.length < popSize) {
-                            const p1 = population[Math.floor(Math.random() * 10)];
-                            const p2 = population[Math.floor(Math.random() * 10)];
-                            const split = Math.floor(Math.random() * Math.min(p1.length, p2.length));
-                            let child = Array.from(new Set([...p1.slice(0, split), ...p2.slice(split)]));
-                            if (Math.random() < 0.2) {
-                                if (Math.random() < 0.5 && child.length > 0) child.splice(Math.floor(Math.random() * child.length), 1);
-                                else child.push(Math.floor(Math.random() * genderPossibleEntries.length));
-                                child = Array.from(new Set(child));
-                            }
-                            nextPop.push(child);
-                        }
-                        population = nextPop;
-                    }
-
-                    population.sort((a, b) => evaluateLocal(b).avg - evaluateLocal(a).avg);
-                    const bestRes = evaluateLocal(population[0]);
-
-                    // Calculate Stats
-                    if (!fixedOpponentLineups) {
-                        setSimProgress(progressStart + progressRange * 0.9);
-                        await new Promise(r => setTimeout(r, 0));
-                    }
-
-                    const statsByTeam = {};
-                    const entryScoresMap = new Map();
-                    bestRes.entries.forEach(e => entryScoresMap.set(e, []));
-
-                    scenarios.forEach((oppEntries, i) => {
-                        const fullMeet = [...bestRes.entries];
-                        Object.values(oppEntries).forEach(opps => fullMeet.push(...opps));
-                        const meetScores = simulateSingleMeet(fullMeet);
-                        Object.entries(meetScores).forEach(([team, score]) => {
-                            if (!statsByTeam[team]) statsByTeam[team] = [];
-                            statsByTeam[team].push(score);
-                        });
-
-                        const eventGroups = {};
-                        fullMeet.forEach(e => {
-                            if (!eventGroups[e.event]) eventGroups[e.event] = [];
-                            eventGroups[e.event].push(e);
-                        });
-
-                        const scoredEntries = new Set();
-                        Object.values(eventGroups).forEach(entries => {
-                            entries.sort((a, b) => isBetter(a.mark, b.mark) ? -1 : isBetter(b.mark, a.mark) ? 1 : 0);
-                            for (let r = 0; r < Math.min(entries.length, SCORING_RULES.length); r++) {
-                                const entry = entries[r];
-                                if (entryScoresMap.has(entry)) {
-                                    const pts = SCORING_RULES[r];
-                                    entryScoresMap.get(entry).push(pts);
-                                    scoredEntries.add(entry);
-                                }
-                            }
-                        });
-
-                        bestRes.entries.forEach(e => {
-                            if (!scoredEntries.has(e)) {
-                                entryScoresMap.get(e).push(0);
-                            }
-                        });
-                    });
-
-                    const enhancedEntries = bestRes.entries.map(e => {
-                        const scores = entryScoresMap.get(e) || [];
-                        if (scores.length === 0) return { ...e, pointsAvg: 0, pointsMin: 0, pointsMax: 0 };
-                        const sorted = [...scores].sort((a, b) => a - b);
-                        return {
-                            ...e,
-                            pointsAvg: sorted.reduce((a, b) => a + b, 0) / scores.length,
-                            pointsMin: sorted[0],
-                            pointsMax: sorted[sorted.length - 1]
-                        };
-                    });
-
-                    const finalStats = Object.entries(statsByTeam).map(([name, scores]) => {
-                        const sorted = scores.sort((a, b) => a - b);
-                        return {
-                            name,
-                            avg: sorted.reduce((a, b) => a + b, 0) / scenarios.length,
-                            min: sorted[0],
-                            max: sorted[sorted.length - 1],
-                            scores: sorted
-                        };
-                    }).sort((a, b) => b.avg - a.avg);
-
-                    return { avg: bestRes.avg, entries: enhancedEntries, stats: finalStats };
-                };
-
-                // Wrapper
-                const optimizeForGender = async (gender, progressStart, progressRange) => {
-                    return optimizeTeamStrategy({
-                        teamName: targetTeam,
-                        gender,
-                        progressStart,
-                        progressRange
-                    });
-                };
 
                 // Helper to run optimization for a specific gender pool
                 const optimizeForGender_UNUSED = async (gender, progressStart, progressRange) => {
@@ -613,142 +765,6 @@ function PVCSimulator({ performances, isBetter }) {
     };
 
     // Configuration for PVC Small Schools
-    const getPVCSchools = (year, season) => {
-        // Specific Rule for Indoor 2026
-        if (year === '2026' && season === 'Indoor') {
-            return {
-                "Bangor Chris": "Bangor Christian Schools",
-                "Bucksport": "Bucksport High School",
-                "Central": "Central High School",
-                "Dexter": "Dexter Regional High School",
-                "Foxcroft": "Foxcroft Academy",
-                "George Stevens": "George Stevens Academy",
-                "Mattanawcook": "Mattanawcook Academy",
-                "Orono": "Orono High School",
-                "PCHS": "Piscataquis Community High School",
-                "Penquis": "Penquis Valley High School",
-                "Searsport": "Searsport District High School",
-                "Sumner": "Sumner/Narragaugus"
-            };
-        }
-
-        // Default / Legacy List
-        return {
-            "Orono": "Orono High School",
-            "George Steve": "George Stevens Academy",
-            "Bucksport": "Bucksport High School",
-            "Sumner": "Sumner/Narragaugus",
-            "Central": "Central High School",
-            "Foxcroft": "Foxcroft Academy",
-            "Dexter": "Dexter Regional High School",
-            "Piscataquis": "Piscataquis Community High School",
-            "Penquis": "Penquis Valley High School",
-            "Searsport": "Searsport District High School",
-            "Mattanawcook": "Mattanawcook Academy",
-            "Lee Academy": "Lee Academy",
-            "Deer Isle": "Deer Isle-Stonington High School",
-            "Bangor Chris": "Bangor Christian Schools",
-            "Greenville": "Greenville High School",
-            "Narraguagus": "Sumner/Narragaugus",
-            "Washington Acad": "Washington Academy",
-            "Calais": "Calais High School",
-            "Shead": "Shead High School",
-            "Fort Kent": "Fort Kent Community High School",
-            "Caribou Hig": "Caribou High School",
-            "Presque Isle": "Presque Isle High School",
-            "Houlton": "Houlton High School"
-        };
-    };
-
-    const { filteredData, years, seasons, events } = useMemo(() => {
-        if (!performances) return { filteredData: [], years: [], seasons: [], events: [] };
-
-        // 1. Calculate available Years and Seasons first (from raw data)
-        const rawYears = new Set();
-        const rawSeasons = new Set();
-        performances.forEach(p => {
-            if (p.year) rawYears.add(p.year);
-            if (p.season) {
-                const m = p.season.match(/^(\d{4})\s+(.*)$/);
-                if (m) rawSeasons.add(m[2]);
-                else rawSeasons.add(p.season);
-            }
-        });
-
-        // 2. If filters are not set, return empty data but populated options
-        if (filterYear === 'All' || filterSeason === 'All') {
-            return {
-                filteredData: [],
-                years: Array.from(rawYears).sort((a, b) => b - a),
-                seasons: Array.from(rawSeasons).sort(),
-                events: []
-            }
-        }
-
-        // 3. Get the specific team list for this context
-        const activeSchools = getPVCSchools(filterYear, filterSeason);
-
-        const processed = performances.map(p => {
-            let year = p.year;
-            let type = p.season;
-            if (p.season && p.season.match(/^\d{4}/)) {
-                const m = p.season.match(/^(\d{4})\s+(.*)$/);
-                year = m[1];
-                type = m[2];
-            }
-
-            // Detect PVC Team based on ACTIVE list
-            let pvcTeam = null;
-            for (const [key, val] of Object.entries(activeSchools)) {
-                // Check against key (short) and val (long)
-                const teamLower = p.team.toLowerCase();
-                const filterKey = key.toLowerCase();
-
-                // Specific fix for "Central" to avoid matching "Maine Central Institute"
-                if (key === "Central" && teamLower.includes("maine")) {
-                    continue;
-                }
-
-                if (teamLower.includes(filterKey) || teamLower === val.toLowerCase()) {
-                    pvcTeam = val;
-                    break;
-                }
-            }
-
-            // Special check for PCHS acronym
-            if (!pvcTeam && activeSchools["PCHS"] && (p.team === "PCHS" || p.team.includes("Piscataquis"))) {
-                pvcTeam = activeSchools["PCHS"];
-            }
-
-            return {
-                ...p,
-                derivedYear: year,
-                derivedType: type,
-                pvcTeam: pvcTeam,
-                isRelay: p.event.toLowerCase().includes('relay') || p.event.toLowerCase().includes('4x')
-            };
-        }).filter(p => p.pvcTeam); // Only include valid schools for THIS season
-
-        const matches = (p, filters) => {
-            const { year, season, event } = filters;
-            return (year === 'All' || p.derivedYear === year) &&
-                (season === 'All' || p.derivedType === season) &&
-                (event === 'All' || p.event === event);
-        };
-
-        const avYears = Array.from(new Set(processed.map(p => p.derivedYear))).sort((a, b) => b - a);
-        const avSeasons = Array.from(new Set(processed.map(p => p.derivedType))).sort();
-        const avEvents = Array.from(new Set(processed.map(p => p.event))).sort();
-
-        const filtered = processed.filter(p => matches(p, { year: filterYear, season: filterSeason, event: filterEvent }));
-
-        return {
-            filteredData: filtered,
-            years: avYears,
-            seasons: avSeasons,
-            events: avEvents
-        };
-    }, [performances, filterYear, filterSeason, filterEvent]);
 
     const EVENT_ALIASES = {
         "55m Dash": ["55m Dash", "55 Meter Dash"],
