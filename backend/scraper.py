@@ -233,28 +233,42 @@ class Sub5Scraper:
         
         name = name.strip()
         
-        # 0. Custom manual abbreviations
-        manual_overrides = {
-            "PHCS": "Piscataquis Community High School",
-            "PCHS": "Piscataquis Community High School",
-            "SMC": "Southern Maine Catholic"
-        }
-        if name.upper() in manual_overrides:
-            return manual_overrides[name.upper()]
+        # 2. Dynamic Acronym Matching (Objective Matcher)
+        # Handles cases like PCHS -> Piscataquis Community High School, SMC -> Southern Maine Catholic
+        if all_teams and len(name) >= 2 and len(name) <= 5 and name.isupper():
+            matches = []
+            for fuller_name in all_teams:
+                if len(fuller_name) <= len(name): continue
+                
+                # Case 1: First letter of every word
+                # "George Stevens Academy" -> GSA
+                # "Piscataquis Community High School" -> PCHS
+                acr_full = "".join(re.findall(r'\b\w', fuller_name)).upper()
+                
+                # Case 2: Scrub common suffixes like "High School"
+                # "Portland High School" -> PHS (standard) vs P (base)
+                base = re.sub(r'\s+(High School|Academy|Regional High School|Area High School|Schools|Memorial High School|Comprehensive High School|Christian Schools)$', '', fuller_name, flags=re.IGNORECASE)
+                acr_base = "".join(re.findall(r'\b\w', base)).upper()
+                
+                if name in [acr_full, acr_base]:
+                    matches.append(fuller_name)
+            
+            unique_matches = list(set(matches))
+            if len(unique_matches) == 1:
+                return unique_matches[0]
+            # No return if ambiguous; fall back to other rules
 
-        # 1. Manual Mappings take priority (shorthands like GSA, MDI)
+        # 3. Manual Mappings take priority (shorthands like GSA, MDI)
         for key, val in TEAM_MAPPING.items():
             if name.lower().startswith(key.lower()):
                 return val
 
-        # 2. Dynamic Substring Absorption
+        # 4. Dynamic Substring Absorption
         # If this name starts exactly like another, longer team name in the DB, absorb it.
         if all_teams:
             # Sort teams by length descending to find the "fullest" versions first
             for fuller_name in sorted(all_teams, key=len, reverse=True):
                 if len(fuller_name) > len(name) and fuller_name.lower().startswith(name.lower()):
-                    # Avoid over-matching (e.g., Portland should not absorb into South Portland unless it STARTS with it)
-                    # The startswith check handles this safely!
                     return fuller_name
             
         return name
