@@ -356,7 +356,7 @@ function PVCSimulator({ performances, isBetter }) {
         // 3. Hill Climbing with Swap Logic
         let improved = true;
         let loops = 0;
-        const maxLoops = 10;
+        const maxLoops = 20;
 
         while (improved && loops < maxLoops) {
             improved = false;
@@ -383,7 +383,9 @@ function PVCSimulator({ performances, isBetter }) {
                 if (membersAtLimit.length === 0) {
                     const trialLineup = [...currentLineupList, toAdd];
                     const newScore = evaluateLineup(trialLineup);
-                    if (newScore > currentScore + 0.01) {
+
+                    // Accept improvement OR lateral move (different lineup, same score)
+                    if (newScore > currentScore + 0.01 || (Math.abs(newScore - currentScore) < 0.01 && !JSON.stringify(currentLineupList).includes(JSON.stringify(toAdd)))) {
                         currentLineupList = trialLineup;
                         currentScore = newScore;
                         memberCounts = {};
@@ -392,13 +394,9 @@ function PVCSimulator({ performances, isBetter }) {
                         break;
                     }
                 } else {
-                    // SURGICAL SWAP: For each member at limit, try swapping 'toAdd' with ONE of their existing entries
-                    // This is much better than removing all of them!
                     let bestSwapScore = currentScore;
                     let bestSwapLineup = null;
 
-                    // We only support swapping if we can solve the limit problem by removing 1 entry per member-at-limit
-                    // Most commonly just 1 member is at limit (the individual athlete)
                     const conflictingEntries = currentLineupList.filter(e => {
                         const em = getMembers(e);
                         return membersAtLimit.some(m => em.includes(m));
@@ -408,7 +406,6 @@ function PVCSimulator({ performances, isBetter }) {
                         const trialLineup = currentLineupList.filter(e => e !== toRemove);
                         trialLineup.push(toAdd);
 
-                        // Verify members are still within limit
                         const trialCounts = {};
                         let valid = true;
                         trialLineup.forEach(le => {
@@ -420,14 +417,14 @@ function PVCSimulator({ performances, isBetter }) {
 
                         if (valid) {
                             const newScore = evaluateLineup(trialLineup);
-                            if (newScore > bestSwapScore + 0.01) {
+                            if (newScore > bestSwapScore + 0.01 || (Math.abs(newScore - bestSwapScore) < 0.01)) {
                                 bestSwapScore = newScore;
                                 bestSwapLineup = trialLineup;
                             }
                         }
                     }
 
-                    if (bestSwapLineup) {
+                    if (bestSwapLineup && JSON.stringify(bestSwapLineup) !== JSON.stringify(currentLineupList)) {
                         currentLineupList = bestSwapLineup;
                         currentScore = bestSwapScore;
                         memberCounts = {};
@@ -590,68 +587,84 @@ function PVCSimulator({ performances, isBetter }) {
                     // Filter lineups for this gender
                     const isGender = (e) => (gender === 'girls' ? e.event.toLowerCase().includes('girls') : !e.event.toLowerCase().includes('girls'));
 
-                    // Internal helper to stabilize a specific pair of rivals
-                    const stabilizePair = async (teamA, teamB, g, label) => {
-                        let stabilized = false;
-                        let localRounds = 0;
-                        const isG = (e) => (g === 'girls' ? e.event.toLowerCase().includes('girls') : !e.event.toLowerCase().includes('girls'));
+                    // Optimization Loop
+                    const maxRounds = 20;
+                    let stable = false;
 
-                        while (!stabilized && localRounds < 3) {
-                            localRounds++;
-                            let changed = false;
+                    for (let round = 1; round <= maxRounds; round++) {
+                        if (stable) break;
+                        let roundChanges = 0;
 
-                            // Take turns optimizing against each other
-                            for (const team of [teamA, teamB]) {
-                                const opponents = { ...currentLineups };
-                                const res = await optimizeTeamStrategy({
-                                    teamName: team,
-                                    gender: g,
-                                    progressStart: 0,
-                                    progressRange: 0,
-                                    fixedOpponentLineups: opponents
-                                });
+                        const getSortedTeams = () => {
+                            const scores = getScores(currentLineups);
+                            return Object.entries(scores)
+                                .sort((a, b) => b[1] - a[1])
+                                .map(x => ({ name: x[0], score: x[1] }));
+                        };
 
-                                const newGenderEntries = res.entries;
-                                const otherGenderEntries = currentLineups[team].filter(e => !isG(e));
+                        let contenders = getSortedTeams().slice(0, 8);
+                        if (!contenders.find(c => c.name === targetTeam)) {
+                            const res = getScores(currentLineups);
+                            contenders.push({ name: targetTeam, score: res[targetTeam] || 0 });
+                        }
 
-                                const oldDef = JSON.stringify(currentLineups[team].filter(isG).map(e => (e.event + e.athlete_id)).sort());
-                                const newDef = JSON.stringify(newGenderEntries.map(e => (e.event + e.athlete_id)).sort());
+                        // CONTENDER DUEL: If top 2 are close, make them go back and forth specifically
+                        if (contenders.length >= 2 && Math.abs(contenders[0].score - contenders[1].score) < 15) {
+                            const teamA = contenders[0].name;
+                            const teamB = contenders[1].name;
 
-                                if (oldDef !== newDef) {
-                                    currentLineups[team] = [...otherGenderEntries, ...newGenderEntries];
-                                    changed = true;
-                                    log.push(`[${g.toUpperCase()} ${label}] ${team} adjusted to counter rival.`);
+                            for (let duel = 0; duel < 2; duel++) { // small sub-duel
+                                for (const team of [teamA, teamB]) {
+                                    const opponents = { ...currentLineups };
+                                    const oldScore = getScores(currentLineups)[team] || 0;
+                                    const res = await optimizeTeamStrategy({
+                                        teamName: team, gender, progressStart: 0, progressRange: 0, fixedOpponentLineups: opponents
+                                    });
+                                    const oldDef = JSON.stringify(currentLineups[team].filter(isGender).map(e => (e.event + e.athlete_id)).sort());
+                                    const newDef = JSON.stringify(res.entries.map(e => (e.event + e.athlete_id)).sort());
+
+                                    if (oldDef !== newDef) {
+                                        const otherGenderEntries = currentLineups[team].filter(e => !isGender(e));
+                                        currentLineups[team] = [...otherGenderEntries, ...res.entries];
+                                        const newScore = getScores(currentLineups)[team] || 0;
+                                        if (newScore > oldScore + 0.1) {
+                                            log.push(`[${gender.toUpperCase()} Round ${round}] ${team} Adjusted (Duel). Score: ${oldScore.toFixed(1)} -> ${newScore.toFixed(1)}`);
+                                            roundChanges++;
+                                        }
+                                    }
                                 }
                             }
-                            if (!changed) stabilized = true;
                         }
-                    };
 
-                    // Initial ranking based on greedy setup
-                    const initialScores = getScores(currentLineups);
-                    const rankedTeams = Object.entries(initialScores)
-                        .sort((a, b) => b[1] - a[1])
-                        .map(x => x[0])
-                        .slice(0, 8); // Focus on top 8 for the tactical staircase
+                        // Normal Round for everyone else
+                        for (const teamObj of contenders) {
+                            const team = teamObj.name;
+                            const opponents = { ...currentLineups };
+                            const oldScore = getScores(currentLineups)[team] || 0;
+                            const res = await optimizeTeamStrategy({
+                                teamName: team, gender, progressStart: 0, progressRange: 0, fixedOpponentLineups: opponents
+                            });
 
-                    // 1. Staircase Ladder Optimization
-                    // Row 1: 1-2
-                    // Row 2: 2-3, 1-2
-                    // Row 3: 3-4, 2-3, 1-2 ...
-                    for (let n = 1; n < rankedTeams.length; n++) {
-                        log.push(`[${gender.toUpperCase()}] Starting Tier ${n + 1} Stabilization Staircase...`);
-                        for (let k = n; k >= 1; k--) {
-                            const team1 = rankedTeams[k - 1];
-                            const team2 = rankedTeams[k];
-                            await stabilizePair(team1, team2, gender, `Tier ${n + 1}`);
+                            const oldDef = JSON.stringify(currentLineups[team].filter(isGender).map(e => (e.event + e.athlete_id)).sort());
+                            const newDef = JSON.stringify(res.entries.map(e => (e.event + e.athlete_id)).sort());
 
-                            // Update progress a bit
-                            setSimProgress(Math.min(95, simProgress + 1));
+                            if (oldDef !== newDef) {
+                                const otherGenderEntries = currentLineups[team].filter(e => !isGender(e));
+                                currentLineups[team] = [...otherGenderEntries, ...res.entries];
+                                const newScore = getScores(currentLineups)[team] || 0;
+                                if (newScore > oldScore + 0.1) {
+                                    log.push(`[${gender.toUpperCase()} Round ${round}] ${team} Adjusted Strategy. Score: ${oldScore.toFixed(1)} -> ${newScore.toFixed(1)}`);
+                                    roundChanges++;
+                                }
+                            }
                             await new Promise(r => setTimeout(r, 0));
                         }
-                    }
 
-                    log.push(`[${gender.toUpperCase()}] Staircase Complete. System stabilized.`);
+                        if (roundChanges === 0) {
+                            log.push(`[${gender.toUpperCase()} Round ${round}] No further improvements found. Equilibrium established.`);
+                            stable = true;
+                        }
+                    }
 
                     // Final Stats for Target Team
                     const finalRes = await optimizeTeamStrategy({
