@@ -590,51 +590,68 @@ function PVCSimulator({ performances, isBetter }) {
                     // Filter lineups for this gender
                     const isGender = (e) => (gender === 'girls' ? e.event.toLowerCase().includes('girls') : !e.event.toLowerCase().includes('girls'));
 
-                    // Optimization Loop
-                    const maxRounds = 10;
-                    let stable = false;
+                    // Internal helper to stabilize a specific pair of rivals
+                    const stabilizePair = async (teamA, teamB, g, label) => {
+                        let stabilized = false;
+                        let localRounds = 0;
+                        const isG = (e) => (g === 'girls' ? e.event.toLowerCase().includes('girls') : !e.event.toLowerCase().includes('girls'));
 
-                    for (let round = 1; round <= maxRounds; round++) {
-                        if (stable) break;
-                        let changes = 0;
-                        const roundScores = getScores(currentLineups);
-                        const rankedTeams = Object.entries(roundScores)
-                            .sort((a, b) => b[1] - a[1]) // Sort desc
-                            .map(x => x[0]);
+                        while (!stabilized && localRounds < 3) {
+                            localRounds++;
+                            let changed = false;
 
-                        // Increase to Top 8 to ensure more competition coverage
-                        const activeTeams = rankedTeams.slice(0, 8);
-                        if (!activeTeams.includes(targetTeam)) activeTeams.push(targetTeam);
+                            // Take turns optimizing against each other
+                            for (const team of [teamA, teamB]) {
+                                const opponents = { ...currentLineups };
+                                const res = await optimizeTeamStrategy({
+                                    teamName: team,
+                                    gender: g,
+                                    progressStart: 0,
+                                    progressRange: 0,
+                                    fixedOpponentLineups: opponents
+                                });
 
-                        for (const team of activeTeams) {
-                            const opponents = { ...currentLineups };
-                            const res = await optimizeTeamStrategy({
-                                teamName: team,
-                                gender: gender,
-                                progressStart: 0,
-                                progressRange: 0,
-                                fixedOpponentLineups: opponents
-                            });
+                                const newGenderEntries = res.entries;
+                                const otherGenderEntries = currentLineups[team].filter(e => !isG(e));
 
-                            const newGenderEntries = res.entries;
-                            const otherGenderEntries = currentLineups[team].filter(e => !isGender(e));
-                            const combined = [...otherGenderEntries, ...newGenderEntries];
+                                const oldDef = JSON.stringify(currentLineups[team].filter(isG).map(e => (e.event + e.athlete_id)).sort());
+                                const newDef = JSON.stringify(newGenderEntries.map(e => (e.event + e.athlete_id)).sort());
 
-                            const oldDef = JSON.stringify(currentLineups[team].filter(isGender).map(e => (e.event + e.athlete_id)).sort());
-                            const newDef = JSON.stringify(newGenderEntries.map(e => (e.event + e.athlete_id)).sort());
-
-                            if (oldDef !== newDef) {
-                                changes++;
-                                log.push(`[${gender.toUpperCase()} Round ${round}] ${team} Adjusted Strategy.`);
-                                currentLineups[team] = combined;
+                                if (oldDef !== newDef) {
+                                    currentLineups[team] = [...otherGenderEntries, ...newGenderEntries];
+                                    changed = true;
+                                    log.push(`[${g.toUpperCase()} ${label}] ${team} adjusted to counter rival.`);
+                                }
                             }
+                            if (!changed) stabilized = true;
                         }
+                    };
 
-                        if (changes === 0) {
-                            log.push(`[${gender.toUpperCase()} Round ${round}] No further improvements found. Equilibrium established.`);
-                            stable = true;
+                    // Initial ranking based on greedy setup
+                    const initialScores = getScores(currentLineups);
+                    const rankedTeams = Object.entries(initialScores)
+                        .sort((a, b) => b[1] - a[1])
+                        .map(x => x[0])
+                        .slice(0, 8); // Focus on top 8 for the tactical staircase
+
+                    // 1. Staircase Ladder Optimization
+                    // Row 1: 1-2
+                    // Row 2: 2-3, 1-2
+                    // Row 3: 3-4, 2-3, 1-2 ...
+                    for (let n = 1; n < rankedTeams.length; n++) {
+                        log.push(`[${gender.toUpperCase()}] Starting Tier ${n + 1} Stabilization Staircase...`);
+                        for (let k = n; k >= 1; k--) {
+                            const team1 = rankedTeams[k - 1];
+                            const team2 = rankedTeams[k];
+                            await stabilizePair(team1, team2, gender, `Tier ${n + 1}`);
+
+                            // Update progress a bit
+                            setSimProgress(Math.min(95, simProgress + 1));
+                            await new Promise(r => setTimeout(r, 0));
                         }
                     }
+
+                    log.push(`[${gender.toUpperCase()}] Staircase Complete. System stabilized.`);
 
                     // Final Stats for Target Team
                     const finalRes = await optimizeTeamStrategy({
