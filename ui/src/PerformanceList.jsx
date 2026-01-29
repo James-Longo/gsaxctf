@@ -381,32 +381,55 @@ function PVCSimulator({ performances, isBetter }) {
                 const membersAtLimit = members.filter(m => (memberCounts[m] || 0) >= EVENT_LIMIT);
 
                 if (membersAtLimit.length === 0) {
-                    // Just add it if no one is at limit (shouldn't happen with greedy start but possible after removals)
                     const trialLineup = [...currentLineupList, toAdd];
                     const newScore = evaluateLineup(trialLineup);
                     if (newScore > currentScore + 0.01) {
                         currentLineupList = trialLineup;
                         currentScore = newScore;
-                        memberCounts = {}; // Recalculate later or update in place
+                        memberCounts = {};
                         currentLineupList.forEach(le => getMembers(le).forEach(m => memberCounts[m] = (memberCounts[m] || 0) + 1));
                         improved = true;
                         break;
                     }
                 } else {
-                    // For each member at limit, try removing each of their existing events
-                    // This is still complex. Let's try a simple 1-for-1 swap if only 1 member is involved,
-                    // or remove ALL conflicting for 1 if score improves.
+                    // SURGICAL SWAP: For each member at limit, try swapping 'toAdd' with ONE of their existing entries
+                    // This is much better than removing all of them!
+                    let bestSwapScore = currentScore;
+                    let bestSwapLineup = null;
 
-                    const trialLineup = currentLineupList.filter(e => {
+                    // We only support swapping if we can solve the limit problem by removing 1 entry per member-at-limit
+                    // Most commonly just 1 member is at limit (the individual athlete)
+                    const conflictingEntries = currentLineupList.filter(e => {
                         const em = getMembers(e);
-                        return !membersAtLimit.some(m => em.includes(m));
+                        return membersAtLimit.some(m => em.includes(m));
                     });
-                    trialLineup.push(toAdd);
 
-                    const newScore = evaluateLineup(trialLineup);
-                    if (newScore > currentScore + 0.01) {
-                        currentLineupList = trialLineup;
-                        currentScore = newScore;
+                    for (const toRemove of conflictingEntries) {
+                        const trialLineup = currentLineupList.filter(e => e !== toRemove);
+                        trialLineup.push(toAdd);
+
+                        // Verify members are still within limit
+                        const trialCounts = {};
+                        let valid = true;
+                        trialLineup.forEach(le => {
+                            getMembers(le).forEach(m => {
+                                trialCounts[m] = (trialCounts[m] || 0) + 1;
+                                if (trialCounts[m] > EVENT_LIMIT) valid = false;
+                            });
+                        });
+
+                        if (valid) {
+                            const newScore = evaluateLineup(trialLineup);
+                            if (newScore > bestSwapScore + 0.01) {
+                                bestSwapScore = newScore;
+                                bestSwapLineup = trialLineup;
+                            }
+                        }
+                    }
+
+                    if (bestSwapLineup) {
+                        currentLineupList = bestSwapLineup;
+                        currentScore = bestSwapScore;
                         memberCounts = {};
                         currentLineupList.forEach(le => getMembers(le).forEach(m => memberCounts[m] = (memberCounts[m] || 0) + 1));
                         improved = true;
@@ -579,14 +602,12 @@ function PVCSimulator({ performances, isBetter }) {
                             .sort((a, b) => b[1] - a[1]) // Sort desc
                             .map(x => x[0]);
 
-                        // Limit to top teams effectively battling for positions (Top 3 + Target if strictly needed)
-                        // For speed, let's do top 4
-                        const activeTeams = rankedTeams.slice(0, 4);
+                        // Increase to Top 8 to ensure more competition coverage
+                        const activeTeams = rankedTeams.slice(0, 8);
                         if (!activeTeams.includes(targetTeam)) activeTeams.push(targetTeam);
 
                         for (const team of activeTeams) {
                             const opponents = { ...currentLineups };
-                            // Optimization logic needs other teams' lineups fixed
                             const res = await optimizeTeamStrategy({
                                 teamName: team,
                                 gender: gender,
@@ -599,21 +620,20 @@ function PVCSimulator({ performances, isBetter }) {
                             const otherGenderEntries = currentLineups[team].filter(e => !isGender(e));
                             const combined = [...otherGenderEntries, ...newGenderEntries];
 
-                            // Check for change
-                            const oldDef = JSON.stringify(currentLineups[team].filter(isGender).map(e => e.id).sort());
-                            const newDef = JSON.stringify(newGenderEntries.map(e => e.id).sort());
+                            const oldDef = JSON.stringify(currentLineups[team].filter(isGender).map(e => (e.event + e.athlete_id)).sort());
+                            const newDef = JSON.stringify(newGenderEntries.map(e => (e.event + e.athlete_id)).sort());
 
                             if (oldDef !== newDef) {
                                 changes++;
-                                log.push(`[${gender.toUpperCase()} Round ${round}] ${team} adjusted strategy.`);
+                                log.push(`[${gender.toUpperCase()} Round ${round}] ${team} Adjusted Strategy.`);
                                 currentLineups[team] = combined;
                             }
-
-                            // Update progress per team step to keep UI alive
-                            await new Promise(r => setTimeout(r, 0));
                         }
 
-                        if (changes === 0) stable = true;
+                        if (changes === 0) {
+                            log.push(`[${gender.toUpperCase()} Round ${round}] No further improvements found. Equilibrium established.`);
+                            stable = true;
+                        }
                     }
 
                     // Final Stats for Target Team
