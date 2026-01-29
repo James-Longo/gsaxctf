@@ -94,6 +94,42 @@ TEAM_MAPPING = {
     "Skowhegan": "Skowhegan Area High School",
     "Erskine Acad": "Erskine Academy",
     "Erskine": "Erskine Academy",
+    "Biddeford High": "Biddeford High School",
+    "Biddeford Hi": "Biddeford High School",
+    "Biddeford": "Biddeford High School",
+    "Bonny Eagle High": "Bonny Eagle High School",
+    "Bonny Eagle": "Bonny Eagle High School",
+    "Cape Elizabeth High": "Cape Elizabeth High School",
+    "Cape Elizabe": "Cape Elizabeth High School",
+    "Cape Elizabeth": "Cape Elizabeth High School",
+    "Cheverus High": "Cheverus High School",
+    "Cheverus Hig": "Cheverus High School",
+    "Cheverus": "Cheverus High School",
+    "Deering High": "Deering High School",
+    "Deering Hig": "Deering High School",
+    "Deering": "Deering High School",
+    "Falmouth High": "Falmouth High School",
+    "Falmouth Hig": "Falmouth High School",
+    "Falmouth": "Falmouth High School",
+    "Freeport High": "Freeport High School",
+    "Freeport Hig": "Freeport High School",
+    "Freeport": "Freeport High School",
+    "Fryeburg Acad": "Fryeburg Academy",
+    "Gorham High": "Gorham High School",
+    "Greely High": "Greely High School",
+    "Kennebunk High": "Kennebunk High School",
+    "Lewiston High": "Lewiston High School",
+    "Marshwood High": "Marshwood High School",
+    "Noble High": "Noble High School",
+    "Oceanside High": "Oceanside High School",
+    "Portland High": "Portland High School",
+    "Scarborough High": "Scarborough High School",
+    "Scarborough": "Scarborough High School",
+    "South Portland High": "South Portland High School",
+    "Thornton Acad": "Thornton Academy",
+    "Windham High": "Windham High School",
+    "Yarmouth High": "Yarmouth High School",
+    "York High": "York High School",
 }
 
 try:
@@ -184,9 +220,31 @@ class Sub5Scraper:
         if not name: return "Unknown"
         name = name.strip()
         name = re.sub(r'\s+J[\d\.\-\':]+.*', '', name)
+        
+        # 1. Check direct mapping (starts with) which handles most cases
         for key, val in TEAM_MAPPING.items():
             if name.lower().startswith(key.lower()):
                 return val
+        
+        # 2. Substring absorption rule:
+        # If the input name is a case-insensitive substring of a known canonical name, absorb it.
+        # We only do this if there's exactly one canonical name that contains it, 
+        # or if one is the "best" match to avoid ambiguous merges (like "Bangor").
+        canonical_names = sorted(list(set(TEAM_MAPPING.values())), key=len, reverse=True)
+        potential_matches = [c for c in canonical_names if name.lower() in c.lower()]
+        
+        if potential_matches:
+            # We filter for matches that actually look like a "fuller" version of the name
+            # e.g., "York" should match "York High School"
+            # But "Bangor" shouldn't necessarily match "Bangor Christian Schools" unless it's a clear substring match of the start
+            for match in potential_matches:
+                if match.lower().startswith(name.lower()):
+                    return match
+            
+            # Fallback to the first match if it's very clear (e.g. if the name is a significant part of the canonical)
+            if len(name) > 4:
+                return potential_matches[0]
+            
         return name
 
     def normalize_athlete_name(self, name):
