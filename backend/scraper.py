@@ -225,13 +225,24 @@ class Sub5Scraper:
         name = name.strip()
         
         # Pre-process: strip common prefixes
-        # (Case-insensitive removal of "M " and "JR ")
-        name = re.sub(r'^(M|JR)\s+', '', name, flags=re.IGNORECASE)
+        # (Case-insensitive removal of "M ", "JR ", and "W ")
+        name = re.sub(r'^(M|JR|W)\s+', '', name, flags=re.IGNORECASE)
         
         # Clean up any suffix artifacts
         name = re.sub(r'\s+J[\d\.\-\':]+.*', '', name)
         
         name = name.strip()
+        
+        # 0. Custom manual abbreviations
+        manual_overrides = {
+            "PHCS": "Piscataquis Community High School",
+            "PCHS": "Piscataquis Community High School",
+            "SMC": "Southern Maine Catholic"
+        }
+        if name.upper() in manual_overrides:
+            return manual_overrides[name.upper()]
+
+        # 1. Manual Mappings take priority (shorthands like GSA, MDI)
         for key, val in TEAM_MAPPING.items():
             if name.lower().startswith(key.lower()):
                 return val
