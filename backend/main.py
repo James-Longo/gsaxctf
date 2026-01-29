@@ -10,9 +10,11 @@ import re
 try:
     from backend.scraper import Sub5Scraper
     from backend.simulator import TrackSimulator
+    from backend.nash_engine import run_simulation, get_team_dataset, MeetRules
 except ImportError:
     from scraper import Sub5Scraper
     from simulator import TrackSimulator
+    from nash_engine import run_simulation, get_team_dataset, MeetRules
 
 app = FastAPI()
 
@@ -300,6 +302,48 @@ def simulate_pvc(team: str, season: str, year: Optional[str] = None, iterations:
         sim = TrackSimulator(DB_PATH)
         result = sim.optimize_team(team, season, year, iterations=iterations, scenarios=scenarios)
         return result
+    except Exception as e:
+        import traceback
+        traceback.print_exc()
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.get("/simulate-nash")
+def simulate_nash(team_a: str, team_b: str, season: str, year: str):
+    try:
+        data_a = get_team_dataset(DB_PATH, team_a, season, year)
+        data_b = get_team_dataset(DB_PATH, team_b, season, year)
+        
+        if not data_a or not data_b:
+            raise HTTPException(status_code=404, detail="Data not found for one or both teams")
+            
+        # Common events for simulation
+        events = [
+            "Boys 55 Meter Dash", "Boys 200 Meter Dash", "Boys 400 Meter Dash",
+            "Boys 800 Meter Run", "Boys 1 Mile Run", "Boys 2 Mile Run",
+            "Boys 55 Meter Hurdles", "Boys 4x200 Meter Relay", "Boys 4x800 Meter Relay",
+            "Boys High Jump", "Boys Long Jump", "Boys Triple Jump", "Boys Shot Put", "Boys Pole Vault",
+            "Girls 55 Meter Dash", "Girls 200 Meter Dash", "Girls 400 Meter Dash",
+            "Girls 800 Meter Run", "Girls 1 Mile Run", "Girls 2 Mile Run",
+            "Girls 55 Meter Hurdles", "Girls 4x200 Meter Relay", "Girls 4x800 Meter Relay",
+            "Girls High Jump", "Girls Long Jump", "Girls Triple Jump", "Girls Shot Put", "Girls Pole Vault"
+        ]
+        
+        rules = MeetRules(max_events_per_athlete=3)
+        result = run_simulation(data_a, data_b, events, rules)
+        
+        if isinstance(result, tuple) and len(result) == 2:
+            roster_a, roster_b = result
+            return {
+                "team_a": {"name": team_a, "roster": roster_a},
+                "team_b": {"name": team_b, "roster": roster_b},
+                "status": "Pure Nash Equilibrium"
+            }
+        else:
+            return {
+                "cycle": result,
+                "status": "Cycle / Mixed Strategy"
+            }
+            
     except Exception as e:
         import traceback
         traceback.print_exc()
