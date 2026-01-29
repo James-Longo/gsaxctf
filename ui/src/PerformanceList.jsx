@@ -210,9 +210,35 @@ function PVCSimulator({ performances, isBetter }) {
         const scores = {};
         Object.entries(eventGroups).forEach(([event, entries]) => {
             entries.sort((a, b) => isBetter(a.mark, b.mark) ? -1 : isBetter(b.mark, a.mark) ? 1 : 0);
-            for (let i = 0; i < Math.min(entries.length, SCORING_RULES.length); i++) {
-                const team = entries[i].pvcTeam;
-                scores[team] = (scores[team] || 0) + SCORING_RULES[i];
+
+            let scoringIndex = 0;
+            const teamRelayCount = {};
+            const teamIndivCount = {};
+            const isRelayEvent = event.toLowerCase().includes('relay') || event.toLowerCase().includes('4x');
+
+            for (let i = 0; i < entries.length; i++) {
+                if (scoringIndex >= SCORING_RULES.length) break;
+
+                const entry = entries[i];
+                const team = entry.pvcTeam;
+
+                let canScore = false;
+                if (isRelayEvent) {
+                    if ((teamRelayCount[team] || 0) < 1) {
+                        canScore = true;
+                        teamRelayCount[team] = (teamRelayCount[team] || 0) + 1;
+                    }
+                } else {
+                    if ((teamIndivCount[team] || 0) < 3) {
+                        canScore = true;
+                        teamIndivCount[team] = (teamIndivCount[team] || 0) + 1;
+                    }
+                }
+
+                if (canScore) {
+                    scores[team] = (scores[team] || 0) + SCORING_RULES[scoringIndex];
+                    scoringIndex++;
+                }
             }
         });
         return scores;
@@ -384,7 +410,6 @@ function PVCSimulator({ performances, isBetter }) {
                     const trialLineup = [...currentLineupList, toAdd];
                     const newScore = evaluateLineup(trialLineup);
 
-                    // Accept improvement OR lateral move (different lineup, same score)
                     if (newScore > currentScore + 0.01 || (Math.abs(newScore - currentScore) < 0.01 && !JSON.stringify(currentLineupList).includes(JSON.stringify(toAdd)))) {
                         currentLineupList = trialLineup;
                         currentScore = newScore;
@@ -397,11 +422,13 @@ function PVCSimulator({ performances, isBetter }) {
                     let bestSwapScore = currentScore;
                     let bestSwapLineup = null;
 
+                    const normToAddMembers = membersAtLimit.map(m => m.toLowerCase().trim());
                     const conflictingEntries = currentLineupList.filter(e => {
-                        const em = getMembers(e);
-                        return membersAtLimit.some(m => em.includes(m));
+                        const em = getMembers(e).map(m => m.toLowerCase().trim());
+                        return normToAddMembers.some(m => em.includes(m));
                     });
 
+                    // 1-for-1 swaps
                     for (const toRemove of conflictingEntries) {
                         const trialLineup = currentLineupList.filter(e => e !== toRemove);
                         trialLineup.push(toAdd);
@@ -410,17 +437,29 @@ function PVCSimulator({ performances, isBetter }) {
                         let valid = true;
                         trialLineup.forEach(le => {
                             getMembers(le).forEach(m => {
-                                trialCounts[m] = (trialCounts[m] || 0) + 1;
-                                if (trialCounts[m] > EVENT_LIMIT) valid = false;
+                                const nm = m.toLowerCase().trim();
+                                trialCounts[nm] = (trialCounts[nm] || 0) + 1;
+                                if (trialCounts[nm] > EVENT_LIMIT) valid = false;
                             });
                         });
 
                         if (valid) {
                             const newScore = evaluateLineup(trialLineup);
-                            if (newScore > bestSwapScore + 0.01 || (Math.abs(newScore - bestSwapScore) < 0.01)) {
+                            if (newScore > bestSwapScore + 0.01 || Math.abs(newScore - bestSwapScore) < 0.01) {
                                 bestSwapScore = newScore;
                                 bestSwapLineup = trialLineup;
                             }
+                        }
+                    }
+
+                    // Multi-swap (Remove all conflicts)
+                    if (conflictingEntries.length > 1) {
+                        const trialLineup = currentLineupList.filter(e => !conflictingEntries.includes(e));
+                        trialLineup.push(toAdd);
+                        const newScore = evaluateLineup(trialLineup);
+                        if (newScore > bestSwapScore + 0.01) {
+                            bestSwapScore = newScore;
+                            bestSwapLineup = trialLineup;
                         }
                     }
 
