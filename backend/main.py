@@ -113,6 +113,74 @@ def get_all_performances(team: Optional[str] = None):
     performances = conn.execute(query, params).fetchall()
     conn.close()
     return [dict(ix) for ix in performances]
+    
+@app.get("/export/performances")
+def export_performances(team: Optional[str] = None, year: Optional[str] = None, season: Optional[str] = None, event: Optional[str] = None, meet: Optional[str] = None):
+    import csv
+    import io
+    from fastapi.responses import StreamingResponse
+
+    conn = get_db_connection()
+    query = '''
+        SELECT athletes.name as athlete_name, performances.event, performances.mark, performances.team, performances.date, performances.meet_name, performances.season, performances.year
+        FROM performances 
+        JOIN athletes ON performances.athlete_id = athletes.id 
+        WHERE 1=1
+    '''
+    params = []
+    if team and team != 'All':
+        query += ' AND performances.team = ?'
+        params.append(team)
+    if year and year != 'All':
+        query += ' AND performances.year = ?'
+        params.append(year)
+    if season and season != 'All':
+        query += ' AND performances.season = ?'
+        params.append(season)
+    if event and event != 'All':
+        query += ' AND performances.event = ?'
+        params.append(event)
+    if meet and meet != 'All':
+        # UI passes "Meet Name (Year)", but DB has meet_name separate. 
+        # However, looking at App.jsx, meetWithYear is derived.
+        # Let's check how filterMeet is used in App.jsx.
+        # Inside App.jsx: matches(p, { meet: filterMeet }) -> p.meetWithYear === meet
+        # So we should probably match meet_name if meet is provided.
+        # Wait, if meet includes the year in parentheses, we might need to strip it or handle it.
+        if "(" in meet and meet.endswith(")"):
+            m_name = meet.rsplit(" (", 1)[0]
+            query += ' AND performances.meet_name = ?'
+            params.append(m_name)
+        else:
+            query += ' AND performances.meet_name = ?'
+            params.append(meet)
+
+    query += ' ORDER BY date DESC'
+    performances = conn.execute(query, params).fetchall()
+    conn.close()
+
+    output = io.StringIO()
+    writer = csv.writer(output)
+    writer.writerow(['Athlete', 'Event', 'Result', 'Team', 'Date', 'Meet', 'Season', 'Year'])
+    
+    for p in performances:
+        writer.writerow([
+            p['athlete_name'],
+            p['event'],
+            p['mark'],
+            p['team'],
+            p['date'],
+            p['meet_name'],
+            p['season'],
+            p['year']
+        ])
+    
+    output.seek(0)
+    return StreamingResponse(
+        iter([output.getvalue()]),
+        media_type="text/csv",
+        headers={"Content-Disposition": "attachment; filename=performances.csv"}
+    )
 
 class PerformanceListRequest(BaseModel):
     url: str

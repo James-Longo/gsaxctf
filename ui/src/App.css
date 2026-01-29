@@ -169,6 +169,31 @@ h1 {
   box-shadow: 0 0 0 1px #800000;
 }
 
+.download-btn {
+  padding: 8px 16px;
+  background-color: #38a169;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-weight: 600;
+  font-size: 0.875rem;
+  cursor: pointer;
+  height: 38px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: background-color 0.2s, transform 0.1s;
+  align-self: flex-end;
+}
+
+.download-btn:hover {
+  background-color: #2f855a;
+}
+
+.download-btn:active {
+  transform: translateY(1px);
+}
+
 .table-container {
   overflow-x: auto;
 }

@@ -144,6 +144,18 @@ function App() {
     setExpandedSplits(new Set())
   }, [selectedAthlete, selectedTeam])
 
+  const handleDownloadCsv = () => {
+    const params = new URLSearchParams()
+    if (selectedTeam !== 'All') params.append('team', selectedTeam)
+    if (filterYear !== 'All') params.append('year', filterYear)
+    if (filterSeasonType !== 'All') params.append('season', filterSeasonType)
+    if (filterEvent !== 'All') params.append('event', filterEvent)
+    if (filterMeet !== 'All') params.append('meet', filterMeet)
+
+    const url = `http://localhost:8000/export/performances?${params.toString()}`
+    window.location.href = url
+  }
+
 
   // Extract metadata and unique filter values
   const { filteredPerformances, years, seasonTypes, events, meets } = useMemo(() => {
@@ -531,6 +543,12 @@ function App() {
                           <span className="slider round"></span>
                         </label>
                         <span className="toggle-label">PRs Only</span>
+                      </div>
+
+                      <div className="filter-group">
+                        <button className="download-btn" onClick={handleDownloadCsv}>
+                          📥 Download CSV
+                        </button>
                       </div>
                     </>
                   )}
