@@ -2,7 +2,7 @@ import sqlite3
 import re
 from collections import defaultdict
 
-# Attempt to import PuLP, fallback to a robust greedy solver if not available
+# Attempt to import PuLP, fallback to a robust hill-climber
 try:
     import pulp
     PULP_AVAILABLE = True
@@ -77,10 +77,6 @@ def get_event_points(marks, event, scoring_table, scoring_limit=3):
     return team_points
 
 def calculate_net_value_matrix(my_team, opponent_roster, scoring_table):
-    """
-    my_team: list of {athlete_id, athlete_name, best_marks, is_relay_athlete}
-    opponent_roster: {event: [(mark, team_id)]}
-    """
     coeffs = {}
     events = set(opponent_roster.keys())
     for ath in my_team:
@@ -96,8 +92,6 @@ def calculate_net_value_matrix(my_team, opponent_roster, scoring_table):
         opp_total_initial = sum(v for k, v in initial_scores.items() if k != 'MY_TEAM')
         
         if is_relay:
-            # For relays, we calculate a single team value and distribute it
-            # Find the best relay mark for my team
             relay_marks = [parse_mark(ath['best_marks'][event]) for ath in my_team if event in ath['best_marks']]
             if not relay_marks: continue
             best_r_mark = min(relay_marks) if is_time else max(relay_marks)
@@ -108,8 +102,6 @@ def calculate_net_value_matrix(my_team, opponent_roster, scoring_table):
             p_scored = new_scores.get('MY_TEAM', 0)
             opp_total_after = sum(v for k, v in new_scores.items() if k != 'MY_TEAM')
             v_relay = p_scored + (opp_total_initial - opp_total_after)
-            
-            # Distribute to all athletes who *could* run it
             for ath in my_team:
                 coeffs[(ath['athlete_id'], event)] = v_relay / 4.0
         else:
@@ -120,7 +112,6 @@ def calculate_net_value_matrix(my_team, opponent_roster, scoring_table):
                 
                 new_marks = sorted(opp_marks_sorted + [(my_mark, 'MY_TEAM')], key=lambda x: x[0], reverse=not is_time)
                 new_scores = get_event_points(new_marks, event, scoring_table)
-                
                 p_scored = new_scores.get('MY_TEAM', 0)
                 opp_total_after = sum(v for k, v in new_scores.items() if k != 'MY_TEAM')
                 coeffs[(ath['athlete_id'], event)] = p_scored + (opp_total_initial - opp_total_after)
@@ -128,75 +119,99 @@ def calculate_net_value_matrix(my_team, opponent_roster, scoring_table):
     return coeffs
 
 def solve_optimal_roster(my_team, events, coeffs, rules):
-    if not PULP_AVAILABLE:
-        # Robust Greedy Fallback
-        selected = []
-        usage = defaultdict(int)
-        event_counts = defaultdict(int)
-        
-        potential = sorted(coeffs.items(), key=lambda x: x[1], reverse=True)
-        
-        for (aid, ev), val in potential:
-            if val <= 0: continue
-            is_relay = 'relay' in ev.lower() or '4x' in ev.lower()
-            relay_limit = 1 if is_relay else 100 # Unlimited individual as per user
-            
-            # Limit check
-            if usage[aid] < rules.max_events_per_athlete:
-                if is_relay:
-                    # Check if we can still add to this relay (max 4)
-                    current_relay_count = sum(1 for ra, re in selected if re == ev)
-                    if current_relay_count < 4:
-                        selected.append((aid, ev))
-                        usage[aid] += 1
-                else:
-                    selected.append((aid, ev))
-                    usage[aid] += 1
-        
-        new_roster = defaultdict(list)
-        for aid, ev in selected:
-            new_roster[ev].append(aid)
-        return dict(new_roster)
-    else:
-        prob = pulp.LpProblem("Optimal_Roster", pulp.LpMaximize)
-        x = {}
-        for ath in my_team:
-            aid = ath['athlete_id']
-            for ev in events:
-                if (aid, ev) in coeffs:
-                    x[(aid, ev)] = pulp.LpVariable(f"x_{aid}_{ev.replace(' ', '_')}_{hash(aid)%1000}", cat='Binary')
-        
-        prob += pulp.lpSum(coeffs[(aid, ev)] * x[(aid, ev)] for (aid, ev) in x)
-        
-        # Constraints
-        for ath in my_team:
-            aid = ath['athlete_id']
-            ath_vars = [x[(aid, ev)] for ev in events if (aid, ev) in x]
-            if ath_vars:
-                prob += pulp.lpSum(ath_vars) <= rules.max_events_per_athlete
-        
-        for ev in events:
-            is_relay = 'relay' in ev.lower() or '4x' in ev.lower()
+    # --- Hill-Climbing Strategy ---
+    # Start with an empty roster or some baseline
+    # Repeatedly attempt to improve by adding or swapping events
+    
+    current_roster = defaultdict(list)
+    usage = defaultdict(int)
+    
+    def get_total_val(roster):
+        total = 0
+        for ev, aids in roster.items():
+            for aid in aids:
+                total += coeffs.get((aid, ev), 0)
+        return total
+
+    # Initial Greedy Pass
+    potential = sorted(coeffs.items(), key=lambda x: x[1], reverse=True)
+    for (aid, ev), val in potential:
+        if val <= 0.01: continue # Ignore non-scoring
+        is_relay = 'relay' in ev.lower() or '4x' in ev.lower()
+        if usage[aid] < rules.max_events_per_athlete:
             if is_relay:
-                ev_vars = [x[(aid, ev)] for ath in my_team if (ath['athlete_id'], ev) in x]
-                if ev_vars:
-                    prob += pulp.lpSum(ev_vars) <= 4
+                if len(current_roster[ev]) < 4:
+                    current_roster[ev].append(aid)
+                    usage[aid] += 1
+            else:
+                current_roster[ev].append(aid)
+                usage[aid] += 1
+
+    # Hill-Climbing Swaps
+    improved = True
+    while improved:
+        improved = False
+        current_val = get_total_val(current_roster)
         
-        prob.solve(pulp.PULP_CBC_CMD(msg=0))
-        new_roster = defaultdict(list)
-        for (aid, ev) in x:
-            if pulp.value(x[(aid, ev)]) and pulp.value(x[(aid, ev)]) > 0.5:
-                new_roster[ev].append(aid)
-        return dict(new_roster)
+        # 1. Try adding something new (if possible)
+        for (aid, ev), val in coeffs.items():
+            if val <= 0.01: continue
+            if aid in current_roster[ev]: continue
+            
+            is_relay = 'relay' in ev.lower() or '4x' in ev.lower()
+            relay_cap = 4 if is_relay else 100
+            
+            if usage[aid] < rules.max_events_per_athlete and len(current_roster[ev]) < relay_cap:
+                current_roster[ev].append(aid)
+                usage[aid] += 1
+                new_val = get_total_val(current_roster)
+                if new_val > current_val + 0.001:
+                    current_val = new_val
+                    improved = True
+                else:
+                    current_roster[ev].remove(aid)
+                    usage[aid] -= 1
+
+        # 2. Try swapping 1-for-1 for athletes at limit
+        for ath in my_team:
+            aid = ath['athlete_id']
+            if usage[aid] >= rules.max_events_per_athlete:
+                # Find events this athlete is currently in
+                my_events = [ev for ev, aids in current_roster.items() if aid in aids]
+                # Find events they are NOT in
+                other_events = [(ev, v) for (a, ev), v in coeffs.items() if a == aid and ev not in my_events]
+                
+                for ev_to_drop in my_events:
+                    for ev_to_add, add_val in other_events:
+                        drop_val = coeffs.get((aid, ev_to_drop), 0)
+                        
+                        is_relay_add = 'relay' in ev_to_add.lower() or '4x' in ev_to_add.lower()
+                        relay_cap = 4 if is_relay_add else 100
+                        
+                        if add_val > drop_val + 0.001 and len(current_roster[ev_to_add]) < relay_cap:
+                            current_roster[ev_to_drop].remove(aid)
+                            current_roster[ev_to_add].append(aid)
+                            new_val = get_total_val(current_roster)
+                            if new_val > current_val + 0.001:
+                                current_val = new_val
+                                improved = True
+                                break # Move to next athlete
+                            else:
+                                # Revert
+                                current_roster[ev_to_add].remove(aid)
+                                current_roster[ev_to_drop].append(aid)
+                    if improved: break
+
+    return dict(current_roster)
 
 def run_simulation(team_a_data, team_b_data, events, rules):
-    # Initialize: A optimizes against empty B
-    roster_b = {ev: [] for ev in events}
     roster_a = {ev: [] for ev in events}
+    roster_b = {ev: [] for ev in events}
     
     history = []
     
-    for i in range(100): # Safety Break
+    print(f"Starting Iterative Best Response...")
+    for i in range(100):
         # Step 1: Team B optimizes against A
         opp_roster_for_b = {}
         for ev, aids in roster_a.items():
@@ -207,11 +222,24 @@ def run_simulation(team_a_data, team_b_data, events, rules):
                     opp_roster_for_b[ev].append((parse_mark(ath['best_marks'][ev]), 'TEAM_A'))
         
         coeffs_b = calculate_net_value_matrix(team_b_data, opp_roster_for_b, rules.scoring_table)
-        roster_b = solve_optimal_roster(team_b_data, events, coeffs_b, rules)
+        new_roster_b = solve_optimal_roster(team_b_data, events, coeffs_b, rules)
+        
+        # Diff for logging
+        for ev in events:
+            old = set(roster_b.get(ev, []))
+            new = set(new_roster_b.get(ev, []))
+            added = new - old
+            removed = old - new
+            for a in added: 
+                name = next(ath['athlete_name'] for ath in team_b_data if ath['athlete_id'] == a)
+                print(f"  [B-Turn {i+1}] + {name} added to {ev}")
+            for a in removed:
+                name = next(ath['athlete_name'] for ath in team_b_data if ath['athlete_id'] == a)
+                print(f"  [B-Turn {i+1}] - {name} removed from {ev}")
         
         # Step 2: Team A optimizes against B
         opp_roster_for_a = {}
-        for ev, aids in roster_b.items():
+        for ev, aids in new_roster_b.items():
             opp_roster_for_a[ev] = []
             for aid in aids:
                 ath = next((a for a in team_b_data if a['athlete_id'] == aid), None)
@@ -220,21 +248,35 @@ def run_simulation(team_a_data, team_b_data, events, rules):
         
         coeffs_a = calculate_net_value_matrix(team_a_data, opp_roster_for_a, rules.scoring_table)
         new_roster_a = solve_optimal_roster(team_a_data, events, coeffs_a, rules)
-        
-        # State Hash for Cycle Detection
+
+        for ev in events:
+            old = set(roster_a.get(ev, []))
+            new = set(new_roster_a.get(ev, []))
+            added = new - old
+            removed = old - new
+            for a in added: 
+                name = next(ath['athlete_name'] for ath in team_a_data if ath['athlete_id'] == a)
+                print(f"  [A-Turn {i+1}] + {name} added to {ev}")
+            for a in removed:
+                name = next(ath['athlete_name'] for ath in team_a_data if ath['athlete_id'] == a)
+                print(f"  [A-Turn {i+1}] - {name} removed from {ev}")
+
         state = (tuple(sorted((k, tuple(sorted(v))) for k, v in new_roster_a.items())),
-                 tuple(sorted((k, tuple(sorted(v))) for k, v in roster_b.items())))
+                 tuple(sorted((k, tuple(sorted(v))) for k, v in new_roster_b.items())))
         
-        if new_roster_a == roster_a:
+        if new_roster_a == roster_a and new_roster_b == roster_b:
             print(f"Convergence reached at iteration {i+1}.")
-            return new_roster_a, roster_b
+            return new_roster_a, new_roster_b
             
         if state in history:
             print(f"Cycle detected at iteration {i+1}.")
-            return history[history.index(state):]
+            # Find where the cycle starts
+            cycle_start = history.index(state)
+            return history[cycle_start:]
             
         history.append(state)
         roster_a = new_roster_a
+        roster_b = new_roster_b
         
     return roster_a, roster_b
 
