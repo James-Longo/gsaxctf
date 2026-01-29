@@ -922,6 +922,7 @@ input:checked+.slider:before {
   display: flex;
   align-items: center;
   margin-left: auto;
+  gap: 12px;
 }
 
 /* PR Pop Calculator Styles */
@@ -1666,4 +1667,148 @@ body {
     font-size: 0.65rem !important;
     color: #a0aec0 !important;
   }
+}
+
+/* Robust Simulation UI */
+.robust-btn {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+  color: white !important;
+  border: none !important;
+}
+
+.robust-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(118, 75, 162, 0.4);
+}
+
+.robust-btn.loading {
+  opacity: 0.8;
+  cursor: wait;
+}
+
+.robust-results-overlay {
+  margin-top: 24px;
+  background: white;
+  border-radius: 12px;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  animation: slideDown 0.3s ease-out;
+}
+
+.robust-card {
+  padding: 24px;
+}
+
+.robust-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  border-bottom: 2px solid #f1f5f9;
+  padding-bottom: 12px;
+}
+
+.robust-header h3 {
+  margin: 0;
+  color: #1e293b;
+  font-size: 1.25rem;
+}
+
+.robust-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.stat-item {
+  background: #f8fafc;
+  padding: 12px;
+  border-radius: 8px;
+  text-align: center;
+}
+
+.stat-label {
+  display: block;
+  font-size: 0.75rem;
+  color: #64748b;
+  text-transform: uppercase;
+  margin-bottom: 4px;
+}
+
+.stat-val {
+  font-size: 1.125rem;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.rec-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 12px;
+}
+
+.rec-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 16px;
+  background: #fff;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  font-size: 0.9rem;
+}
+
+.rec-name {
+  font-weight: 600;
+  color: #334155;
+}
+
+.rec-event {
+  color: #64748b;
+  flex-grow: 1;
+  padding: 0 12px;
+}
+
+.rec-mark {
+  font-weight: 700;
+  color: #764ba2;
+}
+
+.robust-disclaimer {
+  margin-top: 20px;
+  font-size: 0.75rem;
+  color: #94a3b8;
+  font-style: italic;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Deterministic Simulation UI */
+.deterministic-btn {
+  background: linear-gradient(135deg, #8b5cf6 0%, #d946ef 100%) !important;
+  color: white !important;
+  border: none !important;
+  box-shadow: 0 4px 6px -1px rgba(139, 92, 246, 0.4);
+}
+
+.deterministic-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 14px rgba(139, 92, 246, 0.5);
+  filter: brightness(1.1);
+}
+
+.deterministic-btn:disabled {
+  opacity: 0.7;
+  cursor: wait;
 }

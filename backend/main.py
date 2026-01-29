@@ -9,8 +9,10 @@ from bs4 import BeautifulSoup
 import re
 try:
     from backend.scraper import Sub5Scraper
+    from backend.simulator import TrackSimulator
 except ImportError:
     from scraper import Sub5Scraper
+    from simulator import TrackSimulator
 
 app = FastAPI()
 
@@ -291,6 +293,17 @@ def parse_sub5_text(text, current_results, season):
                     "season": season,
                     "year": season_year
                 })
+
+@app.get("/simulate")
+def simulate_pvc(team: str, season: str, year: Optional[str] = None, iterations: int = 50, scenarios: int = 5):
+    try:
+        sim = TrackSimulator(DB_PATH)
+        result = sim.optimize_team(team, season, year, iterations=iterations, scenarios=scenarios)
+        return result
+    except Exception as e:
+        import traceback
+        traceback.print_exc()
+        raise HTTPException(status_code=500, detail=str(e))
 
 @app.post("/analyze-performance-list")
 def analyze_performance_list(request: PerformanceListRequest):
