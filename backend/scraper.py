@@ -553,6 +553,11 @@ class Sub5Scraper:
         # Get list of already synced meet names and all unique team names for dynamic normalization
         synced_meets = set()
         all_teams = set()
+        
+        # Seed all_teams with our known canonical names from TEAM_MAPPING
+        for val in TEAM_MAPPING.values():
+            all_teams.add(val)
+
         cursor.execute("SELECT DISTINCT meet_name FROM performances")
         for row in cursor.fetchall():
             synced_meets.add(row['meet_name'])
@@ -573,7 +578,13 @@ class Sub5Scraper:
                     for eb in events:
                         for res in eb.get("results", []):
                             team = res.get("school")
-                            if team: all_teams.add(team.strip())
+                            if team: 
+                                # We MUST normalize through TEAM_MAPPING here too so all_teams 
+                                # gets the canonical version of everything we find in the files.
+                                team_clean = team.strip()
+                                # Basic normalization for pre-scan
+                                team_norm = self.normalize_team_name(team_clean, all_teams=all_teams)
+                                all_teams.add(team_norm)
             except: pass
 
         for i, filename in enumerate(files):
