@@ -144,18 +144,6 @@ function App() {
     setExpandedSplits(new Set())
   }, [selectedAthlete, selectedTeam])
 
-  const handleDownloadCsv = () => {
-    const params = new URLSearchParams()
-    if (selectedTeam !== 'All') params.append('team', selectedTeam)
-    if (filterYear !== 'All') params.append('year', filterYear)
-    if (filterSeasonType !== 'All') params.append('season', filterSeasonType)
-    if (filterEvent !== 'All') params.append('event', filterEvent)
-    if (filterMeet !== 'All') params.append('meet', filterMeet)
-
-    const baseUrl = isLocalDev ? 'http://localhost:8000' : ''
-    const url = `${baseUrl}/export/performances?${params.toString()}`
-    window.location.href = url
-  }
 
 
   // Extract metadata and unique filter values
@@ -316,6 +304,38 @@ function App() {
       meets: availableMeets
     }
   }, [performances, filterYear, filterSeasonType, filterEvent, filterMeet, selectedTeam, showPRsOnly, sortField, sortDirection])
+
+  const handleDownloadCsv = () => {
+    if (!filteredPerformances || filteredPerformances.length === 0) {
+      alert("No data to download")
+      return
+    }
+
+    const headers = ['Athlete', 'Event', 'Result', 'Team', 'Date', 'Meet', 'Season', 'Year']
+    const csvContent = [
+      headers.join(','),
+      ...filteredPerformances.map(p => [
+        `"${p.athlete_name}"`,
+        `"${p.event}"`,
+        `"${p.mark}"`,
+        `"${p.team}"`,
+        `"${p.date.split('T')[0]}"`,
+        `"${p.meet_name}"`,
+        `"${p.season}"`,
+        `"${p.year}"`
+      ].join(','))
+    ].join('\n')
+
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' })
+    const link = document.createElement('a')
+    const url = URL.createObjectURL(blob)
+    link.setAttribute('href', url)
+    link.setAttribute('download', `performances_${selectedTeam.replace(/\s+/g, '_')}.csv`)
+    link.style.visibility = 'hidden'
+    document.body.appendChild(link)
+    link.click()
+    document.body.removeChild(link)
+  }
 
   const handleSort = (field) => {
     const canonicalField = field === 'result' ? 'mark' : field
