@@ -190,7 +190,7 @@ function PVCSimulator({ performances, isBetter }) {
 
     // Simulation Helpers and Core Logic
     const SCORING_RULES = [10, 8, 6, 4, 2, 1];
-    const EVENT_LIMIT = 4;
+    const EVENT_LIMIT = 3;
 
     const getMembers = (p) => {
         const name = p.athlete_name || "";
@@ -220,9 +220,15 @@ function PVCSimulator({ performances, isBetter }) {
 
     const getGreedyEntries = (pool) => {
         const entries = [];
-        Object.values(pool).forEach(athPerfs => {
-            athPerfs.sort((a, b) => isBetter(a.mark, b.mark) ? -1 : 1);
-            entries.push(...athPerfs.slice(0, EVENT_LIMIT));
+        const memberCounts = {};
+        const all = Object.values(pool).flat().sort((a, b) => isBetter(a.mark, b.mark) ? -1 : 1);
+
+        all.forEach(e => {
+            const members = getMembers(e);
+            if (members.every(m => (memberCounts[m] || 0) < EVENT_LIMIT)) {
+                entries.push(e);
+                members.forEach(m => memberCounts[m] = (memberCounts[m] || 0) + 1);
+            }
         });
         return entries;
     };
@@ -301,68 +307,112 @@ function PVCSimulator({ performances, isBetter }) {
             return res.reduce((s, r) => s + (r[teamName] || 0), 0) / scenarios.length;
         };
 
-        // --- Deterministic Hill Climbing ---
-        // 1. Start with Greedy (Best events for everyone)
-        // Group by Athlete first to make swapping easy
-        const athletes = Object.keys(genderTargetPool);
-        let currentLineupMap = {}; // { athlete_key: [entries] }
+        // --- Robust Deterministic Hill Climbing (Cross-Relay Constraints) ---
 
-        athletes.forEach(key => {
-            const perfs = genderTargetPool[key];
-            const sorted = [...perfs].sort((a, b) => isBetter(a.mark, b.mark) ? -1 : 1);
-            currentLineupMap[key] = sorted.slice(0, EVENT_LIMIT);
+        // 1. Initial Ranking (Greedy Score Estimate)
+        const getBaselinePerformance = (entries) => {
+            const sc = {};
+            Object.entries(genderTeamPools).forEach(([t, pool]) => {
+                if (t === teamName) return;
+                const topEntries = [];
+                Object.values(pool).forEach(athPerfs => {
+                    const sorted = [...athPerfs].sort((a, b) => isBetter(a.mark, b.mark) ? -1 : 1);
+                    topEntries.push(...sorted.slice(0, EVENT_LIMIT));
+                });
+                sc[t] = topEntries;
+            });
+            return sc;
+        };
+        const baselineOpponents = getBaselinePerformance();
+
+        const getEntryValue = (e) => {
+            // How many points would this entry get against baseline opponents?
+            const eventEntries = [e];
+            Object.values(baselineOpponents).forEach(opps => {
+                opps.forEach(o => { if (o.event === e.event) eventEntries.push(o); });
+            });
+            eventEntries.sort((a, b) => isBetter(a.mark, b.mark) ? -1 : isBetter(b.mark, a.mark) ? 1 : 0);
+            const rank = eventEntries.indexOf(e);
+            return rank < SCORING_RULES.length ? SCORING_RULES[rank] : 0;
+        };
+
+        const sortedPossible = [...genderPossibleEntries].sort((a, b) => getEntryValue(b) - getEntryValue(a));
+
+        // 2. Greedy Start with Constraints
+        let currentLineupList = [];
+        let memberCounts = {};
+
+        sortedPossible.forEach(e => {
+            const members = getMembers(e);
+            const canAdd = members.every(m => (memberCounts[m] || 0) < EVENT_LIMIT);
+            if (canAdd) {
+                currentLineupList.push(e);
+                members.forEach(m => memberCounts[m] = (memberCounts[m] || 0) + 1);
+            }
         });
 
-        let currentLineupList = Object.values(currentLineupMap).flat();
         let currentScore = evaluateLineup(currentLineupList);
 
+        // 3. Hill Climbing with Swap Logic
         let improved = true;
         let loops = 0;
-        const maxLoops = 5;
+        const maxLoops = 10;
 
-        // Iterative Improvement
         while (improved && loops < maxLoops) {
             improved = false;
             loops++;
 
-            // For each athlete...
-            for (const key of athletes) {
-                const allPerfs = genderTargetPool[key];
-                const currentSelection = currentLineupMap[key];
+            for (const toAdd of sortedPossible) {
+                if (currentLineupList.includes(toAdd)) continue;
 
-                // If athlete has <= limit events, no choices to make.
-                if (allPerfs.length <= EVENT_LIMIT) continue;
+                // To add 'toAdd', we might need to remove its members' existing events
+                const members = getMembers(toAdd);
+                const conflicting = currentLineupList.filter(e => {
+                    const eMembers = getMembers(e);
+                    return members.some(m => eMembers.includes(m));
+                });
 
-                // Try swapping a currently selected event for an unselected one
-                const unselected = allPerfs.filter(p => !currentSelection.includes(p));
+                // Strategy: Try replacing each conflicting entry, or subsets if necessary
+                // Simplest: Try removing ALL conflicting entries and see if score improves
+                // More advanced: Try every combination? Too slow. 
+                // Let's try: Remove minimum required to free up members in 'toAdd'.
 
-                for (let i = 0; i < currentSelection.length; i++) {
-                    const toRemove = currentSelection[i];
+                // For each member in toAdd that is at limit, we MUST remove one of their events.
+                const membersAtLimit = members.filter(m => (memberCounts[m] || 0) >= EVENT_LIMIT);
 
-                    for (const toAdd of unselected) {
-                        // Swap
-                        const trialSelection = [...currentSelection];
-                        trialSelection[i] = toAdd;
-
-                        // Reconstruct full lineup
-                        const trialLineupMap = { ...currentLineupMap, [key]: trialSelection };
-                        const trialLineupList = Object.values(trialLineupMap).flat();
-
-                        const newScore = evaluateLineup(trialLineupList);
-
-                        if (newScore > currentScore + 0.01) { // strict improvement
-                            currentScore = newScore;
-                            currentLineupMap = trialLineupMap; // Commit change
-                            currentLineupList = trialLineupList;
-                            improved = true;
-                            // Break to restart search (optional, or continue greedy?)
-                            // Let's break to maintain true hill climbing path
-                            break;
-                        }
+                if (membersAtLimit.length === 0) {
+                    // Just add it if no one is at limit (shouldn't happen with greedy start but possible after removals)
+                    const trialLineup = [...currentLineupList, toAdd];
+                    const newScore = evaluateLineup(trialLineup);
+                    if (newScore > currentScore + 0.01) {
+                        currentLineupList = trialLineup;
+                        currentScore = newScore;
+                        memberCounts = {}; // Recalculate later or update in place
+                        currentLineupList.forEach(le => getMembers(le).forEach(m => memberCounts[m] = (memberCounts[m] || 0) + 1));
+                        improved = true;
+                        break;
                     }
-                    if (improved) break;
+                } else {
+                    // For each member at limit, try removing each of their existing events
+                    // This is still complex. Let's try a simple 1-for-1 swap if only 1 member is involved,
+                    // or remove ALL conflicting for 1 if score improves.
+
+                    const trialLineup = currentLineupList.filter(e => {
+                        const em = getMembers(e);
+                        return !membersAtLimit.some(m => em.includes(m));
+                    });
+                    trialLineup.push(toAdd);
+
+                    const newScore = evaluateLineup(trialLineup);
+                    if (newScore > currentScore + 0.01) {
+                        currentLineupList = trialLineup;
+                        currentScore = newScore;
+                        memberCounts = {};
+                        currentLineupList.forEach(le => getMembers(le).forEach(m => memberCounts[m] = (memberCounts[m] || 0) + 1));
+                        improved = true;
+                        break;
+                    }
                 }
-                if (improved) break;
             }
 
             if (!fixedOpponentLineups) {
