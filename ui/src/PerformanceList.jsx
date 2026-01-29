@@ -227,7 +227,7 @@ function PVCSimulator({ performances, isBetter }) {
         return entries;
     };
 
-    // Core Optimization Logic (Reusable)
+    // Core Optimization Logic (Deterministic Hill Climbing)
     const optimizeTeamStrategy = async ({
         teamName,
         gender,
@@ -290,68 +290,88 @@ function PVCSimulator({ performances, isBetter }) {
             }
         }
 
-        const evaluateLocal = (indices) => {
-            const usage = {};
-            const selected = [];
-            indices.forEach(idx => {
-                const p = genderPossibleEntries[idx];
-                const members = getMembers(p);
-                const canFit = members.every(m => (usage[m] || 0) < EVENT_LIMIT);
-                if (canFit) {
-                    selected.push(p);
-                    members.forEach(m => usage[m] = (usage[m] || 0) + 1);
-                }
-            });
-
+        const evaluateLineup = (lineup) => {
             const res = [];
             scenarios.forEach(oppEntries => {
-                const fullMeet = [...selected];
+                const fullMeet = [...lineup];
                 Object.values(oppEntries).forEach(opps => fullMeet.push(...opps));
                 res.push(simulateSingleMeet(fullMeet));
             });
-            return { avg: res.reduce((s, r) => s + (r[teamName] || 0), 0) / scenarios.length, entries: selected, scenarios: scenarios };
+            // Return average score for target team
+            return res.reduce((s, r) => s + (r[teamName] || 0), 0) / scenarios.length;
         };
 
-        // GA
-        let population = [];
-        const popSize = 20;
-        const maxEntries = Object.keys(genderTargetPool).length * EVENT_LIMIT;
+        // --- Deterministic Hill Climbing ---
+        // 1. Start with Greedy (Best events for everyone)
+        // Group by Athlete first to make swapping easy
+        const athletes = Object.keys(genderTargetPool);
+        let currentLineupMap = {}; // { athlete_key: [entries] }
 
-        for (let i = 0; i < popSize; i++) {
-            const size = Math.min(genderPossibleEntries.length, Math.floor(Math.random() * maxEntries));
-            const ind = [];
-            while (ind.length < size) {
-                const r = Math.floor(Math.random() * genderPossibleEntries.length);
-                if (!ind.includes(r)) ind.push(r);
+        athletes.forEach(key => {
+            const perfs = genderTargetPool[key];
+            const sorted = [...perfs].sort((a, b) => isBetter(a.mark, b.mark) ? -1 : 1);
+            currentLineupMap[key] = sorted.slice(0, EVENT_LIMIT);
+        });
+
+        let currentLineupList = Object.values(currentLineupMap).flat();
+        let currentScore = evaluateLineup(currentLineupList);
+
+        let improved = true;
+        let loops = 0;
+        const maxLoops = 5;
+
+        // Iterative Improvement
+        while (improved && loops < maxLoops) {
+            improved = false;
+            loops++;
+
+            // For each athlete...
+            for (const key of athletes) {
+                const allPerfs = genderTargetPool[key];
+                const currentSelection = currentLineupMap[key];
+
+                // If athlete has <= limit events, no choices to make.
+                if (allPerfs.length <= EVENT_LIMIT) continue;
+
+                // Try swapping a currently selected event for an unselected one
+                const unselected = allPerfs.filter(p => !currentSelection.includes(p));
+
+                for (let i = 0; i < currentSelection.length; i++) {
+                    const toRemove = currentSelection[i];
+
+                    for (const toAdd of unselected) {
+                        // Swap
+                        const trialSelection = [...currentSelection];
+                        trialSelection[i] = toAdd;
+
+                        // Reconstruct full lineup
+                        const trialLineupMap = { ...currentLineupMap, [key]: trialSelection };
+                        const trialLineupList = Object.values(trialLineupMap).flat();
+
+                        const newScore = evaluateLineup(trialLineupList);
+
+                        if (newScore > currentScore + 0.01) { // strict improvement
+                            currentScore = newScore;
+                            currentLineupMap = trialLineupMap; // Commit change
+                            currentLineupList = trialLineupList;
+                            improved = true;
+                            // Break to restart search (optional, or continue greedy?)
+                            // Let's break to maintain true hill climbing path
+                            break;
+                        }
+                    }
+                    if (improved) break;
+                }
+                if (improved) break;
             }
-            population.push(ind);
-        }
 
-        const generations = 40;
-        for (let iter = 0; iter < generations; iter++) {
-            if (!fixedOpponentLineups && iter % 5 === 0) {
-                setSimProgress(progressStart + (progressRange * 0.2) + Math.floor((iter / generations) * (progressRange * 0.6)));
+            if (!fixedOpponentLineups) {
+                setSimProgress(progressStart + (progressRange * 0.2) + Math.floor((loops / maxLoops) * (progressRange * 0.6)));
                 await new Promise(r => setTimeout(r, 0));
             }
-            population.sort((a, b) => evaluateLocal(b).avg - evaluateLocal(a).avg);
-            const nextPop = population.slice(0, 5);
-            while (nextPop.length < popSize) {
-                const p1 = population[Math.floor(Math.random() * 10)];
-                const p2 = population[Math.floor(Math.random() * 10)];
-                const split = Math.floor(Math.random() * Math.min(p1.length, p2.length));
-                let child = Array.from(new Set([...p1.slice(0, split), ...p2.slice(split)]));
-                if (Math.random() < 0.2) {
-                    if (Math.random() < 0.5 && child.length > 0) child.splice(Math.floor(Math.random() * child.length), 1);
-                    else child.push(Math.floor(Math.random() * genderPossibleEntries.length));
-                    child = Array.from(new Set(child));
-                }
-                nextPop.push(child);
-            }
-            population = nextPop;
         }
 
-        population.sort((a, b) => evaluateLocal(b).avg - evaluateLocal(a).avg);
-        const bestRes = evaluateLocal(population[0]);
+        const bestRes = { avg: currentScore, entries: currentLineupList };
 
         // Calculate Stats
         if (!fixedOpponentLineups) {
