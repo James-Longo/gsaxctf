@@ -530,6 +530,21 @@ class Sub5Scraper:
         for row in cursor.fetchall():
             if row['team']: all_teams.add(row['team'])
 
+        # PRE-SYNC PASS: Collect all team names from the JSON files about to be synced
+        # This prevents order-dependency issues (e.g. seeing "Fryeburg Aca" before "Fryeburg Academy")
+        self.report_progress("Pre-scanning team names for normalization...", 0)
+        for filename in files:
+            if os.path.splitext(filename)[0] in synced_meets: continue
+            try:
+                with open(os.path.join(json_dir, filename), 'r') as f:
+                    data = json.load(f)
+                    events = data.get("events", []) if isinstance(data, dict) else (data if isinstance(data, list) else [])
+                    for eb in events:
+                        for res in eb.get("results", []):
+                            team = res.get("school")
+                            if team: all_teams.add(team.strip())
+            except: pass
+
         for i, filename in enumerate(files):
             file_path = os.path.join(json_dir, filename)
             meet_name = os.path.splitext(filename)[0]
