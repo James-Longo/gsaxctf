@@ -228,22 +228,38 @@ class Sub5Scraper:
         
         # 2. Substring absorption rule:
         # If the input name is a case-insensitive substring of a known canonical name, absorb it.
-        # We only do this if there's exactly one canonical name that contains it, 
-        # or if one is the "best" match to avoid ambiguous merges (like "Bangor").
         canonical_names = sorted(list(set(TEAM_MAPPING.values())), key=len, reverse=True)
         potential_matches = [c for c in canonical_names if name.lower() in c.lower()]
         
         if potential_matches:
-            # We filter for matches that actually look like a "fuller" version of the name
-            # e.g., "York" should match "York High School"
-            # But "Bangor" shouldn't necessarily match "Bangor Christian Schools" unless it's a clear substring match of the start
-            for match in potential_matches:
-                if match.lower().startswith(name.lower()):
-                    return match
+            # If the name is already an exact match for a canonical name, don't absorb!
+            # (e.g., "Portland High School" shouldn't be absorbed by "South Portland High School")
+            if name.lower() in [c.lower() for c in canonical_names]:
+                # Find the correctly cased canonical name
+                for c in canonical_names:
+                    if c.lower() == name.lower():
+                        return c
+
+            unique_matches = list(set(potential_matches))
+            if len(unique_matches) > 1:
+                # Special case: Portland vs South Portland
+                # If one match is a substring of another match, it's very ambiguous.
+                # However, if the current name exactly matches the start of one but is just IN the other,
+                # we might be able to guess. But user asked to flag ambiguity.
+                
+                # Check if one match is a "better" fit (e.g. starts with)
+                starts_with_matches = [c for c in unique_matches if c.lower().startswith(name.lower())]
+                if len(starts_with_matches) == 1:
+                    return starts_with_matches[0]
+
+                print(f"[AMBIGUITY WARNING] Team name '{name}' matches multiple schools: {unique_matches}")
+                try:
+                    with open('backend/ambiguity_log.txt', 'a') as f:
+                        f.write(f"'{name}' matches: {unique_matches}\n")
+                except: pass
+                return name
             
-            # Fallback to the first match if it's very clear (e.g. if the name is a significant part of the canonical)
-            if len(name) > 4:
-                return potential_matches[0]
+            return unique_matches[0]
             
         return name
 
