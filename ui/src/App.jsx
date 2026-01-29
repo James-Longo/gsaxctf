@@ -152,7 +152,8 @@ function App() {
     if (filterEvent !== 'All') params.append('event', filterEvent)
     if (filterMeet !== 'All') params.append('meet', filterMeet)
 
-    const url = `http://localhost:8000/export/performances?${params.toString()}`
+    const baseUrl = isLocalDev ? 'http://localhost:8000' : ''
+    const url = `${baseUrl}/export/performances?${params.toString()}`
     window.location.href = url
   }
 
