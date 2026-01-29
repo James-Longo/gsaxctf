@@ -85,8 +85,6 @@ TEAM_MAPPING = {
     "Morse High": "Morse High School",
     "Morse": "Morse High School",
     "Brunswick Hi": "Brunswick High School",
-    "Brunswick": "Brunswick High School",
-    "Gardiner Hig": "Gardiner High School",
     "Gardiner": "Gardiner High School",
     "Nokomis High": "Nokomis High School",
     "Nokomis": "Nokomis High School",
@@ -96,24 +94,17 @@ TEAM_MAPPING = {
     "Erskine": "Erskine Academy",
     "Biddeford High": "Biddeford High School",
     "Biddeford Hi": "Biddeford High School",
-    "Biddeford": "Biddeford High School",
     "Bonny Eagle High": "Bonny Eagle High School",
-    "Bonny Eagle": "Bonny Eagle High School",
     "Cape Elizabeth High": "Cape Elizabeth High School",
     "Cape Elizabe": "Cape Elizabeth High School",
-    "Cape Elizabeth": "Cape Elizabeth High School",
     "Cheverus High": "Cheverus High School",
     "Cheverus Hig": "Cheverus High School",
-    "Cheverus": "Cheverus High School",
     "Deering High": "Deering High School",
     "Deering Hig": "Deering High School",
-    "Deering": "Deering High School",
     "Falmouth High": "Falmouth High School",
     "Falmouth Hig": "Falmouth High School",
-    "Falmouth": "Falmouth High School",
     "Freeport High": "Freeport High School",
     "Freeport Hig": "Freeport High School",
-    "Freeport": "Freeport High School",
     "Fryeburg Acad": "Fryeburg Academy",
     "Gorham High": "Gorham High School",
     "Greely High": "Greely High School",
@@ -124,20 +115,16 @@ TEAM_MAPPING = {
     "Oceanside High": "Oceanside High School",
     "Portland High": "Portland High School",
     "Scarborough High": "Scarborough High School",
-    "Scarborough": "Scarborough High School",
     "South Portland High": "South Portland High School",
     "Thornton Acad": "Thornton Academy",
     "Windham High": "Windham High School",
     "Yarmouth High": "Yarmouth High School",
     "York High": "York High School",
     "Boothbay/Wis": "Boothbay/Wiscasset",
-    "Boothbay/Wiscasset": "Boothbay/Wiscasset",
     "Boothbay Reg": "Boothbay/Wiscasset",
-    "Lake Region": "Lake Region High School",
     "Camden Hills": "Camden Hills Regional High School",
     "Gray New Glo": "Gray New Gloucester High School",
     "Oxford Hills": "Oxford Hills Comprehensive High School",
-    "Poland Regio": "Poland Regional High School",
     "Sacopee Vall": "Sacopee Valley High School",
     "St. Dominic": "St. Dominic Regional High School",
     "Thornton Academy MS": "Thornton Academy",
@@ -147,33 +134,6 @@ TEAM_MAPPING = {
     "Medomak Vall": "Medomak Valley High School",
     "Mountain Val": "Mountain Valley High School",
     "Traip Academ": "Traip Academy",
-    "Dexter Regional High School": "Dexter Regional High School",
-    "Lisbon High School": "Lisbon High School",
-    "Massabesic High School": "Massabesic High School",
-    "Mountain Valley High School": "Mountain Valley High School",
-    "Noble High School": "Noble High School",
-    "Old Town High School": "Old Town High School",
-    "Orono High School": "Orono High School",
-    "Poland Regional High School": "Poland Regional High School",
-    "Portland High School": "Portland High School",
-    "Presque Isle High School": "Presque Isle High School",
-    "Sacopee Valley High School": "Sacopee Valley High School",
-    "Saco Middle School": "Saco Middle School",
-    "Sanford High School": "Sanford High School",
-    "Scarborough High School": "Scarborough High School",
-    "Skowhegan Area High School": "Skowhegan Area High School",
-    "South Portland High School": "South Portland High School",
-    "St. Dominic Regional High School": "St. Dominic Regional High School",
-    "Thornton Academy": "Thornton Academy",
-    "Traip Academy": "Traip Academy",
-    "Waterville High School": "Waterville High School",
-    "Wells High School": "Wells High School",
-    "Westbrook High School": "Westbrook High School",
-    "Windham High School": "Windham High School",
-    "Winslow High School": "Winslow High School",
-    "Winthrop High School": "Winthrop High School",
-    "Yarmouth High School": "Yarmouth High School",
-    "York High School": "York High School",
 }
 
 try:
@@ -260,50 +220,25 @@ class Sub5Scraper:
                         r['season'] = r['season'].replace('2024', '2025')
         return results
 
-    def normalize_team_name(self, name):
+    def normalize_team_name(self, name, all_teams=None):
         if not name: return "Unknown"
         name = name.strip()
         name = re.sub(r'\s+J[\d\.\-\':]+.*', '', name)
         
-        # 1. Check direct mapping (starts with) which handles most cases
+        # 1. Manual Mappings take priority (shorthands like GSA, MDI)
         for key, val in TEAM_MAPPING.items():
             if name.lower().startswith(key.lower()):
                 return val
-        
-        # 2. Substring absorption rule:
-        # If the input name is a case-insensitive substring of a known canonical name, absorb it.
-        canonical_names = sorted(list(set(TEAM_MAPPING.values())), key=len, reverse=True)
-        potential_matches = [c for c in canonical_names if name.lower() in c.lower()]
-        
-        if potential_matches:
-            # If the name is already an exact match for a canonical name, don't absorb!
-            # (e.g., "Portland High School" shouldn't be absorbed by "South Portland High School")
-            if name.lower() in [c.lower() for c in canonical_names]:
-                # Find the correctly cased canonical name
-                for c in canonical_names:
-                    if c.lower() == name.lower():
-                        return c
 
-            unique_matches = list(set(potential_matches))
-            if len(unique_matches) > 1:
-                # Special case: Portland vs South Portland
-                # If one match is a substring of another match, it's very ambiguous.
-                # However, if the current name exactly matches the start of one but is just IN the other,
-                # we might be able to guess. But user asked to flag ambiguity.
-                
-                # Check if one match is a "better" fit (e.g. starts with)
-                starts_with_matches = [c for c in unique_matches if c.lower().startswith(name.lower())]
-                if len(starts_with_matches) == 1:
-                    return starts_with_matches[0]
-
-                print(f"[AMBIGUITY WARNING] Team name '{name}' matches multiple schools: {unique_matches}")
-                try:
-                    with open('backend/ambiguity_log.txt', 'a') as f:
-                        f.write(f"'{name}' matches: {unique_matches}\n")
-                except: pass
-                return name
-            
-            return unique_matches[0]
+        # 2. Dynamic Substring Absorption
+        # If this name starts exactly like another, longer team name in the DB, absorb it.
+        if all_teams:
+            # Sort teams by length descending to find the "fullest" versions first
+            for fuller_name in sorted(all_teams, key=len, reverse=True):
+                if len(fuller_name) > len(name) and fuller_name.lower().startswith(name.lower()):
+                    # Avoid over-matching (e.g., Portland should not absorb into South Portland unless it STARTS with it)
+                    # The startswith check handles this safely!
+                    return fuller_name
             
         return name
 
@@ -584,11 +519,16 @@ class Sub5Scraper:
         for row in cursor.fetchall():
             athlete_cache[row['name']] = row['id']
 
-        # Get list of already synced meet names to skip them
+        # Get list of already synced meet names and all unique team names for dynamic normalization
         synced_meets = set()
+        all_teams = set()
         cursor.execute("SELECT DISTINCT meet_name FROM performances")
         for row in cursor.fetchall():
             synced_meets.add(row['meet_name'])
+        
+        cursor.execute("SELECT DISTINCT team FROM performances")
+        for row in cursor.fetchall():
+            if row['team']: all_teams.add(row['team'])
 
         for i, filename in enumerate(files):
             file_path = os.path.join(json_dir, filename)
@@ -698,7 +638,10 @@ class Sub5Scraper:
                             continue
                             
                         # Normalize Team
-                        team_norm = self.normalize_team_name(school)
+                        team_norm = self.normalize_team_name(school, all_teams=all_teams)
+                        # Add to known teams if it looks like a "canonical" (longer) version
+                        if team_norm and team_norm not in all_teams:
+                            all_teams.add(team_norm)
                         
                         # Skip if it is still a likely athlete name (bad parse)
                         if self.is_likely_athlete_name(team_norm):
