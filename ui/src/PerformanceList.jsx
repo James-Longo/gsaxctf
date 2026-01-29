@@ -336,14 +336,21 @@ function PVCSimulator({ performances, isBetter }) {
         // --- Robust Deterministic Hill Climbing (Cross-Relay Constraints) ---
 
         // 1. Initial Ranking (Greedy Score Estimate)
-        const getBaselinePerformance = (entries) => {
+        const getBaselinePerformance = () => {
             const sc = {};
             Object.entries(genderTeamPools).forEach(([t, pool]) => {
                 if (t === teamName) return;
+                const poolEntries = Object.values(pool).flat();
+                const groups = {};
+                poolEntries.forEach(e => {
+                    if (!groups[e.event]) groups[e.event] = [];
+                    groups[e.event].push(e);
+                });
                 const topEntries = [];
-                Object.values(pool).forEach(athPerfs => {
-                    const sorted = [...athPerfs].sort((a, b) => isBetter(a.mark, b.mark) ? -1 : 1);
-                    topEntries.push(...sorted.slice(0, EVENT_LIMIT));
+                Object.entries(groups).forEach(([event, entries]) => {
+                    const isRelayEvent = event.toLowerCase().includes('relay') || event.toLowerCase().includes('4x');
+                    const sorted = [...entries].sort((a, b) => isBetter(a.mark, b.mark) ? -1 : 1);
+                    topEntries.push(...sorted.slice(0, isRelayEvent ? 1 : 3));
                 });
                 sc[t] = topEntries;
             });
@@ -452,14 +459,47 @@ function PVCSimulator({ performances, isBetter }) {
                         }
                     }
 
-                    // Multi-swap (Remove all conflicts)
-                    if (conflictingEntries.length > 1) {
-                        const trialLineup = currentLineupList.filter(e => !conflictingEntries.includes(e));
-                        trialLineup.push(toAdd);
-                        const newScore = evaluateLineup(trialLineup);
-                        if (newScore > bestSwapScore + 0.01) {
-                            bestSwapScore = newScore;
-                            bestSwapLineup = trialLineup;
+                    // Option C: Joint Surgical Swap (Drop exactly 1 lowest event per member-at-limit)
+                    // This specifically solves the "Relay Deadlock" where multiple members are full.
+                    const isR = (e) => e.event.toLowerCase().includes('relay') || e.event.toLowerCase().includes('4x');
+                    if (isR(toAdd)) {
+                        const jointToRemove = new Set();
+                        for (const m of getMembers(toAdd).map(nm => nm.toLowerCase().trim())) {
+                            if ((memberCounts[m] || 0) >= EVENT_LIMIT) {
+                                const mEntries = currentLineupList.filter(e => {
+                                    const em = getMembers(e).map(nm => nm.toLowerCase().trim());
+                                    return em.includes(m);
+                                });
+                                // Sacrifice the lowest value entry for this member
+                                if (mEntries.length > 0) {
+                                    mEntries.sort((a, b) => getEntryValue(a) - getEntryValue(b));
+                                    jointToRemove.add(mEntries[0]);
+                                }
+                            }
+                        }
+
+                        if (jointToRemove.size > 0 && jointToRemove.size < 4) { // don't drop everything
+                            const trialLineup = currentLineupList.filter(e => !jointToRemove.has(e));
+                            trialLineup.push(toAdd);
+
+                            const trialCounts = {};
+                            let valid = true;
+                            trialLineup.forEach(le => {
+                                getMembers(le).forEach(m => {
+                                    const nm = m.toLowerCase().trim();
+                                    trialCounts[nm] = (trialCounts[nm] || 0) + 1;
+                                    if (trialCounts[nm] > EVENT_LIMIT) valid = false;
+                                });
+                            });
+
+                            if (valid) {
+                                const newScore = evaluateLineup(trialLineup);
+                                // For relays, we are slightly more lenient on lateral moves to favor participation
+                                if (newScore > bestSwapScore + 0.01 || Math.abs(newScore - bestSwapScore) < 0.01) {
+                                    bestSwapScore = newScore;
+                                    bestSwapLineup = trialLineup;
+                                }
+                            }
                         }
                     }
 
