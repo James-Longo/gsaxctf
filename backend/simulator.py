@@ -63,8 +63,8 @@ class TrackSimulator:
         # Field events: Higher is better
         return s1 > s2
 
-    def get_pvc_data(self, season, year):
-        """Fetches all top performances for PVC schools in target season."""
+    def get_pvc_data(self, season, year, gender=None):
+        """Fetches all top performances for PVC schools in target season, optionally filtered by gender."""
         conn = sqlite3.connect(self.db_path)
         conn.row_factory = sqlite3.Row
         cursor = conn.cursor()
@@ -87,6 +87,9 @@ class TrackSimulator:
             {f"AND year = '{year}'" if year else ""}
         '''
         params = pvc_teams + [f"%{season}"]
+        
+        if gender:
+            query += f" AND event LIKE '{gender.capitalize()}%'"
         
         rows = cursor.execute(query, params).fetchall()
         conn.close()
@@ -184,8 +187,8 @@ class TrackSimulator:
             entries.extend(perfs[:self.event_limit])
         return entries
 
-    def optimize_team(self, target_team, season, year, iterations=100, scenarios=10):
-        all_perfs = self.get_pvc_data(season, year)
+    def optimize_team(self, target_team, season, year, gender=None, iterations=100, scenarios=10):
+        all_perfs = self.get_pvc_data(season, year, gender=gender)
         pools = self.get_athlete_pools(all_perfs)
         
         target_pool = pools.pop(target_team, {})

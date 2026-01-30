@@ -649,24 +649,25 @@ function PVCSimulator({ performances, isBetter }) {
                 let currentLineups = JSON.parse(JSON.stringify(initialLineups));
                 const log = [];
 
-                // Helper to get score of a lineup state
-                const getScores = (lineups) => {
-                    const allEntries = Object.values(lineups).flat();
+                // Helper to get score of a lineup state for THE CURRENT GENDER
+                const getScoresForGender = (lineups, targetGender) => {
+                    const isGen = (e) => (targetGender === 'girls' ? e.event.toLowerCase().includes('girls') : !e.event.toLowerCase().includes('girls'));
+                    const allEntries = Object.values(lineups).flat().filter(isGen);
                     return simulateSingleMeet(allEntries);
                 };
 
-                // Split by gender for independent optimization
-                const genders = ['boys', 'girls'];
-                const finalResults = { boys: null, girls: null };
-
-                const getLeaderboardString = (lineups) => {
-                    const scores = getScores(lineups);
+                const getLeaderboardString = (lineups, targetGender) => {
+                    const scores = getScoresForGender(lineups, targetGender);
                     return Object.entries(scores)
                         .filter(([_, s]) => s > 0)
                         .sort((a, b) => b[1] - a[1])
                         .map(([t, s]) => `${t}: ${s.toFixed(0)}`)
                         .join(' | ');
                 };
+
+                // Split by gender for independent optimization
+                const genders = ['boys', 'girls'];
+                const finalResults = { boys: null, girls: null };
 
                 for (const gender of genders) {
                     setSimProgress(gender === 'boys' ? 10 : 60);
@@ -684,7 +685,7 @@ function PVCSimulator({ performances, isBetter }) {
                         let roundChanges = 0;
 
                         const getSortedTeams = () => {
-                            const scores = getScores(currentLineups);
+                            const scores = getScoresForGender(currentLineups, gender);
                             return Object.entries(scores)
                                 .sort((a, b) => b[1] - a[1])
                                 .map(x => ({ name: x[0], score: x[1] }));
@@ -692,7 +693,7 @@ function PVCSimulator({ performances, isBetter }) {
 
                         let contenders = getSortedTeams().slice(0, 8);
                         if (!contenders.find(c => c.name === targetTeam)) {
-                            const res = getScores(currentLineups);
+                            const res = getScoresForGender(currentLineups, gender);
                             contenders.push({ name: targetTeam, score: res[targetTeam] || 0 });
                         }
 
@@ -704,7 +705,7 @@ function PVCSimulator({ performances, isBetter }) {
                             for (let duel = 0; duel < 2; duel++) { // small sub-duel
                                 for (const team of [teamA, teamB]) {
                                     const opponents = { ...currentLineups };
-                                    const oldScore = getScores(currentLineups)[team] || 0;
+                                    const oldScore = getScoresForGender(currentLineups, gender)[team] || 0;
                                     const res = await optimizeTeamStrategy({
                                         teamName: team, gender, progressStart: 0, progressRange: 0, fixedOpponentLineups: opponents
                                     });
@@ -714,9 +715,9 @@ function PVCSimulator({ performances, isBetter }) {
                                     if (oldDef !== newDef) {
                                         const otherGenderEntries = currentLineups[team].filter(e => !isGender(e));
                                         currentLineups[team] = [...otherGenderEntries, ...res.entries];
-                                        const newScore = getScores(currentLineups)[team] || 0;
+                                        const newScore = getScoresForGender(currentLineups, gender)[team] || 0;
                                         if (newScore > oldScore + 0.1) {
-                                            const leader = getLeaderboardString(currentLineups);
+                                            const leader = getLeaderboardString(currentLineups, gender);
                                             log.push(`[${gender.toUpperCase()} Round ${round}] ${team} Adjusted (Duel). Leaderboard: ${leader}`);
                                             roundChanges++;
                                         }
@@ -729,7 +730,7 @@ function PVCSimulator({ performances, isBetter }) {
                         for (const teamObj of contenders) {
                             const team = teamObj.name;
                             const opponents = { ...currentLineups };
-                            const oldScore = getScores(currentLineups)[team] || 0;
+                            const oldScore = getScoresForGender(currentLineups, gender)[team] || 0;
                             const res = await optimizeTeamStrategy({
                                 teamName: team, gender, progressStart: 0, progressRange: 0, fixedOpponentLineups: opponents
                             });
@@ -740,9 +741,9 @@ function PVCSimulator({ performances, isBetter }) {
                             if (oldDef !== newDef) {
                                 const otherGenderEntries = currentLineups[team].filter(e => !isGender(e));
                                 currentLineups[team] = [...otherGenderEntries, ...res.entries];
-                                const newScore = getScores(currentLineups)[team] || 0;
+                                const newScore = getScoresForGender(currentLineups, gender)[team] || 0;
                                 if (newScore > oldScore + 0.1) {
-                                    const leader = getLeaderboardString(currentLineups);
+                                    const leader = getLeaderboardString(currentLineups, gender);
                                     log.push(`[${gender.toUpperCase()} Round ${round}] ${team} Adjusted. Leaderboard: ${leader}`);
                                     roundChanges++;
                                 }

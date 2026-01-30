@@ -297,10 +297,10 @@ def parse_sub5_text(text, current_results, season):
                 })
 
 @app.get("/simulate")
-def simulate_pvc(team: str, season: str, year: Optional[str] = None, iterations: int = 50, scenarios: int = 5):
+def simulate_pvc(team: str, season: str, gender: Optional[str] = None, year: Optional[str] = None, iterations: int = 50, scenarios: int = 5):
     try:
         sim = TrackSimulator(DB_PATH)
-        result = sim.optimize_team(team, season, year, iterations=iterations, scenarios=scenarios)
+        result = sim.optimize_team(team, season, year, gender=gender, iterations=iterations, scenarios=scenarios)
         return result
     except Exception as e:
         import traceback
