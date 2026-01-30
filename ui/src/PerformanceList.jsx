@@ -691,42 +691,53 @@ function PVCSimulator({ performances, isBetter }) {
                                 .map(x => ({ name: x[0], score: x[1] }));
                         };
 
-                        let contenders = getSortedTeams().slice(0, 8);
-                        if (!contenders.find(c => c.name === targetTeam)) {
-                            const res = getScoresForGender(currentLineups, gender);
-                            contenders.push({ name: targetTeam, score: res[targetTeam] || 0 });
-                        }
+                        let contenders = getSortedTeams();
+                        // Only optimize teams with at least some athletes (contenders)
+                        contenders = contenders.filter(c => {
+                            const pool = teamPools[c.name];
+                            return pool && Object.values(pool).flat().some(p => (gender === 'girls' ? p.event.toLowerCase().includes('girls') : !p.event.toLowerCase().includes('girls')));
+                        });
 
-                        // CONTENDER DUEL: If top 2 are close, make them go back and forth specifically
-                        if (contenders.length >= 2 && Math.abs(contenders[0].score - contenders[1].score) < 15) {
-                            const teamA = contenders[0].name;
-                            const teamB = contenders[1].name;
+                        // 1. Neighbor Duals Pass (Exhaustive back-and-forth for close matchups)
+                        for (let i = 0; i < contenders.length - 1; i++) {
+                            const teamA = contenders[i].name;
+                            const teamB = contenders[i + 1].name;
+                            const scoreA = contenders[i].score;
+                            const scoreB = contenders[i + 1].score;
 
-                            for (let duel = 0; duel < 2; duel++) { // small sub-duel
-                                for (const team of [teamA, teamB]) {
-                                    const opponents = { ...currentLineups };
-                                    const oldScore = getScoresForGender(currentLineups, gender)[team] || 0;
-                                    const res = await optimizeTeamStrategy({
-                                        teamName: team, gender, progressStart: 0, progressRange: 0, fixedOpponentLineups: opponents
-                                    });
-                                    const oldDef = JSON.stringify(currentLineups[team].filter(isGender).map(e => (e.event + e.athlete_id)).sort());
-                                    const newDef = JSON.stringify(res.entries.map(e => (e.event + e.athlete_id)).sort());
+                            if (Math.abs(scoreA - scoreB) < 25) { // Threshold for "close"
+                                let duelStable = false;
+                                let duelRounds = 0;
+                                while (!duelStable && duelRounds < 5) {
+                                    duelRounds++;
+                                    let duelChanges = 0;
+                                    for (const team of [teamA, teamB]) {
+                                        const opponents = { ...currentLineups };
+                                        const oldScore = getScoresForGender(currentLineups, gender)[team] || 0;
+                                        const res = await optimizeTeamStrategy({
+                                            teamName: team, gender, progressStart: 0, progressRange: 0, fixedOpponentLineups: opponents
+                                        });
+                                        const oldDef = JSON.stringify(currentLineups[team].filter(isGender).map(e => (e.event + e.athlete_id)).sort());
+                                        const newDef = JSON.stringify(res.entries.map(e => (e.event + e.athlete_id)).sort());
 
-                                    if (oldDef !== newDef) {
-                                        const otherGenderEntries = currentLineups[team].filter(e => !isGender(e));
-                                        currentLineups[team] = [...otherGenderEntries, ...res.entries];
-                                        const newScore = getScoresForGender(currentLineups, gender)[team] || 0;
-                                        if (newScore > oldScore + 0.1) {
-                                            const leader = getLeaderboardString(currentLineups, gender);
-                                            log.push(`[${gender.toUpperCase()} Round ${round}] ${team} Adjusted (Duel). Leaderboard: ${leader}`);
-                                            roundChanges++;
+                                        if (oldDef !== newDef) {
+                                            const otherGenderEntries = currentLineups[team].filter(e => !isGender(e));
+                                            currentLineups[team] = [...otherGenderEntries, ...res.entries];
+                                            const newScore = getScoresForGender(currentLineups, gender)[team] || 0;
+                                            if (Math.abs(newScore - oldScore) > 0.1) {
+                                                const leader = getLeaderboardString(currentLineups, gender);
+                                                log.push(`[${gender.toUpperCase()} Round ${round}] ${team} Responding to ${team === teamA ? teamB : teamA}. Leaderboard: ${leader}`);
+                                                duelChanges++;
+                                                roundChanges++;
+                                            }
                                         }
                                     }
+                                    if (duelChanges === 0) duelStable = true;
                                 }
                             }
                         }
 
-                        // Normal Round for everyone else
+                        // 2. Full Field Adjustment Pass
                         for (const teamObj of contenders) {
                             const team = teamObj.name;
                             const opponents = { ...currentLineups };
@@ -742,7 +753,7 @@ function PVCSimulator({ performances, isBetter }) {
                                 const otherGenderEntries = currentLineups[team].filter(e => !isGender(e));
                                 currentLineups[team] = [...otherGenderEntries, ...res.entries];
                                 const newScore = getScoresForGender(currentLineups, gender)[team] || 0;
-                                if (newScore > oldScore + 0.1) {
+                                if (Math.abs(newScore - oldScore) > 0.1) {
                                     const leader = getLeaderboardString(currentLineups, gender);
                                     log.push(`[${gender.toUpperCase()} Round ${round}] ${team} Adjusted. Leaderboard: ${leader}`);
                                     roundChanges++;
@@ -752,7 +763,7 @@ function PVCSimulator({ performances, isBetter }) {
                         }
 
                         if (roundChanges === 0) {
-                            log.push(`[${gender.toUpperCase()} Round ${round}] No further improvements found. Equilibrium established.`);
+                            log.push(`[${gender.toUpperCase()} Round ${round}] Equilibrium established.`);
                             stable = true;
                         }
                     }

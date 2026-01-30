@@ -32,16 +32,53 @@ def run_field_simulation(teams, team_data, events, rules, label):
                     scores[t] += p
         return scores
 
-    for loop in range(15):
+    max_rounds = 20
+    stable = False
+    for loop in range(max_rounds):
+        if stable: break
         changes = 0
-        current_scores = get_current_scores()
+        
+        # 1. Neighbor Duals Pass
+        sorted_contenders = sorted(get_current_scores().items(), key=lambda x: x[1], reverse=True)
+        for i in range(len(sorted_contenders) - 1):
+            team_a, score_a = sorted_contenders[i]
+            team_b, score_b = sorted_contenders[i+1]
+            if abs(score_a - score_b) < 25:
+                duel_stable = False
+                duel_round = 0
+                while not duel_stable and duel_round < 5:
+                    duel_round += 1
+                    duel_changes = 0
+                    for t in [team_a, team_b]:
+                        # Optimize t
+                        opp_roster = defaultdict(list)
+                        for other_t in teams:
+                            if other_t == t: continue
+                            for ev, aids in rosters[other_t].items():
+                                for aid in aids:
+                                    ath = next((a for a in team_data[other_t]['athletes'] if a['athlete_id'] == aid), None)
+                                    if ath and ev in ath['best_marks']:
+                                        opp_roster[ev].append((parse_mark(ath['best_marks'][ev]), other_t))
+                                    else:
+                                        for r in team_data[other_t]['relays']:
+                                            if r['event'] == ev and set(aids) == set(r['member_ids']):
+                                                opp_roster[ev].append((parse_mark(r['mark']), other_t))
+                                                break
+                        coeffs, r_coeffs = calculate_net_value_matrix(team_data[t], opp_roster, rules.scoring_table, events)
+                        new_roster = solve_optimal_roster(team_data[t], events, coeffs, r_coeffs, rules)
+                        if new_roster != rosters[t]:
+                            rosters[t] = new_roster
+                            duel_changes += 1
+                            changes += 1
+                            print(f"[{label} Round {loop+1}] {t} Responding to {team_b if t == team_a else team_a}. Leaderboard: { ' | '.join([f'{tk}: {sv:.0f}' for tk, sv in sorted(get_current_scores().items(), key=lambda x: x[1], reverse=True)]) }")
+                    if duel_changes == 0: duel_stable = True
+
+        # 2. Full Field Pass
         for team in teams:
-            old_score = current_scores.get(team, 0.0)
-            
-            # 1. Build Opponent Roster
             opp_roster = defaultdict(list)
             for other_t in teams:
                 if other_t == team: continue
+                # ... repeat opp_roster build or refactor ...
                 for ev, aids in rosters[other_t].items():
                     for aid in aids:
                         ath = next((a for a in team_data[other_t]['athletes'] if a['athlete_id'] == aid), None)
@@ -52,24 +89,16 @@ def run_field_simulation(teams, team_data, events, rules, label):
                                 if r['event'] == ev and set(aids) == set(r['member_ids']):
                                     opp_roster[ev].append((parse_mark(r['mark']), other_t))
                                     break
-            
-            # 2. Optimize
             coeffs, r_coeffs = calculate_net_value_matrix(team_data[team], opp_roster, rules.scoring_table, events)
             new_roster = solve_optimal_roster(team_data[team], events, coeffs, r_coeffs, rules)
-            
             if new_roster != rosters[team]:
-                changes += 1
                 rosters[team] = new_roster
-                # Recalculate scores and show leaderboard
-                updated_scores = get_current_scores()
-                sorted_up = sorted(updated_scores.items(), key=lambda x: x[1], reverse=True)
-                score_str = " | ".join([f"{t}: {s:.0f}" for t, s in sorted_up])
-                print(f"[{label} Round {loop+1}] {team} Adjusted. Leaderboard: {score_str}")
-                current_scores = updated_scores
-                
+                changes += 1
+                print(f"[{label} Round {loop+1}] {team} Adjusted. Leaderboard: { ' | '.join([f'{tk}: {sv:.0f}' for tk, sv in sorted(get_current_scores().items(), key=lambda x: x[1], reverse=True)]) }")
+        
         if changes == 0:
-            print(f"[{label} Round {loop+1}] No further improvements found. Equilibrium established.")
-            break
+            print(f"[{label} Round {loop+1}] Equilibrium established.")
+            stable = True
             
     return rosters, get_current_scores()
 
