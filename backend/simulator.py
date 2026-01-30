@@ -151,12 +151,36 @@ class TrackSimulator:
         return pools
 
     def get_greedy_entries(self, athlete_pool):
-        """Standard 'Best 3' strategy for a team."""
+        """Standard 'Best 3' strategy for a team, handling mixed time/distance events."""
         entries = []
         for ath_id, perfs in athlete_pool.items():
             if not perfs: continue
-            is_time = any(t in perfs[0]['event'].lower() for t in ['dash', 'run', 'hurdles', 'mile', 'relay', '4x'])
-            perfs.sort(key=lambda x: self.parse_mark(x['mark']), reverse=not is_time)
+            
+            # To pick the "best" events across mixed types (time vs distance),
+            # we need a normalized way to compare them.
+            # But the requirement is likely just "standard best 3".
+            # Let's just ensure we sort each type correctly and then maybe pick the ones 
+            # that score the most points (heuristic).
+            
+            # For simplicity in 'greedy', let's just ensure we don't use a single is_time flag for the pool.
+            # We'll use the 'is_better' logic for rankings.
+            
+            # Sorting mixed events is hard without points. Let's just pick the ones
+            # that are highest in their respective events.
+            # Actually, the user's online version uses the optimizer.
+            
+            # For this simulator's greedy mode, let's just sort by a normalized score if possible,
+            # or just be more careful with the sort.
+            
+            def sort_key(p):
+                val = self.parse_mark(p['mark'])
+                is_time = any(t in p['event'].lower() for t in ['dash', 'run', 'hurdles', 'mile', 'relay', '4x'])
+                # Return a value where HIGHER is always BETTER
+                if is_time:
+                    return -val if val > 0 else -999999
+                return val
+
+            perfs.sort(key=sort_key, reverse=True)
             entries.extend(perfs[:self.event_limit])
         return entries
 
