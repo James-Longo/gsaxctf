@@ -3,8 +3,9 @@ import re
 from collections import defaultdict
 
 class MeetRules:
-    def __init__(self, max_events_per_athlete=3):
+    def __init__(self, max_events_per_athlete=3, max_entries_per_event=3):
         self.max_events_per_athlete = max_events_per_athlete
+        self.max_entries_per_event = max_entries_per_event
         self.scoring_table = {0: 10, 1: 8, 2: 6, 3: 4, 4: 2, 5: 1}
 
 def parse_mark(mark):
@@ -13,9 +14,11 @@ def parse_mark(mark):
     m = mark.strip().upper()
     if any(b in m for b in ['DNF', 'DQ', 'NH', 'ND', 'SCR', 'FOUL']):
         return None
-    dist_match = re.match(r"(\d+)'?\s*[-]?\s*(\d+(?:\.\d+)?)\"?", m)
-    if dist_match:
-        return float(dist_match.group(1)) * 12 + float(dist_match.group(2))
+    # Check for distance (must contain ', ", or -)
+    if any(c in m for c in ["'", '"', "-"]):
+        dist_match = re.match(r"(\d+)'?\s*[-]?\s*(\d+(?:\.\d+)?)\"?", m)
+        if dist_match:
+            return float(dist_match.group(1)) * 12 + float(dist_match.group(2))
     if ':' in m:
         parts = m.split(':')
         if len(parts) == 2:
@@ -32,7 +35,7 @@ def is_better(m1, m2, event):
     is_time = any(x in event_low for x in ['dash', 'run', 'hurdles', 'mile', 'relay', '4x'])
     return m1 < m2 if is_time else m1 > m2
 
-def get_event_points(marks, event, scoring_table, scoring_limit=3):
+def get_event_points(marks, event, scoring_table, scoring_limit=3, average_ties=True):
     is_relay = 'relay' in event.lower() or '4x' in event.lower()
     limit = 1 if is_relay else scoring_limit
     
@@ -60,20 +63,28 @@ def get_event_points(marks, event, scoring_table, scoring_limit=3):
             i = j
             continue
             
-        num_to_award = min(len(scorable_tied_marks), len(scoring_table) - scoring_idx)
-        total_pts = sum(scoring_table.get(scoring_idx + k, 0) for k in range(num_to_award))
-        
-        avg_pts = total_pts / len(scorable_tied_marks)
-        for m in scorable_tied_marks:
-            team_points[m[1]] += avg_pts
-            team_counts[m[1]] += 1
+        if average_ties:
+            num_to_award = min(len(scorable_tied_marks), len(scoring_table) - scoring_idx)
+            total_pts = sum(scoring_table.get(scoring_idx + k, 0) for k in range(num_to_award))
             
-        scoring_idx += num_to_award
+            avg_pts = total_pts / len(scorable_tied_marks)
+            for m in scorable_tied_marks:
+                team_points[m[1]] += avg_pts
+                team_counts[m[1]] += 1
+            scoring_idx += num_to_award
+        else:
+            for m in scorable_tied_marks:
+                if scoring_idx < len(scoring_table):
+                    team_points[m[1]] += scoring_table.get(scoring_idx, 0)
+                    team_counts[m[1]] += 1
+                    scoring_idx += 1
+                else:
+                    break
         i = j
         
     return team_points
 
-def calculate_net_value_matrix(my_team, opponent_roster, scoring_table, events_list):
+def calculate_net_value_matrix(my_team, opponent_roster, scoring_table, events_list, average_ties=True, weight_denial=1.0):
     """
     Returns:
         coeffs: {(ath_id, event): value} for individuals
@@ -87,7 +98,7 @@ def calculate_net_value_matrix(my_team, opponent_roster, scoring_table, events_l
         if 'relay' in event.lower() or '4x' in event.lower(): continue
         
         opp_marks = opponent_roster.get(event, [])
-        initial_scores = get_event_points(opp_marks, event, scoring_table)
+        initial_scores = get_event_points(opp_marks, event, scoring_table, average_ties=average_ties)
         opp_total_initial = sum(v for k, v in initial_scores.items() if k != 'MY_TEAM')
         
         for ath in my_team['athletes']:
@@ -96,24 +107,33 @@ def calculate_net_value_matrix(my_team, opponent_roster, scoring_table, events_l
             if my_mark is None: continue
             
             new_marks = opp_marks + [(my_mark, 'MY_TEAM')]
-            new_scores = get_event_points(new_marks, event, scoring_table)
+            new_scores = get_event_points(new_marks, event, scoring_table, average_ties=average_ties)
             p_scored = new_scores.get('MY_TEAM', 0)
             opp_total_after = sum(v for k, v in new_scores.items() if k != 'MY_TEAM')
-            coeffs[(ath['athlete_id'], event)] = p_scored + (opp_total_initial - opp_total_after)
+            
+            # The value is what we score + what we deny the opponent (weighted)
+            denial = (opp_total_initial - opp_total_after)
+            coeffs[(ath['athlete_id'], event)] = p_scored + (denial * weight_denial) + (p_scored * 0.001)
             
     # Relays
-    for i, r in enumerate(my_team['relays']):
+    for ri, r in enumerate(my_team.get('relays', [])):
         event = r['event']
+        if event not in events_list: continue
+        
         opp_marks = opponent_roster.get(event, [])
-        initial_scores = get_event_points(opp_marks, event, scoring_table)
+        initial_scores = get_event_points(opp_marks, event, scoring_table, average_ties=average_ties)
         opp_total_initial = sum(v for k, v in initial_scores.items() if k != 'MY_TEAM')
         
         my_mark = parse_mark(r['mark'])
+        if my_mark is None: continue
+        
         new_marks = opp_marks + [(my_mark, 'MY_TEAM')]
-        new_scores = get_event_points(new_marks, event, scoring_table)
+        new_scores = get_event_points(new_marks, event, scoring_table, average_ties=average_ties)
         p_scored = new_scores.get('MY_TEAM', 0)
         opp_total_after = sum(v for k, v in new_scores.items() if k != 'MY_TEAM')
-        relay_coeffs[i] = p_scored + (opp_total_initial - opp_total_after)
+        
+        denial = (opp_total_initial - opp_total_after)
+        relay_coeffs[ri] = p_scored + (denial * weight_denial) + (p_scored * 0.001)
         
     return coeffs, relay_coeffs
 
@@ -148,30 +168,85 @@ def solve_optimal_roster(team_data, events, coeffs, relay_coeffs, rules):
                 # Non-intuitive but let's stick to additions/swaps
                 continue
             
-            # If not in, try adding (enforce 3-entry limit per team per individual event)
-            if usage[aid] < rules.max_events_per_athlete and len(current_roster[ev]) < 3:
-                current_roster[ev].append(aid)
-                usage[aid] += 1
-                new_val = get_total_val()
-                if new_val > current_val + 0.001:
-                    current_val = new_val
-                    improved = True
-                else:
-                    current_roster[ev].remove(aid)
-                    usage[aid] -= 1
-            elif usage[aid] >= rules.max_events_per_athlete:
-                # Try swapping with current events for this athlete
-                for ev_drop in [e for e, aids in current_roster.items() if aid in aids]:
-                    current_roster[ev_drop].remove(aid)
+            # If not in, try adding (enforce entry limit per team per individual event)
+            if usage[aid] < rules.max_events_per_athlete:
+                if len(current_roster[ev]) < rules.max_entries_per_event:
+                    # Clear path: just add it
                     current_roster[ev].append(aid)
+                    usage[aid] += 1
                     new_val = get_total_val()
                     if new_val > current_val + 0.001:
                         current_val = new_val
                         improved = True
-                        break
                     else:
                         current_roster[ev].remove(aid)
-                        current_roster[ev_drop].append(aid)
+                        usage[aid] -= 1
+                else:
+                    # Event is FULL. Can we displace a teammate for a net gain?
+                    best_swap_val = -1
+                    drop_aid = None
+                    for raid in current_roster[ev]:
+                        r_val = coeffs.get((raid, ev), 0)
+                        if val > r_val + 0.001:
+                            if val - r_val > best_swap_val:
+                                best_swap_val = val - r_val
+                                drop_aid = raid
+                    
+                    if drop_aid:
+                        current_roster[ev].remove(drop_aid)
+                        current_roster[ev].append(aid)
+                        usage[drop_aid] -= 1
+                        usage[aid] += 1
+                        new_val = get_total_val()
+                        if new_val > current_val + 0.001:
+                            current_val = new_val
+                            improved = True
+                        else:
+                            # Roll back
+                            current_roster[ev].remove(aid)
+                            current_roster[ev].append(drop_aid)
+                            usage[aid] -= 1
+                            usage[drop_aid] += 1
+
+            elif usage[aid] >= rules.max_events_per_athlete:
+                # Try swapping with current events for this athlete
+                for ev_drop in [e for e, aids in current_roster.items() if aid in aids]:
+                    # Need to check if target event is full
+                    if len(current_roster[ev]) < rules.max_entries_per_event:
+                        current_roster[ev_drop].remove(aid)
+                        current_roster[ev].append(aid)
+                        new_val = get_total_val()
+                        if new_val > current_val + 0.001:
+                            current_val = new_val
+                            improved = True
+                            break
+                        else:
+                            current_roster[ev].remove(aid)
+                            current_roster[ev_drop].append(aid)
+                    else:
+                        # Target event is full. Try displacing a teammate AND dropping current event.
+                        # This is complex, but let's try a simple version:
+                        for drop_aid in current_roster[ev]:
+                            r_val = coeffs.get((drop_aid, ev), 0)
+                            my_old_val = coeffs.get((aid, ev_drop), 0)
+                            if val > r_val + 0.001: # Potential gain from the displacement itself
+                                current_roster[ev_drop].remove(aid)
+                                current_roster[ev].remove(drop_aid)
+                                current_roster[ev].append(aid)
+                                usage[drop_aid] -= 1
+                                # usage[aid] remains same
+                                new_val = get_total_val()
+                                if new_val > current_val + 0.001:
+                                    current_val = new_val
+                                    improved = True
+                                    break
+                                else:
+                                    # Roll back
+                                    current_roster[ev].remove(aid)
+                                    current_roster[ev].append(drop_aid)
+                                    current_roster[ev_drop].append(aid)
+                                    usage[drop_aid] += 1
+                        if improved: break
                 if improved: break
         
         if improved: continue
@@ -339,20 +414,21 @@ def get_team_dataset(db_path, team_name, season, year):
     raw_athletes = cursor.execute("SELECT id, name FROM athletes").fetchall()
     name_to_id = {r['name']: r['id'] for r in raw_athletes}
     
-    query = """
-        SELECT athletes.id as aid, athletes.name as aname, p.event, p.mark
-        FROM performances p
-        JOIN athletes ON p.athlete_id = athletes.id
+    # Get all athletes for this team regardless of whether they have individual performances
+    query_all_aths = """
+        SELECT DISTINCT a.id, a.name, p.event, p.mark
+        FROM athletes a
+        JOIN performances p ON a.id = p.athlete_id
         WHERE p.team = ? AND p.season = ? AND p.year = ?
     """
-    rows = cursor.execute(query, (team_name, season, year)).fetchall()
+    rows = cursor.execute(query_all_aths, (team_name, season, year)).fetchall()
     conn.close()
     
     athletes_dict = {}
     relays = []
     
     for r in rows:
-        aid, name, ev, mark = r['aid'], r['aname'], r['event'], r['mark']
+        aid, name, ev, mark = r['id'], r['name'], r['event'], r['mark']
         ev_low = ev.lower()
         is_boys_event = 'boys' in ev_low
         is_girls_event = 'girls' in ev_low
