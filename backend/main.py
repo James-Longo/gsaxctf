@@ -308,42 +308,107 @@ def simulate_pvc(team: str, season: str, year: Optional[str] = None, iterations:
         raise HTTPException(status_code=500, detail=str(e))
 
 @app.get("/simulate-nash")
-def simulate_nash(team_a: str, team_b: str, season: str, year: str):
+def simulate_nash(teams: str, season: str, year: str):
     try:
-        data_a = get_team_dataset(DB_PATH, team_a, season, year)
-        data_b = get_team_dataset(DB_PATH, team_b, season, year)
-        
-        if not data_a or not data_b:
-            raise HTTPException(status_code=404, detail="Data not found for one or both teams")
+        team_list = [t.strip() for t in teams.split(',')]
+        if len(team_list) < 2:
+            raise HTTPException(status_code=400, detail="At least two teams required")
             
-        # Common events for simulation
-        events = [
+        data = {t: get_team_dataset(DB_PATH, t, season, year) for t in team_list}
+        
+        boys_events = [
             "Boys 55 Meter Dash", "Boys 200 Meter Dash", "Boys 400 Meter Dash",
             "Boys 800 Meter Run", "Boys 1 Mile Run", "Boys 2 Mile Run",
             "Boys 55 Meter Hurdles", "Boys 4x200 Meter Relay", "Boys 4x800 Meter Relay",
-            "Boys High Jump", "Boys Long Jump", "Boys Triple Jump", "Boys Shot Put", "Boys Pole Vault",
+            "Boys High Jump", "Boys Long Jump", "Boys Triple Jump", "Boys Shot Put", "Boys Pole Vault"
+        ]
+        
+        girls_events = [
             "Girls 55 Meter Dash", "Girls 200 Meter Dash", "Girls 400 Meter Dash",
             "Girls 800 Meter Run", "Girls 1 Mile Run", "Girls 2 Mile Run",
             "Girls 55 Meter Hurdles", "Girls 4x200 Meter Relay", "Girls 4x800 Meter Relay",
             "Girls High Jump", "Girls Long Jump", "Girls Triple Jump", "Girls Shot Put", "Girls Pole Vault"
         ]
         
-        rules = MeetRules(max_events_per_athlete=3)
-        result = run_simulation(data_a, data_b, events, rules)
+        rules = MeetRules()
         
-        if isinstance(result, tuple) and len(result) == 2:
-            roster_a, roster_b = result
-            return {
-                "team_a": {"name": team_a, "roster": roster_a},
-                "team_b": {"name": team_b, "roster": roster_b},
-                "status": "Pure Nash Equilibrium"
-            }
-        else:
-            return {
-                "cycle": result,
-                "status": "Cycle / Mixed Strategy"
-            }
+        def run_field(t_list, t_data, evs, div_label):
+            rosters = {t: {ev: [] for ev in evs} for t in t_list}
+            logs = []
             
+            def get_scores(curr_rosters):
+                scs = defaultdict(float)
+                for ev in evs:
+                    f_marks = []
+                    for t in t_list:
+                        aids = curr_rosters[t].get(ev, [])
+                        if not aids: continue
+                        the_mark = None
+                        for r in t_data[t]['relays']:
+                            if r['event'] == ev and set(aids) == set(r['member_ids']):
+                                the_mark = parse_mark(r.get('mark'))
+                                break
+                        if the_mark is None:
+                            for aid in aids:
+                                ath = next((a for a in t_data[t]['athletes'] if a['athlete_id'] == aid), None)
+                                if ath and ev in ath['best_marks']:
+                                    f_marks.append((parse_mark(ath['best_marks'][ev]), t))
+                        else:
+                            f_marks.append((the_mark, t))
+                    if f_marks:
+                        pts = get_event_points(f_marks, ev, rules.scoring_table)
+                        for t, p in pts.items(): scs[t] += p
+                return scs
+
+            for loop in range(10):
+                changes = 0
+                curr_scores = get_scores(rosters)
+                for team in t_list:
+                    old_score = curr_scores.get(team, 0.0)
+                    opp = defaultdict(list)
+                    for ot in t_list:
+                        if ot == team: continue
+                        for ev, aids in rosters[ot].items():
+                            for aid in aids:
+                                ath = next((a for a in t_data[ot]['athletes'] if a['athlete_id'] == aid), None)
+                                if ath and ev in ath['best_marks']:
+                                    opp[ev].append((parse_mark(ath['best_marks'][ev]), ot))
+                                else:
+                                    for r in t_data[ot]['relays']:
+                                        if r['event'] == ev and set(aids) == set(r['member_ids']):
+                                            opp[ev].append((parse_mark(r['mark']), ot))
+                                            break
+                    
+                    coeffs, r_coeffs = calculate_net_value_matrix(t_data[team], opp, rules.scoring_table, evs)
+                    new_roster = solve_optimal_roster(t_data[team], evs, coeffs, r_coeffs, rules)
+                    
+                    if new_roster != rosters[team]:
+                        changes += 1
+                        rosters[team] = new_roster
+                        updated = get_scores(rosters)
+                        new_score = updated.get(team, 0.0)
+                        logs.append(f"[{div_label} Round {loop+1}] {team} Adjusted Strategy. Score: {old_score:.1f} -> {new_score:.1f}")
+                        curr_scores = updated
+                if changes == 0:
+                    logs.append(f"[{div_label} Round {loop+1}] Equilibrium established.")
+                    break
+            return rosters, get_scores(rosters), logs
+
+        b_rosters, b_scores, b_logs = run_field(team_list, data, boys_events, "BOYS")
+        g_rosters, g_scores, g_logs = run_field(team_list, data, girls_events, "GIRLS")
+        
+        total = {t: b_scores.get(t, 0) + g_scores.get(t, 0) for t in team_list}
+        
+        return {
+            "status": "Nash Equilibrium Established",
+            "logs": b_logs + g_logs,
+            "projected_scores": sorted(
+                [{"team": t, "score": s, "boys": b_scores.get(t,0), "girls": g_scores.get(t,0)} 
+                 for t, s in total.items()],
+                key=lambda x: x['score'], reverse=True
+            ),
+            "rosters": {"boys": b_rosters, "girls": g_rosters}
+        }
     except Exception as e:
         import traceback
         traceback.print_exc()
