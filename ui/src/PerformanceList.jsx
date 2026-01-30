@@ -259,7 +259,7 @@ function PVCSimulator({ performances, isBetter }) {
         return entries;
     };
 
-    // Core Optimization Logic (Deterministic Hill Climbing)
+    // Core Optimization Logic (Nash Equilibrium Hill Climbing)
     const optimizeTeamStrategy = async ({
         teamName,
         gender,
@@ -333,7 +333,7 @@ function PVCSimulator({ performances, isBetter }) {
             return res.reduce((s, r) => s + (r[teamName] || 0), 0) / scenarios.length;
         };
 
-        // --- Robust Deterministic Hill Climbing (Cross-Relay Constraints) ---
+        // --- Robust Nash Equilibrium Hill Climbing (Cross-Relay Constraints) ---
 
         // 1. Initial Ranking (Greedy Score Estimate)
         const getBaselinePerformance = () => {
@@ -1153,11 +1153,11 @@ function PVCSimulator({ performances, isBetter }) {
                             {isRobustLoading ? `Simulating (${simProgress}%)...` : 'Robust Simulation'}
                         </button>
                         <button
-                            className={`simulate-btn deterministic-btn ${isRobustLoading ? 'loading' : ''}`}
+                            className={`simulate-btn nash-btn ${isRobustLoading ? 'loading' : ''}`}
                             onClick={runStrategicSimulation}
                             disabled={isRobustLoading}
                         >
-                            Deterministic Simulation
+                            Nash Equilibrium
                         </button>
                         <button
                             className={`simulate-btn ${showSimulation ? 'active' : ''}`}
@@ -1174,7 +1174,7 @@ function PVCSimulator({ performances, isBetter }) {
                 <div className="robust-results-overlay">
                     <div className="robust-card">
                         <div className="robust-header">
-                            <h3>{strategicLog && strategicLog.length > 0 ? "Strategic Battle Report" : `Optimal Strategy: ${targetTeam}`}</h3>
+                            <h3>{strategicLog && strategicLog.length > 0 ? "Nash Equilibrium Report" : `Optimal Strategy: ${targetTeam}`}</h3>
                             <button className="close-btn" onClick={() => setRobustSimResults(null)}>✕</button>
                         </div>
 

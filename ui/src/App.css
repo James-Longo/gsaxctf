@@ -1794,21 +1794,21 @@ body {
   }
 }
 
-/* Deterministic Simulation UI */
-.deterministic-btn {
+/* Nash Equilibrium UI */
+.nash-btn {
   background: linear-gradient(135deg, #8b5cf6 0%, #d946ef 100%) !important;
   color: white !important;
-  border: none !important;
-  box-shadow: 0 4px 6px -1px rgba(139, 92, 246, 0.4);
+  font-weight: 600 !important;
+  box-shadow: 0 4px 15px rgba(139, 92, 246, 0.3) !important;
 }
 
-.deterministic-btn:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 6px 14px rgba(139, 92, 246, 0.5);
-  filter: brightness(1.1);
+.nash-btn:hover {
+  background: linear-gradient(135deg, #7c3aed 0%, #c026d3 100%) !important;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(139, 92, 246, 0.4) !important;
 }
 
-.deterministic-btn:disabled {
+.nash-btn:disabled {
   opacity: 0.7;
   cursor: wait;
 }
