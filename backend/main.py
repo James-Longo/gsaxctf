@@ -386,8 +386,12 @@ def simulate_nash(teams: str, season: str, year: str):
                         changes += 1
                         rosters[team] = new_roster
                         updated = get_scores(rosters)
-                        new_score = updated.get(team, 0.0)
-                        logs.append(f"[{div_label} Round {loop+1}] {team} Adjusted Strategy. Score: {old_score:.1f} -> {new_score:.1f}")
+                        
+                        # Build a compact leaderboard string for the log
+                        sorted_updated = sorted(updated.items(), key=lambda x: x[1], reverse=True)
+                        score_str = " | ".join([f"{t}: {s:.0f}" for t, s in sorted_updated])
+                        
+                        logs.append(f"[{div_label} Round {loop+1}] {team} Adjusted. Leaderboard: {score_str}")
                         curr_scores = updated
                 if changes == 0:
                     logs.append(f"[{div_label} Round {loop+1}] Equilibrium established.")

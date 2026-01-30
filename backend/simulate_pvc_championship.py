@@ -60,10 +60,11 @@ def run_field_simulation(teams, team_data, events, rules, label):
             if new_roster != rosters[team]:
                 changes += 1
                 rosters[team] = new_roster
-                # Recalculate score after adjustment
+                # Recalculate scores and show leaderboard
                 updated_scores = get_current_scores()
-                new_score = updated_scores.get(team, 0.0)
-                print(f"[{label} Round {loop+1}] {team} Adjusted Strategy. Score: {old_score:.1f} -> {new_score:.1f}")
+                sorted_up = sorted(updated_scores.items(), key=lambda x: x[1], reverse=True)
+                score_str = " | ".join([f"{t}: {s:.0f}" for t, s in sorted_up])
+                print(f"[{label} Round {loop+1}] {team} Adjusted. Leaderboard: {score_str}")
                 current_scores = updated_scores
                 
         if changes == 0:
