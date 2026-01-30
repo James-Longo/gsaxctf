@@ -2,13 +2,6 @@ import sqlite3
 import re
 from collections import defaultdict
 
-# Attempt to import PuLP, fallback to a robust hill-climber
-try:
-    import pulp
-    PULP_AVAILABLE = True
-except ImportError:
-    PULP_AVAILABLE = False
-
 class MeetRules:
     def __init__(self, max_events_per_athlete=3):
         self.max_events_per_athlete = max_events_per_athlete
@@ -25,7 +18,8 @@ def parse_mark(mark):
         return float(dist_match.group(1)) * 12 + float(dist_match.group(2))
     if ':' in m:
         parts = m.split(':')
-        return float(parts[0]) * 60 + float(parts[1])
+        if len(parts) == 2:
+            return float(parts[0]) * 60 + float(parts[1])
     try:
         return float(m)
     except:
@@ -39,24 +33,27 @@ def is_better(m1, m2, event):
     return m1 < m2 if is_time else m1 > m2
 
 def get_event_points(marks, event, scoring_table, scoring_limit=3):
-    """
-    marks: sorted list of (mark, team_id, is_my_team)
-    Returns: {team_id: total_points}
-    """
     is_relay = 'relay' in event.lower() or '4x' in event.lower()
     limit = 1 if is_relay else scoring_limit
     
+    # Filter out None marks
+    valid_marks = [m for m in marks if m[0] is not None]
+    if not valid_marks:
+        return defaultdict(float)
+        
     team_counts = defaultdict(int)
     team_points = defaultdict(float)
     
+    sorted_marks = sorted(valid_marks, key=lambda x: x[0], reverse=not any(t in event.lower() for t in ['dash', 'run', 'hurdles', 'mile', 'relay', '4x']))
+    
     scoring_idx = 0
     i = 0
-    while i < len(marks) and scoring_idx < len(scoring_table):
+    while i < len(sorted_marks) and scoring_idx < len(scoring_table):
         j = i
-        while j < len(marks) and marks[j][0] == marks[i][0]:
+        while j < len(sorted_marks) and sorted_marks[j][0] == sorted_marks[i][0]:
             j += 1
         
-        tied_marks = marks[i:j]
+        tied_marks = sorted_marks[i:j]
         scorable_tied_marks = [m for m in tied_marks if team_counts[m[1]] < limit]
         
         if not scorable_tied_marks:
@@ -76,133 +73,168 @@ def get_event_points(marks, event, scoring_table, scoring_limit=3):
         
     return team_points
 
-def calculate_net_value_matrix(my_team, opponent_roster, scoring_table):
+def calculate_net_value_matrix(my_team, opponent_roster, scoring_table, events_list):
+    """
+    Returns:
+        coeffs: {(ath_id, event): value} for individuals
+        relay_coeffs: {(relay_id): value} where relay_id is an index into team's relays
+    """
     coeffs = {}
-    events = set(opponent_roster.keys())
-    for ath in my_team:
-        events.update(ath['best_marks'].keys())
+    relay_coeffs = {}
     
-    for event in events:
-        is_relay = 'relay' in event.lower() or '4x' in event.lower()
-        is_time = any(x in event.lower() for x in ['dash', 'run', 'hurdles', 'mile', 'relay', '4x'])
+    # Individuals
+    for event in events_list:
+        if 'relay' in event.lower() or '4x' in event.lower(): continue
         
         opp_marks = opponent_roster.get(event, [])
-        opp_marks_sorted = sorted(opp_marks, key=lambda x: x[0], reverse=not is_time)
-        initial_scores = get_event_points(opp_marks_sorted, event, scoring_table)
+        initial_scores = get_event_points(opp_marks, event, scoring_table)
         opp_total_initial = sum(v for k, v in initial_scores.items() if k != 'MY_TEAM')
         
-        if is_relay:
-            relay_marks = [parse_mark(ath['best_marks'][event]) for ath in my_team if event in ath['best_marks']]
-            if not relay_marks: continue
-            best_r_mark = min(relay_marks) if is_time else max(relay_marks)
+        for ath in my_team['athletes']:
+            if event not in ath['best_marks']: continue
+            my_mark = parse_mark(ath['best_marks'][event])
+            if my_mark is None: continue
             
-            new_marks = sorted(opp_marks_sorted + [(best_r_mark, 'MY_TEAM')], key=lambda x: x[0], reverse=not is_time)
+            new_marks = opp_marks + [(my_mark, 'MY_TEAM')]
             new_scores = get_event_points(new_marks, event, scoring_table)
-            
             p_scored = new_scores.get('MY_TEAM', 0)
             opp_total_after = sum(v for k, v in new_scores.items() if k != 'MY_TEAM')
-            v_relay = p_scored + (opp_total_initial - opp_total_after)
-            for ath in my_team:
-                coeffs[(ath['athlete_id'], event)] = v_relay / 4.0
-        else:
-            for ath in my_team:
-                if event not in ath['best_marks']: continue
-                my_mark = parse_mark(ath['best_marks'][event])
-                if my_mark is None: continue
-                
-                new_marks = sorted(opp_marks_sorted + [(my_mark, 'MY_TEAM')], key=lambda x: x[0], reverse=not is_time)
-                new_scores = get_event_points(new_marks, event, scoring_table)
-                p_scored = new_scores.get('MY_TEAM', 0)
-                opp_total_after = sum(v for k, v in new_scores.items() if k != 'MY_TEAM')
-                coeffs[(ath['athlete_id'], event)] = p_scored + (opp_total_initial - opp_total_after)
-                
-    return coeffs
+            coeffs[(ath['athlete_id'], event)] = p_scored + (opp_total_initial - opp_total_after)
+            
+    # Relays
+    for i, r in enumerate(my_team['relays']):
+        event = r['event']
+        opp_marks = opponent_roster.get(event, [])
+        initial_scores = get_event_points(opp_marks, event, scoring_table)
+        opp_total_initial = sum(v for k, v in initial_scores.items() if k != 'MY_TEAM')
+        
+        my_mark = parse_mark(r['mark'])
+        new_marks = opp_marks + [(my_mark, 'MY_TEAM')]
+        new_scores = get_event_points(new_marks, event, scoring_table)
+        p_scored = new_scores.get('MY_TEAM', 0)
+        opp_total_after = sum(v for k, v in new_scores.items() if k != 'MY_TEAM')
+        relay_coeffs[i] = p_scored + (opp_total_initial - opp_total_after)
+        
+    return coeffs, relay_coeffs
 
-def solve_optimal_roster(my_team, events, coeffs, rules):
-    # --- Hill-Climbing Strategy ---
-    # Start with an empty roster or some baseline
-    # Repeatedly attempt to improve by adding or swapping events
-    
-    current_roster = defaultdict(list)
+def solve_optimal_roster(team_data, events, coeffs, relay_coeffs, rules):
+    """
+    team_data: {athletes: [], relays: []}
+    """
+    current_roster = defaultdict(list) # event -> [ids]
+    active_relays = set() # indices into team_data['relays']
     usage = defaultdict(int)
     
-    def get_total_val(roster):
+    def get_total_val():
         total = 0
-        for ev, aids in roster.items():
-            for aid in aids:
-                total += coeffs.get((aid, ev), 0)
+        for (aid, ev), val in coeffs.items():
+            if aid in current_roster[ev]: total += val
+        for ri in active_relays:
+            total += relay_coeffs.get(ri, 0)
         return total
 
-    # Initial Greedy Pass
-    potential = sorted(coeffs.items(), key=lambda x: x[1], reverse=True)
-    for (aid, ev), val in potential:
-        if val <= 0.01: continue # Ignore non-scoring
-        is_relay = 'relay' in ev.lower() or '4x' in ev.lower()
-        if usage[aid] < rules.max_events_per_athlete:
-            if is_relay:
-                if len(current_roster[ev]) < 4:
-                    current_roster[ev].append(aid)
-                    usage[aid] += 1
-            else:
-                current_roster[ev].append(aid)
-                usage[aid] += 1
-
-    # Hill-Climbing Swaps
+    # Hill-Climbing
     improved = True
     while improved:
         improved = False
-        current_val = get_total_val(current_roster)
+        current_val = get_total_val()
         
-        # 1. Try adding something new (if possible)
+        # 1. Try adding/dropping individual events
         for (aid, ev), val in coeffs.items():
-            if val <= 0.01: continue
-            if aid in current_roster[ev]: continue
+            if val <= 0: continue
             
-            is_relay = 'relay' in ev.lower() or '4x' in ev.lower()
-            relay_cap = 4 if is_relay else 100
+            # If in, try dropping? (Usually doesn't help unless val < 0)
+            if aid in current_roster[ev]:
+                # Non-intuitive but let's stick to additions/swaps
+                continue
             
-            if usage[aid] < rules.max_events_per_athlete and len(current_roster[ev]) < relay_cap:
+            # If not in, try adding (enforce 3-entry limit per team per individual event)
+            if usage[aid] < rules.max_events_per_athlete and len(current_roster[ev]) < 3:
                 current_roster[ev].append(aid)
                 usage[aid] += 1
-                new_val = get_total_val(current_roster)
+                new_val = get_total_val()
                 if new_val > current_val + 0.001:
                     current_val = new_val
                     improved = True
                 else:
                     current_roster[ev].remove(aid)
                     usage[aid] -= 1
+            elif usage[aid] >= rules.max_events_per_athlete:
+                # Try swapping with current events for this athlete
+                for ev_drop in [e for e, aids in current_roster.items() if aid in aids]:
+                    current_roster[ev_drop].remove(aid)
+                    current_roster[ev].append(aid)
+                    new_val = get_total_val()
+                    if new_val > current_val + 0.001:
+                        current_val = new_val
+                        improved = True
+                        break
+                    else:
+                        current_roster[ev].remove(aid)
+                        current_roster[ev_drop].append(aid)
+                if improved: break
+        
+        if improved: continue
 
-        # 2. Try swapping 1-for-1 for athletes at limit
-        for ath in my_team:
-            aid = ath['athlete_id']
-            if usage[aid] >= rules.max_events_per_athlete:
-                # Find events this athlete is currently in
-                my_events = [ev for ev, aids in current_roster.items() if aid in aids]
-                # Find events they are NOT in
-                other_events = [(ev, v) for (a, ev), v in coeffs.items() if a == aid and ev not in my_events]
+        # 2. Try adding/dropping relays
+        for ri, val in relay_coeffs.items():
+            if val <= 0: continue
+            if ri in active_relays: continue
+            
+            r = team_data['relays'][ri]
+            ev = r['event']
+            
+            # Rule: Only one relay per team per event (A-team only)
+            if any(team_data['relays'][other_ri]['event'] == ev for other_ri in active_relays):
+                continue
                 
-                for ev_to_drop in my_events:
-                    for ev_to_add, add_val in other_events:
-                        drop_val = coeffs.get((aid, ev_to_drop), 0)
-                        
-                        is_relay_add = 'relay' in ev_to_add.lower() or '4x' in ev_to_add.lower()
-                        relay_cap = 4 if is_relay_add else 100
-                        
-                        if add_val > drop_val + 0.001 and len(current_roster[ev_to_add]) < relay_cap:
-                            current_roster[ev_to_drop].remove(aid)
-                            current_roster[ev_to_add].append(aid)
-                            new_val = get_total_val(current_roster)
-                            if new_val > current_val + 0.001:
-                                current_val = new_val
-                                improved = True
-                                break # Move to next athlete
-                            else:
-                                # Revert
-                                current_roster[ev_to_add].remove(aid)
-                                current_roster[ev_to_drop].append(aid)
-                    if improved: break
-
-    return dict(current_roster)
+            mids = r['member_ids']
+            if not mids or len(mids) < 4: continue
+            
+            # Can we afford 4 slots?
+            # We might need to drop individual events to make room
+            needed_drops = []
+            possible = True
+            for mid in mids:
+                if usage[mid] >= rules.max_events_per_athlete:
+                    # Find weakest event to drop
+                    best_ev_to_drop = None
+                    min_val = 999
+                    for ev_d in [e for e, aids in current_roster.items() if mid in aids]:
+                        v = coeffs.get((mid, ev_d), 0)
+                        if v < min_val:
+                            min_val = v
+                            best_ev_to_drop = ev_d
+                    
+                    if best_ev_to_drop:
+                        needed_drops.append((mid, best_ev_to_drop, min_val))
+                    else:
+                        possible = False
+                        break
+            
+            if possible:
+                # Check if gain > cost
+                cost = sum(d[2] for d in needed_drops)
+                if val > cost + 0.001:
+                    # Perform surgical swap
+                    for mid, ev_d, _ in needed_drops:
+                        current_roster[ev_d].remove(mid)
+                        usage[mid] -= 1
+                    active_relays.add(ri)
+                    for mid in mids:
+                        usage[mid] += 1
+                    improved = True # Value increased
+                    break
+        
+    # Convert to standard roster format
+    final_roster = defaultdict(list)
+    for ev, aids in current_roster.items():
+        final_roster[ev].extend(aids)
+    for ri in active_relays:
+        r = team_data['relays'][ri]
+        final_roster[r['event']] = r['member_ids']
+    
+    return dict(final_roster)
 
 def run_simulation(team_a_data, team_b_data, events, rules):
     roster_a = {ev: [] for ev in events}
@@ -210,56 +242,41 @@ def run_simulation(team_a_data, team_b_data, events, rules):
     
     history = []
     
-    print(f"Starting Iterative Best Response...")
-    for i in range(100):
+    print(f"Starting tactical iteration (Respecting Relay Constraints)...")
+    for i in range(20):
         # Step 1: Team B optimizes against A
-        opp_roster_for_b = {}
+        opp_marks_for_b = defaultdict(list)
         for ev, aids in roster_a.items():
-            opp_roster_for_b[ev] = []
             for aid in aids:
-                ath = next((a for a in team_a_data if a['athlete_id'] == aid), None)
+                # Find athlete in A's data (individuals or relay members)
+                ath = next((a for a in team_a_data['athletes'] if a['athlete_id'] == aid), None)
                 if ath and ev in ath['best_marks']:
-                    opp_roster_for_b[ev].append((parse_mark(ath['best_marks'][ev]), 'TEAM_A'))
+                    opp_marks_for_b[ev].append((parse_mark(ath['best_marks'][ev]), 'TEAM_A'))
+                else:
+                    # Check relays
+                    for r in team_a_data['relays']:
+                        if r['event'] == ev and set(aids) == set(r['member_ids']):
+                            opp_marks_for_b[ev].append((parse_mark(r['mark']), 'TEAM_A'))
+                            break
         
-        coeffs_b = calculate_net_value_matrix(team_b_data, opp_roster_for_b, rules.scoring_table)
-        new_roster_b = solve_optimal_roster(team_b_data, events, coeffs_b, rules)
-        
-        # Diff for logging
-        for ev in events:
-            old = set(roster_b.get(ev, []))
-            new = set(new_roster_b.get(ev, []))
-            added = new - old
-            removed = old - new
-            for a in added: 
-                name = next(ath['athlete_name'] for ath in team_b_data if ath['athlete_id'] == a)
-                print(f"  [B-Turn {i+1}] + {name} added to {ev}")
-            for a in removed:
-                name = next(ath['athlete_name'] for ath in team_b_data if ath['athlete_id'] == a)
-                print(f"  [B-Turn {i+1}] - {name} removed from {ev}")
+        coeffs_b, r_coeffs_b = calculate_net_value_matrix(team_b_data, opp_marks_for_b, rules.scoring_table, events)
+        new_roster_b = solve_optimal_roster(team_b_data, events, coeffs_b, r_coeffs_b, rules)
         
         # Step 2: Team A optimizes against B
-        opp_roster_for_a = {}
+        opp_marks_for_a = defaultdict(list)
         for ev, aids in new_roster_b.items():
-            opp_roster_for_a[ev] = []
             for aid in aids:
-                ath = next((a for a in team_b_data if a['athlete_id'] == aid), None)
+                ath = next((a for a in team_b_data['athletes'] if a['athlete_id'] == aid), None)
                 if ath and ev in ath['best_marks']:
-                    opp_roster_for_a[ev].append((parse_mark(ath['best_marks'][ev]), 'TEAM_B'))
+                    opp_marks_for_a[ev].append((parse_mark(ath['best_marks'][ev]), 'TEAM_B'))
+                else:
+                    for r in team_b_data['relays']:
+                        if r['event'] == ev and set(aids) == set(r['member_ids']):
+                            opp_marks_for_a[ev].append((parse_mark(r['mark']), 'TEAM_B'))
+                            break
         
-        coeffs_a = calculate_net_value_matrix(team_a_data, opp_roster_for_a, rules.scoring_table)
-        new_roster_a = solve_optimal_roster(team_a_data, events, coeffs_a, rules)
-
-        for ev in events:
-            old = set(roster_a.get(ev, []))
-            new = set(new_roster_a.get(ev, []))
-            added = new - old
-            removed = old - new
-            for a in added: 
-                name = next(ath['athlete_name'] for ath in team_a_data if ath['athlete_id'] == a)
-                print(f"  [A-Turn {i+1}] + {name} added to {ev}")
-            for a in removed:
-                name = next(ath['athlete_name'] for ath in team_a_data if ath['athlete_id'] == a)
-                print(f"  [A-Turn {i+1}] - {name} removed from {ev}")
+        coeffs_a, r_coeffs_a = calculate_net_value_matrix(team_a_data, opp_marks_for_a, rules.scoring_table, events)
+        new_roster_a = solve_optimal_roster(team_a_data, events, coeffs_a, r_coeffs_a, rules)
 
         state = (tuple(sorted((k, tuple(sorted(v))) for k, v in new_roster_a.items())),
                  tuple(sorted((k, tuple(sorted(v))) for k, v in new_roster_b.items())))
@@ -270,13 +287,10 @@ def run_simulation(team_a_data, team_b_data, events, rules):
             
         if state in history:
             print(f"Cycle detected at iteration {i+1}.")
-            # Find where the cycle starts
-            cycle_start = history.index(state)
-            return history[cycle_start:]
+            return history[history.index(state):]
             
         history.append(state)
-        roster_a = new_roster_a
-        roster_b = new_roster_b
+        roster_a, roster_b = new_roster_a, new_roster_b
         
     return roster_a, roster_b
 
@@ -284,6 +298,10 @@ def get_team_dataset(db_path, team_name, season, year):
     conn = sqlite3.connect(db_path)
     conn.row_factory = sqlite3.Row
     cursor = conn.cursor()
+    # Get all athletes first to build name-to-id map
+    raw_athletes = cursor.execute("SELECT id, name FROM athletes").fetchall()
+    name_to_id = {r['name']: r['id'] for r in raw_athletes}
+    
     query = """
         SELECT athletes.id as aid, athletes.name as aname, p.event, p.mark
         FROM performances p
@@ -294,13 +312,33 @@ def get_team_dataset(db_path, team_name, season, year):
     conn.close()
     
     athletes_dict = {}
+    relays = []
+    
     for r in rows:
-        aid, ev, mark = r['aid'], r['event'], r['mark']
-        if aid not in athletes_dict:
-            athletes_dict[aid] = {'athlete_id': aid, 'athlete_name': r['aname'], 'best_marks': {}}
-        m = parse_mark(mark)
-        if m is not None:
-            existing = parse_mark(athletes_dict[aid]['best_marks'].get(ev))
-            if existing is None or is_better(m, existing, ev):
-                athletes_dict[aid]['best_marks'][ev] = mark
-    return list(athletes_dict.values())
+        aid, name, ev, mark = r['aid'], r['aname'], r['event'], r['mark']
+        ev_low = ev.lower()
+        is_boys_event = 'boys' in ev_low
+        is_girls_event = 'girls' in ev_low
+        
+        if ',' in name:
+            # Relay
+            members = [n.strip() for n in name.split(',')]
+            mids = [name_to_id.get(n) for n in members if name_to_id.get(n)]
+            if len(mids) == 4:
+                relays.append({'event': ev, 'mark': mark, 'member_ids': mids, 'gender': 'boys' if is_boys_event else 'girls'})
+        else:
+            # Individual
+            if aid not in athletes_dict:
+                athletes_dict[aid] = {'athlete_id': aid, 'athlete_name': name, 'best_marks': {}, 'gender': 'boys' if is_boys_event else 'girls'}
+            
+            # Update gender if we see a more specific event (sometimes 'boys'/'girls' is missing in first event)
+            if is_boys_event: athletes_dict[aid]['gender'] = 'boys'
+            if is_girls_event: athletes_dict[aid]['gender'] = 'girls'
+
+            m = parse_mark(mark)
+            if m is not None:
+                existing = parse_mark(athletes_dict[aid]['best_marks'].get(ev))
+                if existing is None or is_better(m, existing, ev):
+                    athletes_dict[aid]['best_marks'][ev] = mark
+                    
+    return {'athletes': list(athletes_dict.values()), 'relays': relays}
