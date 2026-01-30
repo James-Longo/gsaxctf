@@ -398,17 +398,28 @@ def simulate_nash(teams: str, season: str, year: str):
                     break
             return rosters, get_scores(rosters), logs
 
-        b_rosters, b_scores, b_logs = run_field(team_list, data, boys_events, "BOYS")
-        g_rosters, g_scores, g_logs = run_field(team_list, data, girls_events, "GIRLS")
-        
-        total = {t: b_scores.get(t, 0) + g_scores.get(t, 0) for t in team_list}
+        def filter_team_data(team_data, gender):
+            return {
+                'athletes': [a for a in team_data['athletes'] if a.get('gender') == gender],
+                'relays': [r for r in team_data['relays'] if r.get('gender') == gender],
+                'team_name': team_data['team_name']
+            }
+
+        boys_data = {t: filter_team_data(data[t], 'boys') for t in team_list}
+        girls_data = {t: filter_team_data(data[t], 'girls') for t in team_list}
+
+        b_rosters, b_scores, b_logs = run_field(team_list, boys_data, boys_events, "BOYS")
+        g_rosters, g_scores, g_logs = run_field(team_list, girls_data, girls_events, "GIRLS")
         
         return {
             "status": "Nash Equilibrium Established",
             "logs": b_logs + g_logs,
-            "projected_scores": sorted(
-                [{"team": t, "score": s, "boys": b_scores.get(t,0), "girls": g_scores.get(t,0)} 
-                 for t, s in total.items()],
+            "boys_scores": sorted(
+                [{"team": t, "score": s} for t, s in b_scores.items()],
+                key=lambda x: x['score'], reverse=True
+            ),
+            "girls_scores": sorted(
+                [{"team": t, "score": s} for t, s in g_scores.items()],
                 key=lambda x: x['score'], reverse=True
             ),
             "rosters": {"boys": b_rosters, "girls": g_rosters}

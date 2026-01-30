@@ -108,20 +108,32 @@ def main():
         if r['event'] == 'Boys 4x200 Meter Relay':
             r['mark'] = '1:40.00'
     
-    boys_rosters, boys_scores = run_field_simulation(teams, team_data, boys_events, rules, "BOYS")
-    girls_rosters, girls_scores = run_field_simulation(teams, team_data, girls_events, rules, "GIRLS")
+    def filter_team_data(t_data, gender):
+        return {
+            t: {
+                'athletes': [a for a in data['athletes'] if a.get('gender') == gender],
+                'relays': [r for r in data['relays'] if r.get('gender') == gender],
+                'team_name': data['team_name']
+            } for t, data in t_data.items()
+        }
+
+    boys_team_data = filter_team_data(team_data, 'boys')
+    girls_team_data = filter_team_data(team_data, 'girls')
+
+    boys_rosters, boys_scores = run_field_simulation(teams, boys_team_data, boys_events, rules, "BOYS")
+    girls_rosters, girls_scores = run_field_simulation(teams, girls_team_data, girls_events, rules, "GIRLS")
     
     print("\n✓ Nash Equilibrium Established")
     
-    # Final Combine and Print
-    total_scores = defaultdict(float)
-    for t in teams:
-        total_scores[t] = boys_scores.get(t, 0.0) + girls_scores.get(t, 0.0)
-        
-    print("\n--- FINAL PVC CHAMPIONSHIP PROJECTED SCORES ---")
-    sorted_scores = sorted(total_scores.items(), key=lambda x: x[1], reverse=True)
-    for i, (t, s) in enumerate(sorted_scores):
-        print(f"{i+1}. {t.ljust(35)}: {s:.1f} pts (B: {boys_scores.get(t,0):.1f} | G: {girls_scores.get(t,0):.1f})")
+    print("\n--- FINAL PVC CHAMPIONSHIP BOYS SCORES ---")
+    sorted_boys = sorted(boys_scores.items(), key=lambda x: x[1], reverse=True)
+    for i, (t, s) in enumerate(sorted_boys):
+        print(f"{i+1}. {t.ljust(35)}: {s:.1f} pts")
+
+    print("\n--- FINAL PVC CHAMPIONSHIP GIRLS SCORES ---")
+    sorted_girls = sorted(girls_scores.items(), key=lambda x: x[1], reverse=True)
+    for i, (t, s) in enumerate(sorted_girls):
+        print(f"{i+1}. {t.ljust(35)}: {s:.1f} pts")
 
 if __name__ == "__main__":
     main()
