@@ -237,12 +237,43 @@ def solve_optimal_roster(team_data, events, coeffs, relay_coeffs, rules):
     return dict(final_roster)
 
 def run_simulation(team_a_data, team_b_data, events, rules):
+    name_a = team_a_data.get('team_name', 'Team A')
+    name_b = team_b_data.get('team_name', 'Team B')
     roster_a = {ev: [] for ev in events}
     roster_b = {ev: [] for ev in events}
     
     history = []
     
-    print(f"Starting tactical iteration (Respecting Relay Constraints)...")
+    def print_current_balance(r_a, r_b, step_label):
+        pts_a = 0
+        pts_b = 0
+        for ev in events:
+            marks = []
+            for aid in r_a.get(ev, []):
+                ath = next((a for a in team_a_data['athletes'] if a['athlete_id'] == aid), None)
+                if ath and ev in ath['best_marks']:
+                    marks.append((parse_mark(ath['best_marks'][ev]), 'A'))
+                else:
+                    for r in team_a_data['relays']:
+                        if r['event'] == ev and set(r_a[ev]) == set(r['member_ids']):
+                            marks.append((parse_mark(r['mark']), 'A'))
+                            break
+            for aid in r_b.get(ev, []):
+                ath = next((a for a in team_b_data['athletes'] if a['athlete_id'] == aid), None)
+                if ath and ev in ath['best_marks']:
+                    marks.append((parse_mark(ath['best_marks'][ev]), 'B'))
+                else:
+                    for r in team_b_data['relays']:
+                        if r['event'] == ev and set(r_b[ev]) == set(r['member_ids']):
+                            marks.append((parse_mark(r['mark']), 'B'))
+                            break
+            if marks:
+                res = get_event_points(marks, ev, rules.scoring_table)
+                pts_a += res.get('A', 0)
+                pts_b += res.get('B', 0)
+        print(f"  [{step_label}] Score: {name_a} {pts_a:.1f} | {name_b} {pts_b:.1f}")
+
+    print(f"Starting tactical iteration between {name_a} and {name_b}...")
     for i in range(20):
         # Step 1: Team B optimizes against A
         opp_marks_for_b = defaultdict(list)
@@ -262,6 +293,9 @@ def run_simulation(team_a_data, team_b_data, events, rules):
         coeffs_b, r_coeffs_b = calculate_net_value_matrix(team_b_data, opp_marks_for_b, rules.scoring_table, events)
         new_roster_b = solve_optimal_roster(team_b_data, events, coeffs_b, r_coeffs_b, rules)
         
+        if new_roster_b != roster_b:
+            print_current_balance(roster_a, new_roster_b, f"Turn {i+1} - {name_b} Adjusts")
+        
         # Step 2: Team A optimizes against B
         opp_marks_for_a = defaultdict(list)
         for ev, aids in new_roster_b.items():
@@ -277,6 +311,9 @@ def run_simulation(team_a_data, team_b_data, events, rules):
         
         coeffs_a, r_coeffs_a = calculate_net_value_matrix(team_a_data, opp_marks_for_a, rules.scoring_table, events)
         new_roster_a = solve_optimal_roster(team_a_data, events, coeffs_a, r_coeffs_a, rules)
+
+        if new_roster_a != roster_a:
+            print_current_balance(new_roster_a, new_roster_b, f"Turn {i+1} - {name_a} Adjusts")
 
         state = (tuple(sorted((k, tuple(sorted(v))) for k, v in new_roster_a.items())),
                  tuple(sorted((k, tuple(sorted(v))) for k, v in new_roster_b.items())))
@@ -341,4 +378,4 @@ def get_team_dataset(db_path, team_name, season, year):
                 if existing is None or is_better(m, existing, ev):
                     athletes_dict[aid]['best_marks'][ev] = mark
                     
-    return {'athletes': list(athletes_dict.values()), 'relays': relays}
+    return {'athletes': list(athletes_dict.values()), 'relays': relays, 'team_name': team_name}
