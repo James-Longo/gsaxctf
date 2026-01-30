@@ -659,6 +659,15 @@ function PVCSimulator({ performances, isBetter }) {
                 const genders = ['boys', 'girls'];
                 const finalResults = { boys: null, girls: null };
 
+                const getLeaderboardString = (lineups) => {
+                    const scores = getScores(lineups);
+                    return Object.entries(scores)
+                        .filter(([_, s]) => s > 0)
+                        .sort((a, b) => b[1] - a[1])
+                        .map(([t, s]) => `${t}: ${s.toFixed(0)}`)
+                        .join(' | ');
+                };
+
                 for (const gender of genders) {
                     setSimProgress(gender === 'boys' ? 10 : 60);
                     await new Promise(r => setTimeout(r, 0));
@@ -707,7 +716,8 @@ function PVCSimulator({ performances, isBetter }) {
                                         currentLineups[team] = [...otherGenderEntries, ...res.entries];
                                         const newScore = getScores(currentLineups)[team] || 0;
                                         if (newScore > oldScore + 0.1) {
-                                            log.push(`[${gender.toUpperCase()} Round ${round}] ${team} Adjusted (Duel). Score: ${oldScore.toFixed(1)} -> ${newScore.toFixed(1)}`);
+                                            const leader = getLeaderboardString(currentLineups);
+                                            log.push(`[${gender.toUpperCase()} Round ${round}] ${team} Adjusted (Duel). Leaderboard: ${leader}`);
                                             roundChanges++;
                                         }
                                     }
@@ -732,7 +742,8 @@ function PVCSimulator({ performances, isBetter }) {
                                 currentLineups[team] = [...otherGenderEntries, ...res.entries];
                                 const newScore = getScores(currentLineups)[team] || 0;
                                 if (newScore > oldScore + 0.1) {
-                                    log.push(`[${gender.toUpperCase()} Round ${round}] ${team} Adjusted Strategy. Score: ${oldScore.toFixed(1)} -> ${newScore.toFixed(1)}`);
+                                    const leader = getLeaderboardString(currentLineups);
+                                    log.push(`[${gender.toUpperCase()} Round ${round}] ${team} Adjusted. Leaderboard: ${leader}`);
                                     roundChanges++;
                                 }
                             }
