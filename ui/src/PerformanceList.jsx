@@ -522,6 +522,24 @@ function PVCSimulator({ performances, isBetter }) {
 
         const bestRes = { avg: currentScore, entries: currentLineupList };
 
+        // Identify what changed if we had a baseline
+        let changeSummary = null;
+        if (fixedOpponentLineups) {
+            const oldList = fixedOpponentLineups[teamName] ? fixedOpponentLineups[teamName].filter(isGender) : [];
+            const oldKeys = oldList.map(e => `${e.event}|${e.athlete_id}`).sort();
+            const newKeys = currentLineupList.map(e => `${e.event}|${e.athlete_id}`).sort();
+
+            const added = currentLineupList.filter(e => !oldKeys.includes(`${e.event}|${e.athlete_id}`));
+            const removed = oldList.filter(e => !newKeys.includes(`${e.event}|${e.athlete_id}`));
+
+            if (added.length > 0 || removed.length > 0) {
+                changeSummary = {
+                    added: added.map(e => ({ name: e.athlete_name, event: e.event })),
+                    removed: removed.map(e => ({ name: e.athlete_name, event: e.event }))
+                };
+            }
+        }
+
         // Calculate Stats
         if (!fixedOpponentLineups) {
             setSimProgress(progressStart + progressRange * 0.9);
@@ -590,7 +608,7 @@ function PVCSimulator({ performances, isBetter }) {
             };
         }).sort((a, b) => b.avg - a.avg);
 
-        return { avg: bestRes.avg, entries: enhancedEntries, stats: finalStats };
+        return { avg: bestRes.avg, entries: enhancedEntries, stats: finalStats, changeSummary };
     };
 
     // Wrapper
@@ -726,7 +744,13 @@ function PVCSimulator({ performances, isBetter }) {
                                             const newScore = getScoresForGender(currentLineups, gender)[team] || 0;
                                             if (Math.abs(newScore - oldScore) > 0.1) {
                                                 const leader = getLeaderboardString(currentLineups, gender);
-                                                log.push(`[${gender.toUpperCase()} Round ${round}] ${team} Responding to ${team === teamA ? teamB : teamA}. Leaderboard: ${leader}`);
+                                                let detail = "";
+                                                if (res.changeSummary) {
+                                                    const addStr = res.changeSummary.added.map(e => `+${e.name}(${e.event})`).join(', ');
+                                                    const remStr = res.changeSummary.removed.map(e => `-${e.name}(${e.event})`).join(', ');
+                                                    detail = ` [${addStr}${remStr ? ' | ' + remStr : ''}]`;
+                                                }
+                                                log.push(`[${gender.toUpperCase()} Round ${round}] ${team} Responding to ${team === teamA ? teamB : teamA}.${detail} Leaderboard: ${leader}`);
                                                 duelChanges++;
                                                 roundChanges++;
                                             }
@@ -755,7 +779,13 @@ function PVCSimulator({ performances, isBetter }) {
                                 const newScore = getScoresForGender(currentLineups, gender)[team] || 0;
                                 if (Math.abs(newScore - oldScore) > 0.1) {
                                     const leader = getLeaderboardString(currentLineups, gender);
-                                    log.push(`[${gender.toUpperCase()} Round ${round}] ${team} Adjusted. Leaderboard: ${leader}`);
+                                    let detail = "";
+                                    if (res.changeSummary) {
+                                        const addStr = res.changeSummary.added.map(e => `+${e.name}(${e.event})`).join(', ');
+                                        const remStr = res.changeSummary.removed.map(e => `-${e.name}(${e.event})`).join(', ');
+                                        detail = ` [${addStr}${remStr ? ' | ' + remStr : ''}]`;
+                                    }
+                                    log.push(`[${gender.toUpperCase()} Round ${round}] ${team} Adjusted.${detail} Leaderboard: ${leader}`);
                                     roundChanges++;
                                 }
                             }
@@ -1202,7 +1232,7 @@ function PVCSimulator({ performances, isBetter }) {
                         </div>
 
                         {strategicLog && strategicLog.length > 0 && (
-                            <div className="strategic-log" style={{ background: '#1e293b', color: '#cbd5e1', padding: '12px', borderRadius: '6px', marginBottom: '20px', maxHeight: '150px', overflowY: 'auto', fontSize: '0.85rem', fontFamily: 'monospace' }}>
+                            <div className="strategic-log" style={{ background: '#1e293b', color: '#cbd5e1', padding: '12px', borderRadius: '6px', marginBottom: '20px', maxHeight: '350px', overflowY: 'auto', fontSize: '0.85rem', fontFamily: 'monospace' }}>
                                 {strategicLog.map((entry, i) => (
                                     <div key={i} style={{ marginBottom: '4px' }}>{entry}</div>
                                 ))}
