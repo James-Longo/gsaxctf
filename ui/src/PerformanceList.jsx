@@ -1347,21 +1347,35 @@ function PVCSimulator({ performances, isBetter }) {
                                                 </div>
                                             </div>
                                             <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px' }}>
-                                                {ath.scoringEvents.map(ev => (
-                                                    <span key={ev.event} style={{
+                                                {ath.scoringEvents.map(ev => {
+                                                    const isTop3 = ev.rank <= 3;
+                                                    const isScoring = ev.isScorable;
+
+                                                    let badgeStyle = {
                                                         fontSize: '0.75rem',
-                                                        background: ev.isScorable ? '#f0fff4' : '#f7fafc',
                                                         padding: '2px 8px',
                                                         borderRadius: '4px',
-                                                        border: ev.isScorable ? '1px solid #c6f6d5' : '1px solid #edf2f7',
-                                                        color: ev.isScorable ? '#22543d' : '#a0aec0',
-                                                        opacity: ev.isScorable ? 1 : 0.7,
-                                                        fontWeight: ev.isScorable ? 600 : 400
-                                                    }}>
-                                                        {ev.isRelay && <span style={{ marginRight: '4px', opacity: 0.8 }}>👥</span>}
-                                                        {ev.event} (<span style={{ fontWeight: 700 }}>#{ev.rank}</span>)
-                                                    </span>
-                                                ))}
+                                                        fontWeight: isScoring ? 600 : 400,
+                                                        display: 'flex',
+                                                        alignItems: 'center',
+                                                        gap: '4px'
+                                                    };
+
+                                                    if (isTop3) {
+                                                        badgeStyle = { ...badgeStyle, background: '#c6f6d5', color: '#22543d', border: '1px solid #9ae6b4' };
+                                                    } else if (isScoring) {
+                                                        badgeStyle = { ...badgeStyle, background: '#edf2f7', color: '#4a5568', border: '1px solid #e2e8f0' };
+                                                    } else {
+                                                        badgeStyle = { ...badgeStyle, background: 'white', color: '#718096', border: '1px solid #f1f5f9' };
+                                                    }
+
+                                                    return (
+                                                        <span key={ev.event} style={badgeStyle}>
+                                                            {ev.isRelay && <span style={{ opacity: 0.8 }}>👥</span>}
+                                                            {ev.event} (<span style={{ fontWeight: 700 }}>#{ev.rank}</span>)
+                                                        </span>
+                                                    );
+                                                })}
                                             </div>
                                         </div>
                                     ))}
@@ -1379,16 +1393,35 @@ function PVCSimulator({ performances, isBetter }) {
                                         <div key={ath.name} style={{ background: 'white', padding: '12px', borderRadius: '8px', boxShadow: '0 1px 3px rgba(0,0,0,0.1)' }}>
                                             <div style={{ fontWeight: 600, marginBottom: '6px', color: '#4a5568', fontSize: '0.9rem' }}>{ath.name}</div>
                                             <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px' }}>
-                                                {ath.scoringEvents.map(ev => (
-                                                    <span key={ev.event} style={{
+                                                {ath.scoringEvents.map(ev => {
+                                                    const isTop3 = ev.rank <= 3;
+                                                    const isScoring = ev.isScorable;
+
+                                                    let badgeStyle = {
                                                         fontSize: '0.7rem',
-                                                        color: ev.isScorable ? '#2f855a' : '#cbd5e1',
-                                                        fontWeight: ev.isScorable ? 600 : 400
-                                                    }}>
-                                                        {ev.isRelay && <span style={{ fontSize: '0.6rem', marginRight: '2px' }}>👥</span>}
-                                                        {ev.event} (<span style={{ fontWeight: 600 }}>#{ev.rank}</span>)
-                                                    </span>
-                                                ))}
+                                                        padding: '2px 6px',
+                                                        borderRadius: '4px',
+                                                        fontWeight: isScoring ? 600 : 400,
+                                                        display: 'flex',
+                                                        alignItems: 'center',
+                                                        gap: '3px'
+                                                    };
+
+                                                    if (isTop3) {
+                                                        badgeStyle = { ...badgeStyle, background: '#c6f6d5', color: '#22543d', border: '1px solid #9ae6b4' };
+                                                    } else if (isScoring) {
+                                                        badgeStyle = { ...badgeStyle, background: '#edf2f7', color: '#4a5568', border: '1px solid #e2e8f0' };
+                                                    } else {
+                                                        badgeStyle = { ...badgeStyle, background: 'white', color: '#718096', border: '1px solid #f1f5f9' };
+                                                    }
+
+                                                    return (
+                                                        <span key={ev.event} style={badgeStyle}>
+                                                            {ev.isRelay && <span style={{ fontSize: '0.6rem' }}>👥</span>}
+                                                            {ev.event} (<span style={{ fontWeight: 600 }}>#{ev.rank}</span>)
+                                                        </span>
+                                                    );
+                                                })}
                                             </div>
                                         </div>
                                     ))}
