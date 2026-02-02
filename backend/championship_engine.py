@@ -402,12 +402,50 @@ class ChampionshipEngine:
             # Sort events by rank
             potential_scoring_events.sort(key=lambda x: x['rank'])
             
+            # Adjacency detection for track events
+            def get_event_index(ev_name):
+                ev_l = ev_name.lower()
+                order = [
+                    "4 x 800", "hurdle", "55m dash", "55 meter dash", 
+                    "mile", "400m", "800m", "200m", "2-mile", "2 mile", "4 x 200"
+                ]
+                # Map to standard indices (merging aliases)
+                mapping = {
+                    0: 0, # 4x800
+                    1: 1, 2: 2, 3: 3, # Hurdle, Dash, Dash
+                    4: 4, # Mile
+                    5: 5, # 400
+                    6: 6, # 800
+                    7: 7, # 200
+                    8: 8, 9: 9, # 2-mile, 2 mile
+                    10: 10 # 4x200
+                }
+                # Normalized sequence index (0-8)
+                sequence = ["4 x 800", "hurdle", "55m dash", "mile", "400m", "800m", "200m", "2 mile", "4 x 200"]
+                
+                for i, token in enumerate(sequence):
+                    if token == "55m dash":
+                        if "55m dash" in ev_l or "55 meter dash" in ev_l: return i
+                    elif token == "2 mile":
+                        if "2-mile" in ev_l or "2 mile" in ev_l: return i
+                    elif token in ev_l:
+                        return i
+                return -1
+
+            track_indices = sorted(list(set(get_event_index(sev['event']) for sev in potential_scoring_events if get_event_index(sev['event']) >= 0)))
+            has_adjacency = False
+            for i in range(len(track_indices) - 1):
+                if track_indices[i+1] - track_indices[i] == 1:
+                    has_adjacency = True
+                    break
+
             athlete_info = {
                 'name': a_name,
-                'scoring_events': potential_scoring_events
+                'scoring_events': potential_scoring_events,
+                'is_adjacent': has_adjacency
             }
             
-            if len(potential_scoring_events) > 3:
+            if len(potential_scoring_events) > 3 or has_adjacency:
                 decision_athletes.append(athlete_info)
             elif potential_scoring_events:
                 straightforward_athletes.append(athlete_info)

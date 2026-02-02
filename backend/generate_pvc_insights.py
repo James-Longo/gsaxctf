@@ -93,12 +93,16 @@ def main():
                 print("\n#### 🎯 Entry Decisions Dashboard")
                 
                 if decisions['decision_athletes']:
-                    print("\n**⚠️ DECISION ATHLETES (>3 Scoring Events)**")
-                    print("| Athlete | Potential Events (Projected Rank) |")
-                    print("| :--- | :--- |")
+                    print("\n**⚠️ DECISION ATHLETES (>3 events or adjacent track events)**")
+                    print("| Athlete | Reason | Potential Events (Projected Rank) |")
+                    print("| :--- | :--- | :--- |")
                     for a in decisions['decision_athletes']:
+                        reasons = []
+                        if len(a['scoring_events']) > 3: reasons.append("Volume")
+                        if a.get('is_adjacent'): reasons.append("Adjacent Track")
+                        reason_str = ", ".join(reasons)
                         ev_strs = [f"{e['event']} (#{e['rank']})" for e in a['scoring_events']]
-                        print(f"| **{a['name']}** | {', '.join(ev_strs)} |")
+                        print(f"| **{a['name']}** | {reason_str} | {', '.join(ev_strs)} |")
                 
                 if decisions['straightforward_athletes']:
                     print("\n**✅ STRAIGHTFORWARD ENTRIES (<=3 Scoring Events)**")

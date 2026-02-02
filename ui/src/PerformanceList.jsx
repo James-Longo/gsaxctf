@@ -1183,11 +1183,42 @@ function PVCSimulator({ performances, isBetter }) {
         const decisionAthletes = [];
         const straightforwardAthletes = [];
 
+        const getEventIndex = (evName) => {
+            const evL = evName.toLowerCase();
+            const sequence = ["4x800", "hurdle", "55m dash", "mile", "400m", "800m", "200m", "2 mile", "4x200"];
+            for (let i = 0; i < sequence.length; i++) {
+                const token = sequence[i];
+                if (token === "55m dash") {
+                    if (evL.includes("55m dash") || evL.includes("55 meter dash")) return i;
+                } else if (token === "2 mile") {
+                    if (evL.includes("2-mile") || evL.includes("2 mile")) return i;
+                } else if (evL.includes(token)) {
+                    return i;
+                }
+            }
+            return -1;
+        };
+
         Object.entries(teamAthletes).forEach(([name, data]) => {
             if (name === "Relay") return;
             data.scoringEvents.sort((a, b) => a.rank - b.rank);
-            if (data.scoringEvents.length > 3) {
-                decisionAthletes.push({ name, scoringEvents: data.scoringEvents });
+
+            const trackIndices = [...new Set(data.scoringEvents.map(e => getEventIndex(e.event)).filter(idx => idx >= 0))].sort((a, b) => a - b);
+            let hasAdjacency = false;
+            for (let i = 0; i < trackIndices.length - 1; i++) {
+                if (trackIndices[i + 1] - trackIndices[i] === 1) {
+                    hasAdjacency = true;
+                    break;
+                }
+            }
+
+            if (data.scoringEvents.length > 3 || hasAdjacency) {
+                decisionAthletes.push({
+                    name,
+                    scoringEvents: data.scoringEvents,
+                    isAdjacent: hasAdjacency,
+                    isVolume: data.scoringEvents.length > 3
+                });
             } else if (data.scoringEvents.length > 0) {
                 straightforwardAthletes.push({ name, scoringEvents: data.scoringEvents });
             }
@@ -1278,12 +1309,18 @@ function PVCSimulator({ performances, isBetter }) {
                         {entryDecisions.decisionAthletes.length > 0 && (
                             <div className="decision-card" style={{ background: '#fff5f5', border: '1px solid #feb2b2', borderRadius: '12px', padding: '20px' }}>
                                 <h4 style={{ margin: '0 0 12px 0', color: '#c53030', display: 'flex', alignItems: 'center', gap: '8px' }}>
-                                    ⚠️ Decision Athletes (&gt;3 Scoring Events)
+                                    ⚠️ Decision Athletes (&gt;3 events or adjacent track)
                                 </h4>
                                 <div className="decisions-list" style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
                                     {entryDecisions.decisionAthletes.map(ath => (
                                         <div key={ath.name} style={{ background: 'white', padding: '12px', borderRadius: '8px', boxShadow: '0 1px 3px rgba(0,0,0,0.1)' }}>
-                                            <div style={{ fontWeight: 700, marginBottom: '6px', color: '#2d3748' }}>{ath.name}</div>
+                                            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '6px' }}>
+                                                <div style={{ fontWeight: 700, color: '#2d3748' }}>{ath.name}</div>
+                                                <div style={{ display: 'flex', gap: '4px' }}>
+                                                    {ath.isVolume && <span style={{ fontSize: '0.65rem', background: '#fed7d7', color: '#9b2c2c', padding: '1px 6px', borderRadius: '10px', fontWeight: 700 }}>VOLUME</span>}
+                                                    {ath.isAdjacent && <span style={{ fontSize: '0.65rem', background: '#fffaf0', color: '#9c4221', padding: '1px 6px', borderRadius: '10px', fontWeight: 700, border: '1px solid #feebc8' }}>ADJACENT</span>}
+                                                </div>
+                                            </div>
                                             <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px' }}>
                                                 {ath.scoringEvents.map(ev => (
                                                     <span key={ev.event} style={{ fontSize: '0.75rem', background: '#edf2f7', padding: '2px 8px', borderRadius: '4px', border: '1px solid #e2e8f0' }}>
