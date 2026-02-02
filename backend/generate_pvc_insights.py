@@ -98,18 +98,31 @@ def main():
                     print("| :--- | :--- | :--- |")
                     for a in decisions['decision_athletes']:
                         reasons = []
-                        if len(a['scoring_events']) > 3: reasons.append("Volume")
+                        if a.get('scorable_count', 0) > 3: reasons.append("Volume")
                         if a.get('is_adjacent'): reasons.append("Adjacent Track")
                         reason_str = ", ".join(reasons)
-                        ev_strs = [f"{e['event']} (#{e['rank']})" for e in a['scoring_events']]
+                        
+                        ev_strs = []
+                        for e in a['scoring_events']:
+                            s = f"{e['event']} (#{e['rank']})"
+                            if e.get('is_scorable'):
+                                ev_strs.append(f"**{s}**")
+                            else:
+                                ev_strs.append(f"*{s}*")
                         print(f"| **{a['name']}** | {reason_str} | {', '.join(ev_strs)} |")
                 
                 if decisions['straightforward_athletes']:
                     print("\n**✅ STRAIGHTFORWARD ENTRIES (<=3 Scoring Events)**")
-                    print("| Athlete | Projected Scoring Events |")
+                    print("| Athlete | Projected Events (Projected Rank) |")
                     print("| :--- | :--- |")
                     for a in decisions['straightforward_athletes']:
-                        ev_strs = [f"{e['event']} (#{e['rank']})" for e in a['scoring_events']]
+                        ev_strs = []
+                        for e in a['scoring_events']:
+                            s = f"{e['event']} (#{e['rank']})"
+                            if e.get('is_scorable'):
+                                ev_strs.append(f"**{s}**")
+                            else:
+                                ev_strs.append(f"*{s}*")
                         print(f"| {a['name']} | {', '.join(ev_strs)} |")
 
     print("\n\n✓ Strategic Insights Generated")

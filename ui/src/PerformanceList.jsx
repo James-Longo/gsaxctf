@@ -1162,31 +1162,33 @@ function PVCSimulator({ performances, isBetter }) {
                 const isRelay = res.isRelay;
                 const limit = isRelay ? 1 : 3;
 
+                // We only increment rankPos for the first 3 from each team
                 if ((teamCounts[team] || 0) < limit) {
                     rankPos++;
                     teamCounts[team] = (teamCounts[team] || 0) + 1;
-
-                    if (team === targetTeam) {
-                        const nameStr = res.athlete_name || "";
-                        let names = [nameStr];
-                        if (isRelay) {
-                            // Split relay members: "John Doe, Jane Smith, ..."
-                            // Some might have "School Name (A, B, C, D)" format or just "A, B, C, D"
-                            names = nameStr.split(',').map(n => n.trim()).filter(n => n && !n.toLowerCase().includes('school') && !n.toLowerCase().includes('relay'));
-                        }
-
-                        names.forEach(name => {
-                            if (!teamAthletes[name]) teamAthletes[name] = { scoringEvents: [] };
-                            teamAthletes[name].scoringEvents.push({
-                                event: res.event,
-                                rank: rankPos,
-                                mark: res.mark,
-                                isRelay: isRelay
-                            });
-                        });
-                    }
+                } else {
+                    // This athlete doesn't count towards the official rank because they are >3rd on their team
+                    // We don't increment rankPos, but we might still want to capture their entry if they're on our target team
                 }
-                if (rankPos >= SCORING_RULES.length) break;
+
+                if (team === targetTeam) {
+                    const nameStr = res.athlete_name || "";
+                    let names = [nameStr];
+                    if (isRelay) {
+                        names = nameStr.split(',').map(n => n.trim()).filter(n => n && !n.toLowerCase().includes('school') && !n.toLowerCase().includes('relay'));
+                    }
+
+                    names.forEach(name => {
+                        if (!teamAthletes[name]) teamAthletes[name] = { scoringEvents: [] };
+                        teamAthletes[name].scoringEvents.push({
+                            event: res.event,
+                            rank: rankPos,
+                            mark: res.mark,
+                            isRelay: isRelay,
+                            isScorable: rankPos <= SCORING_RULES.length && (teamCounts[team] || 0) <= limit
+                        });
+                    });
+                }
             }
         });
 
@@ -1220,7 +1222,8 @@ function PVCSimulator({ performances, isBetter }) {
             });
             data.scoringEvents = Object.values(bestEvs).sort((a, b) => a.rank - b.rank);
 
-            const trackIndices = [...new Set(data.scoringEvents.map(e => getEventIndex(e.event)).filter(idx => idx >= 0))].sort((a, b) => a - b);
+            const scorableEvents = data.scoringEvents.filter(e => e.isScorable);
+            const trackIndices = [...new Set(scorableEvents.map(e => getEventIndex(e.event)).filter(idx => idx >= 0))].sort((a, b) => a - b);
             let hasAdjacency = false;
             for (let i = 0; i < trackIndices.length - 1; i++) {
                 if (trackIndices[i + 1] - trackIndices[i] === 1) {
@@ -1229,21 +1232,26 @@ function PVCSimulator({ performances, isBetter }) {
                 }
             }
 
-            if (data.scoringEvents.length > 3 || hasAdjacency) {
+            if (scorableEvents.length > 3 || hasAdjacency) {
                 decisionAthletes.push({
                     name,
                     scoringEvents: data.scoringEvents,
                     isAdjacent: hasAdjacency,
-                    isVolume: data.scoringEvents.length > 3
+                    isVolume: scorableEvents.length > 3,
+                    scorableCount: scorableEvents.length
                 });
             } else if (data.scoringEvents.length > 0) {
-                straightforwardAthletes.push({ name, scoringEvents: data.scoringEvents });
+                straightforwardAthletes.push({
+                    name,
+                    scoringEvents: data.scoringEvents,
+                    scorableCount: scorableEvents.length
+                });
             }
         });
 
         return {
-            decisionAthletes: decisionAthletes.sort((a, b) => b.scoringEvents.length - a.scoringEvents.length),
-            straightforwardAthletes: straightforwardAthletes.sort((a, b) => b.scoringEvents.length - a.scoringEvents.length)
+            decisionAthletes: decisionAthletes.sort((a, b) => b.scorableCount - a.scorableCount || b.scoringEvents.length - a.scoringEvents.length),
+            straightforwardAthletes: straightforwardAthletes.sort((a, b) => b.scorableCount - a.scorableCount || b.scoringEvents.length - a.scoringEvents.length)
         };
     }, [groupedData, targetTeam]);
 
@@ -1340,8 +1348,16 @@ function PVCSimulator({ performances, isBetter }) {
                                             </div>
                                             <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px' }}>
                                                 {ath.scoringEvents.map(ev => (
-                                                    <span key={ev.event} style={{ fontSize: '0.75rem', background: ev.isRelay ? '#ebf8ff' : '#edf2f7', padding: '2px 8px', borderRadius: '4px', border: ev.isRelay ? '1px solid #bee3f8' : '1px solid #e2e8f0', color: ev.isRelay ? '#2c5282' : 'inherit' }}>
-                                                        {ev.event} (<span style={{ fontWeight: 700, color: ev.isRelay ? '#2c5282' : '#2d3748' }}>#{ev.rank}</span>)
+                                                    <span key={ev.event} style={{
+                                                        fontSize: '0.75rem',
+                                                        background: ev.isScorable ? (ev.isRelay ? '#ebf8ff' : '#edf2f7') : 'transparent',
+                                                        padding: '2px 8px',
+                                                        borderRadius: '4px',
+                                                        border: ev.isScorable ? (ev.isRelay ? '1px solid #bee3f8' : '1px solid #e2e8f0') : '1px solid #f1f5f9',
+                                                        color: ev.isScorable ? (ev.isRelay ? '#2c5282' : '#2d3748') : '#a0aec0',
+                                                        opacity: ev.isScorable ? 1 : 0.7
+                                                    }}>
+                                                        {ev.event} (<span style={{ fontWeight: 700 }}>#{ev.rank}</span>)
                                                     </span>
                                                 ))}
                                             </div>
@@ -1362,7 +1378,11 @@ function PVCSimulator({ performances, isBetter }) {
                                             <div style={{ fontWeight: 600, marginBottom: '6px', color: '#4a5568', fontSize: '0.9rem' }}>{ath.name}</div>
                                             <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px' }}>
                                                 {ath.scoringEvents.map(ev => (
-                                                    <span key={ev.event} style={{ fontSize: '0.7rem', color: ev.isRelay ? '#2c5282' : '#718096', fontWeight: ev.isRelay ? 600 : 400 }}>
+                                                    <span key={ev.event} style={{
+                                                        fontSize: '0.7rem',
+                                                        color: ev.isScorable ? (ev.isRelay ? '#2c5282' : '#4a5568') : '#cbd5e1',
+                                                        fontWeight: ev.isScorable ? 600 : 400
+                                                    }}>
                                                         {ev.event} (<span style={{ fontWeight: 600 }}>#{ev.rank}</span>)
                                                     </span>
                                                 ))}

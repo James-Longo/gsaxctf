@@ -385,17 +385,17 @@ class ChampionshipEngine:
                     rank_pos += 1
                     team_counts[t_n] += 1
             
+            # Attribute any scorable relay to members (only if scorable)
             if my_rank is not None and my_rank <= len(self.rules.scoring_table):
-                # This relay is scorable. Attribute to members.
                 for m_id in r.get('member_ids', []):
-                    # Find athlete name for this ID
                     ath = next((x for x in t_data['athletes'] if x['athlete_id'] == m_id), None)
                     if ath:
                         relay_scoring_for_athletes[ath['athlete_name']].append({
                             'event': ev,
                             'rank': my_rank,
                             'mark': r['mark'],
-                            'is_relay': True
+                            'is_relay': True,
+                            'is_scorable': True
                         })
 
         for a in t_data['athletes']:
@@ -426,12 +426,13 @@ class ChampionshipEngine:
                         rank_pos += 1
                         team_counts[t_n] += 1
                 
-                if my_rank is not None and my_rank <= len(self.rules.scoring_table):
+                if my_rank is not None:
                     potential_scoring_events.append({
                         'event': ev,
                         'rank': my_rank,
                         'mark': mark_str,
-                        'is_relay': False
+                        'is_relay': False,
+                        'is_scorable': my_rank <= len(self.rules.scoring_table)
                     })
             
             # Add relay events
@@ -477,22 +478,25 @@ class ChampionshipEngine:
                 
                 return -1
 
-            track_indices = sorted(list(set(get_event_index(sev['event']) for sev in potential_scoring_events if get_event_index(sev['event']) >= 0)))
+            track_indices = sorted(list(set(get_event_index(sev['event']) for sev in potential_scoring_events if sev.get('is_scorable') and get_event_index(sev['event']) >= 0)))
             has_adjacency = False
             for i in range(len(track_indices) - 1):
                 if track_indices[i+1] - track_indices[i] == 1:
                     has_adjacency = True
                     break
 
+            scorable_count = len([e for e in potential_scoring_events if e.get('is_scorable')])
+
             athlete_info = {
                 'name': a_name,
                 'scoring_events': potential_scoring_events,
-                'is_adjacent': has_adjacency
+                'is_adjacent': has_adjacency,
+                'scorable_count': scorable_count
             }
             
-            if len(potential_scoring_events) > 3 or has_adjacency:
+            if scorable_count > 3 or has_adjacency:
                 decision_athletes.append(athlete_info)
-            elif potential_scoring_events:
+            elif scorable_count > 0:
                 straightforward_athletes.append(athlete_info)
 
         return {
