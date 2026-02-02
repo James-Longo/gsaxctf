@@ -69,7 +69,7 @@ def main():
     for i, (team, score) in enumerate(standings_girls):
         print(f"{i+1}. {team.ljust(35)} : {score:.1f} pts")
 
-    print(f"\n✓ Nash Equilibrium Established (Events: {len(boys_events)})")
+    print(f"\nNash Equilibrium Established (Events: {len(boys_events)})")
 
 if __name__ == "__main__":
     main()

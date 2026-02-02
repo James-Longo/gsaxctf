@@ -4,11 +4,11 @@ This document explains the logic and structure of the major features in this app
 
 ---
 
-## 📊 PVC Simulator (`ui/src/PerformanceList.jsx`)
+## PVC Simulator (`ui/src/PerformanceList.jsx`)
 
 The PVC Simulator predicts the scoring of a "PVC Small Schools" championship meet based on all-time best performances for the selected year and season.
 
-### 🧩 Core Logic
+### Core Logic
 1.  **School Filtering**: Only schools defined in `getPVCSchools(year, season)` are included.
     - *To Modify*: Update the school list in `getPVCSchools` if conference alignment changes.
 2.  **Event Normalization**: Only events matching keys in `EVENT_ALIASES` are counted. This avoids scoring non-championship events (like the Pentathlon).
@@ -23,11 +23,11 @@ The PVC Simulator predicts the scoring of a "PVC Small Schools" championship mee
 
 ---
 
-## 🚀 PR Pop Calculator (`ui/src/PRPopCalculator.jsx`)
+## PR Pop Calculator (`ui/src/PRPopCalculator.jsx`)
 
 This component identifies "PR Pops"—performances in a specific meet that are **strictly better** than any previous performance by that athlete in that event.
 
-### 🧩 Core Logic
+### Core Logic
 1.  **Meet Selection**: Users can select a specific meet from the history of their selected team.
 2.  **Comparison**: For every result in the selected meet, the calculator searches all *previous* dates in the database for that athlete and event.
 3.  **Strict Improvement**: A "Pop" is only triggered if the new mark is better than the historical best (PR). First-time competitors are excluded.
@@ -35,18 +35,18 @@ This component identifies "PR Pops"—performances in a specific meet that are *
 
 ---
 
-## 📋 Create Meet Sheet (`ui/src/MeetSheet.jsx`)
+## Create Meet Sheet (`ui/src/MeetSheet.jsx`)
 
 Generates a print-friendly document showing which athletes are entered in which events.
 
-### 🧩 Core Logic
+### Core Logic
 - **External Source**: Fetches entry data from a specific Google Sheets CSV export URL.
 - **Parsing**: Logic in `MeetSheet.jsx` splits the CSV into Girls and Boys tables based on header row detection (`4x8`, `55H`, etc.).
 - **Manual Overrides**: Allows the coach to manually check/uncheck events to refine the heat sheet before printing.
 
 ---
 
-## ⚙️ Core Utilities (`ui/src/utils.js`)
+## Core Utilities (`ui/src/utils.js`)
 
 These utilities are used across the entire app for accurate data comparison.
 
@@ -61,7 +61,7 @@ These utilities are used across the entire app for accurate data comparison.
 
 ---
 
-## 🐍 Backend Scraper & Parser (`backend/`)
+## Backend Scraper & Parser (`backend/`)
 
 ### `prototype_parser.py`
 This is a **column-aware text parser** designed for Sub5.com's fixed-width output.

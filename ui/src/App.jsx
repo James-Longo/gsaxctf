@@ -358,7 +358,7 @@ function App() {
 
   const renderSortIcon = (field) => {
     if (sortField !== field) return null
-    return sortDirection === 'asc' ? ' ↑' : ' ↓'
+    return sortDirection === 'asc' ? ' (asc)' : ' (desc)'
   }
 
   return (
@@ -373,31 +373,31 @@ function App() {
               onClick={() => setActiveTab('history')}
               className={`nav-btn ${activeTab === 'history' ? 'active' : ''}`}
             >
-              🏃‍♂️ Performance History
+              Performance History
             </button>
             <button
               onClick={() => setActiveTab('analyzer')}
               className={`nav-btn ${activeTab === 'analyzer' ? 'active' : ''}`}
             >
-              📊 PVC Simulator
+              PVC Simulator
             </button>
             <button
               onClick={() => setActiveTab('pr-pop')}
               className={`nav-btn ${activeTab === 'pr-pop' ? 'active' : ''}`}
             >
-              🚀 PR Pop Calculator
+              PR Pop Calculator
             </button>
             <button
               onClick={() => setActiveTab('meet-sheet')}
               className={`nav-btn ${activeTab === 'meet-sheet' ? 'active' : ''}`}
             >
-              📋 Create Meet Sheet
+              Create Meet Sheet
             </button>
             <button
               onClick={() => setActiveTab('athlete-profile')}
               className={`nav-btn ${activeTab === 'athlete-profile' ? 'active' : ''}`}
             >
-              👤 Athlete Profile
+              Athlete Profile
             </button>
           </div>
 
@@ -568,7 +568,7 @@ function App() {
 
                       <div className="filter-group">
                         <button className="download-btn" onClick={handleDownloadCsv}>
-                          📥 Download CSV
+                          Download CSV
                         </button>
                       </div>
                     </>

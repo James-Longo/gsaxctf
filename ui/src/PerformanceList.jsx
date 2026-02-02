@@ -1316,7 +1316,7 @@ function PVCSimulator({ performances, isBetter }) {
                             className={`simulate-btn ${showSimulation ? 'active' : ''}`}
                             onClick={() => setShowSimulation(!showSimulation)}
                         >
-                            {showSimulation ? '📊 Show Raw Results' : '🏆 Quick Simulation'}
+                            {showSimulation ? 'Show Raw Results' : 'Quick Simulation'}
                         </button>
                     </div>
                     <div className="record-count">{filteredData.length} Results</div>
@@ -1326,7 +1326,7 @@ function PVCSimulator({ performances, isBetter }) {
             {entryDecisions && (entryDecisions.decisionAthletes.length > 0 || entryDecisions.straightforwardAthletes.length > 0) && (
                 <div className="entry-decisions-dashboard" style={{ marginTop: '20px' }}>
                     <div className="dashboard-section-header" style={{ marginBottom: '16px', display: 'flex', alignItems: 'center', gap: '8px' }}>
-                        <h3 style={{ margin: 0, fontSize: '1.1rem', color: '#1a202c' }}>🎯 Entry Decisions: {targetTeam}</h3>
+                        <h3 style={{ margin: 0, fontSize: '1.1rem', color: '#1a202c' }}>Entry Decisions: {targetTeam}</h3>
                         <span className="record-count" style={{ fontSize: '0.7rem' }}>Simple Performance Ranking</span>
                     </div>
 
@@ -1334,7 +1334,7 @@ function PVCSimulator({ performances, isBetter }) {
                         {entryDecisions.decisionAthletes.length > 0 && (
                             <div className="decision-card" style={{ background: '#fff5f5', border: '1px solid #feb2b2', borderRadius: '12px', padding: '20px' }}>
                                 <h4 style={{ margin: '0 0 12px 0', color: '#c53030', display: 'flex', alignItems: 'center', gap: '8px' }}>
-                                    ⚠️ Decision Athletes (&gt;3 events or adjacent track)
+                                    Decision Athletes (&gt;3 events or adjacent track)
                                 </h4>
                                 <div className="decisions-list" style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
                                     {entryDecisions.decisionAthletes.map(ath => (
@@ -1371,7 +1371,7 @@ function PVCSimulator({ performances, isBetter }) {
 
                                                     return (
                                                         <span key={ev.event} style={badgeStyle}>
-                                                            {ev.isRelay && <span style={{ opacity: 0.8 }}>👥</span>}
+                                                            {ev.isRelay && <span style={{ opacity: 0.8 }}></span>}
                                                             {ev.event} (<span style={{ fontWeight: 700 }}>#{ev.rank}</span>)
                                                         </span>
                                                     );
@@ -1386,7 +1386,7 @@ function PVCSimulator({ performances, isBetter }) {
                         {entryDecisions.straightforwardAthletes.length > 0 && (
                             <div className="straightforward-card" style={{ background: '#f0fff4', border: '1px solid #9ae6b4', borderRadius: '12px', padding: '20px' }}>
                                 <h4 style={{ margin: '0 0 12px 0', color: '#2f855a', display: 'flex', alignItems: 'center', gap: '8px' }}>
-                                    ✅ Straightforward Entries (≤3 Scoring Events)
+                                    Straightforward Entries (&lt;=3 Scoring Events)
                                 </h4>
                                 <div className="decisions-list" style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
                                     {entryDecisions.straightforwardAthletes.map(ath => (
@@ -1417,7 +1417,7 @@ function PVCSimulator({ performances, isBetter }) {
 
                                                     return (
                                                         <span key={ev.event} style={badgeStyle}>
-                                                            {ev.isRelay && <span style={{ fontSize: '0.6rem' }}>👥</span>}
+                                                            {ev.isRelay && <span style={{ fontSize: '0.6rem' }}></span>}
                                                             {ev.event} (<span style={{ fontWeight: 600 }}>#{ev.rank}</span>)
                                                         </span>
                                                     );
@@ -1437,7 +1437,7 @@ function PVCSimulator({ performances, isBetter }) {
                     <div className="robust-card">
                         <div className="robust-header">
                             <h3>{strategicLog && strategicLog.length > 0 ? "Nash Equilibrium Report" : `Optimal Strategy: ${targetTeam}`}</h3>
-                            <button className="close-btn" onClick={() => setRobustSimResults(null)}>✕</button>
+                            <button className="close-btn" onClick={() => setRobustSimResults(null)}>X</button>
                         </div>
 
                         {strategicLog && strategicLog.length > 0 && (
@@ -1445,7 +1445,7 @@ function PVCSimulator({ performances, isBetter }) {
                                 {strategicLog.map((entry, i) => (
                                     <div key={i} style={{ marginBottom: '4px' }}>{entry}</div>
                                 ))}
-                                <div style={{ color: '#4ade80', marginTop: '8px' }}>✓ Nash Equilibrium Established</div>
+                                <div style={{ color: '#4ade80', marginTop: '8px' }}>Nash Equilibrium Established</div>
                             </div>
                         )}
 
@@ -1601,7 +1601,7 @@ function PVCSimulator({ performances, isBetter }) {
                 <div className="simulation-overlay">
                     {optimizedTeamScores.incomplete ? (
                         <div className="meet-leaderboard warn">
-                            <p>⚠️ <strong>Please select a specific Year and Season</strong> to view the Meet Simulation.</p>
+                            <p>Please select a specific Year and Season to view the Meet Simulation.</p>
                         </div>
                     ) : (
                         <div className="leaderboards-container">
@@ -1623,14 +1623,14 @@ function PVCSimulator({ performances, isBetter }) {
                                 if (missingEvents.length > 0) {
                                     return (
                                         <div className="missing-events-warning" style={{ gridColumn: '1 / -1', marginBottom: '1rem', padding: '1rem', background: '#fff3cd', borderRadius: '8px', border: '1px solid #ffeeba', color: '#856404' }}>
-                                            ⚠️ <strong>Missing Events:</strong> No results found for: {missingEvents.join(', ')}.
+                                            Missing Events: No results found for: {missingEvents.join(', ')}.
                                         </div>
                                     );
                                 }
                                 return null;
                             })()}
                             <div className="meet-leaderboard boys">
-                                <h3>🏃‍♂️ Boys Team Standings</h3>
+                                <h3>Boys Team Standings</h3>
                                 <div className="leaderboard-grid">
                                     {optimizedTeamScores.boys.map((ts, idx) => (
                                         <div key={ts.team} className="leaderboard-wrapper">
@@ -1641,7 +1641,7 @@ function PVCSimulator({ performances, isBetter }) {
                                                 <span className="team-rank">{idx + 1}</span>
                                                 <span className="team-name">{ts.team}</span>
                                                 <span className="team-points">{ts.pts.toFixed(1)}</span>
-                                                <span className="expand-icon">{expandedTeams[`${ts.team}-boys`] ? '▼' : '▶'}</span>
+                                                <span className="expand-icon">{expandedTeams[`${ts.team}-boys`] ? 'v' : '>'}</span>
                                             </div>
                                             {expandedTeams[`${ts.team}-boys`] && (
                                                 <div className="team-breakdown">
@@ -1669,7 +1669,7 @@ function PVCSimulator({ performances, isBetter }) {
                                 </div>
                             </div>
                             <div className="meet-leaderboard girls">
-                                <h3>🏃‍♀️ Girls Team Standings</h3>
+                                <h3>Girls Team Standings</h3>
                                 <div className="leaderboard-grid">
                                     {optimizedTeamScores.girls.map((ts, idx) => (
                                         <div key={ts.team} className="leaderboard-wrapper">
@@ -1680,7 +1680,7 @@ function PVCSimulator({ performances, isBetter }) {
                                                 <span className="team-rank">{idx + 1}</span>
                                                 <span className="team-name">{ts.team}</span>
                                                 <span className="team-points">{ts.pts.toFixed(1)}</span>
-                                                <span className="expand-icon">{expandedTeams[`${ts.team}-girls`] ? '▼' : '▶'}</span>
+                                                <span className="expand-icon">{expandedTeams[`${ts.team}-girls`] ? 'v' : '>'}</span>
                                             </div>
                                             {expandedTeams[`${ts.team}-girls`] && (
                                                 <div className="team-breakdown">

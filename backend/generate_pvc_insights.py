@@ -43,7 +43,7 @@ def main():
             insights = engine.get_strategic_insights(team_name)
             
             if insights['no_brainer_swaps']:
-                print("#### 💡 No-Brainer Swaps (Low-Hanging Fruit)")
+                print("#### No-Brainer Swaps (Low-Hanging Fruit)")
                 for s in insights['no_brainer_swaps']:
                     if 'from_event' in s:
                         print(f"- **{s['athlete_name']}**: Swap from 0-point {s['from_event']} to **{s['to_event']}** (+{s['gain']} pts gain)")
@@ -76,7 +76,7 @@ def main():
                             print(f"    - **{info['name']}**: Currently prioritized in: {', '.join(ev_list)}.")
                     
                     if rb['maxed_but_free']:
-                        print("  * **⚠️ HEAVY BURDEN (Sub-optimal Allocation):**")
+                        print("  * **HEAVY BURDEN (Sub-optimal Allocation):**")
                         for info in rb['maxed_but_free']:
                             print(f"    - **{info['name']}**: Maxed out but scoring **0 pts** in: {', '.join(info['zero_events'])}.")
                             print(f"      *Tactical Note: This athlete should be moved into the relay immediately.*")
@@ -90,10 +90,10 @@ def main():
             # NEW: Entry Decisions Dashboard
             decisions = engine.get_entry_decisions(team_name)
             if decisions['decision_athletes'] or decisions['straightforward_athletes']:
-                print("\n#### 🎯 Entry Decisions Dashboard")
+                print("\n#### Entry Decisions Dashboard")
                 
                 if decisions['decision_athletes']:
-                    print("\n**⚠️ DECISION ATHLETES (>3 events or adjacent track events)**")
+                    print("\n**DECISION ATHLETES (>3 events or adjacent track events)**")
                     print("| Athlete | Reason | Potential Events (Projected Rank) |")
                     print("| :--- | :--- | :--- |")
                     for a in decisions['decision_athletes']:
@@ -112,7 +112,7 @@ def main():
                         print(f"| **{a['name']}** | {reason_str} | {', '.join(ev_strs)} |")
                 
                 if decisions['straightforward_athletes']:
-                    print("\n**✅ STRAIGHTFORWARD ENTRIES (<=3 Scoring Events)**")
+                    print("\n**STRAIGHTFORWARD ENTRIES (<=3 Scoring Events)**")
                     print("| Athlete | Projected Events (Projected Rank) |")
                     print("| :--- | :--- |")
                     for a in decisions['straightforward_athletes']:
@@ -125,7 +125,7 @@ def main():
                                 ev_strs.append(f"*{s}*")
                         print(f"| {a['name']} | {', '.join(ev_strs)} |")
 
-    print("\n\n✓ Strategic Insights Generated")
+    print("\n\nStrategic Insights Generated")
 
 if __name__ == "__main__":
     main()

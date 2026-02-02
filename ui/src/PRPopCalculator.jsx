@@ -183,7 +183,7 @@ const PRPopCalculator = ({ performances, selectedTeam, isBetter }) => {
             <div className="pr-pop-content">
                 {popResults.length > 0 ? (
                     <div className="pop-list">
-                        <h3>🎉 PR Pops for {currentMeetName}</h3>
+                        <h3>PR Pops for {currentMeetName}</h3>
                         <p className="pop-count">Total Pops: {totalPrCount}</p>
                         <div className="pop-grid">
                             {popResults.map(([athlete, events]) => (
