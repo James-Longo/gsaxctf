@@ -1350,13 +1350,15 @@ function PVCSimulator({ performances, isBetter }) {
                                                 {ath.scoringEvents.map(ev => (
                                                     <span key={ev.event} style={{
                                                         fontSize: '0.75rem',
-                                                        background: ev.isScorable ? (ev.isRelay ? '#ebf8ff' : '#edf2f7') : 'transparent',
+                                                        background: ev.isScorable ? '#f0fff4' : '#f7fafc',
                                                         padding: '2px 8px',
                                                         borderRadius: '4px',
-                                                        border: ev.isScorable ? (ev.isRelay ? '1px solid #bee3f8' : '1px solid #e2e8f0') : '1px solid #f1f5f9',
-                                                        color: ev.isScorable ? (ev.isRelay ? '#2c5282' : '#2d3748') : '#a0aec0',
-                                                        opacity: ev.isScorable ? 1 : 0.7
+                                                        border: ev.isScorable ? '1px solid #c6f6d5' : '1px solid #edf2f7',
+                                                        color: ev.isScorable ? '#22543d' : '#a0aec0',
+                                                        opacity: ev.isScorable ? 1 : 0.7,
+                                                        fontWeight: ev.isScorable ? 600 : 400
                                                     }}>
+                                                        {ev.isRelay && <span style={{ marginRight: '4px', opacity: 0.8 }}>👥</span>}
                                                         {ev.event} (<span style={{ fontWeight: 700 }}>#{ev.rank}</span>)
                                                     </span>
                                                 ))}
@@ -1380,9 +1382,10 @@ function PVCSimulator({ performances, isBetter }) {
                                                 {ath.scoringEvents.map(ev => (
                                                     <span key={ev.event} style={{
                                                         fontSize: '0.7rem',
-                                                        color: ev.isScorable ? (ev.isRelay ? '#2c5282' : '#4a5568') : '#cbd5e1',
+                                                        color: ev.isScorable ? '#2f855a' : '#cbd5e1',
                                                         fontWeight: ev.isScorable ? 600 : 400
                                                     }}>
+                                                        {ev.isRelay && <span style={{ fontSize: '0.6rem', marginRight: '2px' }}>👥</span>}
                                                         {ev.event} (<span style={{ fontWeight: 600 }}>#{ev.rank}</span>)
                                                     </span>
                                                 ))}
