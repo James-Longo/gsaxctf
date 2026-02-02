@@ -349,8 +349,9 @@ class ChampionshipEngine:
                     m = parse_mark(mark_str)
                     if m is not None:
                         global_bests[ev].append((m, t_n))
-            # Relays (optional, but let's focus on individual for "entry decisions")
+            # Relays
             for r in t_d.get('relays', []):
+                ev = r['event']
                 m = parse_mark(r['mark'])
                 if m is not None:
                     global_bests[ev].append((m, t_n))
@@ -363,6 +364,39 @@ class ChampionshipEngine:
 
         decision_athletes = []
         straightforward_athletes = []
+
+        # 2. Pre-calculate scorable relays for current team
+        # We attribute scorable relays to athletes on this team
+        relay_scoring_for_athletes = defaultdict(list)
+        for r in t_data.get('relays', []):
+            ev = r['event']
+            my_mark = parse_mark(r['mark'])
+            if my_mark is None: continue
+            
+            event_ranks = rankings.get(ev, [])
+            team_counts = defaultdict(int)
+            rank_pos = 0
+            my_rank = None
+            for m, t_n in event_ranks:
+                if t_n == team_name and m == my_mark:
+                    my_rank = rank_pos + 1
+                    break
+                if team_counts[t_n] < 1: # Only 1 relay per team scores
+                    rank_pos += 1
+                    team_counts[t_n] += 1
+            
+            if my_rank is not None and my_rank <= len(self.rules.scoring_table):
+                # This relay is scorable. Attribute to members.
+                for m_id in r.get('member_ids', []):
+                    # Find athlete name for this ID
+                    ath = next((x for x in t_data['athletes'] if x['athlete_id'] == m_id), None)
+                    if ath:
+                        relay_scoring_for_athletes[ath['athlete_name']].append({
+                            'event': ev,
+                            'rank': my_rank,
+                            'mark': r['mark'],
+                            'is_relay': True
+                        })
 
         for a in t_data['athletes']:
             a_name = a['athlete_name']
@@ -396,11 +430,21 @@ class ChampionshipEngine:
                     potential_scoring_events.append({
                         'event': ev,
                         'rank': my_rank,
-                        'mark': mark_str
+                        'mark': mark_str,
+                        'is_relay': False
                     })
+            
+            # Add relay events
+            potential_scoring_events.extend(relay_scoring_for_athletes.get(a_name, []))
 
-            # Sort events by rank
-            potential_scoring_events.sort(key=lambda x: x['rank'])
+            # Deduplicate by event (keep best rank)
+            best_evs = {}
+            for sev in potential_scoring_events:
+                ev = sev['event']
+                if ev not in best_evs or sev['rank'] < best_evs[ev]['rank']:
+                    best_evs[ev] = sev
+            
+            potential_scoring_events = sorted(best_evs.values(), key=lambda x: x['rank'])
             
             # Adjacency detection for track events
             def get_event_index(ev_name):

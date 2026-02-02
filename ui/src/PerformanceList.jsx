@@ -1167,12 +1167,22 @@ function PVCSimulator({ performances, isBetter }) {
                     teamCounts[team] = (teamCounts[team] || 0) + 1;
 
                     if (team === targetTeam) {
-                        const name = res.athlete_name || (isRelay ? "Relay" : "Unknown");
-                        if (!teamAthletes[name]) teamAthletes[name] = { scoringEvents: [] };
-                        teamAthletes[name].scoringEvents.push({
-                            event: res.event,
-                            rank: rankPos,
-                            mark: res.mark
+                        const nameStr = res.athlete_name || "";
+                        let names = [nameStr];
+                        if (isRelay) {
+                            // Split relay members: "John Doe, Jane Smith, ..."
+                            // Some might have "School Name (A, B, C, D)" format or just "A, B, C, D"
+                            names = nameStr.split(',').map(n => n.trim()).filter(n => n && !n.toLowerCase().includes('school') && !n.toLowerCase().includes('relay'));
+                        }
+
+                        names.forEach(name => {
+                            if (!teamAthletes[name]) teamAthletes[name] = { scoringEvents: [] };
+                            teamAthletes[name].scoringEvents.push({
+                                event: res.event,
+                                rank: rankPos,
+                                mark: res.mark,
+                                isRelay: isRelay
+                            });
                         });
                     }
                 }
@@ -1200,7 +1210,15 @@ function PVCSimulator({ performances, isBetter }) {
 
         Object.entries(teamAthletes).forEach(([name, data]) => {
             if (name === "Relay") return;
-            data.scoringEvents.sort((a, b) => a.rank - b.rank);
+
+            // Deduplicate by event name (keep best rank)
+            const bestEvs = {};
+            data.scoringEvents.forEach(sev => {
+                if (!bestEvs[sev.event] || sev.rank < bestEvs[sev.event].rank) {
+                    bestEvs[sev.event] = sev;
+                }
+            });
+            data.scoringEvents = Object.values(bestEvs).sort((a, b) => a.rank - b.rank);
 
             const trackIndices = [...new Set(data.scoringEvents.map(e => getEventIndex(e.event)).filter(idx => idx >= 0))].sort((a, b) => a - b);
             let hasAdjacency = false;
@@ -1322,8 +1340,8 @@ function PVCSimulator({ performances, isBetter }) {
                                             </div>
                                             <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px' }}>
                                                 {ath.scoringEvents.map(ev => (
-                                                    <span key={ev.event} style={{ fontSize: '0.75rem', background: '#edf2f7', padding: '2px 8px', borderRadius: '4px', border: '1px solid #e2e8f0' }}>
-                                                        {ev.event} (<span style={{ fontWeight: 700, color: '#2d3748' }}>#{ev.rank}</span>)
+                                                    <span key={ev.event} style={{ fontSize: '0.75rem', background: ev.isRelay ? '#ebf8ff' : '#edf2f7', padding: '2px 8px', borderRadius: '4px', border: ev.isRelay ? '1px solid #bee3f8' : '1px solid #e2e8f0', color: ev.isRelay ? '#2c5282' : 'inherit' }}>
+                                                        {ev.event} (<span style={{ fontWeight: 700, color: ev.isRelay ? '#2c5282' : '#2d3748' }}>#{ev.rank}</span>)
                                                     </span>
                                                 ))}
                                             </div>
@@ -1344,7 +1362,7 @@ function PVCSimulator({ performances, isBetter }) {
                                             <div style={{ fontWeight: 600, marginBottom: '6px', color: '#4a5568', fontSize: '0.9rem' }}>{ath.name}</div>
                                             <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px' }}>
                                                 {ath.scoringEvents.map(ev => (
-                                                    <span key={ev.event} style={{ fontSize: '0.7rem', color: '#718096' }}>
+                                                    <span key={ev.event} style={{ fontSize: '0.7rem', color: ev.isRelay ? '#2c5282' : '#718096', fontWeight: ev.isRelay ? 600 : 400 }}>
                                                         {ev.event} (<span style={{ fontWeight: 600 }}>#{ev.rank}</span>)
                                                     </span>
                                                 ))}
