@@ -1147,6 +1147,58 @@ function PVCSimulator({ performances, isBetter }) {
         };
     }, [optimizedData, showSimulation, filterYear, filterSeason]);
 
+    const entryDecisions = useMemo(() => {
+        if (!targetTeam || Object.keys(groupedData).length === 0) return null;
+
+        const teamAthletes = {};
+
+        Object.entries(groupedData).forEach(([groupTitle, results]) => {
+            let rankPos = 0;
+            const teamCounts = {};
+
+            for (let i = 0; i < results.length; i++) {
+                const res = results[i];
+                const team = res.pvcTeam;
+                const isRelay = res.isRelay;
+                const limit = isRelay ? 1 : 3;
+
+                if ((teamCounts[team] || 0) < limit) {
+                    rankPos++;
+                    teamCounts[team] = (teamCounts[team] || 0) + 1;
+
+                    if (team === targetTeam) {
+                        const name = res.athlete_name || (isRelay ? "Relay" : "Unknown");
+                        if (!teamAthletes[name]) teamAthletes[name] = { scoringEvents: [] };
+                        teamAthletes[name].scoringEvents.push({
+                            event: res.event,
+                            rank: rankPos,
+                            mark: res.mark
+                        });
+                    }
+                }
+                if (rankPos >= SCORING_RULES.length) break;
+            }
+        });
+
+        const decisionAthletes = [];
+        const straightforwardAthletes = [];
+
+        Object.entries(teamAthletes).forEach(([name, data]) => {
+            if (name === "Relay") return;
+            data.scoringEvents.sort((a, b) => a.rank - b.rank);
+            if (data.scoringEvents.length > 3) {
+                decisionAthletes.push({ name, scoringEvents: data.scoringEvents });
+            } else if (data.scoringEvents.length > 0) {
+                straightforwardAthletes.push({ name, scoringEvents: data.scoringEvents });
+            }
+        });
+
+        return {
+            decisionAthletes: decisionAthletes.sort((a, b) => b.scoringEvents.length - a.scoringEvents.length),
+            straightforwardAthletes: straightforwardAthletes.sort((a, b) => b.scoringEvents.length - a.scoringEvents.length)
+        };
+    }, [groupedData, targetTeam]);
+
     return (
         <div className="analyzer-container">
             <div className="analyzer-header">
@@ -1214,6 +1266,61 @@ function PVCSimulator({ performances, isBetter }) {
                     <div className="record-count">{filteredData.length} Results</div>
                 </div>
             </div>
+
+            {entryDecisions && (entryDecisions.decisionAthletes.length > 0 || entryDecisions.straightforwardAthletes.length > 0) && (
+                <div className="entry-decisions-dashboard" style={{ marginTop: '20px' }}>
+                    <div className="dashboard-section-header" style={{ marginBottom: '16px', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                        <h3 style={{ margin: 0, fontSize: '1.1rem', color: '#1a202c' }}>🎯 Entry Decisions: {targetTeam}</h3>
+                        <span className="record-count" style={{ fontSize: '0.7rem' }}>Simple Performance Ranking</span>
+                    </div>
+
+                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(400px, 1fr))', gap: '20px' }}>
+                        {entryDecisions.decisionAthletes.length > 0 && (
+                            <div className="decision-card" style={{ background: '#fff5f5', border: '1px solid #feb2b2', borderRadius: '12px', padding: '20px' }}>
+                                <h4 style={{ margin: '0 0 12px 0', color: '#c53030', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                                    ⚠️ Decision Athletes (&gt;3 Scoring Events)
+                                </h4>
+                                <div className="decisions-list" style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+                                    {entryDecisions.decisionAthletes.map(ath => (
+                                        <div key={ath.name} style={{ background: 'white', padding: '12px', borderRadius: '8px', boxShadow: '0 1px 3px rgba(0,0,0,0.1)' }}>
+                                            <div style={{ fontWeight: 700, marginBottom: '6px', color: '#2d3748' }}>{ath.name}</div>
+                                            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px' }}>
+                                                {ath.scoringEvents.map(ev => (
+                                                    <span key={ev.event} style={{ fontSize: '0.75rem', background: '#edf2f7', padding: '2px 8px', borderRadius: '4px', border: '1px solid #e2e8f0' }}>
+                                                        {ev.event} (<span style={{ fontWeight: 700, color: '#2d3748' }}>#{ev.rank}</span>)
+                                                    </span>
+                                                ))}
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+                        )}
+
+                        {entryDecisions.straightforwardAthletes.length > 0 && (
+                            <div className="straightforward-card" style={{ background: '#f0fff4', border: '1px solid #9ae6b4', borderRadius: '12px', padding: '20px' }}>
+                                <h4 style={{ margin: '0 0 12px 0', color: '#2f855a', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                                    ✅ Straightforward Entries (≤3 Scoring Events)
+                                </h4>
+                                <div className="decisions-list" style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+                                    {entryDecisions.straightforwardAthletes.map(ath => (
+                                        <div key={ath.name} style={{ background: 'white', padding: '12px', borderRadius: '8px', boxShadow: '0 1px 3px rgba(0,0,0,0.1)' }}>
+                                            <div style={{ fontWeight: 600, marginBottom: '6px', color: '#4a5568', fontSize: '0.9rem' }}>{ath.name}</div>
+                                            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px' }}>
+                                                {ath.scoringEvents.map(ev => (
+                                                    <span key={ev.event} style={{ fontSize: '0.7rem', color: '#718096' }}>
+                                                        {ev.event} (<span style={{ fontWeight: 600 }}>#{ev.rank}</span>)
+                                                    </span>
+                                                ))}
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+                        )}
+                    </div>
+                </div>
+            )}
 
             {robustSimResults && (
                 <div className="robust-results-overlay">

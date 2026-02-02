@@ -331,3 +331,88 @@ class ChampionshipEngine:
                 })
 
         return insights
+
+    def get_entry_decisions(self, team_name):
+        """
+        Categorizes athletes based on potential scoring events (>3 vs <=3).
+        Calculates simple rankings based on best season marks.
+        """
+        t_data = self.teams_dict[team_name]
+        
+        # 1. Gather "best of the best" marks globally for comparison
+        # (This is a "simple simulation" - just ranking season bests)
+        global_bests = defaultdict(list) # event -> [(mark, team_name)]
+        for t_n, t_d in self.teams_dict.items():
+            # Individuals
+            for a in t_d['athletes']:
+                for ev, mark_str in a['best_marks'].items():
+                    m = parse_mark(mark_str)
+                    if m is not None:
+                        global_bests[ev].append((m, t_n))
+            # Relays (optional, but let's focus on individual for "entry decisions")
+            for r in t_d.get('relays', []):
+                m = parse_mark(r['mark'])
+                if m is not None:
+                    global_bests[ev].append((m, t_n))
+
+        # Sort global rankings
+        rankings = {}
+        for ev, marks in global_bests.items():
+            is_time = any(x in ev.lower() for x in ['dash', 'run', 'hurdles', 'mile', 'relay', '4x'])
+            rankings[ev] = sorted(marks, key=lambda x: x[0], reverse=not is_time)
+
+        decision_athletes = []
+        straightforward_athletes = []
+
+        for a in t_data['athletes']:
+            a_name = a['athlete_name']
+            potential_scoring_events = []
+            
+            for ev, mark_str in a['best_marks'].items():
+                if ev not in self.events: continue
+                my_mark = parse_mark(mark_str)
+                if my_mark is None: continue
+                
+                # Find rank in global list (simple ranking)
+                event_ranks = rankings.get(ev, [])
+                # To be fair, only count 3 per team in the ranking
+                team_counts = defaultdict(int)
+                rank_pos = 0
+                my_rank = None
+                
+                for m, t_n in event_ranks:
+                    # If this is me, record rank
+                    if t_n == team_name and m == my_mark:
+                        # Avoid double counting same mark
+                        my_rank = rank_pos + 1
+                        break
+                    
+                    # Otherwise, increment rank if it counts towards scoring (top 3 per team)
+                    if team_counts[t_n] < 3:
+                        rank_pos += 1
+                        team_counts[t_n] += 1
+                
+                if my_rank is not None and my_rank <= len(self.rules.scoring_table):
+                    potential_scoring_events.append({
+                        'event': ev,
+                        'rank': my_rank,
+                        'mark': mark_str
+                    })
+
+            # Sort events by rank
+            potential_scoring_events.sort(key=lambda x: x['rank'])
+            
+            athlete_info = {
+                'name': a_name,
+                'scoring_events': potential_scoring_events
+            }
+            
+            if len(potential_scoring_events) > 3:
+                decision_athletes.append(athlete_info)
+            elif potential_scoring_events:
+                straightforward_athletes.append(athlete_info)
+
+        return {
+            'decision_athletes': decision_athletes,
+            'straightforward_athletes': straightforward_athletes
+        }

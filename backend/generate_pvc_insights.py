@@ -87,6 +87,27 @@ def main():
             if not insights['congested_athletes'] and not insights['relay_bottlenecks'] and not insights['no_brainer_swaps']:
                 print("*Roster is currently fully optimized.*")
 
+            # NEW: Entry Decisions Dashboard
+            decisions = engine.get_entry_decisions(team_name)
+            if decisions['decision_athletes'] or decisions['straightforward_athletes']:
+                print("\n#### 🎯 Entry Decisions Dashboard")
+                
+                if decisions['decision_athletes']:
+                    print("\n**⚠️ DECISION ATHLETES (>3 Scoring Events)**")
+                    print("| Athlete | Potential Events (Projected Rank) |")
+                    print("| :--- | :--- |")
+                    for a in decisions['decision_athletes']:
+                        ev_strs = [f"{e['event']} (#{e['rank']})" for e in a['scoring_events']]
+                        print(f"| **{a['name']}** | {', '.join(ev_strs)} |")
+                
+                if decisions['straightforward_athletes']:
+                    print("\n**✅ STRAIGHTFORWARD ENTRIES (<=3 Scoring Events)**")
+                    print("| Athlete | Projected Scoring Events |")
+                    print("| :--- | :--- |")
+                    for a in decisions['straightforward_athletes']:
+                        ev_strs = [f"{e['event']} (#{e['rank']})" for e in a['scoring_events']]
+                        print(f"| {a['name']} | {', '.join(ev_strs)} |")
+
     print("\n\n✓ Strategic Insights Generated")
 
 if __name__ == "__main__":
