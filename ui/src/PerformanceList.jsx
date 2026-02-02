@@ -1185,17 +1185,16 @@ function PVCSimulator({ performances, isBetter }) {
 
         const getEventIndex = (evName) => {
             const evL = evName.toLowerCase();
-            const sequence = ["4x800", "hurdle", "55m dash", "mile", "400m", "800m", "200m", "2 mile", "4x200"];
-            for (let i = 0; i < sequence.length; i++) {
-                const token = sequence[i];
-                if (token === "55m dash") {
-                    if (evL.includes("55m dash") || evL.includes("55 meter dash")) return i;
-                } else if (token === "2 mile") {
-                    if (evL.includes("2-mile") || evL.includes("2 mile")) return i;
-                } else if (evL.includes(token)) {
-                    return i;
-                }
-            }
+            // Order: 4x800, Hurdle, 55m, Mile, 400, 800, 200, 2mile, 4x200
+            if (evL.includes("4x800") || evL.includes("4 x 800")) return 0;
+            if (evL.includes("4x200") || evL.includes("4 x 200")) return 8;
+            if (evL.includes("hurdle")) return 1;
+            if (evL.includes("55m dash") || evL.includes("55 meter dash")) return 2;
+            if ((evL.includes("mile") || evL.includes("1600")) && !evL.includes("2")) return 3;
+            if (evL.includes("400")) return 4;
+            if (evL.includes("800")) return 5;
+            if (evL.includes("200")) return 6;
+            if (evL.includes("2-mile") || evL.includes("2 mile") || evL.includes("3200")) return 7;
             return -1;
         };
 

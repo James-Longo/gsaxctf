@@ -405,31 +405,32 @@ class ChampionshipEngine:
             # Adjacency detection for track events
             def get_event_index(ev_name):
                 ev_l = ev_name.lower()
-                order = [
-                    "4 x 800", "hurdle", "55m dash", "55 meter dash", 
-                    "mile", "400m", "800m", "200m", "2-mile", "2 mile", "4 x 200"
-                ]
-                # Map to standard indices (merging aliases)
-                mapping = {
-                    0: 0, # 4x800
-                    1: 1, 2: 2, 3: 3, # Hurdle, Dash, Dash
-                    4: 4, # Mile
-                    5: 5, # 400
-                    6: 6, # 800
-                    7: 7, # 200
-                    8: 8, 9: 9, # 2-mile, 2 mile
-                    10: 10 # 4x200
-                }
                 # Normalized sequence index (0-8)
-                sequence = ["4 x 800", "hurdle", "55m dash", "mile", "400m", "800m", "200m", "2 mile", "4 x 200"]
+                sequence_tokens = [
+                    ["4x800", "4 x 800"],
+                    ["hurdle"],
+                    ["55m dash", "55 meter dash"],
+                    ["mile", "1600"], # mile but not 2 mile
+                    ["400"],
+                    ["800"], # must be checked after 4x800
+                    ["200"],
+                    ["2 mile", "2-mile", "3200"],
+                    ["4x200", "4 x 200"]
+                ]
                 
-                for i, token in enumerate(sequence):
-                    if token == "55m dash":
-                        if "55m dash" in ev_l or "55 meter dash" in ev_l: return i
-                    elif token == "2 mile":
-                        if "2-mile" in ev_l or "2 mile" in ev_l: return i
-                    elif token in ev_l:
-                        return i
+                # Check for 4x800 and 4x200 first to avoid collision with 800/200
+                if "4x800" in ev_l or "4 x 800" in ev_l: return 0
+                if "4x200" in ev_l or "4 x 200" in ev_l: return 8
+                
+                # Regular events
+                if "hurdle" in ev_l: return 1
+                if "55m dash" in ev_l or "55 meter dash" in ev_l: return 2
+                if ("mile" in ev_l or "1600" in ev_l) and "2" not in ev_l: return 3
+                if "400" in ev_l: return 4
+                if "800" in ev_l: return 5
+                if "200" in ev_l: return 6
+                if "2 mile" in ev_l or "2-mile" in ev_l or "3200" in ev_l: return 7
+                
                 return -1
 
             track_indices = sorted(list(set(get_event_index(sev['event']) for sev in potential_scoring_events if get_event_index(sev['event']) >= 0)))
