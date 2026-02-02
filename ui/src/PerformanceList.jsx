@@ -1347,8 +1347,8 @@ function PVCSimulator({ performances, isBetter }) {
                                                 </div>
                                             </div>
                                             <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px' }}>
-                                                {ath.scoringEvents.map(ev => {
-                                                    const isTop3 = ev.rank <= 3;
+                                                {ath.scoringEvents.map((ev, idx) => {
+                                                    const isTop3Opportunity = ev.isScorable && idx < 3;
                                                     const isScoring = ev.isScorable;
 
                                                     let badgeStyle = {
@@ -1361,7 +1361,7 @@ function PVCSimulator({ performances, isBetter }) {
                                                         gap: '4px'
                                                     };
 
-                                                    if (isTop3) {
+                                                    if (isTop3Opportunity) {
                                                         badgeStyle = { ...badgeStyle, background: '#c6f6d5', color: '#22543d', border: '1px solid #9ae6b4' };
                                                     } else if (isScoring) {
                                                         badgeStyle = { ...badgeStyle, background: '#edf2f7', color: '#4a5568', border: '1px solid #e2e8f0' };
@@ -1393,8 +1393,8 @@ function PVCSimulator({ performances, isBetter }) {
                                         <div key={ath.name} style={{ background: 'white', padding: '12px', borderRadius: '8px', boxShadow: '0 1px 3px rgba(0,0,0,0.1)' }}>
                                             <div style={{ fontWeight: 600, marginBottom: '6px', color: '#4a5568', fontSize: '0.9rem' }}>{ath.name}</div>
                                             <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px' }}>
-                                                {ath.scoringEvents.map(ev => {
-                                                    const isTop3 = ev.rank <= 3;
+                                                {ath.scoringEvents.map((ev, idx) => {
+                                                    const isTop3Opportunity = ev.isScorable && idx < 3;
                                                     const isScoring = ev.isScorable;
 
                                                     let badgeStyle = {
@@ -1407,7 +1407,7 @@ function PVCSimulator({ performances, isBetter }) {
                                                         gap: '3px'
                                                     };
 
-                                                    if (isTop3) {
+                                                    if (isTop3Opportunity) {
                                                         badgeStyle = { ...badgeStyle, background: '#c6f6d5', color: '#22543d', border: '1px solid #9ae6b4' };
                                                     } else if (isScoring) {
                                                         badgeStyle = { ...badgeStyle, background: '#edf2f7', color: '#4a5568', border: '1px solid #e2e8f0' };
