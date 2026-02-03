@@ -53,13 +53,48 @@ const AthleteProfile = ({ performances, selectedAthlete }) => {
             const yearGroups = {};
             data.forEach(d => {
                 const year = d.derivedYear || d.year;
-                if (!yearGroups[year]) yearGroups[year] = [];
-                yearGroups[year].push(d);
+                if (!yearGroups[year]) yearGroups[year] = { points: [] };
+
+                const ts = new Date(d.date).getTime();
+                yearGroups[year].points.push({ ...d, timestamp: ts });
             });
+
+            // Calculate trends using timestamp
+            Object.keys(yearGroups).forEach(year => {
+                const pts = yearGroups[year].points;
+                if (pts.length < 2) {
+                    yearGroups[year].trend = pts;
+                    return;
+                }
+
+                const n = pts.length;
+                const sumX = pts.reduce((s, p) => s + p.timestamp, 0);
+                const sumY = pts.reduce((s, p) => s + p.numericValue, 0);
+                const sumXX = pts.reduce((s, p) => s + p.timestamp ** 2, 0);
+                const sumXY = pts.reduce((s, p) => s + p.timestamp * p.numericValue, 0);
+
+                const slope = (n * sumXY - sumX * sumY) / (n * sumXX - sumX ** 2);
+                const intercept = (sumY - slope * sumX) / n;
+
+                const minX = Math.min(...pts.map(p => p.timestamp));
+                const maxX = Math.max(...pts.map(p => p.timestamp));
+
+                yearGroups[year].trend = [
+                    { timestamp: minX, numericValue: slope * minX + intercept, isTrend: true },
+                    { timestamp: maxX, numericValue: slope * maxX + intercept, isTrend: true }
+                ];
+            });
+
+            // unique year ticks for XAxis
+            const yearTicks = Array.from(new Set(data.map(d => {
+                const date = new Date(d.date);
+                return new Date(date.getFullYear(), 0, 1).getTime();
+            }))).sort();
 
             processedGroups[event] = {
                 data,
                 yearGroups,
+                yearTicks,
                 stats: {
                     best: data.find(d => d.numericValue === best)?.mark,
                     median: isTime ? formatTime(median) : formatDistance(median),
@@ -132,10 +167,13 @@ const AthleteProfile = ({ performances, selectedAthlete }) => {
                             <LineChart margin={{ top: 20, right: 30, left: 20, bottom: 20 }}>
                                 <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e2e8f0" />
                                 <XAxis
-                                    dataKey="date"
-                                    type="category"
-                                    allowDuplicatedCategory={false}
-                                    hide={true}
+                                    dataKey="timestamp"
+                                    type="number"
+                                    domain={['dataMin', 'dataMax']}
+                                    ticks={group.yearTicks}
+                                    tickFormatter={(val) => new Date(val).getFullYear()}
+                                    stroke="#718096"
+                                    fontSize={12}
                                 />
                                 <YAxis
                                     domain={['auto', 'auto']}
@@ -145,24 +183,41 @@ const AthleteProfile = ({ performances, selectedAthlete }) => {
                                     fontSize={12}
                                 />
                                 <Tooltip
-                                    formatter={(value) => group.isTime ? formatTime(value) : formatDistance(value)}
-                                    labelFormatter={(label) => `Date: ${label}`}
+                                    formatter={(value, name, props) => {
+                                        if (props.payload.isTrend) return [group.isTime ? formatTime(value) : formatDistance(value), `${name} (Trend)`];
+                                        return [group.isTime ? formatTime(value) : formatDistance(value), name];
+                                    }}
+                                    labelFormatter={(label) => `Date: ${new Date(label).toLocaleDateString()}`}
                                     contentStyle={{ borderRadius: '8px', border: 'none', boxShadow: '0 4px 6px -1px rgba(0,0,0,0.1)' }}
                                 />
                                 <Legend />
-                                {Object.keys(group.yearGroups).sort().map((year, i) => (
-                                    <Line
-                                        key={year}
-                                        data={group.yearGroups[year]}
-                                        type="monotone"
-                                        dataKey="numericValue"
-                                        name={year}
-                                        stroke={COLORS[i % COLORS.length]}
-                                        strokeWidth={3}
-                                        dot={{ r: 4, strokeWidth: 2 }}
-                                        activeDot={{ r: 6 }}
-                                        connectNulls
-                                    />
+                                {Object.keys(group.yearGroups).sort((a, b) => Number(a) - Number(b)).map((year, i) => (
+                                    <React.Fragment key={year}>
+                                        {/* Trend Line (Show in Legend) */}
+                                        <Line
+                                            data={group.yearGroups[year].trend}
+                                            type="monotone"
+                                            dataKey="numericValue"
+                                            name={year}
+                                            stroke={COLORS[i % COLORS.length]}
+                                            strokeWidth={3}
+                                            strokeDasharray="5 5"
+                                            dot={false}
+                                            activeDot={false}
+                                            connectNulls
+                                        />
+                                        {/* Individual Points (Hidden from Legend) */}
+                                        <Line
+                                            data={group.yearGroups[year].points}
+                                            type="monotone"
+                                            dataKey="numericValue"
+                                            name={year}
+                                            stroke="none"
+                                            dot={{ r: 4, fill: COLORS[i % COLORS.length], strokeWidth: 0 }}
+                                            activeDot={{ r: 6 }}
+                                            legendType="none"
+                                        />
+                                    </React.Fragment>
                                 ))}
                             </LineChart>
                         </ResponsiveContainer>

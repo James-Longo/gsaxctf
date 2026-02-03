@@ -42,6 +42,12 @@ function App() {
       .then(data => {
         setAllPerformances(data)
         setDataLoaded(true)
+
+        // Default to Owen Cannon from GSA if found
+        const owen = data.find(p => p.athlete_name === 'Owen Cannon' && p.team === 'George Stevens Academy')
+        if (owen) {
+          setSelectedAthlete({ id: owen.athlete_id, name: owen.athlete_name })
+        }
       })
       .catch(err => {
         console.error('Error loading data.json:', err)
@@ -51,6 +57,11 @@ function App() {
           .then(data => {
             setAllPerformances(data)
             setDataLoaded(true)
+
+            const owen = data.find(p => p.athlete_name === 'Owen Cannon' && p.team === 'George Stevens Academy')
+            if (owen) {
+              setSelectedAthlete({ id: owen.athlete_id, name: owen.athlete_name })
+            }
           })
           .catch(e => console.error('Local dev fallback failed:', e))
       })
@@ -83,10 +94,13 @@ function App() {
   const performances = useMemo(() => {
     if (!selectedAthlete) return []
     if (selectedAthlete.id === 'all') {
-      return allPerformances
+      // If "All Athletes" is selected, filter by team
+      if (selectedTeam === 'All') return allPerformances
+      return allPerformances.filter(p => p.team === selectedTeam)
     }
+    // If a specific athlete is selected, show their entire history (across teams if applicable)
     return allPerformances.filter(p => p.athlete_id === selectedAthlete.id)
-  }, [allPerformances, selectedAthlete])
+  }, [allPerformances, selectedAthlete, selectedTeam])
 
   const [isScraping, setIsScraping] = useState(false)
   const [scrapeStatus, setScrapeStatus] = useState({ message: '', progress: 0 })
@@ -453,7 +467,7 @@ function App() {
 
         <div className="main-content">
           {activeTab === 'analyzer' ? (
-            <PerformanceList performances={performances} isBetter={isBetter} />
+            <PerformanceList performances={allPerformances} isBetter={isBetter} />
           ) :
             activeTab === 'pr-pop' ? (
               <>
@@ -472,7 +486,7 @@ function App() {
                   </div>
                 </div>
                 <PRPopCalculator
-                  performances={performances}
+                  performances={allPerformances}
                   selectedTeam={selectedTeam}
                   isBetter={isBetter}
                 />
