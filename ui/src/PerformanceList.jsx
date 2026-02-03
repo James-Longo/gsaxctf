@@ -807,7 +807,7 @@ function PVCSimulator({ performances, isBetter }) {
 
             } catch (err) {
                 console.error("Strategic sim failed:", err);
-                alert("Error in Strategic Mode");
+                alert("Error in Nash Equilibrium Mode");
             } finally {
                 setIsRobustLoading(false);
             }
@@ -1303,7 +1303,7 @@ function PVCSimulator({ performances, isBetter }) {
                             onClick={runRobustSimulation}
                             disabled={isRobustLoading}
                         >
-                            {isRobustLoading ? `Simulating (${simProgress}%)...` : 'Robust Simulation'}
+                            {isRobustLoading ? `Simulating (${simProgress}%)...` : 'Multi Simulation'}
                         </button>
                         <button
                             className={`simulate-btn nash-btn ${isRobustLoading ? 'loading' : ''}`}
@@ -1316,7 +1316,7 @@ function PVCSimulator({ performances, isBetter }) {
                             className={`simulate-btn ${showSimulation ? 'active' : ''}`}
                             onClick={() => setShowSimulation(!showSimulation)}
                         >
-                            {showSimulation ? 'Show Raw Results' : 'Quick Simulation'}
+                            {showSimulation ? 'Show Raw Results' : 'Greedy'}
                         </button>
                     </div>
                     <div className="record-count">{filteredData.length} Results</div>

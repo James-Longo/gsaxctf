@@ -6,71 +6,71 @@ This document explains the logic and structure of the major features in this app
 
 ## PVC Simulator (`ui/src/PerformanceList.jsx`)
 
-The PVC Simulator predicts the scoring of a "PVC Small Schools" championship meet based on all-time best performances for the selected year and season.
+The PVC Simulator predicts the scoring of a "PVC Small Schools" championship meet using three levels of sophistication.
 
-### Core Logic
-1.  **School Filtering**: Only schools defined in `getPVCSchools(year, season)` are included.
-    - *To Modify*: Update the school list in `getPVCSchools` if conference alignment changes.
-2.  **Event Normalization**: Only events matching keys in `EVENT_ALIASES` are counted. This avoids scoring non-championship events (like the Pentathlon).
-3.  **Grouping**: Data is grouped by event. Only the absolute best performance for each athlete (individual) or team (relay) in that specific event/season/year is kept.
-4.  **Simulation / Optimization**:
-    - **Event Limit (Greedy Selection)**: Maine Track & Field rules limit athletes to 3 events total (including relays). The simulator uses a **Greedy Algorithm** to optimize team scores:
-        1. All possible scoring "actions" (individual results and relay results) are pooled and sorted by points (highest first).
-        2. The simulator iterates through this list, selecting events until an athlete hits their 3-event limit.
-        3. **Relay Decision**: A relay is only selected if **every identified member** on that relay team has fewer than 3 events already assigned. If even one member has already been assigned 3 higher-scoring events, the entire relay is skipped for that team.
-    - **Scoring**: Standard 10-8-6-4-2-1 scoring.
-    - **Tie Splitting**: Points are automatically split for ties (e.g., if two athletes tie for 1st, they each get 9 points `(10+8)/2`).
+### 1. Simulation Modes
+- **Greedy**: Uses a simple greedy algorithm to select the top 3 events for each athlete based on point value. Relays are only selected if all members have slots available. This provides a "upper bound" estimate of potential.
+- **Multi Simulation (Hill Climbing)**: Uses a statistical simulation. It generates multiple random opponent scenarios and then uses a **Hill-Climbing algorithm** to optimize the target team's roster.
+    - It attempts to swap entries to maximize the average score across scenarios.
+    - **Joint Surgical Swap**: Specifically handles "Relay Deadlocks" where a relay cannot be added because multiple members have reached their 3-event limit. It evaluates dropping the lowest-scoring individual event from each congested member to fit the relay.
+- **Nash Equilibrium (Cascading)**: The most advanced mode. It simulates a "ladder" of competition where teams optimize tactically against their closest rivals.
+    - It uses a **Cascading Solver** that iterates down the standings (1st vs 2nd, 2nd vs 3rd).
+    - If a battle causes a ranking flip, the cascade restarts to ensure a stable equilibrium.
+    - Identifies "Hold the Line" (defensive) vs "Title Match" (offensive) tactical shifts.
+
+### 2. Core Constraints
+- **Event Limit**: Maine Track & Field rules limit athletes to 3 events total (including relays).
+- **Scoring**: Standard 10-8-6-4-2-1 scoring.
+- **Tie Splitting**: Points are automatically split for ties (e.g., if two athletes tie for 1st, they each get 9 points `(10+8)/2`).
+
+---
+
+## Backend Logical Engines
+
+The backend contains the game-theoretic core of the application.
+
+### Nash Engine (`backend/nash_engine.py`)
+This engine facilitates complex roster optimization that accounts for opponent behavior.
+- **Net Value Matrix**: Calculates the points gained (or denied to an opponent) for every possible event entry.
+- **Denial Weighting**: Allows the engine to value "blocking" an opponent (denial) alongside scoring points directly.
+- **Optimal Roster Solver**: Uses a custom constrained optimizer to find the best 3 events per athlete (and 1 per relay) that maximizes the team's net value.
+
+### Championship Engine (`backend/championship_engine.py`)
+A high-level wrapper that manages full meet simulations.
+- **Battle Logic**: Orchestrates "one-way Nash steps" where a challenger optimizes tactically against a defender.
+- **Equilibrium Solver**: Iteratively runs battles until no team can improve their ranking or score by changing their roster, reaching a stable tournament state.
+- **Strategic Insights**:
+    - **Congested Athletes**: Identifies athletes who are scoring in 3 events but have a 4th event where they could also score high, providing a "pivot" point for coaches.
+    - **Relay Bottlenecks**: Highlights specific athletes whose individual event load is preventing a high-scoring relay from being entered.
+
+### Entry Decisions (`backend/championship_engine.py`)
+This tool helps coaches make real-world lineup decisions.
+- **Athlete Categorization**:
+    - **Decision Athletes**: Athletes who either have >3 high-scoring events or have "Adjacent" track events (which might cause fatigue/short recovery).
+    - **Straightforward Athletes**: Athletes with 1-3 clear scoring opportunities and no scheduling conflicts.
+- **Adjacency Detection**: Detects track events that occur back-to-back in the Maine Indoor/Outdoor meet sequence (e.g., 400m and 800m).
 
 ---
 
 ## PR Pop Calculator (`ui/src/PRPopCalculator.jsx`)
 
-This component identifies "PR Pops"—performances in a specific meet that are **strictly better** than any previous performance by that athlete in that event.
+Identifies "PR Pops"—performances in a specific meet that are strictly better than any previous performance.
 
-### Core Logic
-1.  **Meet Selection**: Users can select a specific meet from the history of their selected team.
-2.  **Comparison**: For every result in the selected meet, the calculator searches all *previous* dates in the database for that athlete and event.
-3.  **Strict Improvement**: A "Pop" is only triggered if the new mark is better than the historical best (PR). First-time competitors are excluded.
-4.  **Improvement Formatting**: Uses `formatImprovement` to display clearly how much better the mark was (e.g., `-0.45s` or `+6.00"`).
-
----
-
-## Create Meet Sheet (`ui/src/MeetSheet.jsx`)
-
-Generates a print-friendly document showing which athletes are entered in which events.
-
-### Core Logic
-- **External Source**: Fetches entry data from a specific Google Sheets CSV export URL.
-- **Parsing**: Logic in `MeetSheet.jsx` splits the CSV into Girls and Boys tables based on header row detection (`4x8`, `55H`, etc.).
-- **Manual Overrides**: Allows the coach to manually check/uncheck events to refine the heat sheet before printing.
+### Logic
+1.  **Meet Selection**: Filters results by meet and team.
+2.  **Comparison**: For every result, it searches the historical database for that athlete and event.
+3.  **Strict Improvement**: Triggers only if the new mark is better than the all-time best. First-time competitors (no history) are ignored to avoid noise.
 
 ---
 
 ## Core Utilities (`ui/src/utils.js`)
 
-These utilities are used across the entire app for accurate data comparison.
+Essential for accurate data comparison across time and distance events.
 
 ### `parseMark(mark)`
-- **Distances**: Converts strings like `19-05.50` or `4' 10"` into total inches (float).
-- **Times**: Converts strings like `7.24` or `9:57.12` into total seconds (float).
-- **Invalidation**: Correctly flags strings like `DNF`, `DQ`, `FOUL`, etc., as non-comparable.
+- **Distances**: Converts `19-05.50` or `4' 10"` into float inches.
+- **Times**: Converts `7.24` or `9:57.12` into float seconds.
+- **Invalidation**: Handles `DNF`, `DQ`, `FOUL`, `NH`.
 
-### `isBetter(a, b)`
-- Simple boolean check: `(a is better than b)`.
-- Automatically handles the "Distance = Higher is better" vs "Time = Lower is better" logic based on the detected format from `parseMark`.
-
----
-
-## Backend Scraper & Parser (`backend/`)
-
-### `prototype_parser.py`
-This is a **column-aware text parser** designed for Sub5.com's fixed-width output.
-- **Header Detection**: Scans the first 30 lines for meet names and dates.
-- **Block Segmentation**: Splits the text file into "Event Blocks".
-- **Column Analysis**: Locates specific columns (Name, School, Finals) and uses their indices to extract data precisely, even when names or schools are long.
-- **Split Parsing**: Detects cumulative split patterns like `1:11.703 (35.439)` and extracts them into a list.
-
-### `scraper.py`
-- **Session Management**: Tracks which meets have already been scraped for which year/season.
-- **Deduplication**: Ensures the same result isn't inserted twice into SQLite.
-- **Normalization**: Standardizes school names (e.g., "GSA" vs "George Stevens Academy") using a lookup map to ensure the UI can filter them correctly.
+### `is_better(a, b, event)`
+- Handles the inverse logic of track and field: **lower** time is better, but **higher** distance is better. Automatically detects event type to apply the correct comparison.
