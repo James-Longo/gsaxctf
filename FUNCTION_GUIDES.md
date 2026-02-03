@@ -6,14 +6,14 @@ This document explains the logic and structure of the major features in this app
 
 ## PVC Simulator (`ui/src/PerformanceList.jsx`)
 
-The PVC Simulator predicts the scoring of a "PVC Small Schools" championship meet using three levels of sophistication.
+The PVC Simulator predicts the scoring of a "PVC Small Schools" championship meet using three modes.
 
 ### 1. Simulation Modes
 - **Greedy**: Uses a simple greedy algorithm to select the top 3 events for each athlete based on point value. Relays are only selected if all members have slots available. This provides a "upper bound" estimate of potential.
 - **Multi Simulation (Hill Climbing)**: Uses a statistical simulation. It generates multiple random opponent scenarios and then uses a **Hill-Climbing algorithm** to optimize the target team's roster.
     - It attempts to swap entries to maximize the average score across scenarios.
     - **Joint Surgical Swap**: Specifically handles "Relay Deadlocks" where a relay cannot be added because multiple members have reached their 3-event limit. It evaluates dropping the lowest-scoring individual event from each congested member to fit the relay.
-- **Nash Equilibrium (Cascading)**: The most advanced mode. It simulates a "ladder" of competition where teams optimize tactically against their closest rivals.
+- **Nash Equilibrium (Cascading)**: Iterative solver that simulates competition where teams optimize against their closest rivals in the standings.
     - It uses a **Cascading Solver** that iterates down the standings (1st vs 2nd, 2nd vs 3rd).
     - If a battle causes a ranking flip, the cascade restarts to ensure a stable equilibrium.
     - Identifies "Hold the Line" (defensive) vs "Title Match" (offensive) tactical shifts.
@@ -27,13 +27,13 @@ The PVC Simulator predicts the scoring of a "PVC Small Schools" championship mee
 
 ## Backend Logical Engines
 
-The backend contains the game-theoretic core of the application.
+The backend contains the optimization logic of the application.
 
 ### Nash Engine (`backend/nash_engine.py`)
-This engine facilitates complex roster optimization that accounts for opponent behavior.
+This engine handles roster optimization while accounting for opponent behavior.
 - **Net Value Matrix**: Calculates the points gained (or denied to an opponent) for every possible event entry.
 - **Denial Weighting**: Allows the engine to value "blocking" an opponent (denial) alongside scoring points directly.
-- **Optimal Roster Solver**: Uses a custom constrained optimizer to find the best 3 events per athlete (and 1 per relay) that maximizes the team's net value.
+- **Optimal Roster Solver**: Uses a constrained solver to find the best 3 events per athlete (and 1 per relay) that maximizes the team's net value.
 
 ### Championship Engine (`backend/championship_engine.py`)
 A high-level wrapper that manages full meet simulations.

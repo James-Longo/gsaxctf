@@ -1,12 +1,12 @@
 # Track & Field Team App - Development Guide
 
-Welcome to the Track & Field Team App project! This guide provides everything a newcomer needs to know to understand, run, and modify this software. For technical deep dives into specific features, see the **[Function Guides](FUNCTION_GUIDES.md)**.
+Welcome to the Track & Field Team App project! This guide provides context for understanding, running, and modifying this software. For more details on specific features, see the **[Function Guides](FUNCTION_GUIDES.md)**.
 
 ## Architecture Overview
 
 The project is split into three main layers:
 1.  **Ingestion Layer (`backend/scraper.py`, `backend/parsers/`)**: Downloads and parses fixed-width results from Sub5.com.
-2.  **Analytical Layer (`backend/nash_engine.py`, `backend/championship_engine.py`)**: Sophisticated game-theoretic engines that handle roster optimization and tournament simulation.
+2.  **Analytical Layer (`backend/nash_engine.py`, `backend/championship_engine.py`)**: Engines that handle roster optimization and tournament simulation.
 3.  **Visualization Layer (`ui/`)**: A React application built with Vite that provides a dashboard for coaches.
 
 ## Getting Started
