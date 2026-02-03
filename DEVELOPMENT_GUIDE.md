@@ -39,7 +39,6 @@ The project is split into three main layers:
 
 ### Testing & Utility Scripts
 - `backend/simulate_pvc_championship.py`: CLI-based championship simulator.
-- `backend/test_nash.py`: Tests for the Nash Equilibrium engine.
 - `verify_dates.py`: Validation for parsed result dates.
 
 ## Data Flow
