@@ -28,6 +28,9 @@ npx vercel --prod
 ### 3. Split Support
 Split data is stored as a JSON string in the `splits` column of the `performances` table in the database. When exporting to `data.json`, ensure they are parsed back into JSON arrays (handled in `export_for_web.py`). The parser detects splits formatted as `Cumulative (Split)` (e.g., `1:11.703 (35.439)`).
 
+## UI & Documentation Standards
+- **No Emojis:** Never use emojis in documentation, UI labels, or comments. Maintain a professional, clean aesthetic.
+
 ## Common Gotchas
 - **React Imports:** Always ensure `import React from 'react'` is present if using `React.Fragment` or JSX that requires the React object, as the build environment may enforce it.
 - **Athlete ID Types:** The athlete dropdown values are strings, but database IDs are often numbers. Ensure type conversion (e.g., `String(id)`) when filtering in `App.jsx`.
