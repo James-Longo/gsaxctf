@@ -10,9 +10,11 @@ const PERFORMANCE_ANALYZER = { id: 'analyzer', name: 'Performance Analyzer' }
 const PR_POP_CALCULATOR = { id: 'pr-pop', name: 'PR Pop Calculator' }
 const MEET_SHEET = { id: 'meet-sheet', name: 'Meet Sheet' }
 const ATHLETE_PROFILE = { id: 'athlete-profile', name: 'Athlete Profile' }
+const STATE_RANKINGS = { id: 'state-rankings', name: 'State Rankings' }
 
 import MeetSheet from './MeetSheet'
 import AthleteProfile from './AthleteProfile'
+import StateRankings from './StateRankings'
 
 function App() {
   const [allPerformances, setAllPerformances] = useState([])
@@ -413,6 +415,12 @@ function App() {
             >
               Athlete Profile
             </button>
+            <button
+              onClick={() => setActiveTab('state-rankings')}
+              className={`nav-btn ${activeTab === 'state-rankings' ? 'active' : ''}`}
+            >
+              State Rankings
+            </button>
           </div>
 
           {isLocalDev && (
@@ -493,6 +501,8 @@ function App() {
               </>
             ) : activeTab === 'meet-sheet' ? (
               <MeetSheet />
+            ) : activeTab === 'state-rankings' ? (
+              <StateRankings allPerformances={allPerformances} />
             ) : (activeTab === 'history' || activeTab === 'athlete-profile') ? (
               <>
                 <div className="header-row">

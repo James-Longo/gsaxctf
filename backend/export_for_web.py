@@ -39,7 +39,7 @@ def export_data():
     os.makedirs(os.path.dirname(output_path), exist_ok=True)
     
     with open(output_path, 'w', encoding='utf-8') as f:
-        json.dump(data, f)
+        json.dump(data, f, indent=2)
         
     print("Export Complete!")
 
