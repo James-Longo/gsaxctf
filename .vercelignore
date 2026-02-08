@@ -1,9 +1,15 @@
-.git
-.venv
-__pycache__
-*.pyc
+# Ignore everything except what's needed for the frontend build
 backend/
 track_app.db
-node_modules
-dist
-.vercel
+venv/
+venv_linux/
+.venv_new/
+.git/
+.github/
+*.py
+*.pyc
+__pycache__/
+
+# Vite/Node stuff that shouldn't be uploaded (Vercel installs its own)
+ui/node_modules/
+ui/dist/
