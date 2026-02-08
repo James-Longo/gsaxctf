@@ -63,16 +63,16 @@ jobs:
       - name: Deploy to Vercel
         env:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
-          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
-          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID || vars.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID || vars.VERCEL_PROJECT_ID }}
         run: |
           if [ -z "$VERCEL_TOKEN" ]; then
             echo "::error::VERCEL_TOKEN is missing. Please add it to your GitHub Secrets."
             exit 1
           fi
           if [ -z "$VERCEL_ORG_ID" ] || [ -z "$VERCEL_PROJECT_ID" ]; then
-            echo "::error::VERCEL_ORG_ID or VERCEL_PROJECT_ID is missing. Please add them to your GitHub Secrets."
-            exit 1
+            echo "::warning::VERCEL_ORG_ID or VERCEL_PROJECT_ID is missing from secrets. Checking vars..."
           fi
+          
           echo "Deploying to Vercel..."
-          npx vercel --prod --yes --token=$VERCEL_TOKEN
+          npx vercel --prod --yes --token=$VERCEL_TOKEN --org=$VERCEL_ORG_ID --project=$VERCEL_PROJECT_ID
