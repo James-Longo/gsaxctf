@@ -101,6 +101,23 @@ const StateRankings = ({ allPerformances }) => {
 
     return (
         <div className="state-rankings-container">
+            <div className="in-progress-note" style={{
+                backgroundColor: '#fffaf0',
+                border: '1px solid #feebc8',
+                color: '#9c4221',
+                padding: '12px 16px',
+                borderRadius: '8px',
+                marginBottom: '20px',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '10px',
+                fontSize: '0.9rem',
+                fontWeight: '500'
+            }}>
+                <span style={{ fontSize: '1.2rem' }}>⚠️</span>
+                <span><strong>NOTE:</strong> This feature is currently in progress and may be inaccurate. Rankings are still being verified.</span>
+            </div>
+
             <div className="header-row">
                 <h2>State Rankings by Class</h2>
                 <div className="record-count">{filteredRankings.length} Athletes Found</div>
