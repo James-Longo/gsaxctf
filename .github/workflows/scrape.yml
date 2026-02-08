@@ -75,4 +75,4 @@ jobs:
           fi
           
           echo "Deploying to Vercel..."
-          npx vercel --prod --yes --token=$VERCEL_TOKEN --org=$VERCEL_ORG_ID --project=$VERCEL_PROJECT_ID
+          npx vercel --prod --yes --token=$VERCEL_TOKEN
