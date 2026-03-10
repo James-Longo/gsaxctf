@@ -150,6 +150,7 @@ class Sub5Scraper:
         self.progress_callback = progress_callback
         self.session = requests.Session()
         self.session.headers.update(self.headers)
+        self.synced_meets = set() # (year, meet_name)
 
     def _get_with_retry(self, url, max_retries=3):
         for i in range(max_retries):
@@ -422,8 +423,8 @@ class Sub5Scraper:
                 href = a['href']
                 # Search for .htm or .html result files
                 if href.endswith('.htm') or href.endswith('.html'):
-                    # Prioritize emitl, pvc, results patterns
-                    if any(x in href.lower() for x in ['results', 'emitl', 'pvc']):
+                    # Prioritize emitl, pvc, results patterns, including State/Class meets
+                    if any(x in href.lower() for x in ['results', 'emitl', 'pvc', 'states', 'class', 'champ', 'b-boys', 'b-girls']):
                         if not href.startswith('http'):
                             from urllib.parse import urljoin
                             href = urljoin(year_url, href)
@@ -434,7 +435,7 @@ class Sub5Scraper:
             print(f"Error fetching meet links from {year_url}: {e}")
             return []
 
-    def download_missing_files(self, index_url, archive_dir, synced_meets=None):
+    def download_missing_files(self, index_url, archive_dir, synced_meets=None, curr_year=None):
         """Downloads new .htm/.html files from the index URL to the archive directory."""
         if not os.path.exists(archive_dir):
             os.makedirs(archive_dir)
@@ -454,8 +455,8 @@ class Sub5Scraper:
             save_path = os.path.join(archive_dir, filename)
             meet_name = os.path.splitext(filename)[0]
 
-            # SKIP if already in DB (unless force override which we don't have yet)
-            if synced_meets and meet_name in synced_meets:
+            # SKIP if already in DB (check year and meet name to avoid collisions)
+            if synced_meets and curr_year and (curr_year, meet_name) in synced_meets:
                 continue
             
             if not os.path.exists(save_path):
@@ -558,9 +559,9 @@ class Sub5Scraper:
         for val in TEAM_MAPPING.values():
             all_teams.add(val)
 
-        cursor.execute("SELECT DISTINCT meet_name FROM performances")
+        cursor.execute("SELECT DISTINCT year, meet_name FROM performances")
         for row in cursor.fetchall():
-            synced_meets.add(row['meet_name'])
+            synced_meets.add((row['year'], row['meet_name']))
         
         cursor.execute("SELECT DISTINCT team FROM performances")
         for row in cursor.fetchall():
@@ -570,7 +571,7 @@ class Sub5Scraper:
         # This prevents order-dependency issues (e.g. seeing "Fryeburg Aca" before "Fryeburg Academy")
         self.report_progress("Pre-scanning team names for normalization...", 0)
         for filename in files:
-            if os.path.splitext(filename)[0] in synced_meets: continue
+            if (year, os.path.splitext(filename)[0]) in synced_meets: continue
             try:
                 with open(os.path.join(json_dir, filename), 'r') as f:
                     data = json.load(f)
@@ -592,7 +593,7 @@ class Sub5Scraper:
             meet_name = os.path.splitext(filename)[0]
 
             # OPTIMIZATION: Skip if already synced
-            if meet_name in synced_meets:
+            if (year, meet_name) in synced_meets:
                 continue
 
             try:
@@ -792,9 +793,9 @@ class Sub5Scraper:
             conn = self.get_db_connection()
             cursor = conn.cursor()
             try:
-                cursor.execute("SELECT DISTINCT meet_name FROM performances")
+                cursor.execute("SELECT DISTINCT year, meet_name FROM performances")
                 for row in cursor.fetchall():
-                    synced_meets.add(row['meet_name'])
+                    synced_meets.add((row['year'], row['meet_name']))
             except Exception:
                 pass # Table might not exist or be empty
             conn.close()
@@ -816,7 +817,7 @@ class Sub5Scraper:
             
             # 3. Download New Files
             self.report_progress(f"Downloading files for {year}...")
-            self.download_missing_files(index_url, archive_dir, synced_meets=synced_meets)
+            self.download_missing_files(index_url, archive_dir, synced_meets=synced_meets, curr_year=year)
             
             # 4. Parse All Files -> JSON
             self.parse_all_files(archive_dir, json_dir)
