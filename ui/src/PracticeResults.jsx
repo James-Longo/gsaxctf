@@ -12,12 +12,23 @@ const PracticeResults = () => {
 
     useEffect(() => {
         const fetchData = async () => {
+            const isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+            const primaryUrl = isLocal ? 'http://localhost:8000/practice-results' : '/practice_results.json';
+            
             try {
-                const response = await fetch('http://localhost:8000/practice-results');
+                let response = await fetch(primaryUrl);
+                
+                // If local fetch fails, fallback to static JSON (maybe backend isn't running)
+                if (!response.ok && isLocal) {
+                    console.warn(`Local API fetch failed (${response.status}), falling back to static JSON`);
+                    response = await fetch('/practice_results.json');
+                }
+                
                 if (!response.ok) throw new Error('Failed to fetch practice results');
                 const data = await response.json();
                 setResults(data);
             } catch (err) {
+                console.error("Practice Results data error:", err);
                 setError(err.message);
             } finally {
                 setLoading(false);
