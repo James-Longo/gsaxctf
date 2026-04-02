@@ -11,24 +11,143 @@ const PracticeResults = () => {
     const [viewMode, setViewMode] = useState('leaderboard'); // 'leaderboard' or 'sessions'
 
     useEffect(() => {
-        const fetchData = async () => {
-            const isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
-            const primaryUrl = isLocal ? 'http://localhost:8000/practice-results' : '/practice_results.json';
-            
+        const SHEET_CSV_URL = 'https://docs.google.com/spreadsheets/d/1fql3yYQs_9OZZmS8-KHDliEPTKl__ZFZ592E8dkZD7Q/export?format=csv';
+
+        const eventsConfig = [
+            { col: '20m Fly', type: 'time', surfaceCol: '20m Fly Surface' },
+            { col: 'Half Court Dash', type: 'time', surface: 'Gym' },
+            { col: 'Triple Broad Jump', type: 'distance', surfaceCol: 'Triple Broad Jump Surface' },
+            { col: 'Shuttle Run', type: 'time', surfaceCol: 'Shuttle Run Surface' },
+            { col: 'Quintuple Bound', type: 'distance', surfaceCol: 'Quintuple Bound Surface' }
+        ];
+
+        const parseDistanceVal = (val) => {
+            if (!val || !val.includes('-')) return null;
             try {
-                let response = await fetch(primaryUrl);
-                
-                // If local fetch fails, fallback to static JSON (maybe backend isn't running)
-                if (!response.ok && isLocal) {
-                    console.warn(`Local API fetch failed (${response.status}), falling back to static JSON`);
-                    response = await fetch('/practice_results.json');
+                const [ft, ins] = val.split('-').map(Number);
+                return ft * 12 + (ins || 0);
+            } catch { return null; }
+        };
+
+        const formatDistance = (inches) => {
+            if (inches == null) return 'x';
+            const ft = Math.floor(inches / 12);
+            const ins = Math.round((inches % 12) * 100) / 100;
+            return `${ft}-${ins}`;
+        };
+
+        const median = (arr) => {
+            const sorted = [...arr].sort((a, b) => a - b);
+            const mid = Math.floor(sorted.length / 2);
+            return sorted.length % 2 !== 0 ? sorted[mid] : (sorted[mid - 1] + sorted[mid]) / 2;
+        };
+
+        const parseCSV = (text) => {
+            // Proper CSV parser that handles quoted fields (e.g. "2.30h, 2.79h")
+            const parseCSVLine = (line) => {
+                const fields = [];
+                let current = '';
+                let inQuotes = false;
+                for (let i = 0; i < line.length; i++) {
+                    const ch = line[i];
+                    if (inQuotes) {
+                        if (ch === '"' && (i + 1 >= line.length || line[i + 1] === ',')) {
+                            inQuotes = false;
+                        } else {
+                            current += ch;
+                        }
+                    } else {
+                        if (ch === '"') {
+                            inQuotes = true;
+                        } else if (ch === ',') {
+                            fields.push(current.trim());
+                            current = '';
+                        } else {
+                            current += ch;
+                        }
+                    }
                 }
-                
-                if (!response.ok) throw new Error('Failed to fetch practice results');
-                const data = await response.json();
-                setResults(data);
+                fields.push(current.trim());
+                return fields;
+            };
+
+            const lines = text.split('\n').filter(l => l.trim());
+            if (lines.length < 2) return [];
+            const headers = parseCSVLine(lines[0]);
+            const rows = [];
+            for (let i = 1; i < lines.length; i++) {
+                const cols = parseCSVLine(lines[i]);
+                const row = {};
+                headers.forEach((h, idx) => { row[h] = (cols[idx] || '').trim(); });
+                rows.push(row);
+            }
+            return rows;
+        };
+
+        const fetchData = async () => {
+            try {
+                const response = await fetch(SHEET_CSV_URL);
+                if (!response.ok) throw new Error('Failed to fetch practice results from Google Sheets');
+                const csvText = await response.text();
+                const rows = parseCSV(csvText);
+
+                const parsed = [];
+                for (const row of rows) {
+                    if (!row['Name'] || !row['Name'].trim()) continue;
+                    const date = (row['Date'] || '').trim();
+                    const name = row['Name'].trim();
+
+                    for (const event of eventsConfig) {
+                        const rawVal = (row[event.col] || '').trim();
+                        if (!rawVal) continue;
+
+                        let eventSurface = 'Track';
+                        if (event.surface) eventSurface = event.surface;
+                        else if (event.surfaceCol) eventSurface = (row[event.surfaceCol] || '').trim() || 'Track';
+
+                        const trials = rawVal.split(',').map(t => t.trim());
+                        const isHand = trials.some(t => t.toLowerCase().includes('h'));
+                        const validTrials = [];
+
+                        for (const t of trials) {
+                            if (!t || t.toLowerCase() === 'x') continue;
+                            const cleanT = t.toLowerCase().replace('h', '');
+                            if (event.type === 'time') {
+                                const v = parseFloat(cleanT);
+                                if (!isNaN(v)) validTrials.push(v);
+                            } else {
+                                const d = parseDistanceVal(cleanT);
+                                if (d !== null) validTrials.push(d);
+                            }
+                        }
+
+                        if (validTrials.length === 0) continue;
+
+                        let performanceVal;
+                        if (event.type === 'distance') {
+                            performanceVal = Math.max(...validTrials);
+                        } else if (event.col === 'Half Court Dash') {
+                            performanceVal = Math.min(...validTrials);
+                        } else {
+                            performanceVal = median(validTrials);
+                        }
+
+                        parsed.push({
+                            name,
+                            date,
+                            event: event.col,
+                            surface: eventSurface,
+                            trials,
+                            is_hand_timed: isHand,
+                            median_mark: performanceVal,
+                            mark_type: event.type,
+                            formatted_median: event.type === 'distance' ? formatDistance(performanceVal) : String(Math.round(performanceVal * 100) / 100)
+                        });
+                    }
+                }
+                setResults(parsed);
             } catch (err) {
-                console.error("Practice Results data error:", err);
+                console.error('Practice Results data error:', err);
                 setError(err.message);
             } finally {
                 setLoading(false);
