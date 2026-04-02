@@ -620,3 +620,110 @@ def get_meet_data():
         import traceback
         traceback.print_exc()
         raise HTTPException(status_code=500, detail=str(e))
+
+@app.get("/practice-results")
+def get_practice_results():
+    sheet_url = "https://docs.google.com/spreadsheets/d/1fql3yYQs_9OZZmS8-KHDliEPTKl__ZFZ592E8dkZD7Q/export?format=csv"
+    try:
+        response = requests.get(sheet_url)
+        response.raise_for_status()
+        csv_data = response.text
+        
+        import csv
+        import io
+        import statistics
+
+        f = io.StringIO(csv_data)
+        reader = csv.DictReader(f)
+        
+        events_config = [
+            {"col": "20m Fly", "type": "time", "surface_col": "20m Fly Surface"},
+            {"col": "Half Court Dash", "type": "time", "surface": "Gym"},
+            {"col": "Triple Broad Jump", "type": "distance", "surface_col": "Triple Broad Jump Surface"},
+            {"col": "Shuttle Run", "type": "time", "surface_col": "Shuttle Run Surface"},
+            {"col": "Quintuple Bound", "type": "distance", "surface_col": "Quintuple Bound Surface"}
+        ]
+        
+        def parse_distance(val):
+            """Parse '20-1' to inches float."""
+            if '-' not in val: return None
+            try:
+                ft, ins = map(float, val.split('-'))
+                return ft * 12 + ins
+            except:
+                return None
+        
+        def format_distance(inches):
+            """Format inches back to '20-1'."""
+            if inches is None: return "x"
+            ft = int(inches // 12)
+            ins = round(inches % 12, 2)
+            return f"{ft}-{ins}"
+
+        results = []
+        for row in reader:
+            if not row['Name'].strip():
+                continue
+                
+            date = row['Date'].strip()
+            name = row['Name'].strip()
+            for event in events_config:
+                col_name = event['col']
+                raw_val = row.get(col_name, '').strip()
+                if not raw_val:
+                    continue
+                
+                # Determine surface for this event
+                event_surface = 'Track'
+                if 'surface' in event:
+                    event_surface = event['surface']
+                elif 'surface_col' in event:
+                    event_surface = row.get(event['surface_col'], '').strip() or 'Track'
+                
+                # Parse trials (comma separated)
+                trials = [t.strip() for t in raw_val.split(',')]
+                valid_trials = []
+                is_hand = any('h' in t.lower() for t in trials)
+                
+                for t in trials:
+                    t = t.strip()
+                    if not t or t.lower() == 'x':
+                        continue
+                    
+                    # Strip 'h' for hand-timed
+                    clean_t = t.lower().replace('h', '')
+                    
+                    if event['type'] == 'time':
+                        try:
+                            valid_trials.append(float(clean_t))
+                        except: pass
+                    else: # distance
+                        d = parse_distance(clean_t)
+                        if d is not None:
+                            valid_trials.append(d)
+                
+                if not valid_trials:
+                    continue
+                
+                # For distances/precise, use Max. For times, use Median.
+                performance_val = max(valid_trials) if event['type'] == 'distance' else statistics.median(valid_trials)
+                if event['col'] == 'Half Court Dash':
+                     performance_val = min(valid_trials) # Lowest is best and precise
+                
+                results.append({
+                    "name": name,
+                    "date": date,
+                    "event": col_name,
+                    "surface": event_surface,
+                    "trials": trials,
+                    "is_hand_timed": is_hand,
+                    "median_mark": performance_val,
+                    "mark_type": event['type'],
+                    "formatted_median": format_distance(performance_val) if event['type'] == 'distance' else str(round(performance_val, 2))
+                })
+            
+        return results
+    except Exception as e:
+        import traceback
+        traceback.print_exc()
+        raise HTTPException(status_code=500, detail=str(e))

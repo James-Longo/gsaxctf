@@ -10,9 +10,11 @@ const PERFORMANCE_ANALYZER = { id: 'analyzer', name: 'Performance Analyzer' }
 const PR_POP_CALCULATOR = { id: 'pr-pop', name: 'PR Pop Calculator' }
 const MEET_SHEET = { id: 'meet-sheet', name: 'Meet Sheet' }
 const ATHLETE_PROFILE = { id: 'athlete-profile', name: 'Athlete Profile' }
+const PRACTICE_RESULTS = { id: 'practice', name: 'Practice Results' }
 
 import MeetSheet from './MeetSheet'
 import AthleteProfile from './AthleteProfile'
+import PracticeResults from './PracticeResults'
 
 function App() {
   const [allPerformances, setAllPerformances] = useState([])
@@ -413,6 +415,12 @@ function App() {
             >
               Athlete Profile
             </button>
+            <button
+              onClick={() => setActiveTab('practice')}
+              className={`nav-btn ${activeTab === 'practice' ? 'active' : ''}`}
+            >
+              Practice Results
+            </button>
           </div>
 
           {isLocalDev && (
@@ -665,6 +673,8 @@ function App() {
                   />
                 )}
               </>
+            ) : activeTab === 'practice' ? (
+              <PracticeResults />
             ) : (
               <div className="empty-state">
                 <p>Select an athlete to view details.</p>
