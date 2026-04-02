@@ -91,3 +91,20 @@ export function isBetter(a, b) {
         return pA.value > pB.value;
     }
 }
+
+export function formatTime(seconds) {
+    if (isNaN(seconds) || seconds === 0) return '';
+    const mins = Math.floor(seconds / 60);
+    const secs = seconds % 60;
+    if (mins === 0) return secs.toFixed(2);
+    const secStr = secs < 10 ? '0' + secs.toFixed(2) : secs.toFixed(2);
+    return `${mins}:${secStr}`;
+}
+
+export function formatDistance(inches) {
+    if (isNaN(inches) || inches === 0) return '';
+    const ft = Math.floor(inches / 12);
+    const ins = inches % 12;
+    return `${ft}-${ins.toFixed(2)}`;
+}
+

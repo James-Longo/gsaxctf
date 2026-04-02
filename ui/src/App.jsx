@@ -15,6 +15,7 @@ const PRACTICE_RESULTS = { id: 'practice', name: 'Practice Results' }
 import MeetSheet from './MeetSheet'
 import AthleteProfile from './AthleteProfile'
 import PracticeResults from './PracticeResults'
+import ResultPredictor from './ResultPredictor'
 
 function App() {
   const [allPerformances, setAllPerformances] = useState([])
@@ -423,6 +424,12 @@ function App() {
             >
               Practice Results
             </button>
+            <button
+              onClick={() => setActiveTab('predictor')}
+              className={`nav-btn ${activeTab === 'predictor' ? 'active' : ''}`}
+            >
+              Owen's Result Predictor
+            </button>
           </div>
 
           {isLocalDev && (
@@ -677,6 +684,8 @@ function App() {
               </>
             ) : activeTab === 'practice' ? (
               <PracticeResults />
+            ) : activeTab === 'predictor' ? (
+              <ResultPredictor performances={allPerformances} />
             ) : (
               <div className="empty-state">
                 <p>Select an athlete to view details.</p>
