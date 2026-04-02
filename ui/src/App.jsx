@@ -435,7 +435,7 @@ function App() {
               onClick={() => setActiveTab('predictor')}
               className={`nav-btn ${activeTab === 'predictor' ? 'active' : ''}`}
             >
-              Owen's Result Predictor
+              Owen's Performance Predictor
             </button>
           </div>
 

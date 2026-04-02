@@ -229,7 +229,7 @@ export default function ResultPredictor({ performances }) {
     return (
         <div style={{ padding: '0 20px' }}>
             <div className="header-row" style={{ borderBottom: 'none', marginBottom: '10px' }}>
-                <h2>Owen's Result Predictor</h2>
+                <h2>Owen's Performance Predictor</h2>
             </div>
             
             <div className="filter-bar" style={{ display: 'flex', gap: '20px', flexWrap: 'wrap', marginBottom: '30px' }}>
