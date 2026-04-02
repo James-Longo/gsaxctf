@@ -167,15 +167,57 @@ const PracticeResults = () => {
         return Object.entries(grouped).sort((a, b) => new Date(b[0]) - new Date(a[0]));
     }, [filteredResults]);
 
-    const getMphColor = (mph) => {
-        const val = parseFloat(mph);
-        if (isNaN(val) || val === 0) return 'transparent';
-        if (val >= 21) return '#065f46';
-        if (val >= 20) return '#047857';
-        if (val >= 19) return '#059669';
-        if (val >= 18) return '#10b981';
-        if (val >= 17) return '#34d399';
-        return '#6ee7b7';
+    const eventColorScales = useMemo(() => {
+        const scales = {};
+        const byEvent = {};
+        results.forEach(r => {
+            if (!byEvent[r.event]) byEvent[r.event] = [];
+            byEvent[r.event].push(r);
+        });
+
+        Object.keys(byEvent).forEach(ev => {
+            const evResults = byEvent[ev];
+            const isTimeEvent = evResults[0].mark_type === 'time';
+            const isDistEvent = evResults[0].mark_type === 'distance';
+            
+            const vals = [];
+            evResults.forEach(r => {
+                (r.trials || []).forEach(t => {
+                    let v;
+                    if (isDistEvent) v = parseDistance(String(t));
+                    else v = parseFloat(String(t).toLowerCase().replace('h', ''));
+                    if (v !== null && !isNaN(v)) vals.push(v);
+                });
+            });
+
+            if (vals.length === 0) {
+                scales[ev] = () => '#6ee7b7';
+                return;
+            }
+
+            const min = Math.min(...vals);
+            const max = Math.max(...vals);
+            const colors = ['#065f46', '#047857', '#059669', '#10b981', '#34d399', '#6ee7b7'];
+            const bestBound = isTimeEvent ? min : max;
+            const worstBound = isTimeEvent ? max : min;
+
+            scales[ev] = (val) => {
+                if (val === null || isNaN(val)) return 'transparent';
+                if (min === max) return colors[0];
+                let normalized = (val - worstBound) / (bestBound - worstBound);
+                normalized = Math.max(0, Math.min(1, normalized));
+                let index = Math.floor((1 - normalized) * colors.length);
+                if (index >= colors.length) index = colors.length - 1;
+                return colors[index];
+            };
+        });
+        
+        return scales;
+    }, [results]);
+
+    const getEventColor = (val, eventName) => {
+        if (!eventColorScales[eventName]) return '#6ee7b7';
+        return eventColorScales[eventName](val);
     };
 
     if (loading) return <div className="loading-state">Loading Practice Results...</div>;
@@ -255,7 +297,7 @@ const PracticeResults = () => {
                                         <div 
                                             className="result-badge" 
                                             style={{ 
-                                                backgroundColor: getMphColor(filterEvent === '20m Fly' ? a.mphEstimate : (a.best.mark_type === 'time' ? (20/a.best.val)*18 : a.best.val/24)), 
+                                                backgroundColor: getEventColor(a.best.val, a.best.raw_result.event), 
                                                 color: 'white', padding: '4px 8px', borderRadius: '4px', display: 'inline-block', fontWeight: 'bold' 
                                             }}
                                         >
@@ -275,9 +317,7 @@ const PracticeResults = () => {
                             ))}
                         </tbody>
                     </table>
-                    <div className="uncertainty-note" style={{ marginTop: '16px', fontSize: '0.8rem', color: '#718096', fontStyle: 'italic', padding: '0 8px', maxWidth: '800px' }}>
-                        * Automatic results (without 'h') stand on their own as separate replicates. Hand-timed results ('h') are grouped per session with error margins (±) calculated from within-session trials.
-                    </div>
+
                 </div>
             ) : (
                 <div className="sessions-container">
@@ -308,7 +348,7 @@ const PracticeResults = () => {
                                                     <div 
                                                         className="result-badge" 
                                                         style={{ 
-                                                            backgroundColor: getMphColor(r.event === '20m Fly' ? (44.7388 / parseFloat(String(r.median_mark).replace('h', ''))) : (r.mark_type === 'time' ? (20/parseFloat(String(r.median_mark).replace('h', '')))*18 : (isFinite(parseDistance(String(r.median_mark))) ? parseDistance(String(r.median_mark))/24 : 0))), 
+                                                            backgroundColor: getEventColor(r.mark_type === 'distance' ? parseDistance(String(r.median_mark)) : parseFloat(String(r.median_mark).replace('h', '')), r.event), 
                                                             color: 'white', padding: '2px 6px', borderRadius: '4px', display: 'inline-block', fontSize: '0.85rem' 
                                                         }}
                                                     >
