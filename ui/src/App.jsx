@@ -16,6 +16,7 @@ import MeetSheet from './MeetSheet'
 import AthleteProfile from './AthleteProfile'
 import PracticeResults from './PracticeResults'
 import ResultPredictor from './ResultPredictor'
+import Footage from './Footage'
 
 function App() {
   const [allPerformances, setAllPerformances] = useState([])
@@ -425,6 +426,12 @@ function App() {
               Practice Results
             </button>
             <button
+              onClick={() => setActiveTab('footage')}
+              className={`nav-btn ${activeTab === 'footage' ? 'active' : ''}`}
+            >
+              Footage
+            </button>
+            <button
               onClick={() => setActiveTab('predictor')}
               className={`nav-btn ${activeTab === 'predictor' ? 'active' : ''}`}
             >
@@ -684,6 +691,8 @@ function App() {
               </>
             ) : activeTab === 'practice' ? (
               <PracticeResults />
+            ) : activeTab === 'footage' ? (
+              <Footage />
             ) : activeTab === 'predictor' ? (
               <ResultPredictor performances={allPerformances} />
             ) : (
