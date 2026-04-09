@@ -124,10 +124,12 @@ const PracticeResults = () => {
                         if (validTrials.length === 0) continue;
 
                         let performanceVal;
+                        const meanSdEvents = ['20m Fly', 'Half Court Dash', 'Shuttle Run'];
+                        
                         if (event.type === 'distance') {
                             performanceVal = Math.max(...validTrials);
-                        } else if (event.col === 'Half Court Dash') {
-                            performanceVal = Math.min(...validTrials);
+                        } else if (meanSdEvents.includes(event.col)) {
+                            performanceVal = validTrials.reduce((a, b) => a + b, 0) / validTrials.length;
                         } else {
                             performanceVal = median(validTrials);
                         }
@@ -215,7 +217,7 @@ const PracticeResults = () => {
 
             // NEW: For 20m Fly and Half Court Dash, treat each day as a single replicate (Mean/SD)
             // regardless of whether it is hand-timed or automatic.
-            const sessionMeanSdEvents = ['20m Fly', 'Half Court Dash'];
+            const sessionMeanSdEvents = ['20m Fly', 'Half Court Dash', 'Shuttle Run'];
             const shouldForceSessionReplicate = sessionMeanSdEvents.includes(r.event);
 
             if (isHand || shouldForceSessionReplicate) {
@@ -452,7 +454,7 @@ const PracticeResults = () => {
                                     <thead>
                                         <tr>
                                             <th>Athlete</th>
-                                            <th>Median/Peak</th>
+                                            <th>{ ['20m Fly', 'Half Court Dash', 'Shuttle Run'].includes(filterEvent) ? 'Mean' : 'Median/Peak' }</th>
                                             <th>Trials</th>
                                             <th>Surface</th>
                                         </tr>
