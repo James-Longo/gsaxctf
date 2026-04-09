@@ -205,7 +205,6 @@ const PracticeResults = () => {
             const isHand = r.is_hand_timed;
             const isDistance = r.mark_type === 'distance';
             
-            // Collect numeric trials
             const numericTrials = (r.trials || []).map(t => {
                 if (isDistance) return parseDistance(String(t));
                 const cleanT = String(t).toLowerCase().replace('h', '');
@@ -214,8 +213,13 @@ const PracticeResults = () => {
 
             if (numericTrials.length === 0) return;
 
-            if (isHand) {
-                // Hand timed: One replicate per session with Mean and SD
+            // NEW: For 20m Fly and Half Court Dash, treat each day as a single replicate (Mean/SD)
+            // regardless of whether it is hand-timed or automatic.
+            const sessionMeanSdEvents = ['20m Fly', 'Half Court Dash'];
+            const shouldForceSessionReplicate = sessionMeanSdEvents.includes(r.event);
+
+            if (isHand || shouldForceSessionReplicate) {
+                // One replicate per session with Mean and SD
                 const mean = numericTrials.reduce((a, b) => a + b, 0) / numericTrials.length;
                 let sd = 0;
                 if (numericTrials.length > 1) {
@@ -225,13 +229,13 @@ const PracticeResults = () => {
                 dataMap[r.name].replicates.push({
                     val: mean,
                     sd: sd,
-                    isHand: true,
+                    isHand: isHand,
                     date: r.date,
                     mark_type: r.mark_type,
                     raw_result: r
                 });
             } else {
-                // Automatic: Each trial is its own replicate
+                // Automatic: Each trial is its own replicate (for other events like jumps if automatic)
                 numericTrials.forEach(t => {
                     dataMap[r.name].replicates.push({
                         val: t,
@@ -423,7 +427,7 @@ const PracticeResults = () => {
                                             {filterEvent === '20m Fly' ? (a.mphEstimate || 0).toFixed(2) : (a.best.mark_type === 'distance' ? 
                                                 (Math.floor(a.best.val / 12) + '-' + (a.best.val % 12).toFixed(1)) : 
                                                 (a.best.val || 0).toFixed(2))}
-                                            {a.best.isHand && a.best.sd > 0 && (
+                                            {a.best.sd > 0 && (
                                                 <span style={{ fontSize: '0.75rem', marginLeft: '4px', opacity: 0.9, fontWeight: 'normal' }}>
                                                     ±{filterEvent === '20m Fly' ? (a.mphEstimate * (a.best.sd/a.best.val || 0)).toFixed(2) : (a.best.mark_type === 'distance' ? (a.best.sd/12).toFixed(1) + "'" : a.best.sd.toFixed(2))}
                                                 </span>
