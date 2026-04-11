@@ -28,8 +28,11 @@ class FormatDetector:
                 # Check 3rd column (Index 2)
                 col3 = parts[2]
                 
-                # If Col3 looks like a grade (number 7-12, or '--'), it's STANDARD
-                if col3 == '--' or (col3.isdigit() and 7 <= int(col3) <= 12):
+                # If Col3 looks like a grade (number 7-12, or '--', or FR/SO/JR/SR), it's STANDARD
+                grade_patterns = ['--', 'FR', 'SO', 'JR', 'SR', '9', '10', '11', '12']
+                if col3.upper() in grade_patterns:
+                    return FormatType.STANDARD
+                if (col3.isdigit() and 7 <= int(col3) <= 12):
                     return FormatType.STANDARD
                 
                 # If Col3 looks like a School (contains 'School', 'Academy', known acronyms, or is alphabetic text)

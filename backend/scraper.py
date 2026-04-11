@@ -7,9 +7,9 @@ import json
 import shutil
 from datetime import datetime
 try:
-    from backend.prototype_parser import Sub5ColumnParser
+    from backend.parser import Sub5ColumnParser
 except ImportError:
-    from prototype_parser import Sub5ColumnParser
+    from parser import Sub5ColumnParser
 
 # Configuration
 DB_PATH = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'track_app.db')
@@ -225,16 +225,35 @@ class Sub5Scraper:
         if not name: return "Unknown"
         name = name.strip()
         
+        # 1. Clean leading numeric status codes (e.g., "01-Unattached" -> "Unattached")
+        name = re.sub(r'^\d+[-\s]*', '', name)
+
+        # 2. Normalize Unattached
+        if "unattach" in name.lower() or name.lower() == "un":
+            return "Unattached"
+
+        # 3. Clean trailing years (e.g., "School 2021" -> "School")
+        name = re.sub(r'\s+\d{4}$', '', name)
+
+        # 4. Protection: If name looks like a time mark, it's a leak
+        # e.g., ":05.82", "4:33.18"
+        if re.match(r'^:?\d+[:.]\d+', name) or re.match(r'^\d+-\d+\.?\d*$', name):
+            return "Unknown"
+
         # Pre-process: strip common prefixes
-        # (Case-insensitive removal of "M ", "JR ", and "W ")
-        name = re.sub(r'^(M|JR|W)\s+', '', name, flags=re.IGNORECASE)
+        # (Case-insensitive removal of "M ", "JR ", "W ", "FR ", "SO ", "SR ")
+        name = re.sub(r'^(M|JR|W|FR|SO|SR)\s+', '', name, flags=re.IGNORECASE)
         
         # Clean up any suffix artifacts
         name = re.sub(r'\s+J[\d\.\-\':]+.*', '', name)
         
         name = name.strip()
         
-        # 2. Dynamic Acronym Matching (Objective Matcher)
+        # Strip geographic suffixes like ", ME" or ", Freeport"
+        if "," in name:
+            name = name.split(',')[0].strip()
+        
+        # 4. Dynamic Acronym Matching (Objective Matcher)
         # Handles cases like PCHS -> Piscataquis Community High School, SMC -> Southern Maine Catholic
         if all_teams and len(name) >= 2 and len(name) <= 5 and name.isupper():
             matches = []
@@ -242,12 +261,9 @@ class Sub5Scraper:
                 if len(fuller_name) <= len(name): continue
                 
                 # Case 1: First letter of every word
-                # "George Stevens Academy" -> GSA
-                # "Piscataquis Community High School" -> PCHS
                 acr_full = "".join(re.findall(r'\b\w', fuller_name)).upper()
                 
                 # Case 2: Scrub common suffixes like "High School"
-                # "Portland High School" -> PHS (standard) vs P (base)
                 base = re.sub(r'\s+(High School|Academy|Regional High School|Area High School|Schools|Memorial High School|Comprehensive High School|Christian Schools)$', '', fuller_name, flags=re.IGNORECASE)
                 acr_base = "".join(re.findall(r'\b\w', base)).upper()
                 
@@ -257,18 +273,31 @@ class Sub5Scraper:
             unique_matches = list(set(matches))
             if len(unique_matches) == 1:
                 return unique_matches[0]
-            # No return if ambiguous; fall back to other rules
 
-        # 3. Manual Mappings take priority (shorthands like GSA, MDI)
+        # 5. Middle School / Junior High Protection
+        # Avoid lumping MS/JH into High School mappings
+        ms_tokens = ["ms", "middle", "junior high", "jh", "elementary", "elem", "elementa", "primary", "interme"]
+        is_ms_token = any(f" {t}" in name.lower() or name.lower().endswith(f" {t}") or name.lower().endswith(t) for t in ms_tokens)
+        
+        # 6. Manual Mappings
         for key, val in TEAM_MAPPING.items():
+            # If it's an MS name, only accept exact or very specific mappings
+            if is_ms_token:
+                if name.lower() == key.lower():
+                    return val
+                continue
+                
             if name.lower().startswith(key.lower()):
                 return val
 
-        # 4. Dynamic Substring Absorption
-        # If this name starts exactly like another, longer team name in the DB, absorb it.
+        # 7. Dynamic Substring Absorption
         if all_teams:
-            # Sort teams by length descending to find the "fullest" versions first
             for fuller_name in sorted(all_teams, key=len, reverse=True):
+                # Don't absorb if one is MS and the other isn't
+                fuller_is_ms = any(f" {t}" in fuller_name.lower() or fuller_name.lower().endswith(t) for t in ms_tokens)
+                if is_ms_token != fuller_is_ms:
+                    continue
+                    
                 if len(fuller_name) > len(name) and fuller_name.lower().startswith(name.lower()):
                     return fuller_name
             
@@ -277,6 +306,8 @@ class Sub5Scraper:
     def normalize_athlete_name(self, name):
         if not name: return ""
         name = name.strip()
+        # strip leading rank leakage (insurance)
+        name = re.sub(r'^[\s#\-]*\d+[\s.\-]*', '', name).strip()
         for ac in self.manual_fixes.get('athlete_corrections', []):
             if ac['old_name'].lower() == name.lower():
                 return ac['new_name']
@@ -306,18 +337,7 @@ class Sub5Scraper:
         if not name: return True
         name_clean = name.strip()
         
-        # If it looks like a track mark (digits + special chars)
-        # e.g. "12.34", "4-05", "1:23.45"
-        if re.search(r'\d', name_clean) and any(c in name_clean for c in '.:-'):
-            # But exceptions for schools with numbers? (None common in ME except "U-32" in VT)
-            if 'U-32' not in name_clean:
-                return True
-
-        # If it contains 3 or more consecutive spaces, it's likely a merged column error
-        if '   ' in name_clean:
-            return True
-
-        # If it's a known school name (with school keywords), it's not an athlete
+        # 1. If it's a known school name (with school keywords), it's not an athlete
         school_keywords = ['High', 'School', 'Academy', 'Acad', 'Institute', 'MCI', 'GSA', 'MDI', 'GSA', 'EMITL', 'PVC', 'Relay', 'Track', 'Field', 'Team', 'Club', 'Middle', 'University', 'College']
         if any(k.lower() in name_clean.lower() for k in school_keywords):
             return False
@@ -327,19 +347,88 @@ class Sub5Scraper:
             if re.search(r'\b' + re.escape(sk) + r'\b', name_clean, re.I):
                 return False
 
-        # If it contains a comma, it's almost certainly an athlete "Last, First"
+        # 2. If it looks like a person's name: "First Last" or "First M. Last"
+        if re.match(r'^[A-Z][a-z.\']+\s+([A-Z][a-z.\']+\s*){1,2}$', name_clean):
+            return True
+
+        # 3. If it contains a comma, it's almost certainly an athlete "Last, First"
         if ',' in name_clean:
             return True
 
-        # If it looks like a person's name: "First Last" or "First M. Last"
-        if re.match(r'^[A-Z][a-z.\']+\s+([A-Z][a-z.\']+\s*){1,2}$', name_clean):
+        # If it looks like a track mark (digits + special chars)
+        # e.g. "12.34", "4-05", "1:23.45", "12-01.50", "12.34q"
+        # We check for digits and symbols common in marks
+        if re.search(r'\d', name_clean) and any(c in name_clean for c in '.:-\''):
+            return False
+
+        # If it contains 3 or more consecutive spaces, it's likely a merged column error
+        if '   ' in name_clean:
             return True
-        
+            
         # Very short names that aren't known schools
         if len(name_clean) < 3:
             return True
             
         return False
+
+    def mark_is_reasonable(self, mark, event_name):
+        """
+        Validates if a track & field mark is reasonable for the given event.
+        Prevents garbage data from being inserted.
+        """
+        if not mark: return False
+        
+        m = mark.upper().strip()
+        # Accept standard non-numeric marks
+        if m in ["DQ", "DNS", "DNF", "NH", "NM", "FOUL", "SCR", "ND", "NT", "X", "ND"]:
+            return True
+            
+        # Basic numeric check
+        if not re.search(r'\d', m):
+            return False
+            
+        # If it has many colons or dots, it might be a series or garbage
+        if m.count(':') > 2 or m.count('.') > 2:
+            return False
+
+        try:
+            # Event-specific bounds (very loose to avoid false positives)
+            
+            # Distance events (High Jump, Long Jump, Shot Put, etc.)
+            if any(x in event_name.lower() for x in ["jump", "put", "throw", "vault", "discus", "javelin"]):
+                # Should have ' or " or - or be a simple float. 
+                # Avoid very long strings.
+                if len(m) > 10: return False
+                return True
+                
+            # Time events
+            # Convert to seconds for easier bounds check
+            total_seconds = 0
+            parts = m.split(':')
+            if len(parts) == 1:
+                total_seconds = float(parts[0])
+            elif len(parts) == 2:
+                total_seconds = float(parts[0]) * 60 + float(parts[1])
+            elif len(parts) == 3:
+                total_seconds = float(parts[0]) * 3600 + float(parts[1]) * 60 + float(parts[2])
+            
+            # 55m / 60m / 100m dashes (usually 6-25 seconds)
+            if any(x in event_name for x in ["55", "60", "100"]):
+                return 5.0 < total_seconds < 40.0
+                
+            # 1600m / 1 Mile (usually 4-10 mins)
+            if "1600" in event_name or "1 Mile" in event_name:
+                return 180.0 < total_seconds < 900.0
+            
+            # Relays / Longer runs (avoid > 2 hours)
+            if total_seconds > 7200:
+                return False
+
+            return True 
+        except:
+            # If we can't parse it as a number but it has digits, let's be safe and reject if it looks like garbage
+            if len(m) > 12: return False
+            return True
 
     def get_db_connection(self):
         conn = sqlite3.connect(self.db_path)
@@ -382,6 +471,7 @@ class Sub5Scraper:
                     meet_name TEXT,
                     meet_url TEXT,
                     splits TEXT,
+                    grade TEXT,
                     FOREIGN KEY(athlete_id) REFERENCES athletes(id)
                 )
             ''')
@@ -405,11 +495,11 @@ class Sub5Scraper:
 
 
     def get_meet_links(self, year_url):
-        print(f"Fetching meet links from: {year_url}")
+        print(f"Fetching meet links and dates from: {year_url}")
         try:
             response = self._get_with_retry(year_url)
             soup = BeautifulSoup(response.text, 'html.parser')
-            links = []
+            links_with_dates = {} # {url: date_text}
             
             # Sub5 pages sometimes have frames
             frames = soup.find_all(['frame', 'iframe'], src=True)
@@ -417,46 +507,107 @@ class Sub5Scraper:
                 for frame in frames:
                     from urllib.parse import urljoin
                     frame_url = urljoin(year_url, frame['src'])
-                    links.extend(self.get_meet_links(frame_url))
+                    links_with_dates.update(self.get_meet_links_with_dates(frame_url))
             
-            for a in soup.find_all('a', href=True):
-                href = a['href']
-                # Search for .htm or .html result files
-                if href.endswith('.htm') or href.endswith('.html'):
-                    # Prioritize emitl, pvc, results patterns, including State/Class meets
-                    if any(x in href.lower() for x in ['results', 'emitl', 'pvc', 'states', 'class', 'champ', 'b-boys', 'b-girls']):
-                        if not href.startswith('http'):
-                            from urllib.parse import urljoin
-                            href = urljoin(year_url, href)
-                        if href not in links:
-                            links.append(href)
-            return list(set(links))
+            # Parse main page
+            links_with_dates.update(self.get_meet_links_with_dates(year_url, soup))
+            
+            return links_with_dates
         except Exception as e:
             print(f"Error fetching meet links from {year_url}: {e}")
-            return []
+            return {}
 
-    def download_missing_files(self, index_url, archive_dir, synced_meets=None, curr_year=None):
+    def get_meet_links_with_dates(self, url, soup=None):
+        if not soup:
+            try:
+                res = self._get_with_retry(url)
+                soup = BeautifulSoup(res.text, 'html.parser')
+            except:
+                return {}
+        
+        mapping = {}
+        
+        # Filter link function
+        def is_valid_result_link(h):
+            h = h.lower()
+            if not (h.endswith('.htm') or h.endswith('.html')): return False
+            
+            # Explicitly ignore known non-result patterns or large archive files
+            if any(x in h for x in ['meetresults', 'resultspPVC', 'index.htm', 'contact.htm', 'about.htm', 'links.htm']):
+                return False 
+            
+            # Core keywords that always indicate results
+            keywords = [
+                'result', 'emitl', 'pvc', 'states', 'class', 'champ', 'meet', 'inv', 
+                'scores', 'relays', 'festival', 'open', 'youth', 'ms', 'jh', 'middle', 'junior',
+                'boys', 'girls', 'kvac', 'wmc', 'smaa', 'mvc', 'frosh', 'freshman', 'bangor'
+            ]
+            if any(x in h for x in keywords): return True
+            
+            # Heuristic: Filenames with digits are almost always specific meet results (dates/meet numbers)
+            # e.g., 'oldtown20may2023.htm', 'brewer19april2023.htm'
+            filename = h.split('/')[-1]
+            if re.search(r'\d', filename):
+                return True
+                
+            return False
+
+        # Search for tables
+        for row in soup.find_all('tr'):
+            cols = row.find_all('td')
+            if len(cols) >= 2:
+                # First column is usually the date
+                date_text = cols[0].get_text(strip=True)
+                # Second/Third usually has the links
+                for col in cols[1:]:
+                    for a in col.find_all('a', href=True):
+                        href = a['href']
+                        if is_valid_result_link(href):
+                            if not href.startswith('http'):
+                                from urllib.parse import urljoin
+                                href = urljoin(url, href)
+                            mapping[href] = date_text
+        
+        # Fallback for links NOT in tables
+        for a in soup.find_all('a', href=True):
+            href = a['href']
+            if is_valid_result_link(href):
+                if href not in mapping:
+                    if not href.startswith('http'):
+                        from urllib.parse import urljoin
+                        href = urljoin(url, href)
+                    mapping[href] = None # No date found in table context
+        
+        return mapping
+
+    def download_missing_files(self, index_url, archive_dir, synced_meets=None, curr_year=None, curr_season=None):
         """Downloads new .htm/.html files from the index URL to the archive directory."""
         if not os.path.exists(archive_dir):
             os.makedirs(archive_dir)
             
         print(f"Checking for new files at {index_url}...")
-        links = self.get_meet_links(index_url)
-        print(f"Found {len(links)} meet links.")
+        links_map = self.get_meet_links(index_url)
+        print(f"Found {len(links_map)} meet links.")
         
         saved_files = []
-        for link in links:
+        mapping_changed = False
+
+        for link, date_str in links_map.items():
             filename = link.split('/')[-1]
-            # Handle query params if any
             if '?' in filename: filename = filename.split('?')[0]
             if not filename.lower().endswith(('.htm', '.html')):
                 filename += ".htm"
                 
+            # Update internal mapping
+            if date_str:
+                self.web_date_mapping[filename] = date_str
+                mapping_changed = True
+
             save_path = os.path.join(archive_dir, filename)
             meet_name = os.path.splitext(filename)[0]
 
-            # SKIP if already in DB (check year and meet name to avoid collisions)
-            if synced_meets and curr_year and (curr_year, meet_name) in synced_meets:
+            # SKIP if already in DB
+            if synced_meets and curr_year and curr_season and (curr_year, curr_season, meet_name) in synced_meets:
                 continue
             
             if not os.path.exists(save_path):
@@ -468,10 +619,19 @@ class Sub5Scraper:
                     saved_files.append(save_path)
                 except Exception as e:
                     print(f"Failed to download {link}: {e}")
-            else:
-                pass # Already exists
+        
+        if mapping_changed:
+            self.save_web_date_mapping()
                 
         return saved_files
+
+    def save_web_date_mapping(self):
+        mapping_path = os.path.join(os.path.dirname(__file__), 'web_date_mapping.json')
+        try:
+            with open(mapping_path, 'w') as f:
+                json.dump(self.web_date_mapping, f, indent=4)
+        except Exception as e:
+            print(f"Error saving web_date_mapping: {e}")
 
     def parse_all_files(self, archive_dir, json_dir):
         """Runs the Sub5ColumnParser on all files in the archive dir."""
@@ -482,6 +642,7 @@ class Sub5Scraper:
         total = len(files)
         self.report_progress(f"Parsing {total} files...", 0)
         
+        detector = FormatDetector(self)
         parsed_count = 0
         for i, filename in enumerate(files):
             input_path = os.path.join(archive_dir, filename)
@@ -493,10 +654,29 @@ class Sub5Scraper:
                 # if os.path.exists(output_path):
                 #     continue
 
-                parser = Sub5ColumnParser(input_path)
-                events = parser.parse()
+                with open(input_path, "r", encoding="utf-8", errors="ignore") as f:
+                    text = f.read()
+                
+                # Use strategy chain for parsing
+                # (Note: we don't have the full meet_url here easily, 
+                # but filename is often enough for the detector's secondary checks if needed)
+                parser_instance = detector.get_parser(text, filename)
+                
+                # determine season from the archive_dir path components
+                # path is .../sub5_archive/year/season/filename.htm
+                path_parts = input_path.split(os.sep)
+                season_label = path_parts[-2] if len(path_parts) > 2 else "Indoor"
+                
+                results = parser_instance.parse(text, filename, season_label)
+                
+                # Support structured output from newer parsers or list output from Sub5ColumnParser
+                data_to_save = results
+                if isinstance(results, list) and len(results) > 0 and "event" in results[0]:
+                    # Format for new DB sync logic
+                    data_to_save = {"events": results, "date": results[0].get("date")} if "date" in results[0] else results
+
                 with open(output_path, "w", encoding="utf-8") as f:
-                    json.dump(events, f, indent=4, ensure_ascii=False)
+                    json.dump(data_to_save, f, indent=4, ensure_ascii=False)
                 parsed_count += 1
                 
                 if i % 5 == 0 or i == total - 1:
@@ -529,9 +709,10 @@ class Sub5Scraper:
         # We might need to extract date from the filename or the file content if `Sub5ColumnParser` extracted it.
         # Wait, `Sub5ColumnParser` DOES NOT currently extract meet name or date into the JSON output directly, 
         # it just returns a list of events.
-        # Check `prototype_parser.py`: It returns `event_results` list.
-        # The parser logic extracts data from the file content but maybe doesn't return the global meet date ?
-        # Checking `prototype_parser.py`... 
+        # Check `parser.py`: It returns `event_results` list.
+        # Checking `parser.py`... 
+        # logic extracts data from the file content but maybe doesn't return the global meet date ?
+        # Checking `parser.py`... 
         # It seems `parse()` returns a list of dictionaries, one per event.
         # It does not seem to include a top-level "meet_metadata" object.
         # I need to infer date/meet from filename or add metadata parsing.
@@ -669,23 +850,44 @@ class Sub5Scraper:
                     print(f"!!! PLEASE ADD THIS TO backend/manual_fixes.json:")
                     print(f"!!! {{ \"meet_name_fragment\": \"{os.path.splitext(filename)[0]}\", \"new_date\": \"YYYY-MM-DD\" }}\n")
                 
+                # Reconstruct meet_url if possible, otherwise use filename
+                # (Note: full URL is hard to recover here without a mapping, but filename is what qaqc uses)
+                meet_url = filename
+                
+                if filename == "ResultsSMAA2.json":
+                    print(f"  [DEBUG] Syncing {filename}, events found: {len(parsed_events)}")
+                
+                # Reconstruct meet_url if possible, otherwise use filename
+                meet_url = filename
+                
                 for event_block in parsed_events:
-                    # Construct full event name: "Girls 55 Meter Dash"
-                    gender = event_block.get("gender", "")
-                    event_name = event_block.get("event", "")
-                    full_event = f"{gender} {event_name}".strip()
-                    
-                    for r in event_block.get("results", []):
-                        athlete_name = r.get("athlete", "")
-                        school = r.get("school", "")
-                        mark = r.get("result", "")
+                    # Check if this is an event block (has 'results') or a flat performance record
+                    if isinstance(event_block, dict) and "results" in event_block:
+                        # Nested Format (Event block with multiple results)
+                        gender = event_block.get("gender", "")
+                        event_name = event_block.get("event", "")
+                        full_event = f"{gender} {event_name}".strip()
+                        is_relay = event_block.get("is_relay", False)
+                        results_list = event_block.get("results", [])
+                        if filename == "ResultsSMAA2.json":
+                            print(f"    [DEBUG] Event: {full_event}, Results: {len(results_list)}")
+                    else:
+                        # Flat Format (Single performance record per entry)
+                        full_event = event_block.get("event", "").strip()
+                        is_relay = "Relay" in full_event
+                        results_list = [event_block]
+
+                    for r in results_list:
+                        athlete_name = r.get("athlete") or r.get("athlete_name") or ""
+                        school = r.get("school") or r.get("team") or ""
+                        mark = r.get("result") or r.get("mark") or ""
                         
                         # Handle Relays: Use list of athletes if available, else school name
                         relay_athletes = r.get("athletes", [])
-                        if event_block.get("is_relay"):
+                        if is_relay:
                             if relay_athletes:
                                 athlete_name = ", ".join(relay_athletes)
-                            else:
+                            elif not athlete_name:
                                 athlete_name = f"{school} Relay"
 
                         # Apply Athlete Name Fixes
@@ -701,10 +903,11 @@ class Sub5Scraper:
                         if team_norm and team_norm not in all_teams:
                             all_teams.add(team_norm)
                         
-                        # Skip if it is still a likely athlete name (bad parse)
+                        # Skip if it is a numeric mark that leaked into the team field
                         if self.is_likely_athlete_name(team_norm):
-                             # Actually `Sub5ColumnParser` is pretty good, but safety first
-                             pass
+                             if filename == "ResultsSMAA2.json":
+                                 print(f"      [DEBUG] Rejected Team {team_norm} for athlete {athlete_name}")
+                             continue
                         
                         # Insert Athlete (using cache)
                         if athlete_name in athlete_cache:
@@ -729,18 +932,18 @@ class Sub5Scraper:
                         splits_json = json.dumps(r.get("splits", []))
 
                         # Insert Performance
-                        # Deduplication check?
+                        # Deduplication check
                         cursor.execute('''
                             SELECT id FROM performances 
-                            WHERE athlete_id=? AND event=? AND mark=? AND date=?
-                        ''', (athlete_id, full_event, mark, performance_date))
+                            WHERE athlete_id=? AND event=? AND mark=? AND date=? AND meet_name=?
+                        ''', (athlete_id, full_event, mark, performance_date, meet_name))
                         
                         if not cursor.fetchone():
                             cursor.execute('''
                                 INSERT INTO performances 
-                                (athlete_id, event, mark, team, date, season, year, meet_name, meet_url, splits)
-                                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-                            ''', (athlete_id, full_event, mark, team_norm, performance_date, season, year, meet_name, "", splits_json))
+                                (athlete_id, event, mark, team, date, season, year, meet_name, meet_url, splits, grade)
+                                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                            ''', (athlete_id, full_event, mark, team_norm, performance_date, f"{year} {season}", year, meet_name, meet_url, splits_json, r.get("grade", "")))
                             total_performances += 1
                             
                 if i % 10 == 0 or i == total - 1:
@@ -758,6 +961,11 @@ class Sub5Scraper:
         """MAIN ENTRY POINT."""
         # Define the seasons to scrape
         seasons_to_scrape = [
+            {
+                "year": "2022",
+                "season": "Indoor",
+                "url": "https://sub5.com/youth-pages/indoor-track/2022-indoor-results/"
+            },
             {
                 "year": "2023",
                 "season": "Indoor",
@@ -777,6 +985,26 @@ class Sub5Scraper:
                 "year": "2026",
                 "season": "Indoor",
                 "url": "https://sub5.com/youth-pages/indoor-track/2026-indoor-results/"
+            },
+            {
+                "year": "2022",
+                "season": "Outdoor",
+                "url": "https://sub5.com/youth-pages/outdoor-track/2022-outdoor-results/"
+            },
+            {
+                "year": "2023",
+                "season": "Outdoor",
+                "url": "https://sub5.com/youth-pages/outdoor-track/2023-outdoor-results/"
+            },
+            {
+                "year": "2024",
+                "season": "Outdoor",
+                "url": "https://sub5.com/youth-pages/outdoor-track/2024-outdoor-results/"
+            },
+            {
+                "year": "2025",
+                "season": "Outdoor",
+                "url": "https://sub5.com/youth-pages/outdoor-track/2025-outdoor-results/"
             }
         ]
 
@@ -793,9 +1021,9 @@ class Sub5Scraper:
             conn = self.get_db_connection()
             cursor = conn.cursor()
             try:
-                cursor.execute("SELECT DISTINCT year, meet_name FROM performances")
+                cursor.execute("SELECT DISTINCT year, season, meet_name FROM performances")
                 for row in cursor.fetchall():
-                    synced_meets.add((row['year'], row['meet_name']))
+                    synced_meets.add((row['year'], row['season'], row['meet_name']))
             except Exception:
                 pass # Table might not exist or be empty
             conn.close()
@@ -811,13 +1039,13 @@ class Sub5Scraper:
 
             self.report_progress(f"Processing {season} {year}...", int((s_idx / total_seasons) * 100))
 
-            # 2. Directories ...
-            archive_dir = os.path.join(base_dir, f'backend/data/sub5_archive/{year}')
-            json_dir = os.path.join(base_dir, f'backend/data/parsed_results/{year}')
+            # 2. Directories
+            archive_dir = os.path.join(base_dir, f'backend/data/sub5_archive/{year}/{season}')
+            json_dir = os.path.join(base_dir, f'backend/data/parsed_results/{year}/{season}')
             
             # 3. Download New Files
-            self.report_progress(f"Downloading files for {year}...")
-            self.download_missing_files(index_url, archive_dir, synced_meets=synced_meets, curr_year=year)
+            self.report_progress(f"Downloading files for {season} {year}...")
+            self.download_missing_files(index_url, archive_dir, synced_meets=synced_meets, curr_year=year, curr_season=season)
             
             # 4. Parse All Files -> JSON
             self.parse_all_files(archive_dir, json_dir)
@@ -830,6 +1058,59 @@ class Sub5Scraper:
         return total_count
 
 if __name__ == "__main__":
+    import argparse
+    parser = argparse.ArgumentParser(description='Sub5 Track Scraper')
+    parser.add_argument('--year', help='Specific year to scrape')
+    parser.add_argument('--season', help='Specific season (Indoor/Outdoor) to scrape')
+    parser.add_argument('--no-wipe', action='store_true', help='Do not wipe database before scraping')
+    args = parser.parse_args()
+
     scraper = Sub5Scraper()
-    # Run Fresh Start Scrape
-    scraper.run_full_scrape()
+    wipe = not args.no_wipe
+    
+    if args.year or args.season:
+        # Targeted scrape
+        all_seasons = [
+            {"year": "2022", "season": "Indoor", "url": "https://sub5.com/youth-pages/indoor-track/2022-indoor-results/"},
+            {"year": "2023", "season": "Indoor", "url": "https://sub5.com/youth-pages/indoor-track/2023-indoor-results/"},
+            {"year": "2024", "season": "Indoor", "url": "https://sub5.com/youth-pages/indoor-track/2024-indoor-results/"},
+            {"year": "2025", "season": "Indoor", "url": "https://sub5.com/youth-pages/indoor-track/2025-indoor-results/"},
+            {"year": "2026", "season": "Indoor", "url": "https://sub5.com/youth-pages/indoor-track/2026-indoor-results/"},
+            {"year": "2022", "season": "Outdoor", "url": "https://sub5.com/youth-pages/outdoor-track/2022-outdoor-results/"},
+            {"year": "2023", "season": "Outdoor", "url": "https://sub5.com/youth-pages/outdoor-track/2023-outdoor-results/"},
+            {"year": "2024", "season": "Outdoor", "url": "https://sub5.com/youth-pages/outdoor-track/2024-outdoor-results/"},
+            {"year": "2025", "season": "Outdoor", "url": "https://sub5.com/youth-pages/outdoor-track/2025-outdoor-results/"}
+        ]
+        
+        filtered = [s for s in all_seasons if 
+                    (not args.year or s['year'] == args.year) and 
+                    (not args.season or s['season'].lower() == args.season.lower())]
+        
+        if not filtered:
+            print(f"No matching season found for Year: {args.year}, Season: {args.season}")
+        else:
+            # Modify run_full_scrape to accept a custom list or just do manual loop
+            # For simplicity, we'll just modify the scraper instance's internal list if we could, 
+            # but run_full_scrape rebuilds it. Let's just run initialize_db and then loop.
+            
+            wipe = not args.no_wipe
+            scraper.initialize_db(wipe=wipe)
+            base_dir = os.path.dirname(os.path.dirname(__file__))
+            
+            for config in filtered:
+                year = config["year"]
+                season = config["season"]
+                index_url = config["url"]
+                print(f"Targeted Scrape: {season} {year}")
+                
+                archive_dir = os.path.join(base_dir, f'backend/data/sub5_archive/{year}/{season}')
+                json_dir = os.path.join(base_dir, f'backend/data/parsed_results/{year}/{season}')
+                
+                scraper.download_missing_files(index_url, archive_dir, synced_meets=set(), curr_year=year, curr_season=season)
+                scraper.parse_all_files(archive_dir, json_dir)
+                scraper.sync_json_to_db(json_dir, season=season, year=year)
+            
+            print("Targeted Scrape Complete!")
+    else:
+        # Run Scrape (Everything)
+        scraper.run_full_scrape(wipe=wipe)

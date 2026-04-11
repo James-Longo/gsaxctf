@@ -22,7 +22,7 @@ class HyTekBaseParser(BaseParser):
         text = text.replace('\xa0', ' ').replace('\u00a0', ' ')
         
         # Event Header detection
-        event_pattern = re.compile(r'(Girls|Boys|Women|Men)\s+([\d\w\s]+)', re.IGNORECASE)
+        event_pattern = re.compile(r'(Girls|Boys|Women|Men)\s+([\d\w\s/.\-]+)', re.IGNORECASE)
         
         results = []
         lines = text.split('\n')
@@ -39,13 +39,11 @@ class HyTekBaseParser(BaseParser):
                 continue
             
             # Header check
-            if len(line_clean) < 80 and ("Girls" in line_clean or "Boys" in line_clean or "Women" in line_clean or "Men" in line_clean):
+            # Look for lines starting with Gender and having common Track keywords
+            keywords = ["Dash", "Run", "Hurdles", "Relay", "Jump", "Put", "Throw", "Vault", "Discus", "Javelin", "Walk", "Pentathlon", "Heptathlon"]
+            if len(line_clean) < 100 and any(g in line_clean for g in ["Girls", "Boys", "Women", "Men"]):
                 ev_match = event_pattern.search(line_clean)
-                if ev_match:
-                    if "Relay" not in ev_match.group(2) and "Relay" not in line_clean:
-                         # Ensure it's not a relay unless explicit
-                         pass
-                    
+                if ev_match and any(kw.lower() in line_clean.lower() for kw in keywords):
                     current_gender = ev_match.group(1)
                     current_event = ev_match.group(2).strip()
                     i += 1
@@ -70,6 +68,8 @@ class HyTekBaseParser(BaseParser):
                         if mark_idx > 0:
                             mark = parts[mark_idx]
                             school = " ".join(parts[1:mark_idx])
+                            # Clean rank from school if it leaked
+                            school = re.sub(r'^[\s#\-]*\d+[\s.\-]*', '', school).strip()
                             full_event = self.clean_event_name(f"{current_gender} {current_event}")
                             results.append({
                                 "athlete_name": school + " Relay",
@@ -113,21 +113,23 @@ class HyTekStandardParser(HyTekBaseParser):
             # But "Madison Rose" is 1 part if we split by 2 spaces. 
             if idx < 1: continue 
             
-            if p == '--' or (p.isdigit() and 7 <= int(p) <= 12):
+            grade_patterns = ['--', 'FR', 'SO', 'JR', 'SR']
+            if p.upper() in grade_patterns or (p.isdigit() and 7 <= int(p) <= 12):
                 grade_idx = idx
                 break
         
         if grade_idx == -1: return None, i # Standard parser mandates a grade column
         
         name = " ".join(parts[1:grade_idx]) # Name is everything before grade
+        # Clean rank from name if it leaked (happens if spacing is < 2 chars)
+        name = re.sub(r'^[\s#\-]*\d+[\s.\-]*', '', name).strip()
         grade = parts[grade_idx]
         
-        # School is next, Mark is usually last (ignoring points)
-        # Scan from end for mark
+        # School is next, Mark is usually the first numeric part after grade
         mark_idx = -1
-        for k in range(len(parts)-1, grade_idx, -1):
+        for k in range(grade_idx + 1, len(parts)):
              p = parts[k]
-             if re.search(r'\d', p) and (':' in p or '.' in p) and len(p) > 2:
+             if re.search(r'\d', p) and (':' in p or '.' in p) and len(p) >= 3:
                  mark_idx = k
                  break
         
@@ -172,13 +174,16 @@ class HyTekSMAAParser(HyTekBaseParser):
         # Structure: Rank, Name, School, Mark...
         # Name is usually index 1
         name = parts[1]
+        # Clean rank from name if it leaked
+        name = re.sub(r'^[\s#\-]*\d+[\s.\-]*', '', name).strip()
         
         # Find Mark (digits with . or :)
+        # In SMAA, the school is between name (1) and mark.
         mark_idx = -1
-        for k in range(len(parts)-1, 1, -1):
+        for k in range(2, len(parts)):
              p = parts[k]
              # SMAA marks often have trailing chars or heat numbers separately
-             if re.search(r'\d', p) and (':' in p or '.' in p) and len(p) > 3:
+             if re.search(r'\d', p) and (':' in p or '.' in p) and len(p) >= 3:
                  mark_idx = k
                  break
         

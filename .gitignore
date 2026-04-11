@@ -1,33 +1,22 @@
+# Logs
+*.log
+deploy_log.txt
+scraper_debug.log
+
+# Scratch
+backend/scratch/
+scratch/
+qaqc_results.txt
+qaqc_final.txt
+
+# Large temporary files
+ui/public/data.json
+
+# DBs
+backend/results.db
+backend/track_app.db
+
 # Python
-.venv/
-venv/
-venv_linux/
 __pycache__/
-*.pyc
-
-# Data (Keep track_app.db but ignore raw scraped files to save space)
-backend/data/sub5_archive/
-backend/data/parsed_results/
-
-# Generated output (run generate_gsa_pr_matrix.py locally to produce these)
-gsa_pr_matrix_*.csv
-gsa_prs_*.csv
-
-# Frontend
-ui/node_modules/
-ui/dist/
-ui/.env
-.DS_Store
-
-# Backend Output / scratch
-backend/requirements_current.txt
-result.txt
-leigh_out.txt
-leigh_data.json
-debug_data.py
-backend/debug_leigh.py
-audit_out.txt
-
-# Vercel / local env
-.vercel
-.env*.local
+*.py[cod]
+*$py.class

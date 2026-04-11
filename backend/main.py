@@ -515,7 +515,7 @@ def run_scrape_in_background(full=False):
 
 @app.post("/scrape/sub5")
 def scrape_sub5(background_tasks: BackgroundTasks, full: bool = False):
-    """Scrapes only the current 2025-2026 indoor season."""
+    """Scrapes configured historical Indoor and Outdoor seasons from Sub5.com."""
     if scrape_status["is_active"]:
         return {"status": "busy", "message": "Scrape already in progress"}
     

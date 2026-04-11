@@ -31,7 +31,7 @@ The project is split into three main layers:
 ### Core Components
 - **`track_app.db`**: The SQLite database (Source of Truth).
 - **`backend/scraper.py`**: The main scraping engine.
-- **`backend/prototype_parser.py`**: The primary parser for Sub5 results.
+- **`backend/parser.py`**: The primary parser for Sub5 results.
 - **`backend/nash_engine.py`**: Game-theoretic optimization logic.
 - **`backend/championship_engine.py`**: Meet simulation and strategic insight generation.
 - **`backend/main.py`**: FastAPI server logic.
@@ -42,7 +42,7 @@ The project is split into three main layers:
 - `verify_dates.py`: Validation for parsed result dates.
 
 ## Data Flow
-1.  **Ingest**: `scraper.py` fetches HTML; `prototype_parser.py` converts it to JSON.
+1.  **Ingest**: `scraper.py` fetches HTML; `parser.py` converts it to JSON.
 2.  **Persist**: Scraper inserts JSON results into `track_app.db`.
 3.  **Analyze**: Engines (`nash_engine`, `championship_engine`) process raw marks and calculate projected scoring and tactical swaps.
 4.  **Export**: `export_for_web.py` creates `ui/public/data.json`.

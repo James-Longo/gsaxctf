@@ -83,6 +83,9 @@ export function isBetter(a, b) {
     if (!pA.valid && pB.valid) return false;
 
     // Both valid: Compare values
+    // Both valid: Must be same type to compare
+    if (pA.isTime !== pB.isTime) return false;
+
     if (pA.isTime) {
         // Lower is better for time
         return pA.value < pB.value;

@@ -20,11 +20,13 @@ const AthleteProfile = ({ performances, selectedAthlete }) => {
 
         const groups = {};
         performances.forEach(p => {
-            if (!groups[p.event]) groups[p.event] = [];
+            const groupKey = p.event;
+
+            if (!groups[groupKey]) groups[groupKey] = [];
 
             const parsed = parseMark(p.mark);
             if (parsed.valid) {
-                groups[p.event].push({
+                groups[groupKey].push({
                     ...p,
                     numericValue: parsed.value,
                     isTime: parsed.isTime

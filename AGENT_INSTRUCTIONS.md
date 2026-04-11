@@ -9,7 +9,7 @@ This document provides critical context for future AI agents working on this cod
 - `ui/public/data.json`: The exported data consumed by the frontend.
 
 ## Key Components
-- **`backend/prototype_parser.py`**: This is the **primary parser** for Sub5 HTML files. Do not be misled by the "prototype" name. It handles individual and relay results, including complex split parsing.
+- **`backend/parser.py`**: This is the **primary parser** for Sub5 HTML files. It handles individual and relay results, including complex split parsing.
 - **`backend/scraper.py`**: Coordinates the download, parsing, and database synchronization.
 
 ## Key Workflows
@@ -34,5 +34,5 @@ Split data is stored as a JSON string in the `splits` column of the `performance
 ## Common Gotchas
 - **React Imports:** Always ensure `import React from 'react'` is present if using `React.Fragment` or JSX that requires the React object, as the build environment may enforce it.
 - **Athlete ID Types:** The athlete dropdown values are strings, but database IDs are often numbers. Ensure type conversion (e.g., `String(id)`) when filtering in `App.jsx`.
-- **Primary Parser:** Ensure any changes to parsing logic are made in `backend/prototype_parser.py` OR the specialized parsers in `backend/parsers/` if the `FormatDetector` is updated.
+- **Primary Parser:** Ensure any changes to parsing logic are made in `backend/parser.py` OR the specialized parsers in `backend/parsers/` if the `FormatDetector` is updated.
 

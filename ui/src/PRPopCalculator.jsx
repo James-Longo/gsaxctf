@@ -85,11 +85,18 @@ const PRPopCalculator = ({ performances, selectedTeam, isBetter }) => {
             }
 
             // Find all historical performances for this athlete/event/type BEFORE THIS DAY
-            const prevPerformances = performances.filter(prev =>
-                prev.athlete_id === p.athlete_id &&
-                prev.event === p.event &&
-                new Date(prev.date.split('T')[0]) < new Date(actualMeetDate)
-            );
+            const prevPerformances = performances.filter(prev => {
+                let prevType = prev.season || 'Unknown';
+                if (prev.season) {
+                    const m = prev.season.match(/^(\d{4})\s+(.*)$/);
+                    if (m) prevType = m[2];
+                }
+
+                return prev.athlete_id === p.athlete_id &&
+                    prev.event === p.event &&
+                    prevType === type &&
+                    new Date(prev.date.split('T')[0]) < new Date(actualMeetDate);
+            });
 
             if (prevPerformances.length === 0) return false; // It's a first-time PR, not a Pop
 
@@ -115,13 +122,19 @@ const PRPopCalculator = ({ performances, selectedTeam, isBetter }) => {
                 if (match) pType = match[2];
             }
 
-            // Find the best previous mark
-            const prevPerformances = performances.filter(prev =>
-                prev.athlete_id === p.athlete_id &&
-                prev.event === p.event &&
-                new Date(prev.date) < new Date(p.date)
-                // We could also filter by pType but PR usually spans years in same event
-            );
+            // Find the best previous mark in the SAME season type
+            const prevPerformances = performances.filter(prev => {
+                let prevType = prev.season || 'Unknown';
+                if (prev.season) {
+                    const m = prev.season.match(/^(\d{4})\s+(.*)$/);
+                    if (m) prevType = m[2];
+                }
+
+                return prev.athlete_id === p.athlete_id &&
+                    prev.event === p.event &&
+                    prevType === pType &&
+                    new Date(prev.date) < new Date(p.date);
+            });
 
             let oldBest = null;
             prevPerformances.forEach(prev => {

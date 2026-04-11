@@ -125,7 +125,7 @@ const PracticeResults = () => {
 
                         let performanceVal;
                         const meanSdEvents = ['20m Fly', 'Half Court Dash', 'Shuttle Run'];
-                        
+
                         if (event.type === 'distance') {
                             performanceVal = Math.max(...validTrials);
                         } else if (meanSdEvents.includes(event.col)) {
@@ -187,26 +187,26 @@ const PracticeResults = () => {
     const filteredResults = useMemo(() => {
         return results.filter(r => {
             return (filterName === 'All' || r.name === filterName) &&
-                   (filterSurface === 'All' || r.surface === filterSurface) &&
-                   (filterEvent === 'All' || r.event === filterEvent);
+                (filterSurface === 'All' || r.surface === filterSurface) &&
+                (filterEvent === 'All' || r.event === filterEvent);
         });
     }, [results, filterName, filterSurface, filterEvent]);
 
     const leaderboard = useMemo(() => {
         const dataMap = {};
-        
+
         filteredResults.forEach(r => {
             if (!dataMap[r.name]) {
-                dataMap[r.name] = { 
+                dataMap[r.name] = {
                     name: r.name,
                     replicates: []
                 };
             }
-            
+
             const isTime = r.mark_type === 'time';
             const isHand = r.is_hand_timed;
             const isDistance = r.mark_type === 'distance';
-            
+
             const numericTrials = (r.trials || []).map(t => {
                 if (isDistance) return parseDistance(String(t));
                 const cleanT = String(t).toLowerCase().replace('h', '');
@@ -250,20 +250,20 @@ const PracticeResults = () => {
                 });
             }
         });
-        
+
         const summary = Object.values(dataMap).map(athlete => {
             if (athlete.replicates.length === 0) return null;
             const isTime = athlete.replicates[0].mark_type === 'time';
-            
+
             // Sort replicates to find the best one
             const sortedReplicates = [...athlete.replicates].sort((a, b) => isTime ? a.val - b.val : b.val - a.val);
             const best = sortedReplicates[0];
-            
+
             let mphEstimate = null;
             if (filterEvent === '20m Fly') {
                 mphEstimate = (44.7388 / (best.val || 1));
             }
-            
+
             return {
                 name: athlete.name,
                 best: best,
@@ -271,7 +271,7 @@ const PracticeResults = () => {
                 replicatesCount: athlete.replicates.length
             };
         }).filter(Boolean);
-        
+
         return summary.sort((a, b) => {
             if (filterEvent === '20m Fly') {
                 return (b.mphEstimate || 0) - (a.mphEstimate || 0);
@@ -304,7 +304,7 @@ const PracticeResults = () => {
             const evResults = byEvent[ev];
             const isTimeEvent = evResults[0].mark_type === 'time';
             const isDistEvent = evResults[0].mark_type === 'distance';
-            
+
             const vals = [];
             evResults.forEach(r => {
                 (r.trials || []).forEach(t => {
@@ -336,7 +336,7 @@ const PracticeResults = () => {
                 return colors[index];
             };
         });
-        
+
         return scales;
     }, [results]);
 
@@ -353,13 +353,13 @@ const PracticeResults = () => {
             <div className="header-row">
                 <h2>Practice Results - Dashboard</h2>
                 <div className="view-toggle">
-                    <button 
+                    <button
                         className={`toggle-btn ${viewMode === 'leaderboard' ? 'active' : ''}`}
                         onClick={() => setViewMode('leaderboard')}
                     >
                         Leaderboard
                     </button>
-                    <button 
+                    <button
                         className={`toggle-btn ${viewMode === 'sessions' ? 'active' : ''}`}
                         onClick={() => setViewMode('sessions')}
                     >
@@ -404,10 +404,10 @@ const PracticeResults = () => {
                                 <th>Rank</th>
                                 <th>Athlete</th>
                                 <th>{
-                                    filterEvent === '20m Fly' ? 'Best Speed (MPH)' : 
-                                    (filterEvent.includes('Jump') || filterEvent.includes('Bound')) ? 'Best Distance (Feet-Inches)' :
-                                    (filterEvent === 'Shuttle Run' || filterEvent === 'Half Court Dash') ? 'Fastest Time (Seconds)' :
-                                    `Reliable Mark (${filterEvent.includes('Jump') || filterEvent.includes('Bound') ? 'Inches' : 'Seconds'})`
+                                    filterEvent === '20m Fly' ? 'Top Speed (MPH)' :
+                                        (filterEvent.includes('Jump') || filterEvent.includes('Bound')) ? 'Best Distance (Feet-Inches)' :
+                                            (filterEvent === 'Shuttle Run' || filterEvent === 'Half Court Dash') ? 'Fastest Time (Seconds)' :
+                                                `Reliable Mark (${filterEvent.includes('Jump') || filterEvent.includes('Bound') ? 'Inches' : 'Seconds'})`
                                 }</th>
                                 <th>Replicates</th>
                                 <th>Date</th>
@@ -419,19 +419,19 @@ const PracticeResults = () => {
                                     <td>{idx + 1}</td>
                                     <td className="athlete-name-cell">{a.name}</td>
                                     <td>
-                                        <div 
-                                            className="result-badge" 
-                                            style={{ 
-                                                backgroundColor: getEventColor(a.best.val, a.best.raw_result.event), 
-                                                color: 'white', padding: '4px 8px', borderRadius: '4px', display: 'inline-block', fontWeight: 'bold' 
+                                        <div
+                                            className="result-badge"
+                                            style={{
+                                                backgroundColor: getEventColor(a.best.val, a.best.raw_result.event),
+                                                color: 'white', padding: '4px 8px', borderRadius: '4px', display: 'inline-block', fontWeight: 'bold'
                                             }}
                                         >
-                                            {filterEvent === '20m Fly' ? (a.mphEstimate || 0).toFixed(2) : (a.best.mark_type === 'distance' ? 
-                                                (Math.floor(a.best.val / 12) + '-' + (a.best.val % 12).toFixed(1)) : 
+                                            {filterEvent === '20m Fly' ? (a.mphEstimate || 0).toFixed(2) : (a.best.mark_type === 'distance' ?
+                                                (Math.floor(a.best.val / 12) + '-' + (a.best.val % 12).toFixed(1)) :
                                                 (a.best.val || 0).toFixed(2))}
                                             {a.best.sd > 0 && (
                                                 <span style={{ fontSize: '0.75rem', marginLeft: '4px', opacity: 0.9, fontWeight: 'normal' }}>
-                                                    ±{filterEvent === '20m Fly' ? (a.mphEstimate * (a.best.sd/a.best.val || 0)).toFixed(2) : (a.best.mark_type === 'distance' ? (a.best.sd/12).toFixed(1) + "'" : a.best.sd.toFixed(2))}
+                                                    ±{filterEvent === '20m Fly' ? (a.mphEstimate * (a.best.sd / a.best.val || 0)).toFixed(2) : (a.best.mark_type === 'distance' ? (a.best.sd / 12).toFixed(1) + "'" : a.best.sd.toFixed(2))}
                                                 </span>
                                             )}
                                         </div>
@@ -454,13 +454,13 @@ const PracticeResults = () => {
                                     <thead>
                                         <tr>
                                             <th>Athlete</th>
-                                            <th>{ ['20m Fly', 'Half Court Dash', 'Shuttle Run'].includes(filterEvent) ? 'Mean' : 'Median/Peak' }</th>
+                                            <th>{['20m Fly', 'Half Court Dash', 'Shuttle Run'].includes(filterEvent) ? 'Mean' : 'Median/Peak'}</th>
                                             <th>Trials</th>
                                             <th>Surface</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        {sessionResults.sort((a,b) => {
+                                        {sessionResults.sort((a, b) => {
                                             const isTime = a.mark_type === 'time';
                                             const isDist = a.mark_type === 'distance';
                                             const valA = isDist ? parseDistance(String(a.median_mark)) : parseFloat(String(a.median_mark).replace('h', ''));
@@ -470,11 +470,11 @@ const PracticeResults = () => {
                                             <tr key={`${r.name}-${r.event}-${r.date}`}>
                                                 <td className="athlete-name-cell">{r.name}</td>
                                                 <td>
-                                                    <div 
-                                                        className="result-badge" 
-                                                        style={{ 
-                                                            backgroundColor: getEventColor(r.mark_type === 'distance' ? parseDistance(String(r.median_mark)) : parseFloat(String(r.median_mark).replace('h', '')), r.event), 
-                                                            color: 'white', padding: '2px 6px', borderRadius: '4px', display: 'inline-block', fontSize: '0.85rem' 
+                                                    <div
+                                                        className="result-badge"
+                                                        style={{
+                                                            backgroundColor: getEventColor(r.mark_type === 'distance' ? parseDistance(String(r.median_mark)) : parseFloat(String(r.median_mark).replace('h', '')), r.event),
+                                                            color: 'white', padding: '2px 6px', borderRadius: '4px', display: 'inline-block', fontSize: '0.85rem'
                                                         }}
                                                     >
                                                         {r.formatted_median}
