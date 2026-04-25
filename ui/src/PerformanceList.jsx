@@ -1,8 +1,8 @@
-import { useState, useMemo } from 'react'
+import { useState, useMemo, useEffect } from 'react'
 import { parseMark } from './utils'
 import './App.css'
 
-function PVCSimulator({ performances, isBetter }) {
+function PostseasonSimulator({ performances, isBetter, manifest, loadSeason }) {
     const [filterYear, setFilterYear] = useState('All')
     const [filterSeason, setFilterSeason] = useState('All')
     const [filterEvent, setFilterEvent] = useState('All')
@@ -62,6 +62,21 @@ function PVCSimulator({ performances, isBetter }) {
             "Houlton": "Houlton High School"
         };
     };
+
+    useEffect(() => {
+        if (!manifest || !loadSeason) return;
+
+        if (filterYear !== 'All' && filterSeason !== 'All') {
+            const key = `${filterYear}_${filterSeason}`.replace(' ', '_');
+            if (manifest.find(m => m.key === key)) {
+                loadSeason(key);
+            }
+        } else if (filterYear !== 'All') {
+            manifest.filter(m => m.year === filterYear).forEach(m => loadSeason(m.key));
+        } else if (filterSeason !== 'All') {
+            manifest.filter(m => m.season === filterSeason).forEach(m => loadSeason(m.key));
+        }
+    }, [filterYear, filterSeason, manifest, loadSeason]);
 
     const { filteredData, years, seasons, events } = useMemo(() => {
         if (!performances) return { filteredData: [], years: [], seasons: [], events: [] };
@@ -190,7 +205,7 @@ function PVCSimulator({ performances, isBetter }) {
 
     // Simulation Helpers and Core Logic
     const SCORING_RULES = [10, 8, 6, 4, 2, 1];
-    const EVENT_LIMIT = 3;
+    const EVENT_LIMIT = filterSeason === 'Indoor' ? 3 : 4;
 
     const getMembers = (p) => {
         const name = p.athlete_name || "";
@@ -824,22 +839,49 @@ function PVCSimulator({ performances, isBetter }) {
 
     // Configuration for PVC Small Schools
 
-    const EVENT_ALIASES = {
-        "55m Dash": ["55m Dash", "55 Meter Dash"],
-        "200m Dash": ["200m Dash", "200 Meter Dash"],
-        "400m Dash": ["400m Dash", "400 Meter Dash"],
-        "800m Run": ["800m Run", "800 Meter Run"],
-        "1 Mile Run": ["1 Mile Run"],
-        "2 Mile Run": ["2 Mile Run"],
-        "55m Hurdles": ["55m Hurdles", "55 Meter Hurdles"],
-        "4x200m Relay": ["4x200m", "4x200 Meter"],
-        "4x800m Relay": ["4x800m", "4x800 Meter"],
-        "High Jump": ["High Jump"],
-        "Pole Vault": ["Pole Vault"],
-        "Long Jump": ["Long Jump"],
-        "Triple Jump": ["Triple Jump"],
-        "Shot Put": ["Shot Put"]
-    };
+    const EVENT_ALIASES = useMemo(() => {
+        const indoor = {
+            "55m Dash": ["55m Dash", "55 Meter Dash"],
+            "200m Dash": ["200m Dash", "200 Meter Dash"],
+            "400m Dash": ["400m Dash", "400 Meter Dash"],
+            "800m Run": ["800m Run", "800 Meter Run"],
+            "1 Mile Run": ["1 Mile Run", "1600m", "1600 Meter"],
+            "2 Mile Run": ["2 Mile Run", "3200m", "3200 Meter"],
+            "55m Hurdles": ["55m Hurdles", "55 Meter Hurdles"],
+            "4x200m Relay": ["4x200m", "4x200 Meter"],
+            "4x800m Relay": ["4x800m", "4x800 Meter"],
+            "High Jump": ["High Jump"],
+            "Pole Vault": ["Pole Vault"],
+            "Long Jump": ["Long Jump"],
+            "Triple Jump": ["Triple Jump"],
+            "Shot Put": ["Shot Put"]
+        };
+
+        const outdoor = {
+            "100m Dash": ["100m Dash", "100 Meter Dash"],
+            "200m Dash": ["200m Dash", "200 Meter Dash"],
+            "400m Dash": ["400m Dash", "400 Meter Dash"],
+            "800m Run": ["800m Run", "800 Meter Run"],
+            "1600m Run": ["1600m Run", "1600 Meter Run", "1 Mile"],
+            "3200m Run": ["3200m Run", "3200 Meter Run", "2 Mile"],
+            "100m Hurdles": ["100m Hurdles", "100 Meter Hurdles"],
+            "110m Hurdles": ["110m Hurdles", "110 Meter Hurdles"],
+            "300m Hurdles": ["300m Hurdles", "300 Meter Hurdles"],
+            "4x100m Relay": ["4x100m", "4x100 Meter"],
+            "4x400m Relay": ["4x400m", "4x400 Meter"],
+            "4x800m Relay": ["4x800m", "4x800 Meter"],
+            "Race Walk": ["Race Walk", "1600m Race Walk"],
+            "High Jump": ["High Jump"],
+            "Pole Vault": ["Pole Vault"],
+            "Long Jump": ["Long Jump"],
+            "Triple Jump": ["Triple Jump"],
+            "Shot Put": ["Shot Put"],
+            "Discus": ["Discus"],
+            "Javelin": ["Javelin"]
+        };
+
+        return filterSeason === 'Outdoor' ? outdoor : indoor;
+    }, [filterSeason]);
 
     // Group by Event, Season, and Year for context-specific ranking
     const groupedData = useMemo(() => {
@@ -1258,8 +1300,7 @@ function PVCSimulator({ performances, isBetter }) {
     return (
         <div className="analyzer-container">
             <div className="analyzer-header">
-                <h2>PVC Championships Simulator</h2>
-                <p className="subtitle">Simulating PVC Small Schools Championships using all-time best performances</p>
+                <h2>Postseason Simulator</h2>
             </div>
 
             <div className="analyzer-controls">
@@ -1286,37 +1327,12 @@ function PVCSimulator({ performances, isBetter }) {
                             ))}
                         </select>
                     </div>
-                    <div className="filter-group">
-                        <label>Simulation Depth</label>
-                        <input
-                            type="number"
-                            value={simIterations}
-                            onChange={e => setSimIterations(Math.max(1, Number(e.target.value)))}
-                            min="1"
-                            step="10"
-                            style={{ width: '80px', padding: '6px' }}
-                        />
-                    </div>
                     <div className="simulation-actions">
-                        <button
-                            className={`simulate-btn robust-btn ${isRobustLoading ? 'loading' : ''}`}
-                            onClick={runRobustSimulation}
-                            disabled={isRobustLoading}
-                        >
-                            {isRobustLoading ? `Simulating (${simProgress}%)...` : 'Multi Simulation'}
-                        </button>
-                        <button
-                            className={`simulate-btn nash-btn ${isRobustLoading ? 'loading' : ''}`}
-                            onClick={runStrategicSimulation}
-                            disabled={isRobustLoading}
-                        >
-                            Nash Equilibrium
-                        </button>
                         <button
                             className={`simulate-btn ${showSimulation ? 'active' : ''}`}
                             onClick={() => setShowSimulation(!showSimulation)}
                         >
-                            {showSimulation ? 'Show Raw Results' : 'Greedy'}
+                            {showSimulation ? 'Show All Entries' : 'Limit Entries'}
                         </button>
                     </div>
                     <div className="record-count">{filteredData.length} Results</div>
@@ -1760,4 +1776,4 @@ function PVCSimulator({ performances, isBetter }) {
     );
 }
 
-export default PVCSimulator;
+export default PostseasonSimulator;

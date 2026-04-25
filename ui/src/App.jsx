@@ -301,7 +301,7 @@ function App() {
         <div className="sidebar">
           <div className="nav-buttons">
             <button onClick={() => setActiveTab('history')} className={`nav-btn ${activeTab === 'history' ? 'active' : ''}`}>History</button>
-            <button onClick={() => setActiveTab('analyzer')} className={`nav-btn ${activeTab === 'analyzer' ? 'active' : ''}`}>PVC Sim</button>
+            <button onClick={() => setActiveTab('analyzer')} className={`nav-btn ${activeTab === 'analyzer' ? 'active' : ''}`}>Postseason Sim</button>
             <button onClick={() => setActiveTab('pr-pop')} className={`nav-btn ${activeTab === 'pr-pop' ? 'active' : ''}`}>PR Pop</button>
             <button onClick={() => setActiveTab('athlete-profile')} className={`nav-btn ${activeTab === 'athlete-profile' ? 'active' : ''}`}>Profile</button>
             <button onClick={() => setActiveTab('practice')} className={`nav-btn ${activeTab === 'practice' ? 'active' : ''}`}>Practice</button>
@@ -321,7 +321,7 @@ function App() {
           {!dataLoaded ? <div className="loading-state">Initializing Dashboard...</div> : (
           <>
           {activeTab === 'analyzer' ? (
-            <PerformanceList performances={allPerformances} isBetter={isBetter} />
+            <PerformanceList performances={allPerformances} isBetter={isBetter} manifest={manifest} loadSeason={loadSeason} />
           ) : activeTab === 'pr-pop' ? (
             <PRPopCalculator performances={allPerformances} selectedTeam={selectedTeam} isBetter={isBetter} />
           ) : activeTab === 'practice' ? (

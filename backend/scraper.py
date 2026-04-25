@@ -540,7 +540,8 @@ class Sub5Scraper:
             keywords = [
                 'result', 'emitl', 'pvc', 'states', 'class', 'champ', 'meet', 'inv', 
                 'scores', 'relays', 'festival', 'open', 'youth', 'ms', 'jh', 'middle', 'junior',
-                'boys', 'girls', 'kvac', 'wmc', 'smaa', 'mvc', 'frosh', 'freshman', 'bangor'
+                'boys', 'girls', 'kvac', 'wmc', 'smaa', 'mvc', 'frosh', 'freshman', 'bangor',
+                'gsa', 'bucksport', 'ellsworth', 'mdi', 'orono', 'oldtown', 'brewer', 'falmouth'
             ]
             if any(x in h for x in keywords): return True
             
