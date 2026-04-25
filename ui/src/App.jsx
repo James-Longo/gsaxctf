@@ -323,7 +323,7 @@ function App() {
           {activeTab === 'analyzer' ? (
             <PerformanceList performances={allPerformances} isBetter={isBetter} manifest={manifest} loadSeason={loadSeason} />
           ) : activeTab === 'pr-pop' ? (
-            <PRPopCalculator performances={allPerformances} selectedTeam={selectedTeam} isBetter={isBetter} />
+            <PRPopCalculator performances={allPerformances} selectedTeam={selectedTeam} isBetter={isBetter} manifest={manifest} loadSeason={loadSeason} />
           ) : activeTab === 'practice' ? (
             <PracticeResults />
           ) : activeTab === 'footage' ? (

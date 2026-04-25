@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import { parseMark } from './utils';
 
 const formatImprovement = (pNew, pOld) => {
@@ -15,8 +15,15 @@ const formatImprovement = (pNew, pOld) => {
     }
 }
 
-const PRPopCalculator = ({ performances, selectedTeam, isBetter }) => {
+const PRPopCalculator = ({ performances, selectedTeam, isBetter, manifest, loadSeason }) => {
     const [selectedMeet, setSelectedMeet] = useState('latest');
+
+    // Automatically load all historical data when this component is mounted
+    // PR Pop needs full history to identify previous personal bests
+    useEffect(() => {
+        if (!manifest || !loadSeason) return;
+        manifest.forEach(m => loadSeason(m.key));
+    }, [manifest, loadSeason]);
 
     const { processedMeets, popResults, totalPrCount, currentMeetName } = useMemo(() => {
         if (!performances || performances.length === 0) return { processedMeets: [], popResults: [], totalPrCount: 0, currentMeetName: '' };
