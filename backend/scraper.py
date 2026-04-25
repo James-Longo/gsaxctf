@@ -1005,6 +1005,11 @@ class Sub5Scraper:
                 "year": "2025",
                 "season": "Outdoor",
                 "url": "https://sub5.com/youth-pages/outdoor-track/2025-outdoor-results/"
+            },
+            {
+                "year": "2026",
+                "season": "Outdoor",
+                "url": "https://sub5.com/youth-pages/outdoor-track/2026-outdoor-results/"
             }
         ]
 
@@ -1079,7 +1084,8 @@ if __name__ == "__main__":
             {"year": "2022", "season": "Outdoor", "url": "https://sub5.com/youth-pages/outdoor-track/2022-outdoor-results/"},
             {"year": "2023", "season": "Outdoor", "url": "https://sub5.com/youth-pages/outdoor-track/2023-outdoor-results/"},
             {"year": "2024", "season": "Outdoor", "url": "https://sub5.com/youth-pages/outdoor-track/2024-outdoor-results/"},
-            {"year": "2025", "season": "Outdoor", "url": "https://sub5.com/youth-pages/outdoor-track/2025-outdoor-results/"}
+            {"year": "2025", "season": "Outdoor", "url": "https://sub5.com/youth-pages/outdoor-track/2025-outdoor-results/"},
+            {"year": "2026", "season": "Outdoor", "url": "https://sub5.com/youth-pages/outdoor-track/2026-outdoor-results/"}
         ]
         
         filtered = [s for s in all_seasons if 
