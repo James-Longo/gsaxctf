@@ -11,7 +11,7 @@ import {
     ResponsiveContainer,
     Scatter
 } from 'recharts';
-import { parseMark } from './utils';
+import { parseMark, isDistanceEvent, normalizeEvent } from './utils';
 import './App.css';
 
 const AthleteProfile = ({ performances, selectedAthlete }) => {
@@ -20,11 +20,11 @@ const AthleteProfile = ({ performances, selectedAthlete }) => {
 
         const groups = {};
         performances.forEach(p => {
-            const groupKey = p.event;
+            const groupKey = normalizeEvent(p.event);
 
             if (!groups[groupKey]) groups[groupKey] = [];
 
-            const parsed = parseMark(p.mark);
+            const parsed = parseMark(p.mark, isDistanceEvent(p.event));
             if (parsed.valid) {
                 groups[groupKey].push({
                     ...p,

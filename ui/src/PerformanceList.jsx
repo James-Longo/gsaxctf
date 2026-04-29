@@ -1,5 +1,5 @@
 import { useState, useMemo, useEffect } from 'react'
-import { parseMark } from './utils'
+import { parseMark, isDistanceEvent } from './utils'
 import './App.css'
 
 function PostseasonSimulator({ performances, isBetter, manifest, loadSeason }) {
@@ -193,7 +193,7 @@ function PostseasonSimulator({ performances, isBetter, manifest, loadSeason }) {
             if (!pools[team][athleteKey]) pools[team][athleteKey] = [];
 
             const existing = pools[team][athleteKey].find(x => x.event === p.event);
-            if (!existing || isBetter(p.mark, existing.mark)) {
+            if (!existing || isBetter(p.mark, existing.mark, p.event)) {
                 if (existing) {
                     pools[team][athleteKey] = pools[team][athleteKey].filter(x => x.event !== p.event);
                 }
@@ -224,7 +224,7 @@ function PostseasonSimulator({ performances, isBetter, manifest, loadSeason }) {
 
         const scores = {};
         Object.entries(eventGroups).forEach(([event, entries]) => {
-            entries.sort((a, b) => isBetter(a.mark, b.mark) ? -1 : isBetter(b.mark, a.mark) ? 1 : 0);
+            entries.sort((a, b) => isBetter(a.mark, b.mark, a.event) ? -1 : isBetter(b.mark, a.mark, a.event) ? 1 : 0);
 
             let scoringIndex = 0;
             const teamRelayCount = {};
@@ -262,7 +262,7 @@ function PostseasonSimulator({ performances, isBetter, manifest, loadSeason }) {
     const getGreedyEntries = (pool) => {
         const entries = [];
         const memberCounts = {};
-        const all = Object.values(pool).flat().sort((a, b) => isBetter(a.mark, b.mark) ? -1 : 1);
+        const all = Object.values(pool).flat().sort((a, b) => isBetter(a.mark, b.mark, a.event) ? -1 : 1);
 
         all.forEach(e => {
             const members = getMembers(e);
@@ -324,7 +324,7 @@ function PostseasonSimulator({ performances, isBetter, manifest, loadSeason }) {
                 Object.entries(genderOpponentPools).forEach(([team, pool]) => {
                     const entries = [];
                     Object.values(pool).forEach(athPerfs => {
-                        const sorted = [...athPerfs].sort((a, b) => isBetter(a.mark, b.mark) ? -1 : 1);
+                        const sorted = [...athPerfs].sort((a, b) => isBetter(a.mark, b.mark, a.event) ? -1 : 1);
                         const topX = sorted.slice(0, 5);
                         for (let j = 0; j < EVENT_LIMIT && topX.length > 0; j++) {
                             const idx = Math.floor(Math.random() * topX.length);
@@ -364,7 +364,7 @@ function PostseasonSimulator({ performances, isBetter, manifest, loadSeason }) {
                 const topEntries = [];
                 Object.entries(groups).forEach(([event, entries]) => {
                     const isRelayEvent = event.toLowerCase().includes('relay') || event.toLowerCase().includes('4x');
-                    const sorted = [...entries].sort((a, b) => isBetter(a.mark, b.mark) ? -1 : 1);
+                    const sorted = [...entries].sort((a, b) => isBetter(a.mark, b.mark, a.event) ? -1 : 1);
                     topEntries.push(...sorted.slice(0, isRelayEvent ? 1 : 3));
                 });
                 sc[t] = topEntries;
@@ -379,7 +379,7 @@ function PostseasonSimulator({ performances, isBetter, manifest, loadSeason }) {
             Object.values(baselineOpponents).forEach(opps => {
                 opps.forEach(o => { if (o.event === e.event) eventEntries.push(o); });
             });
-            eventEntries.sort((a, b) => isBetter(a.mark, b.mark) ? -1 : isBetter(b.mark, a.mark) ? 1 : 0);
+            eventEntries.sort((a, b) => isBetter(a.mark, b.mark, a.event) ? -1 : isBetter(b.mark, a.mark, a.event) ? 1 : 0);
             const rank = eventEntries.indexOf(e);
             return rank < SCORING_RULES.length ? SCORING_RULES[rank] : 0;
         };
@@ -582,7 +582,7 @@ function PostseasonSimulator({ performances, isBetter, manifest, loadSeason }) {
 
             const scoredEntries = new Set();
             Object.values(eventGroups).forEach(entries => {
-                entries.sort((a, b) => isBetter(a.mark, b.mark) ? -1 : isBetter(b.mark, a.mark) ? 1 : 0);
+                entries.sort((a, b) => isBetter(a.mark, b.mark, a.event) ? -1 : isBetter(b.mark, a.mark, a.event) ? 1 : 0);
                 for (let r = 0; r < Math.min(entries.length, SCORING_RULES.length); r++) {
                     const entry = entries[r];
                     if (entryScoresMap.has(entry)) {

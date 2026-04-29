@@ -13,7 +13,7 @@
  * Invalid marks (DNF, DQ, NH, etc.) are flagged as invalid.
  * Returns { value: number, isTime: boolean, valid: boolean }
  */
-export function parseMark(mark) {
+export function parseMark(mark, forceDistance = false) {
     if (!mark) return { value: 0, isTime: true, valid: false };
 
     const s = mark.toUpperCase().trim();
@@ -25,8 +25,8 @@ export function parseMark(mark) {
     }
 
     // Check for distance (contains ', ", or -) 
-    // BUT ensure it has digits too so we don't catch random dashes
-    if ((s.includes("'") || s.includes('"') || s.includes('-')) && /\d/.test(s)) {
+    // OR if forceDistance is true
+    if (forceDistance || ((s.includes("'") || s.includes('"') || s.includes('-')) && /\d/.test(s))) {
         // Feet: digits followed by ' or -
         const feetMatch = s.match(/^(\d+)['\-]/) || s.match(/(\d+)'/);
         // Inches: digits after ' or - or space, possibly followed by "
@@ -35,6 +35,12 @@ export function parseMark(mark) {
         let totalInches = 0;
         if (feetMatch) totalInches += parseInt(feetMatch[1]) * 12;
         if (inchesMatch && inchesMatch[1]) totalInches += parseFloat(inchesMatch[1]);
+        
+        // Handle pure decimal/integer marks as feet if forceDistance is true
+        if (!feetMatch && !inchesMatch && forceDistance) {
+            const val = parseFloat(s);
+            if (!isNaN(val)) totalInches = val * 12; // Assume feet
+        }
 
         if (isNaN(totalInches)) return { value: 0, isTime: false, valid: false };
 
@@ -71,9 +77,10 @@ export function parseMark(mark) {
 /**
  * Compares two marks. Returns true if a is better than b.
  */
-export function isBetter(a, b) {
-    const pA = parseMark(a);
-    const pB = parseMark(b);
+export function isBetter(a, b, event = null) {
+    const isDistance = event && isDistanceEvent(event);
+    const pA = parseMark(a, isDistance);
+    const pB = parseMark(b, isDistance);
 
     // If both invalid, neither is better
     if (!pA.valid && !pB.valid) return false;
@@ -109,5 +116,61 @@ export function formatDistance(inches) {
     const ft = Math.floor(inches / 12);
     const ins = inches % 12;
     return `${ft}-${ins.toFixed(2)}`;
+}
+
+export const EVENT_MAP = {
+    "100m Dash": ["100m Dash", "100 Meter Dash", "100 Dash"],
+    "200m Dash": ["200m Dash", "200 Meter Dash", "200 Dash"],
+    "400m Dash": ["400m Dash", "400 Meter Dash", "400 Dash"],
+    "800m Run": ["800m Run", "800 Meter Run", "800 Run"],
+    "1600m Run": ["1600m Run", "1600 Meter Run", "1600m", "1600 Meter"],
+    "1 Mile Run": ["1 Mile Run", "1 Mile", "One Mile"],
+    "3200m Run": ["3200m Run", "3200 Meter Run", "3200m", "3200 Meter"],
+    "2 Mile Run": ["2 Mile Run", "2 Mile", "Two Mile"],
+    "55m Dash": ["55m Dash", "55 Meter Dash"],
+    "55m Hurdles": ["55m Hurdles", "55 Meter Hurdles"],
+    "100m Hurdles": ["100m Hurdles", "100 Meter Hurdles"],
+    "110m Hurdles": ["110m Hurdles", "110 Meter Hurdles"],
+    "300m Hurdles": ["300m Hurdles", "300 Meter Hurdles"],
+    "High Jump": ["High Jump"],
+    "Pole Vault": ["Pole Vault"],
+    "Long Jump": ["Long Jump"],
+    "Triple Jump": ["Triple Jump"],
+    "Shot Put": ["Shot Put"],
+    "Discus": ["Discus", "Discus Throw"],
+    "Javelin": ["Javelin", "Javelin Throw", "Javeline"],
+    "Race Walk": ["Race Walk", "1600m Race Walk"],
+    "4x100m Relay": ["4x100m", "4x100 Meter", "4x100"],
+    "4x200m Relay": ["4x200m", "4x200 Meter", "4x200"],
+    "4x400m Relay": ["4x400m", "4x400 Meter", "4x400"],
+    "4x800m Relay": ["4x800m", "4x800 Meter", "4x800"]
+};
+
+export function normalizeEvent(event) {
+    if (!event) return "Unknown";
+    
+    // 1. Gender Swap
+    let normalized = event.replace(/\bMen\b/g, 'Boys').replace(/\bWomen\b/g, 'Girls');
+    
+    const lower = normalized.toLowerCase();
+    for (const [standard, aliases] of Object.entries(EVENT_MAP)) {
+        for (const alias of aliases) {
+            const aliasLower = alias.toLowerCase();
+            // Check for alias with word boundaries if possible, or just index
+            if (lower.includes(aliasLower)) {
+                // Replace the alias part with the standard name
+                // This preserves prefixes like "Girls "
+                const regex = new RegExp(alias.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'gi');
+                return normalized.replace(regex, standard);
+            }
+        }
+    }
+    return normalized;
+}
+
+export function isDistanceEvent(event) {
+    if (!event) return false;
+    const normalized = normalizeEvent(event);
+    return ["High Jump", "Pole Vault", "Long Jump", "Triple Jump", "Shot Put", "Discus", "Javelin"].includes(normalized);
 }
 

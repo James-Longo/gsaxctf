@@ -15,8 +15,9 @@ class Sub5ColumnParser:
             "600 Meter Run", "1000 Meter Run", "1600 Meter Run", "3200 Meter Run",
             "4x200 Meter Relay", "4x400 Meter Relay", "4x800 Meter Relay",
             "Indoor Pentathlon", "Racewalk", "100 Meter Dash", "110 Meter Hurdles",
-            "100 Meter Hurdles", "300 Meter Hurdles", "400 Meter Hurdles", "Javelin Throw",
-            "Discus Throw"
+            "100 Meter Hurdles", "300 Meter Hurdles", "400 Meter Hurdles",
+            "Discus", "Javelin", "Shot Put", "Long Jump", "Triple Jump",
+            "High Jump", "Pole Vault"
         ]
 
     def normalize_event_name(self, event_name):
@@ -160,12 +161,16 @@ class Sub5ColumnParser:
             if m_event:
                 is_header = True
                 gender = m_event.group(1).strip()
+                if gender.lower() == "women": gender = "Girls"
+                if gender.lower() == "men": gender = "Boys"
                 event_name = m_event.group(2).strip()
             elif m_no_event:
                 # Require separator line for no-event-number headers to avoid false positives
                 if i + 1 < len(lines) and "====" in lines[i+1]:
                     is_header = True
                     gender = m_no_event.group(1).strip()
+                    if gender.lower() == "women": gender = "Girls"
+                    if gender.lower() == "men": gender = "Boys"
                     event_name = m_no_event.group(2).strip()
             
             if is_header:
@@ -360,7 +365,7 @@ class Sub5ColumnParser:
                             res_idx = -1
                             for k in range(len(parts)-1, 1, -1):
                                 p = parts[k]
-                                if (re.search(r'\d', p) and ('.' in p or ':' in p)) or p.upper() in ["DQ", "NH", "NM", "DNS", "DNF", "FOUL", "SCR"]:
+                                if (re.search(r'\d', p) and ('.' in p or ':' in p or '-' in p)) or p.upper() in ["DQ", "NH", "NM", "DNS", "DNF", "FOUL", "SCR"]:
                                     res_idx = k
                                     break
                             
@@ -465,7 +470,7 @@ class Sub5ColumnParser:
                         parts = sub.split()
                         res_val = None
                         for p in reversed(parts):
-                            if (re.search(r'\d', p) and ('.' in p or ':' in p)) or p.upper() in ["DQ", "NH", "NM", "DNS", "DNF", "FOUL", "SCR"]:
+                            if (re.search(r'\d', p) and ('.' in p or ':' in p or '-' in p)) or p.upper() in ["DQ", "NH", "NM", "DNS", "DNF", "FOUL", "SCR"]:
                                 res_val = p
                                 break
                         

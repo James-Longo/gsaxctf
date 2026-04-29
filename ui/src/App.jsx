@@ -1,6 +1,5 @@
-
 import React, { useState, useEffect, useMemo } from 'react'
-import { isBetter } from './utils'
+import { isBetter, normalizeEvent, parseMark, isDistanceEvent } from './utils'
 import PerformanceList from './PerformanceList'
 import PRPopCalculator from './PRPopCalculator'
 import './App.css'
@@ -27,6 +26,7 @@ function App() {
   const [selectedTeam, setSelectedTeam] = useState('George Stevens Academy')
   const [selectedAthlete, setSelectedAthlete] = useState(ALL_ATHLETES)
   const [activeTab, setActiveTab] = useState('history')
+  const [loadingProgress, setLoadingProgress] = useState({ current: 0, total: 0 })
 
   const [expandedSplits, setExpandedSplits] = useState(new Set())
 
@@ -43,9 +43,9 @@ function App() {
 
   const isLocalDev = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
 
-  // 1. Initial Load: Manifest and Athletes
+  // 1. Initial Load: Manifest and All Data
   useEffect(() => {
-    const loadCore = async () => {
+    const loadAll = async () => {
       try {
         const [manifestRes, athletesRes] = await Promise.all([
           fetch('/data/manifest.json'),
@@ -56,20 +56,25 @@ function App() {
         
         setManifest(manifestData);
         setAllAthletes(athletesData);
+        setLoadingProgress({ current: 0, total: manifestData.length });
 
-        // Load the latest season by default
-        if (manifestData.length > 0) {
-          const sorted = [...manifestData].sort((a,b) => b.key.localeCompare(a.key));
-          const latestKey = sorted[0].key;
-          await loadSeason(latestKey);
+        // Load all seasons sequentially or in chunks to avoid overwhelming the browser
+        // but ensure everything is loaded before setting dataLoaded(true)
+        const seasonalData = {};
+        for (let i = 0; i < manifestData.length; i++) {
+          const m = manifestData[i];
+          const res = await fetch(`/data/${m.key}.json`);
+          seasonalData[m.key] = await res.json();
+          setLoadingProgress(prev => ({ ...prev, current: i + 1 }));
         }
         
+        setLoadedSeasons(seasonalData);
         setDataLoaded(true);
       } catch (err) {
-        console.error('Initial load failed:', err);
+        console.error('Data load failed:', err);
       }
     };
-    loadCore();
+    loadAll();
   }, [])
 
   const loadSeason = async (key) => {
@@ -137,10 +142,10 @@ function App() {
 
   // Rest of the logic (Stats, filtering, sorting) is the same...
   const { filteredPerformances, years, seasonTypes, events, meets } = useMemo(() => {
-    const absoluteBests = {} 
-    const absoluteBestIds = new Set()
-    const seasonBests = {} 
-    const seasonBestIds = new Set()
+    const runningBests = {} 
+    const runningSeasonBests = {} 
+    const prIds = new Set()
+    const sbIds = new Set()
     const firstPerfIds = new Set()
     const seenEvents = new Set()
 
@@ -154,33 +159,28 @@ function App() {
         year = year || match[1]
         type = match[2]
       }
-      const prK = `${p.athlete_id}|${p.event}|${type}`
-      const sbK = `${p.athlete_id}|${year}|${type}|${p.event}`
+      const normEvent = normalizeEvent(p.event)
+      const prK = `${p.athlete_id}|${normEvent}|${type}`
+      const sbK = `${p.athlete_id}|${year}|${type}|${normEvent}`
+      
       if (!seenEvents.has(prK)) {
         firstPerfIds.add(p.id)
         seenEvents.add(prK)
       }
-      if (!absoluteBests[prK] || isBetter(p.mark, absoluteBests[prK])) {
-        absoluteBests[prK] = p.mark
-      }
-      if (!seasonBests[sbK] || isBetter(p.mark, seasonBests[sbK])) {
-        seasonBests[sbK] = p.mark
-      }
-    })
-
-    const claimedPR = new Set()
-    const claimedSB = new Set()
-    sortedChronological.forEach(p => {
-      let type = p.season; let year = p.year
-      const match = p.season.match(/^(\d{4})\s+(.*)$/)
-      if (match) { year = year || match[1]; type = match[2] }
-      const prK = `${p.athlete_id}|${p.event}|${type}`
-      const sbK = `${p.athlete_id}|${year}|${type}|${p.event}`
-      if (p.mark === absoluteBests[prK] && !claimedPR.has(prK)) {
-        absoluteBestIds.add(p.id); claimedPR.add(prK)
-      }
-      if (p.mark === seasonBests[sbK] && !claimedSB.has(sbK)) {
-        seasonBestIds.add(p.id); claimedSB.add(sbK)
+      
+      const pParsed = parseMark(p.mark, isDistanceEvent(p.event))
+      if (pParsed.valid) {
+        // A performance is a PR if it's the first one OR better than any previous one in this season type
+        if (!runningBests[prK] || isBetter(p.mark, runningBests[prK], p.event)) {
+          runningBests[prK] = p.mark
+          prIds.add(p.id)
+        }
+        
+        // A performance is a Season Best if it's the first of the year/type OR better than any previous in that year/type
+        if (!runningSeasonBests[sbK] || isBetter(p.mark, runningSeasonBests[sbK], p.event)) {
+          runningSeasonBests[sbK] = p.mark
+          sbIds.add(p.id)
+        }
       }
     })
 
@@ -194,8 +194,8 @@ function App() {
         derivedType: type,
         meetWithYear: `${perf.meet_name} (${year})`,
         isFirstTime: firstPerfIds.has(perf.id),
-        isCalculatedPR: absoluteBestIds.has(perf.id),
-        isCalculatedSB: seasonBestIds.has(perf.id)
+        isCalculatedPR: prIds.has(perf.id),
+        isCalculatedSB: sbIds.has(perf.id)
       }
     })
 
@@ -203,9 +203,9 @@ function App() {
       const { year, type, event, meet, team } = filters
       return (year === 'All' || p.derivedYear === year) &&
         (type === 'All' || p.derivedType === type) &&
-        (event === 'All' || p.event === event) &&
+        (event === 'All' || normalizeEvent(p.event) === normalizeEvent(event)) &&
         (meet === 'All' || p.meetWithYear === meet) &&
-        (team === 'All' || p.team === team)
+        (team === 'All' || selectedAthlete.id !== 'all' || p.team === team)
     }
 
     const availableYears = Array.from(new Set(manifest.map(m => m.year))).sort((a,b) => b-a);
@@ -226,8 +226,8 @@ function App() {
       let comparison = 0
       if (sortField === 'date') comparison = new Date(a.date) - new Date(b.date)
       else if (sortField === 'mark') {
-        if (isBetter(a.mark, b.mark)) comparison = 1
-        else if (isBetter(b.mark, a.mark)) comparison = -1
+        if (isBetter(a.mark, b.mark, a.event)) comparison = 1
+        else if (isBetter(b.mark, a.mark, a.event)) comparison = -1
       }
       return sortDirection === 'asc' ? comparison : -comparison
     })
@@ -318,7 +318,19 @@ function App() {
         </div>
 
         <div className="main-content">
-          {!dataLoaded ? <div className="loading-state">Initializing Dashboard...</div> : (
+          {!dataLoaded ? (
+            <div className="loading-state">
+              <div className="loading-spinner"></div>
+              <p>Loading Team History...</p>
+              <div className="progress-bar-container">
+                <div 
+                  className="progress-bar-fill" 
+                  style={{ width: `${(loadingProgress.current / loadingProgress.total) * 100}%` }}
+                ></div>
+              </div>
+              <p className="progress-detail">{loadingProgress.current} / {loadingProgress.total} seasons</p>
+            </div>
+          ) : (
           <>
           {activeTab === 'analyzer' ? (
             <PerformanceList performances={allPerformances} isBetter={isBetter} manifest={manifest} loadSeason={loadSeason} />
@@ -379,7 +391,7 @@ function App() {
                       <label>Event</label>
                       <select value={filterEvent} onChange={e => setFilterEvent(e.target.value)}>
                         <option value="All">All Events</option>
-                        {events.map(ev => <option key={ev} value={ev}>{ev}</option>)}
+                        {events.map(ev => <option key={ev} value={ev}>{normalizeEvent(ev)}</option>)}
                       </select>
                     </div>
                     <button className="download-btn" onClick={handleDownloadCsv}>CSV</button>
@@ -406,7 +418,7 @@ function App() {
                           <td>{p.date.split('T')[0]}</td>
                           {selectedAthlete.id === 'all' && <td>{p.athlete_name}</td>}
                           <td>{p.grade}</td>
-                          <td>{p.event}</td>
+                          <td>{normalizeEvent(p.event)}</td>
                           <td>{p.mark} {p.isCalculatedPR && <span className="badge pr">PR</span>}</td>
                           <td>{p.meet_name}</td>
                         </tr>

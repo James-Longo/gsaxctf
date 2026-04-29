@@ -1,5 +1,5 @@
 import React, { useState, useMemo, useEffect } from 'react';
-import { parseMark } from './utils';
+import { parseMark, normalizeEvent, isDistanceEvent } from './utils';
 
 const formatImprovement = (pNew, pOld) => {
     const diff = pOld.value - pNew.value; // For time: positive means improved (new is smaller). For distance: negative means improved (new is larger).
@@ -18,37 +18,17 @@ const formatImprovement = (pNew, pOld) => {
 const PRPopCalculator = ({ performances, selectedTeam, isBetter, manifest, loadSeason }) => {
     const [selectedMeet, setSelectedMeet] = useState('latest');
 
-    // Automatically load all historical data when this component is mounted
-    // PR Pop needs full history to identify previous personal bests
-    useEffect(() => {
-        if (!manifest || !loadSeason) return;
-        manifest.forEach(m => loadSeason(m.key));
-    }, [manifest, loadSeason]);
+    // App.jsx already loads all data, so we don't need a redundant useEffect here.
 
     const { processedMeets, popResults, totalPrCount, currentMeetName } = useMemo(() => {
         if (!performances || performances.length === 0) return { processedMeets: [], popResults: [], totalPrCount: 0, currentMeetName: '' };
 
-        // 1. First Pass: Find earliest dates for isFirstTime logic
-        const firstDatesMap = {};
-        const bestsMap = {};
-
+        // 1. Pre-index performances by Athlete for MUCH faster lookup
+        // This takes O(n) once, instead of O(n) inside every loop
+        const perfByAthlete = {};
         performances.forEach(p => {
-            let type = p.season || 'Unknown';
-            if (p.season) {
-                const match = p.season.match(/^(\d{4})\s+(.*)$/);
-                if (match) type = match[2];
-            }
-
-            const key = `${p.athlete_id}|${p.event}|${type}`;
-            const pDateStr = p.date || '1970-01-01';
-            if (!firstDatesMap[key] || new Date(pDateStr) < new Date(firstDatesMap[key])) {
-                firstDatesMap[key] = pDateStr;
-            }
-
-            // Track bests overall for PR check
-            if (!bestsMap[key] || isBetter(p.mark, bestsMap[key])) {
-                bestsMap[key] = p.mark;
-            }
+            if (!perfByAthlete[p.athlete_id]) perfByAthlete[p.athlete_id] = [];
+            perfByAthlete[p.athlete_id].push(p);
         });
 
         // 2. Identify all meets for the selected team
@@ -69,17 +49,17 @@ const PRPopCalculator = ({ performances, selectedTeam, isBetter, manifest, loadS
         const actualMeetDate = targetMeet ? targetMeet.date : '';
 
         // 3. Find PR Pops for this meet
-        // First, filter for ONLY the best performance of the day per athlete/event
         const meetPerformances = performances.filter(p =>
             p.team === selectedTeam &&
             p.meet_name === actualMeetName &&
             p.date && (p.date.includes(actualMeetDate) || p.date.startsWith(actualMeetDate))
         );
 
+        // Group by athlete for the current meet to find their bests of the day
         const bestOfMeetDay = {};
         meetPerformances.forEach(p => {
-            const key = `${p.athlete_id}|${p.event}`;
-            if (!bestOfMeetDay[key] || isBetter(p.mark, bestOfMeetDay[key].mark)) {
+            const key = `${p.athlete_id}|${normalizeEvent(p.event)}`;
+            if (!bestOfMeetDay[key] || isBetter(p.mark, bestOfMeetDay[key].mark, p.event)) {
                 bestOfMeetDay[key] = p;
             }
         });
@@ -91,34 +71,36 @@ const PRPopCalculator = ({ performances, selectedTeam, isBetter, manifest, loadS
                 if (match) type = match[2];
             }
 
-            // Find all historical performances for this athlete/event/type BEFORE THIS DAY
-            const prevPerformances = performances.filter(prev => {
+            const athleteHistory = perfByAthlete[p.athlete_id] || [];
+            const normPEvent = normalizeEvent(p.event);
+            const meetDateObj = new Date(actualMeetDate);
+
+            let bestPrev = null;
+            let foundPrev = false;
+
+            athleteHistory.forEach(prev => {
                 let prevType = prev.season || 'Unknown';
                 if (prev.season) {
                     const m = prev.season.match(/^(\d{4})\s+(.*)$/);
                     if (m) prevType = m[2];
                 }
 
-                return prev.athlete_id === p.athlete_id &&
-                    prev.event === p.event &&
-                    prevType === type &&
-                    new Date(prev.date.split('T')[0]) < new Date(actualMeetDate);
-            });
-
-            if (prevPerformances.length === 0) return false; // It's a first-time PR, not a Pop
-
-            let bestPrev = null;
-            prevPerformances.forEach(prev => {
-                if (!bestPrev || isBetter(prev.mark, bestPrev)) {
-                    bestPrev = prev.mark;
+                if (normalizeEvent(prev.event) === normPEvent && prevType === type) {
+                    const prevDate = new Date(prev.date.split('T')[0]);
+                    if (prevDate < meetDateObj) {
+                        foundPrev = true;
+                        if (!bestPrev || isBetter(prev.mark, bestPrev, prev.event)) {
+                            bestPrev = prev.mark;
+                        }
+                    }
                 }
             });
 
-            // Must be STRICTLY BETTER than the best mark from previous days
-            return bestPrev && isBetter(p.mark, bestPrev);
+            if (!foundPrev) return false; 
+            return bestPrev && isBetter(p.mark, bestPrev, p.event);
         });
 
-        // Group by athlete with full details
+        // 4. Group by athlete with full details
         const groupedPops = pops.reduce((acc, p) => {
             const athleteName = p.athlete_name;
             if (!acc[athleteName]) acc[athleteName] = [];
@@ -129,30 +111,31 @@ const PRPopCalculator = ({ performances, selectedTeam, isBetter, manifest, loadS
                 if (match) pType = match[2];
             }
 
-            // Find the best previous mark in the SAME season type
-            const prevPerformances = performances.filter(prev => {
+            const athleteHistory = perfByAthlete[p.athlete_id] || [];
+            const normPEvent = normalizeEvent(p.event);
+            const pDateObj = new Date(p.date);
+
+            let oldBest = null;
+            athleteHistory.forEach(prev => {
                 let prevType = prev.season || 'Unknown';
                 if (prev.season) {
                     const m = prev.season.match(/^(\d{4})\s+(.*)$/);
                     if (m) prevType = m[2];
                 }
 
-                return prev.athlete_id === p.athlete_id &&
-                    prev.event === p.event &&
-                    prevType === pType &&
-                    new Date(prev.date) < new Date(p.date);
-            });
-
-            let oldBest = null;
-            prevPerformances.forEach(prev => {
-                if (!oldBest || isBetter(prev.mark, oldBest)) {
-                    oldBest = prev.mark;
+                if (normalizeEvent(prev.event) === normPEvent && prevType === pType) {
+                    if (new Date(prev.date) < pDateObj) {
+                        if (!oldBest || isBetter(prev.mark, oldBest, prev.event)) {
+                            oldBest = prev.mark;
+                        }
+                    }
                 }
             });
 
             if (oldBest) {
-                const pNew = parseMark(p.mark);
-                const pOld = parseMark(oldBest);
+                const isDist = isDistanceEvent(p.event);
+                const pNew = parseMark(p.mark, isDist);
+                const pOld = parseMark(oldBest, isDist);
                 const improvement = (pNew.valid && pOld.valid) ? formatImprovement(pNew, pOld) : '';
 
                 acc[athleteName].push({
