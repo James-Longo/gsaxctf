@@ -205,12 +205,15 @@ function PostseasonSimulator({ performances, isBetter, manifest, loadSeason }) {
 
     // Simulation Helpers and Core Logic
     const SCORING_RULES = [10, 8, 6, 4, 2, 1];
-    const EVENT_LIMIT = filterSeason === 'Indoor' ? 3 : 4;
+    
+    // Treat Indoor/Outdoor differently: 4 event limit for Outdoor, 3 for Indoor.
+    const EVENT_LIMIT = (filterSeason && filterSeason.toLowerCase().includes('indoor')) ? 3 : 4;
 
     const getMembers = (p) => {
         const name = p.athlete_name || "";
         if (p.isRelay) {
-            return name.split(',').map(n => n.trim()).filter(n => n && !n.toLowerCase().includes('relay'));
+            // Relays often list members separated by commas or slashes
+            return name.split(/[,/]/).map(n => n.trim()).filter(n => n && !n.toLowerCase().includes('relay'));
         }
         return [name];
     };
@@ -1274,12 +1277,12 @@ function PostseasonSimulator({ performances, isBetter, manifest, loadSeason }) {
                 }
             }
 
-            if (scorableEvents.length > 3 || hasAdjacency) {
+            if (scorableEvents.length > EVENT_LIMIT || hasAdjacency) {
                 decisionAthletes.push({
                     name,
                     scoringEvents: data.scoringEvents,
                     isAdjacent: hasAdjacency,
-                    isVolume: scorableEvents.length > 3,
+                    isVolume: scorableEvents.length > EVENT_LIMIT,
                     scorableCount: scorableEvents.length
                 });
             } else if (data.scoringEvents.length > 0) {
@@ -1301,6 +1304,9 @@ function PostseasonSimulator({ performances, isBetter, manifest, loadSeason }) {
         <div className="analyzer-container">
             <div className="analyzer-header">
                 <h2>Postseason Simulator</h2>
+                <div className="rules-info" style={{ marginTop: '8px', fontSize: '0.85rem', color: '#4a5568', background: '#f7fafc', padding: '8px 12px', borderRadius: '6px', border: '1px solid #e2e8f0', display: 'inline-block' }}>
+                    <strong>{filterSeason || 'Season'} Rules:</strong> {EVENT_LIMIT} Event Limit • 3 Individuals per Event • 1 Relay per Team
+                </div>
             </div>
 
             <div className="analyzer-controls">
@@ -1350,7 +1356,7 @@ function PostseasonSimulator({ performances, isBetter, manifest, loadSeason }) {
                         {entryDecisions.decisionAthletes.length > 0 && (
                             <div className="decision-card" style={{ background: '#fff5f5', border: '1px solid #feb2b2', borderRadius: '12px', padding: '20px' }}>
                                 <h4 style={{ margin: '0 0 12px 0', color: '#c53030', display: 'flex', alignItems: 'center', gap: '8px' }}>
-                                    Decision Athletes (&gt;3 events or adjacent track)
+                                    Decision Athletes (&gt;{EVENT_LIMIT} events or adjacent track)
                                 </h4>
                                 <div className="decisions-list" style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
                                     {entryDecisions.decisionAthletes.map(ath => (
@@ -1402,7 +1408,7 @@ function PostseasonSimulator({ performances, isBetter, manifest, loadSeason }) {
                         {entryDecisions.straightforwardAthletes.length > 0 && (
                             <div className="straightforward-card" style={{ background: '#f0fff4', border: '1px solid #9ae6b4', borderRadius: '12px', padding: '20px' }}>
                                 <h4 style={{ margin: '0 0 12px 0', color: '#2f855a', display: 'flex', alignItems: 'center', gap: '8px' }}>
-                                    Straightforward Entries (&lt;=3 Scoring Events)
+                                    Straightforward Entries (&lt;={EVENT_LIMIT} Scoring Events)
                                 </h4>
                                 <div className="decisions-list" style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
                                     {entryDecisions.straightforwardAthletes.map(ath => (
