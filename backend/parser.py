@@ -9,32 +9,45 @@ class Sub5ColumnParser:
         self.file_path = file_path
         self.headers = {'User-Agent': 'Mozilla/5.0'}
         self.standard_events = [
-            "55 Meter Dash", "200 Meter Dash", "400 Meter Dash", "800 Meter Run",
-            "1 Mile Run", "2 Mile Run", "55 Meter Hurdles", "55 Yard Hurdles", "High Jump",
-            "Long Jump", "Triple Jump", "Pole Vault", "Shot Put",
-            "600 Meter Run", "1000 Meter Run", "1600 Meter Run", "3200 Meter Run",
+            # IMPORTANT: More-specific entries must precede their substrings.
+            # Race Walk events must come before plain Run events to avoid
+            # "1600 Meter Race Walk" being misidentified as "1600 Meter Run".
+            "1600 Meter Race Walk", "800 Meter Race Walk",
+            # Relays before bare distance events
             "4x200 Meter Relay", "4x400 Meter Relay", "4x800 Meter Relay",
-            "Indoor Pentathlon", "Racewalk", "100 Meter Dash", "110 Meter Hurdles",
-            "100 Meter Hurdles", "300 Meter Hurdles", "400 Meter Hurdles",
-            "Discus", "Javelin", "Shot Put", "Long Jump", "Triple Jump",
-            "High Jump", "Pole Vault"
+            "4x100 Meter Relay",
+            # Running events
+            "55 Meter Dash", "100 Meter Dash", "200 Meter Dash", "400 Meter Dash",
+            "600 Meter Run", "800 Meter Run", "1000 Meter Run",
+            "1600 Meter Run", "3200 Meter Run",
+            "1 Mile Run", "2 Mile Run",
+            # Hurdles
+            "55 Meter Hurdles", "55 Yard Hurdles",
+            "100 Meter Hurdles", "110 Meter Hurdles",
+            "300 Meter Hurdles", "400 Meter Hurdles",
+            # Field events
+            "High Jump", "Long Jump", "Triple Jump", "Pole Vault",
+            "Shot Put", "Discus", "Javelin",
+            # Misc
+            "Indoor Pentathlon",
         ]
 
     def normalize_event_name(self, event_name):
         """
         Normalizes event names by matching against a list of standard events.
         If a standard event is a substring of the input, use the standard version.
-        Prioritizes the longest match.
+        Prioritizes the longest match to ensure more-specific events (e.g.
+        "1600 Meter Race Walk") win over less-specific ones ("1600 Meter Run").
         """
         best_match = event_name
         max_len = 0
-        
+
         for std in self.standard_events:
             if std.lower() in event_name.lower():
                 if len(std) > max_len:
                     best_match = std
                     max_len = len(std)
-        
+
         return best_match
         
     def parse(self):

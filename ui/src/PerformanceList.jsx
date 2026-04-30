@@ -3,8 +3,29 @@ import { parseMark, isDistanceEvent } from './utils'
 import './App.css'
 
 function PostseasonSimulator({ performances, isBetter, manifest, loadSeason }) {
-    const [filterYear, setFilterYear] = useState('All')
-    const [filterSeason, setFilterSeason] = useState('All')
+    // Derive the current season and year from today's date.
+    // Maine HS track: Indoor = Nov–Mar, Outdoor = Apr–Jun.
+    // Off-season (Jul–Oct) defaults to the most recent completed season (Outdoor).
+    const getDefaultSeason = () => {
+        const now = new Date();
+        const month = now.getMonth() + 1; // 1-indexed
+        const year = now.getFullYear();
+        if (month >= 4 && month <= 10) {
+            // Apr–Oct: Outdoor season of this calendar year
+            return { season: 'Outdoor', year: String(year) };
+        } else if (month >= 11) {
+            // Nov–Dec: Indoor season whose championship falls in the NEXT year
+            return { season: 'Indoor', year: String(year + 1) };
+        } else {
+            // Jan–Mar: Indoor season of this calendar year
+            return { season: 'Indoor', year: String(year) };
+        }
+    };
+
+    const { season: defaultSeason, year: defaultYear } = getDefaultSeason();
+
+    const [filterYear, setFilterYear] = useState(defaultYear)
+    const [filterSeason, setFilterSeason] = useState(defaultSeason)
     const [filterEvent, setFilterEvent] = useState('All')
     const [showSimulation, setShowSimulation] = useState(false)
     const [expandedTeams, setExpandedTeams] = useState({}) // { 'teamName-boys': true }
@@ -14,6 +35,81 @@ function PostseasonSimulator({ performances, isBetter, manifest, loadSeason }) {
     const [simProgress, setSimProgress] = useState(0);
     const [simIterations, setSimIterations] = useState(50);
     const [strategicLog, setStrategicLog] = useState([]);
+    const [competitionType, setCompetitionType] = useState('PVC'); // 'PVC' or 'States'
+
+    const getStateSchools = (year, season) => {
+        const isOutdoor = (season && season.toLowerCase().includes('outdoor'));
+        
+        if (isOutdoor) {
+            return {
+                "Wells": "Wells High School",
+                "Winslow": "Winslow High School",
+                "Houlton": "Houlton/Hodgdon",
+                "Washington A": "Washington Academy",
+                "Spruce Mountai": "Spruce Mountain High School",
+                "Mountain Valle": "Mountain Valley High School",
+                "Maranacook": "Maranacook Community High School",
+                "Bucksport": "Bucksport High School",
+                "Mt. View": "Mount View High School",
+                "Maine Central": "Maine Central Institute",
+                "Orono": "Orono High School",
+                "Lisbon": "Lisbon/Oak Hill",
+                "George Stevens": "George Stevens Academy",
+                "Sacopee Valle": "Sacopee Valley High School",
+                "Mattanawcook": "Mattanawcook Academy",
+                "Central": "Central High School",
+                "Hall-Dale": "Hall-Dale High School",
+                "Dexter": "Dexter Regional High School",
+                "Traip": "Traip Academy",
+                "Fort Kent": "Fort Kent Community High School",
+                "Calais": "Calais High School",
+                "Sumner": "Sumner Memorial High School",
+                "Winthrop": "Winthrop High School",
+                "Kents Hill": "Kents Hill School",
+                "Gould": "Gould Academy",
+                "Dirigo": "Dirigo High School",
+                "Mt. Abram": "Mt. Abram High School",
+                "Madison": "Madison High School",
+                "Old Orchard": "Old Orchard Beach High School",
+                "North Yarmouth": "North Yarmouth Academy",
+                "Maine Coast": "Maine Coast Waldorf School",
+                "Monmouth": "Monmouth Academy",
+                "Narraguagus": "Narraguagus High School",
+                "Carrabec": "Carrabec High School",
+                "Piscataquis": "Piscataquis Community High School",
+                "Telstar": "Telstar Regional High School",
+                "Penquis": "Penquis Valley High School",
+                "Wiscasset": "Wiscasset/Boothbay",
+                "Boothbay": "Wiscasset/Boothbay",
+                "Buckfield": "Buckfield High School",
+                "Madawaska": "Madawaska High School",
+                "Penobscot Vall": "Penobscot Valley High School",
+                "Fort Fairfiel": "Fort Fairfield High School",
+                "Searsport": "Searsport District High School",
+                "Richmond": "Richmond High School",
+                "Lee": "Lee Academy",
+                "Deer Isle": "Deer Isle-Stonington High School",
+                "MSSM": "Maine School of Science and Mathematics",
+                "Washburn": "Washburn District High School",
+                "Bangor Chris": "Bangor Christian Schools",
+                "Easton": "Easton High School",
+                "Greenville": "Greenville High School",
+                "Blue Hill Harb": "Blue Hill Harbor School",
+                "Vinalhaven": "Vinalhaven School",
+                "Greater Portl": "Greater Portland Christian School",
+                "Seacoast": "Seacoast Christian School",
+                "Chop Point": "Chop Point School",
+                "North Haven": "North Haven Community School"
+            };
+        }
+
+        // Default / Placeholder for Indoor States
+        return {
+            "George Stevens": "George Stevens Academy",
+            "Orono": "Orono High School",
+            "Bucksport": "Bucksport High School"
+        };
+    };
 
     // Configuration for PVC Small Schools
     const getPVCSchools = (year, season) => {
@@ -98,7 +194,7 @@ function PostseasonSimulator({ performances, isBetter, manifest, loadSeason }) {
         }
 
         // 3. Get the specific team list for this context
-        const activeSchools = getPVCSchools(filterYear, filterSeason);
+        const activeSchools = competitionType === 'PVC' ? getPVCSchools(filterYear, filterSeason) : getStateSchools(filterYear, filterSeason);
 
         const processed = performances.map(p => {
             let year = p.year;
@@ -160,7 +256,7 @@ function PostseasonSimulator({ performances, isBetter, manifest, loadSeason }) {
             seasons: avSeasons,
             events: avEvents
         };
-    }, [performances, filterYear, filterSeason, filterEvent]);
+    }, [performances, filterYear, filterSeason, filterEvent, competitionType]);
 
     const teamPools = useMemo(() => {
         const pools = {};
@@ -821,76 +917,44 @@ function PostseasonSimulator({ performances, isBetter, manifest, loadSeason }) {
 
     // Configuration for PVC Small Schools
 
-    const EVENT_ALIASES = useMemo(() => {
-        const indoor = {
-            "4x800m Relay": ["4x800m", "4x800 Meter", "4 x 800"],
-            "55m Hurdles": ["55m High Hurdle", "55m Hurdle", "55 Meter Hurdle", "55m H. Hurdle"],
-            "55m Dash": ["55m Dash", "55 Meter Dash"],
-            "1 Mile Run": ["1 Mile Run", "Mile Run", "1600m Run", "1600 Meter Run", "1600m", "1600 Meter"],
-            "400m Dash": ["400m Dash", "400 Meter Dash", "400m Run", "400 Meter Run"],
-            "800m Run": ["800m Run", "800 Meter Run"],
-            "200m Dash": ["200m Dash", "200 Meter Dash", "200m Run", "200 Meter Run"],
-            "2 Mile Run": ["2 Mile Run", "2-Mile Run", "3200m Run", "3200 Meter Run", "3200m", "3200 Meter"],
-            "4x200m Relay": ["4x200m", "4x200 Meter", "4 x 200"],
-            "High Jump": ["High Jump"],
-            "Pole Vault": ["Pole Vault"],
-            "Long Jump": ["Long Jump"],
-            "Triple Jump": ["Triple Jump"],
-            "Shot Put": ["Shot Put"]
-        };
+    const SCORING_EVENTS = useMemo(() => {
+        const indoor = [
+            "4x800m Relay", "55m Hurdles", "55m Dash", "1 Mile Run", 
+            "400m Dash", "800m Run", "200m Dash", "2 Mile Run", "4x200m Relay",
+            "High Jump", "Pole Vault", "Long Jump", "Triple Jump", "Shot Put"
+        ];
 
-        const outdoor = {
-            "4x800m Relay": ["4x800m", "4x800 Meter", "4 x 800"],
-            "1600m Race Walk": ["1600m Race Walk", "1600 Meter Race Walk"],
-            "100m/110m Hurdles": ["100m H. Hurdle", "110m H. Hurdle", "100m Hurdle", "110m Hurdle", "100 Meter Hurdle", "110 Meter Hurdle"],
-            "100m Dash": ["100m Dash", "100 Meter Dash"],
-            "1600m Run": ["1600m Run", "1600 Meter Run", "1 Mile Run", "1 Mile"],
-            "4x100m Relay": ["4x100m", "4x100 Meter", "4 x 100"],
-            "400m Dash": ["400m Run", "400 Meter Run", "400m Dash", "400 Meter Dash"],
-            "300m Hurdles": ["300m Low Hurdle", "300m Int. Hurdle", "300m Hurdle", "300 Meter Hurdle"],
-            "800m Run": ["800m Run", "800 Meter Run"],
-            "200m Dash": ["200m Dash", "200 Meter Dash", "200m Run", "200 Meter Run"],
-            "3200m Run": ["3200m Run", "3200 Meter Run", "2 Mile", "2-Mile", "3200m", "3200 Meter"],
-            "4x400m Relay": ["4x400m", "4x400 Meter", "4 x 400"],
-            "High Jump": ["High Jump"],
-            "Pole Vault": ["Pole Vault"],
-            "Long Jump": ["Long Jump"],
-            "Triple Jump": ["Triple Jump"],
-            "Shot Put": ["Shot Put"],
-            "Discus": ["Discus"],
-            "Javelin": ["Javelin"]
-        };
+        const outdoor = [
+            "4x800m Relay", "1600m Race Walk", "100m/110m Hurdles", "100m Dash", 
+            "1600m Run", "4x100m Relay", "400m Dash", "300m Hurdles", 
+            "800m Run", "200m Dash", "3200m Run", "4x400m Relay",
+            "High Jump", "Pole Vault", "Long Jump", "Triple Jump", "Shot Put", "Discus", "Javelin"
+        ];
 
         return filterSeason === 'Outdoor' ? outdoor : indoor;
     }, [filterSeason]);
 
-    // Group by Event, Season, and Year for context-specific ranking
     const groupedData = useMemo(() => {
         const groups = {};
-        const canonicalOrder = Object.keys(EVENT_ALIASES);
 
         filteredData.forEach(curr => {
-            const eventLower = curr.event.toLowerCase();
-            let canonicalName = null;
+            // Find base canonical name (strip "Girls " or "Boys ")
+            const gender = curr.event.startsWith('Girls') ? 'Girls' : (curr.event.startsWith('Boys') ? 'Boys' : '');
+            const baseName = curr.event.replace(/^(Girls|Boys)\s+/, '');
+            const originalCanonical = baseName;
 
-            // Check if current event matches any allowed alias
-            for (const [name, aliases] of Object.entries(EVENT_ALIASES)) {
-                if (aliases.some(alias => eventLower.includes(alias.toLowerCase()))) {
-                    canonicalName = name;
-                    break;
-                }
-            }
+            // normalizeEvent produces gender-split hurdle names ("100m Hurdles" / "110m Hurdles"),
+            // but SCORING_EVENTS uses the combined key "100m/110m Hurdles".
+            // Map split names back to the combined key for the SCORING_EVENTS lookup.
+            const scoringKey = (baseName === '100m Hurdles' || baseName === '110m Hurdles')
+                ? '100m/110m Hurdles'
+                : baseName;
 
-            // Only include events that are on our official list (this naturally excludes MS and developmental events)
-            if (!canonicalName) return;
+            // Only include events on the scoring list
+            if (!SCORING_EVENTS.includes(scoringKey)) return;
 
-            const gender = eventLower.includes('girl') ? 'Girls' : (eventLower.includes('boy') ? 'Boys' : '');
-            const originalCanonicalName = canonicalName;
-            
-            // Gender-specific naming for Hurdles
-            if (canonicalName === "100m/110m Hurdles") {
-                canonicalName = gender === 'Girls' ? '100m Hurdles' : '110m Hurdles';
-            }
+            // Use the gender-specific name for grouping/display
+            const canonicalName = baseName; // already "100m Hurdles" or "110m Hurdles" from normalizeEvent
 
             const groupKey = `${gender} ${canonicalName} (${curr.derivedType} ${curr.derivedYear})`.trim();
             
@@ -898,13 +962,16 @@ function PostseasonSimulator({ performances, isBetter, manifest, loadSeason }) {
                 items: {},
                 canonicalName: canonicalName,
                 gender: gender,
-                orderIdx: canonicalOrder.indexOf(originalCanonicalName)
+                orderIdx: SCORING_EVENTS.indexOf(scoringKey)
             };
 
-            // For Relays, use team as key. For Individual, use athlete_id
             const athleteKey = curr.isRelay ? curr.pvcTeam : `${curr.athlete_id}|${curr.pvcTeam}`;
             if (!groups[groupKey].items[athleteKey] || isBetter(curr.mark, groups[groupKey].items[athleteKey].mark, canonicalName)) {
-                groups[groupKey].items[athleteKey] = { ...curr, event: `${gender} ${canonicalName}`.trim() };
+                groups[groupKey].items[athleteKey] = { 
+                    ...curr, 
+                    event: `${gender} ${canonicalName}`.trim(),
+                    originalCanonical: originalCanonical 
+                };
             }
         });
 
@@ -943,7 +1010,7 @@ function PostseasonSimulator({ performances, isBetter, manifest, loadSeason }) {
         });
 
         return finalGroups;
-    }, [filteredData, isBetter, EVENT_ALIASES]);
+    }, [filteredData, isBetter, SCORING_EVENTS]);
 
     const optimizedData = useMemo(() => {
         if (!showSimulation || filterYear === 'All' || filterSeason === 'All' || Object.keys(groupedData).length === 0) {
@@ -1002,8 +1069,8 @@ function PostseasonSimulator({ performances, isBetter, manifest, loadSeason }) {
 
         calculatePoints([...individualEntries, ...relayEntries]);
 
-        // 3. Optimization Logic (3 event limit)
-        const eventLimit = 3;
+        // 3. Optimization Logic (season-aware event limit: 3 for Indoor, 4 for Outdoor)
+        const eventLimit = EVENT_LIMIT;
         // An athlete's event count = sum(individual events) + sum(relay participations)
         const athleteCounts = {}; // athlete_name -> count
         const athleteEntries = {}; // athlete_name -> [ {entry, pts} ]
@@ -1151,7 +1218,7 @@ function PostseasonSimulator({ performances, isBetter, manifest, loadSeason }) {
         });
 
         return finalGroups;
-    }, [groupedData, showSimulation, filterYear, filterSeason, isBetter]);
+    }, [groupedData, showSimulation, filterYear, filterSeason, isBetter, EVENT_LIMIT]);
 
     const optimizedTeamScores = useMemo(() => {
         if (!showSimulation) return null;
@@ -1224,7 +1291,8 @@ function PostseasonSimulator({ performances, isBetter, manifest, loadSeason }) {
                             rank: rankPos,
                             mark: res.mark,
                             isRelay: isRelay,
-                            isScorable: rankPos <= SCORING_RULES.length
+                            isScorable: rankPos <= SCORING_RULES.length,
+                            originalCanonical: res.originalCanonical
                         });
                     });
                 }
@@ -1234,37 +1302,8 @@ function PostseasonSimulator({ performances, isBetter, manifest, loadSeason }) {
         const decisionAthletes = [];
         const straightforwardAthletes = [];
 
-        const getEventIndex = (evName) => {
-            const evL = evName.toLowerCase();
-            const isIndoor = (filterSeason && filterSeason.toLowerCase().includes('indoor'));
-
-            if (isIndoor) {
-                // Indoor Order
-                if (evL.includes("4x800") || evL.includes("4 x 800")) return 0;
-                if (evL.includes("55m high hurdle") || evL.includes("55m hurdle") || evL.includes("55 meter hurdle")) return 1;
-                if (evL.includes("55m dash") || evL.includes("55 meter dash")) return 2;
-                if (evL.includes("mile run") || (evL.includes("1600") && !evL.includes("racewalk") && !evL.includes("2"))) return 3;
-                if (evL.includes("400m dash") || evL.includes("400 meter dash") || evL.includes("400m run")) return 4;
-                if (evL.includes("800m run") || evL.includes("800 meter run")) return 5;
-                if (evL.includes("200m dash") || evL.includes("200 meter dash") || evL.includes("200m run")) return 6;
-                if (evL.includes("2-mile run") || evL.includes("2 mile run") || evL.includes("3200")) return 7;
-                if (evL.includes("4x200") || evL.includes("4 x 200")) return 8;
-            } else {
-                // Outdoor Order
-                if (evL.includes("4x800") || evL.includes("4 x 800")) return 0;
-                if (evL.includes("racewalk") || evL.includes("race walk")) return 1;
-                if (evL.includes("100m h. hurdle") || evL.includes("110m h. hurdle") || evL.includes("hurdle") && !evL.includes("300")) return 2;
-                if (evL.includes("100m dash") || evL.includes("100 meter dash")) return 3;
-                if (evL.includes("1600m run") || (evL.includes("1600") && !evL.includes("racewalk") && !evL.includes("2"))) return 4;
-                if (evL.includes("4x100") || evL.includes("4 x 100")) return 5;
-                if (evL.includes("400m run") || evL.includes("400 meter run") || evL.includes("400m dash")) return 6;
-                if (evL.includes("300m low hurdle") || evL.includes("300m int. hurdle") || evL.includes("300m hurdle")) return 7;
-                if (evL.includes("800m run") || evL.includes("800 meter run")) return 8;
-                if (evL.includes("200m dash") || evL.includes("200 meter dash") || evL.includes("200m run")) return 9;
-                if (evL.includes("3200m run") || evL.includes("3200 meter run") || evL.includes("2-mile") || evL.includes("2 mile")) return 10;
-                if (evL.includes("4x400") || evL.includes("4 x 400")) return 11;
-            }
-            return -1;
+        const getEventIndex = (scoringEvent) => {
+            return SCORING_EVENTS.indexOf(scoringEvent.originalCanonical);
         };
 
         Object.entries(teamAthletes).forEach(([name, data]) => {
@@ -1335,9 +1374,16 @@ function PostseasonSimulator({ performances, isBetter, manifest, loadSeason }) {
                         </select>
                     </div>
                     <div className="filter-group">
+                        <label>Competition</label>
+                        <select value={competitionType} onChange={e => setCompetitionType(e.target.value)}>
+                            <option value="PVC">PVC Small Schools</option>
+                            <option value="States">Class C States</option>
+                        </select>
+                    </div>
+                    <div className="filter-group">
                         <label>Optimize For</label>
                         <select value={targetTeam} onChange={e => setTargetTeam(e.target.value)}>
-                            {Object.values(getPVCSchools(filterYear, filterSeason)).map(t => (
+                            {Object.values(competitionType === 'PVC' ? getPVCSchools(filterYear, filterSeason) : getStateSchools(filterYear, filterSeason)).map(t => (
                                 <option key={t} value={t}>{t}</option>
                             ))}
                         </select>
@@ -1347,7 +1393,7 @@ function PostseasonSimulator({ performances, isBetter, manifest, loadSeason }) {
                             className={`simulate-btn ${showSimulation ? 'active' : ''}`}
                             onClick={() => setShowSimulation(!showSimulation)}
                         >
-                            {showSimulation ? 'Show All Entries' : 'Limit Entries'}
+                            {showSimulation ? 'Reset' : 'Simulate'}
                         </button>
                     </div>
                     <div className="record-count">{filteredData.length} Results</div>
@@ -1637,19 +1683,21 @@ function PostseasonSimulator({ performances, isBetter, manifest, loadSeason }) {
                     ) : (
                         <div className="leaderboards-container">
                             {(() => {
-                                const foundEvents = new Set();
-                                Object.values(optimizedData).forEach(r => {
-                                    if (r.length > 0) foundEvents.add(r[0].event);
+                                const activeCanonicalNames = new Set();
+                                Object.values(optimizedData).forEach(results => {
+                                    if (results.length > 0 && results[0].originalCanonical) {
+                                        const name = results[0].originalCanonical;
+                                        // normalizeEvent splits hurdles by gender; map back to combined key for this check
+                                        const scoringKey = (name === '100m Hurdles' || name === '110m Hurdles')
+                                            ? '100m/110m Hurdles'
+                                            : name;
+                                        activeCanonicalNames.add(scoringKey);
+                                    }
                                 });
 
-                                // Group expected events by likely gender if possible, but simplest is just check existence
-                                // We'll just look for missing generic event types
-                                const missingEvents = Object.entries(EVENT_ALIASES).filter(([canonical, aliases]) => {
-                                    // Return true if NONE of the aliases are found in 'foundEvents'
-                                    return !aliases.some(alias => {
-                                        return Array.from(foundEvents).some(found => found.toLowerCase().includes(alias.toLowerCase()));
-                                    });
-                                }).map(([canonical]) => canonical);
+                                const missingEvents = SCORING_EVENTS.filter(canonical => {
+                                    return !activeCanonicalNames.has(canonical);
+                                });
 
                                 if (missingEvents.length > 0) {
                                     return (

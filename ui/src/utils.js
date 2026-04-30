@@ -119,49 +119,73 @@ export function formatDistance(inches) {
 }
 
 export const EVENT_MAP = {
+    // IMPORTANT: More-specific entries must come BEFORE less-specific ones.
+    // Race Walk MUST be before plain Run entries, otherwise "1600 Meter Race Walk"
+    // would be incorrectly matched as "1600m Run".
+    "1600m Race Walk": ["1600m Race Walk", "1600 Meter Race Walk", "1600m RW"],
+    "800m Race Walk": ["800m Race Walk", "800 Meter Race Walk", "800m RW"],
+    // Relays must come before bare distance entries (e.g. 4x800 before 800)
+    "4x100m Relay": ["4x100m Relay", "4 x 100m Relay", "4x100m", "4x100 Meter", "4x100", "4 x 100", "4 x 100m"],
+    "4x200m Relay": ["4x200m Relay", "4 x 200m Relay", "4x200m", "4x200 Meter", "4x200", "4 x 200", "4 x 200m"],
+    "4x400m Relay": ["4x400m Relay", "4 x 400m Relay", "4x400m", "4x400 Meter", "4x400", "4 x 400", "4 x 400m"],
+    "4x800m Relay": ["4x800m Relay", "4 x 800m Relay", "4x800m", "4x800 Meter", "4x800", "4 x 800", "4 x 800m"],
+    // Individual running events
+    "55m Dash": ["55m Dash", "55 Meter Dash", "55 Dash", "55m", "55 Meter"],
     "100m Dash": ["100m Dash", "100 Meter Dash", "100 Dash"],
-    "200m Dash": ["200m Dash", "200 Meter Dash", "200 Dash"],
-    "400m Dash": ["400m Dash", "400 Meter Dash", "400 Dash"],
+    "200m Dash": ["200m Dash", "200 Meter Dash", "200 Dash", "200 Meter Run"],
+    "400m Dash": ["400m Dash", "400 Meter Dash", "400 Dash", "400 Meter Run"],
     "800m Run": ["800m Run", "800 Meter Run", "800 Run"],
-    "1600m Run": ["1600m Run", "1600 Meter Run", "1600m", "1600 Meter"],
-    "1 Mile Run": ["1 Mile Run", "1 Mile", "One Mile"],
-    "3200m Run": ["3200m Run", "3200 Meter Run", "3200m", "3200 Meter"],
-    "2 Mile Run": ["2 Mile Run", "2 Mile", "Two Mile"],
-    "55m Dash": ["55m Dash", "55 Meter Dash"],
-    "55m Hurdles": ["55m Hurdles", "55 Meter Hurdles"],
-    "100m Hurdles": ["100m Hurdles", "100 Meter Hurdles"],
-    "110m Hurdles": ["110m Hurdles", "110 Meter Hurdles"],
-    "300m Hurdles": ["300m Hurdles", "300 Meter Hurdles"],
+    // NOTE: 3200m Run before 1600m Run — "2 Mile" must match before bare "Mile" aliases.
+    // NOTE: No bare "3200 Meter" alias — too broad.
+    "3200m Run": ["3200m Run", "3200 Meter Run", "2 Mile Run", "2 Mile", "Two Mile", "2-Mile Run", "2-Mile"],
+    // NOTE: No bare "1600 Meter" alias — too broad, would match "1600 Meter Race Walk".
+    // NOTE: No bare "Mile" alias — too broad, would match "2 Mile Run".
+    "1600m Run": ["1600m Run", "1600 Meter Run", "1 Mile Run", "1 Mile", "One Mile", "Mile Run"],
+    // Hurdles
+    "55m Hurdles": ["55m Hurdles", "55 Meter Hurdles", "55m High Hurdle", "55m Hurdle", "55 Meter Hurdle", "55m H. Hurdle"],
+    "100m Hurdles": ["100m Hurdles", "100 Meter Hurdles", "100m H. Hurdle", "100m Hurdle", "100 Meter Hurdle"],
+    "110m Hurdles": ["110m Hurdles", "110 Meter Hurdles", "110m H. Hurdle", "110m Hurdle", "110 Meter Hurdle"],
+    "300m Hurdles": ["300m Hurdles", "300 Meter Hurdles", "300m Low Hurdle", "300m Int. Hurdle", "300m Hurdle", "300 Meter Hurdle"],
+    // Field events
     "High Jump": ["High Jump"],
     "Pole Vault": ["Pole Vault"],
     "Long Jump": ["Long Jump"],
     "Triple Jump": ["Triple Jump"],
     "Shot Put": ["Shot Put"],
     "Discus": ["Discus", "Discus Throw"],
-    "Javelin": ["Javelin", "Javelin Throw", "Javeline"],
-    "Race Walk": ["Race Walk", "1600m Race Walk"],
-    "4x100m Relay": ["4x100m", "4x100 Meter", "4x100"],
-    "4x200m Relay": ["4x200m", "4x200 Meter", "4x200"],
-    "4x400m Relay": ["4x400m", "4x400 Meter", "4x400"],
-    "4x800m Relay": ["4x800m", "4x800 Meter", "4x800"]
+    "Javelin": ["Javelin", "Javelin Throw"],
 };
 
-export function normalizeEvent(event) {
+export function normalizeEvent(event, season = '') {
     if (!event) return "Unknown";
     
     // 1. Gender Swap
-    let normalized = event.replace(/\bMen\b/g, 'Boys').replace(/\bWomen\b/g, 'Girls');
+    let normalized = event.replace(/\bMen\b/gi, 'Boys').replace(/\bWomen\b/gi, 'Girls');
     
-    const lower = normalized.toLowerCase();
-    for (const [standard, aliases] of Object.entries(EVENT_MAP)) {
+    const isOutdoor = season && season.toLowerCase().includes('outdoor');
+
+    // 2. Event Canonicalization using word boundaries
+    for (let [standard, aliases] of Object.entries(EVENT_MAP)) {
         for (const alias of aliases) {
-            const aliasLower = alias.toLowerCase();
-            // Check for alias with word boundaries if possible, or just index
-            if (lower.includes(aliasLower)) {
-                // Replace the alias part with the standard name
-                // This preserves prefixes like "Girls "
-                const regex = new RegExp(alias.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'gi');
-                return normalized.replace(regex, standard);
+            const escaped = alias.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+            const regex = new RegExp(`\\b${escaped}\\b`, 'i');
+            
+            if (regex.test(normalized)) {
+                const isGirl = /\bGirls\b/i.test(normalized);
+                const isBoy = /\bBoys\b/i.test(normalized);
+                const prefix = isGirl ? "Girls " : (isBoy ? "Boys " : "");
+                
+                // Season-specific override for Distance events
+                // Indoor: 1 Mile / 2 Mile
+                // Outdoor: 1600m / 3200m
+                if (standard === "1600m Run" || standard === "1 Mile Run") {
+                    standard = isOutdoor ? "1600m Run" : "1 Mile Run";
+                }
+                if (standard === "3200m Run" || standard === "2 Mile Run") {
+                    standard = isOutdoor ? "3200m Run" : "2 Mile Run";
+                }
+
+                return `${prefix}${standard}`;
             }
         }
     }

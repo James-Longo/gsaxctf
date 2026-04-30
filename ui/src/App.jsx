@@ -64,7 +64,8 @@ function App() {
         for (let i = 0; i < manifestData.length; i++) {
           const m = manifestData[i];
           const res = await fetch(`/data/${m.key}.json`);
-          seasonalData[m.key] = await res.json();
+          const rawData = await res.json();
+          seasonalData[m.key] = rawData.map(p => ({ ...p, event: normalizeEvent(p.event, m.season) }));
           setLoadingProgress(prev => ({ ...prev, current: i + 1 }));
         }
         
@@ -81,7 +82,9 @@ function App() {
     if (loadedSeasons[key]) return;
     try {
       const res = await fetch(`/data/${key}.json`);
-      const data = await res.json();
+      const rawData = await res.json();
+      const seasonInfo = manifest.find(m => m.key === key);
+      const data = rawData.map(p => ({ ...p, event: normalizeEvent(p.event, seasonInfo ? seasonInfo.season : '') }));
       setLoadedSeasons(prev => ({ ...prev, [key]: data }));
     } catch (err) {
       console.error(`Failed to load season ${key}:`, err);
