@@ -17,8 +17,9 @@ function PostseasonSimulator({ performances, isBetter, manifest, loadSeason }) {
 
     // Configuration for PVC Small Schools
     const getPVCSchools = (year, season) => {
-        // Specific Rule for Indoor 2026
-        if (year === '2026' && season === 'Indoor') {
+        const isIndoor = (season && season.toLowerCase().includes('indoor'));
+        
+        if (isIndoor) {
             return {
                 "Bangor Chris": "Bangor Christian Schools",
                 "Bucksport": "Bucksport High School",
@@ -35,31 +36,24 @@ function PostseasonSimulator({ performances, isBetter, manifest, loadSeason }) {
             };
         }
 
-        // Default / Legacy List
+        // Outdoor PVC Small Schools List
         return {
-            "Orono": "Orono High School",
-            "George Steve": "George Stevens Academy",
-            "Bucksport": "Bucksport High School",
-            "Sumner": "Sumner/Narragaugus",
-            "Central": "Central High School",
-            "Foxcroft": "Foxcroft Academy",
-            "Dexter": "Dexter Regional High School",
-            "Piscataquis": "Piscataquis Community High School",
-            "Penquis": "Penquis Valley High School",
-            "Searsport": "Searsport District High School",
-            "Mattanawcook": "Mattanawcook Academy",
-            "Lee Academy": "Lee Academy",
-            "Deer Isle": "Deer Isle-Stonington High School",
             "Bangor Chris": "Bangor Christian Schools",
-            "Greenville": "Greenville High School",
-            "Narraguagus": "Sumner/Narragaugus",
-            "Washington Acad": "Washington Academy",
-            "Calais": "Calais High School",
-            "Shead": "Shead High School",
-            "Fort Kent": "Fort Kent Community High School",
-            "Caribou Hig": "Caribou High School",
-            "Presque Isle": "Presque Isle High School",
-            "Houlton": "Houlton High School"
+            "Bucksport": "Bucksport High School",
+            "Central": "Central High School",
+            "Dexter": "Dexter Regional High School",
+            "Foxcroft": "Foxcroft Academy",
+            "George Stevens": "George Stevens Academy",
+            "Houlton": "Houlton/Hodgdon",
+            "Jonesport": "Jonesport-Beals High School",
+            "Mattanawcook": "Mattanawcook Academy",
+            "Narraguagus": "Narraguagus High School",
+            "Orono": "Orono High School",
+            "Penquis": "Penquis Valley High School",
+            "Piscataquis": "Piscataquis Community High School",
+            "Searsport": "Searsport District High School",
+            "Sumner": "Sumner Memorial High School",
+            "Washington A": "Washington Academy"
         };
     };
 
@@ -230,8 +224,6 @@ function PostseasonSimulator({ performances, isBetter, manifest, loadSeason }) {
             entries.sort((a, b) => isBetter(a.mark, b.mark, a.event) ? -1 : isBetter(b.mark, a.mark, a.event) ? 1 : 0);
 
             let scoringIndex = 0;
-            const teamRelayCount = {};
-            const teamIndivCount = {};
             const isRelayEvent = event.toLowerCase().includes('relay') || event.toLowerCase().includes('4x');
 
             for (let i = 0; i < entries.length; i++) {
@@ -240,23 +232,10 @@ function PostseasonSimulator({ performances, isBetter, manifest, loadSeason }) {
                 const entry = entries[i];
                 const team = entry.pvcTeam;
 
-                let canScore = false;
-                if (isRelayEvent) {
-                    if ((teamRelayCount[team] || 0) < 1) {
-                        canScore = true;
-                        teamRelayCount[team] = (teamRelayCount[team] || 0) + 1;
-                    }
-                } else {
-                    if ((teamIndivCount[team] || 0) < 3) {
-                        canScore = true;
-                        teamIndivCount[team] = (teamIndivCount[team] || 0) + 1;
-                    }
-                }
-
-                if (canScore) {
-                    scores[team] = (scores[team] || 0) + SCORING_RULES[scoringIndex];
-                    scoringIndex++;
-                }
+                // Any athlete can score as long as there is room on the podium (top 6)
+                // Removed per-team entry limits as requested.
+                scores[team] = (scores[team] || 0) + SCORING_RULES[scoringIndex];
+                scoringIndex++;
             }
         });
         return scores;
@@ -368,7 +347,7 @@ function PostseasonSimulator({ performances, isBetter, manifest, loadSeason }) {
                 Object.entries(groups).forEach(([event, entries]) => {
                     const isRelayEvent = event.toLowerCase().includes('relay') || event.toLowerCase().includes('4x');
                     const sorted = [...entries].sort((a, b) => isBetter(a.mark, b.mark, a.event) ? -1 : 1);
-                    topEntries.push(...sorted.slice(0, isRelayEvent ? 1 : 3));
+                    topEntries.push(...sorted.slice(0, isRelayEvent ? 6 : 6));
                 });
                 sc[t] = topEntries;
             });
@@ -844,15 +823,15 @@ function PostseasonSimulator({ performances, isBetter, manifest, loadSeason }) {
 
     const EVENT_ALIASES = useMemo(() => {
         const indoor = {
+            "4x800m Relay": ["4x800m", "4x800 Meter", "4 x 800"],
+            "55m Hurdles": ["55m High Hurdle", "55m Hurdle", "55 Meter Hurdle", "55m H. Hurdle"],
             "55m Dash": ["55m Dash", "55 Meter Dash"],
-            "200m Dash": ["200m Dash", "200 Meter Dash"],
-            "400m Dash": ["400m Dash", "400 Meter Dash"],
+            "1 Mile Run": ["1 Mile Run", "Mile Run", "1600m Run", "1600 Meter Run", "1600m", "1600 Meter"],
+            "400m Dash": ["400m Dash", "400 Meter Dash", "400m Run", "400 Meter Run"],
             "800m Run": ["800m Run", "800 Meter Run"],
-            "1 Mile Run": ["1 Mile Run", "1600m", "1600 Meter"],
-            "2 Mile Run": ["2 Mile Run", "3200m", "3200 Meter"],
-            "55m Hurdles": ["55m Hurdles", "55 Meter Hurdles"],
-            "4x200m Relay": ["4x200m", "4x200 Meter"],
-            "4x800m Relay": ["4x800m", "4x800 Meter"],
+            "200m Dash": ["200m Dash", "200 Meter Dash", "200m Run", "200 Meter Run"],
+            "2 Mile Run": ["2 Mile Run", "2-Mile Run", "3200m Run", "3200 Meter Run", "3200m", "3200 Meter"],
+            "4x200m Relay": ["4x200m", "4x200 Meter", "4 x 200"],
             "High Jump": ["High Jump"],
             "Pole Vault": ["Pole Vault"],
             "Long Jump": ["Long Jump"],
@@ -861,19 +840,18 @@ function PostseasonSimulator({ performances, isBetter, manifest, loadSeason }) {
         };
 
         const outdoor = {
+            "4x800m Relay": ["4x800m", "4x800 Meter", "4 x 800"],
+            "1600m Race Walk": ["1600m Race Walk", "1600 Meter Race Walk"],
+            "100m/110m Hurdles": ["100m H. Hurdle", "110m H. Hurdle", "100m Hurdle", "110m Hurdle", "100 Meter Hurdle", "110 Meter Hurdle"],
             "100m Dash": ["100m Dash", "100 Meter Dash"],
-            "200m Dash": ["200m Dash", "200 Meter Dash"],
-            "400m Dash": ["400m Dash", "400 Meter Dash"],
+            "1600m Run": ["1600m Run", "1600 Meter Run", "1 Mile Run", "1 Mile"],
+            "4x100m Relay": ["4x100m", "4x100 Meter", "4 x 100"],
+            "400m Dash": ["400m Run", "400 Meter Run", "400m Dash", "400 Meter Dash"],
+            "300m Hurdles": ["300m Low Hurdle", "300m Int. Hurdle", "300m Hurdle", "300 Meter Hurdle"],
             "800m Run": ["800m Run", "800 Meter Run"],
-            "1600m Run": ["1600m Run", "1600 Meter Run", "1 Mile"],
-            "3200m Run": ["3200m Run", "3200 Meter Run", "2 Mile"],
-            "100m Hurdles": ["100m Hurdles", "100 Meter Hurdles"],
-            "110m Hurdles": ["110m Hurdles", "110 Meter Hurdles"],
-            "300m Hurdles": ["300m Hurdles", "300 Meter Hurdles"],
-            "4x100m Relay": ["4x100m", "4x100 Meter"],
-            "4x400m Relay": ["4x400m", "4x400 Meter"],
-            "4x800m Relay": ["4x800m", "4x800 Meter"],
-            "Race Walk": ["Race Walk", "1600m Race Walk"],
+            "200m Dash": ["200m Dash", "200 Meter Dash", "200m Run", "200 Meter Run"],
+            "3200m Run": ["3200m Run", "3200 Meter Run", "2 Mile", "2-Mile", "3200m", "3200 Meter"],
+            "4x400m Relay": ["4x400m", "4x400 Meter", "4 x 400"],
             "High Jump": ["High Jump"],
             "Pole Vault": ["Pole Vault"],
             "Long Jump": ["Long Jump"],
@@ -889,43 +867,68 @@ function PostseasonSimulator({ performances, isBetter, manifest, loadSeason }) {
     // Group by Event, Season, and Year for context-specific ranking
     const groupedData = useMemo(() => {
         const groups = {};
+        const canonicalOrder = Object.keys(EVENT_ALIASES);
 
         filteredData.forEach(curr => {
-            // Filter non-PVC events
             const eventLower = curr.event.toLowerCase();
-            let isAllowed = false;
+            let canonicalName = null;
 
             // Check if current event matches any allowed alias
-            for (const aliases of Object.values(EVENT_ALIASES)) {
+            for (const [name, aliases] of Object.entries(EVENT_ALIASES)) {
                 if (aliases.some(alias => eventLower.includes(alias.toLowerCase()))) {
-                    isAllowed = true;
+                    canonicalName = name;
                     break;
                 }
             }
 
-            const isExcluded = eventLower.includes("pentathlon");
+            // Only include events that are on our official list (this naturally excludes MS and developmental events)
+            if (!canonicalName) return;
 
-            if (!isAllowed || isExcluded) {
-                return;
+            const gender = eventLower.includes('girl') ? 'Girls' : (eventLower.includes('boy') ? 'Boys' : '');
+            const originalCanonicalName = canonicalName;
+            
+            // Gender-specific naming for Hurdles
+            if (canonicalName === "100m/110m Hurdles") {
+                canonicalName = gender === 'Girls' ? '100m Hurdles' : '110m Hurdles';
             }
 
-            const groupKey = `${curr.event} (${curr.derivedType} ${curr.derivedYear})`;
-            if (!groups[groupKey]) groups[groupKey] = {};
+            const groupKey = `${gender} ${canonicalName} (${curr.derivedType} ${curr.derivedYear})`.trim();
+            
+            if (!groups[groupKey]) groups[groupKey] = {
+                items: {},
+                canonicalName: canonicalName,
+                gender: gender,
+                orderIdx: canonicalOrder.indexOf(originalCanonicalName)
+            };
 
             // For Relays, use team as key. For Individual, use athlete_id
             const athleteKey = curr.isRelay ? curr.pvcTeam : `${curr.athlete_id}|${curr.pvcTeam}`;
-            if (!groups[groupKey][athleteKey] || isBetter(curr.mark, groups[groupKey][athleteKey].mark)) {
-                groups[groupKey][athleteKey] = curr;
+            if (!groups[groupKey].items[athleteKey] || isBetter(curr.mark, groups[groupKey].items[athleteKey].mark, canonicalName)) {
+                groups[groupKey].items[athleteKey] = { ...curr, event: `${gender} ${canonicalName}`.trim() };
             }
         });
 
         const finalGroups = {};
-        Object.entries(groups).forEach(([groupKey, itemMap]) => {
-            const results = Object.values(itemMap);
+        
+        // Sort keys by canonical order, then gender (Girls then Boys)
+        const sortedKeys = Object.keys(groups).sort((a, b) => {
+            const gA = groups[a];
+            const gB = groups[b];
+            
+            if (gA.orderIdx !== gB.orderIdx) return gA.orderIdx - gB.orderIdx;
+            
+            // Same event, sort Girls before Boys
+            if (gA.gender === 'Girls' && gB.gender === 'Boys') return -1;
+            if (gA.gender === 'Boys' && gB.gender === 'Girls') return 1;
+            return 0;
+        });
+
+        sortedKeys.forEach(groupKey => {
+            const results = Object.values(groups[groupKey].items);
 
             results.sort((a, b) => {
-                if (isBetter(a.mark, b.mark)) return -1;
-                if (isBetter(b.mark, a.mark)) return 1;
+                if (isBetter(a.mark, b.mark, groups[groupKey].canonicalName)) return -1;
+                if (isBetter(b.mark, a.mark, groups[groupKey].canonicalName)) return 1;
                 return 0;
             });
 
@@ -940,7 +943,7 @@ function PostseasonSimulator({ performances, isBetter, manifest, loadSeason }) {
         });
 
         return finalGroups;
-    }, [filteredData, isBetter]);
+    }, [filteredData, isBetter, EVENT_ALIASES]);
 
     const optimizedData = useMemo(() => {
         if (!showSimulation || filterYear === 'All' || filterSeason === 'All' || Object.keys(groupedData).length === 0) {
@@ -1199,22 +1202,13 @@ function PostseasonSimulator({ performances, isBetter, manifest, loadSeason }) {
 
         Object.entries(groupedData).forEach(([groupTitle, results]) => {
             let rankPos = 0;
-            const teamCounts = {};
 
             for (let i = 0; i < results.length; i++) {
                 const res = results[i];
                 const team = res.pvcTeam;
                 const isRelay = res.isRelay;
-                const limit = isRelay ? 1 : 3;
-
-                // We only increment rankPos for the first 3 from each team
-                if ((teamCounts[team] || 0) < limit) {
-                    rankPos++;
-                    teamCounts[team] = (teamCounts[team] || 0) + 1;
-                } else {
-                    // This athlete doesn't count towards the official rank because they are >3rd on their team
-                    // We don't increment rankPos, but we might still want to capture their entry if they're on our target team
-                }
+                // Every athlete counts towards the rank if they have a valid performance
+                rankPos++;
 
                 if (team === targetTeam) {
                     const nameStr = res.athlete_name || "";
@@ -1230,7 +1224,7 @@ function PostseasonSimulator({ performances, isBetter, manifest, loadSeason }) {
                             rank: rankPos,
                             mark: res.mark,
                             isRelay: isRelay,
-                            isScorable: rankPos <= SCORING_RULES.length && (teamCounts[team] || 0) <= limit
+                            isScorable: rankPos <= SCORING_RULES.length
                         });
                     });
                 }
@@ -1242,16 +1236,34 @@ function PostseasonSimulator({ performances, isBetter, manifest, loadSeason }) {
 
         const getEventIndex = (evName) => {
             const evL = evName.toLowerCase();
-            // Order: 4x800, Hurdle, 55m, Mile, 400, 800, 200, 2mile, 4x200
-            if (evL.includes("4x800") || evL.includes("4 x 800")) return 0;
-            if (evL.includes("4x200") || evL.includes("4 x 200")) return 8;
-            if (evL.includes("hurdle")) return 1;
-            if (evL.includes("55m dash") || evL.includes("55 meter dash")) return 2;
-            if ((evL.includes("mile") || evL.includes("1600")) && !evL.includes("2")) return 3;
-            if (evL.includes("400")) return 4;
-            if (evL.includes("800")) return 5;
-            if (evL.includes("200")) return 6;
-            if (evL.includes("2-mile") || evL.includes("2 mile") || evL.includes("3200")) return 7;
+            const isIndoor = (filterSeason && filterSeason.toLowerCase().includes('indoor'));
+
+            if (isIndoor) {
+                // Indoor Order
+                if (evL.includes("4x800") || evL.includes("4 x 800")) return 0;
+                if (evL.includes("55m high hurdle") || evL.includes("55m hurdle") || evL.includes("55 meter hurdle")) return 1;
+                if (evL.includes("55m dash") || evL.includes("55 meter dash")) return 2;
+                if (evL.includes("mile run") || (evL.includes("1600") && !evL.includes("racewalk") && !evL.includes("2"))) return 3;
+                if (evL.includes("400m dash") || evL.includes("400 meter dash") || evL.includes("400m run")) return 4;
+                if (evL.includes("800m run") || evL.includes("800 meter run")) return 5;
+                if (evL.includes("200m dash") || evL.includes("200 meter dash") || evL.includes("200m run")) return 6;
+                if (evL.includes("2-mile run") || evL.includes("2 mile run") || evL.includes("3200")) return 7;
+                if (evL.includes("4x200") || evL.includes("4 x 200")) return 8;
+            } else {
+                // Outdoor Order
+                if (evL.includes("4x800") || evL.includes("4 x 800")) return 0;
+                if (evL.includes("racewalk") || evL.includes("race walk")) return 1;
+                if (evL.includes("100m h. hurdle") || evL.includes("110m h. hurdle") || evL.includes("hurdle") && !evL.includes("300")) return 2;
+                if (evL.includes("100m dash") || evL.includes("100 meter dash")) return 3;
+                if (evL.includes("1600m run") || (evL.includes("1600") && !evL.includes("racewalk") && !evL.includes("2"))) return 4;
+                if (evL.includes("4x100") || evL.includes("4 x 100")) return 5;
+                if (evL.includes("400m run") || evL.includes("400 meter run") || evL.includes("400m dash")) return 6;
+                if (evL.includes("300m low hurdle") || evL.includes("300m int. hurdle") || evL.includes("300m hurdle")) return 7;
+                if (evL.includes("800m run") || evL.includes("800 meter run")) return 8;
+                if (evL.includes("200m dash") || evL.includes("200 meter dash") || evL.includes("200m run")) return 9;
+                if (evL.includes("3200m run") || evL.includes("3200 meter run") || evL.includes("2-mile") || evL.includes("2 mile")) return 10;
+                if (evL.includes("4x400") || evL.includes("4 x 400")) return 11;
+            }
             return -1;
         };
 
@@ -1304,9 +1316,6 @@ function PostseasonSimulator({ performances, isBetter, manifest, loadSeason }) {
         <div className="analyzer-container">
             <div className="analyzer-header">
                 <h2>Postseason Simulator</h2>
-                <div className="rules-info" style={{ marginTop: '8px', fontSize: '0.85rem', color: '#4a5568', background: '#f7fafc', padding: '8px 12px', borderRadius: '6px', border: '1px solid #e2e8f0', display: 'inline-block' }}>
-                    <strong>{filterSeason || 'Season'} Rules:</strong> {EVENT_LIMIT} Event Limit • 3 Individuals per Event • 1 Relay per Team
-                </div>
             </div>
 
             <div className="analyzer-controls">
@@ -1370,7 +1379,7 @@ function PostseasonSimulator({ performances, isBetter, manifest, loadSeason }) {
                                             </div>
                                             <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px' }}>
                                                 {ath.scoringEvents.map((ev, idx) => {
-                                                    const isTop3Opportunity = ev.isScorable && idx < 3;
+                                                    const isTop3Opportunity = ev.isScorable && idx < EVENT_LIMIT;
                                                     const isScoring = ev.isScorable;
 
                                                     let badgeStyle = {
@@ -1416,7 +1425,7 @@ function PostseasonSimulator({ performances, isBetter, manifest, loadSeason }) {
                                             <div style={{ fontWeight: 600, marginBottom: '6px', color: '#4a5568', fontSize: '0.9rem' }}>{ath.name}</div>
                                             <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px' }}>
                                                 {ath.scoringEvents.map((ev, idx) => {
-                                                    const isTop3Opportunity = ev.isScorable && idx < 3;
+                                                    const isTop3Opportunity = ev.isScorable && idx < EVENT_LIMIT;
                                                     const isScoring = ev.isScorable;
 
                                                     let badgeStyle = {
