@@ -30,30 +30,22 @@ jobs:
           git config --global http.postBuffer 524288000
           git config --global core.compression 0
 
-      - name: Run Scraper (Incremental)
+      - name: Run Scraper and Update Data
         run: |
-          echo "Starting scraper..."
-          python backend/run_update.py
-        continue-on-error: false
-
-      - name: Export Data for Web
-        run: |
-          echo "Exporting data to JSON..."
-          python backend/export_for_web.py
-
-      - name: Check Database Size
-        run: |
-          ls -lh track_app.db
-          ls -lh ui/public/data.json
+          echo "Starting scraper (JSON-only)..."
+          python3 backend/run_update.py
+        env:
+          PYTHONPATH: ${{ github.workspace }}
 
       - name: Commit and Push Data Updates
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
-          commit_message: "chore: automated backend rescrape and data update [skip ci]"
+          commit_message: "chore: automated backend rescrape and team-data update [skip ci]"
           file_pattern: |
-            track_app.db
-            ui/public/data.json
-          disable_globbing: false
+            ui/public/data/teams/*.json
+            ui/public/data/manifest.json
+            ui/public/data/athletes.json
+            backend/data/scrape_state.json
 
       - name: Set up Node.js
         uses: actions/setup-node@v4

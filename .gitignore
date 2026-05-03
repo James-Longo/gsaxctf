@@ -9,14 +9,11 @@ scratch/
 qaqc_results.txt
 qaqc_final.txt
 
-# Large temporary files
-ui/public/data.json
-
-# DBs
-backend/results.db
-backend/track_app.db
+# DBs (Legacy)
+*.db
+backend/*.db
 
 # Python
-__pycache__/
+**/__pycache__/
 *.py[cod]
 *$py.class

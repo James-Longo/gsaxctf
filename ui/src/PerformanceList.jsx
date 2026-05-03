@@ -1,23 +1,18 @@
 import { useState, useMemo, useEffect } from 'react'
-import { parseMark, isDistanceEvent } from './utils'
+import { parseMark, normalizeEvent, isDistanceEvent } from './utils'
 import './App.css'
 
-function PostseasonSimulator({ performances, isBetter, manifest, loadSeason }) {
+function PostseasonSimulator({ performances, isBetter, manifest, loadTeamData }) {
     // Derive the current season and year from today's date.
-    // Maine HS track: Indoor = Nov–Mar, Outdoor = Apr–Jun.
-    // Off-season (Jul–Oct) defaults to the most recent completed season (Outdoor).
     const getDefaultSeason = () => {
         const now = new Date();
         const month = now.getMonth() + 1; // 1-indexed
         const year = now.getFullYear();
         if (month >= 4 && month <= 10) {
-            // Apr–Oct: Outdoor season of this calendar year
             return { season: 'Outdoor', year: String(year) };
         } else if (month >= 11) {
-            // Nov–Dec: Indoor season whose championship falls in the NEXT year
             return { season: 'Indoor', year: String(year + 1) };
         } else {
-            // Jan–Mar: Indoor season of this calendar year
             return { season: 'Indoor', year: String(year) };
         }
     };
@@ -28,145 +23,102 @@ function PostseasonSimulator({ performances, isBetter, manifest, loadSeason }) {
     const [filterSeason, setFilterSeason] = useState(defaultSeason)
     const [filterEvent, setFilterEvent] = useState('All')
     const [showSimulation, setShowSimulation] = useState(false)
-    const [expandedTeams, setExpandedTeams] = useState({}) // { 'teamName-boys': true }
+    const [expandedTeams, setExpandedTeams] = useState({}) 
     const [robustSimResults, setRobustSimResults] = useState(null)
     const [isRobustLoading, setIsRobustLoading] = useState(false)
     const [targetTeam, setTargetTeam] = useState('George Stevens Academy')
     const [simProgress, setSimProgress] = useState(0);
     const [simIterations, setSimIterations] = useState(50);
     const [strategicLog, setStrategicLog] = useState([]);
-    const [competitionType, setCompetitionType] = useState('PVC'); // 'PVC' or 'States'
+    const [competitionType, setCompetitionType] = useState('PVC');
+    const [isDashboardCollapsed, setIsDashboardCollapsed] = useState(false);
 
     const getStateSchools = (year, season) => {
         const isOutdoor = (season && season.toLowerCase().includes('outdoor'));
-        
         if (isOutdoor) {
             return {
-                "Wells": "Wells High School",
-                "Winslow": "Winslow High School",
-                "Houlton": "Houlton/Hodgdon",
-                "Washington A": "Washington Academy",
-                "Spruce Mountai": "Spruce Mountain High School",
-                "Mountain Valle": "Mountain Valley High School",
-                "Maranacook": "Maranacook Community High School",
-                "Bucksport": "Bucksport High School",
-                "Mt. View": "Mount View High School",
-                "Maine Central": "Maine Central Institute",
-                "Orono": "Orono High School",
-                "Lisbon": "Lisbon/Oak Hill",
-                "George Stevens": "George Stevens Academy",
-                "Sacopee Valle": "Sacopee Valley High School",
-                "Mattanawcook": "Mattanawcook Academy",
-                "Central": "Central High School",
-                "Hall-Dale": "Hall-Dale High School",
-                "Dexter": "Dexter Regional High School",
-                "Traip": "Traip Academy",
-                "Fort Kent": "Fort Kent Community High School",
-                "Calais": "Calais High School",
-                "Sumner": "Sumner Memorial High School",
-                "Winthrop": "Winthrop High School",
-                "Kents Hill": "Kents Hill School",
-                "Gould": "Gould Academy",
-                "Dirigo": "Dirigo High School",
-                "Mt. Abram": "Mt. Abram High School",
-                "Madison": "Madison High School",
-                "Old Orchard": "Old Orchard Beach High School",
-                "North Yarmouth": "North Yarmouth Academy",
-                "Maine Coast": "Maine Coast Waldorf School",
-                "Monmouth": "Monmouth Academy",
-                "Narraguagus": "Narraguagus High School",
-                "Carrabec": "Carrabec High School",
-                "Piscataquis": "Piscataquis Community High School",
-                "Telstar": "Telstar Regional High School",
-                "Penquis": "Penquis Valley High School",
-                "Wiscasset": "Wiscasset/Boothbay",
-                "Boothbay": "Wiscasset/Boothbay",
-                "Buckfield": "Buckfield High School",
-                "Madawaska": "Madawaska High School",
-                "Penobscot Vall": "Penobscot Valley High School",
-                "Fort Fairfiel": "Fort Fairfield High School",
-                "Searsport": "Searsport District High School",
-                "Richmond": "Richmond High School",
-                "Lee": "Lee Academy",
-                "Deer Isle": "Deer Isle-Stonington High School",
-                "MSSM": "Maine School of Science and Mathematics",
-                "Washburn": "Washburn District High School",
-                "Bangor Chris": "Bangor Christian Schools",
-                "Easton": "Easton High School",
-                "Greenville": "Greenville High School",
-                "Blue Hill Harb": "Blue Hill Harbor School",
-                "Vinalhaven": "Vinalhaven School",
-                "Greater Portl": "Greater Portland Christian School",
-                "Seacoast": "Seacoast Christian School",
-                "Chop Point": "Chop Point School",
+                "Wells": "Wells High School", "Winslow": "Winslow High School", "Houlton": "Houlton/Hodgdon",
+                "Washington A": "Washington Academy", "Spruce Mountai": "Spruce Mountain High School",
+                "Mountain Valle": "Mountain Valley High School", "Maranacook": "Maranacook Community High School",
+                "Bucksport": "Bucksport High School", "Mt. View": "Mount View High School",
+                "Maine Central": "Maine Central Institute", "Orono": "Orono High School",
+                "Lisbon": "Lisbon/Oak Hill", "George Stevens": "George Stevens Academy",
+                "Sacopee Valle": "Sacopee Valley High School", "Mattanawcook": "Mattanawcook Academy",
+                "Central": "Central High School", "Hall-Dale": "Hall-Dale High School",
+                "Dexter": "Dexter Regional High School", "Traip": "Traip Academy",
+                "Fort Kent": "Fort Kent Community High School", "Calais": "Calais High School",
+                "Sumner": "Sumner Memorial High School", "Winthrop": "Winthrop High School",
+                "Kents Hill": "Kents Hill School", "Gould": "Gould Academy",
+                "Dirigo": "Dirigo High School", "Mt. Abram": "Mt. Abram High School",
+                "Madison": "Madison High School", "Old Orchard": "Old Orchard Beach High School",
+                "North Yarmouth": "North Yarmouth Academy", "Maine Coast": "Maine Coast Waldorf School",
+                "Monmouth": "Monmouth Academy", "Narraguagus": "Narraguagus High School",
+                "Carrabec": "Carrabec High School", "Piscataquis": "Piscataquis Community High School",
+                "Telstar": "Telstar Regional High School", "Penquis": "Penquis Valley High School",
+                "Wiscasset": "Wiscasset/Boothbay", "Boothbay": "Wiscasset/Boothbay",
+                "Buckfield": "Buckfield High School", "Madawaska": "Madawaska High School",
+                "Penobscot Vall": "Penobscot Valley High School", "Fort Fairfiel": "Fort Fairfield High School",
+                "Searsport": "Searsport District High School", "Richmond": "Richmond High School",
+                "Lee": "Lee Academy", "Deer Isle": "Deer Isle-Stonington High School",
+                "MSSM": "Maine School of Science and Mathematics", "Washburn": "Washburn District High School",
+                "Bangor Chris": "Bangor Christian Schools", "Easton": "Easton High School",
+                "Greenville": "Greenville High School", "Blue Hill Harb": "Blue Hill Harbor School",
+                "Vinalhaven": "Vinalhaven School", "Greater Portl": "Greater Portland Christian School",
+                "Seacoast": "Seacoast Christian School", "Chop Point": "Chop Point School",
                 "North Haven": "North Haven Community School"
             };
         }
-
-        // Default / Placeholder for Indoor States
-        return {
-            "George Stevens": "George Stevens Academy",
-            "Orono": "Orono High School",
-            "Bucksport": "Bucksport High School"
-        };
+        return { "George Stevens": "George Stevens Academy", "Orono": "Orono High School", "Bucksport": "Bucksport High School" };
     };
 
-    // Configuration for PVC Small Schools
     const getPVCSchools = (year, season) => {
         const isIndoor = (season && season.toLowerCase().includes('indoor'));
-        
         if (isIndoor) {
             return {
-                "Bangor Chris": "Bangor Christian Schools",
-                "Bucksport": "Bucksport High School",
-                "Central": "Central High School",
-                "Dexter": "Dexter Regional High School",
-                "Foxcroft": "Foxcroft Academy",
-                "George Stevens": "George Stevens Academy",
-                "Mattanawcook": "Mattanawcook Academy",
-                "Orono": "Orono High School",
-                "PCHS": "Piscataquis Community High School",
-                "Penquis": "Penquis Valley High School",
-                "Searsport": "Searsport District High School",
-                "Sumner": "Sumner/Narragaugus"
+                "Bangor Chris": "Bangor Christian Schools", "Bucksport": "Bucksport High School",
+                "Central": "Central High School", "Dexter": "Dexter Regional High School",
+                "Foxcroft": "Foxcroft Academy", "George Stevens": "George Stevens Academy",
+                "Mattanawcook": "Mattanawcook Academy", "Orono": "Orono High School",
+                "PCHS": "Piscataquis Community High School", "Penquis": "Penquis Valley High School",
+                "Searsport": "Searsport District High School", "Sumner": "Sumner/Narragaugus"
             };
         }
-
-        // Outdoor PVC Small Schools List
         return {
-            "Bangor Chris": "Bangor Christian Schools",
-            "Bucksport": "Bucksport High School",
-            "Central": "Central High School",
-            "Dexter": "Dexter Regional High School",
-            "Foxcroft": "Foxcroft Academy",
-            "George Stevens": "George Stevens Academy",
-            "Houlton": "Houlton/Hodgdon",
-            "Jonesport": "Jonesport-Beals High School",
-            "Mattanawcook": "Mattanawcook Academy",
-            "Narraguagus": "Narraguagus High School",
-            "Orono": "Orono High School",
-            "Penquis": "Penquis Valley High School",
-            "Piscataquis": "Piscataquis Community High School",
-            "Searsport": "Searsport District High School",
-            "Sumner": "Sumner Memorial High School",
-            "Washington A": "Washington Academy"
+            "Bangor Chris": "Bangor Christian Schools", "Bucksport": "Bucksport High School",
+            "Central": "Central High School", "Dexter": "Dexter Regional High School",
+            "Foxcroft": "Foxcroft Academy", "George Stevens": "George Stevens Academy",
+            "Houlton": "Houlton/Hodgdon", "Jonesport": "Jonesport-Beals High School",
+            "Mattanawcook": "Mattanawcook Academy", "Narraguagus": "Narraguagus High School",
+            "Orono": "Orono High School", "Penquis": "Penquis Valley High School",
+            "Piscataquis": "Piscataquis Community High School", "Searsport": "Searsport District High School",
+            "Sumner": "Sumner Memorial High School", "Washington A": "Washington Academy"
         };
     };
 
     useEffect(() => {
-        if (!manifest || !loadSeason) return;
+        if (!manifest || !manifest.teams || !loadTeamData) return;
 
         if (filterYear !== 'All' && filterSeason !== 'All') {
-            const key = `${filterYear}_${filterSeason}`.replace(' ', '_');
-            if (manifest.find(m => m.key === key)) {
-                loadSeason(key);
-            }
+            const seasonKey = `${filterYear}_${filterSeason}`.replace(' ', '_');
+            manifest.teams.forEach(t => {
+                if (t.seasons && t.seasons.includes(seasonKey)) {
+                    loadTeamData(t.slug);
+                }
+            });
         } else if (filterYear !== 'All') {
-            manifest.filter(m => m.year === filterYear).forEach(m => loadSeason(m.key));
+            manifest.teams.forEach(t => {
+                if (t.seasons && t.seasons.some(s => s.startsWith(filterYear))) {
+                    loadTeamData(t.slug);
+                }
+            });
         } else if (filterSeason !== 'All') {
-            manifest.filter(m => m.season === filterSeason).forEach(m => loadSeason(m.key));
+            manifest.teams.forEach(t => {
+                if (t.seasons && t.seasons.some(s => s.endsWith(filterSeason.replace(' ', '_')))) {
+                    loadTeamData(t.slug);
+                }
+            });
         }
-    }, [filterYear, filterSeason, manifest, loadSeason]);
+    }, [filterYear, filterSeason, manifest, loadTeamData]);
 
     const { filteredData, years, seasons, events } = useMemo(() => {
         if (!performances) return { filteredData: [], years: [], seasons: [], events: [] };
@@ -938,14 +890,13 @@ function PostseasonSimulator({ performances, isBetter, manifest, loadSeason }) {
         const groups = {};
 
         filteredData.forEach(curr => {
-            // Find base canonical name (strip "Girls " or "Boys ")
-            const gender = curr.event.startsWith('Girls') ? 'Girls' : (curr.event.startsWith('Boys') ? 'Boys' : '');
-            const baseName = curr.event.replace(/^(Girls|Boys)\s+/, '');
+            // Normalize the event name first to get the canonical version
+            const normalizedFull = normalizeEvent(curr.event, filterSeason);
+            const gender = normalizedFull.startsWith('Girls') ? 'Girls' : (normalizedFull.startsWith('Boys') ? 'Boys' : '');
+            const baseName = normalizedFull.replace(/^(Girls|Boys)\s+/, '');
             const originalCanonical = baseName;
 
-            // normalizeEvent produces gender-split hurdle names ("100m Hurdles" / "110m Hurdles"),
-            // but SCORING_EVENTS uses the combined key "100m/110m Hurdles".
-            // Map split names back to the combined key for the SCORING_EVENTS lookup.
+            // Map hurdles to combined key
             const scoringKey = (baseName === '100m Hurdles' || baseName === '110m Hurdles')
                 ? '100m/110m Hurdles'
                 : baseName;
@@ -954,7 +905,7 @@ function PostseasonSimulator({ performances, isBetter, manifest, loadSeason }) {
             if (!SCORING_EVENTS.includes(scoringKey)) return;
 
             // Use the gender-specific name for grouping/display
-            const canonicalName = baseName; // already "100m Hurdles" or "110m Hurdles" from normalizeEvent
+            const canonicalName = baseName; 
 
             const groupKey = `${gender} ${canonicalName} (${curr.derivedType} ${curr.derivedYear})`.trim();
             
@@ -1402,12 +1353,36 @@ function PostseasonSimulator({ performances, isBetter, manifest, loadSeason }) {
 
             {entryDecisions && (entryDecisions.decisionAthletes.length > 0 || entryDecisions.straightforwardAthletes.length > 0) && (
                 <div className="entry-decisions-dashboard" style={{ marginTop: '20px' }}>
-                    <div className="dashboard-section-header" style={{ marginBottom: '16px', display: 'flex', alignItems: 'center', gap: '8px' }}>
-                        <h3 style={{ margin: 0, fontSize: '1.1rem', color: '#1a202c' }}>Entry Decisions: {targetTeam}</h3>
-                        <span className="record-count" style={{ fontSize: '0.7rem' }}>Simple Performance Ranking</span>
+                    <div className="dashboard-section-header" style={{ 
+                        marginBottom: '16px', 
+                        display: 'flex', 
+                        alignItems: 'center', 
+                        justifyContent: 'space-between',
+                        padding: '12px 16px',
+                        background: '#f8fafc',
+                        borderRadius: '8px',
+                        border: '1px solid #e2e8f0'
+                    }}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                            <h3 style={{ margin: 0, fontSize: '1.1rem', color: '#1a202c' }}>Entry Decisions: {targetTeam}</h3>
+                            <span className="record-count" style={{ fontSize: '0.7rem' }}>Simple Performance Ranking</span>
+                        </div>
+                        <button 
+                            onClick={() => setIsDashboardCollapsed(!isDashboardCollapsed)}
+                            className="toggle-btn"
+                            style={{ 
+                                padding: '4px 12px', 
+                                background: 'white', 
+                                border: '1px solid #cbd5e0',
+                                color: '#4a5568'
+                            }}
+                        >
+                            {isDashboardCollapsed ? 'Expand Decisions' : 'Collapse Dashboard'}
+                        </button>
                     </div>
 
-                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(400px, 1fr))', gap: '20px' }}>
+                    {!isDashboardCollapsed && (
+                        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(400px, 1fr))', gap: '20px' }}>
                         {entryDecisions.decisionAthletes.length > 0 && (
                             <div className="decision-card" style={{ background: '#fff5f5', border: '1px solid #feb2b2', borderRadius: '12px', padding: '20px' }}>
                                 <h4 style={{ margin: '0 0 12px 0', color: '#c53030', display: 'flex', alignItems: 'center', gap: '8px' }}>
@@ -1506,6 +1481,7 @@ function PostseasonSimulator({ performances, isBetter, manifest, loadSeason }) {
                             </div>
                         )}
                     </div>
+                    )}
                 </div>
             )}
 

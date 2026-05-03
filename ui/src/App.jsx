@@ -43,9 +43,9 @@ function App() {
 
   const isLocalDev = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
 
-  // 1. Initial Load: Manifest and All Data
+  // 1. Initial Load: Manifest and Athlete Registry
   useEffect(() => {
-    const loadAll = async () => {
+    const loadInitial = async () => {
       try {
         const [manifestRes, athletesRes] = await Promise.all([
           fetch('/data/manifest.json'),
@@ -56,92 +56,78 @@ function App() {
         
         setManifest(manifestData);
         setAllAthletes(athletesData);
-        setLoadingProgress({ current: 0, total: manifestData.length });
-
-        // Load all seasons sequentially or in chunks to avoid overwhelming the browser
-        // but ensure everything is loaded before setting dataLoaded(true)
-        const seasonalData = {};
-        for (let i = 0; i < manifestData.length; i++) {
-          const m = manifestData[i];
-          const res = await fetch(`/data/${m.key}.json`);
-          const rawData = await res.json();
-          seasonalData[m.key] = rawData.map(p => ({ ...p, event: normalizeEvent(p.event, m.season) }));
-          setLoadingProgress(prev => ({ ...prev, current: i + 1 }));
-        }
         
-        setLoadedSeasons(seasonalData);
+        // Find default team slug
+        const defaultTeam = manifestData.teams.find(t => t.name === selectedTeam) || manifestData.teams[0];
+        if (defaultTeam) {
+           loadTeamData(defaultTeam.slug);
+        }
         setDataLoaded(true);
       } catch (err) {
         console.error('Data load failed:', err);
       }
     };
-    loadAll();
+    loadInitial();
   }, [])
 
-  const loadSeason = async (key) => {
-    if (loadedSeasons[key]) return;
+  const loadTeamData = async (slug) => {
+    if (loadedSeasons[slug]) return; // reuse loadedSeasons state but key it by slug
     try {
-      const res = await fetch(`/data/${key}.json`);
-      const rawData = await res.json();
-      const seasonInfo = manifest.find(m => m.key === key);
-      const data = rawData.map(p => ({ ...p, event: normalizeEvent(p.event, seasonInfo ? seasonInfo.season : '') }));
-      setLoadedSeasons(prev => ({ ...prev, [key]: data }));
+      const res = await fetch(`/data/teams/${slug}.json`);
+      const data = await res.json();
+      // Data is already normalized by the scraper
+      setLoadedSeasons(prev => ({ ...prev, [slug]: data }));
     } catch (err) {
-      console.error(`Failed to load season ${key}:`, err);
+      console.error(`Failed to load team data for ${slug}:`, err);
     }
   };
 
-  // 2. Automatically load data based on filters or selected athlete
+  // 2. Load team data when selection changes
   useEffect(() => {
-    if (!manifest.length) return;
-
-    if (filterYear !== 'All' && filterSeasonType !== 'All') {
-      const key = `${filterYear}_${filterSeasonType}`.replace(' ', '_');
-      if (manifest.find(m => m.key === key)) {
-        loadSeason(key);
-      }
-    } else if (filterYear !== 'All') {
-      // Load all seasons for that year
-      manifest.filter(m => m.year === filterYear).forEach(m => loadSeason(m.key));
+    if (selectedTeam === 'All') {
+      // In a real "All" view, we might want to load everything, 
+      // but for now let's just ensure we have what's needed.
+      // Option: load all teams in manifest (careful with memory)
+      manifest.teams?.forEach(t => loadTeamData(t.slug));
+    } else {
+      const team = manifest.teams?.find(t => t.name === selectedTeam);
+      if (team) loadTeamData(team.slug);
     }
-  }, [filterYear, filterSeasonType, manifest]);
+  }, [selectedTeam, manifest]);
 
   useEffect(() => {
-    if (selectedAthlete && selectedAthlete.id !== 'all' && selectedAthlete.seasons) {
-      selectedAthlete.seasons.forEach(key => loadSeason(key));
+    if (selectedAthlete && selectedAthlete.id !== 'all' && selectedAthlete.primary_team) {
+      const team = manifest.teams?.find(t => t.name === selectedAthlete.primary_team);
+      if (team) loadTeamData(team.slug);
     }
-  }, [selectedAthlete]);
+  }, [selectedAthlete, manifest]);
 
   // Derive all loaded performances into one flat array
   const allPerformances = useMemo(() => {
     return Object.values(loadedSeasons).flat();
   }, [loadedSeasons]);
 
-  // Derived: Unique Teams
+  // Derived: Unique Teams (from manifest now)
   const teams = useMemo(() => {
-    const t = new Set(allPerformances.map(p => p.team).filter(Boolean))
-    return Array.from(t).sort()
-  }, [allPerformances])
+    return (manifest.teams || []).map(t => t.name).sort();
+  }, [manifest])
 
-  // Derived: Athletes for the current view (filtered by team if not All)
+  // Derived: Athletes for the current view
   const filteredAthletes = useMemo(() => {
     if (selectedTeam === 'All') return allAthletes;
-    
-    // This is tricky: we only know if an athlete is on a team if we've loaded their data
-    // For now, let's filter the allAthletes list based on what we've seen in allPerformances
-    const seenAthleteIds = new Set(allPerformances.filter(p => p.team === selectedTeam).map(p => p.athlete_id));
-    return allAthletes.filter(a => seenAthleteIds.has(a.id));
-  }, [allAthletes, allPerformances, selectedTeam]);
+    return allAthletes.filter(a => a.primary_team === selectedTeam);
+  }, [allAthletes, selectedTeam]);
 
   // Current performances to display
   const performances = useMemo(() => {
-    if (!selectedAthlete) return []
+    if (!selectedAthlete || !dataLoaded) return []
     if (selectedAthlete.id === 'all') {
       if (selectedTeam === 'All') return allPerformances
       return allPerformances.filter(p => p.team === selectedTeam)
     }
+    // Filter by athlete_id across ALL loaded data (handles transfers if they exist in loaded files)
     return allPerformances.filter(p => p.athlete_id === selectedAthlete.id)
-  }, [allPerformances, selectedAthlete, selectedTeam])
+  }, [allPerformances, selectedAthlete, selectedTeam, dataLoaded])
 
   // Rest of the logic (Stats, filtering, sorting) is the same...
   const { filteredPerformances, years, seasonTypes, events, meets } = useMemo(() => {
@@ -211,8 +197,8 @@ function App() {
         (team === 'All' || selectedAthlete.id !== 'all' || p.team === team)
     }
 
-    const availableYears = Array.from(new Set(manifest.map(m => m.year))).sort((a,b) => b-a);
-    const availableTypes = Array.from(new Set(manifest.map(m => m.season))).sort();
+    const availableYears = Array.from(new Set((manifest.seasons || []).map(s => s.split('_')[0]))).sort((a,b) => b-a);
+    const availableTypes = Array.from(new Set((manifest.seasons || []).map(s => s.split('_')[1]))).sort();
 
     const availableEvents = Array.from(new Set(
       enriched.filter(p => matches(p, { year: filterYear, type: filterSeasonType, meet: filterMeet, team: selectedTeam })).map(p => p.event)
@@ -223,7 +209,7 @@ function App() {
     )).sort()
 
     let filtered = enriched.filter(p => matches(p, { year: filterYear, type: filterSeasonType, event: filterEvent, meet: filterMeet, team: selectedTeam }))
-    if (showPRsOnly) filtered = filtered.filter(p => p.isCalculatedPR)
+    if (showPRsOnly) filtered = filtered.filter(p => p.is_pr)
 
     filtered.sort((a, b) => {
       let comparison = 0
@@ -336,9 +322,9 @@ function App() {
           ) : (
           <>
           {activeTab === 'analyzer' ? (
-            <PerformanceList performances={allPerformances} isBetter={isBetter} manifest={manifest} loadSeason={loadSeason} />
+            <PerformanceList performances={allPerformances} isBetter={isBetter} manifest={manifest} loadTeamData={loadTeamData} />
           ) : activeTab === 'pr-pop' ? (
-            <PRPopCalculator performances={allPerformances} selectedTeam={selectedTeam} isBetter={isBetter} manifest={manifest} loadSeason={loadSeason} />
+            <PRPopCalculator performances={allPerformances} selectedTeam={selectedTeam} isBetter={isBetter} manifest={manifest} loadTeamData={loadTeamData} />
           ) : activeTab === 'practice' ? (
             <PracticeResults />
           ) : activeTab === 'footage' ? (
@@ -417,12 +403,12 @@ function App() {
                     </thead>
                     <tbody>
                       {filteredPerformances.map(p => (
-                        <tr key={p.id} className={p.isCalculatedPR ? 'pr-row' : ''}>
+                        <tr key={p.id} className={p.is_pr ? 'pr-row' : ''}>
                           <td>{p.date.split('T')[0]}</td>
                           {selectedAthlete.id === 'all' && <td>{p.athlete_name}</td>}
                           <td>{p.grade}</td>
                           <td>{normalizeEvent(p.event)}</td>
-                          <td>{p.mark} {p.isCalculatedPR && <span className="badge pr">PR</span>}</td>
+                          <td>{p.mark} {p.is_pr && <span className="badge pr">PR</span>}</td>
                           <td>{p.meet_name}</td>
                         </tr>
                       ))}

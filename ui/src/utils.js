@@ -175,16 +175,6 @@ export function normalizeEvent(event, season = '') {
                 const isBoy = /\bBoys\b/i.test(normalized);
                 const prefix = isGirl ? "Girls " : (isBoy ? "Boys " : "");
                 
-                // Season-specific override for Distance events
-                // Indoor: 1 Mile / 2 Mile
-                // Outdoor: 1600m / 3200m
-                if (standard === "1600m Run" || standard === "1 Mile Run") {
-                    standard = isOutdoor ? "1600m Run" : "1 Mile Run";
-                }
-                if (standard === "3200m Run" || standard === "2 Mile Run") {
-                    standard = isOutdoor ? "3200m Run" : "2 Mile Run";
-                }
-
                 return `${prefix}${standard}`;
             }
         }
