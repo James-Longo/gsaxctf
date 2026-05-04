@@ -134,6 +134,9 @@ TEAM_MAPPING = {
     "Medomak Vall": "Medomak Valley High School",
     "Mountain Val": "Mountain Valley High School",
     "Traip Academ": "Traip Academy",
+    "Deer Isle St": "Deer Isle-Stonington High School",
+    "DI- Stonington": "Deer Isle-Stonington High School",
+    "DI Stonington": "Deer Isle-Stonington High School",
 }
 
 class Sub5ScraperV2:
