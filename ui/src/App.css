@@ -1408,6 +1408,19 @@ body {
   color: #1a202c;
 }
 
+.splits-toggle {
+  color: #800000;
+  font-size: 0.65rem;
+  cursor: pointer;
+  user-select: none;
+  margin-left: 4px;
+  opacity: 0.7;
+}
+
+.splits-toggle:hover {
+  opacity: 1;
+}
+
 .splits-toggle-btn {
   background: #fff5f5;
   color: #600000;
@@ -2045,4 +2058,214 @@ body {
 
 .album-card:hover .action-arrow {
   transform: translateX(4px);
+}
+/* ── Split Explorer ─────────────────────────────────────────────────────── */
+
+.split-explorer {
+  padding: 0 4px;
+}
+
+.split-explorer h2 {
+  margin-bottom: 4px;
+}
+
+.section-subtitle {
+  color: #718096;
+  font-size: 0.9rem;
+  margin-bottom: 16px;
+}
+
+.split-stats {
+  margin-top: 12px;
+}
+
+.stats-summary {
+  font-size: 0.85rem;
+  color: #4a5568;
+  margin-bottom: 16px;
+}
+
+.no-data {
+  color: #718096;
+  margin-top: 24px;
+}
+
+/* Pacing profile visual */
+.pacing-profile-section h3,
+.split-explorer h3 {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #2d3748;
+  margin: 20px 0 8px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.profile-explainer {
+  font-size: 0.8rem;
+  color: #718096;
+  margin-bottom: 10px;
+}
+
+.pacing-profile {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.profile-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.profile-label {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #4a5568;
+  width: 90px;
+  flex-shrink: 0;
+  text-align: right;
+}
+
+.profile-bar-track {
+  flex: 1;
+  display: flex;
+  height: 32px;
+  border-radius: 4px;
+  overflow: hidden;
+  border: 1px solid #e2e8f0;
+}
+
+.profile-segment {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.2s;
+  overflow: hidden;
+}
+
+.profile-segment:hover {
+  opacity: 1 !important;
+  filter: brightness(1.1);
+}
+
+.profile-segment-label {
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: white;
+  white-space: nowrap;
+  text-shadow: 0 1px 2px rgba(0,0,0,0.4);
+}
+
+.profile-legend {
+  display: flex;
+  gap: 16px;
+  margin-top: 6px;
+  padding-left: 102px;
+  flex-wrap: wrap;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 0.78rem;
+  color: #4a5568;
+}
+
+.legend-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+/* Lap breakdown table */
+.lap-dot {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  margin-right: 6px;
+  vertical-align: middle;
+}
+
+.key-lap-row {
+  background-color: #fff5f5 !important;
+}
+
+.key-lap-row td {
+  border-left: 3px solid #800000;
+}
+
+/* Insight box */
+.split-insight-box {
+  margin-top: 24px;
+  padding: 16px 20px;
+  background: #f7fafc;
+  border-left: 4px solid #800000;
+  border-radius: 0 8px 8px 0;
+}
+
+.split-insight-box h4 {
+  margin: 0 0 10px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #4a5568;
+}
+
+.split-insight-box p {
+  margin: 6px 0;
+  font-size: 0.9rem;
+  color: #2d3748;
+  line-height: 1.5;
+}
+
+/* Lap stat cards (Split Explorer) */
+.lap-stats-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 16px;
+}
+
+.lap-stat-card {
+  flex: 1 1 80px;
+  min-width: 72px;
+  background: #f7fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+  padding: 8px 10px;
+  font-size: 0.82rem;
+}
+
+.lap-stat-header {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  margin-bottom: 6px;
+  font-size: 0.8rem;
+}
+
+.lap-stat-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-top: 3px;
+  gap: 6px;
+}
+
+.lap-stat-label {
+  color: #718096;
+  font-size: 0.75rem;
+}
+
+.stats-footnote {
+  margin-top: 14px;
+  font-size: 0.8rem;
+  color: #4a5568;
+  line-height: 1.55;
 }

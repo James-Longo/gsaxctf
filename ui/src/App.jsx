@@ -16,6 +16,7 @@ import AthleteProfile from './AthleteProfile'
 import PracticeResults from './PracticeResults'
 import ResultPredictor from './ResultPredictor'
 import Footage from './Footage'
+import SplitExplorer from './SplitExplorer'
 
 function App() {
   const [dataLoaded, setDataLoaded] = useState(false)
@@ -201,11 +202,11 @@ function App() {
     const availableTypes = Array.from(new Set((manifest.seasons || []).map(s => s.split('_')[1]))).sort();
 
     const availableEvents = Array.from(new Set(
-      enriched.filter(p => matches(p, { year: filterYear, type: filterSeasonType, meet: filterMeet, team: selectedTeam })).map(p => p.event)
+      enriched.filter(p => matches(p, { year: filterYear, type: filterSeasonType, event: 'All', meet: filterMeet, team: selectedTeam })).map(p => p.event)
     )).sort()
 
     const availableMeets = Array.from(new Set(
-      enriched.filter(p => matches(p, { year: filterYear, type: filterSeasonType, event: filterEvent, team: selectedTeam })).map(p => p.meetWithYear)
+      enriched.filter(p => matches(p, { year: filterYear, type: filterSeasonType, event: filterEvent, meet: 'All', team: selectedTeam })).map(p => p.meetWithYear)
     )).sort()
 
     let filtered = enriched.filter(p => matches(p, { year: filterYear, type: filterSeasonType, event: filterEvent, meet: filterMeet, team: selectedTeam }))
@@ -253,6 +254,11 @@ function App() {
   }, [isScraping, isLocalDev])
 
   useEffect(() => {
+    if (activeTab !== 'splits' || !manifest.teams) return;
+    manifest.teams.filter(t => t.has_splits).forEach(t => loadTeamData(t.slug));
+  }, [activeTab, manifest]);
+
+  useEffect(() => {
     setFilterYear('All'); setFilterSeasonType('All'); setFilterEvent('All'); setFilterMeet('All')
     setSortField('date'); setSortDirection('desc'); setExpandedSplits(new Set())
     if (selectedTeam !== 'All' && selectedAthlete.id !== 'all') setSelectedAthlete(ALL_ATHLETES)
@@ -296,6 +302,7 @@ function App() {
             <button onClick={() => setActiveTab('practice')} className={`nav-btn ${activeTab === 'practice' ? 'active' : ''}`}>Practice</button>
             <button onClick={() => setActiveTab('footage')} className={`nav-btn ${activeTab === 'footage' ? 'active' : ''}`}>Footage</button>
             <button onClick={() => setActiveTab('predictor')} className={`nav-btn ${activeTab === 'predictor' ? 'active' : ''}`}>Predictor</button>
+            <button onClick={() => setActiveTab('splits')} className={`nav-btn ${activeTab === 'splits' ? 'active' : ''}`}>Split Explorer</button>
           </div>
 
           {isLocalDev && (
@@ -331,6 +338,11 @@ function App() {
             <Footage />
           ) : activeTab === 'predictor' ? (
             <ResultPredictor performances={allPerformances} />
+          ) : activeTab === 'splits' ? (
+            <SplitExplorer
+              performances={allPerformances}
+              loading={manifest.teams?.some(t => t.has_splits && !loadedSeasons[t.slug])}
+            />
           ) : (
             <>
               <div className="filter-bar">
@@ -402,16 +414,47 @@ function App() {
                       </tr>
                     </thead>
                     <tbody>
-                      {filteredPerformances.map(p => (
-                        <tr key={p.id} className={p.is_pr ? 'pr-row' : ''}>
-                          <td>{p.date.split('T')[0]}</td>
-                          {selectedAthlete.id === 'all' && <td>{p.athlete_name}</td>}
-                          <td>{p.grade}</td>
-                          <td>{normalizeEvent(p.event)}</td>
-                          <td>{p.mark} {p.is_pr && <span className="badge pr">PR</span>}</td>
-                          <td>{p.meet_name}</td>
-                        </tr>
-                      ))}
+                      {filteredPerformances.map(p => {
+                        const hasSplits = p.splits && p.splits.length > 0
+                        const isExpanded = expandedSplits.has(p.id)
+                        const colSpan = selectedAthlete.id === 'all' ? 6 : 5
+                        return (
+                          <React.Fragment key={p.id}>
+                            <tr className={p.is_pr ? 'pr-row' : ''}>
+                              <td>{p.date.split('T')[0]}</td>
+                              {selectedAthlete.id === 'all' && <td>{p.athlete_name}</td>}
+                              <td>{p.grade}</td>
+                              <td>{normalizeEvent(p.event)}</td>
+                              <td>
+                                {p.mark}
+                                {hasSplits && (
+                                  <span className="splits-toggle" onClick={() => toggleSplits(p.id)}>
+                                    {isExpanded ? ' ▲' : ' ▼'}
+                                  </span>
+                                )}
+                                {p.is_pr && <span className="badge pr">PR</span>}
+                              </td>
+                              <td>{p.meet_name}</td>
+                            </tr>
+                            {isExpanded && (
+                              <tr className="splits-row">
+                                <td colSpan={colSpan}>
+                                  <div className="splits-container">
+                                    <div className="splits-list">
+                                      {p.splits.map((split, i) => (
+                                        <span key={i} className="split-item">
+                                          <span className="split-index">Lap {i + 1}</span>
+                                          <span className="split-val">{split}</span>
+                                        </span>
+                                      ))}
+                                    </div>
+                                  </div>
+                                </td>
+                              </tr>
+                            )}
+                          </React.Fragment>
+                        )
+                      })}
                     </tbody>
                   </table>
                 </div>

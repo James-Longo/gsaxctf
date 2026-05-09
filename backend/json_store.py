@@ -351,11 +351,13 @@ def rebuild_manifest() -> dict:
                 key = f"{year}_{season}"
                 seasons.add(key)
                 all_seasons.add(key)
+        has_splits = any(bool(p.get('splits')) for p in perfs)
         teams_meta.append({
             'slug': fn[:-5],
             'name': team_name,
             'count': len(perfs),
             'seasons': sorted(seasons),
+            'has_splits': has_splits,
         })
 
     manifest = {
