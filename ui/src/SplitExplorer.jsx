@@ -139,43 +139,62 @@ const SplitExplorer = ({ performances, loading }) => {
                         <h3>Pacing Profile</h3>
                         <p className="profile-explainer">Each block represents one {isRelay ? 'leg' : 'lap'} as a share of total race time.</p>
                         <div className="pacing-profile">
+                            {[
+                                { label: 'All athletes', ratios: stats.laps.map(l => l.avgRatio), fast: false },
+                                { label: 'Fast 10%', ratios: stats.laps.map(l => l.topRatio), fast: true },
+                            ].map(({ label, ratios, fast }) => (
+                                <div key={label} className="profile-row">
+                                    <span className="profile-label">{label}</span>
+                                    <div className="profile-bar-track">
+                                        {ratios.map((ratio, i) => (
+                                            <div
+                                                key={i}
+                                                className="profile-segment"
+                                                style={{
+                                                    width: `${ratio * 100}%`,
+                                                    backgroundColor: SEGMENT_COLORS[i % SEGMENT_COLORS.length],
+                                                    opacity: fast ? 1 : 0.55,
+                                                }}
+                                                title={`${lapLabel(i + 1)}: ${(ratio * 100).toFixed(2)}%`}
+                                            >
+                                                {ratio > 0.07 && (
+                                                    <span className="profile-segment-label">{(ratio * 100).toFixed(1)}%</span>
+                                                )}
+                                            </div>
+                                        ))}
+                                    </div>
+                                </div>
+                            ))}
                             {(() => {
-                                const gapRatios = stats.laps.map(l => l.botRatio - l.topRatio);
-                                const gapTotal = gapRatios.reduce((a, b) => a + b, 0) || 1;
-                                const normalizedGaps = gapRatios.map(g => g / gapTotal);
-                                return [
-                                    { label: 'All athletes', ratios: stats.laps.map(l => l.avgRatio), fast: false },
-                                    { label: 'Fast 10%', ratios: stats.laps.map(l => l.topRatio), fast: true },
-                                    { label: 'Gap', ratios: normalizedGaps, fast: true, isGap: true, rawGaps: gapRatios },
-                                ].map(({ label, ratios, fast, isGap, rawGaps }) => (
-                                    <div key={label} className="profile-row">
-                                        <span className="profile-label">{label}</span>
+                                const avgRatios = stats.laps.map(l => l.avgRatio);
+                                const rawGaps = stats.laps.map(l => l.topRatio - l.avgRatio);
+                                const maxAbs = Math.max(...rawGaps.map(Math.abs), 0.001);
+                                return (
+                                    <div className="profile-row">
+                                        <span className="profile-label">Top 10% Δ</span>
                                         <div className="profile-bar-track">
-                                            {ratios.map((ratio, i) => (
-                                                <div
-                                                    key={i}
-                                                    className="profile-segment"
-                                                    style={{
-                                                        width: `${ratio * 100}%`,
-                                                        backgroundColor: SEGMENT_COLORS[i % SEGMENT_COLORS.length],
-                                                        opacity: fast ? 1 : 0.55,
-                                                    }}
-                                                    title={isGap
-                                                        ? `${lapLabel(i + 1)}: ${rawGaps[i] >= 0 ? '+' : ''}${(rawGaps[i] * 100).toFixed(2)}%`
-                                                        : `${lapLabel(i + 1)}: ${(ratio * 100).toFixed(2)}%`}
-                                                >
-                                                    {ratio > 0.07 && (
-                                                        <span className="profile-segment-label">
-                                                            {isGap
-                                                                ? `${rawGaps[i] >= 0 ? '+' : ''}${(rawGaps[i] * 100).toFixed(1)}%`
-                                                                : `${(ratio * 100).toFixed(1)}%`}
-                                                        </span>
-                                                    )}
-                                                </div>
-                                            ))}
+                                            {avgRatios.map((ratio, i) => {
+                                                const g = rawGaps[i];
+                                                const intensity = Math.min(Math.abs(g) / maxAbs, 1);
+                                                const bg = `rgba(4,120,87,${0.15 + intensity * 0.85})`;
+                                                return (
+                                                    <div
+                                                        key={i}
+                                                        className="profile-segment"
+                                                        style={{ width: `${ratio * 100}%`, backgroundColor: bg }}
+                                                        title={`${lapLabel(i + 1)}: ${g >= 0 ? '+' : ''}${(g * 100).toFixed(2)}%`}
+                                                    >
+                                                        {ratio > 0.07 && (
+                                                            <span className="profile-segment-label">
+                                                                {g >= 0 ? '+' : ''}{(g * 100).toFixed(1)}%
+                                                            </span>
+                                                        )}
+                                                    </div>
+                                                );
+                                            })}
                                         </div>
                                     </div>
-                                ));
+                                );
                             })()}
                             <div className="profile-legend">
                                 {stats.laps.map((lap, i) => (
