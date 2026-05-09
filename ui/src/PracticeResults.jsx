@@ -124,14 +124,13 @@ const PracticeResults = () => {
                         if (validTrials.length === 0) continue;
 
                         let performanceVal;
-                        const meanSdEvents = ['20m Fly', 'Half Court Dash', 'Shuttle Run'];
 
                         if (event.type === 'distance') {
                             performanceVal = Math.max(...validTrials);
-                        } else if (meanSdEvents.includes(event.col)) {
+                        } else if (isHand) {
                             performanceVal = validTrials.reduce((a, b) => a + b, 0) / validTrials.length;
                         } else {
-                            performanceVal = median(validTrials);
+                            performanceVal = Math.min(...validTrials);
                         }
 
                         parsed.push({
@@ -215,13 +214,8 @@ const PracticeResults = () => {
 
             if (numericTrials.length === 0) return;
 
-            // NEW: For 20m Fly and Half Court Dash, treat each day as a single replicate (Mean/SD)
-            // regardless of whether it is hand-timed or automatic.
-            const sessionMeanSdEvents = ['20m Fly', 'Half Court Dash', 'Shuttle Run'];
-            const shouldForceSessionReplicate = sessionMeanSdEvents.includes(r.event);
-
-            if (isHand || shouldForceSessionReplicate) {
-                // One replicate per session with Mean and SD
+            if (isHand) {
+                // Hand-timed: one replicate per session, displayed as mean ± SD
                 const mean = numericTrials.reduce((a, b) => a + b, 0) / numericTrials.length;
                 let sd = 0;
                 if (numericTrials.length > 1) {
@@ -231,13 +225,13 @@ const PracticeResults = () => {
                 dataMap[r.name].replicates.push({
                     val: mean,
                     sd: sd,
-                    isHand: isHand,
+                    isHand: true,
                     date: r.date,
                     mark_type: r.mark_type,
                     raw_result: r
                 });
             } else {
-                // Automatic: Each trial is its own replicate (for other events like jumps if automatic)
+                // Electronic: each trial is its own replicate; fastest counts for top speed
                 numericTrials.forEach(t => {
                     dataMap[r.name].replicates.push({
                         val: t,
@@ -454,7 +448,7 @@ const PracticeResults = () => {
                                     <thead>
                                         <tr>
                                             <th>Athlete</th>
-                                            <th>{['20m Fly', 'Half Court Dash', 'Shuttle Run'].includes(filterEvent) ? 'Mean' : 'Median/Peak'}</th>
+                                            <th>{sessionResults.some(r => r.is_hand_timed) ? 'Mean' : 'Best'}</th>
                                             <th>Trials</th>
                                             <th>Surface</th>
                                         </tr>
