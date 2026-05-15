@@ -25,11 +25,12 @@ const SEGMENT_COLORS = ['#4a90d9', '#5ba55a', '#d97b4a', '#9b59b6', '#c0392b', '
 const SplitExplorer = ({ performances, loading }) => {
     const [selectedEvent, setSelectedEvent] = useState('');
     const [filterTeam, setFilterTeam] = useState('All');
+    const [selectedLapCount, setSelectedLapCount] = useState('');
 
     const eventsWithSplits = useMemo(() => {
         const map = {};
         performances.forEach(p => {
-            if (!p.splits?.length) return;
+            if (!p.splits || p.splits.length <= 1) return;
             const ev = normalizeEvent(p.event);
             if (!map[ev]) map[ev] = { count: 0, lapCounts: {} };
             map[ev].count++;
@@ -39,30 +40,32 @@ const SplitExplorer = ({ performances, loading }) => {
         return Object.entries(map)
             .sort((a, b) => b[1].count - a[1].count)
             .map(([ev, d]) => {
-                const modalLaps = parseInt(
-                    Object.entries(d.lapCounts).sort((a, b) => b[1] - a[1])[0][0]
-                );
-                return { event: ev, count: d.count, modalLaps };
+                const lapCounts = Object.entries(d.lapCounts)
+                    .sort((a, b) => b[1] - a[1])
+                    .map(([lc]) => parseInt(lc));
+                return { event: ev, count: d.count, lapCounts };
             });
     }, [performances]);
 
     const currentEvent = selectedEvent || eventsWithSplits[0]?.event || '';
-    const modalLaps = eventsWithSplits.find(e => e.event === currentEvent)?.modalLaps || 0;
+    const currentEventData = eventsWithSplits.find(e => e.event === currentEvent);
+    const availableLapCounts = currentEventData?.lapCounts || [];
+    const currentLapCount = parseInt(selectedLapCount) || availableLapCounts[0] || 0;
 
     const teams = useMemo(() => {
         const s = new Set(
             performances
-                .filter(p => p.splits?.length && normalizeEvent(p.event) === currentEvent)
+                .filter(p => p.splits?.length === currentLapCount && normalizeEvent(p.event) === currentEvent)
                 .map(p => p.team)
                 .filter(Boolean)
         );
         return ['All', ...Array.from(s).sort()];
-    }, [performances, currentEvent]);
+    }, [performances, currentEvent, currentLapCount]);
 
     const parsed = useMemo(() => {
-        if (!modalLaps) return [];
+        if (!currentLapCount) return [];
         return performances.flatMap(p => {
-            if (!p.splits || p.splits.length !== modalLaps) return [];
+            if (!p.splits || p.splits.length !== currentLapCount) return [];
             if (normalizeEvent(p.event) !== currentEvent) return [];
             if (filterTeam !== 'All' && p.team !== filterTeam) return [];
             const total = parseMark(p.mark);
@@ -72,7 +75,7 @@ const SplitExplorer = ({ performances, loading }) => {
             const ratios = splitSecs.map(s => s / total.value);
             return [{ totalSecs: total.value, splitSecs, ratios }];
         });
-    }, [performances, currentEvent, filterTeam, modalLaps]);
+    }, [performances, currentEvent, filterTeam, currentLapCount]);
 
     const stats = useMemo(() => {
         if (!parsed.length) return null;
@@ -81,7 +84,7 @@ const SplitExplorer = ({ performances, loading }) => {
         const topGroup = sorted.slice(0, topN);
         const botGroup = sorted.slice(-topN);
 
-        const laps = Array.from({ length: modalLaps }, (_, i) => {
+        const laps = Array.from({ length: currentLapCount }, (_, i) => {
             const allRatios = parsed.map(p => p.ratios[i]);
             const allTimes = parsed.map(p => p.splitSecs[i]);
             const topRatios = topGroup.map(p => p.ratios[i]);
@@ -97,7 +100,7 @@ const SplitExplorer = ({ performances, loading }) => {
         });
 
         return { laps, n: parsed.length, topN };
-    }, [parsed, modalLaps]);
+    }, [parsed, currentLapCount]);
 
     const isRelay = currentEvent.toLowerCase().includes('relay');
     const lapLabel = i => isRelay ? `Leg ${i}` : `Lap ${i}`;
@@ -125,6 +128,16 @@ const SplitExplorer = ({ performances, loading }) => {
                         {teams.map(t => <option key={t} value={t}>{t}</option>)}
                     </select>
                 </div>
+                {availableLapCounts.length > 1 && (
+                    <div className="filter-group">
+                        <label>Split Count</label>
+                        <select value={currentLapCount} onChange={e => setSelectedLapCount(e.target.value)}>
+                            {availableLapCounts.map(lc => (
+                                <option key={lc} value={lc}>{lc} splits</option>
+                            ))}
+                        </select>
+                    </div>
+                )}
             </div>
 
             {!stats ? (
@@ -169,22 +182,33 @@ const SplitExplorer = ({ performances, loading }) => {
                                 const avgRatios = stats.laps.map(l => l.avgRatio);
                                 const rawGaps = stats.laps.map(l => l.topRatio - l.avgRatio);
                                 const maxAbs = Math.max(...rawGaps.map(Math.abs), 0.001);
+                                const sumAbs = rawGaps.reduce((acc, g) => acc + Math.abs(g), 0);
+                                
+                                const hexToRgb = (hex) => {
+                                    const r = parseInt(hex.slice(1, 3), 16);
+                                    const g = parseInt(hex.slice(3, 5), 16);
+                                    const b = parseInt(hex.slice(5, 7), 16);
+                                    return `${r}, ${g}, ${b}`;
+                                };
+
                                 return (
                                     <div className="profile-row">
                                         <span className="profile-label">Top 10% Δ</span>
                                         <div className="profile-bar-track">
-                                            {avgRatios.map((ratio, i) => {
+                                            {avgRatios.map((_, i) => {
                                                 const g = rawGaps[i];
+                                                const widthPercent = sumAbs > 0 ? (Math.abs(g) / sumAbs) * 100 : 0;
                                                 const intensity = Math.min(Math.abs(g) / maxAbs, 1);
-                                                const bg = `rgba(4,120,87,${0.15 + intensity * 0.85})`;
+                                                const hex = SEGMENT_COLORS[i % SEGMENT_COLORS.length];
+                                                const bg = `rgba(${hexToRgb(hex)}, ${0.15 + intensity * 0.85})`;
                                                 return (
                                                     <div
                                                         key={i}
                                                         className="profile-segment"
-                                                        style={{ width: `${ratio * 100}%`, backgroundColor: bg }}
+                                                        style={{ width: `${widthPercent}%`, backgroundColor: bg }}
                                                         title={`${lapLabel(i + 1)}: ${g >= 0 ? '+' : ''}${(g * 100).toFixed(2)}%`}
                                                     >
-                                                        {ratio > 0.07 && (
+                                                        {widthPercent > 7 && (
                                                             <span className="profile-segment-label">
                                                                 {g >= 0 ? '+' : ''}{(g * 100).toFixed(1)}%
                                                             </span>

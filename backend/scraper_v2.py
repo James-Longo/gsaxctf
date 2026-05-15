@@ -137,6 +137,23 @@ TEAM_MAPPING = {
     "Deer Isle St": "Deer Isle-Stonington High School",
     "DI- Stonington": "Deer Isle-Stonington High School",
     "DI Stonington": "Deer Isle-Stonington High School",
+    "Spruce Mountain": "Spruce Mountain High School",
+    "Mt. View": "Mt. View High School",
+    "Mt View": "Mt. View High School",
+    "Calais": "Calais High School",
+    "Mt. Abram": "Mt. Abram High School",
+    "Mt Abram": "Mt. Abram High School",
+    "Madawaska": "Madawaska High School",
+    "Penobscot Valley": "Penobscot Valley High School",
+    "Richmond": "Richmond High School",
+    "Easton": "Easton High School",
+    "Vinalhaven": "Vinalhaven High School",
+    "Greater Portland": "Greater Portland High School",
+    "Chop Point": "Chop Point High School",
+    "Old Orchard": "Old Orchard Beach High School",
+    "Greater Houlton": "Houlton High School",
+    "Maine Coast Waldorf": "NYA Maine Coast Waldorf",
+    "Wiscasset": "Boothbay/Wiscasset",
 }
 
 class Sub5ScraperV2:
@@ -292,7 +309,7 @@ class Sub5ScraperV2:
     def is_likely_athlete_name(self, name):
         if not name: return True
         name_clean = name.strip()
-        school_keywords = ['High', 'School', 'Academy', 'Acad', 'Institute', 'MCI', 'GSA', 'MDI', 'GSA', 'EMITL', 'PVC', 'Relay', 'Track', 'Field', 'Team', 'Club', 'Middle', 'University', 'College']
+        school_keywords = ['High', 'School', 'Academy', 'Acad', 'Institute', 'MCI', 'GSA', 'MDI', 'GSA', 'EMITL', 'PVC', 'Relay', 'Track', 'Field', 'Team', 'Club', 'Middle', 'University', 'College', 'Mt.', 'Mountain', 'Valley', 'Point', 'Portland', 'Christian', 'Catholic', 'Prep', 'Charter', 'Regional', 'Community', 'Consolidated']
         if any(k.lower() in name_clean.lower() for k in school_keywords):
             return False
         short_keywords = ['EL', 'HS', 'MS', 'U VT']
@@ -551,14 +568,34 @@ class Sub5ScraperV2:
 
     def run_full_scrape(self, wipe=False):
         seasons_to_scrape = [
+            {"year": "2022", "season": "Indoor", "url": "https://sub5.com/youth-pages/indoor-track/2022-indoor-results/"},
+            {"year": "2022", "season": "Outdoor", "url": "https://sub5.com/youth-pages/outdoor-track/2022-outdoor-results/"},
+            {"year": "2023", "season": "Indoor", "url": "https://sub5.com/youth-pages/indoor-track/2023-indoor-results/"},
+            {"year": "2023", "season": "Outdoor", "url": "https://sub5.com/youth-pages/outdoor-track/2023-outdoor-results/"},
+            {"year": "2024", "season": "Indoor", "url": "https://sub5.com/youth-pages/indoor-track/2024-indoor-results/"},
+            {"year": "2024", "season": "Outdoor", "url": "https://sub5.com/youth-pages/outdoor-track/2024-outdoor-results/"},
+            {"year": "2025", "season": "Indoor", "url": "https://sub5.com/youth-pages/indoor-track/2025-indoor-results/"},
+            {"year": "2025", "season": "Outdoor", "url": "https://sub5.com/youth-pages/outdoor-track/2025-outdoor-results/"},
             {"year": "2026", "season": "Indoor", "url": "https://sub5.com/youth-pages/indoor-track/2026-indoor-results/"},
             {"year": "2026", "season": "Outdoor", "url": "https://sub5.com/youth-pages/outdoor-track/2026-outdoor-results/"}
         ]
         
         scrape_state = load_scrape_state()
         athletes = load_athletes()
-        total_count = 0
         base_dir = os.path.dirname(os.path.dirname(__file__))
+        
+        if wipe:
+            self.report_progress("Wiping scrape state and athletes for full re-sync...")
+            scrape_state['synced_meets'] = {}
+            athletes = {}
+            teams_dir = os.path.join(base_dir, 'ui', 'public', 'data', 'teams')
+            if os.path.exists(teams_dir):
+                import shutil
+                for filename in os.listdir(teams_dir):
+                    if filename.endswith(".json"):
+                        os.remove(os.path.join(teams_dir, filename))
+                        
+        total_count = 0
 
         for config in seasons_to_scrape:
             year, season, index_url = config["year"], config["season"], config["url"]
@@ -577,5 +614,10 @@ class Sub5ScraperV2:
         return total_count
 
 if __name__ == "__main__":
+    import argparse
+    parser = argparse.ArgumentParser(description="Scrape Track & Field data from sub5.com")
+    parser.add_argument('--wipe', action='store_true', help="Force a full re-scrape, clearing all existing processed JSON state.")
+    args = parser.parse_args()
+    
     scraper = Sub5ScraperV2()
-    scraper.run_full_scrape()
+    scraper.run_full_scrape(wipe=args.wipe)

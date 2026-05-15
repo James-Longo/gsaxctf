@@ -337,11 +337,12 @@ def rebuild_manifest() -> dict:
         if not fn.endswith('.json'):
             continue
         perfs = _load_json(os.path.join(TEAMS_DIR, fn), [])
-        if not perfs:
-            continue
         
         # Use the team name from the first performance record for canonical naming
-        team_name = perfs[0].get('team', fn[:-5].replace('_', ' '))
+        if perfs:
+            team_name = perfs[0].get('team', fn[:-5].replace('_', ' '))
+        else:
+            team_name = fn[:-5].replace('_', ' ')
         
         seasons = set()
         for p in perfs:
