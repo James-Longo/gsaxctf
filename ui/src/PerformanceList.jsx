@@ -1266,9 +1266,14 @@ function PostseasonSimulator({ performances, isBetter, manifest, loadTeamData })
 
                     names.forEach(name => {
                         if (!teamAthletes[name]) teamAthletes[name] = { scoringEvents: [] };
+                        
+                        let pts = rankPos <= SCORING_RULES.length ? SCORING_RULES[rankPos - 1] : 0;
+                        if (isRelay) pts /= 4;
+
                         teamAthletes[name].scoringEvents.push({
                             event: res.event,
                             rank: rankPos,
+                            expectedPoints: pts,
                             mark: res.mark,
                             isRelay: isRelay,
                             isScorable: rankPos <= SCORING_RULES.length,
@@ -1296,7 +1301,12 @@ function PostseasonSimulator({ performances, isBetter, manifest, loadTeamData })
                     bestEvs[sev.event] = sev;
                 }
             });
-            data.scoringEvents = Object.values(bestEvs).sort((a, b) => a.rank - b.rank);
+            data.scoringEvents = Object.values(bestEvs).sort((a, b) => {
+                if (b.expectedPoints !== a.expectedPoints) {
+                    return b.expectedPoints - a.expectedPoints;
+                }
+                return a.rank - b.rank;
+            });
 
             const scorableEvents = data.scoringEvents.filter(e => e.isScorable);
             const trackIndices = [...new Set(scorableEvents.map(e => getEventIndex(e.event)).filter(idx => idx >= 0))].sort((a, b) => a - b);
