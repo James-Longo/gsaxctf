@@ -260,7 +260,7 @@ function PostseasonSimulator({ performances, isBetter, manifest, loadTeamData })
         return [name];
     };
 
-    const simulateSingleMeet = (allEntries) => {
+    const simulateSingleMeet = (allEntries, divideRelays = false) => {
         const eventGroups = {};
         allEntries.forEach(e => {
             if (!eventGroups[e.event]) eventGroups[e.event] = [];
@@ -282,7 +282,10 @@ function PostseasonSimulator({ performances, isBetter, manifest, loadTeamData })
 
                 // Any athlete can score as long as there is room on the podium (top 6)
                 // Removed per-team entry limits as requested.
-                scores[team] = (scores[team] || 0) + SCORING_RULES[scoringIndex];
+                let pts = SCORING_RULES[scoringIndex];
+                if (divideRelays && isRelayEvent) pts /= 4;
+                
+                scores[team] = (scores[team] || 0) + pts;
                 scoringIndex++;
             }
         });
@@ -391,12 +394,12 @@ function PostseasonSimulator({ performances, isBetter, manifest, loadTeamData })
             }
         }
 
-        const evaluateLineup = (lineup) => {
+        const evaluateLineup = (lineup, divideRelays = false) => {
             const res = [];
             scenarios.forEach(oppEntries => {
                 const fullMeet = [...lineup];
                 Object.values(oppEntries).forEach(opps => fullMeet.push(...opps));
-                res.push(simulateSingleMeet(fullMeet));
+                res.push(simulateSingleMeet(fullMeet, divideRelays));
             });
             // Return average score for target team
             return res.reduce((s, r) => s + (r[teamName] || 0), 0) / scenarios.length;
@@ -455,7 +458,7 @@ function PostseasonSimulator({ performances, isBetter, manifest, loadTeamData })
             }
         });
 
-        let currentScore = evaluateLineup(currentLineupList);
+        let currentScore = evaluateLineup(currentLineupList, true);
 
         // 3. Hill Climbing with Swap Logic
         let improved = true;
@@ -486,7 +489,7 @@ function PostseasonSimulator({ performances, isBetter, manifest, loadTeamData })
 
                 if (membersAtLimit.length === 0) {
                     const trialLineup = [...currentLineupList, toAdd];
-                    const newScore = evaluateLineup(trialLineup);
+                    const newScore = evaluateLineup(trialLineup, true);
 
                     if (newScore > currentScore + 0.01 || (Math.abs(newScore - currentScore) < 0.01 && !JSON.stringify(currentLineupList).includes(JSON.stringify(toAdd)))) {
                         currentLineupList = trialLineup;
@@ -522,7 +525,7 @@ function PostseasonSimulator({ performances, isBetter, manifest, loadTeamData })
                         });
 
                         if (valid) {
-                            const newScore = evaluateLineup(trialLineup);
+                            const newScore = evaluateLineup(trialLineup, true);
                             if (newScore > bestSwapScore + 0.01 || Math.abs(newScore - bestSwapScore) < 0.01) {
                                 bestSwapScore = newScore;
                                 bestSwapLineup = trialLineup;
@@ -564,7 +567,7 @@ function PostseasonSimulator({ performances, isBetter, manifest, loadTeamData })
                             });
 
                             if (valid) {
-                                const newScore = evaluateLineup(trialLineup);
+                                const newScore = evaluateLineup(trialLineup, true);
                                 // For relays, we are slightly more lenient on lateral moves to favor participation
                                 if (newScore > bestSwapScore + 0.01 || Math.abs(newScore - bestSwapScore) < 0.01) {
                                     bestSwapScore = newScore;
