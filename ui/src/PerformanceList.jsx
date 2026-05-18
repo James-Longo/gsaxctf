@@ -37,7 +37,7 @@ function PostseasonSimulator({ performances, isBetter, manifest, loadTeamData })
         const isOutdoor = (season && season.toLowerCase().includes('outdoor'));
         if (isOutdoor) {
             return {
-                "Wells": "Wells High School", "Winslow": "Winslow High School", "Houlton": "Houlton/Hodgdon",
+                "Wells": "Wells High School", "Winslow": "Winslow High School", "Houlton": "Houlton High School",
                 "Washington A": "Washington Academy", "Spruce Mountai": "Spruce Mountain High School",
                 "Mountain Valle": "Mountain Valley High School", "Maranacook": "Maranacook Community High School",
                 "Bucksport": "Bucksport High School", "Mt. View": "Mount View High School",
@@ -87,7 +87,7 @@ function PostseasonSimulator({ performances, isBetter, manifest, loadTeamData })
             "Bangor Chris": "Bangor Christian Schools", "Bucksport": "Bucksport High School",
             "Central": "Central High School", "Dexter": "Dexter Regional High School",
             "Foxcroft": "Foxcroft Academy", "George Stevens": "George Stevens Academy",
-            "Houlton": "Houlton/Hodgdon", "Jonesport": "Jonesport-Beals High School",
+            "Houlton": "Houlton High School", "Jonesport": "Jonesport-Beals High School",
             "Mattanawcook": "Mattanawcook Academy", "Narraguagus": "Narraguagus High School",
             "Orono": "Orono High School", "Penquis": "Penquis Valley High School",
             "Piscataquis": "Piscataquis Community High School", "Searsport": "Searsport District High School",
