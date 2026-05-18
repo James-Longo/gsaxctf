@@ -356,7 +356,7 @@ class Sub5ScraperV2:
         mapping = {}
         def is_valid_result_link(h):
             h = h.lower()
-            if not (h.endswith('.htm') or h.endswith('.html')): return False
+            if not (h.endswith('.htm') or h.endswith('.html') or h.endswith('.pdf')): return False
             if any(x in h for x in ['meetresults', 'resultspPVC', 'index.htm', 'contact.htm', 'about.htm', 'links.htm']):
                 return False 
             keywords = ['result', 'emitl', 'pvc', 'states', 'class', 'champ', 'meet', 'inv', 'scores', 'relays', 'festival', 'open', 'youth', 'ms', 'jh', 'middle', 'junior', 'boys', 'girls', 'kvac', 'wmc', 'smaa', 'mvc', 'frosh', 'freshman', 'bangor', 'gsa', 'bucksport', 'ellsworth', 'mdi', 'orono', 'oldtown', 'brewer', 'falmouth']
@@ -396,7 +396,8 @@ class Sub5ScraperV2:
         for link, date_str in links_map.items():
             filename = link.split('/')[-1]
             if '?' in filename: filename = filename.split('?')[0]
-            if not filename.lower().endswith(('.htm', '.html')):
+            # Preserve .pdf extension; only append .htm for non-typed links
+            if not filename.lower().endswith(('.htm', '.html', '.pdf')):
                 filename += ".htm"
             if date_str:
                 self.web_date_mapping[filename] = date_str
@@ -429,7 +430,7 @@ class Sub5ScraperV2:
     def parse_all_files(self, archive_dir, json_dir):
         if not os.path.exists(json_dir):
             os.makedirs(json_dir)
-        files = [f for f in os.listdir(archive_dir) if f.lower().endswith(('.htm', '.html'))]
+        files = [f for f in os.listdir(archive_dir) if f.lower().endswith(('.htm', '.html', '.pdf'))]
         total = len(files)
         detector = FormatDetector(self)
         parsed_count = 0
@@ -438,8 +439,16 @@ class Sub5ScraperV2:
             output_filename = os.path.splitext(filename)[0] + ".json"
             output_path = os.path.join(json_dir, output_filename)
             try:
-                with open(input_path, "r", encoding="utf-8", errors="ignore") as f:
-                    text = f.read()
+                if filename.lower().endswith('.pdf'):
+                    from backend.parser import Sub5ColumnParser
+                    raw = Sub5ColumnParser.pdf_to_text(input_path)
+                    if raw is None:
+                        print(f"Skipping PDF (pdftotext unavailable): {filename}")
+                        continue
+                    text = Sub5ColumnParser.clean_pdf_text(raw)
+                else:
+                    with open(input_path, "r", encoding="utf-8", errors="ignore") as f:
+                        text = f.read()
                 parser_instance = detector.get_parser(text, filename)
                 path_parts = input_path.split(os.sep)
                 season_label = path_parts[-2] if len(path_parts) > 2 else "Indoor"
@@ -491,7 +500,11 @@ class Sub5ScraperV2:
                     parsed_events = file_data if isinstance(file_data, list) else []
                     date = None
 
-                web_date_raw = self.web_date_mapping.get(filename) or self.web_date_mapping.get(os.path.splitext(filename)[0] + ".htm")
+                web_date_raw = (
+                    self.web_date_mapping.get(filename)
+                    or self.web_date_mapping.get(os.path.splitext(filename)[0] + ".htm")
+                    or self.web_date_mapping.get(os.path.splitext(filename)[0] + ".pdf")
+                )
                 if web_date_raw:
                     parsed_d = self.parse_web_date(web_date_raw)
                     if self.is_date_in_season(parsed_d, season, year):
@@ -607,7 +620,35 @@ class Sub5ScraperV2:
             self.parse_all_files(archive_dir, json_dir)
             count = self.sync_json_to_store(json_dir, season=season, year=year, athletes=athletes, scrape_state=scrape_state)
             total_count += count
-        
+        # Apply manual performance corrections / injections
+        self.report_progress("Applying manual performance corrections...")
+        pc_by_team = {}
+        for pc in self.manual_fixes.get('performance_corrections', []):
+            team_name = pc['team_name']
+            athlete_name = pc['athlete_name']
+            athlete_id = slugify_athlete(athlete_name, team_name)
+            
+            p = {
+                'athlete_name': athlete_name,
+                'athlete_id': athlete_id,
+                'event': pc['event'],
+                'mark': pc['mark'],
+                'grade': pc.get('grade', ''),
+                'team': team_name,
+                'date': f"{pc['date']}T12:00:00" if pc.get('date') else "Unknown",
+                'season': pc.get('season', 'Outdoor'),
+                'year': pc.get('year', '2026'),
+                'meet_name': pc.get('meet_name', 'Manual Correction'),
+                'splits': pc.get('splits', [])
+            }
+            if team_name not in pc_by_team:
+                pc_by_team[team_name] = []
+            pc_by_team[team_name].append(p)
+            
+        for team_name, perfs in pc_by_team.items():
+            athletes, count = add_performances_for_team(team_name, perfs, athletes)
+            total_count += count
+            
         save_scrape_state(scrape_state)
         save_athletes(athletes)
         rebuild_manifest()

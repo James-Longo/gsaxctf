@@ -3,6 +3,8 @@ from bs4 import BeautifulSoup
 import json
 import os
 import sys
+import subprocess
+import tempfile
 
 class Sub5ColumnParser:
     def __init__(self, file_path):
@@ -50,31 +52,123 @@ class Sub5ColumnParser:
 
         return best_match
         
+    @staticmethod
+    def pdf_to_text(pdf_path):
+        """Convert a PDF file to plain text using pdftotext (poppler).
+        Returns the extracted text string, or None if pdftotext is unavailable."""
+        try:
+            result = subprocess.run(
+                ['pdftotext', '-layout', pdf_path, '-'],
+                capture_output=True, text=True, timeout=60
+            )
+            if result.returncode == 0:
+                return result.stdout
+            else:
+                print(f"pdftotext error for {pdf_path}: {result.stderr.strip()}")
+                return None
+        except FileNotFoundError:
+            print("pdftotext not found. Install poppler-utils to parse PDF results.")
+            return None
+        except Exception as e:
+            print(f"Error converting PDF {pdf_path}: {e}")
+            return None
+
+    @staticmethod
+    @staticmethod
+    @staticmethod
+    @staticmethod
+    def clean_pdf_text(text):
+        """Strip PDF-specific artifacts so the column parser works normally.
+
+        Artifacts handled:
+        - Form-feed page breaks with multi-line header blocks
+        - Continuation event headers like ....Event N Girls ...
+        - Indent normalization: result rows must all have exactly 2 leading
+          spaces before the rank number so columns align with the header row.
+          pdftotext produces:
+            page 1:  "  1 Name ..."  (2 spaces before 1-digit rank)
+            page 1:  "  9 Name ..."  (2 spaces before 1-digit rank)
+            page 1:  " 10 Name ..."  (1 space before 2-digit rank)
+            page 2:  " 8 Name ..."   (1 space before 1-digit rank -- needs +1)
+            page 2:  "19 Name ..."   (0 spaces before 2-digit rank -- needs +2)
+          After normalization all single-digit ranks have 2 leading spaces.
+        - The meet date in the Hy-Tek header is extracted and prepended.
+        """
+        text = text.replace("\x0c", "")
+
+        import re as _re
+
+        injected_date_line = None
+        m_date = _re.search(r"Hy-Tek's MEET MANAGER.*?(\d{1,2}/\d{1,2}/\d{4})", text)
+        if m_date:
+            injected_date_line = f"Meet Date: {m_date.group(1)}"
+
+        cleaned_lines = []
+        if injected_date_line:
+            cleaned_lines.append(injected_date_line)
+
+        skip_remaining = 0
+        for line in text.splitlines():
+            stripped = line.strip()
+
+            if skip_remaining > 0:
+                skip_remaining -= 1
+                continue
+
+            if _re.search(r"Hy-Tek's MEET MANAGER", line):
+                skip_remaining = 3
+                continue
+
+            if _re.match(r"^\.+Event\s+\d+\s+", stripped, _re.IGNORECASE):
+                continue
+
+            # Normalize result-row indentation so all ranks are preceded by
+            # exactly 2 spaces (matching the page-1 header column positions).
+            # Single-digit rank with 1 leading space: " N " -> "  N "
+            if _re.match(r"^ \d ", line):
+                line = " " + line
+            # Two-digit rank with no leading space: "NN " -> "  NN "
+            elif _re.match(r"^\d{2} ", line):
+                line = "  " + line
+
+            cleaned_lines.append(line)
+
+        return "\n".join(cleaned_lines)
+
     def parse(self):
         if not os.path.exists(self.file_path):
             return []
-            
-        with open(self.file_path, 'r', encoding='utf-8', errors='ignore') as f:
-            html_content = f.read()
-        
-        soup = BeautifulSoup(html_content, 'html.parser')
-        
-        # Try to find <pre> specifically if possible
-        pre = soup.find('pre')
-        if pre:
-            text = pre.get_text()
+
+        # --- PDF handling ---
+        if self.file_path.lower().endswith('.pdf'):
+            raw_text = self.pdf_to_text(self.file_path)
+            if raw_text is None:
+                print(f"Cannot parse PDF (pdftotext unavailable): {self.file_path}")
+                return []
+            text = self.clean_pdf_text(raw_text)
             lines = text.splitlines()
         else:
-            # If no <pre>, extract from <p> or <div> tags
-            lines = []
-            for tag in soup.find_all(['p', 'div', 'br']):
-                if tag.name == 'br':
-                    lines.append("")
-                else:
-                    lines.append(tag.get_text())
-            if not lines:
-                text = soup.get_text(separator='\n')
+            with open(self.file_path, 'r', encoding='utf-8', errors='ignore') as f:
+                html_content = f.read()
+
+            soup = BeautifulSoup(html_content, 'html.parser')
+
+            # Try to find <pre> specifically if possible
+            pre = soup.find('pre')
+            if pre:
+                text = pre.get_text()
                 lines = text.splitlines()
+            else:
+                # If no <pre>, extract from <p> or <div> tags
+                lines = []
+                for tag in soup.find_all(['p', 'div', 'br']):
+                    if tag.name == 'br':
+                        lines.append("")
+                    else:
+                        lines.append(tag.get_text())
+                if not lines:
+                    text = soup.get_text(separator='\n')
+                    lines = text.splitlines()
         
         # Metadata extraction
         meet_date = None
