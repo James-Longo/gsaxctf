@@ -152,6 +152,7 @@ TEAM_MAPPING = {
     "Chop Point": "Chop Point High School",
     "Old Orchard": "Old Orchard Beach High School",
     "Greater Houlton": "Houlton High School",
+    "Houlton": "Houlton High School",
     "Maine Coast Waldorf": "NYA Maine Coast Waldorf",
     "Wiscasset": "Boothbay/Wiscasset",
 }

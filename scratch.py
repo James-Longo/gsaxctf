@@ -1,16 +1,46 @@
-from backend.scraper_v2 import Sub5ScraperV2
-from backend.json_store import load_athletes, load_scrape_state
+import re
+TEAM_MAPPING = {
+    "Greater Houlton": "Houlton High School",
+    "Houlton": "Houlton High School",
+}
+def normalize_team_name(name, all_teams=None):
+    if not name: return "Unknown"
+    name = name.strip()
+    name = re.sub(r'^\d+[-\s]*', '', name)
+    if "unattach" in name.lower() or name.lower() == "un":
+        return "Unattached"
+    name = re.sub(r'\s+\d{4}$', '', name)
+    if re.match(r'^:?\d+[:.]\d+', name) or re.match(r'^\d+-\d+\.?\d*$', name):
+        return "Unknown"
+    name = re.sub(r'^(M|JR|W|FR|SO|SR)\s+', '', name, flags=re.IGNORECASE)
+    name = re.sub(r'\s+J[\d\.\-\':]+.*', '', name)
+    name = name.strip()
+    if "," in name:
+        name = name.split(',')[0].strip()
 
-scraper = Sub5ScraperV2()
-athletes = load_athletes()
-scrape_state = load_scrape_state()
+    ms_tokens = ["ms", "middle", "junior high", "jh", "elementary", "elem", "elementa", "primary", "interme"]
+    is_ms_token = any(f" {t}" in name.lower() or name.lower().endswith(f" {t}") or name.lower().endswith(t) for t in ms_tokens)
+    
+    for key, val in TEAM_MAPPING.items():
+        if is_ms_token:
+            if name.lower() == key.lower():
+                return val
+            continue
+        if name.lower().startswith(key.lower()):
+            return val
 
-scrape_state['synced_meets'] = {} # force re-sync
-count = scraper.sync_json_to_store(
-    'backend/data/parsed_results/2023/Outdoor', 
-    season='Outdoor', 
-    year='2023', 
-    athletes=athletes, 
-    scrape_state=scrape_state
-)
-print("Count:", count)
+    return name
+
+variants = [
+    "HoultonGHCAHodgdon",
+    "HoultonGHCA",
+    "Houlton High School",
+    "HoultonHodgdonGHCA",
+    "HoultonHodg",
+    "Houlton",
+    "HoultonME",
+    "Houlton MS"
+]
+
+for v in variants:
+    print(f"{v}: {normalize_team_name(v)}")
