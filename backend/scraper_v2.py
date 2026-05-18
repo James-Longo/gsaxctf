@@ -539,9 +539,27 @@ class Sub5ScraperV2:
                         if is_relay:
                             if relay_athletes: athlete_name = ", ".join(relay_athletes)
                             elif not athlete_name: athlete_name = f"{school} Relay"
-                        
+                            # Reject relay records whose school field looks like "LastName, FirstName ..."
+                            # — these are individual-event rows from two-column PDFs that bled into
+                            # the relay section during parsing.
+                            if re.match(r'^[A-Za-z][A-Za-z\'-]+,\s+[A-Za-z]', school):
+                                continue
+
                         athlete_name = self.normalize_athlete_name(athlete_name)
                         if not athlete_name or not mark or mark.upper() in ["DNS", "SCR"]: continue
+
+                        # Reject marks whose format contradicts the event type:
+                        # time-format (M:SS.ss) in a field event, or distance-format (F-I) in a running event.
+                        _ev_low = full_event.lower()
+                        _is_field_ev = any(k in _ev_low for k in ('jump', 'put', 'throw', 'vault', 'discus', 'javelin'))
+                        _is_track_ev = any(k in _ev_low for k in ('dash', 'run', 'hurdles', 'mile', 'relay', '4x', 'walk'))
+                        _has_time_fmt = ':' in mark and '.' in mark
+                        _has_dist_fmt = bool(re.match(r'^\d+-\d+', mark))
+                        if _is_field_ev and _has_time_fmt and not _has_dist_fmt:
+                            continue
+                        if _is_track_ev and _has_dist_fmt and not _has_time_fmt:
+                            continue
+
                         team_norm = self.normalize_team_name(school, all_teams=all_known_teams)
                         if team_norm == "Unknown" or self.is_likely_athlete_name(team_norm): continue
                         

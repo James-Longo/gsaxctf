@@ -6,6 +6,31 @@ import sys
 import subprocess
 import tempfile
 
+_GRADE_MAP = {
+    'FR': '9', 'Fr': '9', 'fr': '9', 'FRESHMAN': '9',
+    'SO': '10', 'So': '10', 'so': '10', 'SOPH': '10', 'SOPHOMORE': '10',
+    'JR': '11', 'Jr': '11', 'jr': '11', 'JUNIOR': '11',
+    'SR': '12', 'Sr': '12', 'sr': '12', 'SENIOR': '12',
+}
+
+def normalize_grade(g):
+    """Return a clean grade string (8-12 or MS) or '' for anything that looks like parsing junk."""
+    if not g:
+        return ''
+    g = g.strip()
+    if not g or g in ('--', '0', '22'):
+        return ''
+    if g in ('8', '9', '10', '11', '12', 'MS'):
+        return g
+    if g in _GRADE_MAP:
+        return _GRADE_MAP[g]
+    # "9 H", "11 B", "12 Finals" etc. — extract the leading grade number
+    m = re.match(r'^(8|9|10|11|12)\b', g)
+    if m:
+        return m.group(1)
+    return ''
+
+
 class Sub5ColumnParser:
     def __init__(self, file_path):
         self.file_path = file_path
@@ -537,7 +562,7 @@ class Sub5ColumnParser:
                                     "athlete": name_val,
                                     "school": school_val,
                                     "result": res_val,
-                                    "grade": grade_val,
+                                    "grade": normalize_grade(grade_val),
                                     "type": anchor_type
                                 }
                                 if ev.get("is_ms"):
@@ -598,9 +623,12 @@ class Sub5ColumnParser:
                                 school_part = re.sub(r'^\s*(?:#|--|\d+)\s+', '', school_part).strip()
                                 school_part = re.split(r'\s{2,}', school_part)[0].strip()
                                 
-                                # Validation: School name should not be purely numeric or empty
-                                # Also check for "1)" which might indicate a misread relay runner line
+                                # Validation: reject empty, purely-numeric, or misread runner lines
+                                # Also reject "LastName, FirstName" patterns — these are individual
+                                # event rows from a two-column PDF bleeding into the relay section.
                                 if not school_part or school_part.replace('.', '').isdigit() or "1)" in school_part:
+                                    continue
+                                if re.match(r'^[A-Za-z][A-Za-z\'-]+,\s+[A-Za-z]', school_part):
                                     continue
 
                                 if school_part and res_val != anchor_type:
