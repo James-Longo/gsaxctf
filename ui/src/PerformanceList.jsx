@@ -289,12 +289,36 @@ function PostseasonSimulator({ performances, isBetter, manifest, loadTeamData })
         return scores;
     };
 
+
+
     const getGreedyEntries = (pool) => {
         const entries = [];
         const memberCounts = {};
-        const all = Object.values(pool).flat().sort((a, b) => isBetter(a.mark, b.mark, a.event) ? -1 : 1);
+        
+        // Basic heuristic for getGreedyEntries without full opponent baseline:
+        // Rank by mark quality relative to typical standards, but since we just want a rough greedy sort,
+        // we'll sort relays lower if they share members. Actually, we shouldn't rely on isBetter for different events.
+        // Let's just group by event, rank within event, and assign points.
+        const groups = {};
+        Object.values(pool).flat().forEach(e => {
+            if (!groups[e.event]) groups[e.event] = [];
+            groups[e.event].push(e);
+        });
+        
+        const scored = [];
+        Object.values(groups).forEach(evEntries => {
+            evEntries.sort((a, b) => isBetter(a.mark, b.mark, a.event) ? -1 : isBetter(b.mark, a.mark, a.event) ? 1 : 0);
+            evEntries.forEach((e, idx) => {
+                let pts = idx < SCORING_RULES.length ? SCORING_RULES[idx] : 0.1; // 0.1 for participation
+                const isRelayEvent = e.event.toLowerCase().includes('relay') || e.event.toLowerCase().includes('4x');
+                if (isRelayEvent) pts /= 4;
+                scored.push({ e, pts });
+            });
+        });
+        
+        scored.sort((a, b) => b.pts - a.pts);
 
-        all.forEach(e => {
+        scored.forEach(({ e }) => {
             const members = getMembers(e);
             if (members.every(m => (memberCounts[m] || 0) < EVENT_LIMIT)) {
                 entries.push(e);
@@ -411,7 +435,9 @@ function PostseasonSimulator({ performances, isBetter, manifest, loadTeamData })
             });
             eventEntries.sort((a, b) => isBetter(a.mark, b.mark, a.event) ? -1 : isBetter(b.mark, a.mark, a.event) ? 1 : 0);
             const rank = eventEntries.indexOf(e);
-            return rank < SCORING_RULES.length ? SCORING_RULES[rank] : 0;
+            let points = rank < SCORING_RULES.length ? SCORING_RULES[rank] : 0;
+            const isRelayEvent = e.event.toLowerCase().includes('relay') || e.event.toLowerCase().includes('4x');
+            return isRelayEvent ? points / 4 : points;
         };
 
         const sortedPossible = [...genderPossibleEntries].sort((a, b) => getEntryValue(b) - getEntryValue(a));
