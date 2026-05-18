@@ -174,8 +174,14 @@ export function normalizeEvent(event, season = '') {
                 const isGirl = /\bGirls\b/i.test(normalized);
                 const isBoy = /\bBoys\b/i.test(normalized);
                 const prefix = isGirl ? "Girls " : (isBoy ? "Boys " : "");
-                
-                return `${prefix}${standard}`;
+
+                // HS gender correction: boys run 110m hurdles, girls run 100m hurdles.
+                // Some meets label the boys event as "100m Hurdles" — normalize it.
+                let canonicalStandard = standard;
+                if (isBoy && standard === '100m Hurdles') canonicalStandard = '110m Hurdles';
+                if (isGirl && standard === '110m Hurdles') canonicalStandard = '100m Hurdles';
+
+                return `${prefix}${canonicalStandard}`;
             }
         }
     }

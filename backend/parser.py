@@ -7,20 +7,20 @@ import subprocess
 import tempfile
 
 _GRADE_MAP = {
-    'FR': '9', 'Fr': '9', 'fr': '9', 'FRESHMAN': '9',
-    'SO': '10', 'So': '10', 'so': '10', 'SOPH': '10', 'SOPHOMORE': '10',
-    'JR': '11', 'Jr': '11', 'jr': '11', 'JUNIOR': '11',
-    'SR': '12', 'Sr': '12', 'sr': '12', 'SENIOR': '12',
+    'Fr': 'FR', 'fr': 'FR', 'FRESHMAN': 'FR',
+    'So': 'SO', 'so': 'SO', 'SOPH': 'SO', 'SOPHOMORE': 'SO',
+    'Jr': 'JR', 'jr': 'JR', 'JUNIOR': 'JR',
+    'Sr': 'SR', 'sr': 'SR', 'SENIOR': 'SR',
 }
 
 def normalize_grade(g):
-    """Return a clean grade string (8-12 or MS) or '' for anything that looks like parsing junk."""
+    """Return a clean grade string (8-12, FR/SO/JR/SR, or MS) or '' for junk."""
     if not g:
         return ''
     g = g.strip()
     if not g or g in ('--', '0', '22'):
         return ''
-    if g in ('8', '9', '10', '11', '12', 'MS'):
+    if g in ('8', '9', '10', '11', '12', 'MS', 'FR', 'SO', 'JR', 'SR'):
         return g
     if g in _GRADE_MAP:
         return _GRADE_MAP[g]
@@ -375,9 +375,10 @@ class Sub5ColumnParser:
                     anchor_type = "Prelims"
                 
                 # Check for columns to the right of the result to establish a boundary
-                # Common headers: H# (Heat), Points, Pts
+                # "Wind" appears immediately after the mark in HY-TEK wind-legal meets;
+                # cutting there prevents wind readings from being picked up as marks.
                 stop_col = -1
-                right_headers = ["H#", "Points", "Pts"]
+                right_headers = ["Wind", "H#", "Points", "Pts"]
                 if anchor_col != -1:
                     for h in right_headers:
                         h_idx = line.find(h, anchor_col)
@@ -491,15 +492,36 @@ class Sub5ColumnParser:
                             # We split by 2+ spaces. 
                             parts = [p.strip() for p in re.split(r'\s{2,}', sub) if p.strip()]
                             
-                            # Usually: [Rank], Name, [Grade], School, Mark, [Points], [Heats]
-                            # Identify result index by looking for the first mark-like token 
-                            # scanning from the right but skipping things that look like points/heats
+                            # Usually: [Rank], Name, [Grade], School, Mark, [Wind], [H#]
+                            # Identify result index by looking for the first mark-like token
+                            # scanning from the right but skipping wind readings and heat numbers.
+                            # Wind readings have exactly one decimal place and abs value <= 9.9
+                            # (e.g. "0.7", "-1.4", "+2.2").  Performance marks always have two
+                            # decimal places ("14.56"), a colon ("1:23.45"), or a feet-inches
+                            # hyphen ("33-04.25"), so the one-decimal test is a reliable filter.
+                            def _is_wind_reading(token):
+                                t = token.strip()
+                                if t.upper() in ('NWI', '+NWI', 'NWI+'):
+                                    return True
+                                t = re.sub(r'[a-zA-Z#]', '', t).strip()
+                                if re.match(r'^[+-]?\d{1,2}\.\d$', t):
+                                    try:
+                                        return abs(float(t)) <= 9.9
+                                    except ValueError:
+                                        pass
+                                return False
+
                             res_idx = -1
                             for k in range(len(parts)-1, 1, -1):
                                 p = parts[k]
-                                if (re.search(r'\d', p) and ('.' in p or ':' in p or '-' in p)) or p.upper() in ["DQ", "NH", "NM", "DNS", "DNF", "FOUL", "SCR"]:
-                                    res_idx = k
-                                    break
+                                is_mark_like = ((re.search(r'\d', p) and ('.' in p or ':' in p or '-' in p))
+                                                or p.upper() in ["DQ", "NH", "NM", "DNS", "DNF", "FOUL", "SCR"])
+                                if not is_mark_like:
+                                    continue
+                                if _is_wind_reading(p):
+                                    continue
+                                res_idx = k
+                                break
                             
                             if res_idx != -1:
                                 res_val = parts[res_idx]
@@ -539,10 +561,14 @@ class Sub5ColumnParser:
                                 else:
                                     school_val = "Unknown"
 
+                                # Strip trailing wind reading before cleaning
+                                # (e.g. "14.02q -0.9" or "12.57 NWI" when single-space separated)
+                                res_val = re.sub(r'\s+(?:NWI\+?|[+-]?\d\.\d)\s*$', '', res_val, flags=re.IGNORECASE).strip()
+
                                 original_res = res_val
                                 is_standard = res_val.upper() in ["DQ", "FOUL", "NH", "NM", "DNS", "DNF", "SCR"]
                                 is_numeric = bool(re.match(r'^[0-9:.-]+$', res_val))
-                                
+
                                 warnings = []
                                 if not (is_standard or is_numeric):
                                     cleaned = re.sub(r'[^0-9:.-]', '', res_val)
@@ -634,7 +660,8 @@ class Sub5ColumnParser:
                                 if school_part and res_val != anchor_type:
                                     if res_val.upper() != "DQ":
                                         res_val = re.sub(r'q$', '', res_val, flags=re.IGNORECASE)
-                                    
+                                    # Strip trailing wind reading before cleaning
+                                    res_val = re.sub(r'\s+(?:NWI\+?|[+-]?\d\.\d)\s*$', '', res_val, flags=re.IGNORECASE).strip()
                                     original_res = res_val
                                 is_standard = res_val.upper() in ["DQ", "FOUL", "NH", "NM", "DNS", "DNF", "SCR"]
                                 is_numeric = bool(re.match(r'^[0-9:.-]+$', res_val))
