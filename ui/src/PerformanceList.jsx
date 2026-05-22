@@ -22,6 +22,7 @@ function PostseasonSimulator({ performances, isBetter, manifest, loadTeamData })
     const [filterYear, setFilterYear] = useState(defaultYear)
     const [filterSeason, setFilterSeason] = useState(defaultSeason)
     const [filterEvent, setFilterEvent] = useState('All')
+    const [scoreMethod, setScoreMethod] = useState('PR')
     const [showSimulation, setShowSimulation] = useState(false)
     const [expandedTeams, setExpandedTeams] = useState({}) 
     const [robustSimResults, setRobustSimResults] = useState(null)
@@ -253,38 +254,68 @@ function PostseasonSimulator({ performances, isBetter, manifest, loadTeamData })
 
     const teamPools = useMemo(() => {
         const pools = {};
-        if (!performances) return pools; // Use performances or filteredData? filteredData is derived in render? No, let's verify. filteredData is likely derived.
-        // Wait, filteredData is a prop or state? Check lines 1-10. Not in view.
-        // Assuming filteredData is available in scope.
+        if (!performances) return pools;
 
-        // Actually, filteredData is usually derived inside the component body.
-        // Let's use filteredData if it is available in scope.
-        // Based on previous reads, filteredData seems to be derived.
-        // I will use `filteredData` in the dependency array. 
-
-        // Re-implementing logic:
+        // Group all valid performances by team -> athleteKey -> event
+        const grouped = {};
         (filteredData || []).forEach(p => {
             const markUpper = (p.mark || "").toUpperCase();
-            if (['DQ', 'DNF', 'NH'].includes(markUpper)) return;
+            if (['DQ', 'DNF', 'NH', 'DNS', 'NM', 'FOUL', 'SCR', 'ND', 'NT', 'X', 'NWI'].includes(markUpper)) return;
 
             const team = p.pvcTeam;
-            if (!pools[team]) pools[team] = {};
+            if (!grouped[team]) grouped[team] = {};
 
             const isRelay = p.isRelay;
             const athleteKey = isRelay ? `relay_${p.event}` : p.athlete_id;
 
-            if (!pools[team][athleteKey]) pools[team][athleteKey] = [];
+            if (!grouped[team][athleteKey]) grouped[team][athleteKey] = {};
+            if (!grouped[team][athleteKey][p.event]) grouped[team][athleteKey][p.event] = [];
 
-            const existing = pools[team][athleteKey].find(x => x.event === p.event);
-            if (!existing || isBetter(p.mark, existing.mark, p.event)) {
-                if (existing) {
-                    pools[team][athleteKey] = pools[team][athleteKey].filter(x => x.event !== p.event);
-                }
-                pools[team][athleteKey].push(p);
-            }
+            grouped[team][athleteKey][p.event].push(p);
         });
+
+        // Resolve to either PR or Median
+        const useMedian = scoreMethod === 'Median';
+        Object.entries(grouped).forEach(([team, athletes]) => {
+            pools[team] = {};
+            Object.entries(athletes).forEach(([athleteKey, events]) => {
+                pools[team][athleteKey] = [];
+                Object.entries(events).forEach(([eventName, perfs]) => {
+                    if (perfs.length === 0) return;
+
+                    let selectedPerf = null;
+                    if (useMedian) {
+                        const parsed = perfs.map(p => {
+                            const isDist = isDistanceEvent(p.event);
+                            return {
+                                perf: p,
+                                parsed: parseMark(p.mark, isDist)
+                            };
+                        }).filter(x => x.parsed.valid);
+
+                        if (parsed.length > 0) {
+                            // Sort by parsed numeric value ascending
+                            parsed.sort((a, b) => a.parsed.value - b.parsed.value);
+                            const mid = Math.floor(parsed.length / 2);
+                            selectedPerf = parsed[mid].perf;
+                        }
+                    } else {
+                        perfs.forEach(p => {
+                            if (!selectedPerf || isBetter(p.mark, selectedPerf.mark, p.event)) {
+                                selectedPerf = p;
+                            }
+                        });
+                    }
+
+                    if (selectedPerf) {
+                        pools[team][athleteKey].push(selectedPerf);
+                    }
+                });
+            });
+        });
+
         return pools;
-    }, [filteredData, isBetter]);
+    }, [filteredData, isBetter, scoreMethod]);
 
     // Simulation Helpers and Core Logic
     const SCORING_RULES = [10, 8, 6, 4, 2, 1];
@@ -1480,6 +1511,13 @@ function PostseasonSimulator({ performances, isBetter, manifest, loadTeamData })
                             {Object.values(competitionType === 'PVC' ? getPVCSchools(filterYear, filterSeason) : getStateSchools(filterYear, filterSeason)).map(t => (
                                 <option key={t} value={t}>{t}</option>
                             ))}
+                        </select>
+                    </div>
+                    <div className="filter-group">
+                        <label>Scoring Basis</label>
+                        <select value={scoreMethod} onChange={e => setScoreMethod(e.target.value)}>
+                            <option value="PR">Personal Record (PR)</option>
+                            <option value="Median">Median Result</option>
                         </select>
                     </div>
                     <div className="simulation-actions">
