@@ -989,42 +989,89 @@ function PostseasonSimulator({ performances, isBetter, manifest, loadTeamData })
 
     const groupedData = useMemo(() => {
         const groups = {};
+        
+        // First group all performances by groupKey -> athleteKey
+        const rawGrouped = {};
 
         filteredData.forEach(curr => {
-            // Normalize the event name first to get the canonical version
+            const markUpper = (curr.mark || "").toUpperCase();
+            if (['DQ', 'DNF', 'NH', 'DNS', 'NM', 'FOUL', 'SCR', 'ND', 'NT', 'X', 'NWI'].includes(markUpper)) return;
+
             const normalizedFull = normalizeEvent(curr.event, filterSeason);
             const gender = normalizedFull.startsWith('Girls') ? 'Girls' : (normalizedFull.startsWith('Boys') ? 'Boys' : '');
             const baseName = normalizedFull.replace(/^(Girls|Boys)\s+/, '');
             const originalCanonical = baseName;
 
-            // Map hurdles to combined key
             const scoringKey = (baseName === '100m Hurdles' || baseName === '110m Hurdles')
                 ? '100m/110m Hurdles'
                 : baseName;
 
-            // Only include events on the scoring list
             if (!SCORING_EVENTS.includes(scoringKey)) return;
 
-            // Use the gender-specific name for grouping/display
-            const canonicalName = baseName; 
-
+            const canonicalName = baseName;
             const groupKey = `${gender} ${canonicalName} (${curr.derivedType} ${curr.derivedYear})`.trim();
-            
-            if (!groups[groupKey]) groups[groupKey] = {
-                items: {},
-                canonicalName: canonicalName,
-                gender: gender,
-                orderIdx: SCORING_EVENTS.indexOf(scoringKey)
-            };
 
-            const athleteKey = curr.isRelay ? curr.pvcTeam : `${curr.athlete_id}|${curr.pvcTeam}`;
-            if (!groups[groupKey].items[athleteKey] || isBetter(curr.mark, groups[groupKey].items[athleteKey].mark, canonicalName)) {
-                groups[groupKey].items[athleteKey] = { 
-                    ...curr, 
-                    event: `${gender} ${canonicalName}`.trim(),
-                    originalCanonical: originalCanonical 
+            if (!rawGrouped[groupKey]) {
+                rawGrouped[groupKey] = {
+                    athletes: {},
+                    canonicalName: canonicalName,
+                    gender: gender,
+                    originalCanonical: originalCanonical,
+                    orderIdx: SCORING_EVENTS.indexOf(scoringKey)
                 };
             }
+
+            const athleteKey = curr.isRelay ? curr.pvcTeam : `${curr.athlete_id}|${curr.pvcTeam}`;
+            if (!rawGrouped[groupKey].athletes[athleteKey]) {
+                rawGrouped[groupKey].athletes[athleteKey] = [];
+            }
+            rawGrouped[groupKey].athletes[athleteKey].push(curr);
+        });
+
+        // Now resolve each groupKey -> athleteKey to a single performance record
+        const useMedian = scoreMethod === 'Median';
+        Object.entries(rawGrouped).forEach(([groupKey, meta]) => {
+            groups[groupKey] = {
+                items: {},
+                canonicalName: meta.canonicalName,
+                gender: meta.gender,
+                orderIdx: meta.orderIdx
+            };
+
+            Object.entries(meta.athletes).forEach(([athleteKey, perfs]) => {
+                if (perfs.length === 0) return;
+
+                let selectedPerf = null;
+                if (useMedian) {
+                    const parsed = perfs.map(p => {
+                        const isDist = isDistanceEvent(p.event);
+                        return {
+                            perf: p,
+                            parsed: parseMark(p.mark, isDist)
+                        };
+                    }).filter(x => x.parsed.valid);
+
+                    if (parsed.length > 0) {
+                        parsed.sort((a, b) => a.parsed.value - b.parsed.value);
+                        const mid = Math.floor(parsed.length / 2);
+                        selectedPerf = parsed[mid].perf;
+                    }
+                } else {
+                    perfs.forEach(p => {
+                        if (!selectedPerf || isBetter(p.mark, selectedPerf.mark, meta.canonicalName)) {
+                            selectedPerf = p;
+                        }
+                    });
+                }
+
+                if (selectedPerf) {
+                    groups[groupKey].items[athleteKey] = {
+                        ...selectedPerf,
+                        event: `${meta.gender} ${meta.canonicalName}`.trim(),
+                        originalCanonical: meta.originalCanonical
+                    };
+                }
+            });
         });
 
         const finalGroups = {};
@@ -1036,7 +1083,6 @@ function PostseasonSimulator({ performances, isBetter, manifest, loadTeamData })
             
             if (gA.orderIdx !== gB.orderIdx) return gA.orderIdx - gB.orderIdx;
             
-            // Same event, sort Girls before Boys
             if (gA.gender === 'Girls' && gB.gender === 'Boys') return -1;
             if (gA.gender === 'Boys' && gB.gender === 'Girls') return 1;
             return 0;
@@ -1058,11 +1104,12 @@ function PostseasonSimulator({ performances, isBetter, manifest, loadTeamData })
                 }
                 results[i].calculatedRank = currentRank;
             }
+
             finalGroups[groupKey] = results;
         });
 
         return finalGroups;
-    }, [filteredData, isBetter, SCORING_EVENTS]);
+    }, [filteredData, isBetter, SCORING_EVENTS, scoreMethod]);
 
     const optimizedData = useMemo(() => {
         if (!showSimulation || filterYear === 'All' || filterSeason === 'All' || Object.keys(groupedData).length === 0) {
@@ -1516,7 +1563,7 @@ function PostseasonSimulator({ performances, isBetter, manifest, loadTeamData })
                     <div className="filter-group">
                         <label>Scoring Basis</label>
                         <select value={scoreMethod} onChange={e => setScoreMethod(e.target.value)}>
-                            <option value="PR">Personal Record (PR)</option>
+                            <option value="PR">Season Best (SB)</option>
                             <option value="Median">Median Result</option>
                         </select>
                     </div>
