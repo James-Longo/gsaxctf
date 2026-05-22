@@ -90,10 +90,51 @@ function PostseasonSimulator({ performances, isBetter, manifest, loadTeamData })
             "Houlton": "Houlton High School", "Jonesport": "Jonesport-Beals High School",
             "Mattanawcook": "Mattanawcook Academy", "Narraguagus": "Narraguagus High School",
             "Orono": "Orono High School", "Penquis": "Penquis Valley High School",
-            "Piscataquis": "Piscataquis Community High School", "Searsport": "Searsport District High School",
             "Sumner": "Sumner Memorial High School", "Washington A": "Washington Academy"
         };
     };
+
+    const loadingState = useMemo(() => {
+        if (!manifest || !manifest.teams || filterYear === 'All' || filterSeason === 'All') {
+            return { isLoading: false, expectedCount: 0, loadedCount: 0, loadingTeams: [], percent: 100 };
+        }
+        
+        const seasonKey = `${filterYear}_${filterSeason}`.replace(' ', '_');
+        const activeSchools = competitionType === 'PVC' ? getPVCSchools(filterYear, filterSeason) : getStateSchools(filterYear, filterSeason);
+        
+        // Find which teams in manifest belong to the expected activeSchools AND participate in this season
+        const expectedTeams = (manifest.teams || []).filter(t => {
+            const participates = t.seasons && t.seasons.includes(seasonKey);
+            if (!participates) return false;
+            
+            // Match against activeSchools values
+            return Object.values(activeSchools).some(schoolName => 
+                t.name.toLowerCase() === schoolName.toLowerCase()
+            );
+        });
+        
+        // Find which expected team slugs are loaded
+        const loadedSlugs = new Set();
+        (performances || []).forEach(p => {
+            const teamObj = manifest.teams.find(t => t.name === p.team);
+            if (teamObj) {
+                loadedSlugs.add(teamObj.slug);
+            }
+        });
+        
+        const loadingTeams = expectedTeams.filter(t => !loadedSlugs.has(t.slug));
+        const expectedCount = expectedTeams.length;
+        const loadedCount = expectedCount - loadingTeams.length;
+        const percent = expectedCount > 0 ? Math.round((loadedCount / expectedCount) * 100) : 100;
+        
+        return {
+            isLoading: loadingTeams.length > 0,
+            expectedCount,
+            loadedCount,
+            loadingTeams,
+            percent
+        };
+    }, [manifest, performances, filterYear, filterSeason, competitionType]);
 
     useEffect(() => {
         if (!manifest || !manifest.teams || !loadTeamData) return;
@@ -1346,6 +1387,69 @@ function PostseasonSimulator({ performances, isBetter, manifest, loadTeamData })
             <div className="analyzer-header">
                 <h2>Postseason Simulator</h2>
             </div>
+
+            {loadingState.isLoading && (
+                <div className="simulation-loading-banner" style={{
+                    backgroundColor: 'rgba(128, 0, 0, 0.04)',
+                    border: '1px solid rgba(128, 0, 0, 0.12)',
+                    color: '#600000',
+                    padding: '16px',
+                    borderRadius: '10px',
+                    marginBottom: '10px',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    gap: '10px',
+                    fontSize: '0.9rem',
+                    fontWeight: '600',
+                    boxShadow: '0 2px 8px rgba(0, 0, 0, 0.02)'
+                }}>
+                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                            <span className="spinner" style={{
+                                width: '14px',
+                                height: '14px',
+                                border: '2px solid rgba(128, 0, 0, 0.2)',
+                                borderTop: '2px solid #800000',
+                                borderRadius: '50%',
+                                display: 'inline-block',
+                                animation: 'spin 0.8s linear infinite'
+                            }} />
+                            <span>Loading postseason team results...</span>
+                        </div>
+                        <span style={{ fontSize: '0.85rem', color: '#718096' }}>
+                            {loadingState.loadedCount} / {loadingState.expectedCount} Teams ({loadingState.percent}%)
+                        </span>
+                    </div>
+                    <div style={{
+                        width: '100%',
+                        height: '6px',
+                        backgroundColor: 'rgba(0, 0, 0, 0.05)',
+                        borderRadius: '3px',
+                        overflow: 'hidden'
+                    }}>
+                        <div style={{
+                            width: `${loadingState.percent}%`,
+                            height: '100%',
+                            backgroundColor: '#800000',
+                            borderRadius: '3px',
+                            transition: 'width 0.4s cubic-bezier(0.4, 0, 0.2, 1)'
+                        }} />
+                    </div>
+                    <div style={{ fontSize: '0.75rem', fontWeight: 'normal', color: '#718096', display: 'flex', flexWrap: 'wrap', gap: '6px', alignItems: 'center' }}>
+                        <span>Remaining:</span>
+                        {loadingState.loadingTeams.slice(0, 5).map(t => (
+                            <span key={t.slug} style={{ background: 'rgba(0,0,0,0.04)', padding: '2px 6px', borderRadius: '4px', fontSize: '0.7rem' }}>
+                                {t.name}
+                            </span>
+                        ))}
+                        {loadingState.loadingTeams.length > 5 && (
+                            <span style={{ fontSize: '0.7rem', fontStyle: 'italic' }}>
+                                + {loadingState.loadingTeams.length - 5} more
+                            </span>
+                        )}
+                    </div>
+                </div>
+            )}
 
             <div className="analyzer-controls">
                 <div className="filter-bar analyzer-filters">
