@@ -58,6 +58,10 @@ const PRPopCalculator = ({ performances, selectedTeam, isBetter, manifest, loadT
         const pops = meetPerformances.filter(p => {
             if (!p.was_pr) return false;
             
+            // Exclude relays
+            const eventLower = (p.event || '').toLowerCase();
+            if (eventLower.includes('relay') || eventLower.includes('4x')) return false;
+            
             const history = perfByAthlete[p.athlete_id] || [];
             const normPEvent = normalizeEvent(p.event, p.season);
             const pDate = new Date(p.date);

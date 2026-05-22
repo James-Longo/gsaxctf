@@ -28,7 +28,7 @@ def main():
     teams = [
         "Orono High School", "Bucksport High School", "George Stevens Academy",
         "Central High School", "Piscataquis Community High School", "Sumner/Narragaugus",
-        "Bangor Christian Schools", "Foxcroft Academy", "Penquis Valley High School"
+        "Bangor Christian Schools", "Penquis Valley High School"
     ]
     
     rules = MeetRules(max_events_per_athlete=3)

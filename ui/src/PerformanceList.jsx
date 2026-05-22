@@ -77,7 +77,7 @@ function PostseasonSimulator({ performances, isBetter, manifest, loadTeamData })
             return {
                 "Bangor Chris": "Bangor Christian Schools", "Bucksport": "Bucksport High School",
                 "Central": "Central High School", "Dexter": "Dexter Regional High School",
-                "Foxcroft": "Foxcroft Academy", "George Stevens": "George Stevens Academy",
+                "George Stevens": "George Stevens Academy",
                 "Mattanawcook": "Mattanawcook Academy", "Orono": "Orono High School",
                 "PCHS": "Piscataquis Community High School", "Penquis": "Penquis Valley High School",
                 "Searsport": "Searsport District High School", "Sumner": "Sumner/Narragaugus"
@@ -86,7 +86,7 @@ function PostseasonSimulator({ performances, isBetter, manifest, loadTeamData })
         return {
             "Bangor Chris": "Bangor Christian Schools", "Bucksport": "Bucksport High School",
             "Central": "Central High School", "Dexter": "Dexter Regional High School",
-            "Foxcroft": "Foxcroft Academy", "George Stevens": "George Stevens Academy",
+            "George Stevens": "George Stevens Academy",
             "Houlton": "Houlton High School", "Jonesport": "Jonesport-Beals High School",
             "Mattanawcook": "Mattanawcook Academy", "Narraguagus": "Narraguagus High School",
             "Orono": "Orono High School", "Penquis": "Penquis Valley High School",

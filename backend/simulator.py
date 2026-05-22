@@ -69,10 +69,9 @@ class TrackSimulator:
         conn.row_factory = sqlite3.Row
         cursor = conn.cursor()
         
-        # PVC Small Schools (from PerformanceList.jsx)
         pvc_teams = [
             "Bangor Christian Schools", "Bucksport High School", "Central High School",
-            "Dexter Regional High School", "Foxcroft Academy", "George Stevens Academy",
+            "Dexter Regional High School", "George Stevens Academy",
             "Mattanawcook Academy", "Orono High School", "Piscataquis Community High School",
             "Penquis Valley High School", "Searsport District High School", "Sumner/Narragaugus"
         ]
