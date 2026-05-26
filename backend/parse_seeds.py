@@ -98,12 +98,15 @@ def convert_parsed(parsed: dict) -> list[dict]:
                 if not team:
                     print(f"  WARN: unmapped relay team '{school_raw}'")
                     continue
+                # First 4 athletes are the relay legs; extras are alternates
+                members = [a for a in result.get("athletes", []) if a][:4]
                 entries.append({
                     "event": canonical_event,
                     "gender": gender,
                     "isRelay": True,
                     "team": team,
                     "mark": mark,
+                    "members": members,
                 })
             else:
                 name = result.get("athlete", "")

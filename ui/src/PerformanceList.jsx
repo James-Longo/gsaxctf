@@ -53,7 +53,7 @@ function PostseasonSimulator({ performances, isBetter, manifest, loadTeamData })
             pvcTeam: entry.team,
             isRelay: entry.isRelay,
             athlete_id: entry.isRelay ? `relay_${entry.event}_${entry.team}` : (entry.athleteId || ''),
-            athlete_name: entry.isRelay ? entry.team : (entry.name || ''),
+            athlete_name: entry.isRelay ? (entry.members || []).join(', ') : (entry.name || ''),
             derivedYear: seedData.meta.year,
             derivedType: seedData.meta.season,
         }));
