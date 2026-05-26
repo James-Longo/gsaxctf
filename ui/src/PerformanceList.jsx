@@ -2054,7 +2054,6 @@ function PostseasonSimulator({ performances, isBetter, manifest, loadTeamData })
                                         <th>Name</th>
                                         <th>Team</th>
                                         <th>Mark</th>
-                                        <th>Date</th>
                                         {showSimulation && <th>Points</th>}
                                     </tr>
                                 </thead>
@@ -2065,7 +2064,6 @@ function PostseasonSimulator({ performances, isBetter, manifest, loadTeamData })
                                             <td className="athlete-name-cell">{res.athlete_name}</td>
                                             <td>{res.pvcTeam}</td>
                                             <td className="mark-cell">{res.mark}</td>
-                                            <td>{res.date ? res.date.split('T')[0] : 'N/A'}</td>
                                             {showSimulation && (
                                                 <td className="points-cell">
                                                     {res.optimizedPts > 0 ? `+${res.optimizedPts.toFixed(1)}` : '-'}
