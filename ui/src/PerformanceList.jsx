@@ -33,6 +33,31 @@ function PostseasonSimulator({ performances, isBetter, manifest, loadTeamData })
     const [strategicLog, setStrategicLog] = useState([]);
     const [competitionType, setCompetitionType] = useState('PVC');
     const [isDashboardCollapsed, setIsDashboardCollapsed] = useState(false);
+    const [seedData, setSeedData] = useState(null);
+
+    useEffect(() => {
+        if (scoreMethod === 'Seeds' && !seedData) {
+            fetch('/data/seeds/pvc_2026_outdoor.json')
+                .then(r => r.json())
+                .then(d => setSeedData(d))
+                .catch(err => console.error('Failed to load seed data', err));
+        }
+    }, [scoreMethod, seedData]);
+
+    // Convert seed entries into perf-like objects compatible with groupedData / teamPools
+    const seedPerfs = useMemo(() => {
+        if (!seedData) return [];
+        return seedData.entries.map(entry => ({
+            event: normalizeEvent(entry.event, 'Outdoor'),
+            mark: entry.mark,
+            pvcTeam: entry.team,
+            isRelay: entry.isRelay,
+            athlete_id: entry.isRelay ? `relay_${entry.event}_${entry.team}` : (entry.athleteId || ''),
+            athlete_name: entry.isRelay ? entry.team : (entry.name || ''),
+            derivedYear: seedData.meta.year,
+            derivedType: seedData.meta.season,
+        }));
+    }, [seedData]);
 
     const getStateSchools = (year, season) => {
         const isOutdoor = (season && season.toLowerCase().includes('outdoor'));
@@ -256,6 +281,18 @@ function PostseasonSimulator({ performances, isBetter, manifest, loadTeamData })
         const pools = {};
         if (!performances) return pools;
 
+        // Seeds mode: build pools directly from seed data (one entry per athlete/event)
+        if (scoreMethod === 'Seeds') {
+            seedPerfs.forEach(p => {
+                const team = p.pvcTeam;
+                if (!pools[team]) pools[team] = {};
+                const athleteKey = p.isRelay ? `relay_${p.event}` : p.athlete_id;
+                if (!pools[team][athleteKey]) pools[team][athleteKey] = [];
+                pools[team][athleteKey].push(p);
+            });
+            return pools;
+        }
+
         // Group all valid performances by team -> athleteKey -> event
         const grouped = {};
         (filteredData || []).forEach(p => {
@@ -315,13 +352,13 @@ function PostseasonSimulator({ performances, isBetter, manifest, loadTeamData })
         });
 
         return pools;
-    }, [filteredData, isBetter, scoreMethod]);
+    }, [filteredData, isBetter, scoreMethod, seedPerfs]);
 
     // Simulation Helpers and Core Logic
     const SCORING_RULES = [10, 8, 6, 4, 2, 1];
     
     // Treat Indoor/Outdoor differently: 4 event limit for Outdoor, 3 for Indoor.
-    const EVENT_LIMIT = (filterSeason && filterSeason.toLowerCase().includes('indoor')) ? 3 : 4;
+    const EVENT_LIMIT = (scoreMethod !== 'Seeds' && filterSeason && filterSeason.toLowerCase().includes('indoor')) ? 3 : 4;
 
     const getMembers = (p) => {
         const name = p.athlete_name || "";
@@ -768,7 +805,7 @@ function PostseasonSimulator({ performances, isBetter, manifest, loadTeamData })
     };
 
     const runRobustSimulation = async () => {
-        if (filterYear === 'All' || filterSeason === 'All') {
+        if (scoreMethod !== 'Seeds' && (filterYear === 'All' || filterSeason === 'All')) {
             alert("Please select a Year and Season first.");
             return;
         }
@@ -984,20 +1021,25 @@ function PostseasonSimulator({ performances, isBetter, manifest, loadTeamData })
             "High Jump", "Pole Vault", "Long Jump", "Triple Jump", "Shot Put", "Discus", "Javelin"
         ];
 
-        return filterSeason === 'Outdoor' ? outdoor : indoor;
-    }, [filterSeason]);
+        if (scoreMethod === 'Seeds' || filterSeason === 'Outdoor') return outdoor;
+        return indoor;
+    }, [filterSeason, scoreMethod]);
 
     const groupedData = useMemo(() => {
         const groups = {};
-        
+
         // First group all performances by groupKey -> athleteKey
         const rawGrouped = {};
 
-        filteredData.forEach(curr => {
+        // Seeds mode uses seed entries; other modes use historical filtered data
+        const sourceData = scoreMethod === 'Seeds' ? seedPerfs : filteredData;
+        const activeSeason = scoreMethod === 'Seeds' ? 'Outdoor' : filterSeason;
+
+        sourceData.forEach(curr => {
             const markUpper = (curr.mark || "").toUpperCase();
             if (['DQ', 'DNF', 'NH', 'DNS', 'NM', 'FOUL', 'SCR', 'ND', 'NT', 'X', 'NWI'].includes(markUpper)) return;
 
-            const normalizedFull = normalizeEvent(curr.event, filterSeason);
+            const normalizedFull = normalizeEvent(curr.event, activeSeason);
             const gender = normalizedFull.startsWith('Girls') ? 'Girls' : (normalizedFull.startsWith('Boys') ? 'Boys' : '');
             const baseName = normalizedFull.replace(/^(Girls|Boys)\s+/, '');
             const originalCanonical = baseName;
@@ -1109,10 +1151,11 @@ function PostseasonSimulator({ performances, isBetter, manifest, loadTeamData })
         });
 
         return finalGroups;
-    }, [filteredData, isBetter, SCORING_EVENTS, scoreMethod]);
+    }, [filteredData, seedPerfs, isBetter, SCORING_EVENTS, scoreMethod]);
 
     const optimizedData = useMemo(() => {
-        if (!showSimulation || filterYear === 'All' || filterSeason === 'All' || Object.keys(groupedData).length === 0) {
+        const bypassYearSeasonCheck = scoreMethod === 'Seeds';
+        if (!showSimulation || (!bypassYearSeasonCheck && (filterYear === 'All' || filterSeason === 'All')) || Object.keys(groupedData).length === 0) {
             return groupedData;
         }
 
@@ -1321,7 +1364,7 @@ function PostseasonSimulator({ performances, isBetter, manifest, loadTeamData })
 
     const optimizedTeamScores = useMemo(() => {
         if (!showSimulation) return null;
-        if (filterYear === 'All' || filterSeason === 'All') return { incomplete: true };
+        if (scoreMethod !== 'Seeds' && (filterYear === 'All' || filterSeason === 'All')) return { incomplete: true };
 
         const scores = { boys: {}, girls: {} };
 
@@ -1565,6 +1608,7 @@ function PostseasonSimulator({ performances, isBetter, manifest, loadTeamData })
                         <select value={scoreMethod} onChange={e => setScoreMethod(e.target.value)}>
                             <option value="PR">Season Best (SB)</option>
                             <option value="Median">Median Result</option>
+                            <option value="Seeds">Actual Seeds (5/29)</option>
                         </select>
                     </div>
                     <div className="simulation-actions">
@@ -1575,7 +1619,7 @@ function PostseasonSimulator({ performances, isBetter, manifest, loadTeamData })
                             {showSimulation ? 'Reset' : 'Simulate'}
                         </button>
                     </div>
-                    <div className="record-count">{filteredData.length} Results</div>
+                    <div className="record-count">{scoreMethod === 'Seeds' ? `${seedPerfs.length} Seeds` : `${filteredData.length} Results`}</div>
                 </div>
             </div>
 

@@ -362,10 +362,10 @@ class Sub5ColumnParser:
                     yr_idx = line.find("Yr") if "Yr" in line else line.find("Year")
                     header_row_idx = i
             else:
-                if ("School" in line or "Team" in line) and ("Finals" in line or "Prelims" in line):
+                if ("School" in line or "Team" in line) and ("Finals" in line or "Prelims" in line or "Seed" in line):
                     school_idx = line.find("School") if "School" in line else line.find("Team")
                     header_row_idx = i
-            
+
             if header_row_idx != -1:
                 if "Finals" in line:
                     anchor_col = line.find("Finals") + len("Finals")
@@ -373,6 +373,9 @@ class Sub5ColumnParser:
                 elif "Prelims" in line:
                     anchor_col = line.find("Prelims") + len("Prelims")
                     anchor_type = "Prelims"
+                elif "Seed" in line:
+                    anchor_col = line.find("Seed") + len("Seed")
+                    anchor_type = "Seed"
                 
                 # Check for columns to the right of the result to establish a boundary
                 # "Wind" appears immediately after the mark in HY-TEK wind-legal meets;
