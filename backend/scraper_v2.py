@@ -285,10 +285,40 @@ class Sub5ScraperV2:
         if not name: return ""
         name = name.strip()
         name = re.sub(r'^[\s#\-]*\d+[\s.\-]*', '', name).strip()
+        
+        # Check manual fixes on the raw cleaned name first
         for ac in self.manual_fixes.get('athlete_corrections', []):
             if ac['old_name'].lower() == name.lower():
                 return ac['new_name']
+                
+        # Pre-clean duplicate/surrounding commas
+        name = re.sub(r',+', ',', name).strip(', ')
+
+        # Handle "Last, First" -> "First Last" format conversion
+        if "," in name:
+            parts = [p.strip() for p in name.split(',', 1)]
+            if len(parts) == 2:
+                last_name, first_name = parts[0], parts[1]
+                # Remove leftover commas in names
+                last_name = last_name.replace(',', '').strip()
+                first_name = first_name.replace(',', '').strip()
+                if last_name and first_name:
+                    # Look for class year / suffix at the end of first_name (e.g., "JR", "SR", "SO", "FR", "II", "III")
+                    suffix_match = re.search(r'\s+(JR|SR|SO|FR|I|II|III|IV|JR\.|SR\.)$', first_name, re.IGNORECASE)
+                    if suffix_match:
+                        suffix = suffix_match.group(0)
+                        first_name_clean = first_name[:-len(suffix)].strip()
+                        name = f"{first_name_clean} {last_name}{suffix}"
+                    else:
+                        name = f"{first_name} {last_name}"
+                        
+        # Check manual fixes again on the normalized name
+        for ac in self.manual_fixes.get('athlete_corrections', []):
+            if ac['old_name'].lower() == name.lower():
+                return ac['new_name']
+                
         return name
+
 
     def is_date_in_season(self, date_str, season, year):
         if not date_str: return False
@@ -528,7 +558,7 @@ class Sub5ScraperV2:
                         results_list = event_block.get("results", [])
                     else:
                         full_event = event_block.get("event", "").strip()
-                        is_relay = "Relay" in full_event
+                        is_relay = "Relay" in full_event or "4x" in full_event.lower()
                         results_list = [event_block]
 
                     for r in results_list:
@@ -537,7 +567,9 @@ class Sub5ScraperV2:
                         mark = r.get("result") or r.get("mark") or ""
                         relay_athletes = r.get("athletes", [])
                         if is_relay:
-                            if relay_athletes: athlete_name = ", ".join(relay_athletes)
+                            if relay_athletes:
+                                normalized_athletes = [self.normalize_athlete_name(ra) for ra in relay_athletes]
+                                athlete_name = ", ".join(normalized_athletes)
                             elif not athlete_name: athlete_name = f"{school} Relay"
                             # Reject relay records whose school field looks like "LastName, FirstName ..."
                             # — these are individual-event rows from two-column PDFs that bled into
@@ -545,7 +577,8 @@ class Sub5ScraperV2:
                             if re.match(r'^[A-Za-z][A-Za-z\'-]+,\s+[A-Za-z]', school):
                                 continue
 
-                        athlete_name = self.normalize_athlete_name(athlete_name)
+                        if not is_relay:
+                            athlete_name = self.normalize_athlete_name(athlete_name)
                         if not athlete_name or not mark or mark.upper() in ["DNS", "SCR"]: continue
 
                         # Reject marks whose format contradicts the event type:
