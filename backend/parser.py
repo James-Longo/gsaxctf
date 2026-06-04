@@ -273,13 +273,25 @@ class Sub5ColumnParser:
         # Segment into events
         events = []
         current_event = None
+        rankings_start_idx = None
         
         for i, line in enumerate(lines):
             line_clean = line.strip()
             # Check for end of results / start of team rankings
             if "Team Rankings" in line_clean and ("Men" in line_clean or "Women" in line_clean or "Boys" in line_clean or "Girls" in line_clean):
-                # Stop parsing as we hit the team scores summary
-                break
+                # Record where rankings start and stop parsing events
+                if rankings_start_idx is None:
+                    rankings_start_idx = i
+                # Don't break — we still need to append the last current_event
+                if current_event:
+                    events.append(current_event)
+                    current_event = None
+                continue
+
+            # Once we're past the first Team Rankings header, skip remaining lines
+            # (they belong to the rankings section, handled by parse_team_rankings)
+            if rankings_start_idx is not None:
+                continue
 
             # Header pattern: "Event 1  Girls 4x800 Meter Relay" or "Girls 55 Meter Dash"
             m_event = re.search(r'Event\s+\d+\s+(Girls|Boys|Women|Men|Mixed)\s+(.*)', line_clean, re.IGNORECASE)
@@ -335,12 +347,90 @@ class Sub5ColumnParser:
                     "is_relay": ev["is_relay"],
                     "results": results
                 })
-                
+
+        # Parse official team rankings from the bottom of the file
+        team_rankings = self.parse_team_rankings(lines, rankings_start_idx)
+
         return {
             "meet_name": meet_name,
             "date": meet_date,
-            "events": parsed_events
+            "events": parsed_events,
+            "team_rankings": team_rankings
         }
+
+    @staticmethod
+    def parse_team_rankings(lines, start_idx):
+        """Parse official team rankings from the 'Team Rankings' section.
+
+        Returns a list of dicts, one per gender block:
+            [
+                {
+                    "gender": "Girls" | "Boys",
+                    "events_scored": int,
+                    "teams": [{"rank": int, "team": str, "score": float}, ...]
+                },
+                ...
+            ]
+        """
+        if start_idx is None:
+            return []
+
+        rankings = []
+        current_block = None
+
+        for line in lines[start_idx:]:
+            stripped = line.strip()
+
+            # Detect ranking header: "Women - Team Rankings - 19 Events Scored"
+            m_header = re.match(
+                r'(Women|Men|Girls|Boys)\s*-\s*Team Rankings\s*-\s*(\d+)\s*Events?\s*Scored',
+                stripped, re.IGNORECASE
+            )
+            if m_header:
+                gender = m_header.group(1).strip()
+                if gender.lower() == 'women':
+                    gender = 'Girls'
+                elif gender.lower() == 'men':
+                    gender = 'Boys'
+                current_block = {
+                    'gender': gender,
+                    'events_scored': int(m_header.group(2)),
+                    'teams': []
+                }
+                rankings.append(current_block)
+                continue
+
+            if not current_block:
+                continue
+
+            # Skip separator lines
+            if '=====' in stripped or not stripped:
+                continue
+
+            # Parse team ranking entries.  HY-TEK formats them as:
+            #   "    1) Brunswick High School      215        2) Medomak Valley High Schoo 110"
+            # There can be 1 or 2 entries per line.  Team names may be
+            # truncated, leaving only 1 space before the score.  Scores
+            # can have decimals (e.g. "247.33").
+            # Strategy: split the line at "N) " boundaries to isolate
+            # individual entries, then extract rank, team, and score.
+            entries = re.split(r'(?=\d+\)\s)', stripped)
+            for entry in entries:
+                entry = entry.strip()
+                if not entry:
+                    continue
+                m = re.match(r'(\d+)\)\s+(.*?)\s+(\d+(?:\.\d+)?)\s*$', entry)
+                if m:
+                    rank = int(m.group(1))
+                    team = m.group(2).strip()
+                    score = float(m.group(3))
+                    current_block['teams'].append({
+                        'rank': rank,
+                        'team': team,
+                        'score': score
+                    })
+
+        return rankings
 
     def parse_event_block(self, ev):
         lines = ev["lines"]
@@ -558,6 +648,8 @@ class Sub5ColumnParser:
                                 m_school = re.search(r'\S', school_area)
                                 if m_school:
                                     school_raw = school_area[m_school.start():].strip()
+                                    if grade_val and school_raw.startswith(grade_val + " "):
+                                        school_raw = school_raw[len(grade_val):].strip()
                                     school_val = re.sub(r'^\d+\s+', '', school_raw).strip()
                                     # Take only the first part if it splits by large gaps
                                     school_val = re.split(r'\s{2,}', school_val)[0].strip()
