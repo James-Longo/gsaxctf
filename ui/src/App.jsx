@@ -61,7 +61,7 @@ function App() {
         // Find default team slug
         const defaultTeam = manifestData.teams.find(t => t.name === selectedTeam) || manifestData.teams[0];
         if (defaultTeam) {
-           loadTeamData(defaultTeam.slug, null, defaultTeam.seasons);
+           loadTeamData(defaultTeam.slug, null, defaultTeam.seasons, defaultTeam.name);
         }
         setDataLoaded(true);
       } catch (err) {
@@ -72,12 +72,19 @@ function App() {
   }, [])
 
   // Team data is chunked per season: /data/teams/{slug}/{year}_{season}.json.
+  // Rows are stored slim (no team/year/season/id fields — they're derivable);
+  // enrich them here to the full shape the components expect.
   // chunkKeys limits which season chunks load (null = all seasons the team has);
   // seasonsHint lets callers pass the team's season list before manifest state lands.
+  const slugifyAthlete = (name, team) => {
+    const raw = `${name.toLowerCase()}--${team.toLowerCase()}`;
+    return raw.replace(/[^a-zA-Z0-9_]/g, '-').replace(/-+/g, '-').replace(/^-|-$/g, '');
+  };
   const inFlight = useRef(new Set());
-  const loadTeamData = async (slug, chunkKeys = null, seasonsHint = null) => {
+  const loadTeamData = async (slug, chunkKeys = null, seasonsHint = null, nameHint = null) => {
     const team = manifest.teams?.find(t => t.slug === slug);
     const seasons = seasonsHint || team?.seasons || [];
+    const teamName = nameHint || team?.name || slug.replace(/_/g, ' ');
     const wanted = chunkKeys ? seasons.filter(s => chunkKeys.includes(s)) : seasons;
     await Promise.all(wanted.map(async (key) => {
       const cacheKey = `${slug}|${key}`;
@@ -86,6 +93,16 @@ function App() {
       try {
         const res = await fetch(`/data/teams/${slug}/${key}.json`);
         const data = await res.json();
+        const [year, season] = [key.slice(0, key.indexOf('_')), key.slice(key.indexOf('_') + 1)];
+        data.forEach((p, i) => {
+          if (!p.team) p.team = teamName;
+          if (!p.year) p.year = year;
+          if (!p.season) p.season = season;
+          if (!p.splits) p.splits = [];
+          if (p.date && p.date !== 'Unknown' && !p.date.includes('T')) p.date = p.date + 'T12:00:00';
+          if (!p.athlete_id) p.athlete_id = slugifyAthlete(p.athlete_name || '', teamName);
+          if (!p.id) p.id = `${slug}|${key}|${i}`;
+        });
         setLoadedSeasons(prev => ({ ...prev, [cacheKey]: data }));
       } catch (err) {
         console.error(`Failed to load team data for ${slug} ${key}:`, err);
@@ -110,17 +127,17 @@ function App() {
       const years = filterYear !== 'All' ? [filterYear] : [latestYear];
       const types = filterSeasonType !== 'All' ? [filterSeasonType] : ['Indoor', 'Outdoor'];
       const wanted = years.flatMap(y => types.map(t => `${y}_${t}`));
-      manifest.teams.forEach(t => loadTeamData(t.slug, wanted, t.seasons));
+      manifest.teams.forEach(t => loadTeamData(t.slug, wanted, t.seasons, t.name));
     } else {
       const team = manifest.teams.find(t => t.name === selectedTeam);
-      if (team) loadTeamData(team.slug, null, team.seasons);
+      if (team) loadTeamData(team.slug, null, team.seasons, team.name);
     }
   }, [selectedTeam, manifest, filterYear, filterSeasonType]);
 
   useEffect(() => {
     if (selectedAthlete && selectedAthlete.id !== 'all' && selectedAthlete.primary_team) {
       const team = manifest.teams?.find(t => t.name === selectedAthlete.primary_team);
-      if (team) loadTeamData(team.slug, null, team.seasons);
+      if (team) loadTeamData(team.slug, null, team.seasons, team.name);
     }
   }, [selectedAthlete, manifest]);
 
@@ -276,7 +293,7 @@ function App() {
 
   useEffect(() => {
     if (activeTab !== 'splits' || !manifest.teams) return;
-    manifest.teams.filter(t => t.has_splits).forEach(t => loadTeamData(t.slug, null, t.seasons));
+    manifest.teams.filter(t => t.has_splits).forEach(t => loadTeamData(t.slug, null, t.seasons, t.name));
   }, [activeTab, manifest]);
 
   useEffect(() => {

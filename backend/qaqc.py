@@ -62,14 +62,19 @@ def load_all_performances():
     by_file = {}
     if not os.path.exists(TEAMS_DIR):
         return all_perfs, by_file
+    import sys as _sys
+    _sys.path.insert(0, os.path.join(BASE_DIR, 'backend'))
+    from json_store import enrich_rows, canonical_team_name
     for fn in sorted(os.listdir(TEAMS_DIR)):
         path = os.path.join(TEAMS_DIR, fn)
         perfs = []
         try:
             if os.path.isdir(path):
+                team_name = canonical_team_name(fn)
                 for chunk in sorted(os.listdir(path)):
                     if chunk.endswith('.json'):
-                        perfs.extend(json.load(open(os.path.join(path, chunk), encoding='utf-8')))
+                        rows = json.load(open(os.path.join(path, chunk), encoding='utf-8'))
+                        perfs.extend(enrich_rows(team_name, chunk[:-5], rows))
                 by_file[fn + '.json'] = perfs
             elif fn.endswith('.json'):
                 perfs = json.load(open(path, encoding='utf-8'))
@@ -1111,6 +1116,128 @@ def check_meet_scoring():
 
 
 # ---------------------------------------------------------------------------
+# 13-15. Incorrect-entry detection
+# ---------------------------------------------------------------------------
+
+def check_athlete_outliers(all_perfs, flags_out):
+    """An athlete's marks in one event cluster tightly; a mark hugely better
+    than their own median is usually a parse error (wrong column, dropped
+    digit, misattributed row) — HS athletes don't improve 25%+ overnight."""
+    print('13. PER-ATHLETE OUTLIER MARKS')
+    groups = defaultdict(list)
+    for p in all_perfs:
+        ev = p.get('event', '')
+        val, is_dist = parse_mark_value(p.get('mark', ''), ev)
+        if val is not None:
+            groups[(p.get('athlete_id'), ev)].append((val, is_dist, p))
+
+    suspects = []
+    for (aid, ev), rows in groups.items():
+        if len(rows) < 4:
+            continue
+        vals = sorted(v for v, _, _ in rows)
+        median = vals[len(vals) // 2]
+        if median <= 0:
+            continue
+        for val, is_dist, p in rows:
+            # flag only the "impossibly good" direction: much faster time or
+            # much longer distance than the athlete's own median
+            ratio = (val / median) if is_dist else (median / val)
+            if ratio >= 1.30:
+                suspects.append((p, val, median, ratio))
+
+    if suspects:
+        print(f'   [ALERT] {len(suspects)} marks are 30%+ better than the athlete\'s own median:')
+        suspects.sort(key=lambda x: -x[3])
+        for p, val, med, ratio in suspects[:10]:
+            print(f"     {p.get('athlete_name','')[:28]:30s} {p.get('event','')[:26]:28s} "
+                  f"{p.get('mark')}  (median {med:.1f}, {ratio:.2f}x)  [{p.get('year')} {p.get('meet_name','')[:24]}]")
+        if len(suspects) > 10:
+            print(f'     ... and {len(suspects)-10} more.')
+        for p, val, med, ratio in suspects:
+            flags_out.append({'check': 'athlete-outlier', 'athlete': p.get('athlete_name'),
+                              'team': p.get('team'), 'event': p.get('event'),
+                              'mark': p.get('mark'), 'median': round(med, 2),
+                              'ratio': round(ratio, 2), 'meet': p.get('meet_name'),
+                              'year': p.get('year'), 'season': p.get('season'),
+                              'perf_id': p.get('id')})
+    else:
+        print('   [OK] No per-athlete outlier marks.')
+    print()
+
+
+def check_duplicate_meets(all_perfs, flags_out):
+    """The same meet ingested twice under different filenames (Results.htm +
+    Results-1.htm, corrected_* reposts) doubles performances and corrupts PRs.
+    Two meets in the same season sharing most (athlete, event, mark) rows are
+    duplicates."""
+    print('14. DUPLICATE MEET INGESTION')
+    meets = defaultdict(set)
+    for p in all_perfs:
+        key = (p.get('year'), p.get('season'), p.get('meet_name'))
+        meets[key].add((p.get('athlete_id'), p.get('event'), p.get('mark')))
+
+    by_season = defaultdict(list)
+    for (year, season, meet), rows in meets.items():
+        if len(rows) >= 20:
+            by_season[(year, season)].append((meet, rows))
+
+    dupes = []
+    for (year, season), meet_list in by_season.items():
+        for i in range(len(meet_list)):
+            for j in range(i + 1, len(meet_list)):
+                m1, r1 = meet_list[i]
+                m2, r2 = meet_list[j]
+                inter = len(r1 & r2)
+                smaller = min(len(r1), len(r2))
+                if smaller and inter / smaller >= 0.6:
+                    dupes.append((year, season, m1, m2, inter, smaller))
+
+    if dupes:
+        print(f'   [ALERT] {len(dupes)} meet pairs look like double ingestion:')
+        for year, season, m1, m2, inter, smaller in sorted(dupes, key=lambda x: -x[4])[:10]:
+            print(f'     [{year} {season}] "{m1}" <-> "{m2}"  ({inter}/{smaller} identical rows)')
+        if len(dupes) > 10:
+            print(f'     ... and {len(dupes)-10} more.')
+        for year, season, m1, m2, inter, smaller in dupes:
+            flags_out.append({'check': 'duplicate-meet', 'year': year, 'season': season,
+                              'meet_a': m1, 'meet_b': m2,
+                              'shared_rows': inter, 'smaller_meet_rows': smaller})
+    else:
+        print('   [OK] No duplicate meet ingestion detected.')
+    print()
+
+
+def check_gender_bleed(all_perfs, flags_out):
+    """The same athlete appearing in Girls AND Boys events within one meet
+    means an event header's gender bled into the wrong section."""
+    print('15. GENDER BLEED (same athlete in both genders in one meet)')
+    seen = defaultdict(set)
+    for p in all_perfs:
+        ev = p.get('event', '')
+        g = 'Girls' if ev.startswith('Girls') else 'Boys' if ev.startswith('Boys') else None
+        if not g or ',' in (p.get('athlete_name') or ''):  # skip relay rosters
+            continue
+        seen[(p.get('athlete_id'), p.get('year'), p.get('season'), p.get('meet_name'))].add(g)
+
+    bleeds = [k for k, gs in seen.items() if len(gs) == 2]
+    if bleeds:
+        by_meet = defaultdict(int)
+        for aid, year, season, meet in bleeds:
+            by_meet[(year, season, meet)] += 1
+        print(f'   [WARN] {len(bleeds)} athletes appear in both genders within one meet '
+              f'({len(by_meet)} meets):')
+        for (year, season, meet), n in sorted(by_meet.items(), key=lambda kv: -kv[1])[:10]:
+            print(f'     [{year} {season}] {meet}: {n} athletes')
+        for (year, season, meet), n in by_meet.items():
+            flags_out.append({'check': 'gender-bleed', 'year': year, 'season': season,
+                              'meet': meet, 'athletes_affected': n})
+    else:
+        print('   [OK] No gender bleed detected.')
+    print()
+
+
+# ---------------------------------------------------------------------------
 # 12. Result order sanity
 # ---------------------------------------------------------------------------
 
@@ -1232,6 +1359,18 @@ def run_qaqc():
     check_meet_scoring()
     print(SEPARATOR)
     check_result_order()
+    print(SEPARATOR)
+    flags = []
+    check_athlete_outliers(all_perfs, flags)
+    print(SEPARATOR)
+    check_duplicate_meets(all_perfs, flags)
+    print(SEPARATOR)
+    check_gender_bleed(all_perfs, flags)
+    print(SEPARATOR)
+    flags_path = os.path.join(BASE_DIR, 'backend', 'data', 'qaqc_flags.json')
+    with open(flags_path, 'w', encoding='utf-8') as f:
+        json.dump(flags, f, indent=1, ensure_ascii=False)
+    print(f'{len(flags)} incorrect-entry flags written to backend/data/qaqc_flags.json')
     print(SEPARATOR)
     print('QA/QC complete.')
 

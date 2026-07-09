@@ -489,6 +489,41 @@ class Sub5ScraperV2:
             return True
         return False
 
+    _EVENT_METERS = re.compile(r'(\d{2,4})\s*(?:m\b|meter)', re.I)
+
+    def repair_mark(self, mark, event):
+        """Repair colon-loss in running-event times: an 800m '2.28' is 2:28.
+
+        Returns (possibly repaired) mark, or None when the mark is physically
+        impossible for the event even after repair."""
+        ev = event.lower()
+        if any(k in ev for k in ('jump', 'put', 'vault', 'discus', 'javelin', 'throw')):
+            return mark
+        meters = None
+        m = self._EVENT_METERS.search(event)
+        if m:
+            meters = int(m.group(1))
+            if '4x' in ev.replace(' ', ''):
+                meters *= 4
+        elif 'mile' in ev:
+            meters = 1609 * (2 if '2 mile' in ev else 1)
+        if not meters or meters < 200:
+            return mark
+        floor = meters * 0.095  # slightly faster than world record pace
+        mm = re.fullmatch(r'(\d{1,2})\.(\d{2})(?:\.\d+)?', str(mark).strip())
+        val = None
+        try:
+            val = float(str(mark).strip()) if ':' not in str(mark) else None
+        except ValueError:
+            pass
+        if val is not None and val < floor and mm:
+            repaired = int(mm.group(1)) * 60 + int(mm.group(2))
+            if floor <= repaired <= meters * 0.7:
+                return f'{mm.group(1)}:{mm.group(2)}'
+        if val is not None and val < floor:
+            return None  # impossible even after repair
+        return mark
+
     def team_name_is_sane(self, team):
         """Reject 'team' names that are really leaked result rows or athlete names."""
         if not team or team == "Unknown":
@@ -1109,6 +1144,8 @@ class Sub5ScraperV2:
                                 continue
                         if not athlete_name or not mark or mark.upper() in ["DNS", "SCR"]: continue
                         if not self.mark_is_valid_format(mark): continue
+                        mark = self.repair_mark(mark, full_event)
+                        if mark is None: continue
 
                         # Reject marks whose format contradicts the event type:
                         # time-format (M:SS.ss) in a field event, or distance-format (F-I) in a running event.
@@ -1322,6 +1359,37 @@ class Sub5ScraperV2:
                 'splits': pc.get('splits', [])
             }
             collector.setdefault(team_name, []).append(p)
+
+        # Drop double-ingested meets: the same meet posted under two filenames
+        # (Results.htm + Results-1.htm, corrected_* reposts, boys/girls copies
+        # of a combined file) shares most rows — keep the larger file.
+        meet_rows = {}
+        for perfs in collector.values():
+            for p in perfs:
+                key = (p['year'], p['season'], p['meet_name'])
+                meet_rows.setdefault(key, set()).add((p['athlete_id'], p['event'], p['mark']))
+        by_season = {}
+        for key, rows in meet_rows.items():
+            if len(rows) >= 20:
+                by_season.setdefault(key[:2], []).append((key, rows))
+        drop_meets = set()
+        for pairs in by_season.values():
+            for i in range(len(pairs)):
+                for j in range(i + 1, len(pairs)):
+                    (k1, r1), (k2, r2) = pairs[i], pairs[j]
+                    if k1 in drop_meets or k2 in drop_meets:
+                        continue
+                    smaller = min(len(r1), len(r2))
+                    if smaller and len(r1 & r2) / smaller >= 0.6:
+                        loser = k1 if len(r1) < len(r2) or \
+                            (len(r1) == len(r2) and k1[2] < k2[2]) else k2
+                        drop_meets.add(loser)
+        if drop_meets:
+            self.report_progress(f'Dropping {len(drop_meets)} double-ingested meets '
+                                 f'(e.g. {sorted(m[2] for m in drop_meets)[:3]})')
+            for team in collector:
+                collector[team] = [p for p in collector[team]
+                                   if (p['year'], p['season'], p['meet_name']) not in drop_meets]
 
         # Single commit: one load + dedup + PR recalc + write per team.
         self.report_progress(f"Committing {sum(len(v) for v in collector.values()):,} performances to {len(collector)} team files...")

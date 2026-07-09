@@ -222,6 +222,24 @@ def _load_json(path: str, default):
 # Public API
 # ---------------------------------------------------------------------------
 
+_SLUG_TO_CANONICAL = None
+
+def canonical_team_name(dir_name: str) -> str:
+    """Map a team directory name back to the canonical team name (with
+    punctuation) using the team registry; falls back to underscore->space."""
+    global _SLUG_TO_CANONICAL
+    if _SLUG_TO_CANONICAL is None:
+        _SLUG_TO_CANONICAL = {}
+        reg_path = os.path.join(BASE_DIR, 'backend', 'data', 'team_registry.json')
+        try:
+            reg = _load_json(reg_path, {})
+            for canon in reg.get('teams', {}):
+                _SLUG_TO_CANONICAL[slugify_team(canon)] = canon
+        except Exception:
+            pass
+    return _SLUG_TO_CANONICAL.get(dir_name, dir_name.replace('_', ' '))
+
+
 def team_path(team_name: str) -> str:
     """Legacy flat-file path (pre-chunking). Kept for migration reads."""
     return os.path.join(TEAMS_DIR, slugify_team(team_name) + '.json')
@@ -235,21 +253,56 @@ def _chunk_key(p: dict) -> str:
     return f"{p.get('year') or 'Unknown'}_{p.get('season') or 'Unknown'}"
 
 
+# Fields stripped from stored rows because they're derivable from the chunk
+# path (team, year, season) or from other fields (athlete_id, id). Stripping
+# them halves the deployed JSON size; enrich_rows() restores them on read.
+def slim_row(p: dict) -> dict:
+    out = {k: v for k, v in p.items()
+           if k not in ('team', 'season', 'year', 'athlete_id', 'id')}
+    if not out.get('splits'):
+        out.pop('splits', None)
+    d = out.get('date', '')
+    if isinstance(d, str) and d.endswith('T12:00:00'):
+        out['date'] = d[:10]
+    return out
+
+
+def enrich_rows(team_name: str, chunk_key: str, rows: list) -> list:
+    """Rebuild the full performance dicts from a slim chunk."""
+    year, _, season = chunk_key.partition('_')
+    for p in rows:
+        p.setdefault('team', team_name)
+        p.setdefault('year', year)
+        p.setdefault('season', season)
+        p.setdefault('splits', [])
+        d = p.get('date', '')
+        if d and d != 'Unknown' and 'T' not in d:
+            p['date'] = d + 'T12:00:00'
+        if 'athlete_id' not in p:
+            p['athlete_id'] = slugify_athlete(p.get('athlete_name', ''), team_name)
+        if 'id' not in p:
+            p['id'] = make_perf_id(p['athlete_id'], p.get('event', ''),
+                                   p.get('mark', ''), p.get('date', ''),
+                                   p.get('meet_name', ''))
+    return rows
+
+
 def load_team(team_name: str) -> list:
-    """Load all performances for a team (all season chunks concatenated).
-    Falls back to the legacy single-file layout if no chunk dir exists."""
+    """Load all performances for a team (all season chunks concatenated,
+    enriched back to full rows). Falls back to the legacy flat layout."""
     d = team_dir(team_name)
     if os.path.isdir(d):
         perfs = []
         for fn in sorted(os.listdir(d)):
             if fn.endswith('.json'):
-                perfs.extend(_load_json(os.path.join(d, fn), []))
+                rows = _load_json(os.path.join(d, fn), [])
+                perfs.extend(enrich_rows(team_name, fn[:-5], rows))
         return perfs
     return _load_json(team_path(team_name), [])
 
 
 def save_team(team_name: str, performances: list):
-    """Save a team's performances as per-season chunk files:
+    """Save a team's performances as slimmed per-season chunk files:
     teams/{TeamSlug}/{year}_{season}.json — small enough for the UI to
     lazy-load only the seasons it needs. Stale chunks and the legacy flat
     file are removed."""
@@ -257,7 +310,7 @@ def save_team(team_name: str, performances: list):
     os.makedirs(d, exist_ok=True)
     by_chunk = {}
     for p in performances:
-        by_chunk.setdefault(_chunk_key(p), []).append(p)
+        by_chunk.setdefault(_chunk_key(p), []).append(slim_row(p))
     for key, perfs in by_chunk.items():
         _atomic_write(os.path.join(d, key + '.json'), perfs)
     wanted = {key + '.json' for key in by_chunk}
@@ -309,9 +362,9 @@ def list_teams() -> list:
     for fn in sorted(os.listdir(TEAMS_DIR)):
         full = os.path.join(TEAMS_DIR, fn)
         if os.path.isdir(full):
-            names.append(fn.replace('_', ' '))
+            names.append(canonical_team_name(fn))
         elif fn.endswith('.json'):
-            names.append(fn[:-5].replace('_', ' '))
+            names.append(canonical_team_name(fn[:-5]))
     return names
 
 
@@ -383,7 +436,7 @@ def rebuild_manifest() -> dict:
         if not os.path.isdir(full):
             continue
         slug = fn
-        team_name = fn.replace('_', ' ')
+        team_name = canonical_team_name(fn)
         seasons = []
         count = 0
         has_splits = False
@@ -398,7 +451,6 @@ def rebuild_manifest() -> dict:
             if 'Unknown' not in key:
                 all_seasons.add(key)
             count += len(perfs)
-            team_name = perfs[0].get('team', team_name)
             if not has_splits and any(bool(p.get('splits')) for p in perfs):
                 has_splits = True
         teams_meta.append({

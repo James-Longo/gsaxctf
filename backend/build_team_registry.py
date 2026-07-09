@@ -151,6 +151,7 @@ def load_team_stats():
                 perfs = json.load(open(os.path.join(full, chunk), encoding='utf-8'))
             except Exception:
                 continue
+            year, _, season = chunk[:-5].partition('_')
             count += len(perfs)
             ms += sum(1 for p in perfs if p.get('grade') == 'MS')
             for p in perfs:
@@ -158,7 +159,7 @@ def load_team_stats():
                 # skip relay pseudo-athletes and comma-joined relay rosters
                 if not a or ',' in a or a.endswith(' Relay'):
                     continue
-                roster[(p.get('year'), p.get('season'))].add(a.lower())
+                roster[(year, season)].add(a.lower())
         stats[name] = (count, ms / count if count else 0.0)
         rosters[name] = dict(roster)
     return stats, rosters
