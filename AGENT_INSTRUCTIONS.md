@@ -41,10 +41,16 @@ Run from the repo root:
   plus mark-order sanity) to `backend/data/meet_verification.json`.
 
 ### 2. Deployment
-**CRITICAL:** Always run Vercel deployments from the **root directory**, not the `ui` directory.
-```powershell
-npx vercel --prod
+**CRITICAL:** Always run Vercel deployments from the **root directory**, not the `ui` directory,
+and always with `--archive=tgz` (the store has ~11k chunk files; Vercel's free tier caps
+raw uploads at 5,000 files):
 ```
+npx vercel --prod --archive=tgz
+```
+The store is gzipped on disk (`teams/{slug}/{year}_{season}.json.gz`, `athletes.json.gz`) to
+stay under Vercel's 500MB bundle cap; the UI decompresses with DecompressionStream and
+re-derives the slim rows' team/year/season/id fields on load (see `loadTeamData` in App.jsx
+and `json_store.slim_row`/`enrich_rows`).
 
 ### 3. Split Support
 Split data is stored as a JSON string in the `splits` column of the `performances` table in the database. When exporting to `data.json`, ensure they are parsed back into JSON arrays (handled in `export_for_web.py`). The parser detects splits formatted as `Cumulative (Split)` (e.g., `1:11.703 (35.439)`).
