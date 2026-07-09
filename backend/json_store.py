@@ -223,17 +223,50 @@ def _load_json(path: str, default):
 # ---------------------------------------------------------------------------
 
 def team_path(team_name: str) -> str:
+    """Legacy flat-file path (pre-chunking). Kept for migration reads."""
     return os.path.join(TEAMS_DIR, slugify_team(team_name) + '.json')
 
 
+def team_dir(team_name: str) -> str:
+    return os.path.join(TEAMS_DIR, slugify_team(team_name))
+
+
+def _chunk_key(p: dict) -> str:
+    return f"{p.get('year') or 'Unknown'}_{p.get('season') or 'Unknown'}"
+
+
 def load_team(team_name: str) -> list:
-    """Load all performances for a team. Returns [] if file doesn't exist."""
+    """Load all performances for a team (all season chunks concatenated).
+    Falls back to the legacy single-file layout if no chunk dir exists."""
+    d = team_dir(team_name)
+    if os.path.isdir(d):
+        perfs = []
+        for fn in sorted(os.listdir(d)):
+            if fn.endswith('.json'):
+                perfs.extend(_load_json(os.path.join(d, fn), []))
+        return perfs
     return _load_json(team_path(team_name), [])
 
 
 def save_team(team_name: str, performances: list):
-    """Save (and overwrite) a team's performance list atomically."""
-    _atomic_write(team_path(team_name), performances)
+    """Save a team's performances as per-season chunk files:
+    teams/{TeamSlug}/{year}_{season}.json — small enough for the UI to
+    lazy-load only the seasons it needs. Stale chunks and the legacy flat
+    file are removed."""
+    d = team_dir(team_name)
+    os.makedirs(d, exist_ok=True)
+    by_chunk = {}
+    for p in performances:
+        by_chunk.setdefault(_chunk_key(p), []).append(p)
+    for key, perfs in by_chunk.items():
+        _atomic_write(os.path.join(d, key + '.json'), perfs)
+    wanted = {key + '.json' for key in by_chunk}
+    for fn in os.listdir(d):
+        if fn.endswith('.json') and fn not in wanted:
+            os.remove(os.path.join(d, fn))
+    legacy = team_path(team_name)
+    if os.path.exists(legacy):
+        os.remove(legacy)
 
 
 def load_athletes() -> dict:
@@ -268,12 +301,16 @@ def save_manifest(manifest: dict):
 
 
 def list_teams() -> list:
-    """Return list of canonical team names from the teams directory."""
+    """Return list of canonical team names from the teams directory
+    (chunk dirs, plus any legacy flat files)."""
     if not os.path.exists(TEAMS_DIR):
         return []
     names = []
     for fn in sorted(os.listdir(TEAMS_DIR)):
-        if fn.endswith('.json'):
+        full = os.path.join(TEAMS_DIR, fn)
+        if os.path.isdir(full):
+            names.append(fn.replace('_', ' '))
+        elif fn.endswith('.json'):
             names.append(fn[:-5].replace('_', ' '))
     return names
 
@@ -327,38 +364,50 @@ def add_performances_for_team(team_name: str, new_perfs: list,
 
 def rebuild_manifest() -> dict:
     """
-    Regenerate manifest.json by scanning all team files.
-    Gathers available seasons and per-team performance counts.
+    Regenerate manifest.json by scanning all team chunk directories.
+    Gathers available seasons (= chunk files), per-team performance counts,
+    and each team's level (hs/ms/college) from the team registry.
     """
+    registry_teams = {}
+    reg_path = os.path.join(BASE_DIR, 'backend', 'data', 'team_registry.json')
+    try:
+        registry_teams = _load_json(reg_path, {}).get('teams', {})
+    except Exception:
+        pass
+
     teams_meta = []
     all_seasons = set()
 
     for fn in sorted(os.listdir(TEAMS_DIR)):
-        if not fn.endswith('.json'):
+        full = os.path.join(TEAMS_DIR, fn)
+        if not os.path.isdir(full):
             continue
-        perfs = _load_json(os.path.join(TEAMS_DIR, fn), [])
-        
-        # Use the team name from the first performance record for canonical naming
-        if perfs:
-            team_name = perfs[0].get('team', fn[:-5].replace('_', ' '))
-        else:
-            team_name = fn[:-5].replace('_', ' ')
-        
-        seasons = set()
-        for p in perfs:
-            year = p.get('year', '')
-            season = p.get('season', '')
-            if year and season:
-                key = f"{year}_{season}"
-                seasons.add(key)
+        slug = fn
+        team_name = fn.replace('_', ' ')
+        seasons = []
+        count = 0
+        has_splits = False
+        for chunk_fn in sorted(os.listdir(full)):
+            if not chunk_fn.endswith('.json'):
+                continue
+            key = chunk_fn[:-5]
+            perfs = _load_json(os.path.join(full, chunk_fn), [])
+            if not perfs:
+                continue
+            seasons.append(key)
+            if 'Unknown' not in key:
                 all_seasons.add(key)
-        has_splits = any(bool(p.get('splits')) for p in perfs)
+            count += len(perfs)
+            team_name = perfs[0].get('team', team_name)
+            if not has_splits and any(bool(p.get('splits')) for p in perfs):
+                has_splits = True
         teams_meta.append({
-            'slug': fn[:-5],
+            'slug': slug,
             'name': team_name,
-            'count': len(perfs),
+            'count': count,
             'seasons': sorted(seasons),
             'has_splits': has_splits,
+            'level': registry_teams.get(team_name, {}).get('level', 'hs'),
         })
 
     manifest = {

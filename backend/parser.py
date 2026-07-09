@@ -32,8 +32,12 @@ def normalize_grade(g):
 
 
 class Sub5ColumnParser:
-    def __init__(self, file_path):
+    def __init__(self, file_path, text=None):
+        """Parse from a file path, or directly from `text` (html or plain)
+        to avoid the temp-file round trip when the caller already has the
+        content in memory."""
         self.file_path = file_path
+        self.text = text
         self.headers = {'User-Agent': 'Mozilla/5.0'}
         self.standard_events = [
             # IMPORTANT: More-specific entries must precede their substrings.
@@ -99,8 +103,138 @@ class Sub5ColumnParser:
             return None
 
     @staticmethod
+    def pdf_words_to_text(pdf_path):
+        """Rebuild a PDF's text from word coordinates (PyMuPDF).
+
+        pdftotext -layout scrambles spreadsheet-style exports whose cells
+        aren't in reading order; regrouping words by y-position and spacing
+        them by x-position recovers a usable fixed-width layout. Returns
+        None if PyMuPDF is unavailable."""
+        try:
+            import fitz
+        except ImportError:
+            return None
+        try:
+            doc = fitz.open(pdf_path)
+        except Exception:
+            return None
+        out_lines = []
+        for page in doc:
+            rows = {}
+            for w in page.get_text('words'):
+                y = round(w[1] / 4)  # 4pt row tolerance
+                rows.setdefault(y, []).append(w)
+            for y in sorted(rows):
+                ws = sorted(rows[y], key=lambda w: w[0])
+                line = ''
+                for w in ws:
+                    col = int(w[0] / 3.5)  # ~average char width in points
+                    if len(line) < col:
+                        line += ' ' * (col - len(line))
+                    elif line and not line.endswith(' '):
+                        line += ' '
+                    line += w[4]
+                out_lines.append(line)
+            out_lines.append('')
+        return '\n'.join(out_lines)
+
     @staticmethod
+    def pdf_ocr_text(pdf_path, timeout=180):
+        """OCR an image-only PDF via pdftoppm + tesseract. Returns text or None."""
+        import shutil as _shutil
+        if not _shutil.which('tesseract') or not _shutil.which('pdftoppm'):
+            return None
+        import tempfile as _tf
+        out = []
+        try:
+            with _tf.TemporaryDirectory() as td:
+                subprocess.run(['pdftoppm', '-r', '300', '-png', pdf_path,
+                                os.path.join(td, 'pg')],
+                               capture_output=True, timeout=timeout)
+                pages = sorted(f for f in os.listdir(td) if f.endswith('.png'))
+                for pg in pages:
+                    r = subprocess.run(['tesseract', os.path.join(td, pg), '-'],
+                                       capture_output=True, text=True, timeout=timeout)
+                    if r.returncode == 0:
+                        out.append(r.stdout)
+        except Exception:
+            return None
+        return '\n'.join(out) if out else None
+
     @staticmethod
+    def pdf_column_text(pdf_path):
+        """Column-aware PDF text: detect vertical whitespace gaps in the word
+        x-positions and emit each column's text sequentially. Handles
+        hand-made dual-meet sheets laid out as 2-3 columns of event blocks."""
+        try:
+            import fitz
+        except ImportError:
+            return None
+        try:
+            doc = fitz.open(pdf_path)
+        except Exception:
+            return None
+        out = []
+        for page in doc:
+            words = page.get_text('words')
+            if not words:
+                continue
+            spans = sorted((w[0], w[2]) for w in words)
+            merged = []
+            for a, b in spans:
+                if merged and a <= merged[-1][1] + 25:
+                    merged[-1] = (merged[-1][0], max(merged[-1][1], b))
+                else:
+                    merged.append((a, b))
+            for cx0, cx1 in merged:
+                colwords = [w for w in words if cx0 - 1 <= w[0] < cx1 + 1]
+                rows = {}
+                for w in colwords:
+                    y = round(w[1] / 4)
+                    rows.setdefault(y, []).append(w)
+                for y in sorted(rows):
+                    ws = sorted(rows[y], key=lambda w: w[0])
+                    out.append(' '.join(w[4] for w in ws))
+                out.append('')
+        return '\n'.join(out)
+
+    @staticmethod
+    def split_pdf_columns(page_text):
+        """Detect side-by-side event columns in pdftotext -layout output and
+        re-emit them sequentially (column 1's lines, then column 2's, ...).
+
+        Multi-column pages repeat the 'Name ... Finals' header at distinct x
+        positions; without splitting, one line splices rows from 2-3
+        different events together."""
+        lines = page_text.splitlines()
+        positions = []
+        for l in lines:
+            for m in re.finditer(r'\bName\b', l):
+                positions.append(m.start())
+        if not positions:
+            return page_text
+        # cluster x-positions (within 3 chars)
+        clusters = []
+        for p in sorted(positions):
+            for c in clusters:
+                if abs(c[0] - p) <= 3:
+                    c.append(p)
+                    break
+            else:
+                clusters.append([p])
+        starts = sorted(min(c) for c in clusters if len(c) >= 1)
+        if len(starts) < 2:
+            return page_text
+        # column boundaries: a bit left of each 'Name' header (rank numbers
+        # sit ~4-6 chars before it)
+        bounds = [0] + [max(0, s - 6) for s in starts[1:]] + [10 ** 6]
+        columns = [[] for _ in range(len(bounds) - 1)]
+        for l in lines:
+            for i in range(len(bounds) - 1):
+                seg = l[bounds[i]:bounds[i + 1]].rstrip()
+                columns[i].append(seg)
+        return '\n'.join('\n'.join(col) for col in columns)
+
     @staticmethod
     def clean_pdf_text(text):
         """Strip PDF-specific artifacts so the column parser works normally.
@@ -119,7 +253,10 @@ class Sub5ColumnParser:
           After normalization all single-digit ranks have 2 leading spaces.
         - The meet date in the Hy-Tek header is extracted and prepended.
         """
-        text = text.replace("\x0c", "")
+        # Split multi-column pages before joining (page by page, since
+        # column boundaries can differ between pages)
+        pages = text.split("\x0c")
+        text = "\n".join(Sub5ColumnParser.split_pdf_columns(p) for p in pages)
 
         import re as _re
 
@@ -161,11 +298,11 @@ class Sub5ColumnParser:
         return "\n".join(cleaned_lines)
 
     def parse(self):
-        if not os.path.exists(self.file_path):
+        if self.text is None and not os.path.exists(self.file_path):
             return []
 
         # --- PDF handling ---
-        if self.file_path.lower().endswith('.pdf'):
+        if self.text is None and self.file_path.lower().endswith('.pdf'):
             raw_text = self.pdf_to_text(self.file_path)
             if raw_text is None:
                 print(f"Cannot parse PDF (pdftotext unavailable): {self.file_path}")
@@ -173,15 +310,20 @@ class Sub5ColumnParser:
             text = self.clean_pdf_text(raw_text)
             lines = text.splitlines()
         else:
-            with open(self.file_path, 'r', encoding='utf-8', errors='ignore') as f:
-                html_content = f.read()
+            if self.text is not None:
+                html_content = self.text
+            else:
+                with open(self.file_path, 'r', encoding='utf-8', errors='ignore') as f:
+                    html_content = f.read()
 
             soup = BeautifulSoup(html_content, 'html.parser')
 
-            # Try to find <pre> specifically if possible
-            pre = soup.find('pre')
-            if pre:
-                text = pre.get_text()
+            # Try to find <pre> specifically if possible.
+            # Older files (2003-2013) split one meet across several <pre>
+            # blocks, so join them all rather than taking just the first.
+            pres = soup.find_all('pre')
+            if pres:
+                text = "\n".join(p.get_text() for p in pres)
                 lines = text.splitlines()
             else:
                 # If no <pre>, extract from <p> or <div> tags
@@ -270,45 +412,44 @@ class Sub5ColumnParser:
             potential_dates.sort(key=lambda x: x[0], reverse=True)
             meet_date = potential_dates[0][1]
         
-        # Segment into events
+        # Segment into events.
+        # "Team Rankings" blocks can appear MID-FILE (e.g. girls rankings
+        # between the girls and boys sections), so rankings mode must end as
+        # soon as a new event header appears — otherwise everything after the
+        # first rankings block is silently dropped.
         events = []
         current_event = None
-        rankings_start_idx = None
-        
+        in_rankings = False
+        ranking_lines = []
+
         for i, line in enumerate(lines):
             line_clean = line.strip()
-            # Check for end of results / start of team rankings
+            # Check for start of a team rankings block
             if "Team Rankings" in line_clean and ("Men" in line_clean or "Women" in line_clean or "Boys" in line_clean or "Girls" in line_clean):
-                # Record where rankings start and stop parsing events
-                if rankings_start_idx is None:
-                    rankings_start_idx = i
-                # Don't break — we still need to append the last current_event
+                in_rankings = True
                 if current_event:
                     events.append(current_event)
                     current_event = None
-                continue
-
-            # Once we're past the first Team Rankings header, skip remaining lines
-            # (they belong to the rankings section, handled by parse_team_rankings)
-            if rankings_start_idx is not None:
+                ranking_lines.append(line)
                 continue
 
             # Header pattern: "Event 1  Girls 4x800 Meter Relay" or "Girls 55 Meter Dash"
             m_event = re.search(r'Event\s+\d+\s+(Girls|Boys|Women|Men|Mixed)\s+(.*)', line_clean, re.IGNORECASE)
-            # Support Division headers: "Girls 50 Meter Dash 5th/6th grade"
-            m_no_event = re.match(r'^\s*(Girls|Boys|Women|Men|Mixed)\s+(.*)', line_clean, re.IGNORECASE)
-            
+            # Support Division headers ("Girls 50 Meter Dash 5th/6th grade") and
+            # prefixed multi-event legs ("Indoor Pentathlon: #5 Girls 800 Meter Run")
+            m_no_event = re.match(r'^\s*(?:[\w .]{0,30}:\s*#?\d*\s*)?(Girls|Boys|Women|Men|Mixed)\s+(.*)', line_clean, re.IGNORECASE)
+
             is_header = False
             gender = ""
             event_name = ""
-            
+
             if m_event:
                 is_header = True
                 gender = m_event.group(1).strip()
                 if gender.lower() == "women": gender = "Girls"
                 if gender.lower() == "men": gender = "Boys"
                 event_name = m_event.group(2).strip()
-            elif m_no_event:
+            elif m_no_event and "Team Rankings" not in line_clean:
                 # Require separator line for no-event-number headers to avoid false positives
                 if i + 1 < len(lines) and "====" in lines[i+1]:
                     is_header = True
@@ -316,14 +457,15 @@ class Sub5ColumnParser:
                     if gender.lower() == "women": gender = "Girls"
                     if gender.lower() == "men": gender = "Boys"
                     event_name = m_no_event.group(2).strip()
-            
+
             if is_header:
+                in_rankings = False  # rankings block ends at the next event
                 if current_event:
                     events.append(current_event)
-                
+
                 # Normalize the event name
                 normalized_name = self.normalize_event_name(event_name)
-                
+
                 current_event = {
                     "gender": gender,
                     "event_name": normalized_name,
@@ -332,6 +474,8 @@ class Sub5ColumnParser:
                     "is_relay": any(x in normalized_name.lower() or x in event_name.lower() for x in ["relay", "4x"]),
                     "is_ms": is_ms_meet
                 }
+            elif in_rankings:
+                ranking_lines.append(line)
             elif current_event:
                 current_event["lines"].append(line)
         if current_event:
@@ -348,8 +492,9 @@ class Sub5ColumnParser:
                     "results": results
                 })
 
-        # Parse official team rankings from the bottom of the file
-        team_rankings = self.parse_team_rankings(lines, rankings_start_idx)
+        # Parse official team rankings from the collected rankings lines only
+        # (they no longer run to EOF, so relay rows can't contaminate them)
+        team_rankings = self.parse_team_rankings(ranking_lines, 0 if ranking_lines else None)
 
         return {
             "meet_name": meet_name,
@@ -570,9 +715,12 @@ class Sub5ColumnParser:
                              if best_part and min_dist < 20:
                                  res_val = best_part
                         
-                        # Handle Exhibition marks (prefixed with X)
+                        # Handle Exhibition marks (prefixed with X) — keep the
+                        # mark but flag it so meet scoring can exclude it
+                        is_exhibition = False
                         if res_val.upper().startswith('X') and len(res_val) > 1:
                              res_val = res_val[1:]
+                             is_exhibition = True
 
                         # Check if result looks valid
                         is_res_numeric = bool(re.search(r'\d', res_val))
@@ -686,6 +834,8 @@ class Sub5ColumnParser:
                                     "grade": normalize_grade(grade_val),
                                     "type": anchor_type
                                 }
+                                if is_exhibition:
+                                    entry["exhibition"] = True
                                 if ev.get("is_ms"):
                                     entry["grade"] = "MS"
                                 
@@ -732,8 +882,10 @@ class Sub5ColumnParser:
 
                         if res_val:
                             # Handle Exhibition marks (prefixed with X, e.g. XDQ, X2:05.56)
+                            relay_exhibition = False
                             if res_val.upper().startswith('X') and len(res_val) > 1:
                                 res_val = res_val[1:]
+                                relay_exhibition = True
 
                             is_res_numeric = bool(re.search(r'\d', res_val))
                             is_res_standard = res_val.upper() in ["DQ", "FOUL", "NH", "NM", "DNS", "DNF", "SCR"]
@@ -776,6 +928,8 @@ class Sub5ColumnParser:
                                     "athletes": [],
                                     "type": anchor_type
                                 }
+                                if relay_exhibition:
+                                    current_relay["exhibition"] = True
                                 if ev.get("is_ms"):
                                     current_relay["grade"] = "MS"
                                     

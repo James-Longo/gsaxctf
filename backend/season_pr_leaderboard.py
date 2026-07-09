@@ -39,8 +39,12 @@ def is_relay(event: str) -> bool:
 
 
 def load_all_performances(team_pattern: str | None):
-    """Yield every performance record, optionally filtered by a team glob pattern."""
-    for path in glob.glob(os.path.join(DATA_DIR, '*.json')):
+    """Yield every performance record, optionally filtered by a team glob pattern.
+    Handles both chunked team dirs (teams/{slug}/{year}_{season}.json) and
+    legacy flat files (teams/{slug}.json)."""
+    paths = glob.glob(os.path.join(DATA_DIR, '*.json')) + \
+        glob.glob(os.path.join(DATA_DIR, '*', '*.json'))
+    for path in paths:
         with open(path, encoding='utf-8') as f:
             perfs = json.load(f)
         for p in perfs:

@@ -36,13 +36,16 @@ function PostseasonSimulator({ performances, isBetter, manifest, loadTeamData })
     const [seedData, setSeedData] = useState(null);
 
     useEffect(() => {
-        if (scoreMethod === 'Seeds' && !seedData) {
-            fetch('/data/seeds/pvc_2026_outdoor.json')
+        if (scoreMethod === 'Seeds') {
+            const file = competitionType === 'States' ? 'states_2026_outdoor.json' : 'pvc_2026_outdoor.json';
+            const fetchUrl = `/data/seeds/${file}`;
+            
+            fetch(fetchUrl)
                 .then(r => r.json())
                 .then(d => setSeedData(d))
                 .catch(err => console.error('Failed to load seed data', err));
         }
-    }, [scoreMethod, seedData]);
+    }, [scoreMethod, competitionType]);
 
     // Convert seed entries into perf-like objects compatible with groupedData / teamPools
     const seedPerfs = useMemo(() => {
@@ -126,13 +129,18 @@ function PostseasonSimulator({ performances, isBetter, manifest, loadTeamData })
         }
         
         const seasonKey = `${filterYear}_${filterSeason}`.replace(' ', '_');
-        const activeSchools = competitionType === 'PVC' ? getPVCSchools(filterYear, filterSeason) : getStateSchools(filterYear, filterSeason);
+        let activeSchools = null;
+        if (competitionType !== 'Everyone') {
+            activeSchools = competitionType === 'PVC' ? getPVCSchools(filterYear, filterSeason) : getStateSchools(filterYear, filterSeason);
+        }
         
         // Find which teams in manifest belong to the expected activeSchools AND participate in this season
         const expectedTeams = (manifest.teams || []).filter(t => {
             const participates = t.seasons && t.seasons.includes(seasonKey);
             if (!participates) return false;
             
+            if (competitionType === 'Everyone') return true;
+
             // Match against activeSchools values
             return Object.values(activeSchools).some(schoolName => 
                 t.name.toLowerCase() === schoolName.toLowerCase()
@@ -163,29 +171,12 @@ function PostseasonSimulator({ performances, isBetter, manifest, loadTeamData })
     }, [manifest, performances, filterYear, filterSeason, competitionType]);
 
     useEffect(() => {
-        if (!manifest || !manifest.teams || !loadTeamData) return;
-
-        if (filterYear !== 'All' && filterSeason !== 'All') {
-            const seasonKey = `${filterYear}_${filterSeason}`.replace(' ', '_');
-            manifest.teams.forEach(t => {
-                if (t.seasons && t.seasons.includes(seasonKey)) {
-                    loadTeamData(t.slug);
-                }
-            });
-        } else if (filterYear !== 'All') {
-            manifest.teams.forEach(t => {
-                if (t.seasons && t.seasons.some(s => s.startsWith(filterYear))) {
-                    loadTeamData(t.slug);
-                }
-            });
-        } else if (filterSeason !== 'All') {
-            manifest.teams.forEach(t => {
-                if (t.seasons && t.seasons.some(s => s.endsWith(filterSeason.replace(' ', '_')))) {
-                    loadTeamData(t.slug);
-                }
-            });
+        if (!loadTeamData) return;
+        
+        if (loadingState.loadingTeams && loadingState.loadingTeams.length > 0) {
+            loadingState.loadingTeams.forEach(t => loadTeamData(t.slug));
         }
-    }, [filterYear, filterSeason, manifest, loadTeamData]);
+    }, [loadingState.loadingTeams, loadTeamData]);
 
     const { filteredData, years, seasons, events } = useMemo(() => {
         if (!performances) return { filteredData: [], years: [], seasons: [], events: [] };
@@ -213,7 +204,10 @@ function PostseasonSimulator({ performances, isBetter, manifest, loadTeamData })
         }
 
         // 3. Get the specific team list for this context
-        const activeSchools = competitionType === 'PVC' ? getPVCSchools(filterYear, filterSeason) : getStateSchools(filterYear, filterSeason);
+        let activeSchools = null;
+        if (competitionType !== 'Everyone') {
+            activeSchools = competitionType === 'PVC' ? getPVCSchools(filterYear, filterSeason) : getStateSchools(filterYear, filterSeason);
+        }
 
         const processed = performances.map(p => {
             let year = p.year;
@@ -226,25 +220,29 @@ function PostseasonSimulator({ performances, isBetter, manifest, loadTeamData })
 
             // Detect PVC Team based on ACTIVE list
             let pvcTeam = null;
-            for (const [key, val] of Object.entries(activeSchools)) {
-                // Check against key (short) and val (long)
-                const teamLower = p.team.toLowerCase();
-                const filterKey = key.toLowerCase();
+            if (competitionType === 'Everyone') {
+                pvcTeam = p.team;
+            } else {
+                for (const [key, val] of Object.entries(activeSchools)) {
+                    // Check against key (short) and val (long)
+                    const teamLower = p.team.toLowerCase();
+                    const filterKey = key.toLowerCase();
 
-                // Specific fix for "Central" to avoid matching "Maine Central Institute"
-                if (key === "Central" && teamLower.includes("maine")) {
-                    continue;
+                    // Specific fix for "Central" to avoid matching "Maine Central Institute"
+                    if (key === "Central" && teamLower.includes("maine")) {
+                        continue;
+                    }
+
+                    if (teamLower.includes(filterKey) || teamLower === val.toLowerCase()) {
+                        pvcTeam = val;
+                        break;
+                    }
                 }
 
-                if (teamLower.includes(filterKey) || teamLower === val.toLowerCase()) {
-                    pvcTeam = val;
-                    break;
+                // Special check for PCHS acronym
+                if (!pvcTeam && activeSchools["PCHS"] && (p.team === "PCHS" || p.team.includes("Piscataquis"))) {
+                    pvcTeam = activeSchools["PCHS"];
                 }
-            }
-
-            // Special check for PCHS acronym
-            if (!pvcTeam && activeSchools["PCHS"] && (p.team === "PCHS" || p.team.includes("Piscataquis"))) {
-                pvcTeam = activeSchools["PCHS"];
             }
 
             return {
@@ -1593,6 +1591,7 @@ function PostseasonSimulator({ performances, isBetter, manifest, loadTeamData })
                         <select value={competitionType} onChange={e => setCompetitionType(e.target.value)}>
                             <option value="PVC">PVC Small Schools</option>
                             <option value="States">Class C States</option>
+                            <option value="Everyone">Everyone</option>
                         </select>
                     </div>
                     <div className="filter-group">

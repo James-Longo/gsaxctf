@@ -16,40 +16,32 @@ class ColumnStrategyParser(BaseParser):
 
     def parse(self, text, meet_url, season_type):
         """
-        Wraps Sub5ColumnParser but works on text by writing to a temporary file 
-        (since Sub5ColumnParser expects a file path).
+        Wraps Sub5ColumnParser, feeding it the in-memory text directly.
+        meet_url doubles as the filename for MS-meet detection.
         """
-        import tempfile
-        
-        with tempfile.NamedTemporaryFile(mode='w', suffix='.htm', delete=False, encoding='utf-8') as tf:
-            tf.write(text)
-            temp_path = tf.name
-            
-        try:
-            parser = Sub5ColumnParser(temp_path)
-            raw_result = parser.parse()
-            
-            # Sub5ColumnParser returns: { meet_name, date, events: [ { event, gender, results: [...] } ] }
-            # We need to flatten this to match the BaseParser.parse expectations: 
-            # List of: { athlete_name, grade, school, event, mark, rank, points, gender, season, date, meet_name, meet_url }
-            
-            flat_events = []
-            meet_name = raw_result.get("meet_name") or "Unknown Meet"
-            meet_date = raw_result.get("date") or "Unknown Date"
-            
-            for ev in raw_result.get("events", []):
-                # Keep the nested structure: events -> results
-                flat_events.append({
-                    "event": ev['event'],
-                    "gender": ev['gender'],
-                    "is_relay": ev.get('is_relay', False),
-                    "results": ev.get('results', []),
-                    "date": meet_date,
-                    "meet_name": meet_name
-                })
-            
-            # Return a dict with a "date" key at top level to help the sync logic
-            return {"events": flat_events, "date": meet_date}
-        finally:
-            if os.path.exists(temp_path):
-                os.remove(temp_path)
+        parser = Sub5ColumnParser(meet_url, text=text)
+        raw_result = parser.parse()
+        if not isinstance(raw_result, dict):
+            return {"events": [], "date": None, "team_rankings": []}
+
+        meet_name = raw_result.get("meet_name") or "Unknown Meet"
+        meet_date = raw_result.get("date") or "Unknown Date"
+
+        flat_events = []
+        for ev in raw_result.get("events", []):
+            flat_events.append({
+                "event": ev['event'],
+                "gender": ev['gender'],
+                "is_relay": ev.get('is_relay', False),
+                "results": ev.get('results', []),
+                "date": meet_date,
+                "meet_name": meet_name
+            })
+
+        # Keep team_rankings so QAQC scoring can verify meets without re-parsing
+        return {
+            "events": flat_events,
+            "date": meet_date,
+            "meet_name": meet_name,
+            "team_rankings": raw_result.get("team_rankings", []),
+        }

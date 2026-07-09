@@ -56,21 +56,29 @@ SEPARATOR = '-' * 60
 
 
 def load_all_performances():
-    """Load every performance from every team file. Returns (list_of_perfs, dict of fn->perfs)."""
+    """Load every performance from every team (chunked dirs or legacy flat
+    files). Returns (list_of_perfs, dict of team_key->perfs)."""
     all_perfs = []
     by_file = {}
     if not os.path.exists(TEAMS_DIR):
         return all_perfs, by_file
     for fn in sorted(os.listdir(TEAMS_DIR)):
-        if not fn.endswith('.json'):
-            continue
         path = os.path.join(TEAMS_DIR, fn)
+        perfs = []
         try:
-            perfs = json.load(open(path, encoding='utf-8'))
+            if os.path.isdir(path):
+                for chunk in sorted(os.listdir(path)):
+                    if chunk.endswith('.json'):
+                        perfs.extend(json.load(open(os.path.join(path, chunk), encoding='utf-8')))
+                by_file[fn + '.json'] = perfs
+            elif fn.endswith('.json'):
+                perfs = json.load(open(path, encoding='utf-8'))
+                by_file[fn] = perfs
+            else:
+                continue
         except Exception as e:
             print(f'  [ERROR] Could not load {fn}: {e}')
-            perfs = []
-        by_file[fn] = perfs
+            by_file.setdefault(fn if fn.endswith(".json") else fn + '.json', [])
         all_perfs.extend(perfs)
     return all_perfs, by_file
 
@@ -137,6 +145,78 @@ def check_season_coverage(all_perfs):
     print()
 
 
+def count_parsed_results(data):
+    """Count result rows in a parsed-meet JSON, handling BOTH shapes:
+    nested ({'events': [{'results': [...]}, ...]}) and flat
+    ({'events': [row, row, ...]} from the HyTek line parsers)."""
+    evs = data.get('events', data) if isinstance(data, dict) else data
+    if not isinstance(evs, list):
+        return 0
+    n = 0
+    for e in evs:
+        if not isinstance(e, dict):
+            continue
+        if 'results' in e:
+            n += len(e.get('results') or [])
+        elif 'athlete_name' in e or 'mark' in e:
+            n += 1
+    return n
+
+
+def classify_unparsed_file(path):
+    """Heuristically classify WHY an archive file parsed to zero results.
+
+    Categories:
+      frameset      - frameset wrapper page, real results live in the frame src
+      html-table    - results in an HTML table grid (e.g. old SMAA format)
+      agate         - newspaper-style one-liner summaries ("100:1. Biggs (MV) 13.39;")
+      paragraph     - comma-separated prose results ("1, Greely High School 'A' 9:59.23.")
+      score-sheet   - team scores only, no individual results
+      nav/index     - navigation or schedule page, no results at all
+      tiny          - trivially small file (broken download / placeholder)
+      pdf           - PDF that produced no results
+      unknown       - none of the above; needs a human look
+    """
+    try:
+        if path.lower().endswith('.pdf'):
+            return 'pdf'
+        raw = open(path, encoding='utf-8', errors='ignore').read()
+    except Exception:
+        return 'unreadable'
+    low = raw.lower()
+    if '<frameset' in low:
+        return 'frameset'
+    if 'http-equiv="refresh"' in low:
+        return 'redirect'
+    # score stubs are usually small — check content before size
+    if 'team rankings' in low or 'team scores' in low or \
+            re.search(r'scores?', os.path.basename(path), re.I):
+        return 'score-sheet'
+    if len(raw) < 1500:
+        return 'tiny'
+    try:
+        from bs4 import BeautifulSoup
+        soup = BeautifulSoup(raw, 'html.parser')
+        pres = soup.find_all('pre')
+        txt = "\n".join(p.get_text() for p in pres) if pres else soup.get_text(separator='\n')
+    except Exception:
+        return 'unreadable'
+    if re.search(r'\b\d+:\s*1\.\s+\S+.*?\([A-Za-z]{1,4}\)\s+[\d:.]+', txt) or \
+       re.search(r'(jump|put|vault|discus|javelin)\s*:\s*1\.\s', txt, re.I):
+        return 'agate'
+    if re.search(r'^\s*\d+,\s+\w+.*?\d[\d:.]+[QqJj]?\.\s', txt, re.M):
+        return 'paragraph'
+    if soup.find('table') and len(soup.find_all('tr')) > 15:
+        return 'html-table'
+    event_kw = re.search(r'(meter|mile|hurdle|relay|jump|vault|shot put|discus|javelin)', txt, re.I)
+    mark_kw = re.search(r'\d+[:.]\d\d', txt)
+    if not event_kw or not mark_kw:
+        if re.search(r'\bscore', txt, re.I):
+            return 'score-sheet'
+        return 'nav/index'
+    return 'unknown'
+
+
 def check_parser_failures():
     """Compare archive files to parsed JSON files; flag archives with zero-result parses."""
     print('3. PARSER FAILURES (archive files with empty/missing parsed output)')
@@ -168,8 +248,7 @@ def check_parser_failures():
                     continue
                 try:
                     data = json.load(open(json_path, encoding='utf-8'))
-                    events = data if isinstance(data, list) else data.get('events', [])
-                    result_count = sum(len(ev.get('results', [])) for ev in events if isinstance(ev, dict))
+                    result_count = count_parsed_results(data)
                     if result_count == 0:
                         empty.append(f'{year}/{season}/{fn}')
                 except Exception:
@@ -186,13 +265,115 @@ def check_parser_failures():
         print('   [OK] All archive files have a parsed JSON.')
 
     if empty:
-        print(f'   [WARN] {len(empty)} archive files parsed to 0 results (may be score sheets, MS meets, or format mismatch):')
-        for f in empty[:15]:
-            print(f'     - {f}')
-        if len(empty) > 15:
-            print(f'     ... and {len(empty)-15} more.')
+        # Classify each zero-result file by probable cause so the list is actionable
+        by_cat = defaultdict(list)
+        for f in empty:
+            rel = f.split('  ')[0]
+            path = os.path.join(ARCHIVE_BASE, rel)
+            by_cat[classify_unparsed_file(path)].append(rel)
+        pct = len(empty) / total * 100 if total else 0
+        print(f'   [WARN] {len(empty)} / {total} ({pct:.1f}%) archive files parsed to 0 results, by cause:')
+        for cat, files in sorted(by_cat.items(), key=lambda kv: -len(kv[1])):
+            print(f'     {cat:12s}: {len(files)}')
+            for f in files[:4]:
+                print(f'        - {f}')
+            if len(files) > 4:
+                print(f'        ... and {len(files)-4} more.')
     else:
         print('   [OK] No archive files parsed to 0 results.')
+    print()
+
+
+def check_season_pipeline_coverage(all_perfs):
+    """Per-season funnel: archived files -> nonempty parses -> synced performances.
+
+    A season with many archived files but few synced performances points at a
+    parsing or syncing problem for that era's format.
+    """
+    print('3b. SEASON PIPELINE COVERAGE (files -> parsed -> synced)')
+    perf_counts = defaultdict(int)
+    for p in all_perfs:
+        perf_counts[(str(p.get('year', '?')), p.get('season', '?'))] += 1
+
+    rows = []
+    for year in sorted(os.listdir(ARCHIVE_BASE)):
+        ypath = os.path.join(ARCHIVE_BASE, year)
+        if not os.path.isdir(ypath):
+            continue
+        for season in sorted(os.listdir(ypath)):
+            spath = os.path.join(ypath, season)
+            if not os.path.isdir(spath):
+                continue
+            files = [f for f in os.listdir(spath) if f.lower().endswith(('.htm', '.html', '.pdf'))]
+            parsed_dir = os.path.join(PARSED_BASE, year, season)
+            nonempty = 0
+            for fn in files:
+                jp = os.path.join(parsed_dir, os.path.splitext(fn)[0] + '.json')
+                try:
+                    data = json.load(open(jp, encoding='utf-8'))
+                    if count_parsed_results(data) > 0:
+                        nonempty += 1
+                except Exception:
+                    pass
+            rows.append((year, season, len(files), nonempty, perf_counts.get((year, season), 0)))
+
+    print(f'   {"Season":16s} {"files":>6s} {"parsed":>7s} {"perfs":>8s}')
+    for year, season, nfiles, nparsed, nperfs in rows:
+        flag = ''
+        if nfiles and nparsed / nfiles < 0.5:
+            flag = '  <- low parse rate'
+        elif nparsed and nperfs == 0:
+            flag = '  <- parsed but nothing synced'
+        print(f'   {year + " " + season:16s} {nfiles:6d} {nparsed:7d} {nperfs:8,d}{flag}')
+    print()
+
+
+def check_date_season_consistency(all_perfs):
+    """Flag performances whose date falls outside their labeled season window.
+
+    Indoor YYYY runs Nov (YYYY-1) through Mar YYYY; Outdoor YYYY runs Mar-Jul YYYY.
+    A date outside the window means the parser grabbed the wrong date from the
+    file (record lines, license dates, etc.).
+    """
+    print('3c. DATE / SEASON CONSISTENCY')
+    from datetime import datetime as _dt
+    bad = []
+    unknown = 0
+    for p in all_perfs:
+        d = p.get('date', '')
+        if not d or d == 'Unknown':
+            unknown += 1
+            continue
+        try:
+            dt = _dt.strptime(d[:10], '%Y-%m-%d')
+            yr = int(p.get('year'))
+        except (ValueError, TypeError):
+            bad.append((d, p.get('meet_name'), p.get('year'), p.get('season')))
+            continue
+        season = p.get('season')
+        if season == 'Indoor':
+            ok = _dt(yr - 1, 11, 1) <= dt <= _dt(yr, 3, 31)
+        elif season == 'Outdoor':
+            ok = _dt(yr, 3, 1) <= dt <= _dt(yr, 7, 31)
+        else:
+            ok = True
+        if not ok:
+            bad.append((d[:10], p.get('meet_name'), p.get('year'), p.get('season')))
+
+    total = len(all_perfs)
+    print(f'   [INFO] {unknown:,} / {total:,} performances have no date.')
+    if bad:
+        by_meet = defaultdict(int)
+        for d, mn, yr, ssn in bad:
+            by_meet[(mn, yr, ssn, d)] += 1
+        print(f'   [ALERT] {len(bad):,} performances have dates outside their season window '
+              f'({len(by_meet)} meet/date combos):')
+        for (mn, yr, ssn, d), n in sorted(by_meet.items(), key=lambda kv: -kv[1])[:10]:
+            print(f'     [{yr} {ssn}] {mn}: date={d}  (x{n})')
+        if len(by_meet) > 10:
+            print(f'     ... and {len(by_meet)-10} more meet/date combos.')
+    else:
+        print('   [OK] All dated performances fall inside their season window.')
     print()
 
 
@@ -531,41 +712,52 @@ def _normalize_school(name):
     return result
 
 
-def _fuzzy_team_match(abbrev, full_candidates):
-    """Match a (possibly truncated) team name from rankings to our scored schools.
+_STRIP_WORDS = {'high', 'school', 'schools', 'hs', 'academy', 'acad', 'regional',
+                'area', 'community', 'memorial', 'district', 'institute',
+                'comprehensive', 'consolidated', 'boys', 'girls', 'men', 'women',
+                'mens', 'womens', 'indoor', 'outdoor', 'track', 'field', 'tf',
+                'team', 'varsity', 'coed'}
 
-    HY-TEK truncates team names in the rankings section (e.g. "Medomak Valley
-    High Schoo") so we use startswith matching.  Returns the best matching
-    canonical name from *full_candidates*, or the original *abbrev* if no
-    match is found.
+
+def _compare_key(name):
+    """Reduce a school name to a punctuation/synonym-insensitive key so
+    'Mount Desert Island HS', 'Mt. Desert Island High Schoo' and
+    'Mt. Desert Island High School' all compare equal.
+
+    HY-TEK truncates rankings names mid-suffix ('Camden Rockport Middle Sch'),
+    so trailing tokens that are a PREFIX of a strip word are dropped too.
     """
-    # First, try to normalize the ranking name through TEAM_MAPPING
+    # Strip glued/trailing state suffixes ("Mount Desert IslandME", "Bonny Eagle, ME")
+    name = re.sub(r'(?<=[a-z])(ME|MA|NH|VT|CT|RI)\b', '', name)
+    name = re.sub(r'[,\s]+(ME|MA|NH|VT|CT|RI)\s*$', '', name)
+    n = name.lower().replace('.', ' ').replace('-', ' ').replace("'", '')
+    n = re.sub(r'\bmount\b', 'mt', n)
+    n = re.sub(r'\bsaint\b', 'st', n)
+    n = re.sub(r'\b(19|20)\d{2}\b', '', n)          # season years in club names
+    n = re.sub(r'\b\d{2}\s*/?\s*\d{2}\b', '', n)    # "17-18" style seasons
+    toks = [t for t in n.split() if t not in _STRIP_WORDS]
+    while toks and any(w.startswith(toks[-1]) for w in _STRIP_WORDS):
+        toks.pop()
+    return ' '.join(toks)
+
+
+def _fuzzy_team_match(abbrev, full_candidates):
+    """Match a (possibly truncated) team name from rankings to our scored
+    schools via compare keys (see _compare_key). Returns the matched
+    candidate or `abbrev` if no match."""
     normalized = _normalize_school(abbrev)
     if normalized in full_candidates:
         return normalized
 
-    abbrev_lower = abbrev.lower().strip()
-    norm_lower = normalized.lower().strip()
-
-    # Exact match
+    by_key = {}
     for c in full_candidates:
-        if c.lower() == abbrev_lower or c.lower() == norm_lower:
-            return c
+        by_key.setdefault(_compare_key(c), c)
 
-    # Startswith match (either direction — ranking name may be truncated,
-    # or our canonical name may be a prefix of the ranking name)
-    best = None
-    best_len = 0
-    for c in full_candidates:
-        c_lower = c.lower()
-        for needle in (abbrev_lower, norm_lower):
-            if c_lower.startswith(needle) and len(needle) > best_len:
-                best = c
-                best_len = len(needle)
-            if needle.startswith(c_lower) and len(c_lower) > best_len:
-                best = c
-                best_len = len(c_lower)
-    return best or abbrev
+    for needle_name in (abbrev, normalized):
+        needle = _compare_key(needle_name)
+        if needle and needle in by_key:
+            return by_key[needle]
+    return abbrev
 
 
 def _score_meet_from_parsed(parsed_data, ind_table=None, relay_table=None):
@@ -590,11 +782,21 @@ def _score_meet_from_parsed(parsed_data, ind_table=None, relay_table=None):
     events = parsed_data.get('events', [])
     scores = defaultdict(lambda: defaultdict(float))  # gender -> school -> points
 
+    # Group blocks by (gender, event): meets with Prelims AND Finals sections
+    # produce two blocks for the same event, and scoring both double-counts.
+    # Use only Finals-type results when any exist for the event.
+    grouped = {}
     for ev_block in events:
-        gender = ev_block.get('gender', '')
-        event_name = ev_block.get('event', '')
-        is_relay = ev_block.get('is_relay', False)
-        results = ev_block.get('results', [])
+        key = (ev_block.get('gender', ''), ev_block.get('event', ''), ev_block.get('is_relay', False))
+        grouped.setdefault(key, []).extend(ev_block.get('results', []))
+
+    for (gender, event_name, is_relay), results in grouped.items():
+        # Seed-type rows are entry lists, exhibition entries never score
+        results = [r for r in results
+                   if r.get('type') != 'Seed' and not r.get('exhibition')]
+        finals = [r for r in results if r.get('type') == 'Finals']
+        if finals:
+            results = finals
 
         table = relay_table if is_relay else ind_table
 
@@ -669,7 +871,6 @@ def check_meet_scoring():
     # Lazy imports — sys.path must be set before importing backend modules
     import sys
     sys.path.insert(0, os.path.join(BASE_DIR, 'backend'))
-    from parser import Sub5ColumnParser
     from json_store import list_teams
     _ensure_team_mapping()
     _school_cache.clear()
@@ -682,6 +883,7 @@ def check_meet_scoring():
     exact_matches = 0
     mismatches = []
     no_ranking_files = 0
+    verification = {}  # meet_key -> {status, config, max_delta}
 
     # Define candidate scoring configurations to fit
     configs = [
@@ -704,20 +906,41 @@ def check_meet_scoring():
             if not os.path.isdir(season_path):
                 continue
             for fn in sorted(os.listdir(season_path)):
-                if not fn.lower().endswith(('.htm', '.html')):
+                if not fn.lower().endswith(('.htm', '.html', '.pdf')):
                     continue
                 total_meets += 1
-                filepath = os.path.join(season_path, fn)
 
+                # Read the persisted parse (team_rankings included) rather
+                # than re-parsing the archive file — ~50x faster.
+                stem = os.path.splitext(fn)[0]
+                meet_key = f'{year}_{season}_{stem}'
+                jp = os.path.join(PARSED_BASE, year, season, stem + '.json')
                 try:
-                    p = Sub5ColumnParser(filepath)
-                    parsed = p.parse()
-                except Exception as e:
+                    parsed = json.load(open(jp, encoding='utf-8'))
+                except Exception:
+                    verification[meet_key] = {'status': 'parse_missing'}
+                    continue
+                if not isinstance(parsed, dict):
+                    no_ranking_files += 1
+                    verification[meet_key] = {'status': 'no_rankings'}
                     continue
 
                 rankings = parsed.get('team_rankings', [])
                 if not rankings:
                     no_ranking_files += 1
+                    verification[meet_key] = {'status': 'no_rankings'}
+                    continue
+
+                # Legacy meets post genders in separate files but include both
+                # genders' ranking blocks in each — only blocks whose gender
+                # has results in THIS file are verifiable here.
+                genders_present = {ev.get('gender') for ev in parsed.get('events', [])
+                                   if isinstance(ev, dict) and ev.get('results')}
+                rankings = [b for b in rankings
+                            if b.get('gender') in genders_present and b.get('teams')]
+                if not rankings:
+                    no_ranking_files += 1
+                    verification[meet_key] = {'status': 'rankings_other_gender'}
                     continue
 
                 meets_with_rankings += 1
@@ -729,6 +952,7 @@ def check_meet_scoring():
 
                 meet_label = f'{year}/{season}/{fn}'
                 meet_ok = True
+                mm_start = len(mismatches)
 
                 for block in rankings:
                     gender = block['gender']
@@ -736,36 +960,54 @@ def check_meet_scoring():
                     if not official_teams:
                         continue
 
+                    # Aggregate each config's scores by compare key so name
+                    # variants ("MDI" vs "Mount Desert Island HS") pool their
+                    # points instead of splitting across two entries.
+                    def _keyed(scores):
+                        agg = {}
+                        names = {}
+                        for school, pts in scores.items():
+                            k = _compare_key(_normalize_school(school))
+                            agg[k] = agg.get(k, 0.0) + pts
+                            names.setdefault(k, school)
+                        return agg, names
+
+                    def _lookup(agg, official_name):
+                        # Exact compare-key equality only: suffix truncation is
+                        # handled inside _compare_key, and looser prefix
+                        # matching mismatches sibling schools (Bangor vs
+                        # Bangor Christian).
+                        for cand in (official_name, _normalize_school(official_name)):
+                            k = _compare_key(cand)
+                            if k in agg:
+                                return k
+                        return None
+
                     # Select the configuration with the minimum sum of absolute errors for this gender
                     best_name = None
                     best_score_diff = float('inf')
-                    best_scores = {}
+                    best_agg, best_names = {}, {}
 
                     for name, _, _ in configs:
-                        our_scores = computed_by_config[name].get(gender, {})
-                        all_our_schools = list(our_scores.keys())
-
+                        agg, names = _keyed(computed_by_config[name].get(gender, {}))
                         total_abs_diff = 0.0
                         for entry in official_teams:
-                            official_name = entry['team']
-                            official_score = entry['score']
-                            matched = _fuzzy_team_match(official_name, all_our_schools)
-                            our_score = our_scores.get(matched, 0.0)
-                            total_abs_diff += abs(our_score - official_score)
-
+                            k = _lookup(agg, entry['team'])
+                            our_score = agg.get(k, 0.0) if k else 0.0
+                            total_abs_diff += abs(our_score - entry['score'])
                         if total_abs_diff < best_score_diff:
                             best_score_diff = total_abs_diff
                             best_name = name
-                            best_scores = our_scores
+                            best_agg, best_names = agg, names
 
                     # Now perform the actual comparison using the best configuration's scores
-                    all_our_schools = list(best_scores.keys())
                     for entry in official_teams:
                         official_name = entry['team']
                         official_score = entry['score']
 
-                        matched = _fuzzy_team_match(official_name, all_our_schools)
-                        our_score = best_scores.get(matched, 0.0)
+                        k = _lookup(best_agg, official_name)
+                        matched = best_names.get(k, official_name) if k else official_name
+                        our_score = best_agg.get(k, 0.0) if k else 0.0
 
                         if abs(our_score - official_score) > 0.5:
                             meet_ok = False
@@ -785,11 +1027,37 @@ def check_meet_scoring():
 
                 if meet_ok:
                     exact_matches += 1
+                    verification[meet_key] = {'status': 'verified'}
+                else:
+                    new_mm = mismatches[mm_start:]
+                    max_delta = max(abs(m['delta']) for m in new_mm)
+                    # <=2 points off is a tie-averaging / judge-call difference,
+                    # not a parsing failure — still high confidence.
+                    status = 'verified_close' if max_delta <= 2.0 else 'mismatch'
+                    verification[meet_key] = {
+                        'status': status,
+                        'teams_off': len(new_mm),
+                        'max_delta': max_delta,
+                        'scoring_system': new_mm[0]['scoring_system'],
+                    }
 
+    # Persist per-meet verdicts: this is the confidence record for the store.
+    verification_path = os.path.join(BASE_DIR, 'backend', 'data', 'meet_verification.json')
+    try:
+        with open(verification_path, 'w', encoding='utf-8') as f:
+            json.dump(verification, f, indent=2, sort_keys=True)
+    except Exception as e:
+        print(f'   [WARN] Could not write {verification_path}: {e}')
+
+    close_matches = sum(1 for d in verification.values() if d.get('status') == 'verified_close')
     print(f'   Total archive files scanned: {total_meets}')
     print(f'   Files with Team Rankings: {meets_with_rankings}')
     print(f'   Files without rankings: {no_ranking_files}')
-    print(f'   Exact scoring matches: {exact_matches} / {meets_with_rankings}')
+    pct = exact_matches / meets_with_rankings * 100 if meets_with_rankings else 0
+    pct_c = (exact_matches + close_matches) / meets_with_rankings * 100 if meets_with_rankings else 0
+    print(f'   Exact scoring matches: {exact_matches} / {meets_with_rankings} ({pct:.1f}%)')
+    print(f'   Verified incl. close (max 2pts off): {exact_matches + close_matches} / {meets_with_rankings} ({pct_c:.1f}%)')
+    print(f'   Per-meet verdicts written to backend/data/meet_verification.json')
 
     if mismatches:
         unmapped = [m for m in mismatches if m['unmapped']]
@@ -843,6 +1111,91 @@ def check_meet_scoring():
 
 
 # ---------------------------------------------------------------------------
+# 12. Result order sanity
+# ---------------------------------------------------------------------------
+
+def check_result_order():
+    """Results in a Hy-Tek file are listed in finishing order, so parsed marks
+    should be monotonic within an event (ascending times / descending
+    distances).  A high inversion rate means the parser read the wrong column.
+    Works for every meet — no official rankings needed.  Augments
+    meet_verification.json with an order_ok flag per meet.
+    """
+    print('12. RESULT ORDER SANITY (marks monotonic within events)')
+    verification_path = os.path.join(BASE_DIR, 'backend', 'data', 'meet_verification.json')
+    try:
+        verification = json.load(open(verification_path, encoding='utf-8'))
+    except Exception:
+        verification = {}
+
+    suspect = []
+    checked = 0
+    for year in sorted(os.listdir(PARSED_BASE)):
+        ypath = os.path.join(PARSED_BASE, year)
+        if not os.path.isdir(ypath):
+            continue
+        for season in sorted(os.listdir(ypath)):
+            spath = os.path.join(ypath, season)
+            if not os.path.isdir(spath):
+                continue
+            for fn in sorted(os.listdir(spath)):
+                if not fn.endswith('.json'):
+                    continue
+                try:
+                    data = json.load(open(os.path.join(spath, fn), encoding='utf-8'))
+                except Exception:
+                    continue
+                events = data.get('events', []) if isinstance(data, dict) else data
+                pairs = 0
+                inversions = 0
+                for ev in events:
+                    if not isinstance(ev, dict):
+                        continue
+                    ev_name = ev.get('event', '')
+                    is_field = any(k in ev_name.lower() for k in FIELD_KEYWORDS)
+                    vals = []
+                    for r in ev.get('results', []):
+                        if r.get('type') == 'Seed' or r.get('exhibition'):
+                            continue
+                        v, _ = parse_mark_value(r.get('result', ''), ev_name)
+                        if v is not None:
+                            vals.append(v)
+                    if len(vals) < 4:
+                        continue
+                    for a, b in zip(vals, vals[1:]):
+                        pairs += 1
+                        if (is_field and b > a + 0.01) or (not is_field and b < a - 0.01):
+                            inversions += 1
+                if pairs < 10:
+                    continue
+                checked += 1
+                rate = inversions / pairs
+                meet_key = f'{year}_{season}_{os.path.splitext(fn)[0]}'
+                entry = verification.setdefault(meet_key, {'status': 'no_rankings'})
+                entry['order_ok'] = rate <= 0.25
+                entry['inversion_rate'] = round(rate, 3)
+                if rate > 0.25:
+                    suspect.append((f'{year}/{season}/{fn}', rate))
+
+    try:
+        with open(verification_path, 'w', encoding='utf-8') as f:
+            json.dump(verification, f, indent=2, sort_keys=True)
+    except Exception as e:
+        print(f'   [WARN] Could not update {verification_path}: {e}')
+
+    print(f'   Meets checked: {checked}')
+    if suspect:
+        print(f'   [ALERT] {len(suspect)} meets have >25% mark-order inversions (wrong column parsed?):')
+        for name, rate in sorted(suspect, key=lambda x: -x[1])[:12]:
+            print(f'     {name}  ({rate:.0%} inverted)')
+        if len(suspect) > 12:
+            print(f'     ... and {len(suspect)-12} more.')
+    else:
+        print('   [OK] All meets have sane mark ordering.')
+    print()
+
+
+# ---------------------------------------------------------------------------
 # Main
 # ---------------------------------------------------------------------------
 
@@ -857,6 +1210,10 @@ def run_qaqc():
     check_season_coverage(all_perfs)
     print(SEPARATOR)
     check_parser_failures()
+    print(SEPARATOR)
+    check_season_pipeline_coverage(all_perfs)
+    print(SEPARATOR)
+    check_date_season_consistency(all_perfs)
     print(SEPARATOR)
     check_duplicate_team_slugs(by_file)
     print(SEPARATOR)
@@ -873,6 +1230,8 @@ def run_qaqc():
     check_perf_id_collisions(by_file)
     print(SEPARATOR)
     check_meet_scoring()
+    print(SEPARATOR)
+    check_result_order()
     print(SEPARATOR)
     print('QA/QC complete.')
 

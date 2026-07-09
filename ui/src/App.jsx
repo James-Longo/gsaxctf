@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from 'react'
+import React, { useState, useEffect, useMemo, useRef } from 'react'
 import { isBetter, normalizeEvent, parseMark, isDistanceEvent } from './utils'
 import PerformanceList from './PerformanceList'
 import PRPopCalculator from './PRPopCalculator'
@@ -61,7 +61,7 @@ function App() {
         // Find default team slug
         const defaultTeam = manifestData.teams.find(t => t.name === selectedTeam) || manifestData.teams[0];
         if (defaultTeam) {
-           loadTeamData(defaultTeam.slug);
+           loadTeamData(defaultTeam.slug, null, defaultTeam.seasons);
         }
         setDataLoaded(true);
       } catch (err) {
@@ -71,35 +71,56 @@ function App() {
     loadInitial();
   }, [])
 
-  const loadTeamData = async (slug) => {
-    if (loadedSeasons[slug]) return; // reuse loadedSeasons state but key it by slug
-    try {
-      const res = await fetch(`/data/teams/${slug}.json`);
-      const data = await res.json();
-      // Data is already normalized by the scraper
-      setLoadedSeasons(prev => ({ ...prev, [slug]: data }));
-    } catch (err) {
-      console.error(`Failed to load team data for ${slug}:`, err);
-    }
+  // Team data is chunked per season: /data/teams/{slug}/{year}_{season}.json.
+  // chunkKeys limits which season chunks load (null = all seasons the team has);
+  // seasonsHint lets callers pass the team's season list before manifest state lands.
+  const inFlight = useRef(new Set());
+  const loadTeamData = async (slug, chunkKeys = null, seasonsHint = null) => {
+    const team = manifest.teams?.find(t => t.slug === slug);
+    const seasons = seasonsHint || team?.seasons || [];
+    const wanted = chunkKeys ? seasons.filter(s => chunkKeys.includes(s)) : seasons;
+    await Promise.all(wanted.map(async (key) => {
+      const cacheKey = `${slug}|${key}`;
+      if (loadedSeasons[cacheKey] || inFlight.current.has(cacheKey)) return;
+      inFlight.current.add(cacheKey);
+      try {
+        const res = await fetch(`/data/teams/${slug}/${key}.json`);
+        const data = await res.json();
+        setLoadedSeasons(prev => ({ ...prev, [cacheKey]: data }));
+      } catch (err) {
+        console.error(`Failed to load team data for ${slug} ${key}:`, err);
+        inFlight.current.delete(cacheKey);
+      }
+    }));
   };
 
-  // 2. Load team data when selection changes
+  const teamFullyLoaded = (t) =>
+    (t.seasons || []).every(s => loadedSeasons[`${t.slug}|${s}`]);
+
+  // 2. Load team data when selection changes.
+  // Single team: load its whole history (chunks fetch in parallel).
+  // All teams: loading every chunk of every team would be hundreds of MB, so
+  // load only chunks matching the year/season filters (latest year when the
+  // year filter is 'All').
   useEffect(() => {
+    if (!manifest.teams) return;
     if (selectedTeam === 'All') {
-      // In a real "All" view, we might want to load everything, 
-      // but for now let's just ensure we have what's needed.
-      // Option: load all teams in manifest (careful with memory)
-      manifest.teams?.forEach(t => loadTeamData(t.slug));
+      const allYears = (manifest.seasons || []).map(s => s.split('_')[0]);
+      const latestYear = allYears.sort().slice(-1)[0];
+      const years = filterYear !== 'All' ? [filterYear] : [latestYear];
+      const types = filterSeasonType !== 'All' ? [filterSeasonType] : ['Indoor', 'Outdoor'];
+      const wanted = years.flatMap(y => types.map(t => `${y}_${t}`));
+      manifest.teams.forEach(t => loadTeamData(t.slug, wanted, t.seasons));
     } else {
-      const team = manifest.teams?.find(t => t.name === selectedTeam);
-      if (team) loadTeamData(team.slug);
+      const team = manifest.teams.find(t => t.name === selectedTeam);
+      if (team) loadTeamData(team.slug, null, team.seasons);
     }
-  }, [selectedTeam, manifest]);
+  }, [selectedTeam, manifest, filterYear, filterSeasonType]);
 
   useEffect(() => {
     if (selectedAthlete && selectedAthlete.id !== 'all' && selectedAthlete.primary_team) {
       const team = manifest.teams?.find(t => t.name === selectedAthlete.primary_team);
-      if (team) loadTeamData(team.slug);
+      if (team) loadTeamData(team.slug, null, team.seasons);
     }
   }, [selectedAthlete, manifest]);
 
@@ -255,7 +276,7 @@ function App() {
 
   useEffect(() => {
     if (activeTab !== 'splits' || !manifest.teams) return;
-    manifest.teams.filter(t => t.has_splits).forEach(t => loadTeamData(t.slug));
+    manifest.teams.filter(t => t.has_splits).forEach(t => loadTeamData(t.slug, null, t.seasons));
   }, [activeTab, manifest]);
 
   useEffect(() => {
@@ -341,7 +362,7 @@ function App() {
           ) : activeTab === 'splits' ? (
             <SplitExplorer
               performances={allPerformances}
-              loading={manifest.teams?.some(t => t.has_splits && !loadedSeasons[t.slug])}
+              loading={manifest.teams?.some(t => t.has_splits && !teamFullyLoaded(t))}
             />
           ) : (
             <>
