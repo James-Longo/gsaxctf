@@ -6,6 +6,7 @@ Each team file is a flat list of performance records.
 PR flags (was_pr, is_pr, is_sb) are pre-computed and stored with each record.
 """
 
+import gzip
 import json
 import os
 import re
@@ -19,7 +20,7 @@ import shutil
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 DATA_DIR = os.path.join(BASE_DIR, 'ui', 'public', 'data')
 TEAMS_DIR = os.path.join(DATA_DIR, 'teams')
-ATHLETES_PATH = os.path.join(DATA_DIR, 'athletes.json')
+ATHLETES_PATH = os.path.join(DATA_DIR, 'athletes.json.gz')
 MANIFEST_PATH = os.path.join(DATA_DIR, 'manifest.json')
 SCRAPE_STATE_PATH = os.path.join(BASE_DIR, 'backend', 'data', 'scrape_state.json')
 
@@ -198,12 +199,18 @@ def recalculate_prs(performances: list) -> list:
 # ---------------------------------------------------------------------------
 
 def _atomic_write(path: str, data):
-    """Write JSON atomically (write to tmp, then rename) to avoid corruption."""
+    """Write JSON atomically (write to tmp, then rename) to avoid corruption.
+    Paths ending in .gz are gzip-compressed (deterministic: mtime=0)."""
     os.makedirs(os.path.dirname(path), exist_ok=True)
     tmp_fd, tmp_path = tempfile.mkstemp(dir=os.path.dirname(path), suffix='.tmp')
     try:
-        with os.fdopen(tmp_fd, 'w', encoding='utf-8') as f:
-            json.dump(data, f, ensure_ascii=False)
+        if path.endswith('.gz'):
+            with os.fdopen(tmp_fd, 'wb') as raw:
+                with gzip.GzipFile(filename='', mode='wb', fileobj=raw, mtime=0) as f:
+                    f.write(json.dumps(data, ensure_ascii=False).encode('utf-8'))
+        else:
+            with os.fdopen(tmp_fd, 'w', encoding='utf-8') as f:
+                json.dump(data, f, ensure_ascii=False)
         shutil.move(tmp_path, path)
     except Exception:
         if os.path.exists(tmp_path):
@@ -212,10 +219,25 @@ def _atomic_write(path: str, data):
 
 
 def _load_json(path: str, default):
+    if path.endswith('.gz'):
+        if not os.path.exists(path):
+            path = path[:-3]  # transitional fallback to plain json
+    elif not os.path.exists(path) and os.path.exists(path + '.gz'):
+        path = path + '.gz'
     if not os.path.exists(path):
         return default
-    with open(path, 'r', encoding='utf-8') as f:
+    opener = gzip.open if path.endswith('.gz') else open
+    with opener(path, 'rt', encoding='utf-8') as f:
         return json.load(f)
+
+
+def _chunk_files(d: str):
+    """Yield (chunk_key, filename) for a team dir, gz or plain."""
+    for fn in sorted(os.listdir(d)):
+        if fn.endswith('.json.gz'):
+            yield fn[:-8], fn
+        elif fn.endswith('.json'):
+            yield fn[:-5], fn
 
 
 # ---------------------------------------------------------------------------
@@ -293,10 +315,9 @@ def load_team(team_name: str) -> list:
     d = team_dir(team_name)
     if os.path.isdir(d):
         perfs = []
-        for fn in sorted(os.listdir(d)):
-            if fn.endswith('.json'):
-                rows = _load_json(os.path.join(d, fn), [])
-                perfs.extend(enrich_rows(team_name, fn[:-5], rows))
+        for key, fn in _chunk_files(d):
+            rows = _load_json(os.path.join(d, fn), [])
+            perfs.extend(enrich_rows(team_name, key, rows))
         return perfs
     return _load_json(team_path(team_name), [])
 
@@ -312,10 +333,10 @@ def save_team(team_name: str, performances: list):
     for p in performances:
         by_chunk.setdefault(_chunk_key(p), []).append(slim_row(p))
     for key, perfs in by_chunk.items():
-        _atomic_write(os.path.join(d, key + '.json'), perfs)
-    wanted = {key + '.json' for key in by_chunk}
+        _atomic_write(os.path.join(d, key + '.json.gz'), perfs)
+    wanted = {key + '.json.gz' for key in by_chunk}
     for fn in os.listdir(d):
-        if fn.endswith('.json') and fn not in wanted:
+        if (fn.endswith('.json') or fn.endswith('.json.gz')) and fn not in wanted:
             os.remove(os.path.join(d, fn))
     legacy = team_path(team_name)
     if os.path.exists(legacy):
@@ -440,10 +461,7 @@ def rebuild_manifest() -> dict:
         seasons = []
         count = 0
         has_splits = False
-        for chunk_fn in sorted(os.listdir(full)):
-            if not chunk_fn.endswith('.json'):
-                continue
-            key = chunk_fn[:-5]
+        for key, chunk_fn in _chunk_files(full):
             perfs = _load_json(os.path.join(full, chunk_fn), [])
             if not perfs:
                 continue

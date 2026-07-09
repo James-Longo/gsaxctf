@@ -17,6 +17,7 @@ import PracticeResults from './PracticeResults'
 import ResultPredictor from './ResultPredictor'
 import Footage from './Footage'
 import SplitExplorer from './SplitExplorer'
+import SearchSelect from './SearchSelect'
 
 function App() {
   const [dataLoaded, setDataLoaded] = useState(false)
@@ -48,12 +49,9 @@ function App() {
   useEffect(() => {
     const loadInitial = async () => {
       try {
-        const [manifestRes, athletesRes] = await Promise.all([
-          fetch('/data/manifest.json'),
-          fetch('/data/athletes.json')
-        ]);
+        const manifestRes = await fetch('/data/manifest.json');
         const manifestData = await manifestRes.json();
-        const athletesData = await athletesRes.json();
+        const athletesData = await fetchJsonGz('/data/athletes.json.gz');
         
         setManifest(manifestData);
         setAllAthletes(athletesData);
@@ -80,6 +78,24 @@ function App() {
     const raw = `${name.toLowerCase()}--${team.toLowerCase()}`;
     return raw.replace(/[^a-zA-Z0-9_]/g, '-').replace(/-+/g, '-').replace(/^-|-$/g, '');
   };
+  // Chunks are stored gzipped (.json.gz) to fit hosting limits; decompress
+  // client-side. Falls back to parsing as plain JSON if the server (or a
+  // proxy) already decoded it.
+  const fetchJsonGz = async (url) => {
+    const res = await fetch(url);
+    if (!res.ok) throw new Error(`HTTP ${res.status} for ${url}`);
+    if (url.endsWith('.gz')) {
+      const buf = await res.arrayBuffer();
+      const bytes = new Uint8Array(buf);
+      if (bytes[0] === 0x1f && bytes[1] === 0x8b) {
+        const ds = new DecompressionStream('gzip');
+        const stream = new Response(buf).body.pipeThrough(ds);
+        return JSON.parse(await new Response(stream).text());
+      }
+      return JSON.parse(new TextDecoder().decode(buf));
+    }
+    return res.json();
+  };
   const inFlight = useRef(new Set());
   const loadTeamData = async (slug, chunkKeys = null, seasonsHint = null, nameHint = null) => {
     const team = manifest.teams?.find(t => t.slug === slug);
@@ -91,8 +107,7 @@ function App() {
       if (loadedSeasons[cacheKey] || inFlight.current.has(cacheKey)) return;
       inFlight.current.add(cacheKey);
       try {
-        const res = await fetch(`/data/teams/${slug}/${key}.json`);
-        const data = await res.json();
+        const data = await fetchJsonGz(`/data/teams/${slug}/${key}.json.gz`);
         const [year, season] = [key.slice(0, key.indexOf('_')), key.slice(key.indexOf('_') + 1)];
         data.forEach((p, i) => {
           if (!p.team) p.team = teamName;
@@ -150,6 +165,33 @@ function App() {
   const teams = useMemo(() => {
     return (manifest.teams || []).map(t => t.name).sort();
   }, [manifest])
+
+  // Type-ahead options: teams grouped by level, biggest programs first
+  const LEVEL_LABELS = { hs: 'High School', ms: 'Middle School', college: 'College' }
+  const teamOptions = useMemo(() => {
+    const opts = [{ value: 'All', label: 'All Teams' }]
+    const order = { hs: 0, ms: 1, college: 2 }
+    const sorted = [...(manifest.teams || [])].sort((a, b) =>
+      (order[a.level] ?? 3) - (order[b.level] ?? 3) || b.count - a.count)
+    for (const t of sorted) {
+      opts.push({
+        value: t.name, label: t.name,
+        group: LEVEL_LABELS[t.level] || 'Other',
+        secondary: `${t.count.toLocaleString()} results`,
+      })
+    }
+    return opts
+  }, [manifest])
+
+  const athleteOptions = useMemo(() => {
+    const base = [{ value: 'all', label: 'All Athletes' }]
+    const source = selectedTeam === 'All' ? allAthletes
+      : allAthletes.filter(a => a.primary_team === selectedTeam)
+    return base.concat(source.map(a => ({
+      value: a.id, label: a.name,
+      secondary: selectedTeam === 'All' ? a.primary_team : undefined,
+    })))
+  }, [allAthletes, selectedTeam])
 
   // Derived: Athletes for the current view
   const filteredAthletes = useMemo(() => {
@@ -386,28 +428,29 @@ function App() {
               <div className="filter-bar">
                 <div className="filter-group">
                   <label>Team</label>
-                  <select value={selectedTeam} onChange={e => setSelectedTeam(e.target.value)}>
-                    <option value="All">All Teams</option>
-                    {teams.map(t => <option key={t} value={t}>{t}</option>)}
-                  </select>
+                  <SearchSelect
+                    value={selectedTeam}
+                    onChange={setSelectedTeam}
+                    options={teamOptions}
+                    placeholder="Search teams..."
+                  />
                 </div>
 
                 <div className="filter-group">
                   <label>Athlete</label>
-                  <select
+                  <SearchSelect
                     value={selectedAthlete.id}
-                    onChange={e => {
-                      const val = e.target.value
+                    onChange={(val) => {
                       if (val === 'all') setSelectedAthlete(ALL_ATHLETES)
                       else {
-                        const ath = allAthletes.find(a => String(a.id) === val)
+                        const ath = allAthletes.find(a => String(a.id) === String(val))
                         if (ath) setSelectedAthlete(ath)
                       }
                     }}
-                  >
-                    <option value="all">All Athletes</option>
-                    {filteredAthletes.map(a => <option key={a.id} value={a.id}>{a.name}</option>)}
-                  </select>
+                    options={athleteOptions}
+                    placeholder="Search athletes..."
+                    minSearch={selectedTeam === 'All' ? 2 : 0}
+                  />
                 </div>
 
                 {activeTab === 'history' && (

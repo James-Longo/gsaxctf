@@ -507,7 +507,9 @@ class Sub5ScraperV2:
                 meters *= 4
         elif 'mile' in ev:
             meters = 1609 * (2 if '2 mile' in ev else 1)
-        if not meters or meters < 200:
+        if not meters or meters < 50:
+            return mark
+        if 'pentathlon' in ev or 'heptathlon' in ev or 'decathlon' in ev:
             return mark
         floor = meters * 0.095  # slightly faster than world record pace
         mm = re.fullmatch(r'(\d{1,2})\.(\d{2})(?:\.\d+)?', str(mark).strip())
@@ -516,7 +518,7 @@ class Sub5ScraperV2:
             val = float(str(mark).strip()) if ':' not in str(mark) else None
         except ValueError:
             pass
-        if val is not None and val < floor and mm:
+        if val is not None and val < floor and mm and meters >= 400:
             repaired = int(mm.group(1)) * 60 + int(mm.group(2))
             if floor <= repaired <= meters * 0.7:
                 return f'{mm.group(1)}:{mm.group(2)}'
@@ -1108,8 +1110,10 @@ class Sub5ScraperV2:
                         results_list = [event_block]
 
                     # Event-name sanity: OCR/hand-made sheets sometimes splice
-                    # athlete text into the event label
-                    if len(full_event) > 40 or re.search(r'\d+[:.]\d+|[|]', full_event):
+                    # athlete text into the event label; "Girls oys 50 Meter"
+                    # is a mangled combined-gender header
+                    if len(full_event) > 40 or re.search(r'\d+[:.]\d+|[|]', full_event) \
+                            or re.search(r'\b(oys|irls)\b', full_event):
                         continue
 
                     for r in results_list:

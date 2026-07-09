@@ -2269,3 +2269,28 @@ body {
   color: #4a5568;
   line-height: 1.55;
 }
+
+/* SearchSelect (type-ahead dropdowns) */
+.searchselect { position: relative; min-width: 220px; }
+.searchselect input {
+  width: 100%; box-sizing: border-box; padding: 6px 26px 6px 10px;
+  border: 1px solid #ccc; border-radius: 4px; font-size: 14px; background: #fff;
+}
+.searchselect .ss-caret {
+  position: absolute; right: 8px; top: 50%; transform: translateY(-50%);
+  pointer-events: none; color: #888; font-size: 11px;
+}
+.ss-list {
+  position: absolute; z-index: 40; left: 0; right: 0; top: calc(100% + 2px);
+  max-height: 320px; overflow-y: auto; margin: 0; padding: 2px;
+  list-style: none; background: #fff; border: 1px solid #bbb; border-radius: 4px;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.15);
+}
+.ss-opt { display: flex; justify-content: space-between; gap: 10px;
+  padding: 5px 8px; cursor: pointer; border-radius: 3px; font-size: 13.5px; }
+.ss-opt.ss-hi { background: #eef4ff; }
+.ss-opt.ss-sel { font-weight: 600; }
+.ss-2nd { color: #999; font-size: 12px; white-space: nowrap; }
+.ss-group { padding: 6px 8px 2px; font-size: 11px; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 0.05em; color: #777; }
+.ss-empty { padding: 8px; color: #999; font-size: 13px; }

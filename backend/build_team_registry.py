@@ -144,14 +144,13 @@ def load_team_stats():
         count = 0
         ms = 0
         roster = defaultdict(set)
-        for chunk in os.listdir(full):
-            if not chunk.endswith('.json'):
-                continue
+        from backend.json_store import _chunk_files, _load_json
+        for key, chunk in _chunk_files(full):
             try:
-                perfs = json.load(open(os.path.join(full, chunk), encoding='utf-8'))
+                perfs = _load_json(os.path.join(full, chunk), [])
             except Exception:
                 continue
-            year, _, season = chunk[:-5].partition('_')
+            year, _, season = key.partition('_')
             count += len(perfs)
             ms += sum(1 for p in perfs if p.get('grade') == 'MS')
             for p in perfs:

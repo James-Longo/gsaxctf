@@ -22,7 +22,7 @@ from collections import defaultdict
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 TEAMS_DIR = os.path.join(BASE_DIR, 'ui', 'public', 'data', 'teams')
-ATHLETES_PATH = os.path.join(BASE_DIR, 'ui', 'public', 'data', 'athletes.json')
+ATHLETES_PATH = os.path.join(BASE_DIR, 'ui', 'public', 'data', 'athletes.json.gz')
 ARCHIVE_BASE = os.path.join(BASE_DIR, 'backend', 'data', 'sub5_archive')
 PARSED_BASE = os.path.join(BASE_DIR, 'backend', 'data', 'parsed_results')
 
@@ -71,10 +71,10 @@ def load_all_performances():
         try:
             if os.path.isdir(path):
                 team_name = canonical_team_name(fn)
-                for chunk in sorted(os.listdir(path)):
-                    if chunk.endswith('.json'):
-                        rows = json.load(open(os.path.join(path, chunk), encoding='utf-8'))
-                        perfs.extend(enrich_rows(team_name, chunk[:-5], rows))
+                from json_store import _chunk_files, _load_json
+                for key, chunk in _chunk_files(path):
+                    rows = _load_json(os.path.join(path, chunk), [])
+                    perfs.extend(enrich_rows(team_name, key, rows))
                 by_file[fn + '.json'] = perfs
             elif fn.endswith('.json'):
                 perfs = json.load(open(path, encoding='utf-8'))
@@ -135,7 +135,8 @@ def check_overall_stats(all_perfs, by_file):
     print('1. OVERALL STATS')
     print(f'   Team files : {len(by_file)}')
     print(f'   Performances: {len(all_perfs):,}')
-    athletes = json.load(open(ATHLETES_PATH)) if os.path.exists(ATHLETES_PATH) else []
+    import gzip as _gz
+    athletes = json.load(_gz.open(ATHLETES_PATH, 'rt')) if os.path.exists(ATHLETES_PATH) else []
     print(f'   Athletes   : {len(athletes):,}')
     print()
 
@@ -1127,6 +1128,9 @@ def check_athlete_outliers(all_perfs, flags_out):
     groups = defaultdict(list)
     for p in all_perfs:
         ev = p.get('event', '')
+        # combined-events "marks" mix leg times and points — not comparable
+        if re.search(r'pentathlon|heptathlon|decathlon', ev, re.I):
+            continue
         val, is_dist = parse_mark_value(p.get('mark', ''), ev)
         if val is not None:
             groups[(p.get('athlete_id'), ev)].append((val, is_dist, p))
