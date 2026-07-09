@@ -11,6 +11,7 @@ from backend.json_store import (
     add_performances_for_team, rebuild_manifest, slugify_athlete, list_teams,
     TEAMS_DIR, SCRAPE_STATE_PATH
 )
+from backend.event_canon import canonical_event
 
 # Configuration
 FIXES_PATH = os.path.join(os.path.dirname(__file__), 'manual_fixes.json')
@@ -1101,20 +1102,25 @@ class Sub5ScraperV2:
                     if isinstance(event_block, dict) and "results" in event_block:
                         gender = event_block.get("gender", "")
                         event_name = event_block.get("event", "")
-                        full_event = f"{gender} {event_name}".strip()
                         is_relay = event_block.get("is_relay", False)
                         results_list = event_block.get("results", [])
                     else:
-                        full_event = event_block.get("event", "").strip()
-                        is_relay = "Relay" in full_event or "4x" in full_event.lower()
+                        raw_ev = event_block.get("event", "").strip()
+                        m_g = re.match(r'^(Girls|Boys|Women|Men)\s+(.*)$', raw_ev, re.I)
+                        gender = m_g.group(1).capitalize() if m_g else ''
+                        gender = {'Women': 'Girls', 'Men': 'Boys'}.get(gender, gender)
+                        event_name = m_g.group(2) if m_g else raw_ev
+                        is_relay = "Relay" in raw_ev or "4x" in raw_ev.lower()
                         results_list = [event_block]
 
-                    # Event-name sanity: OCR/hand-made sheets sometimes splice
-                    # athlete text into the event label; "Girls oys 50 Meter"
-                    # is a mangled combined-gender header
-                    if len(full_event) > 40 or re.search(r'\d+[:.]\d+|[|]', full_event) \
-                            or re.search(r'\b(oys|irls)\b', full_event):
+                    # Canonicalize: one spelling per event, corrected gender,
+                    # junk/out-of-scope labels dropped (see event_canon.py)
+                    canon = canonical_event(event_name, gender or 'Boys')
+                    if canon is None:
                         continue
+                    gender, event_canon_name = canon
+                    full_event = f"{gender} {event_canon_name}"
+                    is_relay = is_relay or 'Relay' in event_canon_name
 
                     for r in results_list:
                         # Seed-type rows come from entry/heat sheets, not results

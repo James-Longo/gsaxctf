@@ -154,7 +154,9 @@ def recalculate_prs(performances: list) -> list:
             p['is_pr'] = False
             continue
 
-        pr_key = (aid, event)
+        # PRs are tracked separately for Indoor and Outdoor (displayed as
+        # PR-sub-I / PR-sub-O in the UI)
+        pr_key = (aid, event, season)
         sb_key = (aid, event, year, season)
 
         # was_pr
@@ -182,13 +184,13 @@ def recalculate_prs(performances: list) -> list:
                 p['is_sb'] = False
 
     # --- Pass 2: is_pr (last was_pr chronologically = current best) ---
-    current_pr_id: dict = {}  # (athlete_id, event) -> perf id
+    current_pr_id: dict = {}  # (athlete_id, event, season) -> perf id
     for p in sorted_p:
         if p.get('was_pr'):
-            current_pr_id[(p.get('athlete_id'), p.get('event'))] = p['id']
+            current_pr_id[(p.get('athlete_id'), p.get('event'), p.get('season'))] = p['id']
 
     for p in sorted_p:
-        key = (p.get('athlete_id'), p.get('event'))
+        key = (p.get('athlete_id'), p.get('event'), p.get('season'))
         p['is_pr'] = (p.get('id') == current_pr_id.get(key))
 
     return performances

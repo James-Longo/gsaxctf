@@ -137,9 +137,10 @@ function App() {
   useEffect(() => {
     if (!manifest.teams) return;
     if (selectedTeam === 'All') {
-      const allYears = (manifest.seasons || []).map(s => s.split('_')[0]);
-      const latestYear = allYears.sort().slice(-1)[0];
-      const years = filterYear !== 'All' ? [filterYear] : [latestYear];
+      const allYears = Array.from(new Set((manifest.seasons || []).map(s => s.split('_')[0]))).sort();
+      const latestYear = allYears.slice(-1)[0];
+      const years = filterYear === 'Last4' ? allYears.slice(-4)
+        : filterYear !== 'All' ? [filterYear] : [latestYear];
       const types = filterSeasonType !== 'All' ? [filterSeasonType] : ['Indoor', 'Outdoor'];
       const wanted = years.flatMap(y => types.map(t => `${y}_${t}`));
       manifest.teams.forEach(t => loadTeamData(t.slug, wanted, t.seasons, t.name));
@@ -269,16 +270,21 @@ function App() {
       }
     })
 
+    const allYears = Array.from(new Set((manifest.seasons || []).map(s => s.split('_')[0]))).sort((a,b) => b-a);
+    const last4 = new Set(allYears.slice(0, 4));
+
     const matches = (p, filters) => {
       const { year, type, event, meet, team } = filters
-      return (year === 'All' || p.derivedYear === year) &&
+      const yearOk = year === 'All' ||
+        (year === 'Last4' ? last4.has(p.derivedYear) : p.derivedYear === year)
+      return yearOk &&
         (type === 'All' || p.derivedType === type) &&
         (event === 'All' || normalizeEvent(p.event) === normalizeEvent(event)) &&
         (meet === 'All' || p.meetWithYear === meet) &&
         (team === 'All' || selectedAthlete.id !== 'all' || p.team === team)
     }
 
-    const availableYears = Array.from(new Set((manifest.seasons || []).map(s => s.split('_')[0]))).sort((a,b) => b-a);
+    const availableYears = allYears;
     const availableTypes = Array.from(new Set((manifest.seasons || []).map(s => s.split('_')[1]))).sort();
 
     const availableEvents = Array.from(new Set(
@@ -382,7 +388,7 @@ function App() {
             <button onClick={() => setActiveTab('practice')} className={`nav-btn ${activeTab === 'practice' ? 'active' : ''}`}>Practice</button>
             <button onClick={() => setActiveTab('footage')} className={`nav-btn ${activeTab === 'footage' ? 'active' : ''}`}>Footage</button>
             <button onClick={() => setActiveTab('predictor')} className={`nav-btn ${activeTab === 'predictor' ? 'active' : ''}`}>Predictor</button>
-            <button onClick={() => setActiveTab('splits')} className={`nav-btn ${activeTab === 'splits' ? 'active' : ''}`}>Split Explorer</button>
+            {false && <button onClick={() => setActiveTab('splits')} className={`nav-btn ${activeTab === 'splits' ? 'active' : ''}`}>Split Explorer</button>}
           </div>
 
           {isLocalDev && (
@@ -459,6 +465,7 @@ function App() {
                       <label>Year</label>
                       <select value={filterYear} onChange={e => setFilterYear(e.target.value)}>
                         <option value="All">All Years</option>
+                        <option value="Last4">Last 4 Years</option>
                         {years.map(y => <option key={y} value={y}>{y}</option>)}
                       </select>
                     </div>
@@ -513,7 +520,7 @@ function App() {
                                     {isExpanded ? ' ▲' : ' ▼'}
                                   </span>
                                 )}
-                                {p.is_pr && <span className="badge pr">PR</span>}
+                                {p.is_pr && <span className="badge pr">{p.season === 'Indoor' ? 'PRᵢ' : p.season === 'Outdoor' ? 'PRₒ' : 'PR'}</span>}
                               </td>
                               <td>{p.meet_name}</td>
                             </tr>
