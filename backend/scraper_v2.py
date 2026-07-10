@@ -51,7 +51,16 @@ SEASONS = (
     ] +
     [{"year": str(y), "season": s,
       "url": f"https://sub5.com/youth-pages/{s.lower()}-track/{y}-{s.lower()}-results/"}
-     for y in range(2022, 2027) for s in ("Indoor", "Outdoor")]
+     for y in range(2022, 2027) for s in ("Indoor", "Outdoor")] +
+    # Cross country: legacy FrontPage tree 2003-2013, WP pages 2015-2025
+    [{"year": f"20{n:02d}", "season": "XC",
+      "url": (f"https://sub5.com/wp-content/xcresults/results{n:02d}/results{n:02d}.htm"
+              if n >= 11 else
+              f"https://sub5.com/wp-content/xcresults/results{n:02d}/results.htm")}
+     for n in range(3, 14)] +
+    [{"year": str(y), "season": "XC",
+      "url": f"https://sub5.com/youth-pages/cross-country/{y}-xc-results/"}
+     for y in range(2015, 2026)]
 )
 
 TEAM_MAPPING = {
@@ -347,6 +356,8 @@ def _parse_one_file(args):
         chain.append(VerticalTokensParser(_WORKER_DETECTOR.scraper))
         from backend.parsers.pipegrid import PipeGridParser
         chain.append(PipeGridParser(_WORKER_DETECTOR.scraper))
+        from backend.parsers.xcsheet import XCDualSheetParser
+        chain.append(XCDualSheetParser(_WORKER_DETECTOR.scraper))
 
         # Accept the first parser yielding a real result set (>=5 rows);
         # otherwise keep whichever produced the most.
@@ -818,6 +829,10 @@ class Sub5ScraperV2:
                 start_date = datetime(year_val, 3, 1)
                 end_date = datetime(year_val, 6, 30)
                 return start_date <= dt <= end_date
+            elif season == "XC":
+                start_date = datetime(year_val, 8, 1)
+                end_date = datetime(year_val, 12, 10)
+                return start_date <= dt <= end_date
             return True
         except:
             return False
@@ -1048,9 +1063,11 @@ class Sub5ScraperV2:
                 if isinstance(file_data, dict) and "events" in file_data:
                     parsed_events = file_data.get("events", [])
                     date = file_data.get("date")
+                    venue = file_data.get("venue")
                 else:
                     parsed_events = file_data if isinstance(file_data, list) else []
                     date = None
+                    venue = None
 
                 # Date resolution hierarchy — every source is validated against
                 # the season window (year/season come from the index page the
@@ -1115,7 +1132,7 @@ class Sub5ScraperV2:
 
                     # Canonicalize: one spelling per event, corrected gender,
                     # junk/out-of-scope labels dropped (see event_canon.py)
-                    canon = canonical_event(event_name, gender or 'Boys')
+                    canon = canonical_event(event_name, gender or 'Boys', season=season)
                     if canon is None:
                         continue
                     gender, event_canon_name = canon
@@ -1190,6 +1207,8 @@ class Sub5ScraperV2:
                             'meet_name': meet_name,
                             'splits': r.get("splits", [])
                         }
+                        if season == 'XC':
+                            p['course'] = (venue or meet_name).strip()
                         
                         team_slug = team_norm # Will be slugified in json_store
                         if team_slug not in all_teams_data:

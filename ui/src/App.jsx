@@ -18,6 +18,7 @@ import ResultPredictor from './ResultPredictor'
 import Footage from './Footage'
 import SplitExplorer from './SplitExplorer'
 import SearchSelect from './SearchSelect'
+import XCCourseExplorer from './XCCourseExplorer'
 
 function App() {
   const [dataLoaded, setDataLoaded] = useState(false)
@@ -141,7 +142,7 @@ function App() {
       const latestYear = allYears.slice(-1)[0];
       const years = filterYear === 'Last4' ? allYears.slice(-4)
         : filterYear !== 'All' ? [filterYear] : [latestYear];
-      const types = filterSeasonType !== 'All' ? [filterSeasonType] : ['Indoor', 'Outdoor'];
+      const types = filterSeasonType !== 'All' ? [filterSeasonType] : ['Indoor', 'Outdoor', 'XC'];
       const wanted = years.flatMap(y => types.map(t => `${y}_${t}`));
       manifest.teams.forEach(t => loadTeamData(t.slug, wanted, t.seasons, t.name));
     } else {
@@ -388,6 +389,7 @@ function App() {
             <button onClick={() => setActiveTab('practice')} className={`nav-btn ${activeTab === 'practice' ? 'active' : ''}`}>Practice</button>
             <button onClick={() => setActiveTab('footage')} className={`nav-btn ${activeTab === 'footage' ? 'active' : ''}`}>Footage</button>
             <button onClick={() => setActiveTab('predictor')} className={`nav-btn ${activeTab === 'predictor' ? 'active' : ''}`}>Predictor</button>
+            <button onClick={() => setActiveTab('xc-courses')} className={`nav-btn ${activeTab === 'xc-courses' ? 'active' : ''}`}>XC Courses</button>
             {false && <button onClick={() => setActiveTab('splits')} className={`nav-btn ${activeTab === 'splits' ? 'active' : ''}`}>Split Explorer</button>}
           </div>
 
@@ -422,6 +424,8 @@ function App() {
             <PracticeResults />
           ) : activeTab === 'footage' ? (
             <Footage />
+          ) : activeTab === 'xc-courses' ? (
+            <XCCourseExplorer />
           ) : activeTab === 'predictor' ? (
             <ResultPredictor performances={allPerformances} />
           ) : activeTab === 'splits' ? (

@@ -43,5 +43,6 @@ class ColumnStrategyParser(BaseParser):
             "events": flat_events,
             "date": meet_date,
             "meet_name": meet_name,
+            "venue": raw_result.get("venue"),
             "team_rankings": raw_result.get("team_rankings", []),
         }

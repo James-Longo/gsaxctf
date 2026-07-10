@@ -411,6 +411,22 @@ class Sub5ColumnParser:
             # Sort by priority, then take the first one
             potential_dates.sort(key=lambda x: x[0], reverse=True)
             meet_date = potential_dates[0][1]
+
+        # Venue line (XC course identity): e.g. "Twin Brook, Cumberland, ME"
+        meet_venue = None
+        for line in lines[:10]:
+            clean = line.strip()
+            if not clean or clean == meet_name or 'hy-tek' in clean.lower() \
+                    or 'licensed' in clean.lower() or clean.lower() == 'results':
+                continue
+            if re.search(r'length|distance|weather|temp', clean, re.I):
+                continue
+            if re.search(r',\s*(ME|Maine|NH)\b', clean) or re.search(
+                    r'\b(Park|Brook|Course|Country Club|Rec\b|Recreation|Farm|Fairground|Golf|Trails?)\b',
+                    clean):
+                if not re.search(r'\d{1,2}/\d{1,2}/\d{2,4}', clean) and len(clean) < 60:
+                    meet_venue = clean
+                    break
         
         # Segment into events.
         # "Team Rankings" blocks can appear MID-FILE (e.g. girls rankings
@@ -499,6 +515,7 @@ class Sub5ColumnParser:
         return {
             "meet_name": meet_name,
             "date": meet_date,
+            "venue": meet_venue,
             "events": parsed_events,
             "team_rankings": team_rankings
         }

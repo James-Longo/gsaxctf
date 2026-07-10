@@ -54,7 +54,11 @@ JUNK = re.compile(
     r'\bcont|\d/\d{1,2}/\d{2,4}|,', re.I)
 
 
-def canonical_event(raw, gender):
+XC_TOKEN = re.compile(r'\bcc\b|cross\s*country|\bxc\b', re.I)
+K_DIST = re.compile(r'\b([2-9](?:\.\d)?)\s*k\b', re.I)
+
+
+def canonical_event(raw, gender, season=None):
     """Return (gender, canonical_event_name) or None to drop the row."""
     if not raw:
         return None
@@ -62,6 +66,25 @@ def canonical_event(raw, gender):
 
     if OUT_OF_SCOPE.search(s):
         return None
+
+    # Cross country: one race per gender; distance from "5k"/"5000m"/miles.
+    if season == 'XC' or XC_TOKEN.search(s):
+        m = INNER_GENDER.search(s)
+        if m:
+            gender = 'Boys' if m.group(1) else 'Girls'
+        k = K_DIST.search(s)
+        if k:
+            return gender, f'{k.group(1).upper()}K Cross Country'
+        d = DIST_RE.search(s)
+        if d and int(d.group(1)) >= 1500:
+            meters = int(d.group(1))
+            if meters % 1000 == 0:
+                return gender, f'{meters // 1000}K Cross Country'
+            return gender, f'{meters} Meter Cross Country'
+        mi = re.search(r'(\d(?:\.\d+)?)\s*miles?', s, re.I)
+        if mi:
+            return gender, f'{mi.group(1)} Mile Cross Country'
+        return gender, '5K Cross Country'  # the default HS race
 
     # inner gender overrides the section prefix
     m = INNER_GENDER.search(s)
