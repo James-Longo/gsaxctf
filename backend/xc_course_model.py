@@ -84,6 +84,10 @@ def norm_course(raw):
     s = ' '.join(toks).strip(' ,.-')
     if len(s) < 3:
         return ''
+    # debris that is a file description, not a place
+    if re.search(r'result|by\s?heat|section|heats?$|\bpdf\b|^meet\b|^with\b', s, re.I):
+        s2 = COURSE_ALIASES.get(s.title().lower())
+        return s2 if s2 is not None else ''
     s = re.sub(r'^la\s*liberte$', 'LaLiberte', s, flags=re.I)
     s = s.title()
     return COURSE_ALIASES.get(s.lower(), s)  # '' alias = exclude

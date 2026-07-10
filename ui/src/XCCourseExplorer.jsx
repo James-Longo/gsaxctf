@@ -77,11 +77,6 @@ export default function XCCourseExplorer() {
   return (
     <div className="xc-explorer">
       <h2>XC Course Explorer</h2>
-      <p className="xc-note">
-        Equivalence computed from athletes who raced multiple courses in the same
-        season ({data.event}). A course's factor combines its length and difficulty:
-        1.05 means times there run about 5% slower than the median Maine course.
-      </p>
 
       <div className="xc-converter">
         <h3>Time Converter</h3>
