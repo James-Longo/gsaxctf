@@ -42,9 +42,10 @@ jobs:
         with:
           commit_message: "chore: automated backend rescrape and team-data update [skip ci]"
           file_pattern: |
-            ui/public/data/teams/*.json
+            ui/public/data/teams
             ui/public/data/manifest.json
-            ui/public/data/athletes.json
+            ui/public/data/athletes.json.gz
+            ui/public/data/xc_courses.json.gz
             backend/data/scrape_state.json
 
       - name: Set up Node.js
@@ -66,5 +67,7 @@ jobs:
             echo "::warning::VERCEL_ORG_ID or VERCEL_PROJECT_ID is missing from secrets. Checking vars..."
           fi
           
+          # --archive=tgz is REQUIRED: the store is ~14.7k chunk files and Vercel's
+          # raw upload path caps at 5,000 files/day ("api-upload-free").
           echo "Deploying to Vercel..."
-          npx vercel --prod --yes --token=$VERCEL_TOKEN
+          npx vercel --prod --yes --archive=tgz --token=$VERCEL_TOKEN
