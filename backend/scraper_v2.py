@@ -274,6 +274,69 @@ SKIP_PARSE_FILES = {
     'fryeburg5_21.pdf',
 }
 
+_HYTEK_STOP_RE = re.compile(
+    r'^(results?|meet results|team rankings|team scores?|'
+    r'complete results|final results|rankings)$', re.I)
+
+
+def hytek_header_meta(text):
+    """Meet name / venue / host from a Hy-Tek Meet Manager header.
+
+    Hy-Tek exports open with a fixed four-line block:
+
+        Licensed to Foxcroft Academy     HY-TEK's Meet Manager 9/20/2019
+                 PVC Regular Season Meet - 9/20/2019
+                        Dover-Foxcroft
+                            Results
+
+    Line 1 names the licensing host, line 2 the meet, and the line(s)
+    between the meet and the 'Results' marker the venue. Returns a dict with
+    whatever could be read; every key may be None.
+    """
+    out = {'meet': None, 'venue': None, 'host': None}
+    if not text:
+        return out
+    # .htm archives arrive as raw markup; the header lives inside <pre>
+    if '<' in text[:2000] and '</' in text[:8000].lower():
+        try:
+            from bs4 import BeautifulSoup
+            soup = BeautifulSoup(text[:60000], 'html.parser')
+            pres = soup.find_all('pre')
+            text = "\n".join(p.get_text() for p in pres) if pres \
+                else soup.get_text('\n')
+        except Exception:
+            pass
+    if 'HY-TEK' not in text[:4000]:
+        return out
+    lines = [l.strip() for l in text[:4000].splitlines()]
+    lines = [l for l in lines if l]
+    if not lines or 'HY-TEK' not in lines[0]:
+        return out
+    m = re.search(r'Licensed to\s+(.+?)\s{2,}HY-TEK', lines[0])
+    if m:
+        out['host'] = m.group(1).strip(' -')
+    # locate the 'Results' marker inside the header block
+    stop = None
+    for i, l in enumerate(lines[1:7], 1):
+        if _HYTEK_STOP_RE.fullmatch(l):
+            stop = i
+            break
+    if stop is None:
+        return out
+    block = lines[1:stop]
+    if not block:
+        return out
+    # meet name is first; anything after it and before 'Results' is the venue
+    out['meet'] = re.sub(r'\s*-\s*\d{1,2}/\d{1,2}/\d{2,4}.*$', '', block[0]).strip() or None
+    for cand in reversed(block[1:]):
+        # skip bare date lines ("9/16/2011", "10/24/2011 to 10/25/2011")
+        if re.fullmatch(r'[\d/]{6,10}(\s+to\s+[\d/]{6,10})?', cand):
+            continue
+        out['venue'] = re.sub(r'^at\s+', '', cand, flags=re.I).strip()
+        break
+    return out
+
+
 def _parse_one_file(args):
     """Worker: parse a single archive file to its output JSON.
     Returns (filename, result_count, error_message_or_None)."""
@@ -358,6 +421,12 @@ def _parse_one_file(args):
         chain.append(PipeGridParser(_WORKER_DETECTOR.scraper))
         from backend.parsers.xcsheet import XCDualSheetParser
         chain.append(XCDualSheetParser(_WORKER_DETECTOR.scraper))
+        # Spreadsheet exports (Excel / OpenOffice "Save as Web Page") carry no
+        # structure the other table parsers key on; content-typed columns are
+        # the only handle. Last resort, so it only sees what the rest missed.
+        if not filename.lower().endswith('.pdf'):
+            from backend.parsers.spreadsheet import SpreadsheetTableParser
+            chain.append(SpreadsheetTableParser(_WORKER_DETECTOR.scraper))
 
         # Accept the first parser yielding a real result set (>=5 rows);
         # otherwise keep whichever produced the most.
@@ -442,6 +511,16 @@ def _parse_one_file(args):
         data_to_save = results
         if isinstance(results, list) and results and 'event' in results[0]:
             data_to_save = {'events': results, 'date': results[0].get('date')} if 'date' in results[0] else results
+        # The file's own Hy-Tek header is a second source of truth for the
+        # venue; only fill what the parser could not supply itself.
+        if isinstance(data_to_save, dict):
+            meta = hytek_header_meta(text)
+            if meta['venue'] and not data_to_save.get('venue'):
+                data_to_save['venue'] = meta['venue']
+            if meta['meet'] and not data_to_save.get('meet_name'):
+                data_to_save['meet_name'] = meta['meet']
+            if meta['host'] and not data_to_save.get('host'):
+                data_to_save['host'] = meta['host']
         with open(output_path, 'w', encoding='utf-8') as f:
             json.dump(data_to_save, f, indent=4, ensure_ascii=False)
         return (filename, _count(results), None)
@@ -454,10 +533,24 @@ class Sub5ScraperV2:
         self.headers = {'User-Agent': 'Mozilla/5.0'}
         self.manual_fixes = self.load_manual_fixes()
         self.web_date_mapping = self.load_web_date_mapping()
+        self.web_meet_mapping = self.load_web_meet_mapping()
         self.team_registry = self.load_team_registry()
         self.progress_callback = progress_callback
         self.session = requests.Session()
         self.session.headers.update(self.headers)
+        # urllib3 owns the backoff, honours Retry-After, and retries only the
+        # transient statuses; 4xx stays permanent because the legacy tree is
+        # full of dead links that are not worth ~7s each to re-confirm.
+        from requests.adapters import HTTPAdapter
+        from urllib3.util.retry import Retry
+        retry = Retry(total=3, connect=3, read=3,
+                      backoff_factor=1,
+                      status_forcelist=(429, 500, 502, 503, 504),
+                      allowed_methods=frozenset(['GET', 'HEAD']),
+                      raise_on_status=False)
+        adapter = HTTPAdapter(max_retries=retry)
+        self.session.mount('http://', adapter)
+        self.session.mount('https://', adapter)
 
     def load_team_registry(self):
         """Canonical team names + level-aware aliases, built by
@@ -560,29 +653,6 @@ class Sub5ScraperV2:
             return True
         return False
 
-    def _get_with_retry(self, url, max_retries=3):
-        for i in range(max_retries):
-            try:
-                response = self.session.get(url, timeout=30)
-                response.raise_for_status()
-                return response
-            except requests.exceptions.HTTPError as e:
-                # 4xx is permanent (dead legacy links) — retrying wastes ~7s each
-                if e.response is not None and 400 <= e.response.status_code < 500:
-                    raise
-                if i == max_retries - 1:
-                    print(f"Failed to fetch {url} after {max_retries} attempts: {e}")
-                    raise
-                import time
-                time.sleep(2 ** i)
-            except Exception as e:
-                if i == max_retries - 1:
-                    print(f"Failed to fetch {url} after {max_retries} attempts: {e}")
-                    raise
-                import time
-                time.sleep(2 ** i)
-        return None
-
     def report_progress(self, message, progress=None):
         if self.progress_callback:
             self.progress_callback(message, progress)
@@ -597,23 +667,55 @@ class Sub5ScraperV2:
             try:
                 with open(mapping_path, 'r') as f:
                     return json.load(f)
-            except:
+            except Exception:
                 pass
         return {}
 
+    def load_web_meet_mapping(self):
+        """Meet name + venue harvested from the season index tables, keyed
+        '<year>/<season>/<filename>'. The venue column is the only reliable
+        course identity for the ~95% of result files that carry none."""
+        mapping_path = os.path.join(os.path.dirname(__file__), 'web_meet_mapping.json')
+        if os.path.exists(mapping_path):
+            try:
+                with open(mapping_path, 'r', encoding='utf-8') as f:
+                    return json.load(f)
+            except Exception:
+                pass
+        return {}
+
+    def save_web_meet_mapping(self):
+        mapping_path = os.path.join(os.path.dirname(__file__), 'web_meet_mapping.json')
+        try:
+            with open(mapping_path, 'w', encoding='utf-8') as f:
+                json.dump(self.web_meet_mapping, f, indent=4, ensure_ascii=False)
+        except Exception as e:
+            print(f"Error saving web_meet_mapping: {e}")
+
     def parse_web_date(self, date_str):
-        if not date_str: return None
-        # Multi-day meets: "June 3-4, 2005" / "June 3 & 10, 2006" -> first day
+        """Parse a season-index date cell ("October 25, 2008", "Oct 25, 2008",
+        "June 3-4, 2005"). dateutil handles the format variation; the only
+        local rule is that a multi-day meet is dated to its first day."""
+        if not date_str:
+            return None
+        # "June 3-4, 2005" / "June 3 & 10, 2006" / "January 9/10, 2015" -> first
+        # day. The slash form must be collapsed before parsing or it reads as
+        # month/day and silently takes the year from the wrong token.
+        date_str = re.sub(r'(\d{1,2})\s*[-&/]\s*\d{1,2}(?=\s*,)', r'\1', date_str)
         date_str = re.sub(r'(\d{1,2})\s*[-&]\s*\d{1,2}', r'\1', date_str)
         try:
-            dt = datetime.strptime(date_str, "%B %d, %Y")
-            return dt.strftime("%Y-%m-%d")
-        except:
-            try:
-                dt = datetime.strptime(date_str, "%b %d, %Y")
-                return dt.strftime("%Y-%m-%d")
-            except:
-                return None
+            from dateutil import parser as _dateparser
+            dt = _dateparser.parse(date_str, fuzzy=True, dayfirst=False)
+        except Exception:
+            return None
+        return dt.strftime("%Y-%m-%d")
+
+    def _get_with_retry(self, url, max_retries=3):
+        """Fetch a URL. Transient failures are retried by the session's
+        urllib3 adapter; this only turns a final failure into an exception."""
+        response = self.session.get(url, timeout=30)
+        response.raise_for_status()
+        return response
 
     def load_manual_fixes(self):
         if os.path.exists(FIXES_PATH):
@@ -908,26 +1010,45 @@ class Sub5ScraperV2:
             if re.search(r'\d', filename): return True
             return False
 
+        from urllib.parse import urljoin
+
+        # Index rows are [date | meet name | venue]. The venue column is the
+        # authoritative course identity for XC and exists for 2005+; 2003-04
+        # tables are two-column and carry the venue inside the meet name
+        # ("Marshwood, Bonny Eagle, Portland at Scarborough").
         for row in soup.find_all('tr'):
-            cols = row.find_all('td')
-            if len(cols) >= 2:
-                date_text = cols[0].get_text(strip=True)
-                for col in cols[1:]:
-                    for a in col.find_all('a', href=True):
-                        href = a['href']
-                        if is_valid_result_link(href):
-                            if not href.startswith('http'):
-                                from urllib.parse import urljoin
-                                href = urljoin(url, href)
-                            mapping[href] = date_text
+            cols = row.find_all(['td', 'th'])
+            if len(cols) < 2:
+                continue
+            cells = [c.get_text(' ', strip=True).replace('\xa0', ' ') for c in cols]
+            # Skip the year-navigation rows ("2013", "2012", ...) that link to
+            # other season indexes rather than to meets.
+            if re.fullmatch(r'(19|20)\d\d', cells[1].strip()):
+                continue
+            date_text = cells[0].strip()
+            meet_text = cells[1].strip()
+            venue_text = cells[2].strip() if len(cells) > 2 else ''
+            if not venue_text:
+                m = re.search(r'\bat\s+([A-Z][\w.\'-]*(?:\s+[A-Z][\w.\'-]*){0,3})',
+                              meet_text)
+                if m:
+                    venue_text = m.group(1).strip()
+            for col in cols[1:]:
+                for a in col.find_all('a', href=True):
+                    href = a['href']
+                    if is_valid_result_link(href):
+                        if not href.startswith('http'):
+                            href = urljoin(url, href)
+                        mapping[href] = {'date': date_text or None,
+                                         'meet': meet_text or None,
+                                         'venue': venue_text or None}
         for a in soup.find_all('a', href=True):
             href = a['href']
             if is_valid_result_link(href):
+                if not href.startswith('http'):
+                    href = urljoin(url, href)
                 if href not in mapping:
-                    if not href.startswith('http'):
-                        from urllib.parse import urljoin
-                        href = urljoin(url, href)
-                    mapping[href] = None
+                    mapping[href] = {'date': None, 'meet': None, 'venue': None}
         return mapping
 
     def download_missing_files(self, index_url, archive_dir, synced_meets=None, curr_year=None, curr_season=None, workers=6):
@@ -937,16 +1058,24 @@ class Sub5ScraperV2:
         saved_files = []
         mapping_changed = False
         to_fetch = []
-        for link, date_str in links_map.items():
+        for link, info in links_map.items():
+            if not isinstance(info, dict):   # legacy shape: bare date string
+                info = {'date': info, 'meet': None, 'venue': None}
+            date_str = info.get('date')
             filename = link.split('/')[-1]
             if '?' in filename: filename = filename.split('?')[0]
             # Preserve .pdf extension; only append .htm for non-typed links
             if not filename.lower().endswith(('.htm', '.html', '.pdf')):
                 filename += ".htm"
+            # Scope by season: generic filenames (Results-1.htm, classaboys.htm)
+            # recur across years and would otherwise clobber each other.
+            scoped_key = f"{curr_year}/{curr_season}/{filename}"
             if date_str:
-                # Scope by season: generic filenames (Results-1.htm, classaboys.htm)
-                # recur across years and would otherwise clobber each other.
-                self.web_date_mapping[f"{curr_year}/{curr_season}/{filename}"] = date_str
+                self.web_date_mapping[scoped_key] = date_str
+                mapping_changed = True
+            if info.get('meet') or info.get('venue'):
+                self.web_meet_mapping[scoped_key] = {
+                    'meet': info.get('meet'), 'venue': info.get('venue')}
                 mapping_changed = True
             save_path = os.path.join(archive_dir, filename)
             meet_name = os.path.splitext(filename)[0]
@@ -975,6 +1104,7 @@ class Sub5ScraperV2:
                         saved_files.append(result)
         if mapping_changed:
             self.save_web_date_mapping()
+            self.save_web_meet_mapping()
         return saved_files
 
     def save_web_date_mapping(self):
@@ -1068,6 +1198,21 @@ class Sub5ScraperV2:
                     parsed_events = file_data if isinstance(file_data, list) else []
                     date = None
                     venue = None
+
+                # Course identity, best source first. The season index table on
+                # sub5 carries an explicit venue column, which beats anything
+                # recoverable from the result file itself; the file's own venue
+                # (parser- or Hy-Tek-supplied) is the second source of truth.
+                # The filename stem is the last resort and names no place at
+                # all for generic slugs like "Results-F1-3".
+                idx_meta = {}
+                for _cand in (filename, meet_name + ".htm", meet_name + ".html",
+                              meet_name + ".pdf"):
+                    idx_meta = self.web_meet_mapping.get(f"{year}/{season}/{_cand}") or {}
+                    if idx_meta:
+                        break
+                course_name = (idx_meta.get('venue') or venue
+                               or idx_meta.get('meet') or meet_name)
 
                 # Date resolution hierarchy — every source is validated against
                 # the season window (year/season come from the index page the
@@ -1208,7 +1353,7 @@ class Sub5ScraperV2:
                             'splits': r.get("splits", [])
                         }
                         if season == 'XC':
-                            p['course'] = (venue or meet_name).strip()
+                            p['course'] = (course_name or meet_name).strip()
                         
                         team_slug = team_norm # Will be slugified in json_store
                         if team_slug not in all_teams_data:
