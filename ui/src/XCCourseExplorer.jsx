@@ -5,8 +5,10 @@ import SearchSelect from './SearchSelect'
  * XC Course Explorer - course equivalence built from athletes who raced
  * multiple courses in the same season (backend/xc_course_model.py).
  *
- * factor is multiplicative: predicted time on B = time on A * fB / fA.
- * It reflects both course length and difficulty.
+ * One number per course, multiplicative: time on B = time on A * fB / fA.
+ * It absorbs everything that makes a race take longer -- length, hills,
+ * footing -- and is measured from runners who raced both courses, so no
+ * course distance is involved anywhere.
  */
 
 const fetchGz = async (url) => {
@@ -46,10 +48,42 @@ export default function XCCourseExplorer() {
     fetchGz('/data/xc_courses.json.gz').then(setData).catch(e => setError(String(e)))
   }, [])
 
+  // Collapse a year list into runs: [2004,2020] -> "2004, 2020", not
+  // "2004–2020". A venue's courses interleave rather than running in clean
+  // eras, so a first-to-last span would claim years the course never raced
+  // and would overlap the venue's other entries.
+  const yearSpan = (ys) => {
+    const out = []
+    let i = 0
+    while (i < ys.length) {
+      let j = i
+      while (j + 1 < ys.length && +ys[j + 1] === +ys[j] + 1) j++
+      out.push(i === j ? ys[i] : `${ys[i]}–${ys[j]}`)
+      i = j + 1
+    }
+    return out.join(', ')
+  }
+
+  // A venue that has raced more than one course needs something on the row to
+  // tell its entries apart. Years are exact and owe nothing to the distance
+  // label, so they disambiguate where a venue repeats and stay out of the way
+  // where it does not.
+  const label = useMemo(() => {
+    const seen = {}
+    for (const c of (data?.courses || [])) seen[c.venue] = (seen[c.venue] || 0) + 1
+    const m = {}
+    for (const c of (data?.courses || [])) {
+      m[c.course] = seen[c.venue] > 1
+        ? `${c.venue} (${yearSpan(c.years || [])})`
+        : c.venue
+    }
+    return m
+  }, [data])
+
   const options = useMemo(() => (data?.courses || []).map(c => ({
-    value: c.course, label: c.course,
-    secondary: `med ${c.medianTime} | ${c.athletes} athletes`,
-  })), [data])
+    value: c.course, label: label[c.course] || c.venue,
+    secondary: `typical ${c.medianTime} | ${c.athletes} athletes`,
+  })), [data, label])
 
   const byName = useMemo(() => {
     const m = {}
@@ -105,41 +139,46 @@ export default function XCCourseExplorer() {
         </div>
         {converted != null && byName[fromCourse] && byName[toCourse] && (
           <p className="xc-note">
-            {byName[toCourse].course} runs {byName[toCourse].factor > byName[fromCourse].factor
-              ? 'slower' : 'faster'} than {byName[fromCourse].course} by{' '}
-            {Math.abs((byName[toCourse].factor / byName[fromCourse].factor - 1) * 100).toFixed(1)}%.
+            A race at {label[toCourse]} takes{' '}
+            {Math.abs((byName[toCourse].factor / byName[fromCourse].factor - 1) * 100).toFixed(1)}%{' '}
+            {byName[toCourse].factor > byName[fromCourse].factor ? 'longer' : 'less'} than
+            one at {label[fromCourse]}, from runners who raced both.
           </p>
         )}
       </div>
 
-      <h3>
-        Course Difficulty Ranking{' '}
-        <button className="xc-sort" onClick={() => setSortAsc(a => !a)}>
-          {sortAsc ? 'fastest first' : 'slowest first'}
-        </button>
-      </h3>
-      <table className="results-table">
+      <h3>Course Ratings</h3>
+      <div className="table-container">
+      <table className="performance-table">
         <thead>
           <tr>
-            <th>#</th><th>Course</th><th>Factor</th><th>vs median</th>
-            <th>Median 5K</th><th>Athletes</th><th>Races</th><th>Years</th>
+            <th>#</th><th>Course</th>
+            <th className="sortable active" onClick={() => setSortAsc(a => !a)}
+                title="Sort by rating">
+              Rating* {sortAsc ? '▲' : '▼'}
+            </th>
+            <th>Median time</th>
           </tr>
         </thead>
         <tbody>
           {ranked.map((c, i) => (
             <tr key={c.course}>
               <td>{i + 1}</td>
-              <td>{c.course}</td>
-              <td>{c.factor.toFixed(3)}</td>
-              <td>{c.pct > 0 ? '+' : ''}{c.pct.toFixed(1)}%</td>
+              <td>{label[c.course]}</td>
+              <td>
+                {c.factor.toFixed(3)}
+                {c.factorSE != null && <span className="xc-se"> ±{c.factorSE.toFixed(3)}</span>}
+              </td>
               <td>{c.medianTime}</td>
-              <td>{c.athletes.toLocaleString()}</td>
-              <td>{c.races}</td>
-              <td>{c.years[0]}–{c.years[c.years.length - 1]}</td>
             </tr>
           ))}
         </tbody>
       </table>
+      </div>
+      <p className="xc-note">
+        * Every rating is relative to the Festival of Champions course at
+        Belfast, which is 1.000
+      </p>
     </div>
   )
 }
