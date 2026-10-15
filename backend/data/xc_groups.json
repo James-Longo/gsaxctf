@@ -1,0 +1,133 @@
+{
+ "_note": "Postseason meets for the XC simulator (prototype). Each team's class and region come from the school catalog (backend/school_catalog.py, MPA 2026-27 classification); conference members listed here by name are resolved through the catalog. PVC: schools that ran the 2025 PVC varsity races (no official roster found); Large/Small follows MPA class (B/C).",
+ "2026": {
+  "sources": {
+   "classification": "https://www.mpa.cc/resources/Tournament%20Info/Cross%20Country%20Boys/Bulletin%202026-27.pdf",
+   "pvc_members": "2025 PVC varsity results (sub5 pvc-boys-varsity.txt / pvc-girls-varsity.txt) -- inferred; not confirmed by an official PVC source",
+   "dates_venues": "Confirmed 2026-10-15 from the GSA XC calendar (Isaac Vaccaro's 'XC this week' email of 2026-10-11 and its linked 'XC Calendar' sheet): PVC Oct 17 at Old Town HS, first race noon; Northern regionals Oct 24 at Belfast; States Oct 31 at Cony"
+  },
+  "meets": [
+   {
+    "id": "pvc",
+    "name": "PVC Championship",
+    "date": "2026-10-17",
+    "venue": "Old Town",
+    "schools": [
+     "Caribou",
+     "Ellsworth",
+     "Foxcroft",
+     "Hermon",
+     "John Bapst",
+     "Mt. Desert Island",
+     "Old Town",
+     "Presque Isle",
+     "Bangor Christian",
+     "Bucksport",
+     "Central",
+     "Dexter",
+     "Fort Fairfield",
+     "Fort Kent",
+     "George Stevens",
+     "Houlton/GHCA",
+     "Machias",
+     "Mattanawcook",
+     "Narraguagus",
+     "Orono",
+     "Schenck",
+     "Sumner",
+     "Washington Academy",
+     "Woodland"
+    ],
+    "divisions": {
+     "Large": "B",
+     "Small": "C"
+    }
+   },
+   {
+    "id": "reg_A_N",
+    "name": "Class A North Regional",
+    "date": "2026-10-24",
+    "venue": "Belfast",
+    "class": "A",
+    "region": "North"
+   },
+   {
+    "id": "reg_B_N",
+    "name": "Class B North Regional",
+    "date": "2026-10-24",
+    "venue": "Belfast",
+    "class": "B",
+    "region": "North"
+   },
+   {
+    "id": "reg_C_N",
+    "name": "Class C North Regional",
+    "date": "2026-10-24",
+    "venue": "Belfast",
+    "class": "C",
+    "region": "North"
+   },
+   {
+    "id": "reg_A_S",
+    "name": "Class A South Regional",
+    "date": "2026-10-24",
+    "venue": "Twin Brook",
+    "class": "A",
+    "region": "South"
+   },
+   {
+    "id": "reg_B_S",
+    "name": "Class B South Regional",
+    "date": "2026-10-24",
+    "venue": "Twin Brook",
+    "class": "B",
+    "region": "South"
+   },
+   {
+    "id": "reg_C_S",
+    "name": "Class C South Regional",
+    "date": "2026-10-24",
+    "venue": "Twin Brook",
+    "class": "C",
+    "region": "South"
+   },
+   {
+    "id": "state_A",
+    "name": "Class A State",
+    "date": "2026-10-31",
+    "venue": "Cony",
+    "class": "A",
+    "from": [
+     "reg_A_N",
+     "reg_A_S"
+    ]
+   },
+   {
+    "id": "state_B",
+    "name": "Class B State",
+    "date": "2026-10-31",
+    "venue": "Cony",
+    "class": "B",
+    "from": [
+     "reg_B_N",
+     "reg_B_S"
+    ]
+   },
+   {
+    "id": "state_C",
+    "name": "Class C State",
+    "date": "2026-10-31",
+    "venue": "Cony",
+    "class": "C",
+    "from": [
+     "reg_C_N",
+     "reg_C_S"
+    ]
+   }
+  ],
+  "qualifying": {
+   "teams": "half of the region's scoring teams, rounded up, minimum 4",
+   "individuals": "top 30 finishers overall at the regional"
+  }
+ }
+}
