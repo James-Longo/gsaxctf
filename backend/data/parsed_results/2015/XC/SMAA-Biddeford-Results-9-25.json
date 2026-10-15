@@ -193,14 +193,7 @@
                     "result": "33:48",
                     "grade": "",
                     "type": "Finals"
-                }
-            ]
-        },
-        {
-            "event": "5,000 meters",
-            "gender": "Girls",
-            "is_relay": false,
-            "results": [
+                },
                 {
                     "athlete": "Felicity Lamb",
                     "school": "Nob",
@@ -219,7 +212,7 @@
         },
         {
             "event": "5,000 meters",
-            "gender": "Girls",
+            "gender": "Boys",
             "is_relay": false,
             "results": [
                 {
@@ -418,7 +411,8 @@
                     "grade": "",
                     "type": "Finals"
                 }
-            ]
+            ],
+            "gender_from_names": true
         },
         {
             "event": "5,000 meters",
@@ -626,5 +620,65 @@
     ],
     "date": null,
     "meet_name": "Results: SMAA Bonny Eagle, Cheverus, Noble @ Biddeford",
-    "team_rankings": []
+    "team_rankings": [
+        {
+            "kind": "xc",
+            "gender": "Girls",
+            "event_header": "Team Scores:",
+            "teams": [
+                {
+                    "rank": 1,
+                    "team": "Bonny Eagle",
+                    "score": 28.0,
+                    "places": []
+                },
+                {
+                    "rank": 2,
+                    "team": "Biddeford",
+                    "score": 33.0,
+                    "places": []
+                },
+                {
+                    "rank": 3,
+                    "team": "Noble",
+                    "score": 62.0,
+                    "places": []
+                }
+            ],
+            "totals_only": true
+        },
+        {
+            "kind": "xc",
+            "gender": "Boys",
+            "event_header": "Team Scores:",
+            "teams": [
+                {
+                    "rank": 1,
+                    "team": "Biddeford",
+                    "score": 23.0,
+                    "places": []
+                },
+                {
+                    "rank": 2,
+                    "team": "Bonny Eagle",
+                    "score": 57.0,
+                    "places": []
+                },
+                {
+                    "rank": 3,
+                    "team": "Cheverus",
+                    "score": 61.0,
+                    "places": []
+                },
+                {
+                    "rank": 4,
+                    "team": "Noble",
+                    "score": 99.0,
+                    "places": []
+                }
+            ],
+            "totals_only": true
+        }
+    ],
+    "parser": "LooseListParser"
 }
