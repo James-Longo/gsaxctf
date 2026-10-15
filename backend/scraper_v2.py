@@ -9,9 +9,11 @@ from backend.parsers.detector import FormatDetector
 from backend.json_store import (
     load_scrape_state, save_scrape_state, load_athletes, save_athletes,
     add_performances_for_team, rebuild_manifest, slugify_athlete, list_teams,
-    TEAMS_DIR, SCRAPE_STATE_PATH
+    TEAMS_DIR, SCRAPE_STATE_PATH, _chunk_files, _load_json, enrich_rows,
+    canonical_team_name
 )
 from backend.event_canon import canonical_event
+from backend import school_catalog
 
 # Configuration
 FIXES_PATH = os.path.join(os.path.dirname(__file__), 'manual_fixes.json')
@@ -52,7 +54,7 @@ SEASONS = (
     [{"year": str(y), "season": s,
       "url": f"https://sub5.com/youth-pages/{s.lower()}-track/{y}-{s.lower()}-results/"}
      for y in range(2022, 2027) for s in ("Indoor", "Outdoor")] +
-    # Cross country: legacy FrontPage tree 2003-2013, WP pages 2015-2025
+    # Cross country: legacy FrontPage tree 2003-2013, WP pages 2015-2026
     [{"year": f"20{n:02d}", "season": "XC",
       "url": (f"https://sub5.com/wp-content/xcresults/results{n:02d}/results{n:02d}.htm"
               if n >= 11 else
@@ -60,7 +62,7 @@ SEASONS = (
      for n in range(3, 14)] +
     [{"year": str(y), "season": "XC",
       "url": f"https://sub5.com/youth-pages/cross-country/{y}-xc-results/"}
-     for y in range(2015, 2026)]
+     for y in range(2015, 2027)]
 )
 
 TEAM_MAPPING = {
@@ -306,12 +308,18 @@ def hytek_header_meta(text):
                 else soup.get_text('\n')
         except Exception:
             pass
-    if 'HY-TEK' not in text[:4000]:
-        return out
     lines = [l.strip() for l in text[:4000].splitlines()]
     lines = [l for l in lines if l]
-    if not lines or 'HY-TEK' not in lines[0]:
+    if not lines:
         return out
+    if 'HY-TEK' not in lines[0]:
+        # Hy-Tek .txt exports drop the license line and open with the
+        # meet title itself:  "2025 Southern Regional XC Championships -
+        # 10/25/2025" / "Twin Brook" / "Results"
+        if 'HY-TEK' in text[:4000] or not re.search(
+                r'\s-\s+\d{1,2}/\d{1,2}/\d{2,4}', lines[0]):
+            return out
+        lines = [''] + lines
     m = re.search(r'Licensed to\s+(.+?)\s{2,}HY-TEK', lines[0])
     if m:
         out['host'] = m.group(1).strip(' -')
@@ -337,6 +345,429 @@ def hytek_header_meta(text):
     return out
 
 
+# (a 25-character school cell truncates the suffix: "Winslow High School   Boy",
+# "Mount Blue High School Bo")
+_MF_SUFFIX = re.compile(r'^(.*\S)\s+(M|F|B|G|Boys?|Bo|Girls?|Gi|Gir|Men|Women)$')
+_MF_GIRLS = {'F', 'G', 'Girls', 'Girl', 'Gi', 'Gir', 'Women'}
+
+
+def split_gender_suffix(data):
+    """Mixed boys+girls lists that carry gender as a school suffix.
+
+    The LaLiberte list exports head every page "Boys 4k Run CC Varsity" but
+    rank both genders together, marking each runner's school "Morse M" /
+    "Morse F" (2026) or "Mt. Blue HS B" / "Mt. Blue HS G" / "Monmouth Girls"
+    (2021). When nearly every school in an event carries a suffix and both
+    genders occur, move the girls' rows into a Girls event and strip the
+    suffix (team-name resolution happens downstream). Works on grouped
+    events and on flat Hy-Tek rows (gender read from the event prefix).
+    Returns the number of rows moved to Girls."""
+    if not isinstance(data, dict):
+        return 0
+    events = data.get('events') or []
+    moved = 0
+
+    def _split(rows):
+        tags = [_MF_SUFFIX.match((r.get('school') or '').strip()) for r in rows]
+        n_f = sum(1 for t in tags if t and t.group(2) in _MF_GIRLS)
+        n_m = sum(1 for t in tags if t) - n_f
+        if not n_m or not n_f or n_m + n_f < 0.5 * len(rows) or len(rows) < 6:
+            return None
+        from backend.parsers.namegender import name_gender
+        boys, girls, unknown = [], [], []
+        for r, t in zip(rows, tags):
+            if t:
+                # the scored entry ("Mt. Ararat HS B"): official team scores
+                # rank boys' and girls' entries in one list
+                r['team_entry'] = r.get('school')
+                r['school'] = t.group(1)
+                (girls if t.group(2) in _MF_GIRLS else boys).append(r)
+                continue
+            # a school cut before its suffix ("Messalonskee High School"):
+            # a decisive first name, else the runner stays unassigned
+            ng = name_gender(r.get('athlete') or r.get('athlete_name'))
+            (girls if ng == 'Girls' else boys if ng == 'Boys' else unknown).append(r)
+        if unknown and n_m + n_f >= 0.9 * len(rows) and len(unknown) <= 2:
+            boys.extend(unknown)   # the old rule: a near-fully tagged list
+            boys.sort(key=lambda r: rows.index(r))
+            unknown = []
+        return boys, girls, unknown
+
+    if events and isinstance(events[0], dict) and 'results' in events[0]:
+        out = []
+        for ev in events:
+            parts = _split(ev.get('results', [])) if not ev.get('is_relay') else None
+            if not parts:
+                out.append(ev)
+                continue
+            boys, girls, unknown = parts
+            moved += len(girls)
+            label = str(ev.get('event') or '')
+            # one race for the team scores: QAQC re-merges the halves
+            ev = dict(ev, combined_race=len(out))
+            if boys:
+                out.append(dict(ev, gender='Boys', results=boys,
+                                event=re.sub(r'\b(Girls|Women)\b', 'Boys', label)))
+            out.append(dict(ev, gender='Girls', results=girls,
+                            event=re.sub(r'\b(Boys|Men)\b', 'Girls', label)))
+            if unknown:
+                out.append(dict(ev, gender='Mixed', results=unknown,
+                                event=re.sub(r'\b(Boys|Men|Girls|Women)\b\s*', '', label).strip()))
+        data['events'] = out
+        return moved
+    # flat rows: split per event label
+    by_event = {}
+    for r in events:
+        if isinstance(r, dict):
+            by_event.setdefault(r.get('event', ''), []).append(r)
+    for label, rows in by_event.items():
+        parts = _split(rows)
+        if not parts:
+            continue
+        for r in parts[1]:   # (flat rows: unassigned ones keep the label)
+            r['event'] = re.sub(r'^(Boys|Men)\b', 'Girls', label)
+            r['gender'] = 'Girls'
+            moved += 1
+    return moved
+
+
+_MS_MEET_TITLE = re.compile(
+    r'junior\s+high|middle\s+school|\bjr\.?\s+high|\bm\.?s\.?\s+(?:xc|cross|meet|champ|invit|league)|'
+    r'\bjh\b|elementary|\bgrades?\s+[5-8]\b|\b[5-8]th\s+grade', re.I)
+
+
+class _MostRowsParser:
+    """Run several parsers, keep the result with the most rows (the first
+    parser wins ties)."""
+
+    def __init__(self, parsers):
+        self.parsers = parsers
+
+    def parse(self, text, filename, season_label):
+        best, best_n = None, -1
+        for p in self.parsers:
+            try:
+                r = p.parse(text, filename, season_label)
+            except Exception:
+                continue
+            ev = r.get('events', []) if isinstance(r, dict) else (r or [])
+            n = sum(len(e.get('results', [])) if isinstance(e, dict) and 'results' in e else 1
+                    for e in ev)
+            if n > best_n:
+                best, best_n = r, n
+                if isinstance(r, dict):
+                    r['parser'] = type(p).__name__
+        return best if best is not None else []
+
+
+_LABEL_BOYS = re.compile(r"\b(?:men|boys|male)'?s?\b", re.I)
+_LABEL_GIRLS = re.compile(r"\b(?:women|girls|female)'?s?\b", re.I)
+
+
+def strip_sex_prefix(data):
+    """A sex cell read into the school ("W MTA", "M Mt. Ararat Middl"): when
+    most of a race's schools open with one sex letter, it goes."""
+    for e in data.get('events') or []:
+        rows = e.get('results') if isinstance(e, dict) else None
+        if not rows or len(rows) < 5:
+            continue
+        pre = [re.match(r'^([WMFBG]) (?=\S)', r.get('school') or '') for r in rows]
+        letters = {m.group(1) for m in pre if m}
+        if len(letters) == 1 and sum(1 for m in pre if m) >= 0.8 * len(rows):
+            for r, m in zip(rows, pre):
+                if m:
+                    r['school'] = r['school'][2:]
+
+
+def fix_wrapped_places(data):
+    """A Hy-Tek page printed with a one-digit place field ("10" then "1",
+    "2" ... for 11, 12): the list order is the finish order, so each row's
+    place is its position."""
+    for e in data.get('events') or []:
+        rows = e.get('results') if isinstance(e, dict) else None
+        if not rows or len(rows) <= 12:
+            continue
+        p = [r.get('place') for r in rows]
+        if sum(1 for i, x in enumerate(p) if x == i % 10 + 1) >= 0.9 * len(p) and \
+                sum(1 for i, x in enumerate(p) if x == i + 1) < 0.5 * len(p):
+            for i, r in enumerate(rows):
+                r['place'] = i + 1
+
+
+def fix_event_gender_from_label(data):
+    """An event label that names one gender ("3k Run CC 9-10 Division
+    Boys") outranks the gender a parser carried over from an earlier header;
+    the store's event canonicalization applies the same rule."""
+    for ev in data.get('events') or []:
+        if not isinstance(ev, dict) or 'results' not in ev:
+            continue
+        label = str(ev.get('event') or '')
+        b, g = _LABEL_BOYS.search(label), _LABEL_GIRLS.search(label)
+        if b and not g:
+            ev['gender'] = 'Boys'
+        elif g and not b:
+            ev['gender'] = 'Girls'
+
+
+def merge_continued_events(data):
+    """Two consecutive races with one label whose second part carries on
+    from the first - places 53+ after 1-52 (a list printed in two columns),
+    or, without places, times that start where the first part ended - are
+    one race. A second race restarts at place 1 / a faster time."""
+    from backend.json_store import parse_mark_value
+    evs = data.get('events') or []
+    if any(isinstance(b, dict) and isinstance(b.get('event_idx'), int)
+           for b in data.get('team_rankings') or []):
+        return  # score blocks already point at events by index
+    out = []
+    for ev in evs:
+        prev = out[-1] if out else None
+        if prev is not None and isinstance(ev, dict) and isinstance(prev, dict) \
+                and 'results' in ev and 'results' in prev and ev['results'] and prev['results'] \
+                and not ev.get('is_relay') and (ev.get('event'), ev.get('gender'), ev.get('section')) == \
+                (prev.get('event'), prev.get('gender'), prev.get('section')) \
+                and ev.get('combined_race') is None and prev.get('combined_race') is None:
+            p1 = [r.get('place') for r in prev['results'] if r.get('place')]
+            p2 = [r.get('place') for r in ev['results'] if r.get('place')]
+            if p1 and p2:
+                cont = p2[0] > 1 and p2[0] > p1[-1]
+            else:
+                a, _ = parse_mark_value(prev['results'][-1].get('result', ''), '')
+                b, _ = parse_mark_value(ev['results'][0].get('result', ''), '')
+                cont = a is not None and b is not None and b >= a
+            if cont:
+                prev['results'].extend(ev['results'])
+                continue
+        out.append(ev)
+    data['events'] = out
+
+
+def fix_event_gender_from_names(data):
+    """Relabel a race whose runners' first names overwhelmingly belong to
+    the other gender (>= 90% of 8+ decisive names): spreadsheets and
+    hand-typed lists carry no gender, and parsers fall back on a filename
+    hint or a default. Marks the event 'gender_from_names'."""
+    from backend.parsers.namegender import gender_evidence
+    for ev in data.get('events') or []:
+        if not isinstance(ev, dict) or 'results' not in ev or ev.get('is_relay'):
+            continue
+        b, g = gender_evidence(ev['results'])
+        n = len(ev['results'])
+        # (8+ decisive names; or a short list whose names all agree)
+        if (b + g < 8 or b + g < 0.3 * n) and not (b + g >= 4 and min(b, g) == 0 and b + g >= 0.6 * n):
+            continue
+        want = 'Boys' if b >= 0.9 * (b + g) else 'Girls' if g >= 0.9 * (b + g) else None
+        if want and ev.get('gender') != want:
+            ev['gender'] = want
+            ev['gender_from_names'] = True
+            label = str(ev.get('event') or '')
+            ev['event'] = re.sub(r'\b(Boys|Men|Girls|Women)\b', want, label)
+    split_mixed_by_names(data)
+
+
+def drop_relay_team_totals(data, text, filename):
+    """Relay meets post each team's combined time ("Cheverus  49:36") with
+    the legs; a list of those is no race of runners. A race in a relay
+    file whose median is 30+ minutes and whose "runners" are mostly bare
+    team names (no school beside them) is dropped."""
+    if not re.search(r'relay', (filename or '') + ' ' + (text or '')[:20000], re.I):
+        return
+    def secs(t):
+        try:
+            v = 0.0
+            for x in str(t).split(':'):
+                v = v * 60 + float(x)
+            return v
+        except ValueError:
+            return 0.0
+    keep = []
+    for ev in data.get('events') or []:
+        rows = ev.get('results') if isinstance(ev, dict) else None
+        if rows:
+            ts = sorted(secs(r.get('result')) for r in rows)
+            bare = sum(1 for r in rows if not (r.get('school') or '').strip()
+                       or len((r.get('school') or '').strip()) == 1)
+            if ts[len(ts) // 2] >= 1800 and bare >= 0.6 * len(rows):
+                continue
+            # two-runner relays ("cyr / TANGUAY  19:01"): a team's time
+            if sum(1 for r in rows if re.search(r'\S\s*/\s*\S', r.get('athlete') or '')) >= 0.6 * len(rows):
+                ev['is_relay'] = True
+                if 'relay' not in str(ev.get('event') or '').lower():
+                    ev['event'] = (str(ev.get('event') or '') + ' Relay').strip()
+        keep.append(ev)
+    data['events'] = keep
+
+
+def drop_duplicate_events(data):
+    """A race listed twice: USATF JO pages re-rank the 15-18 race by age
+    group ("5000 Meter Run Individual Girls / Results - Women 15-16"), team
+    summary sheets repeat a race. An event whose runners (name and time)
+    all appear in a larger event of the file is that event again."""
+    evs = data.get('events') or []
+    keys = []
+    for e in evs:
+        rows = e.get('results') if isinstance(e, dict) else None
+        keys.append({((r.get('athlete') or '').strip().lower(), str(r.get('result')))
+                     for r in rows or [] if r.get('athlete')})
+    # (a "Top 10" / "JV Top 5" re-listing retypes a name or a time:
+    # "Aryanna Benl" / "Aryanna Beal" - a row matches on name and time, on
+    # school and time, or on name alone)
+    alt = []
+    for e in evs:
+        rows = e.get('results') if isinstance(e, dict) else None
+        alt.append(({((r.get('school') or '').strip().lower(), str(r.get('result'))) for r in rows or []},
+                    {(r.get('athlete') or '').strip().lower() for r in rows or []}))
+    drop = {}
+    for i, ki in enumerate(keys):
+        if len(ki) < 3 or evs[i].get('combined_race') is not None:
+            continue
+        for j, kj in enumerate(keys):
+            # (or the same race printed twice in the file: the copy goes)
+            if j != i and j not in drop and (len(kj) > len(ki) or j < i and kj == ki) and \
+                    len(ki & kj) >= 0.9 * len(ki):
+                drop[i] = j
+                break
+            if j != i and j not in drop and len(ki) >= 5 and len(kj) > len(ki):
+                rows = evs[i].get('results') or []
+                hit = sum(1 for r in rows if ((r.get('athlete') or '').strip().lower(), str(r.get('result'))) in kj
+                          or ((r.get('school') or '').strip().lower(), str(r.get('result'))) in alt[j][0]
+                          or (r.get('athlete') or '').strip().lower() in alt[j][1])
+                if hit >= 0.8 * len(rows) and len(ki & kj) >= 0.5 * len(ki):
+                    drop[i] = j
+                    break
+    if not drop:
+        return
+    new_idx, out = {}, []
+    for i, e in enumerate(evs):
+        if i not in drop:
+            new_idx[i] = len(out)
+            out.append(e)
+    for b in data.get('team_rankings') or []:
+        ei = b.get('event_idx') if isinstance(b, dict) else None
+        if isinstance(ei, int):
+            b['event_idx'] = new_idx.get(ei, new_idx.get(drop.get(ei)))
+    data['events'] = out
+
+
+def split_mixed_by_names(data):
+    """A race list holding both sexes with nothing in the file to tell them
+    apart (a "Mixed" Hy-Tek race, a combined LaLiberte list printed under
+    one gender): runners whose first name decides it go to a Boys / Girls
+    race; the rest stay in a "Mixed" race rather than be guessed. Only for
+    lists where 20+ decisive names (40%+ of the runners) split 12-88%. The parts keep one
+    combined_race id so QAQC can re-merge them for the team scores."""
+    from backend.parsers.namegender import name_gender, gender_evidence, last_first_order
+    out = []
+    nxt = max([e.get('combined_race', -1) for e in data.get('events') or []
+               if isinstance(e, dict) and isinstance(e.get('combined_race'), int)] + [99]) + 1
+    for ev in data.get('events') or []:
+        if not isinstance(ev, dict) or 'results' not in ev or ev.get('is_relay') \
+                or ev.get('combined_race') is not None:
+            out.append(ev)
+            continue
+        lf = last_first_order(ev['results'])
+        b, g = gender_evidence(ev['results'], lf)
+        # (a list typed with initials or surnames only decides too few
+        # names to say anything: 40%+ of the runners must)
+        if b + g < 20 or b + g < 0.4 * len(ev['results']) or not (0.12 <= b / (b + g) <= 0.88):
+            out.append(ev)
+            continue
+        parts = {'Boys': [], 'Girls': [], None: []}
+        for r in ev['results']:
+            parts[name_gender(r.get('athlete'), last_first=lf)].append(r)
+        label = re.sub(r'\b(Boys|Men|Girls|Women|Mixed)\b\s*', '', str(ev.get('event') or '')).strip()
+        for gname in ('Girls', 'Boys', None):
+            if parts[gname]:
+                out.append(dict(ev, gender=gname or 'Mixed', event=label, results=parts[gname],
+                                combined_race=nxt, gender_from_names=True))
+        nxt += 1
+    data['events'] = out
+
+
+_FILE_GENDER = re.compile(r'(boys|girls|women|men)', re.I)
+_GENDER_SWAP = {'boys': 'girls', 'girls': 'boys', 'men': 'women', 'women': 'men'}
+
+
+def drop_sibling_gender_events(data, input_path):
+    """falmouthboys_august26.html and falmouthgirls_august26.html are the
+    same two-sheet workbook posted twice. When a file named for one gender
+    has a sibling named for the other, the other gender's races belong to
+    the sibling: keep only this file's own."""
+    d, fn = os.path.split(input_path)
+    m = None
+    for m in _FILE_GENDER.finditer(fn):
+        pass  # last gender word in the name
+    if not m:
+        return
+    word = m.group(1)
+    swap = _GENDER_SWAP[word.lower()]
+    swap = swap.capitalize() if word[0].isupper() else swap
+    swap = swap.upper() if word.isupper() else swap
+    sib = fn[:m.start()] + swap + fn[m.end():]
+    if not os.path.exists(os.path.join(d, sib)):
+        return
+    own = 'Girls' if word.lower() in ('girls', 'women') else 'Boys'
+    evs = data.get('events') or []
+    # (a stray runner or two of the other sex inside this file's own race
+    # stays: only a whole race - the sibling's - is dropped)
+    keep = [e for e in evs if not isinstance(e, dict) or 'results' not in e
+            or e.get('gender') in (own, None, 'Mixed') or len(e['results']) < 5]
+    if len(keep) == len(evs) or not any(isinstance(e, dict) and e.get('results') for e in keep):
+        return
+    data['events'] = keep
+    data['team_rankings'] = [b for b in data.get('team_rankings') or []
+                             if b.get('gender') in (own, None)]
+
+
+def _pair_xc_blocks(events, blocks):
+    """Point each official XC team-score block at its race (event_idx).
+
+    Per-class sections ("CLASS A Results") of one race are separate events
+    sharing gender and event name; their blocks carry the same section label.
+    Only applied when every block finds its race, otherwise QAQC falls back
+    to pairing by gender in order."""
+    if not blocks or any(isinstance(b.get('event_idx'), int) for b in blocks):
+        return
+    # blocks labelled by division ("Small School", "Class B") pair with the
+    # race whose name carries that label
+    if all(b.get('division') for b in blocks) and not all(b.get('section') for b in blocks):
+        idx, used = {}, set()
+        for bi, b in enumerate(blocks):
+            lab = re.sub(r'\s+', ' ', b['division']).lower()
+            for ei, e in enumerate(events):
+                if ei in used or not isinstance(e, dict) or not e.get('results'):
+                    continue
+                if b.get('gender') and e.get('gender') not in (b['gender'], None):
+                    continue
+                name = re.sub(r'\s+', ' ', ' '.join(str(e.get(k) or '') for k in ('event', 'section'))).lower()
+                if lab in name:
+                    idx[bi] = ei
+                    used.add(ei)
+                    break
+        if len(idx) == len(blocks):
+            for bi, ei in idx.items():
+                blocks[bi]['event_idx'] = ei
+        return
+    if not all(b.get('section') for b in blocks):
+        return
+    idx = {}
+    used = set()
+    for bi, b in enumerate(blocks):
+        for ei, e in enumerate(events):
+            if ei in used or not isinstance(e, dict) or not e.get('results'):
+                continue
+            if e.get('section') != b['section']:
+                continue
+            if b.get('gender') and e.get('gender') not in (b['gender'], None):
+                continue
+            idx[bi] = ei
+            used.add(ei)
+            break
+    if len(idx) == len(blocks):
+        for bi, ei in idx.items():
+            blocks[bi]['event_idx'] = ei
+
+
 def _parse_one_file(args):
     """Worker: parse a single archive file to its output JSON.
     Returns (filename, result_count, error_message_or_None)."""
@@ -360,6 +791,58 @@ def _parse_one_file(args):
         else:
             with open(input_path, 'r', encoding='utf-8', errors='ignore') as f:
                 text = f.read()
+            if season_label == 'XC':
+                # a Windows-1252 byte ("D\x92Orso") dropped by the utf-8 read
+                # pulls the rest of a fixed-width row one column left
+                raw_bytes = open(input_path, 'rb').read()
+                try:
+                    raw_bytes.decode('utf-8')
+                except UnicodeDecodeError:
+                    # (only the curly quotes and dashes: other stray bytes are
+                    # dropped as before - the exports' padding was built
+                    # without them)
+                    fixed = re.sub(rb'[\x91\x92]', b"'", re.sub(rb'[\x93\x94]', b'"',
+                                   re.sub(rb'[\x96\x97]', b'-', raw_bytes)))
+                    text = fixed.decode('utf-8', errors='ignore')
+            # Word pages saved through a broken codepage carry U+FFFD for
+            # every non-breaking space (KVACLeavittSept16boys.htm: 3,266 of
+            # them): the column gaps are lost unless they read
+            # as the non-breaking spaces they were
+            if season_label == 'XC' and text.count('\ufffd') > 100:
+                text = text.replace('\ufffd', '\xa0')
+            elif season_label == 'XC':
+                # (a few stray U+FFFD in table cells: "W \ufffd", "Noble \ufffd")
+                text = re.sub(r'\s*\ufffd+\s*(?=<)', ' ', text)
+        if season_label == 'XC':
+            # (zero-width spaces between a PDF's words: "Matyas\u200b \u200bNachtigall")
+            text = text.replace('\u200b', '')
+            _o = r'(?i)(<td\b[^>]*>(?:\s*<(?:font|span|b)\b[^>]*>)*)\s*'
+            _c = r'\s*((?:</(?:font|span|b)>\s*)*</td>)'
+            if re.search(r'(?i)<t[dh]\b[^>]*>(?:\s*<(?:font|span|b)\b[^>]*>)*\s*time\s*<', text):
+                # a sheet's Time cells typed "16 51" or "2128": minutes and seconds
+                text = re.sub(_o + r'([1-5]?\d) ([0-5]\d)' + _c, r'\1\2:\3\4', text)
+                text = re.sub(_o + r'((?:[89]|[1-5]\d))([0-5]\d)' + _c, r'\1\2:\3\4', text)
+                # ("18.38": a dot for the colon, when no cell carries a colon time)
+                if not re.search(_o + r'\d{1,2}:\d{2}', text):
+                    text = re.sub(_o + r'((?:[89]|[1-5]\d))\.([0-5]\d)' + _c, r'\1\2:\3\4', text)
+            # "22: 40": a space typed after the colon
+            text = re.sub(r'(?m)(?<![\d:.])([1-5]?\d): ([0-5]\d)(?=[ \t]{2,}|[ \t]*$)', r'\1:\2', text)
+            # "18;01": a hand-typed time with the semicolon key
+            # ("18;28;89" / "18:37;82": minutes, seconds, hundredths)
+            text = re.sub(r'(?<![\d;:.])(\d{1,2})[;:](\d{2});(\d{2})(?![\d;:])',
+                          lambda m: f'{m.group(1)}:{m.group(2)}.{m.group(3)}' if int(m.group(1)) >= 4
+                          else m.group(0), text)
+            text = re.sub(r'(?<![\d;:.])(\d{1,2});(\d{2})(?![\d;:])', r'\1:\2', text)
+            # an apostrophe for the colon ("16'41", "18'10 11" = 18:10.11)
+            text = re.sub(r"(?<![\d'’])(\d{1,2})['’](\d{2})(?: (\d{2})(?=\s|<|$))?(?![\d'’])",
+                          lambda m: f'{m.group(1)}:{m.group(2)}' + (f'.{m.group(3)}' if m.group(3) else ''), text)
+            # "25m 23s" (no milliseconds)
+            text = re.sub(r'\b(\d{1,2})m\s+(\d{1,2})s\b(?!\s+\d{1,3}ms)',
+                          lambda m: f'{m.group(1)}:{int(m.group(2)):02d}', text)
+            # a timer's "18m 4s 980ms" (kept in its column's width)
+            text = re.sub(r'\b(\d{1,2})m\s+(\d{1,2})s\s+(\d{1,3})ms\b',
+                          lambda m: f'{m.group(1)}:{int(m.group(2)):02d}.{m.group(3).rjust(3, "0")[:2]}'.rjust(len(m.group(0))),
+                          text)
         def _count(res):
             if isinstance(res, dict):
                 return sum(len(e.get('results', [])) for e in res.get('events', []))
@@ -392,6 +875,38 @@ def _parse_one_file(args):
                 return True
             return inversions / pairs <= 0.25
 
+        def _xc_teams_ok(res):
+            """A cross-country race has far fewer teams than runners. When a
+            parser crosses the name and team columns (Last | First | Team
+            sheets, team-first layouts), nearly every row gets its own
+            "school" (a first name or surname) or school == athlete; those
+            rows would become hundreds of fake teams in the store."""
+            if isinstance(res, list):
+                # flat Hy-Tek rows: one group per event label
+                groups = {}
+                for r in res:
+                    if isinstance(r, dict) and 'athlete_name' in r:
+                        groups.setdefault(r.get('event'), []).append(
+                            {'athlete': r.get('athlete_name'), 'school': r.get('school')})
+                res = {'events': [{'results': g} for g in groups.values()]}
+            if not isinstance(res, dict):
+                return True
+            for ev in res.get('events', []):
+                rows = ev.get('results', []) if isinstance(ev, dict) else []
+                if len(rows) < 15:
+                    continue
+                schools = [(r.get('school') or '').strip().lower() for r in rows]
+                names = [(r.get('athlete') or '').strip() for r in rows]
+                same = sum(1 for n, s in zip(names, schools) if s and s == n.lower())
+                # a bare surname in the name column + a per-row "school" =
+                # a Last | First sheet read as name | team (open/JO/youth
+                # races legitimately have many teams, but full names)
+                bare = sum(1 for n in names if n and not re.search(r'[\s,]', n))
+                if same > 0.3 * len(rows) or (
+                        len(set(schools)) > 0.6 * len(rows) and bare > 0.7 * len(rows)):
+                    return False
+            return True
+
         # Retry chain: the detector's choice, then the robust column parser,
         # then the loose-list parser for hand-typed / collapsed-PDF formats.
         # First parser to produce results wins.
@@ -399,7 +914,36 @@ def _parse_one_file(args):
         from backend.parsers.looselist import LooseListParser
         from backend.parsers.placegrid import PlaceGridParser
         parser_instance = _WORKER_DETECTOR.get_parser(text, filename)
+        from backend.parsers.hytek import HyTekStandardParser, HyTekSMAAParser
+        if season_label == 'XC' and isinstance(parser_instance, (HyTekStandardParser,
+                                                                 HyTekSMAAParser)):
+            # The flat Hy-Tek row parsers drop most XC rows (bib columns,
+            # pace columns, blank grades); the column parser reads the same
+            # layouts whole. Keep whichever reads more rows.
+            parser_instance = _MostRowsParser([ColumnStrategyParser(_WORKER_DETECTOR.scraper),
+                                               parser_instance])
         chain = [parser_instance]
+        # XC "OFFICIAL MEET REPORT" exports: two-column pages with pace
+        # columns that every generic parser misreads
+        from backend.parsers.meetreport import MeetReportParser
+        if MeetReportParser.matches(text):
+            chain.insert(0, MeetReportParser(_WORKER_DETECTOR.scraper))
+        # XCRun "PLC BIB PTS NAME TEAM TIME PACE" exports, same problem
+        from backend.parsers.xcrun import XCRunParser
+        if XCRunParser.matches(text):
+            chain.insert(0, XCRunParser(_WORKER_DETECTOR.scraper))
+        # Randy Easter's MVC pages: overall list + team table with places
+        from backend.parsers.easter import EasterParser
+        if EasterParser.matches(text):
+            chain.insert(0, EasterParser(_WORKER_DETECTOR.scraper))
+        # DirectAthletics MeetPro text (college meets): header-word columns
+        from backend.parsers.directathletics import DirectAthleticsParser
+        if DirectAthleticsParser.matches(re.sub(r'<[^>]+>', '', text[:20000])):
+            chain.insert(0, DirectAthleticsParser(_WORKER_DETECTOR.scraper))
+        # RunScore-style "=====" ruler tables: columns cut by the ruler
+        from backend.parsers.rulertable import RulerTableParser
+        if RulerTableParser.matches(re.sub(r'<[^>]+>', '', text[:200000])):
+            chain.insert(0, RulerTableParser(_WORKER_DETECTOR.scraper))
         if not isinstance(parser_instance, ColumnStrategyParser):
             chain.append(ColumnStrategyParser(_WORKER_DETECTOR.scraper))
         if not filename.lower().endswith('.pdf'):
@@ -412,6 +956,9 @@ def _parse_one_file(args):
         if re.search(r'\d\.\s+[A-Z][\w.\' -]+\([A-Z][A-Za-z]{0,4}\)\s+[\d:.\-]+', text):
             chain.append(AgateParser(_WORKER_DETECTOR.scraper))
         chain.append(LooseListParser(_WORKER_DETECTOR.scraper))
+        # plain "Place Name School Time" sheets with no event header
+        from backend.parsers.headertable import HeaderTableParser
+        chain.append(HeaderTableParser(_WORKER_DETECTOR.scraper))
         chain.append(PlaceGridParser(_WORKER_DETECTOR.scraper))
         chain.append(ParagraphNewsParser(_WORKER_DETECTOR.scraper))
         chain.append(AgateParser(_WORKER_DETECTOR.scraper))
@@ -427,10 +974,63 @@ def _parse_one_file(args):
         if not filename.lower().endswith('.pdf'):
             from backend.parsers.spreadsheet import SpreadsheetTableParser
             chain.append(SpreadsheetTableParser(_WORKER_DETECTOR.scraper))
+        # hand-typed XC place lists (no event header, no ruler): last resort
+        from backend.parsers.xclist import XCListParser
+        chain.append(XCListParser(_WORKER_DETECTOR.scraper))
 
         # Accept the first parser yielding a real result set (>=5 rows);
         # otherwise keep whichever produced the most.
+        def _dups(res):
+            rows = [(r.get('athlete'), r.get('result')) for e in (res.get('events') or [])
+                    if isinstance(e, dict) for r in e.get('results', [])] if isinstance(res, dict) else []
+            return len(rows) - len(set(rows))
+
+        def _cut_names(res):
+            # names cut mid-word by a column split ("ea Ro", "ydia")
+            return sum(1 for e in (res.get('events') or []) if isinstance(res, dict) and isinstance(e, dict)
+                       for r in e.get('results', []) if re.match(r'[a-z]', r.get('athlete') or ''))
+
+        def _holes(res):
+            # places missing inside each race's numbered list
+            n = 0
+            for e in (res.get('events') or []) if isinstance(res, dict) else []:
+                pl = {int(r['place']) for r in e.get('results', []) if isinstance(r.get('place'), (int, float))}
+                if len(pl) >= 10:
+                    n += max(pl) - len(pl)
+            return n
+
+        def _verified(res):
+            from backend import qaqc
+            try:
+                v = qaqc.xc_verify_parsed(res) if isinstance(res, dict) else None
+            except Exception:
+                return False
+            return bool(v) and v.get('status') == 'verified'
+
+        _ROWLIKE = re.compile(r"(?<!\S)\d{1,3}[.)]?\s+[A-Za-z'][^\d:]{1,60}?\s\d{1,2}:\d{2}")
+
         def _run_chain(txt, strict=False):
+            # XC: the first parser to give 5+ rows wins - unless the page
+            # plainly holds many more runners ("1 Name School 18:16" rows)
+            # than it kept and the parse does not verify; then the parser
+            # keeping the most runners (not the same ones twice) wins.
+            expect = 0
+            if season_label == 'XC':
+                plain = txt
+                if '<' in txt[:3000]:
+                    # (an HTML table row's cells sit on source lines of their
+                    # own: one line per row, as the page shows it)
+                    if not re.search(r'<pre\b', txt, re.I) and re.search(r'<tr\b', txt, re.I):
+                        plain = re.sub(r'[\r\n]+', ' ', plain)
+                        plain = re.sub(r'(?i)</tr>|<br\s*/?>|</p>', '\n', plain)
+                    plain = re.sub(r'<[^>]+>', ' ', plain).replace('&nbsp;', ' ')
+                expect = sum(len(_ROWLIKE.findall(l)) for l in plain.splitlines())
+                if not expect:
+                    # (a list with no place column: one runner per timed line)
+                    expect = sum(1 for l in plain.splitlines()
+                                 if re.search(r'(?<![\d:.])\d{1,2}:\d{2}(?:\.\d+)?(?![\d:])', l)
+                                 and len(re.findall(r'[A-Za-z]{2,}', l)) >= 2)
+            first = None
             effective = chain
             # OCR'd table grids keep their borders as pipes — try the
             # pipe-grid parser first for that signature
@@ -453,10 +1053,43 @@ def _parse_one_file(args):
                     if n > rejected_n:
                         rejected, rejected_n = candidate, n
                     continue
+                if season_label == 'XC' and not _xc_teams_ok(candidate):
+                    continue  # name/team columns crossed: never keep
+                if season_label == 'XC' and isinstance(candidate, dict):
+                    rows = [r for e in candidate.get('events') or [] if isinstance(e, dict)
+                            for r in e.get('results', [])]
+                    if rows and sum(1 for r in rows if (r.get('athlete') or '').strip()) < 0.5 * len(rows):
+                        continue  # relay-team rows with no runner: not an XC result
+                    if any(re.search(r'(?i)\bdash\b|hurdle|jump|vault|\bshot\b|discus|javelin',
+                                     str(e.get('event') or '')) for e in candidate.get('events') or []
+                           if isinstance(e, dict)) and \
+                            not re.search(r'(?i)\bdash\b|hurdle|jump|vault|discus|javelin', txt[:3000]):
+                        continue  # a track event label the page never prints: a misread
+                    if rows and sum(1 for r in rows if re.match(r'\d{1,3}[.)]|\d{1,3}\s+\d', r.get('athlete') or '')) > 0.3 * len(rows):
+                        continue  # the place left in the name ("1.Tiffany Tanner", "1    1 2   169  Casey")
+                    # a sheet read with its team column lost (cells shifted by
+                    # a spanning header cell) when the sheet names a team column
+                    if type(p).__name__ == 'SpreadsheetTableParser' and rows and \
+                            sum(1 for r in rows if not (r.get('school') or '').strip()) > 0.5 * len(rows) and \
+                            re.search(r'(?i)>\s*(team|school)\s*<', txt) and \
+                            not re.search(r'(?i)relay', txt[:20000] + filename):
+                        if n > rejected_n:      # (kept only if nothing else reads it)
+                            rejected, rejected_n = candidate, n
+                        continue
+                if isinstance(candidate, dict) and not candidate.get('parser'):
+                    candidate['parser'] = type(p).__name__  # provenance
                 if n >= 5:
-                    return candidate, n
+                    if first is None:
+                        if n >= 0.8 * expect or _verified(candidate):
+                            return candidate, n
+                        first = [candidate, n, candidate, n]
+                    elif n > 1.15 * first[3] and _dups(candidate) <= _dups(first[0]) + 2:
+                        first[2:] = [candidate, n]
+                    continue
                 if n > best_n:
                     best, best_n = candidate, n
+            if first is not None:
+                return first[2], first[3]
             if best_n <= 0 and rejected_n > best_n:
                 return rejected, 0  # report 0 so PDF fallbacks still try
             return best, best_n
@@ -508,24 +1141,270 @@ def _parse_one_file(args):
                 if alt_n >= 5:
                     break
 
+        # An XC PDF whose parse holds far fewer runners than the page has
+        # finish times: the column splitter may have cut a two-table page
+        # apart (poland_sept2.pdf: girls' and boys' pages side by side, 38 of
+        # ~96 runners kept). Retry on the uncut layout text and the other
+        # extractions; keep whichever holds the most runners.
+        elif season_label == 'XC' and filename.lower().endswith('.pdf'):
+            n_times = sum(len(re.findall(r'(?<![\d:.])\d{1,2}:\d{2}(?:\.\d+)?(?![\d:])', l)) or
+                          # (two lists side by side timed "21:50:00": both count)
+                          (lambda k: k if k >= 2 else 0)(len(re.findall(
+                              r'(?<![\d:.])(?:[89]|[1-5]\d):\d{2}:\d{2}(?![\d:])', l)))
+                          for l in raw.splitlines() if re.search(r'[A-Za-z]{2}', l))
+            if n_times >= 15 and _count(results) < 0.95 * n_times and not _verified(results) and \
+                    not re.search(r'(?i)relay', filename):
+                from backend.parser import Sub5ColumnParser
+                best_c = _count(results)
+                for alt in (raw, Sub5ColumnParser.pdf_words_to_text(input_path),
+                            Sub5ColumnParser.pdf_column_text(input_path)):
+                    if not alt:
+                        continue
+                    if alt is not raw:
+                        alt = Sub5ColumnParser.clean_pdf_text(alt)
+                    alt_results, alt_n = _run_chain(alt, strict=True)
+                    # (more runners, not the same runners twice)
+                    # (more runners, not the same runners twice; a list's
+                    # last few rows lost to the column splitter count too)
+                    if alt_n >= 5 and (_count(alt_results) > 1.1 * best_c and _count(results) < 0.75 * n_times or
+                                       _count(alt_results) >= best_c + 3 and alt is raw and
+                                       _dups(alt_results) <= _dups(results) and
+                                       _cut_names(alt_results) <= _cut_names(results)) and \
+                            _dups(alt_results) <= _dups(results) + 2:
+                        results, best_n, best_c = alt_results, alt_n, _count(alt_results)
+
+        # An XC PDF list with holes in its places (55, 56, 58, 59 missing):
+        # the layout text split those rows' name from their school and time
+        # ("55 K. McEwen" / "Car" / "20:12" on three lines). The PDF's
+        # reading-order text keeps each row whole: keep it when it fills holes.
+        if season_label == 'XC' and filename.lower().endswith('.pdf') and _holes(results) and \
+                not _verified(results):
+            try:
+                import subprocess
+                rt = subprocess.run(['pdftotext', '-raw', input_path, '-'], capture_output=True,
+                                    text=True, timeout=60).stdout
+            except Exception:
+                rt = ''
+            if rt:
+                from backend.parser import Sub5ColumnParser
+                alt_results, alt_n = _run_chain(Sub5ColumnParser.clean_pdf_text(rt), strict=True)
+                if alt_n >= 5 and _holes(alt_results) < _holes(results) and \
+                        _count(alt_results) > _count(results) and _dups(alt_results) <= _dups(results):
+                    results, best_n = alt_results, max(alt_n, best_n)
+
         data_to_save = results
         if isinstance(results, list) and results and 'event' in results[0]:
             data_to_save = {'events': results, 'date': results[0].get('date')} if 'date' in results[0] else results
+        if season_label == 'XC' and isinstance(data_to_save, list) and not data_to_save:
+            data_to_save = {'events': [], 'date': None, 'meet_name': None, 'team_rankings': []}
         # The file's own Hy-Tek header is a second source of truth for the
         # venue; only fill what the parser could not supply itself.
         if isinstance(data_to_save, dict):
+            split_gender_suffix(data_to_save)
+            fix_event_gender_from_label(data_to_save)
+            if season_label == 'XC':
+                drop_relay_team_totals(data_to_save, text, filename)
+                drop_duplicate_events(data_to_save)
+                fix_wrapped_places(data_to_save)
+                strip_sex_prefix(data_to_save)
+                # (a non-breaking space inside a name or team: "Palmer,\xa0Eli")
+                for _e in data_to_save.get('events') or []:
+                    for _r in (_e.get('results') or []) if isinstance(_e, dict) else []:
+                        for _f in ('athlete', 'school'):
+                            if isinstance(_r.get(_f), str) and '\xa0' in _r[_f]:
+                                _r[_f] = re.sub(r'\s+', ' ', _r[_f].replace('\xa0', ' ')).strip()
+                            # (a soft hyphen and a typeset dash left on a name: "Morris-\xad\u2010")
+                            if isinstance(_r.get(_f), str) and '\xad' in _r[_f]:
+                                _r[_f] = re.sub(r'[-\u2010\xad\s]+$', '', _r[_f].replace('\xad', ''))
+                            # ("Ted Warnquist | YORK": a typed column bar)
+                            if isinstance(_r.get(_f), str) and re.match(r'\|\s|.*\s\|$', _r[_f]):
+                                _r[_f] = _r[_f].strip(' |')
+                merge_continued_events(data_to_save)
+                fix_event_gender_from_names(data_to_save)
+                pre_drop_events = list(data_to_save.get('events') or [])
+                drop_sibling_gender_events(data_to_save, input_path)
             meta = hytek_header_meta(text)
             if meta['venue'] and not data_to_save.get('venue'):
                 data_to_save['venue'] = meta['venue']
-            if meta['meet'] and not data_to_save.get('meet_name'):
+            # (a parser that skips dated lines takes the venue for the title)
+            if meta['meet'] and (not data_to_save.get('meet_name')
+                                 or data_to_save.get('meet_name') == meta['venue']):
                 data_to_save['meet_name'] = meta['meet']
             if meta['host'] and not data_to_save.get('host'):
                 data_to_save['host'] = meta['host']
+            # Junior-high / middle-school meets posted beside the high-school
+            # results: told by the meet title, never by the venue (the
+            # Festival of Champions is held at a middle school)
+            if season_label == 'XC':
+                title = meta['meet'] or data_to_save.get('meet_name') or ''
+                if data_to_save.get('meet_level') == 'ms' or _MS_MEET_TITLE.search(title):
+                    data_to_save['meet_level'] = 'ms'
+                    for ev in data_to_save.get('events') or []:
+                        for r in (ev.get('results') or []) if isinstance(ev, dict) else []:
+                            if isinstance(r, dict) and not r.get('grade'):
+                                r['grade'] = 'MS'
+            # Official XC team scores ride along with any parser's rows: they
+            # are what QAQC re-derives from the finish order
+            # an "All Classes Combined" / New England qualifier list re-ranks
+            # races posted on their own: kept out of 'events' (no runner is
+            # stored twice) but read as 'aggregate_events' so its own team
+            # scores can be checked against it
+            if season_label == 'XC' and not data_to_save.get('events') and \
+                    re.search(r'combin|qualif', filename + ' ' + text[:5000], re.I):
+                try:
+                    from backend.parser import Sub5ColumnParser
+                    agg = Sub5ColumnParser(filename, text=text)
+                    agg.allow_aggregate = True
+                    ar = agg.parse()
+                    aev = ar.get('events') if isinstance(ar, dict) else None
+                    if not aev:
+                        from backend.parsers.xclist import XCListParser
+                        xl = XCListParser(_WORKER_DETECTOR.scraper)
+                        xl.allow_aggregate = True
+                        aev = xl.parse(text, filename, 'XC').get('events')
+                    if aev:
+                        data_to_save['aggregate_events'] = [dict(e, aggregate=True) for e in aev]
+                except Exception:
+                    pass
+            if season_label == 'XC':
+                # (a file holding only the team scores keeps them too: they
+                # are checked against the race posted beside it)
+                from backend.parsers.xcscores import parse_xc_team_scores
+                xc_blocks = parse_xc_team_scores(text)
+                if filename.lower().endswith('.pdf') and raw and raw is not text:
+                    # (two score tables side by side, cut apart by the column
+                    # splitter: the layout text keeps their rows whole)
+                    alt_blocks = parse_xc_team_scores(raw)
+                    if sum(len(b['teams']) for b in alt_blocks) > sum(len(b['teams']) for b in xc_blocks or []):
+                        xc_blocks = alt_blocks
+                if (not xc_blocks or all(b.get('totals_only') for b in xc_blocks)) and not any(
+                        b.get('kind') == 'xc' for b in data_to_save.get('team_rankings') or []):
+                    # team scores as a grid of places ("1st 14 1 5 / TOTAL"),
+                    # or columns of places under the team names: these carry
+                    # every place, so they win over a list of totals
+                    from backend.parsers.teamgrid import team_grid_blocks, vertical_grid_blocks
+                    plain = raw if filename.lower().endswith('.pdf') else \
+                        re.sub(r'<[^>]+>', ' ', text).replace('&nbsp;', ' ')
+                    fg = ('Girls' if re.search(r'girl|women', filename, re.I)
+                          else 'Boys' if re.search(r'boy|\bmen', filename, re.I) else None)
+                    grid = team_grid_blocks(plain, fg)
+                    vgrid = vertical_grid_blocks(raw if filename.lower().endswith('.pdf') else text, fg)
+                    # (a scorer-number column 1-5 beside team columns can read
+                    # as an ordinal grid with one team: keep the fuller reading)
+                    if vgrid and sum(len(b['teams']) for b in vgrid) > sum(len(b['teams']) for b in grid or []):
+                        grid = vgrid
+                    if grid:
+                        xc_blocks = grid
+                if xc_blocks:
+                    # a block naming no gender in a file whose rows are one
+                    # race plus a stray runner or two of the other sex (girls
+                    # in a boys' race, split off by the sex column): that race
+                    evs = [e for e in data_to_save.get('events') or [] if isinstance(e, dict)]
+                    tot = sum(len(e.get('results') or []) for e in evs)
+                    by_g = {}
+                    for e in evs:
+                        by_g[e.get('gender')] = by_g.get(e.get('gender'), 0) + len(e.get('results') or [])
+                    if tot and len(by_g) > 1:
+                        g0, n0 = max(by_g.items(), key=lambda kv: kv[1])
+                        if n0 >= 0.9 * tot:
+                            for b in xc_blocks:
+                                if b.get('gender') is None:
+                                    b['gender'] = g0
+                    # a genderless block for the race this file left to its
+                    # sibling ("...boys..." file printing both races' grids):
+                    # the race it fits names its gender
+                    kept_g = {e.get('gender') for e in data_to_save.get('events') or [] if isinstance(e, dict)}
+                    gone = [e for e in locals().get('pre_drop_events') or []
+                            if isinstance(e, dict) and e.get('results') and e.get('gender') not in kept_g]
+                    live = [e for e in data_to_save.get('events') or [] if isinstance(e, dict) and e.get('results')]
+                    # a race the parser gendered by default (two "Boys"
+                    # sheets) whose results the other gender's score table
+                    # reproduces exactly: that race is the other gender's
+                    from backend import qaqc as _q
+                    for b in xc_blocks:
+                        g = b.get('gender')
+                        if g not in ('Boys', 'Girls') or any(e.get('gender') == g for e in live):
+                            continue
+                        offs = sorted(((_q._xc_verify_block(b, e['results']) or {}).get('teams_off', 99), k)
+                                      for k, e in enumerate(live))
+                        # (the best fit, off by at most one team, and clearly best)
+                        fit = [live[offs[0][1]]] if offs and offs[0][0] <= 1 and \
+                            (len(offs) == 1 or offs[1][0] >= offs[0][0] + 2) else []
+                        if len(fit) == 1 and sum(1 for e in live if e.get('gender') == fit[0].get('gender')) > 1:
+                            fit[0]['gender'] = g
+                            fit[0]['gender_from_scores'] = True
+                    if gone or len({e.get('gender') for e in live}) > 1:
+                        from backend import qaqc as _q
+                        for b in xc_blocks:
+                            if b.get('gender') is None:
+                                fits = {e.get('gender') for e in gone + [e for e in data_to_save.get('events') or []
+                                                                          if isinstance(e, dict) and e.get('results')]
+                                        if (_q._xc_verify_block(b, e['results']) or {}).get('status') == 'verified'}
+                                if len(fits) == 1:
+                                    b['gender'] = fits.pop()
+                    # (the other gender's table, whose race went to the
+                    # sibling file: it is checked there)
+                    gone_g = {e.get('gender') for e in gone} - {e.get('gender') for e in live} - {None}
+                    if gone_g and live:
+                        xc_blocks = [b for b in xc_blocks if b.get('gender') not in gone_g]
+                    _pair_xc_blocks(data_to_save.get('events') or [], xc_blocks)
+                    # each block's division / class label, from its race's name
+                    # when the score table itself names none
+                    evs_all = data_to_save.get('events') or []
+                    for b in xc_blocks:
+                        ei = b.get('event_idx')
+                        if not b.get('division') and isinstance(ei, int) and 0 <= ei < len(evs_all):
+                            md = re.search(r'\b(Class\s+[A-D]\b|Division\s+\w+|(?:Small|Large)\s+School|'
+                                           r'Junior\s+Varsity|JV|Varsity|Freshman|Middle\s+School|Reserve)',
+                                           str(evs_all[ei].get('event') or '') + ' ' + str(evs_all[ei].get('section') or ''), re.I)
+                            if md:
+                                b['division'] = md.group(1)
+                    data_to_save['team_rankings'] = [
+                        b for b in (data_to_save.get('team_rankings') or [])
+                        if b.get('kind') != 'xc'] + xc_blocks
         with open(output_path, 'w', encoding='utf-8') as f:
             json.dump(data_to_save, f, indent=4, ensure_ascii=False)
         return (filename, _count(results), None)
     except Exception as e:
         return (filename, 0, str(e))
+
+
+def write_meet_links(url_mapping=None):
+    """ui/public/data/meet_links.json.gz: {'<year>_<season>': {meet_name:
+    url}} for the site's meet links. sub5 files come from the scraper's URL
+    map (meet_name is the archive filename without its extension, as the
+    store files it); Five K Sport files link to their OneDrive document."""
+    base = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    if url_mapping is None:
+        try:
+            with open(os.path.join(base, 'backend', 'web_url_mapping.json'), encoding='utf-8') as f:
+                url_mapping = json.load(f)
+        except (OSError, ValueError):
+            url_mapping = {}
+    out = {}
+    for key, url in url_mapping.items():
+        year, season, filename = key.split('/', 2)
+        stem, ext = os.path.splitext(filename)
+        meets = out.setdefault(f'{year}_{season}', {})
+        meets[stem] = url
+        if ext.lower() == '.pdf':
+            # a PDF sharing its stem with an .htm is stored as '<stem>_pdf'
+            meets[f'{stem}_pdf'] = url
+    import glob
+    for path in glob.glob(os.path.join(base, 'backend', 'data', 'parsed_results', '*', 'XC', 'fiveks-*.json')):
+        try:
+            with open(path, encoding='utf-8') as f:
+                url = (json.load(f).get('source') or {}).get('url')
+        except (OSError, ValueError):
+            continue
+        if url:
+            year = path.split(os.sep)[-3]
+            out.setdefault(f'{year}_XC', {})[os.path.splitext(os.path.basename(path))[0]] = url
+    import gzip
+    dest = os.path.join(base, 'ui', 'public', 'data', 'meet_links.json.gz')
+    with gzip.open(dest, 'wb', compresslevel=9) as f:
+        f.write(json.dumps(out, separators=(',', ':'), sort_keys=True).encode('utf-8'))
+    return out
 
 
 class Sub5ScraperV2:
@@ -534,6 +1413,7 @@ class Sub5ScraperV2:
         self.manual_fixes = self.load_manual_fixes()
         self.web_date_mapping = self.load_web_date_mapping()
         self.web_meet_mapping = self.load_web_meet_mapping()
+        self.web_url_mapping = self.load_web_url_mapping()
         self.team_registry = self.load_team_registry()
         self.progress_callback = progress_callback
         self.session = requests.Session()
@@ -691,6 +1571,51 @@ class Sub5ScraperV2:
                 json.dump(self.web_meet_mapping, f, indent=4, ensure_ascii=False)
         except Exception as e:
             print(f"Error saving web_meet_mapping: {e}")
+
+    def load_web_url_mapping(self):
+        """Source URL of every result file, keyed '<year>/<season>/<filename>'
+        like the date and meet maps. The site links each meet to it."""
+        mapping_path = os.path.join(os.path.dirname(__file__), 'web_url_mapping.json')
+        if os.path.exists(mapping_path):
+            try:
+                with open(mapping_path, 'r', encoding='utf-8') as f:
+                    return json.load(f)
+            except Exception:
+                pass
+        return {}
+
+    def save_web_url_mapping(self):
+        mapping_path = os.path.join(os.path.dirname(__file__), 'web_url_mapping.json')
+        try:
+            with open(mapping_path, 'w', encoding='utf-8') as f:
+                json.dump(self.web_url_mapping, f, indent=1, sort_keys=True)
+        except Exception as e:
+            print(f"Error saving web_url_mapping: {e}")
+
+    @staticmethod
+    def _archive_filename(link):
+        """The archive filename a result link is saved under."""
+        filename = link.split('/')[-1]
+        if '?' in filename:
+            filename = filename.split('?')[0]
+        # Preserve .pdf extension; only append .htm for non-typed links
+        if not filename.lower().endswith(('.htm', '.html', '.pdf')):
+            filename += ".htm"
+        return filename
+
+    def record_source_urls(self, seasons=None):
+        """Fill web_url_mapping from the season index pages alone (no result
+        files are downloaded): one index request per season, the same pages
+        a full scrape reads."""
+        n = 0
+        for config in (seasons if seasons is not None else SEASONS):
+            for link in self.get_meet_links(config['url']):
+                key = f"{config['year']}/{config['season']}/{self._archive_filename(link)}"
+                if self.web_url_mapping.get(key) != link:
+                    self.web_url_mapping[key] = link
+                    n += 1
+        self.save_web_url_mapping()
+        return n
 
     def parse_web_date(self, date_str):
         """Parse a season-index date cell ("October 25, 2008", "Oct 25, 2008",
@@ -988,7 +1913,7 @@ class Sub5ScraperV2:
         mapping = {}
         def is_valid_result_link(h):
             h = h.lower()
-            if not (h.endswith('.htm') or h.endswith('.html') or h.endswith('.pdf')): return False
+            if not (h.endswith('.htm') or h.endswith('.html') or h.endswith('.pdf') or h.endswith('.txt')): return False
             # Only follow sub5-hosted files (legacy pages link out to
             # coolrunning, nesportstiming, newenglandsports, etc.)
             if h.startswith('http') and 'sub5.com' not in h:
@@ -1062,14 +1987,13 @@ class Sub5ScraperV2:
             if not isinstance(info, dict):   # legacy shape: bare date string
                 info = {'date': info, 'meet': None, 'venue': None}
             date_str = info.get('date')
-            filename = link.split('/')[-1]
-            if '?' in filename: filename = filename.split('?')[0]
-            # Preserve .pdf extension; only append .htm for non-typed links
-            if not filename.lower().endswith(('.htm', '.html', '.pdf')):
-                filename += ".htm"
+            filename = self._archive_filename(link)
             # Scope by season: generic filenames (Results-1.htm, classaboys.htm)
             # recur across years and would otherwise clobber each other.
             scoped_key = f"{curr_year}/{curr_season}/{filename}"
+            if self.web_url_mapping.get(scoped_key) != link:
+                self.web_url_mapping[scoped_key] = link
+                mapping_changed = True
             if date_str:
                 self.web_date_mapping[scoped_key] = date_str
                 mapping_changed = True
@@ -1105,6 +2029,7 @@ class Sub5ScraperV2:
         if mapping_changed:
             self.save_web_date_mapping()
             self.save_web_meet_mapping()
+            self.save_web_url_mapping()
         return saved_files
 
     def save_web_date_mapping(self):
@@ -1259,6 +2184,11 @@ class Sub5ScraperV2:
                     meet_level = 'college'
                 else:
                     meet_level = 'hs'
+                # The parser reads the level from the results header itself
+                # ("BRUNSWICK JUNIOR HIGH XC") and grade columns; trust it over
+                # the filename guess when it has one.
+                if isinstance(file_data, dict) and file_data.get('meet_level') in ('ms', 'hs', 'college'):
+                    meet_level = file_data['meet_level']
 
                 for event_block in parsed_events:
                     if isinstance(event_block, dict) and "results" in event_block:
@@ -1277,7 +2207,8 @@ class Sub5ScraperV2:
 
                     # Canonicalize: one spelling per event, corrected gender,
                     # junk/out-of-scope labels dropped (see event_canon.py)
-                    canon = canonical_event(event_name, gender or 'Boys', season=season)
+                    canon = canonical_event(event_name, gender or 'Boys', season=season,
+                                            level=meet_level)
                     if canon is None:
                         continue
                     gender, event_canon_name = canon
@@ -1331,7 +2262,21 @@ class Sub5ScraperV2:
                         if _is_track_ev and _has_dist_fmt and not _has_time_fmt:
                             continue
 
-                        team_norm = self.normalize_team_name(school, all_teams=all_known_teams, level=meet_level)
+                        team_norm = None
+                        if season == 'XC' and school:
+                            # Cross country files results under the school
+                            # catalog: every spelling of a school (truncations,
+                            # codes, mascots, M/F suffixes) lands on one team,
+                            # filed under the co-op it raced as, so one runner
+                            # keeps one athlete id. Strings the catalog cannot
+                            # place fall back to the registry resolution below.
+                            unit = school_catalog.store_unit(
+                                school, year=str(year), season='XC', gender=gender,
+                                meet_name=filename, grade=r.get('grade'))
+                            if unit:
+                                team_norm = school_catalog.store_name(unit)
+                        if team_norm is None:
+                            team_norm = self.normalize_team_name(school, all_teams=all_known_teams, level=meet_level)
                         if not self.team_name_is_sane(team_norm) or self.is_likely_athlete_name(team_norm): continue
                         if is_relay and athlete_name == f"{school} Relay":
                             athlete_name = f"{team_norm} Relay"
@@ -1465,6 +2410,26 @@ class Sub5ScraperV2:
         self.report_progress(f'Frameset repair complete: {repaired} repaired, {failed} unrecoverable')
         return repaired, failed
 
+    @staticmethod
+    def _stored_meet_rows(season_keys):
+        """(year, season) -> {meet_name: {(athlete_id, event, mark)}} for the
+        meets already in the store, in the same shape the dedup compares."""
+        out = {}
+        chunk_keys = {f'{y}_{s}': (y, s) for y, s in season_keys}
+        for fn in os.listdir(TEAMS_DIR):
+            full = os.path.join(TEAMS_DIR, fn)
+            if not os.path.isdir(full):
+                continue
+            team = canonical_team_name(fn)
+            for key, chunk in _chunk_files(full):
+                if key not in chunk_keys:
+                    continue
+                for p in enrich_rows(team, key, _load_json(os.path.join(full, chunk), [])):
+                    out.setdefault(chunk_keys[key], {}).setdefault(
+                        p.get('meet_name'), set()).add(
+                        (p['athlete_id'], p['event'], p['mark']))
+        return out
+
     def run_full_scrape(self, wipe=False, seasons=None, download=True, parse=True):
         """Full pipeline: download -> parse -> sync -> manifest.
 
@@ -1547,6 +2512,31 @@ class Sub5ScraperV2:
             if len(rows) >= 20:
                 by_season.setdefault(key[:2], []).append((key, rows))
         drop_meets = set()
+        # A file that contains two or more other meets is a combined
+        # re-ranking (the New England qualifier list pools the Class A/B/C
+        # state races), not a race: drop it and keep the races themselves.
+        for pairs in by_season.values():
+            for k1, r1 in pairs:
+                inside = sum(1 for k2, r2 in pairs
+                             if k2 != k1 and len(r2) < len(r1)
+                             and len(r1 & r2) / len(r2) >= 0.6)
+                if inside >= 2:
+                    drop_meets.add(k1)
+        # An incremental run only holds the NEW meets, so a re-post of a meet
+        # already in the store (an overall .txt next to the by-section .htm it
+        # duplicates) has nothing to collide with above. Compare against the
+        # stored meets of the same seasons too, and keep the stored copy.
+        if not wipe:
+            stored = self._stored_meet_rows({k for k in by_season})
+            for skey, pairs in by_season.items():
+                for (k1, r1) in pairs:
+                    for k2, r2 in stored.get(skey, {}).items():
+                        if k2 == k1[2] or len(r2) < 20:
+                            continue
+                        smaller = min(len(r1), len(r2))
+                        if len(r1 & r2) / smaller >= 0.6:
+                            drop_meets.add(k1)
+                            break
         for pairs in by_season.values():
             for i in range(len(pairs)):
                 for j in range(i + 1, len(pairs)):
@@ -1576,6 +2566,13 @@ class Sub5ScraperV2:
         save_scrape_state(scrape_state)
         save_athletes(athletes)
         rebuild_manifest()
+        write_meet_links(self.web_url_mapping)
+        # athlete identity: code layer + reviewed decisions -> one id per
+        # runner; PR flags over whole careers and the athlete registry
+        from backend import athlete_catalog
+        self.report_progress("Building athlete catalog...")
+        athlete_catalog.build(quiet=True)
+        athlete_catalog.apply(quiet=True)
         self.report_progress("Scrape Complete!", 100)
         return total_count
 
@@ -1584,8 +2581,12 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Scrape Track & Field data from sub5.com")
     parser.add_argument('--wipe', action='store_true', help="Force a full re-scrape, clearing all existing processed JSON state.")
     parser.add_argument('--years', help="Comma-separated years to scrape (default: all seasons in SEASONS).")
+    parser.add_argument('--season', choices=['Indoor', 'Outdoor', 'XC'],
+                        help="Limit to one season type (default: all).")
     parser.add_argument('--resync-only', action='store_true',
                         help="Skip download and parse; wipe and rebuild the store from existing parsed_results JSONs.")
+    parser.add_argument('--record-urls', action='store_true',
+                        help="Read the season index pages and record each result file's source URL (no downloads).")
     parser.add_argument('--repair-framesets', action='store_true',
                         help="Re-fetch Hy-Tek frameset stub meets (X_full.htm / stitched event pages).")
     args = parser.parse_args()
@@ -1594,9 +2595,15 @@ if __name__ == "__main__":
     if args.years:
         wanted = {y.strip() for y in args.years.split(',')}
         selected = [s for s in SEASONS if s['year'] in wanted]
+    if args.season:
+        selected = [s for s in selected if s['season'] == args.season]
 
     scraper = Sub5ScraperV2()
-    if args.repair_framesets:
+    if args.record_urls:
+        n = scraper.record_source_urls(seasons=selected)
+        write_meet_links(scraper.web_url_mapping)
+        print(f'{n} source URLs recorded')
+    elif args.repair_framesets:
         scraper.repair_frameset_stubs(seasons=selected)
     elif args.resync_only:
         scraper.run_full_scrape(wipe=True, seasons=selected, download=False, parse=False)

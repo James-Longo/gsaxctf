@@ -9,6 +9,8 @@ PR flags (was_pr, is_pr, is_sb) are pre-computed and stored with each record.
 import gzip
 import json
 import os
+from collections import defaultdict
+from datetime import date
 import re
 import hashlib
 import tempfile
@@ -438,11 +440,26 @@ def add_performances_for_team(team_name: str, new_perfs: list,
     return athletes, inserted
 
 
+# Season windows are measured on a calendar that starts July 1, so indoor
+# (December to March) doesn't wrap the new year.
+_SEASON_YEAR_START = (7, 1)
+
+
+def _season_offset(month, day):
+    """Days since July 1 on a fixed 366-day calendar (leap day included)."""
+    d = date(2000, month, day)
+    start = date(2000 if (month, day) >= _SEASON_YEAR_START else 1999, *_SEASON_YEAR_START)
+    return (d - start).days
+
+
 def rebuild_manifest() -> dict:
     """
     Regenerate manifest.json by scanning all team chunk directories.
     Gathers available seasons (= chunk files), per-team performance counts,
-    and each team's level (hs/ms/college) from the team registry.
+    each team's level (hs/ms/college) from the team registry, and each
+    sport's season window: the earliest and latest month-day any result of
+    that season type was run, which the site uses to open on the sport
+    that's in season.
     """
     registry_teams = {}
     reg_path = os.path.join(BASE_DIR, 'backend', 'data', 'team_registry.json')
@@ -453,6 +470,8 @@ def rebuild_manifest() -> dict:
 
     teams_meta = []
     all_seasons = set()
+    window = {}   # season type -> [earliest, latest] (offset, 'MM-DD')
+    sports = defaultdict(set)   # athlete id -> season types they have results in
 
     for fn in sorted(os.listdir(TEAMS_DIR)):
         full = os.path.join(TEAMS_DIR, fn)
@@ -462,6 +481,7 @@ def rebuild_manifest() -> dict:
         team_name = canonical_team_name(fn)
         seasons = []
         count = 0
+        by_sport = defaultdict(int)
         has_splits = False
         for key, chunk_fn in _chunk_files(full):
             perfs = _load_json(os.path.join(full, chunk_fn), [])
@@ -471,12 +491,29 @@ def rebuild_manifest() -> dict:
             if 'Unknown' not in key:
                 all_seasons.add(key)
             count += len(perfs)
+            stype = key.split('_', 1)[1] if '_' in key else key
+            by_sport[stype] += len(perfs)
+            for p in perfs:
+                sports[p.get('athlete_id') or slugify_athlete(p.get('athlete_name', ''), team_name)].add(stype)
+                d = p.get('date') or ''
+                if len(d) < 10 or not d[:4].isdigit():
+                    continue
+                try:
+                    off = _season_offset(int(d[5:7]), int(d[8:10]))
+                except ValueError:
+                    continue
+                w = window.setdefault(stype, [(off, d[5:10]), (off, d[5:10])])
+                if off < w[0][0]:
+                    w[0] = (off, d[5:10])
+                if off > w[1][0]:
+                    w[1] = (off, d[5:10])
             if not has_splits and any(bool(p.get('splits')) for p in perfs):
                 has_splits = True
         teams_meta.append({
             'slug': slug,
             'name': team_name,
             'count': count,
+            'counts': dict(sorted(by_sport.items())),
             'seasons': sorted(seasons),
             'has_splits': has_splits,
             'level': registry_teams.get(team_name, {}).get('level', 'hs'),
@@ -485,6 +522,23 @@ def rebuild_manifest() -> dict:
     manifest = {
         'teams': teams_meta,
         'seasons': sorted(all_seasons),
+        'season_windows': {k: {'start': w[0][1], 'end': w[1][1]}
+                           for k, w in sorted(window.items()) if k != 'Unknown'},
     }
     save_manifest(manifest)
+
+    # The site's athlete pickers list only athletes who competed in the sport
+    # being viewed; record each athlete's season types in the registry. The
+    # registry is a list keyed by id (two runners can share a name), and a
+    # runner from the athlete catalog covers several store ids (`members`).
+    registry = _load_json(ATHLETES_PATH, [])
+    if isinstance(registry, list):
+        changed = False
+        for a in registry:
+            sp = sorted(set().union(*(sports.get(i, set()) for i in (a.get('members') or [a.get('id')]))))
+            if a.get('sports') != sp:
+                a['sports'] = sp
+                changed = True
+        if changed:
+            _atomic_write(ATHLETES_PATH, registry)
     return manifest
