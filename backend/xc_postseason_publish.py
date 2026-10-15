@@ -83,7 +83,7 @@ def forecast(year, asof, sims, seed=0, quiet=False):
                 rr = rat[a]
                 e = rr['theta'] + noise.shift(rr['n'], rr['prior'])
                 aths.append(dict(
-                    name=rr['name'], school=name(school_of[a]), grade=rr.get('grade'),
+                    name=rr['name'], school=name(school_of[a]), div=v.get('div'), grade=rr.get('grade'),
                     t=_mmss(e), _e=e, n=rr['n'], start=round(v['start'], 3),
                     med=v['med'], p10=v['p10'], p90=v['p90'], top10=round(v['top10'], 3),
                     qual=None if v['qualify'] is None else round(v['qualify'], 3),
@@ -95,7 +95,7 @@ def forecast(year, asof, sims, seed=0, quiet=False):
                 aths = [x for x in aths if x['start'] >= 0.01]
                 aths.sort(key=lambda x: (x['start'] < 0.5, x['med'] if x['start'] >= 0.5 else -x['start'], x['_e']))
             else:
-                aths.sort(key=lambda x: (x['med'], x['_e']))
+                aths.sort(key=lambda x: (x['div'] or '', x['med'], x['_e']))
             for x in aths:
                 x.pop('_e')
             gm[mid] = dict(teams=teams, athletes=aths)

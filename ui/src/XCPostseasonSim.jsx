@@ -65,11 +65,21 @@ export default function XCPostseasonSim({ followTeam }) {
   const followed = (t) => followTeam && t.store === followTeam
   const followedSchool = race.teams.find(followed)?.team
 
+  // order in the race (within the division, for a meet scored by
+  // division), kept when the list is filtered
+  const rankOf = new Map()
+  const divCount = {}
+  for (const a of race.athletes) {
+    divCount[a.div] = (divCount[a.div] || 0) + 1
+    rankOf.set(a, divCount[a.div])
+  }
   let runners = race.athletes
   if (team) runners = runners.filter(a => a.school === team)
   const q = query.trim().toLowerCase()
   if (q) runners = runners.filter(a => `${a.name} ${a.school}`.toLowerCase().includes(q))
-  const shown = showAll || team || q ? runners : runners.slice(0, ROWS)
+  const shown = showAll || team || q ? runners : runners.filter(a => rankOf.get(a) <= ROWS)
+  let lastRunnerDiv = null
+  const runnerCols = isReg || isState ? 7 : 6
 
   let lastDiv = null
   let rank = 0
@@ -153,36 +163,42 @@ export default function XCPostseasonSim({ followTeam }) {
             <table className="performance-table xs-table">
               <thead>
                 <tr>
-                  <th className="num" title="Median simulated place">#</th><th>Runner</th><th>Team</th>
+                  <th className="num">#</th><th>Runner</th><th>Team</th>
                   <th className="num" title="Expected time on the Festival of Champions course">Expected</th>
-                  <th className="num" title="80% of simulations">Range</th>
+                  <th className="num" title="Median simulated place (80% of simulations)">Place</th>
                   <th className="num">Top 10</th>
                   {isReg && <th className="num">States</th>}
                   {isState && <th className="num" title="Share of simulations in which the runner qualifies">In field</th>}
                 </tr>
               </thead>
               <tbody>
-                {shown.length === 0 && <tr><td colSpan={7} className="xs-empty">No runners match.</td></tr>}
-                {shown.map((a, i) => (
-                  <tr key={`${a.name}|${a.school}|${i}`} className={a.school === followedSchool ? 'xs-follow' : ''}>
-                    <td className="num">{a.med}</td>
+                {shown.length === 0 && <tr><td colSpan={runnerCols} className="xs-empty">No runners match.</td></tr>}
+                {shown.map((a, i) => {
+                  const divRow = a.div !== lastRunnerDiv && a.div
+                  lastRunnerDiv = a.div
+                  return (
+                  <React.Fragment key={`${a.name}|${a.school}|${i}`}>
+                  {divRow && <tr className="xs-div"><td colSpan={runnerCols}>{a.div}</td></tr>}
+                  <tr className={a.school === followedSchool ? 'xs-follow' : ''}>
+                    <td className="num">{rankOf.get(a)}</td>
                     <td>
                       {a.name}{a.grade ? <span className="xs-gr"> {a.grade}</span> : null}
                       {a.n === 0 && <span className="xs-chip" title="No race this season on file: rated from last season">prior</span>}
-                      {a.n === 1 && <span className="xs-chip" title="One race this season on file">1 race</span>}
                     </td>
                     <td className="xs-school">{a.school}</td>
                     <td className="num" title={a.races.length ? a.races.map(r => `${r[0]}  ${r[1]}`).join('\n') : 'Rated from last season'}>{a.t}</td>
-                    <td className="num xs-range">{a.p10}–{a.p90}</td>
+                    <td className="num xs-range">{a.med} <span className="xs-spread">({a.p10}–{a.p90})</span></td>
                     <td className={`num ${pctCls(a.top10)}`}>{pct(a.top10)}</td>
                     {isReg && <td className={`num ${pctCls(a.qual)}`}>{pct(a.qual)}</td>}
                     {isState && <td className={`num ${pctCls(a.start)}`}>{pct(a.start)}</td>}
                   </tr>
-                ))}
+                  </React.Fragment>
+                  )
+                })}
               </tbody>
             </table>
           </div>
-          {!showAll && !team && !q && runners.length > ROWS && (
+          {!showAll && !team && !q && runners.length > shown.length && (
             <button className="xs-more" onClick={() => setShowAll(true)}>All {runners.length} runners</button>
           )}
         </div>

@@ -1178,7 +1178,8 @@ def simulate_postseason(obs, year, gender, cutoff, groups, calib, noise,
     Returns (ratings, entries_by_meet, results_by_meet). Results hold, per
     team: place distribution and win probability (per division for meets
     scored by division), and for regionals the chance of reaching states;
-    per athlete: place quantiles and qualifying chance.
+    per athlete: place quantiles (within the division, for meets scored by
+    division) and qualifying chance.
     """
     if ratings is None:
         ratings, _ = season_ratings(rate_obs if rate_obs is not None else obs,
@@ -1206,7 +1207,8 @@ def simulate_postseason(obs, year, gender, cutoff, groups, calib, noise,
     acc = defaultdict(lambda: dict(team_place=defaultdict(lambda: defaultdict(int)),
                                    team_scores=defaultdict(list),
                                    team_q=defaultdict(int), ind_place=defaultdict(list),
-                                   ind_q=defaultdict(int), started=defaultdict(int)))
+                                   ind_q=defaultdict(int), started=defaultdict(int),
+                                   ind_div={}))
     a_carry = math.sqrt(form_carry)
     a_race = math.sqrt(1 - form_carry)
 
@@ -1217,10 +1219,9 @@ def simulate_postseason(obs, year, gender, cutoff, groups, calib, noise,
                       for a in aids)
         order = [a for _, a in perf]
         st = acc[mid]
-        for i, a in enumerate(order):
-            st['ind_place'][a].append(i + 1)
-            st['started'][a] += 1
         divs = meets[mid].get('divisions')
+        # a meet scored by division places its runners within the division
+        div_place = {}
         if divs:
             for dname, cls in divs.items():
                 # a division is a class letter (PVC Large = MPA class B) or,
@@ -1231,10 +1232,17 @@ def simulate_postseason(obs, year, gender, cutoff, groups, calib, noise,
                 else:
                     sub = [a for a in order
                            if groups['schools'].get(school_of[a], {}).get('class') == cls]
+                for i, a in enumerate(sub):
+                    div_place[a] = i + 1
+                    st['ind_div'][a] = dname
                 ranked, _ = score_race(sub, school_of)
                 for i, (t, sc, _) in enumerate(ranked):
                     st['team_place'][(dname, t)][i + 1] += 1
                     st['team_scores'][(dname, t)].append(sc)
+        for i, a in enumerate(order):
+            st['ind_place'][a].append(div_place.get(a, i + 1))
+            st['started'][a] += 1
+        if divs:
             return order, None
         ranked, _ = score_race(order, school_of)
         for i, (t, sc, _) in enumerate(ranked):
@@ -1288,7 +1296,7 @@ def simulate_postseason(obs, year, gender, cutoff, groups, calib, noise,
         for a, ps in st['ind_place'].items():
             ps.sort()
             k = len(ps)
-            inds[a] = dict(start=k / sims, med=ps[k // 2], p10=ps[k // 10], p90=ps[(9 * k) // 10],
+            inds[a] = dict(div=st['ind_div'].get(a), start=k / sims, med=ps[k // 2], p10=ps[k // 10], p90=ps[(9 * k) // 10],
                            top10=sum(p <= 10 for p in ps) / sims,
                            top25=sum(p <= 25 for p in ps) / sims,
                            qualify=st['ind_q'].get(a, 0) / sims if 'region' in meets[mid] else None)
