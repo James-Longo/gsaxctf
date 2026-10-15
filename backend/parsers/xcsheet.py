@@ -13,7 +13,7 @@ XCDualSheetParser - classic cross-country dual/tri meet summaries:
 
 Individual rows carry overall place, name, finish time, and pace; the school
 comes from the numbered team subsection header. Gender from the filename.
-The single implicit event is 5K Cross Country.
+The single implicit event is a cross-country race of unstated distance.
 """
 
 import re
@@ -74,6 +74,6 @@ class XCDualSheetParser(BaseParser):
         if not results:
             return {'events': [], 'date': None, 'meet_name': None, 'team_rankings': []}
         meet_name = next((l.strip() for l in lines[:4] if l.strip()), None)
-        return {'events': [{'event': '5K Cross Country', 'gender': gender,
+        return {'events': [{'event': 'Run CC', 'gender': gender,   # distance not given
                             'is_relay': False, 'results': results}],
                 'date': date, 'meet_name': meet_name, 'team_rankings': []}

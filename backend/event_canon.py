@@ -58,8 +58,13 @@ XC_TOKEN = re.compile(r'\bcc\b|cross\s*country|\bxc\b', re.I)
 K_DIST = re.compile(r'\b([2-9](?:\.\d)?)\s*k\b', re.I)
 
 
-def canonical_event(raw, gender, season=None):
-    """Return (gender, canonical_event_name) or None to drop the row."""
+def canonical_event(raw, gender, season=None, level=None):
+    """Return (gender, canonical_event_name) or None to drop the row.
+
+    `level` is the meet level ('hs', 'ms', 'college') when known. It only
+    matters for cross country with no stated distance: high-school varsity
+    races are 5K, but a middle-school race is 1.5-2 miles, so it stays
+    distance-unknown rather than being stored as a fake 5K."""
     if not raw:
         return None
     s = str(raw).strip()
@@ -84,6 +89,8 @@ def canonical_event(raw, gender, season=None):
         mi = re.search(r'(\d(?:\.\d+)?)\s*miles?', s, re.I)
         if mi:
             return gender, f'{mi.group(1)} Mile Cross Country'
+        if level == 'ms':
+            return gender, 'Cross Country'   # distance unknown: not a 5K
         return gender, '5K Cross Country'  # the default HS race
 
     # inner gender overrides the section prefix

@@ -120,10 +120,17 @@ class LooseListParser(BaseParser):
         events = []
         current = None
         section_gender = default_gender
+        in_scores = False
 
         for line in lines:
             s = line.strip()
             if not s:
+                continue
+            # Hy-Tek team-score blocks ("*1 Portland High School  75  10 12 ..."
+            # then "Average: 17:45.74") look like result rows; skip them up to
+            # the next event header
+            if re.match(r'^team\s+scores?\b', s, re.I):
+                in_scores = True
                 continue
             if s.count('|') >= 2:
                 continue  # OCR'd table grid — PipeGridParser territory
@@ -145,6 +152,7 @@ class LooseListParser(BaseParser):
                 if current and current['results']:
                     events.append(current)
                 gender, ev_name = header
+                in_scores = False
                 current = {
                     'event': canon_event(ev_name),
                     'gender': gender or section_gender or 'Girls',
@@ -153,7 +161,14 @@ class LooseListParser(BaseParser):
                 }
                 continue
 
-            if current is None:
+            if in_scores and (
+                    re.search(r'\b(Place|Pl|Name)\b.*\b(Name|School|Team)\b', s, re.I)
+                    or re.match(r'^\d{1,3}[.)]?\s+[A-Za-z].*\d:\d\d', s)):
+                # a results ruler or a timed place row ends the scores block
+                # (team-score rows carry no times; small meets print the
+                # scores FIRST: "Team Scores / Lisbon 35 ... / Place Name ...")
+                in_scores = False
+            if current is None or in_scores:
                 continue
 
             row = self._parse_row(s, current['is_relay'])
@@ -201,6 +216,13 @@ class LooseListParser(BaseParser):
         if m:
             g = m.group(1).capitalize()
             return ('Girls' if g in ('Girls', 'Women') else 'Boys', m.group(2))
+        # "EVENT #4      JV BOYS 5K RUN CC": numbered, gender anywhere
+        m = re.match(r'^Event\s*#\s*\d+\s+(.+)$', s, re.I)
+        if m:
+            gw = re.search(r'\b(girls|boys|women|men)\b', m.group(1), re.I)
+            g = gw.group(1).lower() if gw else ''
+            return ('Girls' if g in ('girls', 'women') else 'Boys' if g else None,
+                    re.sub(r'\s+', ' ', m.group(1)).strip())
         m = re.match(r'^(Girls|Boys|Women|Men)[:\s]+(.+)$', s, re.I)
         if m and EVENT_KEYWORDS.search(m.group(2)) and not re.match(r'^\d+[.)]', m.group(2)):
             g = m.group(1).capitalize()
@@ -253,7 +275,9 @@ class LooseListParser(BaseParser):
         return None
 
     def _parse_row(self, s, is_relay):
-        m = re.match(r'^(\d{1,2})[.)]?\s+(.+)$', s)
+        # 3-digit places: big XC fields run past 99, and Hy-Tek then drops
+        # the leading space ("100 Gideon Walters ...")
+        m = re.match(r'^(\d{1,3})[.)]?\s+(.+)$', s)
         if not m:
             return None
         rest = m.group(2).strip()

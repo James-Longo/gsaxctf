@@ -14,21 +14,54 @@ _GRADE_MAP = {
 }
 
 def normalize_grade(g):
-    """Return a clean grade string (8-12, FR/SO/JR/SR, or MS) or '' for junk."""
+    """Return a clean grade string (5-12, FR/SO/JR/SR, or MS) or '' for junk.
+    Middle-school grades 5-7 are kept: they are how a junior-high race that
+    sub5 posts beside the high-school results is told apart."""
     if not g:
         return ''
     g = g.strip()
     if not g or g in ('--', '0', '22'):
         return ''
-    if g in ('8', '9', '10', '11', '12', 'MS', 'FR', 'SO', 'JR', 'SR'):
+    if g in ('5', '6', '7', '8', '9', '10', '11', '12', 'MS', 'FR', 'SO', 'JR', 'SR'):
         return g
     if g in _GRADE_MAP:
         return _GRADE_MAP[g]
-    # "9 H", "11 B", "12 Finals" etc. — extract the leading grade number
-    m = re.match(r'^(8|9|10|11|12)\b', g)
+    # "9 H", "11 B", "12 Finals", "8th", "8t" — extract the leading grade number
+    m = re.match(r'^([5-9]|10|11|12)(?:\b|st|nd|rd|th|t\b)', g)
     if m:
         return m.group(1)
     return ''
+
+
+# "CLASS A Results" / "Division II Results": per-class sections of one race
+# ("Class A Results - Women" also splits a Mixed race by gender)
+# ("Division 2,3, JC Results 5000 Run": a label of several words, then the race)
+_SECTION_RE = re.compile(r'^(Class|Division|Section)\s+(\w{1,4}(?:\s*,\s*\w{1,4})*)\s+Results'
+                         r'(?:\s*-\s*(Women|Men|Girls|Boys))?(?:\s+\d+\s*\w*\s*Run)?$', re.I)
+_SECTION_GENDER = {'women': 'Girls', 'girls': 'Girls', 'men': 'Boys', 'boys': 'Boys'}
+_XC_SCORES_LINE = re.compile(r'^(?:\S+\s+){0,3}Team\s+Scores?$', re.I)
+
+
+_NUMBER_WORDS = {'one': '1', 'two': '2', 'three': '3', 'four': '4', 'five': '5', 'six': '6'}
+
+
+def _number_words(label):
+    """'Three Mile Run' -> '3 Mile Run': distance words become digits so the
+    event canonicaliser reads the distance."""
+    return re.sub(r'\b(one|two|three|four|five|six)(?=\s+(?:mile|k\b|kilometer))',
+                  lambda m: _NUMBER_WORDS[m.group(1).lower()], label, flags=re.I)
+
+
+def _is_xc_event(name):
+    """A cross-country race label: "5k Run CC", "3.1 Mile Run VARSITY Class C",
+    "2.4 Mile Run" - CC/XC/cross, a k-distance run, or a run over 2 miles
+    (track runs stop at 2 miles)."""
+    if re.search(r'\bCC\b|cross|\bXC\b', name, re.I):
+        return True
+    if re.search(r'\d\s*(?:k|km)\s+run', name, re.I):
+        return True
+    m = re.search(r'(\d+(?:\.\d+)?)\s*miles?\s+run', name, re.I)
+    return bool(m and float(m.group(1)) > 2)
 
 
 class Sub5ColumnParser:
@@ -72,9 +105,12 @@ class Sub5ColumnParser:
         """
         best_match = event_name
         max_len = 0
+        low = event_name.lower()
 
         for std in self.standard_events:
-            if std.lower() in event_name.lower():
+            # whole-number boundary: "2.1 Mile Run CC" is not "1 Mile Run",
+            # nor "3.2 Mile Run" a "2 Mile Run"
+            if re.search(r'(?<![\d.])' + re.escape(std.lower()), low):
                 if len(std) > max_len:
                     best_match = std
                     max_len = len(std)
@@ -210,6 +246,9 @@ class Sub5ColumnParser:
         positions = []
         for l in lines:
             for m in re.finditer(r'\bName\b', l):
+                # "First Name  Last Name" is one table's two name cells
+                if re.search(r'\b(Last|Team|School)\s+$', l[:m.start()]):
+                    continue
                 positions.append(m.start())
         if not positions:
             return page_text
@@ -226,8 +265,24 @@ class Sub5ColumnParser:
         if len(starts) < 2:
             return page_text
         # column boundaries: a bit left of each 'Name' header (rank numbers
-        # sit ~4-6 chars before it)
-        bounds = [0] + [max(0, s - 6) for s in starts[1:]] + [10 ** 6]
+        # sit ~4-6 chars before it) - or at the column's own "Place" header
+        # when one precedes the name ("Place Score Name ...  Place Score Name")
+        def _gutter(x):
+            # nearest column at/left of x that is blank on every data line
+            data = [l for l in lines if re.match(r'\s*\d+\s', l)]
+            for c in sorted(range(max(1, x - 12), x + 5), key=lambda c: (abs(c - x), c)):
+                if all(len(l) <= c or not l[c - 1:c + 1].strip() for l in data):
+                    return c
+            return x
+
+        def _bound(x):
+            for l in lines:
+                if l[x:x + 4] == 'Name':
+                    pm = list(re.finditer(r'\b(?:Place|PLACE|Pl|PL|Plc)\b', l[max(0, x - 24):x]))
+                    if pm:
+                        return _gutter(max(0, x - 24) + pm[-1].start())
+            return max(0, x - 6)
+        bounds = [0] + [_bound(s) for s in starts[1:]] + [10 ** 6]
         columns = [[] for _ in range(len(bounds) - 1)]
         for l in lines:
             for i in range(len(bounds) - 1):
@@ -253,6 +308,10 @@ class Sub5ColumnParser:
           After normalization all single-digit ranks have 2 leading spaces.
         - The meet date in the Hy-Tek header is extracted and prepended.
         """
+        # (a lone carriage return inside a row - "Serena\t\r Blasios" -
+        # is no line break)
+        text = re.sub(r'\t?\r(?!\n)', ' ', text)
+        text = re.sub(r'(?<=\S)( *)\t\n[ \xa0\t]*(?=\S)', lambda m: m.group(1) or ' ', text)   # (already split: "Serena\t" / " \xa0 Blasios")
         # Split multi-column pages before joining (page by page, since
         # column boundaries can differ between pages)
         pages = text.split("\x0c")
@@ -322,9 +381,42 @@ class Sub5ColumnParser:
             # Older files (2003-2013) split one meet across several <pre>
             # blocks, so join them all rather than taking just the first.
             pres = soup.find_all('pre')
+            # Word "Save as Web Page" exports hold one Hy-Tek line per <p>,
+            # wrapped at arbitrary points in the source; those newlines are
+            # just HTML whitespace (the alignment lives in &nbsp; runs). Any
+            # <pre> blocks in such files are stray fragments.
+            word_html = 'schemas-microsoft-com:office' in html_content[:5000]
+            word_lines = []
+            if word_html:
+                word_lines = [re.sub(r'[ \t\r\n]+', ' ', t.get_text()).replace('\xa0', ' ')
+                              for t in soup.find_all('p')]
             if pres:
                 text = "\n".join(p.get_text() for p in pres)
                 lines = text.splitlines()
+                row = re.compile(r'^\s*\d+\s+\S.*\d:\d\d')
+                if word_lines and sum(1 for l in word_lines if row.match(l)) > \
+                        sum(1 for l in lines if row.match(l)):
+                    lines = word_lines
+                # a <pre> holding only the page header, the results loose
+                # in the body (&nbsp;-padded lines broken by <br>)
+                # (or the results run on past the <pre> in &nbsp;-padded
+                # paragraphs: scarborough17sept04.htm's boys races)
+                body = re.sub(r'<br\s*/?>', '\n', html_content, flags=re.I)
+                body_lines = [l.replace('\xa0', ' ') for l in
+                              BeautifulSoup(body, 'html.parser').get_text().splitlines()]
+                n_pre = sum(1 for l in lines if row.match(l))
+                n_body = sum(1 for l in body_lines if row.match(l))
+                if n_pre == 0 and n_body >= 3:
+                    lines = body_lines
+                elif n_pre and n_body >= 1.3 * n_pre + 5:
+                    lines = [l for l in body_lines if l.strip()]   # (paragraph gaps)
+            elif word_lines:
+                lines = word_lines
+            elif soup.find('tr') is not None and not soup.find(['p', 'div']) and \
+                    any(re.match(r'^\s*\d+\s+\S.*\d:\d\d', tr.get_text(' ')) for tr in soup.find_all('tr')[:400]):
+                # Hy-Tek "HTML table" export: one text row per <tr>
+                lines = [' '.join(td.get_text() for td in tr.find_all(['td', 'th'])).replace('\xa0', ' ')
+                         for tr in soup.find_all('tr')]
             else:
                 # If no <pre>, extract from <p> or <div> tags
                 lines = []
@@ -336,7 +428,24 @@ class Sub5ColumnParser:
                 if not lines:
                     text = soup.get_text(separator='\n')
                     lines = text.splitlines()
-        
+
+        # a hand-edited fixed-width page: a tab pads a line to the next
+        # 8-column stop ("  7 Aimee Brooks\t\t MDI" lines up with "MDIHS")
+        # (a tab typed inside a name, "Hill\t, Braydan", was kept as one
+        # column: each such line keeps whichever reading puts its time where
+        # the other rows' times end)
+        if any('\t' in l for l in lines) and any(re.match(r'^\s*={20,}', l) for l in lines):
+            from collections import Counter
+            _tm = re.compile(r'\d{1,2}:\d{2}(?:\.\d+)?')
+            ends = Counter(m.end() for l in lines if '\t' not in l for m in [_tm.search(l)] if m)
+            if ends:
+                col = ends.most_common(1)[0][0]
+
+                def _fit(l):
+                    m = _tm.search(l)
+                    return abs(m.end() - col) if m else 99
+                lines = [min((l.expandtabs(8), l), key=_fit) if '\t' in l else l for l in lines]
+
         # Metadata extraction
         meet_date = None
         meet_name = None
@@ -368,7 +477,13 @@ class Sub5ColumnParser:
             if not meet_name and not any(re.search(pat, line) for pat in date_patterns):
                 if not "===" in line and not "Licensed to" in line and len(clean) > 5:
                     meet_name = clean
-                    if any(x in clean.lower() for x in ms_keywords):
+                    # whole-word "MS": the Hy-Tek license line of "Wilbur Race
+                    # Systems" (or any "...ms ") is not a middle-school title
+                    # (a venue line - "AUBURN MIDDLE SCHOOL - AUBURN,ME" -
+                    # names where a high-school meet was held, not its level)
+                    if re.search(r'(?<![a-z])ms\b|-ms-|middle school|junior high|\bjh\b|elementary',
+                                 clean.lower()) and not re.search(
+                                     r',\s*(ME|Maine|NH)\b|\s-\s+[A-Z][A-Za-z .]+$', clean):
                         is_ms_meet = True
             
             for pat in date_patterns:
@@ -449,11 +564,73 @@ class Sub5ColumnParser:
                 ranking_lines.append(line)
                 continue
 
+            # Championship files rank each class separately inside one
+            # event ("CLASS A Results" ... "CLASS B Results"), places
+            # restarting at 1: each section is its own race. The column
+            # ruler printed above the first section is carried over.
+            if current_event and not in_rankings:
+                if _XC_SCORES_LINE.match(line_clean):
+                    current_event['in_scores'] = True
+                m_sec = _SECTION_RE.match(line_clean)
+                # a Mixed race ranked by sex with no class ("Results - Women"
+                # ... "Results - Men"): each half is its own race
+                m_gs = None if m_sec else re.match(r'^Results\s*-\s*(Women|Men|Girls|Boys)\b(?:\s.*)?$', line_clean, re.I)
+                if m_gs and not current_event.get('in_scores') and 'section' not in current_event and \
+                        (current_event.get('gender') == 'Mixed' or current_event.get('gsplit')):
+                    g2 = _SECTION_GENDER[m_gs.group(1).lower()]
+                    if not current_event.get('gsplit'):
+                        current_event['gsplit'] = True
+                        current_event['gprefix'] = list(current_event['lines'])
+                        current_event['gender'] = g2
+                    elif g2 != current_event['gender']:
+                        events.append(current_event)
+                        current_event = dict(current_event, gender=g2,
+                                             lines=list(current_event['gprefix']))
+                    continue
+                if m_sec and not current_event.get('in_scores'):
+                    label = f"{m_sec.group(1).capitalize()} {m_sec.group(2)}"
+                    sec_gender = _SECTION_GENDER.get((m_sec.group(3) or '').lower())
+                    if 'section' not in current_event:
+                        current_event['section'] = label
+                        current_event['prefix'] = list(current_event['lines'])
+                        if sec_gender:
+                            current_event['gender'] = sec_gender
+                    elif (current_event['section'], current_event['gender']) != \
+                            (label, sec_gender or current_event['gender']):
+                        events.append(current_event)
+                        current_event = dict(current_event, section=label,
+                                             lines=list(current_event['prefix']))
+                        if sec_gender:
+                            current_event['gender'] = sec_gender
+                    continue
+
             # Header pattern: "Event 1  Girls 4x800 Meter Relay" or "Girls 55 Meter Dash"
             m_event = re.search(r'Event\s+\d+\s+(Girls|Boys|Women|Men|Mixed)\s+(.*)', line_clean, re.IGNORECASE)
+            # college exports abbreviate: "Event 1  M 8k Run CC  Varsity"
+            if not m_event:
+                m_event = re.search(r'^Event\s+\d+\s+([MWF])\s+(\S.*)', line_clean)
+            # gender after the distance: "Event 6  4k Run CC Youth Boys"
+            m_late = None if m_event else re.match(
+                r'^Event\s+\d+\s+(\S.*?)\s*\b(Girls|Boys|Women|Men)\b\s*(.*)$', line_clean, re.I)
+            if m_late:
+                m_event = re.match(r'(\S+)\s+(.*)', f"{m_late.group(2)} "
+                                   f"{(m_late.group(1) + ' ' + m_late.group(3)).strip()}")
             # Support Division headers ("Girls 50 Meter Dash 5th/6th grade") and
             # prefixed multi-event legs ("Indoor Pentathlon: #5 Girls 800 Meter Run")
             m_no_event = re.match(r'^\s*(?:[\w .]{0,30}:\s*#?\d*\s*)?(Girls|Boys|Women|Men|Mixed)\s+(.*)', line_clean, re.IGNORECASE)
+            # RaceTab: "Varsity Boys Three Mile Run Finals" over a ruler
+            if not m_no_event and not re.search(r'team\s+scores?', line_clean, re.I):
+                m_no_event = re.match(r'^((?:Varsity|JV|Junior Varsity|Freshman|Open|Reserve|Middle School)'
+                                      r'\s+)(Girls|Boys|Women|Men)\s+(.*?)(?:\s+Finals)?$', line_clean, re.I)
+                if m_no_event:
+                    m_no_event = re.match(r'(\S+)\s+(.*)', f"{m_no_event.group(2)} "
+                                          f"{_number_words(m_no_event.group(3))} {m_no_event.group(1).strip()}")
+            # USATF JO Hy-Tek: "2000 Meter Run CC 8 & Under Division Girls"
+            if not m_no_event:
+                m_late = re.match(r'^\s*(\d[\w .&/-]*?\b(?:Run|CC|XC)\b[\w .&/-]*?)\s+(Girls|Boys|Women|Men)\s*$',
+                                  line_clean, re.I)
+                if m_late:
+                    m_no_event = re.match(r'(\S+)\s+(.*)', f"{m_late.group(2)} {m_late.group(1).strip()}")
 
             is_header = False
             gender = ""
@@ -462,17 +639,53 @@ class Sub5ColumnParser:
             if m_event:
                 is_header = True
                 gender = m_event.group(1).strip()
+                gender = {'M': 'Boys', 'W': 'Girls', 'F': 'Girls'}.get(gender, gender)
+                if len(gender) > 1:
+                    gender = gender.capitalize()
                 if gender.lower() == "women": gender = "Girls"
                 if gender.lower() == "men": gender = "Boys"
                 event_name = m_event.group(2).strip()
             elif m_no_event and "Team Rankings" not in line_clean:
                 # Require separator line for no-event-number headers to avoid false positives
-                if i + 1 < len(lines) and "====" in lines[i+1]:
+                # (bib-first exports put the column ruler between the two)
+                nxt = next((l for l in lines[i + 1:i + 4] if l.strip()), '')
+                if (i + 1 < len(lines) and "====" in lines[i+1]) or (
+                        i + 2 < len(lines) and "====" in lines[i + 2]
+                        and re.search(r'\bName\b', lines[i + 1])
+                        and re.search(r'\b(School|Team)\b', lines[i + 1])) or (
+                        # "Boys 5k" straight over Hy-Tek rows (sub5 .txt pages)
+                        len(line_clean) < 40 and not events and current_event is None
+                        and re.match(r'^\s*\d{1,4}\s+\S.*\d:\d\d', nxt)
+                        and not any(re.search(r'\bname\b', l, re.I) for l in lines[:i])
+                        and re.search(r'\d\s*(k|km|mile)|run|race|cc\b|xc\b', line_clean, re.I)):
                     is_header = True
                     gender = m_no_event.group(1).strip()
                     if gender.lower() == "women": gender = "Girls"
                     if gender.lower() == "men": gender = "Boys"
                     event_name = m_no_event.group(2).strip()
+
+            # A Hy-Tek column ruler with no event line anywhere above it
+            # ("Individual Results" / Name Year Team Finals): one race, its
+            # gender from the file name
+            if not is_header and not events and current_event is None \
+                    and re.search(r'\bName\b', line_clean) and re.search(r'\b(School|Team)\b', line_clean) \
+                    and re.search(r'\b(Finals|Time)\b', line_clean) \
+                    and any('====' in l for l in lines[max(0, i - 1):i + 2]):
+                fn = self.file_path.lower()
+                g = 'Girls' if re.search(r'girl|women', fn) else 'Boys' if re.search(r'boy|\bmen', fn) else None
+                # (an "All Classes Combined" list re-ranks class races posted
+                # on their own: not a race)
+                if g and (getattr(self, 'allow_aggregate', False) or
+                          not re.search(r'combin|new\s+england\s+qualif', ' '.join(lines[:i]) + fn, re.I)):
+                    is_header, gender, event_name = True, g, 'Run CC'
+                    lines[i - 1:i] = lines[i - 1:i]  # (no-op: keep the ruler with the event)
+
+            # "....Event 2  Boys 1.9 Mile Run CC" is Hy-Tek's page-break
+            # continuation of the current event, not a new race
+            if is_header and current_event and line_clean.startswith('..') \
+                    and current_event['original_event_name'] == event_name.strip() \
+                    and current_event['gender'] == gender:
+                continue
 
             if is_header:
                 in_rankings = False  # rankings block ends at the next event
@@ -507,6 +720,76 @@ class Sub5ColumnParser:
                     "is_relay": ev["is_relay"],
                     "results": results
                 })
+                if ev.get("section"):
+                    parsed_events[-1]["section"] = ev["section"]
+
+        # A Mixed race whose rows carry sex ("W17", "M40") is two races
+        # for the store: split it by the rows' own sex, order kept.
+        split = []
+        for pe in parsed_events:
+            rs = pe['results']
+            bare = pe['gender'] == 'Mixed' and sum(
+                1 for r in rs if re.match(r'[MWFB]\s+\S', r.get('school') or '')) >= 0.8 * len(rs)
+            for r in rs:
+                if r.get('sex') or pe['is_relay']:
+                    continue
+                m1 = re.match(r'([MWFB])(\d{1,2})\s+(\S.*)$', r.get('school') or '') or (
+                    bare and re.match(r'([MWFB])()\s+(\S.*)$', r.get('school') or ''))
+                m2 = re.search(r'\s+([MWFB])(\d{1,2})$', r.get('athlete') or '')
+                if m1:
+                    r['school'] = m1.group(3)
+                if m2:
+                    r['athlete'] = r['athlete'][:m2.start()].strip()
+                mm = m1 or m2
+                if mm:
+                    r['sex'] = 'Girls' if mm.group(1) in 'WF' else 'Boys'
+                    r['grade'] = normalize_grade(mm.group(2) or '')
+            sx = [r.get('sex') for r in rs]
+            sx = [r.get('sex') for r in rs]
+            # (a sex column that says "M" for every runner of a mixed race
+            # carries no information: leave the race for the school-suffix split)
+            if pe['gender'] == 'Mixed' and len({x for x in sx if x}) == 1:
+                for r in rs:
+                    r.pop('sex', None)
+            if pe['gender'] == 'Mixed' and rs and sum(1 for x in sx if x) >= 0.8 * len(rs) \
+                    and len({x for x in sx if x}) > 1:
+                try:
+                    from backend.parsers.namegender import name_gender
+                except ImportError:
+                    from parsers.namegender import name_gender
+                for r in rs:  # "Jamie Bell  M  Incredi-Bells": a bare M/W
+                    if not r.get('sex'):
+                        m1 = re.match(r'([MWFB])\s+(\S.*)$', r.get('school') or '')
+                        if m1:
+                            r['school'] = m1.group(2)
+                            r['sex'] = 'Girls' if m1.group(1) in 'WF' else 'Boys'
+                        else:
+                            r['sex'] = name_gender(r.get('athlete'))
+                for g in ('Girls', 'Boys', None):
+                    part = [r for r in rs if r.get('sex') == g]
+                    if part:
+                        split.append(dict(pe, gender=g or 'Mixed', results=part))
+                continue
+            split.append(pe)
+        parsed_events = split
+
+        # A page break that repeats the event header without the "...."
+        # continuation mark splits one race in two; the second part's
+        # places carry on from the first (51 after 50), a new race's
+        # restart at 1.
+        merged = []
+        for pe in parsed_events:
+            prev = merged[-1] if merged else None
+            if prev and not pe['is_relay'] and \
+                    (prev['event'], prev['gender'], prev.get('section')) == \
+                    (pe['event'], pe['gender'], pe.get('section')):
+                lp = [r.get('place') for r in prev['results'] if r.get('place')]
+                fp = [r.get('place') for r in pe['results'] if r.get('place')]
+                if lp and fp and fp[0] > 1 and fp[0] >= lp[-1]:
+                    prev['results'].extend(pe['results'])
+                    continue
+            merged.append(pe)
+        parsed_events = merged
 
         # Parse official team rankings from the collected rankings lines only
         # (they no longer run to EOF, so relay rows can't contaminate them)
@@ -594,6 +877,231 @@ class Sub5ColumnParser:
 
         return rankings
 
+    _HL_ROW = re.compile(r'^\s*\*?(\d{1,4})\s+(?=\S)')  # "*1" marks a qualifier
+    # finish/pace times: "19:26.22", "6:15.4", "1:02:13.5"; Hy-Tek prefixes
+    # judged ties with J and exhibition with x, suffixes records with R/#/*
+    _HL_TIME = re.compile(
+        r'(?<!\S)([JjXx*]?)(\d{1,2}:\d{2}(?::\d{2})?(?:\.\d{1,3})?)([A-Za-z*#@$!%&]{0,2})(?!\S)')
+    _HL_NOPLACE = re.compile(r'^\s*--\s+(?=[A-Za-z])')
+    _HL_STATUS = re.compile(r'(?<!\S)(DNF|DNS|DQ|SCR)(?!\S)')
+    _HL_GRADE = re.compile(r'(?<!\S)(\d{1,2}|FR|SO|JR|SR|Fr|So|Jr|Sr|--)(?!\S)')
+
+    def parse_headerless_block(self, ev):
+        """Individual results with no column-header row:
+
+              1 Henri Rivard              12 Marshwood             16:13.74    1
+              1 Andrew Chingos            SO Brunswick         6:15.4   19:26.22    1
+
+        Hy-Tek pads every field to a fixed width, so the grade column sits at
+        the same position on every row; it is located by vote and the name /
+        school split there. The finish time is the LAST time on the row:
+        some exports print a per-mile pace (or splits) before it. After it
+        come team-score places and notes ("19:34.20*   1  *course record")."""
+        rows = []
+        for line in ev["lines"]:
+            if not line.strip() or '===' in line:
+                continue
+            m = self._HL_ROW.match(line) or self._HL_NOPLACE.match(line)
+            if not m:
+                continue
+            times = list(self._HL_TIME.finditer(line, m.end()))
+            if times:
+                fin = times[-1]
+                body_end = times[0].start()
+                mark, exhib = fin.group(2), fin.group(1) in ('x', 'X')
+                after = fin.end()
+            else:
+                # unplaced finishers: " -- Anna Klingle  11 Brunswick   DNF   3"
+                st = self._HL_STATUS.search(line, m.end())
+                if not st:
+                    continue
+                body_end, mark, exhib = st.start(), st.group(1).upper(), False
+                after = st.end()
+            # printed place ("32" twice marks a tie) and, after the finish,
+            # the runner's team-score place (blank for non-scorers)
+            place = int(m.group(1)) if m.re is self._HL_ROW else None
+            tp = re.match(r'\s+(\d{1,3})(?=\s|$)', line[after:])
+            if tp and ev.get('heat_col'):   # "16:13.34   2   1": H# first
+                tp = re.match(r'\s+(\d{1,3})(?=\s|$)', line[after + tp.end():])
+            team_place = int(tp.group(1)) if tp else None
+            if not re.search(r'[A-Za-z]', line[m.end():body_end]):
+                continue
+            start = m.end()
+            if ev.get('bib_first'):  # "  1   654  Eastman, Silas ..."
+                mb = re.match(r'#?\d+\s+(?=[A-Za-z])', line[start:])
+                if mb:
+                    start += mb.end()
+            rows.append((line, start, body_end, (mark, exhib, place, team_place)))
+        if len(rows) < 3:
+            return self._untimed_rows(ev)
+
+        # vote for the grade column (right edge: "9" and "12" right-align)
+        from collections import Counter
+        votes = Counter()
+        for line, start, body_end, _ in rows:
+            for g in self._HL_GRADE.finditer(line, start, body_end):
+                if g.start() > start:  # never the first name token
+                    votes[g.end()] += 1
+        grade_end = None
+        if votes:
+            col, n = votes.most_common(1)[0]
+            if n >= 0.5 * len(rows):
+                grade_end = col
+        school_col = None
+        if grade_end is None:
+            gaps = Counter()
+            for line, start, body_end, _ in rows:
+                g = re.search(r'\S\s{2,}(?=\S)', line[start:body_end])
+                if g:
+                    gaps[start + g.end()] += 1
+            if gaps:
+                school_col = gaps.most_common(1)[0][0]
+
+        results = []
+        # the number after a cross-country finish is the team-score place
+        # (after a track mark it is meet points)
+        xc_event = _is_xc_event(ev.get('original_event_name') or ev.get('event_name') or '')
+        for line, start, body_end, fin in rows:
+            grade = ''
+            if grade_end is not None:
+                gm = None
+                for g in self._HL_GRADE.finditer(line, start, body_end):
+                    if g.start() > start and abs(g.end() - grade_end) <= 1 \
+                            and (gm is None or g.end() == grade_end):
+                        gm = g
+                if gm is None:
+                    # hand-edited rows and mis-encoded names shift the
+                    # columns ("Ethan Roach   *       FR Old Town"): accept a
+                    # grade anywhere once it stands apart from the name
+                    for g in self._HL_GRADE.finditer(line, start, body_end):
+                        if g.start() > start and g.group(1) != '--' \
+                                and line[g.start() - 2:g.start()] == '  ':
+                            gm = g
+                            break
+                if gm is None:
+                    # a long name squeezes the gap to one space: "Donahue
+                    # Hanscom, Mike SO MTA" - the grade follows "Last, First"
+                    mc = re.compile(r'[^,]*,\s*\S+(?: \S+)?? ((?:FR|SO|JR|SR|[5-9]|1[0-2]))(?= +[A-Za-z])')
+                    mm = mc.match(line, start)
+                    if mm and mm.end(1) < body_end:
+                        gm = re.compile(r'\S+').search(line, mm.start(1))
+                if gm:
+                    name, grade = line[start:gm.start()], gm.group(1) if gm.re is self._HL_GRADE else gm.group(0)
+                    school = line[gm.end():body_end]
+                else:
+                    # blank or garbled ("S0") grade cell: the grade field is
+                    # the 2 columns ending at grade_end
+                    cut = grade_end - 2
+                    name, school = line[start:cut], line[grade_end:body_end]
+                    if line[grade_end:grade_end + 1].strip():
+                        school = line[cut:body_end]  # school starts in the cell
+                    gap = re.search(r'\S\s{2,}(?=\S)', line[start:body_end])
+                    if line[cut - 1:cut].strip() or (
+                            gap and start + gap.end() < cut - 1 and line[cut - 1:cut + 1].strip()):
+                        # the name ran past the field, or a drifted PDF row
+                        # starts its school left of the grade cell ("chicoine,
+                        # alex    Elhs Boys X-Country"): names never hold a
+                        # double space, so the first one ends the name
+                        parts = re.split(r'\s{2,}', line[start:body_end].strip(), 1)
+                        if len(parts) != 2:
+                            continue
+                        name, school = parts
+            elif school_col is not None and school_col < body_end \
+                    and not line[school_col - 1:school_col].strip():
+                name, school = line[start:school_col], line[school_col:body_end]
+                inner = re.search(r'\S(\s{2,})\S', name.strip())
+                if inner:  # drifted row: the school began before the column
+                    body = line[start:body_end].strip()
+                    name, school = re.split(r'\s{2,}', body, 1)
+            else:
+                parts = re.split(r'\s{2,}', line[start:body_end].strip(), 1)
+                if len(parts) != 2:
+                    # "Donahue Hanscom, Mike SO MTA": single spaces only
+                    body = line[start:body_end].strip()
+                    mm = re.match(r'([^,]*,\s*\S+(?: \S+)??) (FR|SO|JR|SR|[5-9]|1[0-2]) +([A-Za-z].*)$',
+                                  body) or re.match(  # "Nicholas Dieffenbacher-Krall FR Old Town"
+                        r'([A-Z][\w\'.-]*(?: [A-Z][\w\'.-]*)+?) (FR|SO|JR|SR) +([A-Za-z].*)$', body)
+                    if not mm:
+                        continue
+                    parts = [mm.group(1), mm.group(3)]
+                    grade = mm.group(2)
+                name, school = parts
+            # stray annotation marks ("Ethan Roach   *")
+            name = re.sub(r'(?:\s+[*#]+)+$', '', name.strip())
+            name = re.sub(r'^#\d+\s+', '', name)  # bib: "#379 Martin, Josiah"
+            # PDF text drifts cells off the voted grade column: a grade
+            # left on either side of the split ("Merrill, Kristen   SO" |
+            # "SR Mt. Ararat High School")
+            school = school.strip()
+            if not grade:
+                # (an age column - 16, 17 - is cut off the same way; it
+                # normalises to no grade)
+                mg = re.match(r'(FR|SO|JR|SR|\d{1,2}(?:st|nd|rd|th|t)?)\s+(?=[A-Za-z])', school)
+                if mg:
+                    grade, school = mg.group(1), school[mg.end():]
+                else:
+                    mg = re.search(r'\s{2,}(FR|SO|JR|SR|\d{1,2})$', name)
+                    if mg:
+                        grade, name = mg.group(1), name[:mg.start()]
+            name = re.sub(r'\s*-\s*(?:\d|V|JV)$', '', name)  # "Mayer, Lucas - 5"
+            school = re.sub(r'^(?:[*#]+\s+)+', '', school.strip())
+            if not name or not school or not re.search(r'[A-Za-z]', school):
+                continue
+            entry = {
+                "athlete": name,
+                "school": school,
+                "result": fin[0],
+                "grade": normalize_grade(grade),
+                "type": "Finals",
+            }
+            if fin[1]:
+                entry["exhibition"] = True
+            if fin[2] is not None:
+                entry["place"] = fin[2]
+            if fin[3] is not None and xc_event:
+                entry["team_place"] = fin[3]
+            if ev.get("is_ms") and not entry["grade"]:
+                entry["grade"] = "MS"
+            results.append(entry)
+        return results
+
+    _UNTIMED = re.compile(r'^\s*(\d{1,4})\s+(\S.*?\S)\s{2,}(\S.*?)(?:\s{2,}(\d{1,3}))?\s*$')
+
+    def _untimed_rows(self, ev):
+        """A cross-country race posted with places and team points but no
+        times ("  2 Mann, Blake   York Middle School   1"): the finish order
+        is the result. Rows keep an empty mark (nothing to store as a
+        performance) but their place and team place, so the team scores
+        still check. Only when nearly every numbered row is untimed."""
+        if not _is_xc_event(ev.get('original_event_name') or ev.get('event_name') or ''):
+            return []
+        lines = ev['lines']
+        cut = next((i for i, l in enumerate(lines) if re.search(r'team\s+scores?', l, re.I)), len(lines))
+        numbered = [l for l in lines[:cut] if re.match(r'^\s*\d{1,4}\s+[A-Za-z]', l)]
+        if len(numbered) < 5 or any(self._HL_TIME.search(l) for l in numbered):
+            return []
+        out = []
+        for l in numbered:
+            m = self._UNTIMED.match(l)
+            if not m:
+                continue
+            school = re.sub(r'^(?:J?V)\s+', '', m.group(3).strip())  # "V   FR Cony"
+            grade = ''
+            mg = re.match(r'(FR|SO|JR|SR|\d{1,2})\s+(?=[A-Za-z])', school)
+            if mg:
+                grade, school = mg.group(1), school[mg.end():]
+            if re.search(r'\d', re.sub(r"\s(?:(?:19|20)\d\d|'\d{1,2})$", '', school)):
+                continue        # (a club name may end in its year: "Brunswick CC 2011")
+            name = re.sub(r'\s*-\s*(?:\d|V|JV)$|\s+J?V$', '', m.group(2).strip())
+            r = {'athlete': name, 'school': school, 'result': '',
+                 'grade': normalize_grade(grade), 'type': 'Finals', 'place': int(m.group(1))}
+            if m.group(4):
+                r['team_place'] = int(m.group(4))
+            out.append(r)
+        if len(out) < 0.9 * len(numbered):
+            return []
+        return out
+
     def parse_event_block(self, ev):
         lines = ev["lines"]
         is_relay = ev["is_relay"]
@@ -612,6 +1120,8 @@ class Sub5ColumnParser:
                     name_idx = line.find("Name")
                     school_idx = line.find("School") if "School" in line else line.find("Team")
                     yr_idx = line.find("Yr") if "Yr" in line else line.find("Year")
+                    if yr_idx == -1 and re.search(r'\bAge\b', line):
+                        yr_idx = re.search(r'\bAge\b', line).start()  # "W17" / "M40"
                     header_row_idx = i
             else:
                 if ("School" in line or "Team" in line) and ("Finals" in line or "Prelims" in line or "Seed" in line):
@@ -628,6 +1138,10 @@ class Sub5ColumnParser:
                 elif "Seed" in line:
                     anchor_col = line.find("Seed") + len("Seed")
                     anchor_type = "Seed"
+                elif re.search(r'\bTime\b', line):
+                    # bib-first exports: "Comp#  Name  School  Time Points"
+                    anchor_col = re.search(r'\bTime\b', line).end()
+                    anchor_type = "Finals"
                 
                 # Check for columns to the right of the result to establish a boundary
                 # "Wind" appears immediately after the mark in HY-TEK wind-legal meets;
@@ -643,10 +1157,34 @@ class Sub5ColumnParser:
                 break
                 
         if header_row_idx == -1:
+            # Hy-Tek .txt exports (most XC championships on sub5) print no
+            # "Name Year School" ruler at all; read the columns off the rows
+            # (a block with a "School ... Finals" ruler is a team event, e.g.
+            # a medley relay not named "Relay": not header-less)
+            if not is_relay and not any(
+                    re.search(r'\b(School|Team)\b.*\b(Finals|Prelims|Seed|Time)\b', l)
+                    for l in lines):
+                return self.parse_headerless_block(ev)
             return []
-            
+
+        # XC exports with a per-mile pace column ("Avg Mile  Finals"): in
+        # PDF text the cells drift off the header positions and the anchor
+        # lands on the pace. The finish is always the last time on the row.
+        # Bib-first exports ("Comp#  Name  School  Time Points") drift off
+        # the header positions in PDF text the same way.
+        hdr = lines[header_row_idx]
+        bib_first = bool(re.search(r'Comp\s*#|\bBib\b', hdr, re.I))
+        if not is_relay and (bib_first or re.search(
+                r'Avg\.?\s*Mile|\bPace\b|Per\s*Mile|Min/Mi', hdr, re.I)):
+            rows = self.parse_headerless_block(
+                dict(ev, lines=lines[header_row_idx + 1:], bib_first=bib_first,
+                     heat_col=bool(re.search(r'H#', hdr))))
+            if rows:
+                return rows
+
         events = [] # Renamed from event_results
         current_relay = None
+        xc_event = _is_xc_event(ev.get('original_event_name') or ev.get('event_name') or '')
         start_idx = header_row_idx + 1
         if start_idx < len(lines) and "====" in lines[start_idx]:
             start_idx += 1
@@ -770,7 +1308,7 @@ class Sub5ColumnParser:
                                 return False
 
                             res_idx = -1
-                            for k in range(len(parts)-1, 1, -1):
+                            for k in range(len(parts)-1, 0, -1):
                                 p = parts[k]
                                 is_mark_like = ((re.search(r'\d', p) and ('.' in p or ':' in p or '-' in p))
                                                 or p.upper() in ["DQ", "NH", "NM", "DNS", "DNF", "FOUL", "SCR"])
@@ -785,12 +1323,24 @@ class Sub5ColumnParser:
                                 res_val = parts[res_idx]
                                 # School/Name boundary depends on where the res_val is in the original line
                                 res_pos = line.find(res_val, name_idx + 1)
+                                res_end = res_pos + len(res_val) if res_pos >= 0 else -1
                                 
                                 # Use anchor_col and school_idx to try to split Name/School
                                 grade_val = ""
+                                row_school_idx = school_idx
                                 if yr_idx != -1 and yr_idx > name_idx and yr_idx < school_idx:
                                     name_val = line[name_idx:yr_idx].strip()
                                     grade_val = line[yr_idx:school_idx].strip()
+                                    # a name longer than its field pushes the
+                                    # year and school right ("Nicholas
+                                    # Dieffenbacher-Krall FR Old Town")
+                                    if yr_idx > 0 and line[yr_idx - 1:yr_idx + 1].strip() == line[yr_idx - 1:yr_idx + 1] \
+                                            and line[yr_idx - 1].isalpha():
+                                        mo = re.match(r'\s*(\S.*?\S)\s+(FR|SO|JR|SR|\d{1,2})\s+(?=[A-Za-z])',
+                                                      line[name_idx:res_pos])
+                                        if mo:
+                                            name_val, grade_val = mo.group(1), mo.group(2)
+                                            row_school_idx = name_idx + mo.end() + 5
                                 else:
                                     name_val = line[name_idx:school_idx].strip()
 
@@ -804,11 +1354,21 @@ class Sub5ColumnParser:
                                     continue
                                 
                                 # SKIP: If name_val looks like a mark (digits + separators)
-                                if re.search(r'\d', name_val) and any(c in name_val for c in '.:-\''):
+                                # ("Verhey, Jake-1": a runner-order tag is not a mark)
+                                if re.search(r'\d', name_val) and (
+                                        not re.search(r'[A-Za-z]{2}', name_val)
+                                        or re.search(r'\d[:.]\d', name_val)):
                                     continue
+                                # team-order / varsity tags on the name:
+                                # "Verhey, Jake-1", "Deveau, Adam - V"
+                                name_val = re.sub(r'\s*-\s*(?:\d|V|JV)$', '', name_val)
                                 
                                 # Extract school
-                                area_start = max(0, school_idx - 5)
+                                area_start = max(0, row_school_idx - 5)
+                                # (not inside a name filling its field:
+                                # "Elizavyetta Bachkousk    Tripp Middle School")
+                                while 0 < area_start < row_school_idx and line[area_start - 1:area_start + 1].isalpha():
+                                    area_start += 1
                                 school_area = line[area_start:res_pos]
                                 m_school = re.search(r'\S', school_area)
                                 if m_school:
@@ -818,6 +1378,11 @@ class Sub5ColumnParser:
                                     school_val = re.sub(r'^\d+\s+', '', school_raw).strip()
                                     # Take only the first part if it splits by large gaps
                                     school_val = re.split(r'\s{2,}', school_val)[0].strip()
+                                    # later PDF pages drift right: the year
+                                    # cell lands at the start of the school
+                                    mg = re.match(r'(FR|SO|JR|SR|\d{1,2})\s+(?=[A-Za-z])', school_val)
+                                    if mg and not grade_val:
+                                        grade_val, school_val = mg.group(1), school_val[mg.end():]
                                 else:
                                     school_val = "Unknown"
 
@@ -851,9 +1416,25 @@ class Sub5ColumnParser:
                                     "grade": normalize_grade(grade_val),
                                     "type": anchor_type
                                 }
+                                # open / alumni races print sex+age: "W17"
+                                msx = re.fullmatch(r'([MWFB])(\d{1,2})?', grade_val)
+                                if msx:
+                                    entry["sex"] = 'Girls' if msx.group(1) in 'WF' else 'Boys'
+                                    # "W7": sex and grade in one cell (an age
+                                    # past 12 normalises to no grade)
+                                    entry["grade"] = normalize_grade(msx.group(2) or '')
                                 if is_exhibition:
                                     entry["exhibition"] = True
-                                if ev.get("is_ms"):
+                                mpl = re.match(r'\s*\*?(\d{1,4})\s', line)
+                                if mpl:
+                                    entry["place"] = int(mpl.group(1))
+                                if xc_event and res_end > 0:
+                                    tp = re.match(r'\s+(\d{1,3})(?=\s|$)', line[res_end:])
+                                    if tp and 'H#' in lines[header_row_idx]:
+                                        tp = re.match(r'\s+(\d{1,3})(?=\s|$)', line[res_end + tp.end():])
+                                    if tp:
+                                        entry["team_place"] = int(tp.group(1))
+                                if ev.get("is_ms") and not entry["grade"]:
                                     entry["grade"] = "MS"
                                 
                                 if warnings: entry["warnings"] = warnings
@@ -952,7 +1533,38 @@ class Sub5ColumnParser:
                                     
                                 if warnings: current_relay["warnings"] = warnings
                                 events.append(current_relay)
-                            
+
+        # Cross-country PDFs shift their columns from page to page (page 2
+        # rows start at column 0 and run ~10 characters wider), so the
+        # page-1 ruler cuts later pages' times off (or just their
+        # hundredths and team points). The header-less reading
+        # (finish = last time on the row) is position-free: take it when it
+        # finds rows the ruler lost and agrees on the rows both found.
+        if not is_relay and not events:
+            untimed = self._untimed_rows(dict(ev, lines=lines[header_row_idx + 1:]))
+            if untimed:
+                return untimed
+        if not is_relay and xc_event and len(events) >= 5:
+            alt = self.parse_headerless_block(dict(ev, lines=lines[header_row_idx + 1:],
+                                                   heat_col='H#' in lines[header_row_idx]))
+            # marks the ruler sliced short ("22:45.6" of "22:45.63")
+            hdr = {e['athlete'].split(',')[0]: e.get('result', '') for e in events}
+            sliced = sum(1 for a in alt if hdr.get(a['athlete'].split(',')[0], a['result']) != a['result']
+                         and a['result'].startswith(hdr.get(a['athlete'].split(',')[0], '')))
+            cut = sum(1 for e in events if re.fullmatch(r'\d+:\d\d', e.get('result', '')))
+            alt_cut = sum(1 for e in alt if re.fullmatch(r'\d+:\d\d', e.get('result', '')))
+            if alt_cut < cut:
+                sliced = max(sliced, 1)
+            if len(alt) > len(events) or (len(alt) == len(events) and sliced):
+                names = {e['athlete'].split(',')[0] for e in events}
+                pairs = {(e['athlete'], e['school']) for e in events}
+                # marks the ruler sliced mid-token ("21:0", "22:")
+                broken = sum(1 for e in events
+                             if not re.fullmatch(r'\d+:\d\d(?:\.\d+)?|DNF|DNS|DQ|SCR', e.get('result', '')))
+                agree_names = sum(1 for a in alt if a['athlete'].split(',')[0] in names) >= 0.9 * len(events)
+                agree_pairs = sum(1 for a in alt if (a['athlete'], a['school']) in pairs) >= 0.9 * len(events)
+                if agree_pairs or ((broken or sliced) and agree_names):
+                    return alt
         return events
 
 if __name__ == "__main__":

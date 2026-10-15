@@ -766,7 +766,63 @@ def _fuzzy_team_match(abbrev, full_candidates):
     return abbrev
 
 
-def _score_meet_from_parsed(parsed_data, ind_table=None, relay_table=None):
+def _assign_by_points(raw_scores, official_teams):
+    """Match a block's scored schools to the official teams when the names
+    do not resolve (nicknames like "Eddies" for Edward Little, relay names
+    vs individual codes). Names first; then an unresolved school (or a pair
+    of them) is given to the one team whose remaining deficit its points
+    fill exactly. Returns (largest per-team deficit, aliases {raw: official});
+    the deficit is inf when some school's points could not be credited.
+
+    A meet that only verifies this way still proves the parse: every point
+    the file awards is accounted for, team by team."""
+    raw = {k: v for k, v in raw_scores.items() if v > 0}
+    teams = [t['team'] for t in official_teams]
+    deficit = {t['team']: float(t['score']) for t in official_teams}
+    keys = {t: _compare_key(_normalize_school(t)) for t in teams}
+    keys_raw = {t: _compare_key(t) for t in teams}
+    aliases = {}
+    for r in list(raw):
+        kr = {_compare_key(r), _compare_key(_normalize_school(r))} - {''}
+        hits = [t for t in teams if keys[t] in kr or keys_raw[t] in kr]
+        if not hits:
+            hits = [t for t in teams for k in kr
+                    if len(k) >= 4 and len(keys_raw[t]) >= 4
+                    and (keys_raw[t].startswith(k) or k.startswith(keys_raw[t]))]
+        if len(set(hits)) == 1:
+            aliases[r] = hits[0]
+            deficit[hits[0]] -= raw.pop(r)
+    changed = True
+    while changed and raw:
+        changed = False
+        for r in list(raw):
+            fit = [t for t in teams if abs(deficit[t] - raw[r]) <= 0.01]
+            if len(fit) == 1:
+                aliases[r] = fit[0]
+                deficit[fit[0]] -= raw.pop(r)
+                changed = True
+        if changed or len(raw) < 2:
+            continue
+        rs = list(raw)
+        for i in range(len(rs)):
+            for j in range(i + 1, len(rs)):
+                pts = raw[rs[i]] + raw[rs[j]]
+                fit = [t for t in teams if abs(deficit[t] - pts) <= 0.01]
+                if len(fit) == 1:
+                    for r in (rs[i], rs[j]):
+                        aliases[r] = fit[0]
+                        deficit[fit[0]] -= raw.pop(r)
+                    changed = True
+                    break
+            if changed:
+                break
+    if raw:  # points nobody could be credited with
+        return float('inf'), aliases
+    return max([abs(d) for d in deficit.values()] or [0.0]), aliases
+
+
+def _score_meet_from_parsed(parsed_data, ind_table=None, relay_table=None, normalize=True,
+                            split_divisions=False):
     """Score a meet from its parsed event results.
 
     Uses the specified individual and relay scoring tables (defaulting to standard 10-8-6-4-2-1).
@@ -791,12 +847,17 @@ def _score_meet_from_parsed(parsed_data, ind_table=None, relay_table=None):
     # Group blocks by (gender, event): meets with Prelims AND Finals sections
     # produce two blocks for the same event, and scoring both double-counts.
     # Use only Finals-type results when any exist for the event.
+    # split_divisions: Jr/Sr (or Small/Large school) divisions print as
+    # repeated all-Finals blocks of one event and each scores on its own.
     grouped = {}
-    for ev_block in events:
+    for i, ev_block in enumerate(events):
         key = (ev_block.get('gender', ''), ev_block.get('event', ''), ev_block.get('is_relay', False))
+        if split_divisions and key in grouped and all(
+                r.get('type') == 'Finals' for r in ev_block.get('results', [])):
+            key = key + (i,)
         grouped.setdefault(key, []).extend(ev_block.get('results', []))
 
-    for (gender, event_name, is_relay), results in grouped.items():
+    for (gender, event_name, is_relay, *_div), results in grouped.items():
         # Seed-type rows are entry lists, exhibition entries never score
         results = [r for r in results
                    if r.get('type') != 'Seed' and not r.get('exhibition')]
@@ -818,7 +879,7 @@ def _score_meet_from_parsed(parsed_data, ind_table=None, relay_table=None):
             val, _ = parse_mark_value(mark_str, event_name)
             if val is None:
                 continue
-            school = _normalize_school(school_raw)
+            school = _normalize_school(school_raw) if normalize else school_raw.strip()
             marks.append((val, school))
 
         if not marks:
@@ -861,6 +922,566 @@ def _score_meet_from_parsed(parsed_data, ind_table=None, relay_table=None):
     return scores
 
 
+# ---------------------------------------------------------------------------
+# 11b. Cross-country team-score verification
+# ---------------------------------------------------------------------------
+
+def _xc_team_places(results, cap=7, min_team=5, shared_ties=False):
+    """Re-derive Hy-Tek XC team scoring from a race's finish order.
+
+    Teams with >= `min_team` finishers score; their runners take TEAM places
+    in finish order (everyone else is skipped), the top 5 count and runners
+    6-`cap` displace. Meet Manager options vary by meet (some place every
+    team's runners, some score plain overall places, some let all runners
+    displace), so callers try several. Keyed by the raw school string, which is constant
+    within one race. With `shared_ties`, scorers printed with the same
+    place (a judged tie) share one team place and the next scorer skips
+    ahead (XCRun scores ties that way), and plain overall scoring
+    (min_team <= 0) uses the printed places, so a runner removed from the
+    list leaves its gap. Returns {school: [team places...]}."""
+    rows, tie_key = [], []
+    for r in results:
+        if r.get('exhibition') or r.get('type') == 'Seed':
+            continue
+        school = (r.get('team_entry') or r.get('school') or '').strip()
+        mark = r.get('result', '')
+        if not school or str(mark).upper() in BAD_MARKS:
+            continue
+        if not mark:
+            # an untimed race (places and team points only): the printed
+            # place orders it
+            if r.get('place') is None:
+                continue
+        else:
+            v, _ = parse_mark_value(mark, '')
+            if v is None:
+                continue
+        rows.append(school)
+        tie_key.append(r.get('place'))
+    counts = defaultdict(int)
+    for s in rows:
+        counts[s] += 1
+    if min_team <= 0:  # plain overall places: every finisher counts
+        scoring = set(counts)
+    else:
+        scoring = {s for s, n in counts.items()
+                   if n >= min_team and s.lower() not in ('unattached', 'unknown')}
+    places = defaultdict(list)
+    p = 0
+    last_key, last_p = None, None
+    for s, k in zip(rows, tie_key):
+        if s not in scoring or len(places[s]) >= cap:
+            continue
+        p += 1
+        if min_team <= 0 and shared_ties and k is not None:
+            # plain overall places as printed: a removed runner leaves a gap
+            places[s].append(k)
+            continue
+        if shared_ties and k is not None and k == last_key:
+            places[s].append(last_p)
+            continue
+        last_key, last_p = k, p
+        places[s].append(p)
+    return places
+
+
+def _xc_merge_truncations(results):
+    """One team printed two ways in a race ("HALL-DALE HIGH SCHOO" and
+    "HALL-DALE HIGH": a registration name and a cell truncation) is still
+    one team. Returns the rows with each school string that extends a
+    shorter one (8+ characters) renamed to it, or None when there is none."""
+    names = sorted({(r.get('school') or '').strip() for r in results}, key=len)
+    alias = {}
+    for i, a in enumerate(names):
+        for b in names[:i]:
+            if len(b) >= 8 and a.lower().startswith(b.lower()) and a != b:
+                alias[a] = alias.get(b, b)
+                break
+    if not alias:
+        return None
+    return [dict(r, school=alias.get((r.get('school') or '').strip(), r.get('school')))
+            for r in results]
+
+
+def _xc_merge_codes(results):
+    """A hand-typed list coding one school two ways, one code the start of
+    the other ("El" / "Ell" for Ellsworth, "Win" / "Wins" for Winslow): the
+    rows with the shorter code renamed to the longer one, or None when there
+    is none."""
+    from collections import Counter
+    cnt = Counter((r.get('school') or '').strip() for r in results)
+    codes = [c for c in cnt if 2 <= len(c) <= 5 and c.isalpha()]
+    alias = {}
+    # ("lew" / "Lew": one code typed in two cases)
+    for a in codes:
+        same = [b for b in codes if b.lower() == a.lower()]
+        top = max(same, key=lambda b: cnt[b])
+        if a != top:
+            alias[a] = top
+    for a in codes:
+        longer = {alias.get(b, b) for b in codes if len(b) > len(a) and b.lower().startswith(a.lower())}
+        if len(longer) == 1:
+            alias[a] = longer.pop()
+    # ("Houtlon / GHCA" once among "Houlton / GHCA" rows: a typo of a long name)
+    import difflib
+    names = [c for c in cnt if len(c) >= 7]
+    # ("GCHA" once among "GHCA" rows: two letters swapped in a code)
+    for a in codes:
+        if cnt[a] == 1 and a not in alias:
+            near = [b for b in codes if b != a and cnt[b] >= 3 and len(b) == len(a) and len(a) >= 3
+                    and sorted(a.lower()) == sorted(b.lower())
+                    and sum(1 for x, y in zip(a.lower(), b.lower()) if x != y) == 2]
+            if len(near) == 1:
+                alias[a] = near[0]
+    for a in names:
+        if cnt[a] != 1:
+            continue
+        near = [b for b in names if b != a and cnt[b] >= 3 and
+                difflib.SequenceMatcher(None, a.lower(), b.lower()).ratio() >= 0.85 and
+                sorted(a.lower()) == sorted(b.lower())]
+        if len(near) == 1:
+            alias[a] = near[0]
+    if not alias:
+        return None
+    return [dict(r, school=alias.get((r.get('school') or '').strip(), r.get('school')))
+            for r in results]
+
+
+def _xc_tie_orders(results):
+    """The finish order, plus re-orderings of printed ties. Hy-Tek prints
+    a judged tie as two rows with the same place ("32 McCarthy ... 22:40.50
+    33" / "32 Porter ... 22:40.50  32"); which of the two takes the lower
+    team place is its own call, recorded only in the team-points column.
+    Yields the order as printed, the tie groups sorted by printed team
+    place, and the tie groups reversed."""
+    yield results
+    # a hand-timed list printed out of time order ("20:35, 20:56, 20:28"):
+    # the meet scored its runners in time order
+    def _t(r):
+        m = re.match(r'^(?:(\d+):)?(\d{1,2}):(\d{2}(?:\.\d+)?)$', str(r.get('result') or '').strip())
+        return (int(m.group(1) or 0) * 3600 + int(m.group(2)) * 60 + float(m.group(3))) if m else None
+    ts = [_t(r) for r in results]
+    if len(results) >= 5 and all(t is not None for t in ts) and \
+            any(b < a - 0.5 for a, b in zip(ts, ts[1:])):
+        yield [r for _t0, _k, r in sorted((t, k, r) for k, (t, r) in enumerate(zip(ts, results)))]
+    groups, i = [], 0
+    while i < len(results):
+        j = i
+        p = results[i].get('place')
+        while p is not None and j + 1 < len(results) and results[j + 1].get('place') == p:
+            j += 1
+        if j > i:
+            groups.append((i, j + 1))
+        i = j + 1
+    if not groups:
+        return
+    by_tp, rev = list(results), list(results)
+    for a, b in groups:
+        by_tp[a:b] = sorted(results[a:b], key=lambda r: (r.get('team_place') is None,
+                                                         r.get('team_place') or 0))
+        rev[a:b] = results[a:b][::-1]
+    yield by_tp
+    yield rev
+
+
+# squad designator ending an official team name: "MT. ARARAT HIGH SCHOOL B"
+_AB_TEAM = re.compile(r"\s['\"]?[A-D]['\"]?$")
+
+
+def _xc_printed_places_ok(official, results):
+    """A/B squads ("MT. ARARAT HIGH SCHOOL A" / "... B"): which of a
+    school's runners were entered on which squad is not in the results, so
+    the squads' places cannot be re-derived from finish order. The rows'
+    printed team-score places can still be checked: in finish order they
+    must run 1, 2, 3, ... with no gap (no scoring runner lost or
+    misordered) and every official squad's places must be printed places
+    of runners of one school, no place used twice."""
+    if not any(_AB_TEAM.search(t.get('team', '')) for t in official):
+        return False
+    printed = [(r.get('team_place'), (r.get('school') or '').strip()) for r in results
+               if r.get('team_place') is not None and not r.get('exhibition')]
+    if len(printed) < 5 or [tp for tp, _ in printed] != list(range(1, len(printed) + 1)):
+        return False
+    school_of = {tp: sch for tp, sch in printed}
+    used = set()
+    for t in official:
+        schools = {school_of.get(p) for p in t['places']}
+        if None in schools or len(schools) != 1 or used & set(t['places']):
+            return False
+        used |= set(t['places'])
+    return True
+
+
+# file context for the catalog-resolved variant (set by xc_verify_file)
+_XC_CTX = {}
+
+
+def _catalog_rows(rows, gender=None):
+    """Rows with each school replaced by its catalog scoring unit, when the
+    catalog resolves it ("SCK" / "SNK" / "Schenck" -> one team)."""
+    if not _XC_CTX.get('year'):
+        return None
+    try:
+        from backend import school_catalog as sc
+    except Exception:
+        return None
+    out, hit = [], 0
+    cache = {}
+    for r in rows:
+        raw = r.get('school') or ''
+        if raw not in cache:
+            try:
+                sid = sc.resolve(raw, year=_XC_CTX['year'], season='XC', gender=gender,
+                                 meet_name=_XC_CTX.get('meet'))
+                cache[raw] = sc.team_unit(sid, _XC_CTX['year'], 'XC', gender) if sid else None
+            except Exception:
+                cache[raw] = None
+        u = cache[raw]
+        hit += bool(u)
+        out.append(dict(r, school='cat:' + str(u)) if u else r)
+    return out if hit >= 0.5 * len(rows) else None
+
+
+def _xc_listed_teams_rows(block, results):
+    """The rows of the teams the score table lists (by name, code or
+    initials), when that leaves out a team of five or more finishers; else
+    None."""
+    fold = lambda x: re.sub(r'[^a-z]', '', (x or '').lower())
+    names = [t.get('team') for t in block.get('teams', []) if t.get('team')]
+    if len(names) < 2:
+        return None
+    keys = []
+    for n in names:
+        ini = ''.join(w[0] for w in re.findall(r'[A-Za-z]+', n)).lower()
+        keys.append((fold(n), ini))
+
+    def listed(school):
+        f = fold(school)
+        if not f:
+            return False
+        for fn, ini in keys:
+            if f == fn or f == ini or (len(f) >= 3 and fn.startswith(f)) or (len(fn) >= 4 and f.startswith(fn[:4])):
+                return True
+        return False
+    from collections import Counter
+    cnt = Counter((r.get('school') or '').strip() for r in results)
+    gone = [sc for sc, n in cnt.items() if n >= 5 and not listed(sc)]
+    if not gone:
+        return None
+    kept = [r for r in results if listed(r.get('school'))]
+    return kept if len({(r.get('school') or '').strip() for r in kept}) >= len(names) else None
+
+
+def _xc_verify_totals(block, results):
+    """A block printing only each team's total ("Yarmouth 26"): name-free,
+    every official total must be some computed team's total under one
+    scoring rule (displacer cap, which teams place, 4 or 5 scorers)."""
+    off = sorted(t['score'] for t in block.get('teams', []) if t.get('score') is not None)
+    if not off:
+        return None
+    best = None
+    # (4 scorers: small fields - "Team scores based on 4 scoring runners":
+    # fewer teams field five than the table scores)
+    from collections import Counter
+    fives = sum(1 for _s, c in Counter((r.get('school') or '').strip() for r in results).items() if _s and c >= 5)
+    scorers = (5, 4) if min(off) < 15 or fives < len(off) else (5,)
+    # hand-typed sheets spell one school two ways ("SP" / "Sp", "Lee Ac." /
+    # "Lee Academy"): also score with the school folded
+    def _fold(rows):
+        out = []
+        for r in rows:
+            sc = re.sub(r'[^a-z]', '', (r.get('school') or '').lower())
+            out.append(dict(r, school=sc[:4] if sc else r.get('school')))
+        return out
+    n_rows = len(results)
+    orders = list(_xc_tie_orders(results))
+    # (rows without a printed team-points cell take no team place: the
+    # same variant the place-list check uses)
+    if sum(1 for r in results if r.get('team_place') is not None) >= 5:
+        orders += [[r for r in o if r.get('team_place') is not None] for o in orders]
+    mc = _xc_merge_codes(results)
+    if mc is not None:
+        orders.append(mc)
+    orders += [_fold(o) for o in orders]
+    cat = _catalog_rows(results, block.get('gender'))
+    if cat:
+        orders.append(cat)
+    only = _xc_listed_teams_rows(block, results)
+    if only is not None:
+        # (only the table's teams place: "Schenck ... NOT fielding full
+        # teams" though five Schenck runners finished)
+        orders.append(only)
+    for order in orders:
+        for k in scorers:
+            for cap in (7, 5, 8, 9, 10, 10 ** 6):
+                # (teams of 4+ placing: a meet whose 4-runner team scores
+                # with a filler)
+                for min_team in (k, 4, 3, 1, 0):
+                    comp = _xc_team_places(order, cap, min_team)
+                    tot = sorted(sum(v[:k]) for v in comp.values() if len(v) >= k)
+                    pool = list(tot)
+                    # a short team scored with filler places for its missing
+                    # runners: consecutive from the next team place or from
+                    # the field size + 1 ("Lawrence 108" = 9+11+19 + 34+35)
+                    last = max((max(v) for v in comp.values() if v), default=0)
+                    short = []
+                    shorts = [v for v in comp.values() if 0 < len(v) < k and min_team < k and len(v) >= min_team]
+                    # (several short teams can take the fillers in turn:
+                    # Carrabec + 42, Madison + 43)
+                    starts = set(range(last + 1, last + 2 + len(shorts))) | {n_rows + 1}
+                    for v in shorts:
+                        gap = k - len(v)
+                        short.append({sum(v) + sum(range(f, f + gap)) for f in starts}
+                                     | {sum(v) + f * gap for f in starts})
+                    miss = 0
+                    for x in off:
+                        if x in pool:
+                            pool.remove(x)
+                        elif any(x in c for c in short):
+                            short.remove(next(c for c in short if x in c))
+                        else:
+                            miss += 1
+                    if best is None or miss < best[0]:
+                        best = (miss, tot)
+                    if not miss:
+                        break
+    miss, tot = best
+    n = min(len(tot), len(off))
+    return {'status': 'verified' if not miss else 'mismatch', 'teams_off': miss,
+            'max_delta': max([abs(a - b) for a, b in zip(tot[:n], off[:n])] or [0]),
+            'official_teams': len(off), 'computed_teams': len(tot), 'method': 'team_totals'}
+
+
+def _xc_verify_block(block, results):
+    """Compare one official Team Scores block against the parsed race.
+    Name-free: each official team's places list must equal some computed
+    team's list, so naming differences between the individual rows and the
+    score block cannot cause false mismatches."""
+    if block.get('totals_only'):
+        return _xc_verify_totals(block, results)
+    official = [t for t in block.get('teams', []) if t.get('places')]
+    if not official:
+        return None
+    shown = max(5, max(len(t['places']) for t in official))
+    # Meets differ on whether runners past the displayed scorers still take
+    # team places (displace) and whether incomplete teams' runners do: try
+    # each rule and keep the best fit.
+    # Some meets score short teams with a filler place for each missing
+    # runner (field size + 1, repeated): only the real places are checkable.
+    n_rows = len(results)
+
+    def _real(places):
+        # sorted: two teammates in a judged tie can be printed 8, 7
+        return tuple(sorted(p for p in places if p <= n_rows))
+
+    best = None
+    # runners per team that take places: 7 is standard; meets set 5-10
+    caps = sorted({shown, 7, 8, 9, 10, 10 ** 6})
+    orders = list(_xc_tie_orders(results))
+    # Hy-Tek entries made as individuals run in their school's colours but
+    # never score: their team-points cell is blank while teammates' are
+    # filled. When the race prints that column, also score only the rows
+    # that carry a team place.
+    if sum(1 for r in results if r.get('team_place') is not None) >= 5:
+        orders += [[r for r in o if r.get('team_place') is not None] for o in orders]
+    merged = _xc_merge_truncations(results)
+    if merged is not None:
+        orders += [merged]
+    mc = _xc_merge_codes(results)
+    if mc is not None:
+        orders += [mc]
+    # a scored runner listed without a team ("19 13 816 UNKNOWN RUNNER"):
+    # the official team whose places hold that team place, by its other rows
+    blank = [r for r in results if r.get('team_place') is not None and not (r.get('school') or '').strip()]
+    if blank:
+        by_tp = {r['team_place']: (r.get('school') or '').strip() for r in results
+                 if r.get('team_place') is not None and (r.get('school') or '').strip()}
+        fill = {}
+        for r in blank:
+            owners = [t for t in official if r['team_place'] in t['places']]
+            if len(owners) == 1:
+                schools = {by_tp.get(pl) for pl in owners[0]['places']} - {None, ''}
+                if len(schools) == 1:
+                    fill[id(r)] = schools.pop()
+        if fill:
+            filled = [dict(r, school=fill[id(r)]) if id(r) in fill else r for r in results]
+            orders += [filled, [r for r in filled if r.get('team_place') is not None]]
+    # one school spelled two ways ("SCK" / "SNK"): the catalog's team
+    cat = _catalog_rows(results, block.get('gender'))
+    if cat:
+        orders += [cat]
+    # (only the table's teams place: a school of 5+ finishers the table
+    # leaves out, or one spelled two ways "Brunswick" / "Brunswick High
+    # School" folded to the table's name)
+    only = _xc_listed_teams_rows(block, cat or results)
+    if only is not None:
+        orders += [only]
+    # a race printed with a class column ("MSB" / "WCH"): a runner entered
+    # in another division runs in the field but scores in that division
+    divs = [r.get('division') for r in results if r.get('division')]
+    if divs and len(set(divs)) > 1:
+        main = max(set(divs), key=divs.count)
+        orders += [[r for r in results if r.get('division') in (main, None)]]
+    for order in orders:
+        tied = any(a.get('place') is not None and a.get('place') == b.get('place')
+                   for a, b in zip(order, order[1:])) or any(
+            a.get('place') is not None and b.get('place') is not None
+            and b['place'] > a['place'] + 1 for a, b in zip(order, order[1:]))
+        for cap, min_team, shared in [(c, m, t) for t in ((False, True) if tied else (False,))
+                                      for m in (5, 4, 3, 1, 0) for c in caps]:
+            computed = _xc_team_places(order, cap, min_team, shared)
+            lists = [tuple(v[:shown]) for v in computed.values() if len(v) >= 5]
+            pool = [tuple(v[:shown]) for v in computed.values()]
+            # a short team's missing scorers are padded with filler places
+            # past the last real one (16, 17 after 15 scorers; or field+1).
+            # Fillers only pad the five scoring slots, never displacers, so
+            # a list with displacers keeps every place.
+            last = max((max(v) for v in computed.values() if v), default=0)
+            n_off = 0
+            for t in official:
+                tp = _real(t['places'])
+                if len(t['places']) <= 5:
+                    pl = list(t['places'])
+                    # a run of one repeated value ends the list: fillers
+                    # ("5 7 14 14 14"), whatever number Hy-Tek chose
+                    while len(pl) >= 2 and pl[-1] == pl[-2]:
+                        v = pl[-1]
+                        while pl and pl[-1] == v:
+                            pl.pop()
+                    tp = tuple(p for p in _real(pl) if p <= last)
+                if t.get('truncated') or 5 <= len(tp) < shown:
+                    # the line lost its last place(s), or the team is printed
+                    # with fewer displacers than it ran (left off the sheet)
+                    tp = next((c for c in pool if c[:len(tp)] == tp), tp)
+                if tp in pool:
+                    pool.remove(tp)
+                else:
+                    n_off += 1
+            if best is None or n_off < best[0]:
+                best = (n_off, lists)
+    off, comp_lists = best
+    by_printed = bool(off) and _xc_printed_places_ok(official, results)
+    if by_printed:
+        off = 0
+    comp_scores = sorted(sum(v[:5]) for v in comp_lists)
+    off_scores = sorted(t['score'] for t in official)
+    n = min(len(comp_scores), len(off_scores))
+    max_delta = max([abs(a - b) for a, b in zip(comp_scores[:n], off_scores[:n])] or [0])
+    if not off:
+        status = 'verified'
+    elif comp_scores[:len(off_scores)] == off_scores:
+        status = 'verified_close'   # same team totals, a displacer differs
+    else:
+        status = 'mismatch'
+    out = {'status': status, 'teams_off': off, 'max_delta': 0.0 if by_printed else max_delta,
+           'official_teams': len(official), 'computed_teams': len(comp_lists)}
+    if by_printed:
+        out['method'] = 'printed_team_places'
+    return out
+
+
+def xc_verify_parsed(parsed):
+    """Verdict for a parsed XC file carrying 'kind': 'xc' team_rankings.
+    Returns None when the file has no XC team scores."""
+    if not isinstance(parsed, dict):
+        return None
+    blocks = [b for b in parsed.get('team_rankings', []) or []
+              if isinstance(b, dict) and b.get('kind') == 'xc']
+    if not blocks:
+        return None
+    events = [e for e in parsed.get('events', [])
+              if isinstance(e, dict) and e.get('results')]
+    if not events and parsed.get('aggregate_events'):
+        # a combined / qualifier re-ranking: its scores against its own list
+        parsed = dict(parsed, events=parsed['aggregate_events'])
+        events = [e for e in parsed['events'] if isinstance(e, dict) and e.get('results')]
+    if not events:
+        return {'status': 'xc_no_results'}
+    # pair blocks with races: by the parser's explicit event_idx when it
+    # recorded one, else by gender in order of appearance
+    verdicts = []
+    all_events = parsed.get('events', [])
+    # a mixed list the parser split by gender ("Mt. Blue HS B" / "... G")
+    # was scored as one race: verify against the halves re-merged by place
+    combined = defaultdict(list)
+    for e in events:
+        if e.get('combined_race') is not None:
+            combined[e['combined_race']].extend(e['results'])
+
+    def _rows(e):
+        cid = e.get('combined_race')
+        if cid is None:
+            return e['results']
+        return sorted(combined[cid], key=lambda r: r.get('place') or 0)
+
+    # a co-ed race the parser split by its sex column: its scores may have
+    # been figured on the whole field (boys in the girls' race take places)
+    mixed = defaultdict(list)
+    for e in events:
+        if e.get('mixed_race') is not None:
+            mixed[e['mixed_race']].extend(e['results'])
+    _rank = {'verified': 0, 'verified_close': 1, 'mismatch': 2}
+
+    def _vb(b, e):
+        cands = [_rows(e)]
+        if e.get('mixed_race') is not None:
+            cands.append(sorted(mixed[e['mixed_race']], key=lambda r: r.get('place') or 0))
+        vs = [v for v in (_xc_verify_block(b, rows) for rows in cands) if v]
+        return min(vs, key=lambda v: (_rank[v['status']], v['teams_off'])) if vs else None
+
+    if all(isinstance(b.get('event_idx'), int) for b in blocks):
+        for b in blocks:
+            i = b['event_idx']
+            if 0 <= i < len(all_events) and all_events[i].get('results'):
+                v = _vb(b, all_events[i])
+                if v:
+                    verdicts.append(v)
+        blocks = []
+    for g in {b.get('gender') for b in blocks}:
+        gb = [b for b in blocks if b.get('gender') == g]
+        ge = [e for e in events if g is None or e.get('gender') == g]
+        if g is None and len({e.get('gender') for e in events}) > 1:
+            # a block that names no gender in a two-race file: each block
+            # is checked against the race it fits (blocks in race order)
+            if len(gb) <= len(events):
+                rank = {'verified': 0, 'verified_close': 1, 'mismatch': 2}
+                for b in gb:
+                    vs = [v for v in (_vb(b, e) for e in events) if v]
+                    if vs:
+                        verdicts.append(min(vs, key=lambda v: (rank[v['status']], v['teams_off'])))
+                continue
+            return {'status': 'xc_unpaired'}
+        if g is not None and not ge:
+            continue        # (that race is posted in its own file)
+        if len(gb) != len(ge):
+            # one race posted per file but its block repeated, or a
+            # combined file: pair each block with every race of the gender
+            # and keep the best fit
+            if len(ge) == 1 or len(gb) == 1:
+                for b in gb:
+                    best = None
+                    for e in ge:
+                        v = _vb(b, e)
+                        if v and (best is None or v['teams_off'] < best['teams_off']):
+                            best = v
+                    if best:
+                        verdicts.append(best)
+                continue
+            return {'status': 'xc_unpaired'}
+        for b, e in zip(gb, ge):
+            v = _vb(b, e)
+            if v:
+                verdicts.append(v)
+    if not verdicts:
+        return {'status': 'xc_unpaired'}
+    rank = {'verified': 0, 'verified_close': 1, 'mismatch': 2}
+    worst = max(verdicts, key=lambda v: rank[v['status']])
+    return {'status': worst['status'], 'races': len(verdicts),
+            'teams_off': sum(v['teams_off'] for v in verdicts),
+            'max_delta': max(v['max_delta'] for v in verdicts),
+            'scoring_system': 'xc'}
+
+
 def check_meet_scoring():
     """Compare our computed scoring against official Team Rankings.
 
@@ -890,6 +1511,12 @@ def check_meet_scoring():
     mismatches = []
     no_ranking_files = 0
     verification = {}  # meet_key -> {status, config, max_delta}
+    by_points = 0
+    xc_counts = {}
+    xc_mismatch = []
+
+    def meet_label_of(y, s_, f):
+        return f'{y}/{s_}/{f}'
 
     # Define candidate scoring configurations to fit
     configs = [
@@ -931,7 +1558,18 @@ def check_meet_scoring():
                     verification[meet_key] = {'status': 'no_rankings'}
                     continue
 
-                rankings = parsed.get('team_rankings', [])
+                # Cross country: official Team Scores re-derived from the
+                # finish order (name-free, see xc_verify_parsed)
+                xc_v = xc_verify_parsed(parsed)
+                if xc_v is not None:
+                    verification[meet_key] = xc_v
+                    xc_counts[xc_v['status']] = xc_counts.get(xc_v['status'], 0) + 1
+                    if xc_v['status'] == 'mismatch':
+                        xc_mismatch.append((meet_label_of(year, season, fn), xc_v))
+                    continue
+
+                rankings = [b for b in parsed.get('team_rankings', []) or []
+                            if b.get('kind') != 'xc']
                 if not rankings:
                     no_ranking_files += 1
                     verification[meet_key] = {'status': 'no_rankings'}
@@ -953,8 +1591,15 @@ def check_meet_scoring():
 
                 # Precompute scores under each configuration
                 computed_by_config = {}
+                # repeated (gender, event) blocks = possible Jr/Sr divisions
+                ev_keys = [(e.get('gender'), e.get('event'), e.get('is_relay', False))
+                           for e in parsed.get('events', []) if isinstance(e, dict)]
+                has_divisions = len(ev_keys) != len(set(ev_keys))
                 for name, ind_t, rel_t in configs:
                     computed_by_config[name] = _score_meet_from_parsed(parsed, ind_t, rel_t)
+                    if has_divisions:
+                        computed_by_config[name + '+divisions'] = _score_meet_from_parsed(
+                            parsed, ind_t, rel_t, split_divisions=True)
 
                 meet_label = f'{year}/{season}/{fn}'
                 meet_ok = True
@@ -994,7 +1639,7 @@ def check_meet_scoring():
                     best_score_diff = float('inf')
                     best_agg, best_names = {}, {}
 
-                    for name, _, _ in configs:
+                    for name in computed_by_config:
                         agg, names = _keyed(computed_by_config[name].get(gender, {}))
                         total_abs_diff = 0.0
                         for entry in official_teams:
@@ -1031,9 +1676,52 @@ def check_meet_scoring():
                                 'scoring_system': best_name
                             })
 
-                if meet_ok:
+                resolved = None
+                if not meet_ok:
+                    # Names did not resolve (or TEAM_MAPPING merged schools):
+                    # account for the points on the raw school strings instead
+                    name_delta = max(abs(m['delta']) for m in mismatches[mm_start:])
+                    for name, ind_t, rel_t, split in [(n, i_, r_, sp) for n, i_, r_ in configs
+                                                       for sp in ((False, True) if has_divisions
+                                                                  else (False,))]:
+                        raw_scores = _score_meet_from_parsed(parsed, ind_t, rel_t,
+                                                             normalize=False,
+                                                             split_divisions=split)
+                        if split:
+                            name = name + '+divisions'
+                        worst, aliases = 0.0, {}
+                        for block in rankings:
+                            d, al = _assign_by_points(
+                                raw_scores.get(block['gender'], {}), block['teams'])
+                            worst = max(worst, d)
+                            aliases.update(al)
+                        if worst < name_delta and (resolved is None or worst < resolved[2]):
+                            resolved = (name, aliases, worst)
+                    if resolved and resolved[2] <= 2.0:
+                        del mismatches[mm_start:]
+                        meet_ok = resolved[2] <= 0.5
+                    else:
+                        resolved = None
+                if resolved and not meet_ok:
+                    by_points += 1
+                    verification[meet_key] = {
+                        'status': 'verified_close', 'teams_off': None,
+                        'max_delta': resolved[2], 'scoring_system': resolved[0],
+                        'resolved_by': 'points',
+                        'aliases': {k: v for k, v in sorted(resolved[1].items())
+                                    if _compare_key(k) != _compare_key(v)},
+                    }
+                elif meet_ok:
                     exact_matches += 1
                     verification[meet_key] = {'status': 'verified'}
+                    if resolved:
+                        verification[meet_key].update({
+                            'resolved_by': 'points',
+                            'scoring_system': resolved[0],
+                            'aliases': {k: v for k, v in sorted(resolved[1].items())
+                                        if _compare_key(k) != _compare_key(v)},
+                        })
+                        by_points += 1
                 else:
                     new_mm = mismatches[mm_start:]
                     max_delta = max(abs(m['delta']) for m in new_mm)
@@ -1063,6 +1751,17 @@ def check_meet_scoring():
     pct_c = (exact_matches + close_matches) / meets_with_rankings * 100 if meets_with_rankings else 0
     print(f'   Exact scoring matches: {exact_matches} / {meets_with_rankings} ({pct:.1f}%)')
     print(f'   Verified incl. close (max 2pts off): {exact_matches + close_matches} / {meets_with_rankings} ({pct_c:.1f}%)')
+    print(f'   ...of which verified by accounting for points (team names unresolved): {by_points}')
+    xc_total = sum(xc_counts.values())
+    if xc_total:
+        xc_ok = xc_counts.get('verified', 0)
+        xc_close = xc_counts.get('verified_close', 0)
+        print(f'   Cross country (Team Scores re-derived from finish order): '
+              f'{xc_ok} verified, {xc_close} close, {xc_counts.get("mismatch", 0)} mismatch '
+              f'of {xc_total} ({(xc_ok + xc_close) / xc_total * 100:.1f}% verified incl. close); '
+              f'{xc_counts.get("xc_no_results", 0) + xc_counts.get("xc_unpaired", 0)} unpairable')
+        for label, v in sorted(xc_mismatch, key=lambda x: -x[1].get('max_delta', 0))[:8]:
+            print(f"     [XC {label}] teams off {v.get('teams_off')}, max delta {v.get('max_delta')}")
     print(f'   Per-meet verdicts written to backend/data/meet_verification.json')
 
     if mismatches:
@@ -1381,3 +2080,174 @@ def run_qaqc():
 
 if __name__ == '__main__':
     run_qaqc()
+
+
+_SIB_DROP = {'team', 'teams', 'score', 'scores', 'socres', 'scoring', 'results', 'result', 'txt',
+             'htm', 'html', 'pdf', 'json', 'the', 'final', 'xc', 'cross', 'country', 'meet'}
+
+
+def _sib_tokens(name):
+    # ("camdenhillsTeamBoys": camel-case words too)
+    stem = re.sub(r'(?<=[a-z])(?=[A-Z])', ' ', os.path.splitext(os.path.basename(name))[0])
+    toks = set(re.findall(r'[a-z]+|\d+', stem.lower()))
+    # ("winslowscores" / "winslowboys": the school word before a suffix)
+    for t in list(toks):
+        m = re.fullmatch(r'([a-z]{4,}?)(boys|girls|scores?|results?|team|varsity|jv)+', t)
+        if m:
+            toks.add(m.group(1))
+            toks |= set(re.findall(r'boys|girls', t))
+    return toks - _SIB_DROP
+
+
+def _sib_gender(toks):
+    g = set()
+    for t in toks:
+        if t in ('boys', 'boy', 'men', 'b'):
+            g.add('B')
+        elif t in ('girls', 'girl', 'women', 'g'):
+            g.add('G')
+    return g
+
+
+def _xc_verify_with_first_page(path, parsed):
+    """A page posted as its own file ("scarboroughboys2": places 53-76
+    and the team scores) continues the race in the file beside it
+    ("scarboroughboys": places 1-52): the two lists joined are the race."""
+    evs = [e for e in parsed.get('events') or [] if isinstance(e, dict) and e.get('results')]
+    firsts = [min((r.get('place') or 0) for r in e['results']) for e in evs]
+    if not evs or min(firsts) <= 1:
+        return None
+    d = os.path.dirname(path)
+    mine = _sib_tokens(path)
+    for fn in sorted(os.listdir(d)):
+        q = os.path.join(d, fn)
+        if q == path or not fn.endswith('.json'):
+            continue
+        toks = _sib_tokens(fn)
+        if not ({t for t in mine & toks if re.search(r'[a-z]{4}', t)}) or \
+                (_sib_gender(mine) and _sib_gender(toks) and not (_sib_gender(mine) & _sib_gender(toks))):
+            continue
+        try:
+            other = json.load(open(q))
+        except Exception:
+            continue
+        joined, hit = [], False
+        for e, f0 in zip(evs, firsts):
+            prev = next((o for o in other.get('events') or [] if isinstance(o, dict) and
+                         o.get('gender') == e.get('gender') and o.get('results') and
+                         max((r.get('place') or 0) for r in o['results']) == f0 - 1), None)
+            if prev:
+                hit = True
+                joined.append(dict(e, results=prev['results'] + e['results']))
+            else:
+                joined.append(e)
+        if hit:
+            w = xc_verify_parsed(dict(parsed, events=joined))
+            if w and w.get('status') in ('verified', 'verified_close'):
+                return dict(w, sibling=fn + ' (first page)')
+    return None
+
+
+def xc_verify_file(path):
+    """xc_verify_parsed for one parsed file; a file that holds only the team
+    scores ("...-Boys-Team.txt", "...Scores_sept11") is checked against the
+    race posted beside it: the sibling file in the same folder whose name
+    shares the most words (same gender word), whichever verifies best."""
+    try:
+        parsed = json.load(open(path))
+    except Exception:
+        return None
+    _XC_CTX.clear()
+    m = re.search(r'(\d{4})[/\\]XC[/\\]', path)
+    if m:
+        _XC_CTX.update(year=m.group(1), meet=os.path.basename(path))
+    v = xc_verify_parsed(parsed)
+    if v and v.get('status') not in ('verified', 'xc_no_results'):
+        w = _xc_verify_with_first_page(path, parsed)
+        if w:
+            return w
+    own_n = sum(len(e.get('results') or []) for e in parsed.get('events') or [] if isinstance(e, dict))
+    # (a score sheet listing only each team's runners, "TEAM SCORE -> 35"
+    # under them, beside the full results file: the full race checks it)
+    upgrade = bool(v) and v.get('status') in ('mismatch', 'verified_close') and own_n and \
+        re.search(r'(?i)scor|team', os.path.basename(path))
+    if not upgrade and (not v or v.get('status') != 'xc_no_results'):
+        return v
+    orig = v
+    d = os.path.dirname(path)
+    mine = _sib_tokens(path)
+    g_mine = _sib_gender(mine)
+    cands = []
+    for fn in os.listdir(d):
+        q = os.path.join(d, fn)
+        if q == path or not fn.endswith('.json'):
+            continue
+        toks = _sib_tokens(fn)
+        g = _sib_gender(toks)
+        if g_mine and g and not (g & g_mine):
+            # (files posted under each other's names: "...3sept04boys.htm"
+            # holding the girls' race) - the race inside decides
+            try:
+                evg = {str(e.get('gender') or '')[:1] for e in json.load(open(q)).get('events') or []
+                       if isinstance(e, dict) and e.get('results')}
+            except Exception:
+                evg = set()
+            if not (evg & g_mine):
+                continue
+        # (a shared year / generic word is no tie: "HS_MEET_9_11_2015")
+        shared = {t for t in mine & toks if not re.fullmatch(r'\d{4}|boys?|girls?|men|women|home|hs|ms|varsity|v|jv|b|g|\d', t)}
+        # (a name typed two ways: "scarbrough" / "scarborough")
+        import difflib
+        shared |= {a for a in mine for b2 in toks if a != b2 and len(a) >= 6 and len(b2) >= 6 and
+                   difflib.SequenceMatcher(None, a, b2).ratio() >= 0.9}
+        # (a shared date alone is no tie either: "biddefordgirls9_13" / "belfast9_13")
+        common = len(shared) if any(re.search(r'[a-z]{3}', t) for t in shared) else 0
+        if common:
+            cands.append((common / len(mine | toks), q))
+    best = v
+    rank = {'verified': 0, 'verified_close': 1, 'mismatch': 2, 'xc_unpaired': 3, 'xc_no_results': 4}
+    for _sim, q in sorted(cands, reverse=True)[:6]:
+        try:
+            other = json.load(open(q))
+        except Exception:
+            continue
+        if not isinstance(other, dict) or not any(isinstance(e, dict) and e.get('results')
+                                                  for e in other.get('events') or []):
+            continue
+        if upgrade and sum(len(e.get('results') or []) for e in other.get('events') or []
+                           if isinstance(e, dict)) <= own_n:
+            continue
+        blocks = [{k: x for k, x in b.items() if k != 'event_idx'}
+                  for b in parsed.get('team_rankings') or [] if isinstance(b, dict) and b.get('kind') == 'xc']
+        w = xc_verify_parsed(dict(other, team_rankings=blocks))
+        if w and rank.get(w['status'], 9) < rank.get(best['status'], 9):
+            best = dict(w, sibling=os.path.basename(q))
+            if w['status'] == 'verified':
+                break
+    # one score file for both races ("winslowscores9_5": BOYS and GIRLS
+    # tables) beside one race file per gender: the two races together
+    gens = {b.get('gender') for b in parsed.get('team_rankings') or [] if isinstance(b, dict)
+            and b.get('kind') == 'xc'}
+    if len(gens - {None}) >= 2 and len(cands) >= 2 and (best.get('races') or 0) < len(gens - {None}):
+        # (a single sibling holds one race: the other block went unchecked)
+        best = v
+        top = sorted(cands, reverse=True)
+        evs, names = [], []
+        for _sim, q in top[:4]:
+            try:
+                other = json.load(open(q))
+            except Exception:
+                continue
+            got = [e for e in (other.get('events') or []) if isinstance(e, dict) and e.get('results')]
+            if got and not ({e.get('gender') for e in got} & {e.get('gender') for e in evs}):
+                evs += got
+                names.append(os.path.basename(q))
+        if len(names) >= 2:
+            blocks = [{k: x for k, x in b.items() if k != 'event_idx'}
+                      for b in parsed.get('team_rankings') or [] if isinstance(b, dict) and b.get('kind') == 'xc']
+            w = xc_verify_parsed({'events': evs, 'team_rankings': blocks})
+            if w and rank.get(w['status'], 9) < rank.get(best['status'], 9):
+                best = dict(w, sibling=' + '.join(names))
+    if upgrade:
+        return best if best and best.get('status') == 'verified' and best is not orig else orig
+    return best

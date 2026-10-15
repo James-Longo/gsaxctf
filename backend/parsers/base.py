@@ -1,6 +1,41 @@
 from abc import ABC, abstractmethod
 import re
 
+
+def _cap_word(w):
+    """'MCDONALD' -> 'McDonald', "O'NEIL" -> "O'Neil", 'SMITH-JONES' -> 'Smith-Jones'."""
+    out = '-'.join(p[:1].upper() + p[1:].lower() for p in w.split('-'))
+    out = re.sub(r"\b(Mc)([a-z])", lambda m: m.group(1) + m.group(2).upper(), out)
+    out = re.sub(r"\b([OD]')([a-z])", lambda m: m.group(1) + m.group(2).upper(), out)
+    return out
+
+
+def proper_case_name(name):
+    """Timing exports (XCRun, RunScore) print athletes in capitals ("BRAYDEN
+    DOW", "COLLINS, Tim"); every other source is mixed case, so capitals
+    would split one runner into two identities. Re-case all-caps words;
+    leave roman numerals alone."""
+    if not name:
+        return name
+    return re.sub(r"[A-Z][A-Z'\-]+",
+                  lambda m: m.group(0) if re.fullmatch(r'I{2,3}|IV|VI*', m.group(0))
+                  else _cap_word(m.group(0)), name)
+
+
+def proper_case_team(team):
+    """'MT. ARARAT' -> 'Mt. Ararat', 'OXFORD HILLS' -> 'Oxford Hills'; short
+    codes ('MDI', 'EL', 'GHCA', 'CONY') stay as printed. Only for all-caps strings."""
+    if not team or team != team.upper():
+        return team
+    def fix(m):
+        w = m.group(0)
+        if w in ('MT', 'ST'):
+            return w.title()
+        if len(w) <= 4 or not re.search(r'[AEIOUY]', w):
+            return w
+        return _cap_word(w)
+    return re.sub(r"[A-Z][A-Z'\-]*", fix, team)
+
 class BaseParser(ABC):
     def __init__(self, scraper=None):
         self.scraper = scraper
