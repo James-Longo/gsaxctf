@@ -26,6 +26,8 @@ const fmtDate = (s) => new Date(s + 'T12:00:00').toLocaleDateString('en-US', { w
 const shortName = (m) => m.name.replace(' Championship', '').replace(' Regional', '')
 const ROWS = 50
 const PLACES = ['1st', '2nd', '3rd', '4th+']
+const DIV_KEY = 'xs-div'
+const savedDiv = () => { try { return localStorage.getItem(DIV_KEY) } catch { return null } }
 
 export default function XCPostseasonSim({ followTeam }) {
   const [data, setData] = useState(null)
@@ -35,6 +37,10 @@ export default function XCPostseasonSim({ followTeam }) {
   const [team, setTeam] = useState(null)
   const [query, setQuery] = useState('')
   const [showAll, setShowAll] = useState(false)
+  // a meet scored by division (PVC Large / Small) shows one division at a
+  // time; the choice is remembered, and 'All' shows both
+  const [divPick, setDivPick] = useState(savedDiv)
+  const pickDiv = (d) => { setDivPick(d); setTeam(null); setShowAll(false); try { localStorage.setItem(DIV_KEY, d) } catch { /* private mode */ } }
 
   useEffect(() => {
     fetchGz(asset('/data/xc_postseason.json.gz')).then(setData).catch(e => setError(String(e)))
@@ -63,7 +69,12 @@ export default function XCPostseasonSim({ followTeam }) {
   const isReg = meetId.startsWith('reg')
   const isState = meetId.startsWith('state')
   const followed = (t) => followTeam && t.store === followTeam
-  const followedSchool = race.teams.find(followed)?.team
+  const divs = [...new Set(race.teams.map(t => t.div).filter(Boolean))].sort().reverse()
+  const div = divs.length ? (divs.includes(divPick) || divPick === 'All' ? divPick
+    : race.teams.find(followed)?.div || (divs.includes('Small') ? 'Small' : divs[0])) : null
+  const inDiv = (x) => !div || div === 'All' || x.div === div
+  const teams = race.teams.filter(inDiv)
+  const followedSchool = teams.find(followed)?.team
 
   // order in the race (within the division, for a meet scored by
   // division), kept when the list is filtered
@@ -73,7 +84,7 @@ export default function XCPostseasonSim({ followTeam }) {
     divCount[a.div] = (divCount[a.div] || 0) + 1
     rankOf.set(a, divCount[a.div])
   }
-  let runners = race.athletes
+  let runners = race.athletes.filter(inDiv)
   if (team) runners = runners.filter(a => a.school === team)
   const q = query.trim().toLowerCase()
   if (q) runners = runners.filter(a => `${a.name} ${a.school}`.toLowerCase().includes(q))
@@ -93,6 +104,13 @@ export default function XCPostseasonSim({ followTeam }) {
             <button key={g} className={g === gender ? 'active' : ''} onClick={() => setGender(g)}>{g}</button>
           ))}
         </div>
+        {divs.length > 0 && (
+          <div className="xs-seg" role="group" aria-label="Division">
+            {[...divs, 'All'].map(d => (
+              <button key={d} className={d === div ? 'active' : ''} onClick={() => pickDiv(d)}>{d}</button>
+            ))}
+          </div>
+        )}
         <div className="xs-meets">
           {meetsByDate.map(([d, ms]) => (
             <div key={d} className="xs-day">
@@ -130,9 +148,9 @@ export default function XCPostseasonSim({ followTeam }) {
               </tr>
             </thead>
             <tbody>
-              {race.teams.length === 0 && <tr><td colSpan={teamCols} className="xs-empty">No team has five rated runners yet.</td></tr>}
-              {race.teams.map(t => {
-                const divRow = t.div !== lastDiv && t.div
+              {teams.length === 0 && <tr><td colSpan={teamCols} className="xs-empty">No team has five rated runners yet.</td></tr>}
+              {teams.map(t => {
+                const divRow = t.div !== lastDiv && t.div && div === 'All'
                 if (t.div !== lastDiv) { lastDiv = t.div; rank = 0 }
                 rank++
                 return (
@@ -174,7 +192,7 @@ export default function XCPostseasonSim({ followTeam }) {
               <tbody>
                 {shown.length === 0 && <tr><td colSpan={runnerCols} className="xs-empty">No runners match.</td></tr>}
                 {shown.map((a, i) => {
-                  const divRow = a.div !== lastRunnerDiv && a.div
+                  const divRow = a.div !== lastRunnerDiv && a.div && div === 'All'
                   lastRunnerDiv = a.div
                   return (
                   <React.Fragment key={`${a.name}|${a.school}|${i}`}>
