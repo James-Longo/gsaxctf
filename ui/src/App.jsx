@@ -1,5 +1,5 @@
-import React, { useState, useEffect, useMemo, useRef } from 'react'
-import { isBetter, normalizeEvent, parseMark, isDistanceEvent } from './utils'
+import React, { useState, useEffect, useMemo, useRef, useCallback } from 'react'
+import { isBetter, normalizeEvent, parseMark, isDistanceEvent, asset } from './utils'
 import PerformanceList from './PerformanceList'
 import PRPopCalculator from './PRPopCalculator'
 import './App.css'
@@ -19,23 +19,77 @@ import Footage from './Footage'
 import SplitExplorer from './SplitExplorer'
 import SearchSelect from './SearchSelect'
 import XCCourseExplorer from './XCCourseExplorer'
+import XCPostseasonSim from './XCPostseasonSim'
+
+// The site is split by sport. Each sport has its own tabs, and every view's
+// season filter is pinned to it. `team` tabs (track team tools) sit below a
+// divider.
+const TRACK_TABS = ['history', 'sim', 'pr-pop', 'athlete-profile', 'predictor']
+const SPORTS = {
+  xc: { label: 'Cross Country', season: 'XC', tabs: ['history', 'sim', 'xc-courses'], team: [] },
+  indoor: { label: 'Indoor', season: 'Indoor', tabs: TRACK_TABS, team: ['practice', 'footage'] },
+  outdoor: { label: 'Outdoor', season: 'Outdoor', tabs: TRACK_TABS, team: ['practice', 'footage'] },
+}
+// Athlete Profiles opens on this runner when no athlete is chosen
+const DEFAULT_PROFILE_ATHLETE = 'owen-cannon-george-stevens-academy'
+const sportTabs = (sp) => [...SPORTS[sp].tabs, ...SPORTS[sp].team]
+const TAB_LABELS = {
+  history: 'Results', sim: 'Postseason Simulator', 'pr-pop': 'PR Pop', 'athlete-profile': 'Athlete Profiles',
+  'xc-courses': 'Courses', predictor: "Owen's Predictor", practice: 'Practice', footage: 'Footage',
+}
+// Days since July 1 (a season calendar, so indoor's Dec-Mar doesn't wrap),
+// on a fixed leap year. Matches json_store._season_offset.
+const seasonOffset = (month, day) => {
+  const start = (month > 7 || (month === 7 && day >= 1)) ? Date.UTC(2000, 6, 1) : Date.UTC(1999, 6, 1)
+  return Math.round((Date.UTC(2000, month - 1, day) - start) / 86400000)
+}
+// The sport in season on date `d`. `windows` comes from the manifest: each
+// season type's earliest and latest result date ('MM-DD'), measured from the
+// data. Inside a window, that sport; inside two (the day one ends and the
+// next begins), the one that started more recently; between seasons, the
+// next one to start. Without windows, a fixed month rule.
+const sportForDate = (windows, d = new Date()) => {
+  const keys = Object.keys(SPORTS).filter(k => windows?.[SPORTS[k].season])
+  if (!keys.length) {
+    const m = d.getMonth() + 1
+    return m >= 8 && m <= 11 ? 'xc' : m === 12 || m <= 3 ? 'indoor' : 'outdoor'
+  }
+  const off = (md) => seasonOffset(+md.slice(0, 2), +md.slice(3, 5))
+  const t = seasonOffset(d.getMonth() + 1, d.getDate())
+  const w = keys.map(k => ({ k, s: off(windows[SPORTS[k].season].start), e: off(windows[SPORTS[k].season].end) }))
+  const inside = w.filter(x => x.s <= t && t <= x.e).sort((a, b) => b.s - a.s)
+  if (inside.length) return inside[0].k
+  return w.sort((a, b) => ((a.s - t + 366) % 366) - ((b.s - t + 366) % 366))[0].k
+}
+// URL hash is #sport/tab, e.g. #xc/sim. `explicit` is false when the URL
+// names no sport, so the default can follow the manifest's season windows.
+const readHash = (windows) => {
+  const [sp, tab] = window.location.hash.replace(/^#/, '').split('/')
+  const sport = SPORTS[sp] ? sp : sportForDate(windows)
+  return { sport, tab: sportTabs(sport).includes(tab) ? tab : 'history', explicit: !!SPORTS[sp] }
+}
 
 function App() {
   const [dataLoaded, setDataLoaded] = useState(false)
   const [manifest, setManifest] = useState([])
   const [allAthletes, setAllAthletes] = useState([])
   const [loadedSeasons, setLoadedSeasons] = useState({}) // key -> data array
+  const [meetLinks, setMeetLinks] = useState({}) // '<year>_<season>' -> meet_name -> source url
   
   const [selectedTeam, setSelectedTeam] = useState('George Stevens Academy')
   const [selectedAthlete, setSelectedAthlete] = useState(ALL_ATHLETES)
-  const [activeTab, setActiveTab] = useState('history')
+  const [sport, setSport] = useState(() => readHash().sport)
+  const [activeTab, setActiveTab] = useState(() => readHash().tab)
+  // read before the URL sync below rewrites the hash
+  const urlChoseSport = useRef(readHash().explicit)
+  const seasonWindows = useRef(null)
   const [loadingProgress, setLoadingProgress] = useState({ current: 0, total: 0 })
 
   const [expandedSplits, setExpandedSplits] = useState(new Set())
 
   // Filter states
   const [filterYear, setFilterYear] = useState('All')
-  const [filterSeasonType, setFilterSeasonType] = useState('All')
+  const filterSeasonType = SPORTS[sport].season
   const [filterEvent, setFilterEvent] = useState('All')
   const [filterMeet, setFilterMeet] = useState('All')
   const [showPRsOnly, setShowPRsOnly] = useState(false)
@@ -44,18 +98,49 @@ function App() {
   const [sortField, setSortField] = useState('date')
   const [sortDirection, setSortDirection] = useState('desc')
 
-  const isLocalDev = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+  useEffect(() => {
+    const want = `#${sport}/${activeTab}`
+    if (window.location.hash !== want) window.history.replaceState(null, '', want)
+  }, [sport, activeTab])
+  useEffect(() => {
+    const onHash = () => {
+      const h = readHash(seasonWindows.current)
+      setSport(h.sport); setActiveTab(h.tab)
+      // a link to a tab this sport doesn't have lands on Results; say so in the URL
+      if (window.location.hash !== `#${h.sport}/${h.tab}`) window.history.replaceState(null, '', `#${h.sport}/${h.tab}`)
+    }
+    window.addEventListener('hashchange', onHash)
+    return () => window.removeEventListener('hashchange', onHash)
+  }, [])
+  const switchSport = (sp) => {
+    setSport(sp)
+    if (!sportTabs(sp).includes(activeTab)) setActiveTab('history')
+    setFilterEvent('All'); setFilterMeet('All')
+  }
+  const isXC = sport === 'xc'
+  const sportPerformances = (perfs) => perfs.filter(p => p.season === SPORTS[sport].season)
+
 
   // 1. Initial Load: Manifest and Athlete Registry
   useEffect(() => {
     const loadInitial = async () => {
       try {
-        const manifestRes = await fetch('/data/manifest.json');
+        const manifestRes = await fetch(asset('/data/manifest.json'));
         const manifestData = await manifestRes.json();
-        const athletesData = await fetchJsonGz('/data/athletes.json.gz');
+        const athletesData = await fetchJsonGz(asset('/data/athletes.json.gz'));
         
         setManifest(manifestData);
         setAllAthletes(athletesData);
+        // links to each meet's full results; the table works without them
+        fetchJsonGz(asset('/data/meet_links.json.gz')).then(setMeetLinks).catch(() => {});
+        // open on the sport that's in season by the data's own season dates
+        // (unless the URL already chose one)
+        seasonWindows.current = manifestData.season_windows || null;
+        if (!urlChoseSport.current) {
+          const sp = sportForDate(seasonWindows.current);
+          setSport(sp);
+          setActiveTab(t => sportTabs(sp).includes(t) ? t : 'history');
+        }
         
         // Find default team slug
         const defaultTeam = manifestData.teams.find(t => t.name === selectedTeam) || manifestData.teams[0];
@@ -108,7 +193,7 @@ function App() {
       if (loadedSeasons[cacheKey] || inFlight.current.has(cacheKey)) return;
       inFlight.current.add(cacheKey);
       try {
-        const data = await fetchJsonGz(`/data/teams/${slug}/${key}.json.gz`);
+        const data = await fetchJsonGz(asset(`/data/teams/${slug}/${key}.json.gz`));
         const [year, season] = [key.slice(0, key.indexOf('_')), key.slice(key.indexOf('_') + 1)];
         data.forEach((p, i) => {
           if (!p.team) p.team = teamName;
@@ -138,7 +223,7 @@ function App() {
   useEffect(() => {
     if (!manifest.teams) return;
     if (selectedTeam === 'All') {
-      const allYears = Array.from(new Set((manifest.seasons || []).map(s => s.split('_')[0]))).sort();
+      const allYears = Array.from(new Set((manifest.seasons || []).filter(s => s.endsWith(`_${filterSeasonType}`)).map(s => s.split('_')[0]))).sort();
       const latestYear = allYears.slice(-1)[0];
       const years = filterYear === 'Last4' ? allYears.slice(-4)
         : filterYear !== 'All' ? [filterYear] : [latestYear];
@@ -153,10 +238,23 @@ function App() {
 
   useEffect(() => {
     if (selectedAthlete && selectedAthlete.id !== 'all' && selectedAthlete.primary_team) {
-      const team = manifest.teams?.find(t => t.name === selectedAthlete.primary_team);
-      if (team) loadTeamData(team.slug, null, team.seasons, team.name);
+      // a runner's career can sit in several team folders (school spellings)
+      for (const name of selectedAthlete.teams || [selectedAthlete.primary_team]) {
+        const team = manifest.teams?.find(t => t.name === name);
+        if (team) loadTeamData(team.slug, null, team.seasons, team.name);
+      }
     }
   }, [selectedAthlete, manifest]);
+
+  // The athlete catalog (backend/athlete_catalog.py) groups a runner's
+  // spellings: a registry entry lists the store ids it covers in `members`.
+  // runnerId() maps a row's store id to the runner it belongs to.
+  const runnerOf = useMemo(() => {
+    const m = {}
+    for (const a of allAthletes) for (const id of a.members || []) m[id] = a.id
+    return m
+  }, [allAthletes])
+  const runnerId = useCallback((p) => runnerOf[p.athlete_id] || p.athlete_id, [runnerOf])
 
   // Derive all loaded performances into one flat array
   const allPerformances = useMemo(() => {
@@ -170,35 +268,43 @@ function App() {
 
   // Type-ahead options: teams grouped by level, biggest programs first
   const LEVEL_LABELS = { hs: 'High School', ms: 'Middle School', college: 'College' }
+  // Every picker lists only what exists in the sport being viewed.
+  const sportSeason = SPORTS[sport].season
   const teamOptions = useMemo(() => {
     const opts = [{ value: 'All', label: 'All Teams' }]
     const order = { hs: 0, ms: 1, college: 2 }
-    const sorted = [...(manifest.teams || [])].sort((a, b) =>
-      (order[a.level] ?? 3) - (order[b.level] ?? 3) || b.count - a.count)
+    const n = t => t.counts?.[sportSeason] ?? 0
+    const sorted = (manifest.teams || [])
+      .filter(t => (t.seasons || []).some(k => k.endsWith(`_${sportSeason}`)))
+      .sort((a, b) => (order[a.level] ?? 3) - (order[b.level] ?? 3) || n(b) - n(a))
     for (const t of sorted) {
       opts.push({
         value: t.name, label: t.name,
         group: LEVEL_LABELS[t.level] || 'Other',
-        secondary: `${t.count.toLocaleString()} results`,
+        secondary: `${n(t).toLocaleString()} results`,
       })
     }
     return opts
-  }, [manifest])
+  }, [manifest, sportSeason])
 
   const athleteOptions = useMemo(() => {
     const base = [{ value: 'all', label: 'All Athletes' }]
-    const source = selectedTeam === 'All' ? allAthletes
-      : allAthletes.filter(a => a.primary_team === selectedTeam)
+    const source = allAthletes.filter(a =>
+      (selectedTeam === 'All' || a.primary_team === selectedTeam || a.teams?.includes(selectedTeam)) &&
+      (!a.sports || a.sports.includes(sportSeason)))
     return base.concat(source.map(a => ({
       value: a.id, label: a.name,
-      secondary: selectedTeam === 'All' ? a.primary_team : undefined,
+      // relay teams after the runners, under their own heading
+      group: a.kind === 'relay' ? 'Relay teams' : undefined,
+      secondary: selectedTeam === 'All' ? a.primary_team : (a.aka?.length ? `also ${a.aka.join(', ')}` : undefined),
+      search: a.aka?.join(' '),
     })))
-  }, [allAthletes, selectedTeam])
+  }, [allAthletes, selectedTeam, sportSeason])
 
   // Derived: Athletes for the current view
   const filteredAthletes = useMemo(() => {
     if (selectedTeam === 'All') return allAthletes;
-    return allAthletes.filter(a => a.primary_team === selectedTeam);
+    return allAthletes.filter(a => a.primary_team === selectedTeam || a.teams?.includes(selectedTeam));
   }, [allAthletes, selectedTeam]);
 
   // Current performances to display
@@ -209,8 +315,8 @@ function App() {
       return allPerformances.filter(p => p.team === selectedTeam)
     }
     // Filter by athlete_id across ALL loaded data (handles transfers if they exist in loaded files)
-    return allPerformances.filter(p => p.athlete_id === selectedAthlete.id)
-  }, [allPerformances, selectedAthlete, selectedTeam, dataLoaded])
+    return allPerformances.filter(p => runnerId(p) === selectedAthlete.id)
+  }, [allPerformances, selectedAthlete, selectedTeam, dataLoaded, runnerId])
 
   // Rest of the logic (Stats, filtering, sorting) is the same...
   const { filteredPerformances, years, seasonTypes, events, meets } = useMemo(() => {
@@ -232,8 +338,8 @@ function App() {
         type = match[2]
       }
       const normEvent = normalizeEvent(p.event)
-      const prK = `${p.athlete_id}|${normEvent}|${type}`
-      const sbK = `${p.athlete_id}|${year}|${type}|${normEvent}`
+      const prK = `${runnerId(p)}|${normEvent}|${type}`
+      const sbK = `${runnerId(p)}|${year}|${type}|${normEvent}`
       
       if (!seenEvents.has(prK)) {
         firstPerfIds.add(p.id)
@@ -271,7 +377,7 @@ function App() {
       }
     })
 
-    const allYears = Array.from(new Set((manifest.seasons || []).map(s => s.split('_')[0]))).sort((a,b) => b-a);
+    const allYears = Array.from(new Set((manifest.seasons || []).filter(s => s.endsWith(`_${filterSeasonType}`)).map(s => s.split('_')[0]))).sort((a,b) => b-a);
     const last4 = new Set(allYears.slice(0, 4));
 
     const matches = (p, filters) => {
@@ -288,9 +394,12 @@ function App() {
     const availableYears = allYears;
     const availableTypes = Array.from(new Set((manifest.seasons || []).map(s => s.split('_')[1]))).sort();
 
-    const availableEvents = Array.from(new Set(
-      enriched.filter(p => matches(p, { year: filterYear, type: filterSeasonType, event: 'All', meet: filterMeet, team: selectedTeam })).map(p => p.event)
-    )).sort()
+    // one option per displayed event: many raw labels can normalize to the
+    // same event (every XC distance label is "Boys Cross Country")
+    const eventByLabel = new Map()
+    enriched.filter(p => matches(p, { year: filterYear, type: filterSeasonType, event: 'All', meet: filterMeet, team: selectedTeam }))
+      .forEach(p => { const k = normalizeEvent(p.event); if (!eventByLabel.has(k)) eventByLabel.set(k, p.event) })
+    const availableEvents = [...eventByLabel.entries()].sort(([a], [b]) => a.localeCompare(b)).map(([, raw]) => raw)
 
     const availableMeets = Array.from(new Set(
       enriched.filter(p => matches(p, { year: filterYear, type: filterSeasonType, event: filterEvent, meet: 'All', team: selectedTeam })).map(p => p.meetWithYear)
@@ -301,7 +410,8 @@ function App() {
 
     filtered.sort((a, b) => {
       let comparison = 0
-      if (sortField === 'date') comparison = new Date(a.date) - new Date(b.date)
+      // undated rows ('Unknown') sort as oldest instead of breaking the sort
+      if (sortField === 'date') comparison = (Date.parse(a.date) || 0) - (Date.parse(b.date) || 0)
       else if (sortField === 'mark') {
         if (isBetter(a.mark, b.mark, a.event)) comparison = 1
         else if (isBetter(b.mark, a.mark, a.event)) comparison = -1
@@ -310,35 +420,7 @@ function App() {
     })
 
     return { filteredPerformances: filtered, years: availableYears, seasonTypes: availableTypes, events: availableEvents, meets: availableMeets }
-  }, [performances, filterYear, filterSeasonType, filterEvent, filterMeet, selectedTeam, showPRsOnly, sortField, sortDirection, manifest])
-
-  const [isScraping, setIsScraping] = useState(false)
-  const [scrapeStatus, setScrapeStatus] = useState({ message: '', progress: 0 })
-
-  const handleScrape = async (full = false) => {
-    if (!isLocalDev) return
-    try {
-      const url = `http://localhost:8000/scrape/sub5?full=${full}`
-      const res = await fetch(url, { method: 'POST' })
-      const result = await res.json()
-      if (result.status === 'started' || result.status === 'busy') setIsScraping(true)
-    } catch (err) { alert(`Scrape failed: ${err.message}`) }
-  }
-
-  useEffect(() => {
-    if (!isLocalDev || !isScraping) return
-    const interval = setInterval(async () => {
-      try {
-        const res = await fetch('http://localhost:8000/scrape/status')
-        const data = await res.json()
-        setScrapeStatus({ message: data.message, progress: data.progress })
-        if (!data.is_active) {
-          setIsScraping(false); window.location.reload()
-        }
-      } catch (err) { clearInterval(interval) }
-    }, 1000)
-    return () => clearInterval(interval)
-  }, [isScraping, isLocalDev])
+  }, [performances, filterYear, filterSeasonType, filterEvent, filterMeet, selectedTeam, showPRsOnly, sortField, sortDirection, manifest, runnerId])
 
   useEffect(() => {
     if (activeTab !== 'splits' || !manifest.teams) return;
@@ -346,14 +428,22 @@ function App() {
   }, [activeTab, manifest]);
 
   useEffect(() => {
-    setFilterYear('All'); setFilterSeasonType('All'); setFilterEvent('All'); setFilterMeet('All')
+    setFilterYear('All'); setFilterEvent('All'); setFilterMeet('All')
     setSortField('date'); setSortDirection('desc'); setExpandedSplits(new Set())
     if (selectedTeam !== 'All' && selectedAthlete.id !== 'all') setSelectedAthlete(ALL_ATHLETES)
   }, [selectedTeam])
 
   useEffect(() => {
-    setFilterYear('All'); setFilterSeasonType('All'); setFilterEvent('All'); setFilterMeet('All')
+    setFilterYear('All'); setFilterEvent('All'); setFilterMeet('All')
   }, [selectedAthlete])
+
+  // Opening Athlete Profiles with no athlete chosen shows the default
+  // runner, in every sport (switching sport keeps whoever is selected).
+  useEffect(() => {
+    if (activeTab !== 'athlete-profile' || selectedAthlete.id !== 'all') return
+    const ath = allAthletes.find(a => a.id === DEFAULT_PROFILE_ATHLETE)
+    if (ath) setSelectedAthlete(ath)
+  }, [activeTab, allAthletes])
 
   const handleDownloadCsv = () => {
     const headers = ['Athlete', 'Event', 'Result', 'Gr', 'Team', 'Date', 'Meet', 'Season', 'Year']
@@ -378,27 +468,25 @@ function App() {
   return (
     <div className="container">
       <h1 className="no-print">Track & Field Dashboard</h1>
+      <div className="sport-switch no-print" role="tablist" aria-label="Sport">
+        {Object.entries(SPORTS).map(([key, sp]) => (
+          <button key={key} role="tab" aria-selected={sport === key}
+            className={sport === key ? 'active' : ''} onClick={() => switchSport(key)}>{sp.label}</button>
+        ))}
+      </div>
 
       <div className="dashboard-layout">
         <div className="sidebar">
           <div className="nav-buttons">
-            <button onClick={() => setActiveTab('history')} className={`nav-btn ${activeTab === 'history' ? 'active' : ''}`}>History</button>
-            <button onClick={() => setActiveTab('analyzer')} className={`nav-btn ${activeTab === 'analyzer' ? 'active' : ''}`}>Postseason Sim</button>
-            <button onClick={() => setActiveTab('pr-pop')} className={`nav-btn ${activeTab === 'pr-pop' ? 'active' : ''}`}>PR Pop</button>
-            <button onClick={() => setActiveTab('athlete-profile')} className={`nav-btn ${activeTab === 'athlete-profile' ? 'active' : ''}`}>Profile</button>
-            <button onClick={() => setActiveTab('practice')} className={`nav-btn ${activeTab === 'practice' ? 'active' : ''}`}>Practice</button>
-            <button onClick={() => setActiveTab('footage')} className={`nav-btn ${activeTab === 'footage' ? 'active' : ''}`}>Footage</button>
-            <button onClick={() => setActiveTab('predictor')} className={`nav-btn ${activeTab === 'predictor' ? 'active' : ''}`}>Predictor</button>
-            <button onClick={() => setActiveTab('xc-courses')} className={`nav-btn ${activeTab === 'xc-courses' ? 'active' : ''}`}>XC Courses</button>
-            {false && <button onClick={() => setActiveTab('splits')} className={`nav-btn ${activeTab === 'splits' ? 'active' : ''}`}>Split Explorer</button>}
+            {SPORTS[sport].tabs.map(t => (
+              <button key={t} onClick={() => setActiveTab(t)} className={`nav-btn ${activeTab === t ? 'active' : ''}`}>{TAB_LABELS[t]}</button>
+            ))}
+            {SPORTS[sport].team.length > 0 && <hr className="nav-divider" />}
+            {SPORTS[sport].team.map(t => (
+              <button key={t} onClick={() => setActiveTab(t)} className={`nav-btn ${activeTab === t ? 'active' : ''}`}>{TAB_LABELS[t]}</button>
+            ))}
           </div>
 
-          {isLocalDev && (
-            <div className="dev-controls">
-              <button className={`update-btn ${isScraping ? 'loading' : ''}`} onClick={() => handleScrape(false)} disabled={isScraping}>Update</button>
-              {isScraping && <div className="progress-text">{scrapeStatus.message} {scrapeStatus.progress}%</div>}
-            </div>
-          )}
         </div>
 
         <div className="main-content">
@@ -416,10 +504,12 @@ function App() {
             </div>
           ) : (
           <>
-          {activeTab === 'analyzer' ? (
-            <PerformanceList performances={allPerformances} isBetter={isBetter} manifest={manifest} loadTeamData={loadTeamData} />
+          {activeTab === 'sim' ? (
+            sport === 'xc'
+              ? <XCPostseasonSim followTeam={selectedTeam} />
+              : <PerformanceList performances={allPerformances} isBetter={isBetter} manifest={manifest} loadTeamData={loadTeamData} season={SPORTS[sport].season} />
           ) : activeTab === 'pr-pop' ? (
-            <PRPopCalculator performances={allPerformances} selectedTeam={selectedTeam} isBetter={isBetter} manifest={manifest} loadTeamData={loadTeamData} />
+            <PRPopCalculator performances={sportPerformances(allPerformances)} selectedTeam={selectedTeam} isBetter={isBetter} manifest={manifest} loadTeamData={loadTeamData} />
           ) : activeTab === 'practice' ? (
             <PracticeResults />
           ) : activeTab === 'footage' ? (
@@ -474,13 +564,6 @@ function App() {
                       </select>
                     </div>
                     <div className="filter-group">
-                      <label>Season</label>
-                      <select value={filterSeasonType} onChange={e => setFilterSeasonType(e.target.value)}>
-                        <option value="All">All Seasons</option>
-                        {seasonTypes.map(s => <option key={s} value={s}>{s}</option>)}
-                      </select>
-                    </div>
-                    <div className="filter-group">
                       <label>Event</label>
                       <select value={filterEvent} onChange={e => setFilterEvent(e.target.value)}>
                         <option value="All">All Events</option>
@@ -493,6 +576,9 @@ function App() {
               </div>
 
               {activeTab === 'history' ? (
+                // XC: no PRs (a time depends on the course, so the fastest
+                // "5K" is mostly the fastest course) and no event column
+                // (one event per gender; the label is only a distance guess)
                 <div className="table-container">
                   <table className="performance-table">
                     <thead>
@@ -500,7 +586,7 @@ function App() {
                         <th onClick={() => handleSort('date')}>Date</th>
                         {selectedAthlete.id === 'all' && <th>Athlete</th>}
                         <th>Gr</th>
-                        <th>Event</th>
+                        {!isXC && <th>Event</th>}
                         <th onClick={() => handleSort('mark')}>Result</th>
                         <th>Meet</th>
                       </tr>
@@ -509,14 +595,15 @@ function App() {
                       {filteredPerformances.map(p => {
                         const hasSplits = p.splits && p.splits.length > 0
                         const isExpanded = expandedSplits.has(p.id)
-                        const colSpan = selectedAthlete.id === 'all' ? 6 : 5
+                        const colSpan = (selectedAthlete.id === 'all' ? 6 : 5) - (isXC ? 1 : 0)
+                        const showPR = p.is_pr && !isXC
                         return (
                           <React.Fragment key={p.id}>
-                            <tr className={p.is_pr ? 'pr-row' : ''}>
+                            <tr className={showPR ? 'pr-row' : ''}>
                               <td>{p.date.split('T')[0]}</td>
                               {selectedAthlete.id === 'all' && <td>{p.athlete_name}</td>}
                               <td>{p.grade}</td>
-                              <td>{normalizeEvent(p.event)}</td>
+                              {!isXC && <td>{normalizeEvent(p.event)}</td>}
                               <td>
                                 {p.mark}
                                 {hasSplits && (
@@ -524,9 +611,13 @@ function App() {
                                     {isExpanded ? ' ▲' : ' ▼'}
                                   </span>
                                 )}
-                                {p.is_pr && <span className="badge pr">{p.season === 'Indoor' ? 'PRᵢ' : p.season === 'Outdoor' ? 'PRₒ' : 'PR'}</span>}
+                                {showPR && <span className="badge pr">{p.season === 'Indoor' ? 'PRᵢ' : p.season === 'Outdoor' ? 'PRₒ' : 'PR'}</span>}
                               </td>
-                              <td>{p.meet_name}</td>
+                              <td>
+                                {meetLinks[`${p.year}_${p.season}`]?.[p.meet_name]
+                                  ? <a className="meet-link" href={meetLinks[`${p.year}_${p.season}`][p.meet_name]} target="_blank" rel="noopener noreferrer">{p.meet_name}</a>
+                                  : p.meet_name}
+                              </td>
                             </tr>
                             {isExpanded && (
                               <tr className="splits-row">
@@ -551,7 +642,7 @@ function App() {
                   </table>
                 </div>
               ) : (
-                <AthleteProfile performances={performances} selectedAthlete={selectedAthlete} />
+                <AthleteProfile performances={sportPerformances(performances)} selectedAthlete={selectedAthlete} />
               )}
             </>
           )}

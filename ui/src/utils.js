@@ -161,6 +161,14 @@ export function normalizeEvent(event, season = '') {
     
     // 1. Gender Swap
     let normalized = event.replace(/\bMen\b/gi, 'Boys').replace(/\bWomen\b/gi, 'Girls');
+
+    // Cross country is one event per gender. The distance in the label
+    // ("5K", "2.9 Mile") varies by course and is often a guess; the backend
+    // keeps it for the course model, but the site shows only the gender.
+    if (/cross\s*country/i.test(normalized) || /\bxc\b/i.test(normalized) || /^xc$/i.test(season)) {
+        const g = /\bGirls\b/i.test(normalized) ? 'Girls ' : /\bBoys\b/i.test(normalized) ? 'Boys ' : '';
+        return `${g}Cross Country`;
+    }
     
     const isOutdoor = season && season.toLowerCase().includes('outdoor');
 
@@ -194,3 +202,9 @@ export function isDistanceEvent(event) {
     return ["High Jump", "Pole Vault", "Long Jump", "Triple Jump", "Shot Put", "Discus", "Javelin"].includes(normalized);
 }
 
+
+
+// Site files (public/) relative to the deploy base: "/" on gsaxctf.com,
+// "/gsaxctf/" on the GitHub Pages project URL. Vite sets BASE_URL from the
+// `base` option (vite.config.js).
+export const asset = (path) => import.meta.env.BASE_URL + String(path).replace(/^\//, '')

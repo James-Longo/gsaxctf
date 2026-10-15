@@ -2305,3 +2305,111 @@ body {
 .xc-time { width: 90px; padding: 6px 8px; border: 1px solid #ccc; border-radius: 4px; font-size: 15px; }
 .xc-result { font-size: 20px; font-weight: 700; padding: 4px 2px; min-width: 90px; }
 .xc-sort { font-size: 12px; margin-left: 10px; padding: 2px 8px; cursor: pointer; }
+
+/* ---- Sport switch (Cross Country / Indoor / Outdoor) ---- */
+.sport-switch {
+  display: flex;
+  justify-content: center;
+  gap: 4px;
+  margin: 4px auto 0;
+  padding: 4px;
+  background: #f1f5f9;
+  border-radius: 10px;
+  width: fit-content;
+  max-width: 100%;
+}
+.sport-switch button {
+  padding: 8px 18px;
+  border: none;
+  border-radius: 7px;
+  background: transparent;
+  color: #4a5568;
+  font-weight: 600;
+  font-size: 0.95rem;
+  cursor: pointer;
+}
+.sport-switch button:hover:not(.active) { color: #800000; }
+.sport-switch button.active {
+  background: #800000;
+  color: white;
+  box-shadow: 0 2px 4px rgba(128, 0, 0, 0.25);
+}
+.nav-divider {
+  border: none;
+  border-top: 1px solid #e2e8f0;
+  margin: 6px 0;
+}
+
+/* ---- XC postseason sim ---- */
+.xs { display: flex; flex-direction: column; gap: 14px; }
+.xs-bar { display: flex; gap: 16px; align-items: flex-start; flex-wrap: wrap; }
+.xs-seg { display: flex; border: 1px solid #cbd5e0; border-radius: 8px; overflow: hidden; flex: none; }
+.xs-seg button {
+  padding: 7px 16px; border: none; background: white; color: #2d3748;
+  font-weight: 600; cursor: pointer;
+}
+.xs-seg button + button { border-left: 1px solid #cbd5e0; }
+.xs-seg button.active { background: #800000; color: white; }
+.xs-meets { display: flex; gap: 14px; flex-wrap: wrap; flex: 1; min-width: 0; }
+.xs-day { display: flex; flex-direction: column; gap: 4px; }
+.xs-date { font-size: 0.72rem; font-weight: 700; color: #718096; text-transform: uppercase; letter-spacing: 0.05em; }
+.xs-day-btns { display: flex; gap: 4px; flex-wrap: wrap; }
+.xs-day-btns button {
+  padding: 5px 10px; border: 1px solid #e2e8f0; border-radius: 6px; background: white;
+  color: #2d3748; font-size: 0.85rem; cursor: pointer; white-space: nowrap;
+}
+.xs-day-btns button:hover:not(.active) { border-color: #800000; }
+.xs-day-btns button.has-follow { border-color: #d6a5a5; background: #fdf5f5; }
+.xs-day-btns button.active { background: #800000; border-color: #800000; color: white; }
+.xs-meta { font-size: 0.9rem; color: #2d3748; display: flex; flex-wrap: wrap; gap: 4px 12px; align-items: baseline; }
+.xs-grid { display: grid; grid-template-columns: minmax(0, 1fr); gap: 18px; }
+.xs-panel { min-width: 0; }
+.xs-table th, .xs-table td { padding: 7px 9px; font-size: 0.86rem; }
+.xs-table th.num, .xs-table td.num { text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.xs-table td { vertical-align: middle; }
+.xs-team { cursor: pointer; }
+.xs-follow td { background: #fdf5f5; }
+.xs-follow td:nth-child(2) { font-weight: 600; }
+.xs-sel td { background: #f8e9e9 !important; }
+.xs-div td {
+  background: #f7fafc; font-size: 0.72rem; font-weight: 700; color: #718096;
+  text-transform: uppercase; letter-spacing: 0.05em; padding: 5px 9px;
+}
+.xs-hi { color: #800000; font-weight: 700; }
+.xs-lo { color: #a0aec0; }
+.xs-plain { color: #718096; }
+.xs-chip {
+  margin-left: 6px; padding: 1px 6px; border-radius: 10px; font-size: 0.68rem;
+  background: #edf2f7; color: #4a5568; white-space: nowrap;
+}
+.xs-gr { color: #718096; font-size: 0.78rem; }
+.xs-school { color: #4a5568; }
+.xs-range { color: #4a5568; }
+.xs-empty { text-align: center; color: #a0aec0; padding: 24px !important; }
+.xs-runner-bar { display: flex; gap: 8px; margin-bottom: 8px; flex-wrap: wrap; }
+.xs-search {
+  flex: 1; min-width: 140px; padding: 7px 10px; border: 1px solid #cbd5e0; border-radius: 6px;
+  font-size: 0.88rem; color: #2d3748; background: white;
+}
+.xs-clear {
+  padding: 6px 10px; border: 1px solid #800000; border-radius: 6px; background: #800000;
+  color: white; font-size: 0.82rem; cursor: pointer; white-space: nowrap;
+}
+.xs-clear.ghost { background: white; color: #800000; }
+.xs-more {
+  margin-top: 8px; width: 100%; padding: 8px; border: 1px solid #e2e8f0; border-radius: 6px;
+  background: #f8fafc; color: #4a5568; cursor: pointer; font-size: 0.85rem;
+}
+.xs-more:hover { border-color: #800000; color: #800000; }
+@media (max-width: 768px) {
+  .xs-bar { flex-direction: column; gap: 10px; }
+  .xs-meets { gap: 10px; }
+  .xs-table th, .xs-table td { padding: 6px 6px; font-size: 0.8rem; }
+  .sport-switch button { padding: 8px 12px; font-size: 0.88rem; }
+  .sport-switch button.active, .xs-seg button.active, .xs-day-btns button.active, .xs-clear:not(.ghost) { color: white; }
+  .xs-hi { color: #800000; }
+  .xs-lo { color: #a0aec0; }
+}
+
+.meet-link { color: #800000; text-decoration: none; }
+.meet-link:hover { text-decoration: underline; }

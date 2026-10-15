@@ -3,9 +3,10 @@ import React, { useState, useRef, useEffect, useMemo } from 'react'
 /**
  * SearchSelect - type-ahead replacement for long <select> lists.
  *
- * options: [{ value, label, group?, secondary? }]
+ * options: [{ value, label, group?, secondary?, search? }]
  *   group     - optional section header (options must be pre-sorted by group)
  *   secondary - dim text right of the label (e.g. team name, result count)
+ *   search    - extra text the query also matches (e.g. other spellings)
  * minSearch  - require N typed chars before listing (for huge option sets)
  */
 export default function SearchSelect({ value, onChange, options, placeholder = 'Search...', minSearch = 0 }) {
@@ -25,7 +26,7 @@ export default function SearchSelect({ value, onChange, options, placeholder = '
     for (const o of options) {
       const l = o.label.toLowerCase()
       if (l.startsWith(q)) starts.push(o)
-      else if (l.includes(q)) contains.push(o)
+      else if (l.includes(q) || (o.search && o.search.toLowerCase().includes(q))) contains.push(o)
       if (starts.length + contains.length >= 300) break
     }
     return [...starts, ...contains]

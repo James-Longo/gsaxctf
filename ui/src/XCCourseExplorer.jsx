@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useMemo } from 'react'
+import { asset } from './utils'
 import SearchSelect from './SearchSelect'
 
 /**
@@ -45,37 +46,32 @@ export default function XCCourseExplorer() {
   const [sortAsc, setSortAsc] = useState(true)
 
   useEffect(() => {
-    fetchGz('/data/xc_courses.json.gz').then(setData).catch(e => setError(String(e)))
+    fetchGz(asset('/data/xc_courses.json.gz')).then(setData).catch(e => setError(String(e)))
   }, [])
 
-  // Collapse a year list into runs: [2004,2020] -> "2004, 2020", not
-  // "2004–2020". A venue's courses interleave rather than running in clean
-  // eras, so a first-to-last span would claim years the course never raced
-  // and would overlap the venue's other entries.
-  const yearSpan = (ys) => {
-    const out = []
-    let i = 0
-    while (i < ys.length) {
-      let j = i
-      while (j + 1 < ys.length && +ys[j + 1] === +ys[j] + 1) j++
-      out.push(i === j ? ys[i] : `${ys[i]}–${ys[j]}`)
-      i = j + 1
-    }
-    return out.join(', ')
-  }
-
-  // A venue that has raced more than one course needs something on the row to
-  // tell its entries apart. Years are exact and owe nothing to the distance
-  // label, so they disambiguate where a venue repeats and stay out of the way
-  // where it does not.
+  // A venue with more than one course needs something on the row to tell
+  // them apart: the distance the results call it when the venue has races
+  // of different lengths, and the years when one course changed between
+  // eras (an older era is published as its own course).
   const label = useMemo(() => {
-    const seen = {}
-    for (const c of (data?.courses || [])) seen[c.venue] = (seen[c.venue] || 0) + 1
+    const dists = {}, perVD = {}
+    for (const c of (data?.courses || [])) {
+      ;(dists[c.venue] ||= new Set()).add(c.distance)
+      const k = `${c.venue}|${c.distance}`
+      perVD[k] = (perVD[k] || 0) + 1
+    }
     const m = {}
     for (const c of (data?.courses || [])) {
-      m[c.course] = seen[c.venue] > 1
-        ? `${c.venue} (${yearSpan(c.years || [])})`
-        : c.venue
+      let s = c.venue
+      if (c.distance && dists[c.venue].size > 1) s += ` · ${c.distance}`
+      // an era is contiguous: name it by its span, the current one "since"
+      if (perVD[`${c.venue}|${c.distance}`] > 1) {
+        const ys = c.years || []
+        const newest = Math.max(...(data.courses.filter(x => x.venue === c.venue && x.distance === c.distance)
+          .flatMap(x => (x.years || []).map(Number))))
+        s += Number(ys[ys.length - 1]) === newest ? ` (since ${ys[0]})` : ` (${ys[0]}–${ys[ys.length - 1]})`
+      }
+      m[c.course] = s
     }
     return m
   }, [data])

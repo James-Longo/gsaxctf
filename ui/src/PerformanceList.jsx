@@ -1,8 +1,8 @@
 import { useState, useMemo, useEffect } from 'react'
-import { parseMark, normalizeEvent, isDistanceEvent } from './utils'
+import { parseMark, normalizeEvent, isDistanceEvent, asset } from './utils'
 import './App.css'
 
-function PostseasonSimulator({ performances, isBetter, manifest, loadTeamData }) {
+function PostseasonSimulator({ performances, isBetter, manifest, loadTeamData, season }) {
     // Derive the current season and year from today's date.
     const getDefaultSeason = () => {
         const now = new Date();
@@ -20,7 +20,9 @@ function PostseasonSimulator({ performances, isBetter, manifest, loadTeamData })
     const { season: defaultSeason, year: defaultYear } = getDefaultSeason();
 
     const [filterYear, setFilterYear] = useState(defaultYear)
-    const [filterSeason, setFilterSeason] = useState(defaultSeason)
+    // `season` (from the site's sport switch) pins Indoor or Outdoor
+    const [filterSeason, setFilterSeason] = useState(season || defaultSeason)
+    useEffect(() => { if (season) setFilterSeason(season) }, [season])
     const [filterEvent, setFilterEvent] = useState('All')
     const [scoreMethod, setScoreMethod] = useState('PR')
     const [showSimulation, setShowSimulation] = useState(false)
@@ -38,7 +40,7 @@ function PostseasonSimulator({ performances, isBetter, manifest, loadTeamData })
     useEffect(() => {
         if (scoreMethod === 'Seeds') {
             const file = competitionType === 'States' ? 'states_2026_outdoor.json' : 'pvc_2026_outdoor.json';
-            const fetchUrl = `/data/seeds/${file}`;
+            const fetchUrl = asset(`/data/seeds/${file}`);
             
             fetch(fetchUrl)
                 .then(r => r.json())
@@ -1579,6 +1581,7 @@ function PostseasonSimulator({ performances, isBetter, manifest, loadTeamData })
                             {years.map(y => <option key={y} value={y}>{y}</option>)}
                         </select>
                     </div>
+                    {!season && (
                     <div className="filter-group">
                         <label>Season</label>
                         <select value={filterSeason} onChange={e => setFilterSeason(e.target.value)}>
@@ -1586,6 +1589,7 @@ function PostseasonSimulator({ performances, isBetter, manifest, loadTeamData })
                             {seasons.map(s => <option key={s} value={s}>{s}</option>)}
                         </select>
                     </div>
+                    )}
                     <div className="filter-group">
                         <label>Competition</label>
                         <select value={competitionType} onChange={e => setCompetitionType(e.target.value)}>

@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
+import { asset } from './utils'
 
 export default function Footage() {
   const [albums, setAlbums] = useState([]);
 
   useEffect(() => {
-    fetch('/albums.json')
+    fetch(asset('/albums.json'))
       .then(res => res.json())
       .then(data => {
         const sorted = data.sort((a, b) => a.title.localeCompare(b.title));
