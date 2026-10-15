@@ -1,8 +1,10 @@
-name: Update Results and Deploy
+name: Update Results (manual fallback)
 
+# Superseded by the Claude update routine (docs/agents/update-routine.md),
+# which also reads Five K Sport in a browser, runs QAQC and publishes the
+# postseason forecasts. The schedule is off; a manual run still works as a
+# fallback. Its commit triggers the GitHub Pages deploy (deploy-pages.yml).
 on:
-  schedule:
-    - cron: '0 11 * * 1' # Mondays at 11:00 UTC (6am EST)
   workflow_dispatch:
 
 permissions:
@@ -46,28 +48,7 @@ jobs:
             ui/public/data/manifest.json
             ui/public/data/athletes.json.gz
             ui/public/data/xc_courses.json.gz
+            ui/public/data/xc_postseason.json.gz
+            ui/public/data/meet_links.json.gz
+            backend/web_url_mapping.json
             backend/data/scrape_state.json
-
-      - name: Set up Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '20'
-
-      - name: Deploy to Vercel
-        env:
-          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
-          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID || vars.VERCEL_ORG_ID }}
-          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID || vars.VERCEL_PROJECT_ID }}
-        run: |
-          if [ -z "$VERCEL_TOKEN" ]; then
-            echo "::error::VERCEL_TOKEN is missing. Please add it to your GitHub Secrets."
-            exit 1
-          fi
-          if [ -z "$VERCEL_ORG_ID" ] || [ -z "$VERCEL_PROJECT_ID" ]; then
-            echo "::warning::VERCEL_ORG_ID or VERCEL_PROJECT_ID is missing from secrets. Checking vars..."
-          fi
-          
-          # --archive=tgz is REQUIRED: the store is ~14.7k chunk files and Vercel's
-          # raw upload path caps at 5,000 files/day ("api-upload-free").
-          echo "Deploying to Vercel..."
-          npx vercel --prod --yes --archive=tgz --token=$VERCEL_TOKEN

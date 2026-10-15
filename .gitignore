@@ -17,3 +17,12 @@ backend/*.db
 **/__pycache__/
 *.py[cod]
 *$py.class
+
+# Internal artifacts that stay on the routine's computer (not the repo or site)
+backend/data/athlete_decisions.json
+backend/data/athlete_catalog.json.gz
+backend/data/athlete_review_queue.json.gz
+backend/data/routine_state.json
+
+# Claude Code local state (worktrees, settings, preview config)
+.claude/

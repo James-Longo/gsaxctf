@@ -40,17 +40,26 @@ Run from the repo root:
   Writes per-meet verdicts (verified / verified_close / mismatch / no_rankings,
   plus mark-order sanity) to `backend/data/meet_verification.json`.
 
+#### Second source: Five K Sport (browser agent)
+Western/coastal meets timed by Five K Sport are not on sub5. Their files sit on OneDrive, which blocks plain downloads, so an agent with a browser tool fetches them. Follow `docs/agents/fiveksport.md` (code: `backend/fiveksport.py`, archive: `backend/data/fiveks_archive/`).
+
 ### 2. Deployment
-**CRITICAL:** Always run Vercel deployments from the **root directory**, not the `ui` directory,
-and always with `--archive=tgz` (the store has ~11k chunk files; Vercel's free tier caps
-raw uploads at 5,000 files):
-```
-npx vercel --prod --archive=tgz
-```
-The store is gzipped on disk (`teams/{slug}/{year}_{season}.json.gz`, `athletes.json.gz`) to
-stay under Vercel's 500MB bundle cap; the UI decompresses with DecompressionStream and
-re-derives the slim rows' team/year/season/id fields on load (see `loadTeamData` in App.jsx
-and `json_store.slim_row`/`enrich_rows`).
+The site is hosted on **GitHub Pages**; a push to `main` is the deploy.
+`.github/workflows/deploy-pages.yml` builds `ui/` (sparse checkout, no
+backend archives) and publishes `ui/dist`. Updates come from the Claude
+update routine (`docs/agents/update-routine.md`), which ends with
+`python3 -m backend.routine publish --yes` (commit + push). Vercel is no longer
+used.
+
+Data paths in the UI go through `asset()` (utils.js) so the site works both at
+the project URL (`/gsaxctf/`, base set by the workflow) and on the custom
+domain (`/`, once `ui/public/CNAME` exists).
+
+The store is gzipped on disk (`teams/{slug}/{year}_{season}.json.gz`,
+`athletes.json.gz`, ~100 MB total, well under Pages' 1 GB site limit); the UI
+decompresses with DecompressionStream and re-derives the slim rows'
+team/year/season/id fields on load (see `loadTeamData` in App.jsx and
+`json_store.slim_row`/`enrich_rows`).
 
 ### 3. Split Support
 Split data is stored as a JSON string in the `splits` column of the `performances` table in the database. When exporting to `data.json`, ensure they are parsed back into JSON arrays (handled in `export_for_web.py`). The parser detects splits formatted as `Cumulative (Split)` (e.g., `1:11.703 (35.439)`).
