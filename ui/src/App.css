@@ -2415,3 +2415,36 @@ body {
 
 .meet-link { color: #800000; text-decoration: none; }
 .meet-link:hover { text-decoration: underline; }
+
+/* Record board */
+.record-note {
+  color: #4a5568;
+  font-size: 0.875rem;
+  margin: -12px 0 16px;
+}
+.record-section h3 {
+  margin: 16px 0 8px;
+  color: #800000;
+}
+.record-row {
+  cursor: pointer;
+}
+.record-row:hover td {
+  background: #f8fafc;
+}
+.record-event {
+  font-weight: 600;
+  white-space: nowrap;
+}
+.record-top {
+  width: 100%;
+  font-size: 0.85rem;
+  border-collapse: collapse;
+}
+.record-top td {
+  padding: 4px 8px;
+  border-bottom: 1px solid #edf2f7;
+}
+.record-date {
+  white-space: nowrap;
+}

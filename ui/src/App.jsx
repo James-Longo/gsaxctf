@@ -20,11 +20,12 @@ import SplitExplorer from './SplitExplorer'
 import SearchSelect from './SearchSelect'
 import XCCourseExplorer from './XCCourseExplorer'
 import XCPostseasonSim from './XCPostseasonSim'
+import RecordBoard from './RecordBoard'
 
 // The site is split by sport. Each sport has its own tabs, and every view's
 // season filter is pinned to it. `team` tabs (track team tools) sit below a
 // divider.
-const TRACK_TABS = ['history', 'sim', 'pr-pop', 'athlete-profile', 'predictor']
+const TRACK_TABS = ['history', 'records', 'sim', 'pr-pop', 'athlete-profile', 'predictor']
 const SPORTS = {
   xc: { label: 'Cross Country', season: 'XC', tabs: ['history', 'sim', 'xc-courses'], team: [] },
   indoor: { label: 'Indoor', season: 'Indoor', tabs: TRACK_TABS, team: ['practice', 'footage'] },
@@ -34,7 +35,7 @@ const SPORTS = {
 const DEFAULT_PROFILE_ATHLETE = 'owen-cannon-george-stevens-academy'
 const sportTabs = (sp) => [...SPORTS[sp].tabs, ...SPORTS[sp].team]
 const TAB_LABELS = {
-  history: 'Results', sim: 'Postseason Simulator', 'pr-pop': 'PR Pop', 'athlete-profile': 'Athlete Profiles',
+  history: 'Results', records: 'Records', sim: 'Postseason Simulator', 'pr-pop': 'PR Pop', 'athlete-profile': 'Athlete Profiles',
   'xc-courses': 'Courses', predictor: "Owen's Predictor", practice: 'Practice', footage: 'Footage',
 }
 // Days since July 1 (a season calendar, so indoor's Dec-Mar doesn't wrap),
@@ -537,7 +538,7 @@ function App() {
                   />
                 </div>
 
-                <div className="filter-group">
+                {activeTab !== 'records' && <div className="filter-group">
                   <label>Athlete</label>
                   <SearchSelect
                     value={selectedAthlete.id}
@@ -552,7 +553,7 @@ function App() {
                     placeholder="Search athletes..."
                     minSearch={selectedTeam === 'All' ? 2 : 0}
                   />
-                </div>
+                </div>}
 
                 {activeTab === 'history' && (
                   <>
@@ -642,6 +643,9 @@ function App() {
                     </tbody>
                   </table>
                 </div>
+              ) : activeTab === 'records' ? (
+                <RecordBoard performances={allPerformances} selectedTeam={selectedTeam} manifest={manifest}
+                  loadTeamData={loadTeamData} season={SPORTS[sport].season} runnerId={runnerId} athletes={allAthletes} meetLinks={meetLinks} />
               ) : (
                 <AthleteProfile performances={sportPerformances(performances)} selectedAthlete={selectedAthlete} />
               )}
