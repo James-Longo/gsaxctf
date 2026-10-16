@@ -1402,6 +1402,12 @@ def _parse_one_file(args):
                 fix_event_gender_from_names(data_to_save, split=False)
                 strip_leg_grades(data_to_save)
                 split_glued_grades(data_to_save)
+                # the 110m hurdles is a boys' event (BucksportMeet.pdf 2016 printed
+                # it after "F 100 hurdles" with no "M")
+                for _e in data_to_save.get('events') or []:
+                    if isinstance(_e, dict) and _e.get('gender') == 'Girls' and \
+                            re.search(r'\b110\b.*hurdle', str(_e.get('event') or ''), re.I):
+                        _e['gender'] = 'Boys'
                 # the official team scores, in every format a file prints
                 # them (backend/parsers/teamscores.py), when the parser
                 # read none: the score check needs them
@@ -1668,6 +1674,10 @@ class Sub5ScraperV2:
         ev = event.lower()
         if any(k in ev for k in ('jump', 'put', 'vault', 'discus', 'javelin', 'throw')):
             return mark
+        # "12.19.94", "4.13.74": a dot typed for the colon (BucksportMeet.pdf 2016)
+        dd = re.fullmatch(r'(\d{1,2})\.(\d{2})\.(\d{1,2})', str(mark).strip())
+        if dd:
+            mark = f'{dd.group(1)}:{dd.group(2)}.{dd.group(3)}'
         meters = None
         m = self._EVENT_METERS.search(event)
         if m:
