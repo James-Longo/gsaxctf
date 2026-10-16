@@ -657,9 +657,13 @@ def file_expansion(groups, schools):
             if not g.raw or not (g.weak or m in ('truncation', 'code') or cont) or (g.method or '').startswith('manual'):
                 continue
             n = sc.norm(g.raw)
-            if len(n) < 6:
-                continue
-            hits = {x.decision for fn, x in full if fn != n and fn.startswith(n)}
+            hits = {x.decision for fn, x in full if fn != n and fn.startswith(n)} if len(n) >= 6 else set()
+            # a code made of a full name's initials: "WE" beside "Warsaw
+            # Elementary", "MBJH" beside "Mt. Blue Junior High"
+            if not hits and re.fullmatch(r'[A-Z]{2,5}', (g.raw or '').strip()):
+                code = g.raw.strip()
+                hits = {x.decision for fn, x in full
+                        if ''.join(w[0] for w in re.findall(r'[A-Za-z]+', x.raw)).upper() == code}
             if len(hits) == 1:
                 sid = hits.pop()
                 cur = schools.get(g.decision) if g.decision else None

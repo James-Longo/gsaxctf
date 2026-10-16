@@ -72,3 +72,10 @@ source.
 
 Be exact and quote the file. Don't guess: if you can't tell which is right,
 say so in `notes`.
+
+## After the audit
+
+A pattern shared by many files is a parser fix. A file in a one-off layout
+that no parser reads (a coach's score sheet, an event grid) is transcribed
+by hand instead: `docs/agents/track-transcribe.md`, written to
+`backend/data/transcribed/`, which the pipeline prefers over any parse.

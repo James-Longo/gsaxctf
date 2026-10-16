@@ -288,7 +288,7 @@ class HtmlTableParser(BaseParser):
             aff = r[aff_i].strip()
             mark = r[mark_i].strip()
             if not name or not mark or not (is_mark(mark) or mark.upper() in
-                                            ('DQ', 'DNF', 'DNS', 'NH', 'NM', 'FOUL', 'SCR')):
+                                            ('DQ', 'DNF', 'DNS', 'NH', 'NM', 'FOUL', 'SCR', 'FAIL', 'FS', 'ND', 'NT')):
                 continue
             if is_relay:
                 results.append({'school': name, 'result': mark, 'athletes': [],

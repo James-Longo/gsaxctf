@@ -18,7 +18,7 @@ EVENT_KEYWORDS = re.compile(
     r'shot\s*put|discus|javelin|race\s*walk|\brw\b|mile|run)', re.I)
 GENDER_RE = re.compile(r'\b(girls?|boys?|women|men|ladies)\b', re.I)
 MARK_RE = re.compile(r"^(\d{1,2}:)?\d{1,3}[:.]\d{1,2}(\.\d+)?$|^\d{1,3}-\d{1,2}(\.\d+)?$|^\d{1,2}'\d{1,2}(\.\d+)?\"?$")
-STATUS = {'DQ', 'NH', 'NM', 'DNF', 'DNS', 'FOUL', 'SCR'}
+STATUS = {'DQ', 'NH', 'NM', 'DNF', 'DNS', 'FOUL', 'SCR', 'FAIL', 'FS', 'ND', 'NT'}
 GRADE_RE = re.compile(r'^(7|8|9|10|11|12|FR|SO|JR|SR)$', re.I)
 
 EVENT_CANON = {

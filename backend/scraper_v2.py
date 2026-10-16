@@ -486,6 +486,57 @@ def strip_sex_prefix(data):
                     r['school'] = r['school'][2:]
 
 
+_LEG_GRADE = re.compile(r'\s+(?:FR|SO|JR|SR|Fr|So|Jr|Sr|[5-9]|1[0-2])$')
+
+
+def strip_leg_grades(data):
+    """Relay legs printed with their class year ("1) Norah Garvey FR
+    2) Willow Whitten FR"): the year is not part of the name."""
+    for e in data.get('events') or []:
+        for r in (e.get('results') or []) if isinstance(e, dict) else []:
+            legs = r.get('athletes')
+            if isinstance(legs, list) and legs and all(isinstance(x, str) for x in legs) \
+                    and sum(1 for x in legs if _LEG_GRADE.search(x)) >= max(1, len(legs) - 1):
+                r['athletes'] = [_LEG_GRADE.sub('', x).strip() for x in legs]
+
+
+_DASH_CODE = re.compile(r'^(.+?)\s+-\s+([A-Za-z]{1,5})$')
+
+
+def split_dash_codes(data):
+    """A sheet that prints each runner as "Surname - Code" in one cell
+    (lakeregioninvite.htm: "Schaeffer - GNG", no school column): the code
+    is the school."""
+    for e in data.get('events') or []:
+        rows = e.get('results') if isinstance(e, dict) else None
+        if not rows:
+            continue
+        hits = [_DASH_CODE.match(r.get('athlete') or '') for r in rows]
+        if sum(1 for m in hits if m) >= 0.8 * len(rows) and \
+                sum(1 for r in rows if not (r.get('school') or '').strip()) >= 0.8 * len(rows):
+            for r, m in zip(rows, hits):
+                if m and not (r.get('school') or '').strip():
+                    r['athlete'], r['school'] = m.group(1).strip(), m.group(2)
+
+
+def split_glued_grades(data):
+    """An individual row whose name ran into its class year ("McKechnic,
+    Nicholas SR" with no grade) or kept the unplaced marker ("--- Fillion,
+    Cam SO"): the year is the grade."""
+    for e in data.get('events') or []:
+        if not isinstance(e, dict) or e.get('is_relay'):
+            continue
+        for r in e.get('results') or []:
+            n = r.get('athlete')
+            if not isinstance(n, str):
+                continue
+            n = re.sub(r'^-{2,}\s*', '', n)
+            m = re.match(r'^(.*,.*\S)\s+(FR|SO|JR|SR)$', n)
+            if m and not (r.get('grade') or '').strip():
+                n, r['grade'] = m.group(1), m.group(2)
+            r['athlete'] = n
+
+
 def fix_wrapped_places(data):
     """A Hy-Tek page printed with a one-digit place field ("10" then "1",
     "2" ... for 11, 12): the list order is the finish order, so each row's
@@ -517,6 +568,48 @@ def fix_event_gender_from_label(data):
             ev['gender'] = 'Boys'
         elif g and not b:
             ev['gender'] = 'Girls'
+
+
+TRANSCRIBED = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'data', 'transcribed')
+
+
+def load_transcription(input_path):
+    """backend/data/transcribed/<year>/<season>/<stem>.json for this
+    archive file, as a parse document, or None. A transcription is a reader's
+    copy of a file in the parse format (events -> results with athlete or
+    athletes, school, result, place, grade); it outranks every parser."""
+    parts = os.path.normpath(input_path).split(os.sep)
+    if len(parts) < 3:
+        return None
+    stem = os.path.splitext(parts[-1])[0]
+    p = os.path.join(TRANSCRIBED, parts[-3], parts[-2], stem + '.json')
+    if not os.path.exists(p):
+        return None
+    with open(p, encoding='utf-8') as f:
+        d = json.load(f)
+    events = []
+    for e in d.get('events') or []:
+        rows = []
+        for r in e.get('results') or []:
+            if not r.get('result') or (not e.get('is_relay') and not (r.get('athlete') or '').strip()):
+                continue
+            row = {'school': r.get('school') or '', 'result': str(r.get('result') or ''),
+                   'type': r.get('type') or 'Finals'}
+            if r.get('place') is not None:
+                row['place'] = r['place']
+            if r.get('points') is not None:
+                row['points'] = r['points']
+            if e.get('is_relay'):
+                row['athletes'] = r.get('athletes') or []
+            else:
+                row['athlete'] = r.get('athlete') or ''
+                row['grade'] = r.get('grade') or ''
+            rows.append(row)
+        events.append({'event': e['event'], 'gender': e.get('gender') or '',
+                       'is_relay': bool(e.get('is_relay')), 'results': rows})
+    return {'events': events, 'date': d.get('date'), 'meet_name': d.get('meet_name'),
+            'venue': d.get('venue'), 'team_rankings': d.get('team_rankings') or [],
+            'parser': 'Transcribed'}
 
 
 def add_team_scores(data, input_path):
@@ -853,7 +946,7 @@ def _parse_one_file(args):
             # every non-breaking space (KVACLeavittSept16boys.htm: 3,266 of
             # them): the column gaps are lost unless they read
             # as the non-breaking spaces they were
-            if season_label == 'XC' and text.count('\ufffd') > 100:
+            if text.count('\ufffd') > 100:
                 text = text.replace('\ufffd', '\xa0')
             elif season_label == 'XC':
                 # (a few stray U+FFFD in table cells: "W \ufffd", "Noble \ufffd")
@@ -967,6 +1060,12 @@ def _parse_one_file(args):
             # layouts whole. Keep whichever reads more rows.
             parser_instance = _MostRowsParser([ColumnStrategyParser(_WORKER_DETECTOR.scraper),
                                                parser_instance])
+        elif isinstance(parser_instance, (HyTekStandardParser, HyTekSMAAParser)):
+            # track: the flat readers drop rows of wide-column PDFs (2023 PVC
+            # week 4: 194 of 610); the column parser replaces them only when
+            # it reads more
+            parser_instance = _MostRowsParser([parser_instance,
+                                               ColumnStrategyParser(_WORKER_DETECTOR.scraper)])
         chain = [parser_instance]
         # XC "OFFICIAL MEET REPORT" exports: two-column pages with pace
         # columns that every generic parser misreads
@@ -1058,7 +1157,7 @@ def _parse_one_file(args):
 
         _ROWLIKE = re.compile(r"(?<!\S)\d{1,3}[.)]?\s+[A-Za-z'][^\d:]{1,60}?\s\d{1,2}:\d{2}")
 
-        def _run_chain(txt, strict=False):
+        def _run_chain(txt, strict=False, most=False):
             # XC: the first parser to give 5+ rows wins - unless the page
             # plainly holds many more runners ("1 Name School 18:16" rows)
             # than it kept and the parse does not verify; then the parser
@@ -1079,6 +1178,8 @@ def _parse_one_file(args):
                     expect = sum(1 for l in plain.splitlines()
                                  if re.search(r'(?<![\d:.])\d{1,2}:\d{2}(?:\.\d+)?(?![\d:])', l)
                                  and len(re.findall(r'[A-Za-z]{2,}', l)) >= 2)
+            if most:    # (the parser reading the most rows, not the first)
+                expect = float('inf')
             first = None
             effective = chain
             # OCR'd table grids keep their borders as pipes — try the
@@ -1222,6 +1323,19 @@ def _parse_one_file(args):
                             _dups(alt_results) <= _dups(results) + 2:
                         results, best_n, best_c = alt_results, alt_n, _count(alt_results)
 
+        # A track PDF printed in two columns of events (KVAC 2008 league
+        # sheets): the layout text runs both columns' rows together line by
+        # line. Read each page's columns one after the other; keep that read
+        # when it holds clearly more rows.
+        if season_label != 'XC' and filename.lower().endswith('.pdf') and raw and not _verified(results):
+            from backend.parser import Sub5ColumnParser
+            cols = Sub5ColumnParser.split_layout_columns(raw)
+            if cols is not raw:
+                alt_results, alt_n = _run_chain(Sub5ColumnParser.clean_pdf_text(cols), strict=True, most=True)
+                if alt_n >= 5 and _count(alt_results) > 1.2 * _count(results) + 10 and \
+                        _dups(alt_results) <= _dups(results) + 2:
+                    results, best_n = alt_results, max(alt_n, best_n)
+
         # An XC PDF list with holes in its places (55, 56, 58, 59 missing):
         # the layout text split those rows' name from their school and time
         # ("55 K. McEwen" / "Car" / "20:12" on three lines). The PDF's
@@ -1240,6 +1354,12 @@ def _parse_one_file(args):
                 if alt_n >= 5 and _holes(alt_results) < _holes(results) and \
                         _count(alt_results) > _count(results) and _dups(alt_results) <= _dups(results):
                     results, best_n = alt_results, max(alt_n, best_n)
+
+        # a hand transcription of a file no parser reads (one-off score
+        # sheets: docs/agents/track-transcribe.md) replaces the parse
+        tr = load_transcription(input_path)
+        if tr is not None:
+            results = tr
 
         data_to_save = results
         if isinstance(results, list) and results and 'event' in results[0]:
@@ -1272,6 +1392,7 @@ def _parse_one_file(args):
                             if isinstance(_r.get(_f), str) and re.match(r'\|\s|.*\s\|$', _r[_f]):
                                 _r[_f] = _r[_f].strip(' |')
                 merge_continued_events(data_to_save)
+                split_dash_codes(data_to_save)
                 fix_event_gender_from_names(data_to_save)
                 pre_drop_events = list(data_to_save.get('events') or [])
                 drop_sibling_gender_events(data_to_save, input_path)
@@ -1279,6 +1400,8 @@ def _parse_one_file(args):
                 # track: a race whose names all belong to the other sex
                 # (a sheet the parser read under one gender)
                 fix_event_gender_from_names(data_to_save, split=False)
+                strip_leg_grades(data_to_save)
+                split_glued_grades(data_to_save)
                 # the official team scores, in every format a file prints
                 # them (backend/parsers/teamscores.py), when the parser
                 # read none: the score check needs them

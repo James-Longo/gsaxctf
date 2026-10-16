@@ -839,6 +839,93 @@ def review_export(batches, size, outdir, rows=None, unsure=False):
     return paths
 
 
+def _career(rows):
+    """A name's results folded to one line per season: grade(s), result
+    count, and the best mark per event (first listed = most raced)."""
+    from backend.json_store import parse_mark_value
+    by = collections.defaultdict(list)
+    for r in rows:
+        by[r['season']].append(r)
+    out = []
+    for season in sorted(by):
+        rs = by[season]
+        ev = collections.defaultdict(list)
+        for r in rs:
+            ev[r['event']].append(r['mark'])
+        best = []
+        for e, marks in sorted(ev.items(), key=lambda kv: -len(kv[1]))[:4]:
+            vals = [(parse_mark_value(m, e)[0], m) for m in marks]
+            vals = [v for v in vals if v[0]]
+            if vals:
+                field = bool(re.search(r'(?i)jump|vault|put|throw|discus|javelin|hammer', e))
+                best.append(f"{e} {(max if field else min)(vals)[1]} x{len(marks)}")
+        grades = sorted({str(r['grade']) for r in rs if r['grade']})
+        teams = sorted({r['team'] for r in rs})
+        # one line: "2015 XC | gr 11 | 6 results 09-05..10-24 | 5000 Meter Run CC 17:39.26 x6"
+        out.append(' | '.join(x for x in (
+            season, ('gr ' + '/'.join(grades)) if grades else '',
+            f"{len(rs)} results {rs[0]['date'][5:]}..{rs[-1]['date'][5:]}", '; '.join(best),
+            ('teams ' + ', '.join(teams)) if len(teams) > 1 else '') if x))
+    return out
+
+
+def _row_line(r):
+    return f"{r['date']} | {r['meet']} | {r['event']} | {r['mark']} | gr {r['grade'] or '-'}"
+
+
+def roster_export(units, outdir, rows=None, max_bytes=180000):
+    """One file per roster (school unit and gender) for a roster reviewer
+    (docs/agents/athlete-roster-review.md): every name on it with a season-by-
+    season career, and the roster's undecided queued pairs with both sides'
+    results."""
+    queue = (_read_gz(QUEUE_PATH, {}) or {}).get('pairs', [])
+    decisions = load_decisions()
+    rows = rows if rows is not None else load_rows()
+    os.makedirs(outdir, exist_ok=True)
+    paths = []
+    for unit_g in units:
+        unit, g = unit_g.split('|')
+        mine = [r for r in rows if r[2] == unit and gender_of(r[8]) == g and not is_relay(r[6], r[8])]
+        names = sorted({r[6] for r in mine})
+        er = _entity_rows(mine, {entity_key(unit, g, n) for n in names})
+        pairs = [p for p in queue if p['a'].startswith(unit_g + '|') and p['b'].startswith(unit_g + '|')
+                 and pair_key(p['a'], p['b']) not in decisions]
+        roster = {k.split('|', 2)[2]: _career(v) for k, v in er.items()}
+        # (by surname, so a family's names sit together)
+        roster = dict(sorted(roster.items(), key=lambda kv: (re.split(r'[\s,]+', kv[0].strip())[-1].lower()
+                                                             if ',' not in kv[0] else kv[0].split(',')[0].lower(),
+                                                             kv[0])))
+        qp = [dict(pair=pair_key(p['a'], p['b']), relation=p['relation'],
+                   evidence=dict(soft=p['soft'], co_meet=p['co_meet'], grad=p['grad'],
+                                 mark_gap=p['mark_gap'], sibling_risk=p['sibling_risk']),
+                   a=[_row_line(r) for r in _nearest(er.get(p['a'], []), er.get(p['b'], []), cap=6)],
+                   b=[_row_line(r) for r in _nearest(er.get(p['b'], []), er.get(p['a'], []), cap=6)])
+              for p in pairs]
+        # a big roster goes out in parts by surname (a family stays in one
+        # part); each queued pair goes with its first name's part
+        size = len(json.dumps(roster)) + len(json.dumps(qp))
+        nparts = max(1, -(-size // max_bytes))
+        names_l = list(roster)
+        cut = [names_l[i * len(names_l) // nparts] for i in range(nparts)] + [None]
+        part_of, k = {}, 0
+        for n in names_l:
+            if k + 1 < nparts and n == cut[k + 1]:
+                k += 1
+            part_of[n] = k
+        for i in range(nparts):
+            names_i = {n: c for n, c in roster.items() if part_of[n] == i}
+            qp_i = [q for q in qp if part_of.get(q['pair'].split('||')[0].split('|', 2)[2]) == i]
+            suffix = f'_part{i + 1}of{nparts}' if nparts > 1 else ''
+            path = os.path.join(outdir, unit_g.replace('|', '_') + suffix + '.json')
+            with open(path, 'w', encoding='utf-8') as f:
+                json.dump(dict(roster=unit_g, part=f'{i + 1} of {nparts}' if nparts > 1 else None,
+                               instructions='docs/agents/athlete-roster-review.md',
+                               names=names_i, queued_pairs=qp_i), f, indent=0, separators=(',', ':'))
+            paths.append(path)
+            print(f'{unit_g}{suffix}: {len(names_i)} names, {len(qp_i)} queued pairs -> {path}')
+    return paths
+
+
 def review_import(paths, reviewer):
     """Record reviewer decisions: each file holds
     {"decisions": [{"pair": "...", "decision": "same|different|unsure", "reason": "..."}]}."""
@@ -987,6 +1074,9 @@ def main():
     ex.add_argument('--size', type=int, default=20)
     ex.add_argument('--out', required=True)
     ex.add_argument('--unsure', action='store_true', help='export the pairs agents marked unsure, for a person')
+    ro = sub.add_parser('roster-export', help='one file per roster for a roster reviewer')
+    ro.add_argument('--out', required=True)
+    ro.add_argument('units', nargs='+', help='"me-hs-gsa|Boys" ...')
     im = sub.add_parser('review-import')
     im.add_argument('paths', nargs='+')
     im.add_argument('--by', required=True, help='who decided, e.g. "sonnet-5.5 review" or "James Longo"')
@@ -999,6 +1089,8 @@ def main():
         apply()
     elif a.cmd == 'review-export':
         review_export(a.batches, a.size, a.out, unsure=a.unsure)
+    elif a.cmd == 'roster-export':
+        roster_export(a.units, a.out)
     elif a.cmd == 'review-import':
         review_import(a.paths, a.by)
 

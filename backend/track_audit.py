@@ -83,10 +83,19 @@ def sample(per_year, seed, out_dir):
                      stored.get((f"{c.split('_')[0]}_{c.split('_')[1]}", c.split('_', 2)[2]))]
             if cands:
                 picks.append(rng.choice(cands))
+    write_bundles(picks, out_dir, ver, stored)
+    print(json.dumps(dict(sampled=len(picks), keys=picks), indent=1))
+    return picks
+
+
+def write_bundles(picks, out_dir, ver=None, stored=None):
+    ver = ver if ver is not None else _verification()
+    stored = stored if stored is not None else _stored_rows()
     os.makedirs(out_dir, exist_ok=True)
     for k in picks:
         year, season, stem = k.split('_', 2)
-        src = sorted(glob.glob(os.path.join(DATA, 'sub5_archive', year, season, glob.escape(stem) + '.*')))
+        src = sorted(x for x in glob.glob(os.path.join(DATA, 'sub5_archive', year, season, glob.escape(stem) + '.*'))
+                     if os.path.splitext(os.path.basename(x))[0] == stem)   # (not "Results.AVMS-ship.htm")
         rows = stored.get((f'{year}_{season}', stem), [])
         by_event = collections.defaultdict(list)
         for r in rows:
@@ -98,8 +107,6 @@ def sample(per_year, seed, out_dir):
                            verification=ver.get(k)), f, indent=1)
         with open(os.path.join(d, 'stored.json'), 'w') as f:
             json.dump(by_event, f, indent=0)
-    print(json.dumps(dict(sampled=len(picks), keys=picks), indent=1))
-    return picks
 
 
 def collect(out_dir):
@@ -129,11 +136,16 @@ def main():
     s.add_argument('--per-year', type=int, default=3)
     s.add_argument('--seed', type=int, default=2026)
     s.add_argument('--out', required=True)
+    bd = sub.add_parser('bundle', help='bundles for given meet keys')
+    bd.add_argument('--out', required=True)
+    bd.add_argument('keys', nargs='+')
     c = sub.add_parser('collect')
     c.add_argument('dir')
     a = ap.parse_args()
     if a.cmd == 'sample':
         sample(a.per_year, a.seed, a.out)
+    elif a.cmd == 'bundle':
+        write_bundles(a.keys, a.out)
     else:
         collect(a.dir)
 

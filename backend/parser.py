@@ -219,6 +219,40 @@ class Sub5ColumnParser:
             return None
         return '\n'.join(out) if out else None
 
+    _COL_START = re.compile(r'(?<=\s\s)(?:Event\s+\d+|\d{1,3}\s+[A-Z][\w\'.-]*,?\s|-{2,3}\s+[A-Z]|Lane\s+Name|Name\s+(?:Yr|Year))')
+
+    @staticmethod
+    def split_layout_columns(text, min_votes=12):
+        """A two-column `pdftotext -layout` page (KVAC 2008 league sheets:
+        events side by side, no ==== rules): the right column's rows and
+        event headers start at one x position. Returns each page's left
+        column followed by its right, or the text unchanged when no page has
+        a second column."""
+        from collections import Counter
+        out, split = [], False
+        for page in text.split('\f'):
+            lines = page.splitlines()
+            votes = Counter(m.start() for l in lines for m in Sub5ColumnParser._COL_START.finditer(l)
+                            if m.start() >= 40)
+            if not votes:
+                out.append(page)
+                continue
+            best = max(votes, key=lambda c: sum(v for k, v in votes.items() if abs(k - c) <= 3))
+            if sum(v for k, v in votes.items() if abs(k - best) <= 3) < min_votes:
+                out.append(page)
+                continue
+            cut = min(k for k in votes if abs(k - best) <= 3)
+            left, right = [], []
+            for l in lines:
+                c = cut
+                while 0 < c < len(l) and l[c - 1] != ' ':   # (at the gap before the column)
+                    c -= 1
+                left.append(l[:c].rstrip())
+                right.append(l[c:])
+            out.append('\n'.join(left + right))
+            split = True
+        return '\f'.join(out) if split else text
+
     @staticmethod
     def pdf_column_text(pdf_path):
         """Column-aware PDF text: detect vertical whitespace gaps in the word
@@ -363,6 +397,10 @@ class Sub5ColumnParser:
                 continue
 
             if _re.match(r"^\.+Event\s+\d+\s+", stripped, _re.IGNORECASE):
+                # (a track event's is kept, as "....Event": the parser carries
+                # the event on and reads its rows by their own columns)
+                if not _is_xc_event(stripped) and not _re.search(r'(?i)\bteam\b|scores', stripped):
+                    cleaned_lines.append('....' + stripped.lstrip('.'))
                 continue
 
             # Normalize result-row indentation so all ranks are preceded by
@@ -382,6 +420,7 @@ class Sub5ColumnParser:
         if self.text is None and not os.path.exists(self.file_path):
             return []
 
+        word_html = False
         # --- PDF handling ---
         if self.text is None and self.file_path.lower().endswith('.pdf'):
             raw_text = self.pdf_to_text(self.file_path)
@@ -415,7 +454,9 @@ class Sub5ColumnParser:
             if pres:
                 text = "\n".join(p.get_text() for p in pres)
                 lines = text.splitlines()
-                row = re.compile(r'^\s*\d+\s+\S.*\d:\d\d')
+                # (a result row ends in a time, or a field mark in a
+                # field-events-only file: "5-03.50", "101-08")
+                row = re.compile(r'^\s*\d+\s+\S.*(?:\d:\d\d|\d-\d\d(?:\.\d\d)?\s*$)')
                 if word_lines and sum(1 for l in word_lines if row.match(l)) > \
                         sum(1 for l in lines if row.match(l)):
                     lines = word_lines
@@ -450,6 +491,23 @@ class Sub5ColumnParser:
                 if not lines:
                     text = soup.get_text(separator='\n')
                     lines = text.splitlines()
+
+        # a Word export that ran the column header onto the record line
+        # ("EMITL Record: R 25.61 ... Teal Jackson, Brewer      Name   Year
+        # School   Finals  H# Points"): the header goes back on its own line,
+        # its name column under the rows' (col 4)
+        _glued = re.compile(r'^(\S.*?\S)\s{2,}((?:Name|School|Team)\s{2,}.*\b(?:Finals|Prelims|Mark)\b.*)$')
+        # (a Word export only: a two-column PDF page prints the right
+        # column's header beside the left column's record line)
+        if word_html and any(_glued.match(l) for l in lines):
+            fixed = []
+            for l in lines:
+                g = _glued.match(l)
+                if g and not re.match(r'^\s*(?:Name|School|Team)\b', l):
+                    fixed += [g.group(1), '    ' + g.group(2)]
+                else:
+                    fixed.append(l)
+            lines = fixed
 
         # a hand-edited fixed-width page: a tab pads a line to the next
         # 8-column stop ("  7 Aimee Brooks\t\t MDI" lines up with "MDIHS")
@@ -712,6 +770,11 @@ class Sub5ColumnParser:
             if is_header and current_event and line_clean.startswith('..') \
                     and current_event['original_event_name'] == event_name.strip() \
                     and current_event['gender'] == gender:
+                if not current_event['is_relay'] and not _is_xc_event(event_name):
+                    # (track: the page's rows sit apart from the first page's
+                    # header columns - read on their own, merged back below)
+                    events.append(current_event)
+                    current_event = dict(current_event, lines=[], continuation=True)
                 continue
 
             if is_header:
@@ -740,9 +803,32 @@ class Sub5ColumnParser:
         if current_event:
             events.append(current_event)
             
-        parsed_events = []
+        # a track event's continuation pages: read on their own (rows by
+        # their gaps) or, as before, under the first page's header - the
+        # reading with more rows
+        grouped = []
         for ev in events:
-            results = self.parse_event_block(ev)
+            if ev.get('continuation') and grouped:
+                grouped[-1].append(ev)
+            else:
+                grouped.append([ev])
+        parsed_blocks = []
+        for grp in grouped:
+            base = grp[0]
+            if len(grp) == 1:
+                parsed_blocks.append((base, self.parse_event_block(base)))
+                continue
+            whole = self.parse_event_block(dict(base, lines=[l for g in grp for l in g['lines']]))
+            parts = list(self.parse_event_block(base) or [])
+            for g in grp[1:]:
+                numbered = [l for l in g['lines'] if re.match(r'^\s*\d{1,4}\s+\S', l)]
+                bib = bool(numbered) and sum(1 for l in numbered if re.match(r'^\s*\d{1,4}\s+\d{1,5}\s+[A-Za-z]', l)) \
+                    >= 0.6 * len(numbered)
+                parts += self.parse_headerless_block(dict(g, bib_first=bib)) or []
+            parsed_blocks.append((base, parts if len(parts) > len(whole or []) else whole))
+
+        parsed_events = []
+        for ev, results in parsed_blocks:
             if results:
                 parsed_events.append({
                     "event": ev["event_name"],
@@ -912,8 +998,12 @@ class Sub5ColumnParser:
     # judged ties with J and exhibition with x, suffixes records with R/#/*
     _HL_TIME = re.compile(
         r'(?<!\S)([JjXx*]?)(\d{1,2}:\d{2}(?::\d{2})?(?:\.\d{1,3})?)([A-Za-z*#@$!%&]{0,2})(?!\S)')
-    _HL_NOPLACE = re.compile(r'^\s*--\s+(?=[A-Za-z])')
-    _HL_STATUS = re.compile(r'(?<!\S)(DNF|DNS|DQ|SCR)(?!\S)')
+    # (track: also seconds "13.13" and field marks "16-10.25")
+    _HL_MARK = re.compile(
+        r'(?<!\S)([JjXx*]?)(\d{1,2}:\d{2}(?::\d{2})?(?:\.\d{1,3})?|\d{1,3}\.\d{2}|\d{1,3}-\d{2}(?:\.\d{1,2})?)'
+        r'([A-Za-z*#@$!%&]{0,2})(?!\S)')
+    _HL_NOPLACE = re.compile(r'^\s*--\s+(?=[A-Za-z]|\d{1,5}\s+[A-Za-z])')
+    _HL_STATUS = re.compile(r'(?<!\S)(DNF|DNS|DQ|SCR|NT|ND|NH|NM|FOUL|FS|FAIL)(?!\S)')
     _HL_GRADE = re.compile(r'(?<!\S)(\d{1,2}|FR|SO|JR|SR|Fr|So|Jr|Sr|--)(?!\S)')
 
     def parse_headerless_block(self, ev):
@@ -928,13 +1018,18 @@ class Sub5ColumnParser:
         some exports print a per-mile pace (or splits) before it. After it
         come team-score places and notes ("19:34.20*   1  *course record")."""
         rows = []
+        # a track event (a Hy-Tek continuation page, "....Event 6 Boys 100
+        # Meter Dash", has no header row): seconds and field marks too
+        label = ev.get('original_event_name') or ev.get('event_name') or ''
+        xc = _is_xc_event(label) or not re.search(
+            r'(?i)dash|hurdle|meter|yard|jump|vault|put|throw|discus|javelin|hammer|relay|walk|\bmile\b', label)
         for line in ev["lines"]:
             if not line.strip() or '===' in line:
                 continue
             m = self._HL_ROW.match(line) or self._HL_NOPLACE.match(line)
             if not m:
                 continue
-            times = list(self._HL_TIME.finditer(line, m.end()))
+            times = list((self._HL_TIME if xc else self._HL_MARK).finditer(line, m.end()))
             if times:
                 fin = times[-1]
                 body_end = times[0].start()
@@ -1132,8 +1227,34 @@ class Sub5ColumnParser:
             return []
         return out
 
+    _FIELD_LABEL = re.compile(r'(?i)jump|vault|shot|discus|javelin|hammer|weight')
+
     def parse_event_block(self, ev):
         lines = ev["lines"]
+        # a field-event "relay" scored by adding up each team's jumpers
+        # ("Boys Pole Vault Relay": "  1 Alec James   JR Scarborough
+        # 12-00.00") lists every jumper on a row of their own under a
+        # Name / Year / School header: individual marks, not team rows
+        # (not when the rows are team totals, "Old Town A   Old Town
+        # 28-00.00", and not when that reading loses rows)
+        numbered = [l for l in lines if re.match(r'^\s{0,4}\d{1,3}\s+[A-Za-z]', l)]
+        if ev["is_relay"] and not ev.get('_field_relay') and \
+                self._FIELD_LABEL.search(ev.get('original_event_name') or '') and (any(
+                re.search(r'\bName\b.*\b(?:Yr|Year)\b.*\b(?:School|Team)\b', l) for l in lines[:12]) or (
+                # (no header: "  1 Lauren Berube   SR Edward Little   10-00.00")
+                len(numbered) >= 3 and sum(1 for l in numbered if re.search(r'\S\s+(?:FR|SO|JR|SR)\s+[A-Z]', l))
+                >= 0.5 * len(numbered))):
+            teams = sum(1 for l in numbered if re.match(r'^\s*\d{1,3}\s+.+?\s[A-F](?:\s{2,}|\s*\()', l))
+            if teams < 0.5 * max(1, len(numbered)):
+                # (the team totals indented under the jumpers stay out)
+                ind_lines = [l for l in lines if not re.match(r'^\s{8,}\d{1,3}\s{2,}\S', l)]
+                ind = self.parse_event_block(dict(ev, lines=ind_lines, is_relay=False, _field_relay=True)) or []
+                rel = self.parse_event_block(dict(ev, _field_relay=True)) or []
+                # (the team reading also takes the meet-score lines below)
+                if len(ind) >= 0.8 * len(rel):
+                    ev["is_relay"] = False
+                    return ind
+                return rel
         is_relay = ev["is_relay"]
         
         name_idx = -1
@@ -1292,7 +1413,7 @@ class Sub5ColumnParser:
                                      # Result usually starts AT or BEFORE anchor_col (since anchor is "Finals")
                                      # "Finals" header is often right-aligned or centered? No, usually Left.
                                      
-                                     if re.search(r'\d', p) or p.upper() in ["DQ", "DNS", "NH", "FOUL", "DNF"]:
+                                     if re.search(r'\d', p) or p.upper().lstrip("X") in STATUS_MARKS:
                                          if dist < min_dist:
                                             min_dist = dist
                                             best_part = p
@@ -1309,7 +1430,7 @@ class Sub5ColumnParser:
 
                         # Check if result looks valid
                         is_res_numeric = bool(re.search(r'\d', res_val))
-                        is_res_standard = res_val.upper() in ["DQ", "FOUL", "NH", "NM", "DNS", "DNF", "SCR"]
+                        is_res_standard = res_val.upper() in STATUS_MARKS
                         
                         if is_res_numeric or is_res_standard:
                             res_pos = line.rfind(res_val, 0, right_boundary + 2)
@@ -1528,13 +1649,19 @@ class Sub5ColumnParser:
                                 relay_exhibition = True
 
                             is_res_numeric = bool(re.search(r'\d', res_val))
-                            is_res_standard = res_val.upper() in ["DQ", "FOUL", "NH", "NM", "DNS", "DNF", "SCR"]
+                            is_res_standard = res_val.upper() in STATUS_MARKS
                             
                             if is_res_numeric or is_res_standard:
                                 res_pos = line.rfind(res_val, 0, right_boundary + 5)
                                 school_part = line[school_idx:res_pos].strip()
                                 school_part = re.sub(r'^\s*(?:#|--|\d+)\s+', '', school_part).strip()
-                                school_part = re.split(r'\s{2,}', school_part)[0].strip()
+                                # (not inside a name printed with a double space:
+                                # "Mt.  Desert Island H.S.")
+                                _sp = re.split(r'\s{2,}', school_part)
+                                while len(_sp) > 1 and re.search(r'\b(?:Mt|St|Ft|No|So|E|W|N|S)\.?$', _sp[0]) \
+                                        and re.match(r"[A-Z][a-z]", _sp[1]):
+                                    _sp[0:2] = [_sp[0] + ' ' + _sp[1]]
+                                school_part = _sp[0].strip()
                                 
                                 # Validation: reject empty, purely-numeric, or misread runner lines
                                 # Also reject "LastName, FirstName" patterns — these are individual

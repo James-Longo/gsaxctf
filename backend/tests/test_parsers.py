@@ -1426,6 +1426,96 @@ Men - Senior Division - Team Rankings - 5 Events Scored
     assert list(races.values()) == [fin], races
 
 
+
+ROUND2_STATUS = """Boys 100 Meter Dash 7th/8th grade
+===================================================================
+    Name                    Year Team                    Finals  H#
+===================================================================
+  1 Ellis, Issac                 MDI Elementa             13.61   1
+  2 Smith, Carter                Brewer CS                13.69   1
+ -- Bernaiche, Isaiah            Brewer CS                   NT   3
+Boys Long Jump 7th/8th grade
+================================================================
+    Name                    Year Team                    Finals
+================================================================
+  1 Leies, Isaac                 MDI Elementa          14-04.00
+  2 Look, Jacob                  Brewer CS             14-00.00
+ -- Avellar, Colby               Piscataquis                 ND
+"""
+
+GLUED_HEADER = """Event 43  Girls 200 Meter Dash Meet B
+==========================================================================
+EMITL Record: R 25.61  2/11/2013   Teal Jackson, Brewer                            Name                    Year School                  Finals  H# Points
+==========================================================================
+  1 Ashley Anderson           SR Mt. Desert               27.00   7  10
+  2 Mackenzie Lambert         SO Bangor                   28.40   7   8
+Event 47  Girls 4x200 Meter Relay
+=======================================================================
+    School                                               Finals  Points
+=======================================================================
+  1 Mt.  Desert Island H.S.  'A'                       1:38.19      10
+     1) Ann Ames SO  2) Bea Bean JR
+"""
+
+
+def test_round2_status_rows_glued_header_and_relay_names():
+    """Unplaced rows keep their status (NT, ND); a column header that a Word
+    export ran onto the record line still finds its columns; a school
+    printed with a double space ("Mt.  Desert") stays whole."""
+    res = Sub5ColumnParser('brewerms.htm', text='<pre>' + ROUND2_STATUS + '</pre>').parse()
+    got = {e['event']: [r['result'] for r in e['results']] for e in res['events']}
+    assert got['100 Meter Dash'] == ['13.61', '13.69', 'NT'], got
+    assert got['Long Jump'] == ['14-04.00', '14-00.00', 'ND'], got
+    word = '<html xmlns:o="urn:schemas-microsoft-com:office:office"><body>'   # (a Word export)
+    res = Sub5ColumnParser('emitl.htm', text=word + '<pre>' + GLUED_HEADER + '</pre></body></html>').parse()
+    ev = {e['event']: e for e in res['events']}
+    assert [(r['athlete'], r['school'], r['result']) for r in ev['200 Meter Dash']['results']] == [
+        ('Ashley Anderson', 'Mt. Desert', '27.00'), ('Mackenzie Lambert', 'Bangor', '28.40')]
+    relay = ev['4x200 Meter Relay']['results'][0]
+    assert relay['school'] == 'Mt. Desert Island H.S.', relay
+    from backend.scraper_v2 import strip_leg_grades, split_glued_grades
+    d = {'events': [{'results': [{'athlete': 'McKechnic, Nicholas SR', 'grade': ''},
+                                 {'athlete': '--- Fillion, Cam SO', 'grade': '', 'result': 'DNF'}]}]}
+    split_glued_grades(d)
+    assert [(r['athlete'], r['grade']) for r in d['events'][0]['results']] == [
+        ('McKechnic, Nicholas', 'SR'), ('Fillion, Cam', 'SO')]
+    d = {'events': [{'results': [dict(relay, athletes=['Ann Ames SO', 'Bea Bean JR'])]}]}
+    strip_leg_grades(d)
+    assert d['events'][0]['results'][0]['athletes'] == ['Ann Ames', 'Bea Bean']
+
+
+
+FIELD_RELAYS = """Event 2  Boys Pole Vault Relay
+================================================================
+    Name                    Year School                  Finals
+================================================================
+Finals
+  1 Alec James                JR Scarborough           12-00.00
+  2 Alex Johnson              JR Gorham                11-00.00
+  3 Troy Lambert              JR Gorham               J11-00.00
+ -- Thomas White              JR Winslow                     NH
+Event 32  Boys Shot Put Relay
+=======================================================================
+    Name                    Year School                  Finals  Points
+=======================================================================
+  1 Central A   (Rob Hall/Brett White/Rob Musinski)   107-08.75    10
+  2 Bangor A                     Bangor               107-03.25     8
+  3 Brewer A                     Brewer               105-02.50     6
+"""
+
+
+def test_field_relay_jumpers_keep_their_names():
+    """A field "relay" that lists each jumper is individual marks; one that
+    lists team totals ("Bangor A") stays a relay."""
+    res = Sub5ColumnParser('usmrelays.htm', text='<pre>' + FIELD_RELAYS + '</pre>').parse()
+    ev = {e['event']: e for e in res['events']}
+    pv = ev['Pole Vault']
+    assert not pv['is_relay'] and [(r['athlete'], r['result']) for r in pv['results']] == [
+        ('Alec James', '12-00.00'), ('Alex Johnson', '11-00.00'), ('Troy Lambert', '11-00.00'),
+        ('Thomas White', 'NH')], pv
+    assert ev['Shot Put']['is_relay']
+
+
 if __name__ == '__main__':
     qaqc._ensure_team_mapping()
     failed = 0
