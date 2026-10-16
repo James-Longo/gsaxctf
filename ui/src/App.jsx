@@ -467,7 +467,7 @@ function App() {
 
   return (
     <div className="container">
-      <h1 className="no-print">Track & Field Dashboard</h1>
+      <h1 className="no-print">GSAXCTF</h1>
       <div className="sport-switch no-print" role="tablist" aria-label="Sport">
         {Object.entries(SPORTS).map(([key, sp]) => (
           <button key={key} role="tab" aria-selected={sport === key}
