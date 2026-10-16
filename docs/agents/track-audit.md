@@ -31,9 +31,13 @@ For every event in the source (and every stored event):
 7. Rows that are not results at all (headers, team names as athletes,
    splits, seed marks) stored as performances.
 
-Prelims and finals: the site stores finals when a file has both; a prelim
-mark stored instead of the final is a finding. Exhibition (`x`) rows may be
-stored. Ignore display formatting (e.g. `9:50.70` vs `9:50.7`).
+By design, not findings: prelim and final marks are both stored (each is a
+real race; the site picks the best); status rows (DQ, DNF, NH, FOUL, NM) are
+stored with the status as the mark and the site's lists skip them;
+exhibition (`x`) rows may be stored; a mark equal in prelims and finals is
+stored once. A prelim mark stored *instead of* a final is a finding, and so
+is a final (or a DQ'd athlete's status row) that is missing. Ignore display
+formatting (e.g. `9:50.70` vs `9:50.7`).
 
 ## Findings file
 

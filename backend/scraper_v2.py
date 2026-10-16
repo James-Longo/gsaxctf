@@ -1489,7 +1489,7 @@ class Sub5ScraperV2:
         from backend.build_team_registry import cluster_key
         return cluster_key(name)
 
-    MARK_STATUS_CODES = {"DQ", "NH", "FOUL", "NM", "DNS", "DNF", "SCR", "ND", "NT"}
+    MARK_STATUS_CODES = {"DQ", "NH", "FOUL", "NM", "DNS", "DNF", "SCR", "ND", "NT", "FAIL", "FS"}
 
     def mark_is_valid_format(self, mark):
         """Strict mark validation for the sync stage.
@@ -2221,6 +2221,19 @@ class Sub5ScraperV2:
                     # its own file when that names one of the days
                     if date and date in self.web_date_days(web_date_raw):
                         parsed_d = date
+                    # A file whose own date is more than a few days BEFORE
+                    # the index's keeps it: the index is keyed by file name
+                    # ("Results1.htm" is reused across a season) and lags
+                    # ("PVC meet #3 - 5/2/03" listed on 5/9). Only earlier: a
+                    # file with no title date has only its Hy-Tek print
+                    # stamp, which is on or after the meet.
+                    if date and parsed_d and season != 'XC':
+                        try:
+                            from datetime import date as _d
+                            if (_d.fromisoformat(parsed_d) - _d.fromisoformat(date)).days > 3:
+                                parsed_d = date
+                        except ValueError:
+                            pass
                     if self.is_date_in_season(parsed_d, season, year):
                         date = parsed_d
                 if not date:
@@ -2306,6 +2319,8 @@ class Sub5ScraperV2:
                             if re.search(r'\d+[:.]\d+', athlete_name):
                                 continue
                         if not athlete_name or not mark or mark.upper() in ["DNS", "SCR"]: continue
+                        # a hand time cut at its column edge: "13:14.0h" -> "13:14."
+                        mark = re.sub(r'(?<=\d)\.$', '', mark)
                         if not self.mark_is_valid_format(mark): continue
                         mark = self.repair_mark(mark, full_event)
                         if mark is None: continue

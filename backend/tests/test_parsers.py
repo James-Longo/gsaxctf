@@ -1331,6 +1331,57 @@ def test_printed_points_by_column():
     assert printed_points('  3 Cy Cole                    Gamma                     20.67     2.50', h) == 2.5
 
 
+def test_track_audit_fixes_event_names():
+    """From the 2026-10 track audit: a 500m is not a 50 Meter Dash, yard
+    races (440, 880) are kept, a 3x relay is not a 4x."""
+    from backend.event_canon import canonical_event
+    assert canonical_event('Men 500 Meter Dash', 'Boys') == ('Boys', '500 Meter Run')
+    assert canonical_event('55 Meter Dash', 'Boys') == ('Boys', '55 Meter Dash')
+    assert canonical_event('880 Yard Run', 'Girls') == ('Girls', '880 Yard Run')
+    assert canonical_event('440 Yard Dash In-7th', 'Girls') == ('Girls', '440 Yard Dash')
+    assert canonical_event('3x1600 Meter Relay', 'Boys') == ('Boys', '3x1600 Meter Relay')
+    assert canonical_event('4x800 Meter Relay', 'Boys') == ('Boys', '4x800 Meter Relay')
+
+
+TRACK_AUDIT = """\
+                    Hy-Tek's Meet Manager 5/5/2013 06:39 AM
+                            KVAC Meet #3 - 5/3/2013
+Event 1  Girls 1760 Sprint Medley Long
+==========================================================================
+    School                                               Finals  H# Points
+==========================================================================
+  1 Alpha High School  'A'                              4:37.12   2   10
+     1) Ann Ames                        2) Bea Bean
+  2 Beta High School  'A'                               4:45.86   2    8
+     1) Cat Cole                        2) Di Dodd
+Event 2  Girls 100 Meter Dash
+=======================================================================
+    Name                    Year School                  Finals  Points
+=======================================================================
+  1 Haji-Hersi, Mairiam          Alpha                    12.00     10
+ 2 Massengale, Lacey            Beta                     12.10      8
+Event 3  Boys Discus Throw
+=======================================================================
+    Name                    Year School                    Seed    Finals  Points
+=======================================================================
+  1 Al Ames                   12 Alpha                   110-02    120-04    10
+ -- Bo Ellington              11 Beta                    105-02     XFOUL
+"""
+
+
+def test_track_audit_fixes_parser():
+    """A medley relay is a relay; a row printed one column left keeps the
+    first letter of its name; XFOUL is a foul, not the seed mark; the
+    meet date is the title's, not the Hy-Tek print stamp's."""
+    res = Sub5ColumnParser('audit.htm', text='<pre>' + TRACK_AUDIT + '</pre>').parse()
+    ev = {e['event']: e for e in res['events']}
+    med = [e for k, e in ev.items() if 'Medley' in k][0]
+    assert med['is_relay'] and [r['school'] for r in med['results']] == ['Alpha High School', 'Beta High School']
+    assert [r['athlete'] for r in ev['100 Meter Dash']['results']] == ['Haji-Hersi, Mairiam', 'Massengale, Lacey']
+    assert [r['result'] for r in ev['Discus']['results']] == ['120-04', 'FOUL']
+    assert res.get('date') == '2013-05-03', res.get('date')
+
+
 if __name__ == '__main__':
     qaqc._ensure_team_mapping()
     failed = 0

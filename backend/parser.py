@@ -64,6 +64,11 @@ def _is_xc_event(name):
     return bool(m and float(m.group(1)) > 2)
 
 
+# a row's status in place of a mark; without these in the list the scan from
+# the right passes over "FAIL" / "XFOUL" to the seed mark
+STATUS_MARKS = {"DQ", "NH", "NM", "DNS", "DNF", "FOUL", "SCR", "FAIL", "FS", "ND", "NT"}
+
+
 def printed_points(line, header):
     """The points a row prints under the header's "Points" column (Hy-Tek
     right-aligns them under the word), or None: a scoring check from the
@@ -533,6 +538,11 @@ class Sub5ColumnParser:
                             priority = 0
                             if any(x in line.lower() for x in ["meet", "results", "wk"]):
                                 priority = 10
+                            # the Hy-Tek license line's date is when the file
+                            # was printed ("Meet Manager 5/5/2013 06:39 AM"),
+                            # not the meet ("KVAC Meet #3 - 5/3/2013")
+                            if re.search(r'licensed to|meet\s*manager|hy-?tek', line, re.I):
+                                priority = -5
                             potential_dates.append((priority, found_date))
                     except:
                         pass
@@ -715,7 +725,10 @@ class Sub5ColumnParser:
                     "event_name": normalized_name,
                     "original_event_name": event_name, # Keep original for reference
                     "lines": [],
-                    "is_relay": any(x in normalized_name.lower() or x in event_name.lower() for x in ["relay", "4x"]),
+                    # ("Girls 1760 Sprint Medley Long", "4x60 Yard Shuttle
+                    # Hurdle": team events that never say "Relay")
+                    "is_relay": any(x in normalized_name.lower() or x in event_name.lower()
+                                    for x in ["relay", "4x", "medley", "shuttle"]),
                     "is_ms": is_ms_meet
                 }
             elif in_rankings:
@@ -1326,7 +1339,7 @@ class Sub5ColumnParser:
                             for k in range(len(parts)-1, 0, -1):
                                 p = parts[k]
                                 is_mark_like = ((re.search(r'\d', p) and ('.' in p or ':' in p or '-' in p))
-                                                or p.upper() in ["DQ", "NH", "NM", "DNS", "DNF", "FOUL", "SCR"])
+                                                or p.upper().lstrip("X") in STATUS_MARKS)
                                 if not is_mark_like:
                                     continue
                                 if _is_wind_reading(p):
@@ -1343,8 +1356,14 @@ class Sub5ColumnParser:
                                 # Use anchor_col and school_idx to try to split Name/School
                                 grade_val = ""
                                 row_school_idx = school_idx
+                                # a row printed one column left of the ruler
+                                # (" 37 Massengale" under "  36 Haji-Hersi")
+                                # must not lose the first letter of the name
+                                ns = name_idx
+                                while 0 < ns and line[ns - 1].isalpha() and ns < len(line) and line[ns].isalpha():
+                                    ns -= 1
                                 if yr_idx != -1 and yr_idx > name_idx and yr_idx < school_idx:
-                                    name_val = line[name_idx:yr_idx].strip()
+                                    name_val = line[ns:yr_idx].strip()
                                     grade_val = line[yr_idx:school_idx].strip()
                                     # a name longer than its field pushes the
                                     # year and school right ("Nicholas
@@ -1357,7 +1376,7 @@ class Sub5ColumnParser:
                                             name_val, grade_val = mo.group(1), mo.group(2)
                                             row_school_idx = name_idx + mo.end() + 5
                                 else:
-                                    name_val = line[name_idx:school_idx].strip()
+                                    name_val = line[ns:school_idx].strip()
 
                                 # Clean name (remove leading rank/number)
                                 name_val = re.sub(r'^[\s#\-]*\d+[\s.\-]*', '', name_val).strip()
@@ -1406,7 +1425,9 @@ class Sub5ColumnParser:
                                 res_val = re.sub(r'\s+(?:NWI\+?|[+-]?\d\.\d)\s*$', '', res_val, flags=re.IGNORECASE).strip()
 
                                 original_res = res_val
-                                is_standard = res_val.upper() in ["DQ", "FOUL", "NH", "NM", "DNS", "DNF", "SCR"]
+                                if res_val.upper().lstrip("X") in STATUS_MARKS:
+                                    res_val = res_val.upper().lstrip("X")   # "XFOUL": an exhibition foul
+                                is_standard = res_val.upper() in STATUS_MARKS
                                 is_numeric = bool(re.match(r'^[0-9:.-]+$', res_val))
 
                                 warnings = []
@@ -1490,7 +1511,7 @@ class Sub5ColumnParser:
                         parts = sub.split()
                         res_val = None
                         for p in reversed(parts):
-                            if (re.search(r'\d', p) and ('.' in p or ':' in p or '-' in p)) or p.upper() in ["DQ", "NH", "NM", "DNS", "DNF", "FOUL", "SCR"]:
+                            if (re.search(r'\d', p) and ('.' in p or ':' in p or '-' in p)) or p.upper().lstrip("X") in STATUS_MARKS:
                                 res_val = p
                                 break
                         
@@ -1527,7 +1548,9 @@ class Sub5ColumnParser:
                                     # Strip trailing wind reading before cleaning
                                     res_val = re.sub(r'\s+(?:NWI\+?|[+-]?\d\.\d)\s*$', '', res_val, flags=re.IGNORECASE).strip()
                                     original_res = res_val
-                                is_standard = res_val.upper() in ["DQ", "FOUL", "NH", "NM", "DNS", "DNF", "SCR"]
+                                if res_val.upper().lstrip("X") in STATUS_MARKS:
+                                    res_val = res_val.upper().lstrip("X")   # "XFOUL": an exhibition foul
+                                is_standard = res_val.upper() in STATUS_MARKS
                                 is_numeric = bool(re.match(r'^[0-9:.-]+$', res_val))
                                 
                                 warnings = []

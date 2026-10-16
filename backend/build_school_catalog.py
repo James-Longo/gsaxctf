@@ -638,6 +638,46 @@ def compare_scores(official, ours, resolve_official):
 # Main build
 # ---------------------------------------------------------------------------
 
+def file_expansion(groups, schools):
+    """A truncated name is the school a full name in the same file starts
+    with: "Mountain Val" beside "Mountain Valley" is Mountain Valley, whatever
+    the string means elsewhere (the Dirigo/Mountain Valley XC co-op made it
+    Dirigo). Only a truncation or a weak decision gives way, and only to one
+    exact full name."""
+    by_file = collections.defaultdict(list)
+    for g in groups.values():
+        by_file[g.rel].append(g)
+    changed = 0
+    for rel, gs in by_file.items():
+        full = [(sc.norm(x.raw), x) for x in gs if x.decision and not x.weak and
+                (x.method or '').split('+')[0] in ('exact', 'stem') and x.raw]
+        for g in gs:
+            m = (g.method or '').split('+')[0]
+            cont = (g.method or '').startswith('athlete-continuity')
+            if not g.raw or not (g.weak or m in ('truncation', 'code') or cont) or (g.method or '').startswith('manual'):
+                continue
+            n = sc.norm(g.raw)
+            if len(n) < 6:
+                continue
+            hits = {x.decision for fn, x in full if fn != n and fn.startswith(n)}
+            if len(hits) == 1:
+                sid = hits.pop()
+                cur = schools.get(g.decision) if g.decision else None
+                # (the level is the meet's call; a curated school is not
+                # swapped for an automatic out-of-state entry)
+                if cur and (cur.get('level') != schools.get(sid, {}).get('level') or sid.startswith('oos-auto')):
+                    continue
+                # continuity gives way only to a school its own name suggested
+                if cont and sid not in (g.candidates or []):
+                    continue
+                if sid != g.decision:
+                    g.flags.append(f'file expansion: {g.decision} -> {sid}')
+                    g.decision, g.method, g.weak = sid, f'file-expansion (was {g.method})', False
+                    changed += 1
+    print(f'file expansion: {changed} truncated names read as a full name in the same file')
+    return changed
+
+
 def company_check(groups, schools):
     """'The company a school keeps', for the decisions that rest on weak names.
 
@@ -787,6 +827,7 @@ def main(argv=None):
     print(f'{len(groups)} (file, raw string) groups; {len(auto)} automatic out-of-state entries')
     stats = decide(groups, schools)
     print('evidence passes:', dict(stats))
+    file_expansion(groups, schools)
     # the company check corrects codes and mascots that continuity then
     # leaned on elsewhere ("MJH" -> Mattanawcook made Messalonskee's own
     # runners look like Mattanawcook's): re-run the evidence after it

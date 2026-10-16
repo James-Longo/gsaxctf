@@ -66,6 +66,10 @@ class Teams:
         self.cache = {}
 
     def __call__(self, raw, gender=None):
+        # Hy-Tek team accounts: "YORK HIGH SCHOOL OUTDOOR 2", "Gorham High
+        # School indoor", "Winslow high school track", "Cheverus Stags"
+        raw = re.sub(r'(?i)\b(?:outdoor|indoor|itrack|otrack|track(?:\s*(?:&|and)\s*field)?|t\s*&\s*f|'
+                     r'xc|girls|boys|men|women)\b|\b\d{1,4}\s*$', ' ', raw or '').strip(' -')
         k = (raw, gender)
         if k not in self.cache:
             u = None
@@ -189,19 +193,32 @@ def compare(blocks, computed, teams):
         else:
             ours = computed.get(g, {})
         used = set()
+        got_by = []
         for t in b['teams']:
             uid = teams(t['team'], g if g != 'Combined' else None)
             fam = teams.members(uid)
-            got = sum(v for k, v in ours.items() if k in fam or teams.members(k) & {uid})
-            used |= {k for k in ours if k in fam or teams.members(k) & {uid}}
+            hit = {k for k in ours if k in fam or teams.members(k) & {uid}}
+            used |= hit
+            got_by.append([t, sum(ours[k] for k in hit), bool(hit)])
+        # An official name the catalog can't place ("LINCLOLN ACADEMY") is
+        # the team of ours nobody claimed with the same points, or failing
+        # that one sharing a word of the name.
+        spare = {k: v for k, v in ours.items() if k not in used and v}
+        for row in got_by:
+            t, got, hit = row
+            if hit or not spare:
+                continue
+            same = [k for k, v in spare.items() if abs(v - t['score']) <= 0.5]
+            words = set(re.findall(r'[a-z]{4,}', t['team'].lower())) - {'high', 'school', 'academy', 'track'}
+            named = [k for k in spare if words & set(re.findall(r'[a-z]{4,}', k.replace('-', ' ')))]
+            pick = same[0] if len(same) == 1 else named[0] if len(named) == 1 else None
+            if pick:
+                row[1] = spare.pop(pick)
+        for t, got, _ in got_by:
             d = got - t['score']
             total += abs(d)
             rows.append(dict(gender=g, team=t['team'], official=t['score'], computed=round(got, 2),
                              delta=round(d, 2)))
-        # points we gave a team the file doesn't list
-        for k, v in ours.items():
-            if k not in used and v and g != 'Combined' and not k.startswith('x-'):
-                pass  # (unlisted teams: not counted; official lists can omit 0-pt teams)
     return total, rows
 
 

@@ -407,6 +407,8 @@ class ParagraphNewsParser(BaseParser):
                 if len(parts) < 3:
                     continue
                 mark = parts[-1].rstrip('Qq.')
+                # "J7.84": a judged tie (same time, place by the judges)
+                mark = re.sub(r'^[Jj](?=\d)', '', mark)
                 if not is_mark(mark):
                     continue
                 if len(parts) >= 4:
