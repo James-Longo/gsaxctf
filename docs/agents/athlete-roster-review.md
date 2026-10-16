@@ -42,6 +42,17 @@ for different and for same, middle school and high school, and "when
 unsure, say unsure"). Use the whole roster: who else has that surname, which
 seasons each name covers, whether a variant fills a gap in one career.
 
+**Surname-only ("Sanborn") and initial ("J Smith") names: work them out
+from the roster.** The code has already merged the ones where only one
+runner fits. What reaches you has two or more candidates (siblings, a
+father and son decades apart) or a gap in the seasons. Decide by context:
+which candidate was on the team that season, in that grade band, running
+that event at that level (a 6-02 high jump is the high jumper, not his
+distance-running brother; a 2:05 800 is the 800 runner). One row is enough
+when only one candidate fits it. Say `unsure` only when two candidates both
+fit, or none does. This rule replaces "a single initial-only row is unsure"
+in athlete-review.md.
+
 **Then read the roster for misses**: two names on this roster that are one
 runner but are not in `queued_pairs` (a nickname the code doesn't know, a
 swapped first/last, a hyphenated surname printed half). List them under

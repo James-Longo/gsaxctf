@@ -2536,6 +2536,9 @@ class Sub5ScraperV2:
                         }
                         if season == 'XC':
                             p['course'] = (course_name or meet_name).strip()
+                        if r.get('exhibition'):
+                            # ("X4:29.26": ran outside the scoring; kept, never a PR)
+                            p['exhibition'] = True
                         
                         team_slug = team_norm # Will be slugified in json_store
                         if team_slug not in all_teams_data:

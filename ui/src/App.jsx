@@ -347,7 +347,8 @@ function App() {
       }
       
       const pParsed = parseMark(p.mark, isDistanceEvent(p.event))
-      if (pParsed.valid) {
+      // (an exhibition mark - "X4:29.26" - is shown but never a PR or season best)
+      if (pParsed.valid && !p.exhibition) {
         // A performance is a PR if it's the first one OR better than any previous one in this season type
         if (!runningBests[prK] || isBetter(p.mark, runningBests[prK], p.event)) {
           runningBests[prK] = p.mark
@@ -467,7 +468,7 @@ function App() {
 
   return (
     <div className="container">
-      <h1 className="no-print">Track & Field Dashboard</h1>
+      <h1 className="no-print">GSAXCTF</h1>
       <div className="sport-switch no-print" role="tablist" aria-label="Sport">
         {Object.entries(SPORTS).map(([key, sp]) => (
           <button key={key} role="tab" aria-selected={sport === key}

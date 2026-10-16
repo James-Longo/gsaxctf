@@ -230,6 +230,10 @@ def is_team_label(name, team):
         hay = (team or '').lower().replace('.', '')
         if pre and (pre in hay or pre.split()[0] in hay):
             return True
+        # "GSA A" for George Stevens Academy: the team's initials
+        initials = ''.join(w[0] for w in re.findall(r'[a-z]+', hay))
+        if pre and len(pre) >= 2 and ' ' not in pre and initials.startswith(pre):
+            return True
     return False
 
 
@@ -534,9 +538,16 @@ def evaluate(a, b, rel, tf):
     if neg:
         label = 'reject'
     elif rel in ('trivial', 'concat'):
-        label = 'auto' if all(s == 'no shared event family' for s in soft) else 'review'
-    elif rel in ('typo_last', 'typo_first', 'typo_both', 'truncated', 'leaddrop'):
-        label = 'auto' if (not soft and rare and (rel != 'typo_both' or minor['n'] <= 3)) else 'review'
+        # the same words printed differently (case, order, a column's bleed
+        # "Nick Anderson     C") and never in one race: one runner (unless
+        # the name spans more seasons than one career can)
+        label = 'review' if any(x.startswith('combined span') for x in soft) else 'auto'
+    elif rel in ('typo_last', 'typo_first', 'nickname', 'prefix_first', 'truncated', 'leaddrop'):
+        # with no warning sign at all, roster reviewers called these the
+        # same runner 97-100% of the time (pilot, 2026-10-16)
+        label = 'auto' if not soft else 'review'
+    elif rel == 'typo_both':
+        label = 'auto' if (not soft and rare and minor['n'] <= 3) else 'review'
     else:
         label = 'review'
     return dict(a=major['key'], b=minor['key'], relation=rel, label=label,
@@ -556,6 +567,7 @@ def candidate_pairs(ents):
         if e['g'] in ('Boys', 'Girls'):
             by_unit[(e['unit'], e['g'])].append(e)
     pairs = []
+    unit_pairs = []
     for lst in by_unit.values():
         if len(lst) < 2:
             continue
@@ -578,7 +590,57 @@ def candidate_pairs(ents):
                 ev = evaluate(a, b, r[0], tf)
                 ev['detail'] = r[1]
                 pairs.append(ev)
+                unit_pairs.append(ev)
+        resolve_by_roster(lst, unit_pairs)
+        unit_pairs = []
     return pairs
+
+
+def _short_form(e):
+    """('single', surname) for a one-token name, ('initial', (letter,
+    surname)) for "J Smith", else None."""
+    t = e['toks']
+    if len(t) == 1 and len(t[0]) >= 2:
+        return ('single', t[0])
+    if len(t) == 2 and len(t[0]) == 1 and len(t[1]) >= 2:
+        return ('initial', (t[0], t[1]))
+    if len(t) == 2 and len(t[1]) == 1 and len(t[0]) >= 2:      # "Smith J"
+        return ('initial', (t[1], t[0]))
+    return None
+
+
+def resolve_by_roster(roster, pairs):
+    """A surname-only ("Sanborn") or initial ("J Smith") name is the one
+    full-name runner on the roster it can be: same surname (and initial),
+    on the team in every season the short name raced, never in one race
+    with it. Exactly one such runner -> that pair merges; the short name's
+    other pairs leave the queue. Two or more -> left for review."""
+    full = [e for e in roster if len(e['toks']) >= 2 and all(len(t) >= 2 for t in e['toks'][:2])]
+    by_key = {e['key']: e for e in roster}
+    for e in roster:
+        sf = _short_form(e)
+        if not sf:
+            continue
+        kind, v = sf
+        cands = []
+        for f in full:
+            if kind == 'single':
+                ok = f['toks'][-1] == v
+            else:
+                ok = f['toks'][-1] == v[1] and f['toks'][0][0] == v[0]
+            if ok and set(e['ays']) <= set(f['ays']) and not (e['races'] & f['races']):
+                cands.append(f)
+        mine = [p for p in pairs if e['key'] in (p['a'], p['b']) and p['label'] == 'review']
+        if len(cands) != 1:
+            continue
+        f = cands[0]
+        for p in mine:
+            other = p['b'] if p['a'] == e['key'] else p['a']
+            if other == f['key']:
+                p['label'] = 'auto'
+                p['detail'] = (p.get('detail') or '') + f"; roster context: the only {f['name']} on the team those seasons"
+            else:
+                p['label'] = 'resolved'
 
 
 # ---------------------------------------------------------------------------
@@ -873,7 +935,7 @@ def _row_line(r):
     return f"{r['date']} | {r['meet']} | {r['event']} | {r['mark']} | gr {r['grade'] or '-'}"
 
 
-def roster_export(units, outdir, rows=None, max_bytes=180000):
+def roster_export(units, outdir, rows=None, max_bytes=180000, families_only=False):
     """One file per roster (school unit and gender) for a roster reviewer
     (docs/agents/athlete-roster-review.md): every name on it with a season-by-
     season career, and the roster's undecided queued pairs with both sides'
@@ -890,6 +952,14 @@ def roster_export(units, outdir, rows=None, max_bytes=180000):
         er = _entity_rows(mine, {entity_key(unit, g, n) for n in names})
         pairs = [p for p in queue if p['a'].startswith(unit_g + '|') and p['b'].startswith(unit_g + '|')
                  and pair_key(p['a'], p['b']) not in decisions]
+        if families_only:
+            # only the surname families the queued pairs touch (their
+            # context is the family: siblings, spellings, the year one leaves)
+            fam = {t for p in pairs for side in (p['a'], p['b'])
+                   for t in clean_name(side.split('|', 2)[2]) if len(t) >= 3}
+            er = {k: v for k, v in er.items()
+                  if (clean_name(k.split('|', 2)[2]) or [''])[-1] in fam
+                  or (clean_name(k.split('|', 2)[2]) or [''])[0] in fam}
         roster = {k.split('|', 2)[2]: _career(v) for k, v in er.items()}
         # (by surname, so a family's names sit together)
         roster = dict(sorted(roster.items(), key=lambda kv: (re.split(r'[\s,]+', kv[0].strip())[-1].lower()
@@ -984,6 +1054,8 @@ def apply(catalog=None, quiet=False):
                 cid = member_of.get(aid, aid)
                 ev = p.get('event', '')
                 val, _ = js.parse_mark_value(p.get('mark', ''), ev)
+                if p.get('exhibition'):
+                    val = None      # an exhibition mark is shown, never a PR or season best
                 refs[(cid, ev, season)].append(((p.get('date') or ''), val, p.get('mark', ''),
                                                 year, path, i))
     # pass 2: flags per key, the same rules as json_store.recalculate_prs
@@ -1076,7 +1148,9 @@ def main():
     ex.add_argument('--unsure', action='store_true', help='export the pairs agents marked unsure, for a person')
     ro = sub.add_parser('roster-export', help='one file per roster for a roster reviewer')
     ro.add_argument('--out', required=True)
-    ro.add_argument('units', nargs='+', help='"me-hs-gsa|Boys" ...')
+    ro.add_argument('--families-only', action='store_true', help='only the surname families in queued pairs')
+    ro.add_argument('--all-queued', action='store_true', help='every roster with undecided queued pairs')
+    ro.add_argument('units', nargs='*', help='"me-hs-gsa|Boys" ...')
     im = sub.add_parser('review-import')
     im.add_argument('paths', nargs='+')
     im.add_argument('--by', required=True, help='who decided, e.g. "sonnet-5.5 review" or "James Longo"')
@@ -1090,7 +1164,12 @@ def main():
     elif a.cmd == 'review-export':
         review_export(a.batches, a.size, a.out, unsure=a.unsure)
     elif a.cmd == 'roster-export':
-        roster_export(a.units, a.out)
+        units = a.units
+        if a.all_queued:
+            dec = load_decisions()
+            units = sorted({p['a'].rsplit('|', 1)[0] for p in (_read_gz(QUEUE_PATH, {}) or {}).get('pairs', [])
+                            if pair_key(p['a'], p['b']) not in dec})
+        roster_export(units, a.out, families_only=a.families_only)
     elif a.cmd == 'review-import':
         review_import(a.paths, a.by)
 

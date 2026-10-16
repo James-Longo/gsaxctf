@@ -1467,6 +1467,11 @@ class Sub5ColumnParser:
                                     continue
                                 if _is_wind_reading(p):
                                     continue
+                                # (a dual-unit row, "119-11   36.55m": the metric
+                                # conversion printed after the feet-inches mark)
+                                if re.fullmatch(r'\d+(?:\.\d+)?m', p) and any(
+                                        re.fullmatch(r"\d{1,3}-\d{1,2}(?:\.\d+)?", q) for q in parts[:k]):
+                                    continue
                                 res_idx = k
                                 break
                             
