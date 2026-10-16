@@ -312,9 +312,12 @@ def entity_key(unit, gender, name):
     return f'{unit}|{gender}|{name}'
 
 
-def relay_key(unit, gender, event, name):
+def relay_key(unit, gender, name):
+    """One relay team is one school, gender and set of legs, in any order and
+    any event: the store id of a relay (its printed legs + school) does not
+    name the event, so the 4x100 and 4x200 of the same four are one team."""
     legs = sorted(' '.join(clean_name(x)) for x in name.split(',') if clean_name(x))
-    return f'relay|{unit}|{gender}|{event}|' + ';'.join(legs)
+    return f'relay|{unit}|{gender}|' + ';'.join(legs)
 
 
 def build_entities(rows):
@@ -324,9 +327,11 @@ def build_entities(rows):
         if is_relay(name, event):
             if ',' not in name:
                 continue
-            k = relay_key(unit, gender, event, name)
-            r = relays.setdefault(k, dict(unit=unit, gender=gender, event=event, members=collections.Counter(),
-                                          names=collections.Counter(), teams=collections.Counter(), seasons=set()))
+            k = relay_key(unit, gender, name)
+            r = relays.setdefault(k, dict(unit=unit, gender=gender, events=collections.Counter(),
+                                          members=collections.Counter(), names=collections.Counter(),
+                                          teams=collections.Counter(), seasons=set()))
+            r['events'][event] += 1
             r['members'][aid] += 1
             r['names'][name] += 1
             r['teams'][team] += 1
@@ -362,6 +367,22 @@ def build_entities(rows):
             cur = e['best'].get(k2)
             if cur is None or (v > cur if js.is_distance_event(event) else v < cur):
                 e['best'][k2] = v
+    # a store id is one relay team (a race read as the wrong gender files
+    # the same printed relay under both)
+    owner = {}
+    for k in list(relays):
+        r = relays[k]
+        into = next((owner[sid] for sid in r['members'] if sid in owner), None)
+        if into is None:
+            for sid in r['members']:
+                owner[sid] = k
+            continue
+        t = relays.pop(k)
+        for f in ('events', 'members', 'names', 'teams'):
+            relays[into][f].update(t[f])
+        relays[into]['seasons'] |= t['seasons']
+        for sid in t['members']:
+            owner[sid] = into
     for e in ents.values():
         e['ays'] = sorted(e['ays'])
         e['years'] = sorted(e['years'])
@@ -623,6 +644,17 @@ def cluster(ents, pairs, decisions):
     for p in pairs:
         if p['label'] == 'auto' and pair_key(p['a'], p['b']) not in decisions:
             union(p['a'], p['b'], 'auto')
+    # One store id is one runner: the site resolves a profile by it, so a
+    # name filed under both genders (a race the parser read as the wrong
+    # sex, a Mixed list) must not become two runners with one id. The
+    # conflict is reported by build() for QAQC.
+    by_sid = collections.defaultdict(list)
+    for k, e in ents.items():
+        for sid in e['members']:
+            by_sid[sid].append(k)
+    for ks in by_sid.values():
+        for k in ks[1:]:
+            union(ks[0], k, 'store id')
     groups = collections.defaultdict(list)
     for k in ents:
         groups[find(k)].append(k)
@@ -648,6 +680,7 @@ def build(rows=None, quiet=False):
 
     athletes = []
     member_of = {}
+    gender_conflicts = []
     for keys in groups:
         es = [ents[k] for k in keys]
         store_ids = collections.Counter()
@@ -662,7 +695,15 @@ def build(rows=None, quiet=False):
             grads.update(e['grads'])
             seasons.update(e['seasons'])
         cid = store_ids.most_common(1)[0][0]
-        a = dict(id=cid, name=display_name(names, first_freq), gender=es[0]['g'], unit=es[0]['unit'],
+        by_g = collections.Counter()
+        for e in es:
+            by_g[e['g']] += e['n']
+        gender = max(by_g, key=lambda g: (g in ('Boys', 'Girls'), by_g[g]))
+        if len([g for g in by_g if g in ('Boys', 'Girls')]) > 1:
+            gender_conflicts.append(dict(
+                id=cid, gender=gender, rows=dict(by_g),
+                other=sorted(r for e in es if e['g'] != gender for r in e['races'])[:20]))
+        a = dict(id=cid, name=display_name(names, first_freq), gender=gender, unit=es[0]['unit'],
                  class_of=grads.most_common(1)[0][0] if grads else None,
                  primary_team=teams.most_common(1)[0][0], teams=sorted(teams),
                  sports=sorted(seasons), rows=sum(e['n'] for e in es),
@@ -681,7 +722,8 @@ def build(rows=None, quiet=False):
     for k, r in relays.items():
         cid = r['members'].most_common(1)[0][0]
         relay_out.append(dict(id=f'relay--{cid}', key=k, name=tidy(r['names'].most_common(1)[0][0]),
-                              gender=r['gender'], event=r['event'], kind='relay',
+                              gender=r['gender'], event=r['events'].most_common(1)[0][0],
+                              events=sorted(r['events']), kind='relay',
                               primary_team=r['teams'].most_common(1)[0][0],
                               sports=sorted(r['seasons']), members=sorted(r['members'])))
         for sid in r['members']:
@@ -698,10 +740,12 @@ def build(rows=None, quiet=False):
         entities_merged=sum(len(a.get('entities', [])) for a in athletes),
         relay_teams=len(relay_out), pairs=dict(labels), decisions=len(decisions),
         review_queue=sum(1 for p in queue if pair_key(p['a'], p['b']) not in decisions),
-        unsure=sum(1 for p in queue if pair_key(p['a'], p['b']) in decisions), refused=len(refused))
+        unsure=sum(1 for p in queue if pair_key(p['a'], p['b']) in decisions), refused=len(refused),
+        gender_conflicts=len(gender_conflicts))
     say(json.dumps(stats))
     catalog = dict(stats=stats, athletes=athletes, relays=relay_out, member_of=member_of,
-                   refused=[dict(a=a, b=b, why=w, reason=r) for a, b, w, r in refused])
+                   refused=[dict(a=a, b=b, why=w, reason=r) for a, b, w, r in refused],
+                   gender_conflicts=sorted(gender_conflicts, key=lambda c: -sum(c['rows'].values())))
     _write_gz(CATALOG_PATH, catalog)
     _write_gz(QUEUE_PATH, dict(built=stats['built'], pairs=queue))
     return catalog, ents, pairs
@@ -894,8 +938,17 @@ def _write_registry(catalog):
     """athletes.json.gz for the site: one entry per runner (with the store ids
     it covers and its other spellings) plus relay teams, marked kind='relay'."""
     out = []
-    for a in catalog.get('athletes', []):
-        e = dict(id=a['id'], name=a['name'], primary_team=a['primary_team'], sports=a['sports'])
+    seen = {}
+    for a in sorted(catalog.get('athletes', []), key=lambda a: -a['rows']):
+        if a['id'] in seen:
+            # two runners on one store id that the catalog could not join
+            # (they share a race: "HERMAN" and "Herman" on one list); the
+            # site has one profile per id, so they share its entry
+            e = seen[a['id']]
+            e['sports'] = sorted(set(e['sports']) | set(a['sports']))
+            continue
+        e = seen[a['id']] = dict(id=a['id'], name=a['name'], primary_team=a['primary_team'],
+                                 sports=a['sports'])
         if a.get('members'):
             e['members'] = a['members']
         if a.get('aka'):
@@ -920,7 +973,7 @@ def qaqc(catalog=None):
     s = catalog.get('stats', {})
     return dict(athletes=s.get('athletes'), merged=s.get('merged_athletes'),
                 review_queue=s.get('review_queue'), decisions=s.get('decisions'),
-                refused_merges=s.get('refused'))
+                refused_merges=s.get('refused'), gender_conflicts=s.get('gender_conflicts'))
 
 
 def main():

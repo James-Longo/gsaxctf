@@ -462,6 +462,8 @@ class _MostRowsParser:
 
 _LABEL_BOYS = re.compile(r"\b(?:men|boys|male)'?s?\b", re.I)
 _LABEL_GIRLS = re.compile(r"\b(?:women|girls|female)'?s?\b", re.I)
+# a one-letter sex prefix on a hand-made sheet: "M 400m", "F High Jump"
+_LABEL_SEX_LETTER = re.compile(r'^\s*([MFW])\s+(?=\d|[A-Za-z]{2})')
 
 
 def strip_sex_prefix(data):
@@ -503,6 +505,9 @@ def fix_event_gender_from_label(data):
             continue
         label = str(ev.get('event') or '')
         b, g = _LABEL_BOYS.search(label), _LABEL_GIRLS.search(label)
+        letter = _LABEL_SEX_LETTER.match(label)
+        if letter and not (b or g):
+            b, g = letter.group(1) == 'M', letter.group(1) != 'M'
         if b and not g:
             ev['gender'] = 'Boys'
         elif g and not b:
@@ -542,11 +547,16 @@ def merge_continued_events(data):
     data['events'] = out
 
 
-def fix_event_gender_from_names(data):
+def fix_event_gender_from_names(data, split=True):
     """Relabel a race whose runners' first names overwhelmingly belong to
     the other gender (>= 90% of 8+ decisive names): spreadsheets and
     hand-typed lists carry no gender, and parsers fall back on a filename
-    hint or a default. Marks the event 'gender_from_names'."""
+    hint or a default. Marks the event 'gender_from_names'.
+
+    split: also split a list holding both sexes (split_mixed_by_names). Only
+    for cross country: a track list that reads mixed is more often a girls'
+    race with Cams and Maddoxes in it, or two events the parser ran
+    together, than a combined race."""
     from backend.parsers.namegender import gender_evidence
     for ev in data.get('events') or []:
         if not isinstance(ev, dict) or 'results' not in ev or ev.get('is_relay'):
@@ -562,7 +572,8 @@ def fix_event_gender_from_names(data):
             ev['gender_from_names'] = True
             label = str(ev.get('event') or '')
             ev['event'] = re.sub(r'\b(Boys|Men|Girls|Women)\b', want, label)
-    split_mixed_by_names(data)
+    if split:
+        split_mixed_by_names(data)
 
 
 def drop_relay_team_totals(data, text, filename):
@@ -1223,6 +1234,10 @@ def _parse_one_file(args):
                 fix_event_gender_from_names(data_to_save)
                 pre_drop_events = list(data_to_save.get('events') or [])
                 drop_sibling_gender_events(data_to_save, input_path)
+            else:
+                # track: a race whose names all belong to the other sex
+                # (a sheet the parser read under one gender)
+                fix_event_gender_from_names(data_to_save, split=False)
             meta = hytek_header_meta(text)
             if meta['venue'] and not data_to_save.get('venue'):
                 data_to_save['venue'] = meta['venue']

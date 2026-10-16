@@ -1252,6 +1252,32 @@ def test_round5_row_readers():
     assert [y['place'] for y in res['events'][0]['results']] == [1, 2, 3, 4, 5], res
 
 
+def test_track_sex_letter_labels_and_name_relabel():
+    """A hand-made dual-meet sheet ("M 400m" / "F 400m") read entirely as
+    girls; a truncated "oys 800 Meter Run" header; an initial is not a first
+    name; on track a list that reads mixed is relabelled, never split."""
+    from backend.scraper_v2 import fix_event_gender_from_label, fix_event_gender_from_names
+    from backend.parsers.namegender import name_gender
+    data = {'events': [{'event': 'M 400m', 'gender': 'Girls', 'results': []},
+                       {'event': 'F 400m', 'gender': 'Boys', 'results': []},
+                       {'event': 'Mile Run', 'gender': 'Girls', 'results': []}]}
+    fix_event_gender_from_label(data)
+    assert [e['gender'] for e in data['events']] == ['Boys', 'Girls', 'Girls']
+    assert name_gender('B Bradley') is None and name_gender('J. Smith') is None
+    assert name_gender('Bradley, B') is None and name_gender('Ian Moss') == 'Boys'
+    boys = ['Ian Moss', 'Luca Reed', 'Cameron Holt', 'John Ames', 'Peter Bell']
+    girls = ['Emma Ames', 'Olivia Bell', 'Sophia Cole', 'Grace Dodd', 'Hannah Eck',
+             'Abigail Fisk', 'Chloe Gale', 'Lily Hart', 'Ella Ince', 'Ava Jory',
+             'Mia Kemp', 'Zoe Lane', 'Julia Moss', 'Sarah Nye', 'Anna Orr']
+    data = {'events': [{'event': 'oys 800 Meter Run', 'gender': 'Girls',
+                        'results': [{'athlete': n} for n in boys]},
+                       {'event': '100 Meter Hurdles', 'gender': 'Girls',
+                        'results': [{'athlete': n} for n in girls + boys]}]}
+    fix_event_gender_from_names(data, split=False)
+    assert [e['gender'] for e in data['events']] == ['Boys', 'Girls']
+    assert len(data['events']) == 2
+
+
 if __name__ == '__main__':
     qaqc._ensure_team_mapping()
     failed = 0

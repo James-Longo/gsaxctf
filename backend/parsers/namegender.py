@@ -290,6 +290,8 @@ def first_name(athlete, last_first=False):
         n = n.split(',', 1)[1]
     elif len(n.split()) < 2:
         return None  # a bare surname ("Thomas", "Carl") says nothing
+    elif not last_first and re.fullmatch(r"[A-Za-z]\.?", n.split()[0]):
+        return None  # an initial: "B Bradley" is not a Bradley
     t = re.findall(r"[A-Za-z][A-Za-z'\-]+", n)
     if last_first and ',' not in (athlete or '') and t:
         return t[-1].lower()

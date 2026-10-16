@@ -45,6 +45,14 @@ For each **mismatch** in the new meets (most are rare, so read each one):
    (the official scores disagree with the file's own results; leave it and
    note it in the report).
 
+**Gender conflicts**: `python3 -m backend.athlete_catalog stats` reports
+`gender_conflicts`, runners whose results are filed under both genders
+(the catalog keeps them one runner; the store id has no gender). A new one
+usually means a race the parser read as the wrong sex: its `other` races in
+`gender_conflicts` (backend/data/athlete_catalog.json.gz) name the meet.
+Check new ones in this run's meets against the source file and fix the
+parser if it is a pattern.
+
 Five K Sport files are verified by `fiveksport sync` (every high-school
 results file with a team sheet must say `verified`).
 
