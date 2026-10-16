@@ -48,8 +48,7 @@ The site is hosted on **GitHub Pages**; a push to `main` is the deploy.
 `.github/workflows/deploy-pages.yml` builds `ui/` (sparse checkout, no
 backend archives) and publishes `ui/dist`. Updates come from the Claude
 update routine (`docs/agents/update-routine.md`), which ends with
-`python3 -m backend.routine publish --yes` (commit + push). Vercel is no longer
-used.
+`python3 -m backend.routine publish --yes` (commit + push).
 
 Data paths in the UI go through `asset()` (utils.js) so the site works both at
 the project URL (`/gsaxctf/`, base set by the workflow) and on the custom

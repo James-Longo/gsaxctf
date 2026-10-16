@@ -51,4 +51,4 @@ The project is split into three main layers:
 ## Common Tasks
 - **Updating Data**: Run `python backend/scraper.py` then `python backend/export_for_web.py`.
 - **Modifying Optimization**: Edit `backend/nash_engine.py` for game theory changes or `PerformanceList.jsx` for UI-side Hill Climbing logic.
-- **Deployment**: Refer to `AGENT_INSTRUCTIONS.md` for Vercel rules.
+- **Deployment**: Push to `main`; GitHub Pages deploys it (see `AGENT_INSTRUCTIONS.md`).
