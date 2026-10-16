@@ -64,6 +64,20 @@ function PostseasonSimulator({ performances, isBetter, manifest, loadTeamData, s
         }));
     }, [seedData]);
 
+    const squash = (s) => (s || '').toLowerCase().replace(/[^a-z0-9]/g, '');
+    // A store team belongs to a listed school when its name contains the
+    // school's short key ("Central/Dexter (indoor track)" is Central and
+    // Dexter's co-op) or equals the full name; middle schools never do.
+    const schoolOf = (teamName, schools) => {
+        const t = squash(teamName);
+        if (/middle|junior|elementary|grades/i.test(teamName || '')) return null;
+        for (const [key, val] of Object.entries(schools || {})) {
+            if (key === "Central" && t.includes("maine")) continue;
+            if (t.includes(squash(key)) || t === squash(val)) return val;
+        }
+        return null;
+    };
+
     const getStateSchools = (year, season) => {
         const isOutdoor = (season && season.toLowerCase().includes('outdoor'));
         if (isOutdoor) {
@@ -143,10 +157,7 @@ function PostseasonSimulator({ performances, isBetter, manifest, loadTeamData, s
             
             if (competitionType === 'Everyone') return true;
 
-            // Match against activeSchools values
-            return Object.values(activeSchools).some(schoolName => 
-                t.name.toLowerCase() === schoolName.toLowerCase()
-            );
+            return schoolOf(t.name, activeSchools) !== null;
         });
         
         // Find which expected team slugs are loaded
@@ -227,15 +238,17 @@ function PostseasonSimulator({ performances, isBetter, manifest, loadTeamData, s
             } else {
                 for (const [key, val] of Object.entries(activeSchools)) {
                     // Check against key (short) and val (long)
-                    const teamLower = p.team.toLowerCase();
-                    const filterKey = key.toLowerCase();
+                    // (punctuation dropped: the store's "HallDale High School"
+                    // is the list's "Hall-Dale")
+                    const teamLower = squash(p.team);
+                    const filterKey = squash(key);
 
                     // Specific fix for "Central" to avoid matching "Maine Central Institute"
                     if (key === "Central" && teamLower.includes("maine")) {
                         continue;
                     }
 
-                    if (teamLower.includes(filterKey) || teamLower === val.toLowerCase()) {
+                    if (teamLower.includes(filterKey) || teamLower === squash(val)) {
                         pvcTeam = val;
                         break;
                     }

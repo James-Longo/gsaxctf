@@ -1278,6 +1278,17 @@ def test_track_sex_letter_labels_and_name_relabel():
     assert len(data['events']) == 2
 
 
+def test_multi_day_web_date_keeps_the_files_own_day():
+    """The season index dates a two-day meet "December 28/29, 2021"; the file
+    for day two says 12/29 and keeps it (KVAC 4C), day one keeps 12/28."""
+    from backend.scraper_v2 import Sub5ScraperV2
+    s = Sub5ScraperV2.__new__(Sub5ScraperV2)
+    assert s.web_date_days('December 28/29, 2021') == {'2021-12-28', '2021-12-29'}
+    assert s.web_date_days('June 3-4, 2005') == {'2005-06-03', '2005-06-04'}
+    assert s.web_date_days('October 25, 2008') == {'2008-10-25'}
+    assert s.web_date_days('June 3 & 10, 2006') == {'2006-06-03'}
+
+
 if __name__ == '__main__':
     qaqc._ensure_team_mapping()
     failed = 0

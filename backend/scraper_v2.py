@@ -1650,6 +1650,22 @@ class Sub5ScraperV2:
             return None
         return dt.strftime("%Y-%m-%d")
 
+    def web_date_days(self, date_str):
+        """Every day a season-index date cell names: "January 9/10, 2015" ->
+        both days, "June 3-4, 2005" -> June 3 and 4. One day for a plain date."""
+        first = self.parse_web_date(date_str)
+        if not first:
+            return set()
+        days = {first}
+        m = re.search(r'(\d{1,2})\s*[-&/]\s*(\d{1,2})(?=\s*,|\s+\d{4})', date_str or '')
+        if m:
+            a, b = int(m.group(1)), int(m.group(2))
+            if a < b <= a + 6:
+                from datetime import date as _d, timedelta
+                d0 = _d.fromisoformat(first)
+                days |= {(d0 + timedelta(days=i)).isoformat() for i in range(b - a + 1)}
+        return days
+
     def _get_with_retry(self, url, max_retries=3):
         """Fetch a URL. Transient failures are retried by the session's
         urllib3 adapter; this only turns a final failure into an exception."""
@@ -2176,6 +2192,10 @@ class Sub5ScraperV2:
                     date = None
                 if web_date_raw:
                     parsed_d = self.parse_web_date(web_date_raw)
+                    # a multi-day meet ("December 28/29, 2021") is dated by
+                    # its own file when that names one of the days
+                    if date and date in self.web_date_days(web_date_raw):
+                        parsed_d = date
                     if self.is_date_in_season(parsed_d, season, year):
                         date = parsed_d
                 if not date:
@@ -2278,15 +2298,17 @@ class Sub5ScraperV2:
                             continue
 
                         team_norm = None
-                        if season == 'XC' and school:
-                            # Cross country files results under the school
-                            # catalog: every spelling of a school (truncations,
-                            # codes, mascots, M/F suffixes) lands on one team,
-                            # filed under the co-op it raced as, so one runner
-                            # keeps one athlete id. Strings the catalog cannot
-                            # place fall back to the registry resolution below.
+                        if school:
+                            # Results are filed under the school catalog: every
+                            # spelling of a school (truncations, codes, mascots,
+                            # M/F suffixes) lands on one team, filed under the
+                            # co-op it raced as, so one runner keeps one athlete
+                            # id. Strings the catalog cannot place fall back to
+                            # the registry resolution below, which fuzzy-matches
+                            # against the teams already stored ("WIND" ->
+                            # Windsor), so it is the last resort.
                             unit = school_catalog.store_unit(
-                                school, year=str(year), season='XC', gender=gender,
+                                school, year=str(year), season=season, gender=gender,
                                 meet_name=filename, grade=r.get('grade'))
                             if unit:
                                 team_norm = school_catalog.store_name(unit)

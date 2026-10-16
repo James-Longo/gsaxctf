@@ -638,6 +638,113 @@ def compare_scores(official, ours, resolve_official):
 # Main build
 # ---------------------------------------------------------------------------
 
+def company_check(groups, schools):
+    """'The company a school keeps', for the decisions that rest on weak names.
+
+    A code, a mascot or an athlete-continuity decision can settle on the wrong
+    school when two schools share it ("Hawks": Marshwood and Hermon; "MJHS":
+    Messalonskee and Mattanawcook) -- and continuity can then confirm the
+    mistake, because the same runners carry the same string in other files.
+    The schools a file names in full are independent evidence: Marshwood's
+    home meet also has Sanford, Noble and Massabesic, schools Marshwood meets
+    every season and Hermon never does. Among the ids the string resolves to
+    anywhere, the one that races with this file's other schools far more often
+    than the current decision wins."""
+    named = collections.defaultdict(set)
+    for g in groups.values():
+        if g.decision and not g.weak and not g.decision.startswith('x-') and \
+                (g.method or '').split('+')[0] in ('exact', 'stem', 'truncation'):
+            named[g.rel].add(g.decision)
+    cooc = collections.Counter()
+    nfiles = collections.Counter()
+    for ids in named.values():
+        for a in ids:
+            nfiles[a] += 1
+            for b in ids:
+                if a != b:
+                    cooc[(a, b)] += 1
+    by_raw = collections.defaultdict(collections.Counter)
+    for g in groups.values():
+        if g.decision:
+            by_raw[g.raw][g.decision] += g.rows
+    # where a middle schooler runs in high school: (athlete) -> {ay: hs town}
+    later = collections.defaultdict(dict)
+    for g in groups.values():
+        e = schools.get(g.decision) if g.decision else None
+        if e and e.get('level') == 'hs' and e.get('town') and not g.weak:
+            for a in g.athletes:
+                later[a][g.ay] = e['town']
+
+    hs_towns = {e.get('town') for e in schools.values() if e.get('level') == 'hs' and e.get('town')}
+
+    def later_town(g):
+        towns = collections.Counter()
+        for a in g.athletes:
+            t = [tw for ay, tw in later.get(a, {}).items() if g.ay < ay <= g.ay + 5]
+            if t:
+                towns[collections.Counter(t).most_common(1)[0][0]] += 1
+        if not towns:
+            return None
+        t, n = towns.most_common(1)[0]
+        return t if n >= 4 and n >= 0.7 * sum(towns.values()) else None
+    changed = 0
+    for g in groups.values():
+        m = g.method or ''
+        if not g.decision or m.startswith(('manual', 'later-hs')) or \
+                not (g.weak or m.split('+')[0] in ('code', 'mascot', 'nickname')
+                     or m.startswith(('athlete-continuity', 'company'))):
+            continue
+        others = named.get(g.rel, set()) - {g.decision}
+        # a full name ("Phillips Exeter", "Plymouth South") is not up for
+        # grabs: only a short code, a mascot or nickname may become a school
+        # its name doesn't suggest
+        open_name = len(g.raw or '') <= 6 or m.split('+')[0] in ('mascot', 'nickname') or \
+            (' ' not in (g.raw or '') and (g.raw or '').isupper())
+        cands = set(g.candidates or [])
+        if open_name:
+            cands |= set(by_raw[g.raw]) | set((g.evidence or {}).get('votes', {}))
+        # same level only: middle vs high school is the meet's and the
+        # string's call (relevel, level context), not the company's
+        lv = schools.get(g.decision, {}).get('level')
+        cands = {c for c in cands if c in schools and not c.startswith('x-')
+                 and schools[c].get('level') == lv and nfiles[c] >= 5}
+
+        # middle school: the high school its runners go on to names the town
+        if lv == 'ms':
+            t = later_town(g)
+            # (a town with no high school sends its runners elsewhere:
+            # Durham's go on to Freeport, which says nothing against Durham)
+            if t and schools.get(g.decision, {}).get('town') != t and \
+                    schools.get(g.decision, {}).get('town') in hs_towns:
+                fit = [c for c in cands if schools[c].get('town') == t]
+                if len(fit) == 1:
+                    g.flags.append(f'later high school: {g.decision} -> {fit[0]} (runners go on to {t})')
+                    g.decision, g.method, g.weak = fit[0], f'later-hs (was {m.split(" (was ")[0]})', False
+                    changed += 1
+                    continue
+            if t and schools.get(g.decision, {}).get('town') == t:
+                continue      # the future high school agrees: leave it
+        if len(others) < 2:
+            continue
+
+        def score(sid):
+            # share of sid's meets that have each of this file's schools: a
+            # big school that races everyone does not win by size
+            if not nfiles[sid]:
+                return 0.0
+            return sum(cooc[(sid, o)] for o in others if not compatible(schools, sid, o)) / nfiles[sid]
+        cur = score(g.decision)
+        best = max(cands, key=score, default=None)
+        if best and best != g.decision and not compatible(schools, best, g.decision):
+            b = score(best)
+            if b >= 0.5 and b >= 5 * max(cur, 0.05):
+                g.flags.append(f'company: {g.decision} ({cur:.2f}) -> {best} ({b:.2f})')
+                g.decision, g.method, g.weak = best, f'company (was {m.split(" (was ")[0]})', False
+                changed += 1
+    print(f'company check: {changed} groups re-resolved by the schools they race with')
+    return changed
+
+
 def main(argv=None):
     ap = argparse.ArgumentParser()
     ap.add_argument('--parsed', nargs='*', default=[os.path.join(DATA, 'parsed_results')])
@@ -680,6 +787,13 @@ def main(argv=None):
     print(f'{len(groups)} (file, raw string) groups; {len(auto)} automatic out-of-state entries')
     stats = decide(groups, schools)
     print('evidence passes:', dict(stats))
+    # the company check corrects codes and mascots that continuity then
+    # leaned on elsewhere ("MJH" -> Mattanawcook made Messalonskee's own
+    # runners look like Mattanawcook's): re-run the evidence after it
+    for _ in range(2):
+        if not company_check(groups, schools):
+            break
+        print('evidence passes:', dict(decide(groups, schools)))
     coop_activity(groups, schools, coops, idx, args)
     n_host = coop_labels_to_host(groups, schools)
     print(f'co-op labels read where the co-op was not competing -> host school: {n_host} groups')
