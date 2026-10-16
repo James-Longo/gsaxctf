@@ -270,13 +270,17 @@ def _partner(year, season, stem, parsed, index):
     """The results file a scores-only file belongs to: same season, same
     date, and the most official schools among its rows."""
     date = (parsed.get('date') or '')[:10]
-    names = {_key(t['team']) for b in parsed.get('team_rankings') or [] for t in b.get('teams', [])}
+    if not date:
+        return None       # undated: any meet of the season with these schools would do
+    teams = Teams(year, season, stem)
+    names = {teams(t['team']) for b in parsed.get('team_rankings') or [] for t in b.get('teams', [])}
     best, best_n = None, 0
     for st, d in index.get((year, season), {}).items():
-        if st == stem or not d.get('events') or (date and (d.get('date') or '')[:10] != date):
+        if st == stem or not d.get('events') or (d.get('date') or '')[:10] != date:
             continue
-        schools = {_key(r.get('school')) for e in d['events'] if isinstance(e, dict)
-                   for r in e.get('results') or []}
+        other = Teams(year, season, st)
+        schools = {other(r.get('school')) for e in d['events'] if isinstance(e, dict)
+                   for r in (e.get('results') or [])[:40]}
         n = len(names & schools)
         if n > best_n:
             best, best_n = st, n

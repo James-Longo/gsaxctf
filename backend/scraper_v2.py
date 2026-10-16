@@ -532,6 +532,15 @@ def add_team_scores(data, input_path):
     if blocks:
         data['team_rankings'] = blocks
         data['team_rankings_source'] = 'teamscores'
+        if not data.get('date'):
+            # a scores-only file is paired with its results by date: the
+            # title's ("... - 4/20/2006"), not the Hy-Tek print stamp's
+            for line in file_text(input_path).splitlines()[:40]:
+                m = re.search(r'(\d{1,2})/(\d{1,2})/(\d{2,4})', line)
+                if m and not re.search(r'licensed|meet\s*manager|hy-?tek', line, re.I):
+                    y = m.group(3) if len(m.group(3)) == 4 else '20' + m.group(3)
+                    data['date'] = f'{y}-{int(m.group(1)):02d}-{int(m.group(2)):02d}'
+                    break
 
 
 def merge_continued_events(data):
@@ -1230,7 +1239,10 @@ def _parse_one_file(args):
         data_to_save = results
         if isinstance(results, list) and results and 'event' in results[0]:
             data_to_save = {'events': results, 'date': results[0].get('date')} if 'date' in results[0] else results
-        if season_label == 'XC' and isinstance(data_to_save, list) and not data_to_save:
+        # (a track scores-only file -- "Team Rankings - Through Event 38" posted
+        # beside the results -- parses to no rows; keep it a document so its
+        # official scores are read below)
+        if isinstance(data_to_save, list) and not data_to_save:
             data_to_save = {'events': [], 'date': None, 'meet_name': None, 'team_rankings': []}
         # The file's own Hy-Tek header is a second source of truth for the
         # venue; only fill what the parser could not supply itself.
