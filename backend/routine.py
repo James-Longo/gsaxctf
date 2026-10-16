@@ -129,6 +129,10 @@ def qaqc():
     with contextlib.redirect_stdout(buf):
         q.check_meet_scoring()
         q.check_result_order()
+        # indoor/outdoor: printed points / fitted tables through the school
+        # catalog (backend/track_verify.py) replace the legacy track check
+        from backend import track_verify
+        track_verify.save(track_verify.check_all(quiet=True))
     synced = set(_load_json(os.path.join(DATA, 'scrape_state.json'), {}).get('synced_meets', {}))
     state = _load_json(STATE_PATH, {})
     seen = set(state.get('reported_meets', []))

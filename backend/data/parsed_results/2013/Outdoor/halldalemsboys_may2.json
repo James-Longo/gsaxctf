@@ -1,21 +1,46 @@
 {
-    "events": [
+    "events": [],
+    "date": "Unknown Date",
+    "meet_name": "Sheet1",
+    "venue": null,
+    "team_rankings": [
         {
-            "event": "4x400 Relay",
             "gender": "Boys",
-            "is_relay": true,
-            "results": [
+            "events_scored": null,
+            "teams": [
                 {
-                    "school": "Windsor",
-                    "result": "124.5",
-                    "athletes": [],
-                    "grade": "",
-                    "type": "Finals"
+                    "rank": 1,
+                    "team": "Windsor",
+                    "score": 124.5
+                },
+                {
+                    "rank": 2,
+                    "team": "HD",
+                    "score": 120.0
+                },
+                {
+                    "rank": 3,
+                    "team": "China",
+                    "score": 51.0
+                },
+                {
+                    "rank": 4,
+                    "team": "Gardiner",
+                    "score": 27.0
+                },
+                {
+                    "rank": 5,
+                    "team": "Monmouth",
+                    "score": 26.0
+                },
+                {
+                    "rank": 6,
+                    "team": "Page",
+                    "score": 4.0
                 }
             ]
         }
     ],
-    "date": null,
-    "meet_name": "Sheet1",
-    "team_rankings": []
+    "parser": "ColumnStrategyParser",
+    "team_rankings_source": "teamscores"
 }

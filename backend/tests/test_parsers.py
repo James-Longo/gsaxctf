@@ -1289,6 +1289,48 @@ def test_multi_day_web_date_keeps_the_files_own_day():
     assert s.web_date_days('June 3 & 10, 2006') == {'2006-06-03'}
 
 
+def test_team_scores_reader_formats():
+    """Score blocks the parser missed: a meet label inside the Hy-Tek header,
+    a 'Through Event' table with a code column and a split decimal, an
+    inline list, a number on its own line."""
+    from backend.parsers.teamscores import extract_team_scores
+    t = """
+                 Women - 2B - Team Rankings - 14 Events Scored
+===============================================================================
+    1) Alpha High School         111        2) Beta High School         97
+    3) Gamma HS                   28
+"""
+    b = extract_team_scores(t)
+    assert [(x['gender'], [(y['team'], y['score']) for y in x['teams']]) for x in b] == \
+        [('Girls', [('Alpha High School', 111.0), ('Beta High School', 97.0), ('Gamma HS', 28.0)])]
+    t = """Team Rankings - Through Event 38
+                    Female Team Scores
+    Place   School                                 Points
+      1     Alpha High School         ALP              99
+      2     Beta Track Team           BETA             64 .50
+                    Male Team Scores
+      1     Beta Track Team           BETA            103 .50
+      2     Alpha High School         ALP              59
+"""
+    b = {x['gender']: [(y['team'], y['score']) for y in x['teams']] for x in extract_team_scores(t)}
+    assert b == {'Girls': [('Alpha High School', 99.0), ('Beta Track Team', 64.5)],
+                 'Boys': [('Beta Track Team', 103.5), ('Alpha High School', 59.0)]}, b
+    b = extract_team_scores('Girls Team Scores: Alpha 116, Beta Academy 46.5, Gamma 37.5')
+    assert [(y['team'], y['score']) for y in b[0]['teams']] == [('Alpha', 116.0), ('Beta Academy', 46.5), ('Gamma', 37.5)]
+    b = extract_team_scores('Male Team Scores\n1 Alpha High School  -\n162\n2 Beta High School -\n129\n')
+    assert [(y['team'], y['score']) for y in b[0]['teams']] == [('Alpha High School', 162.0), ('Beta High School', 129.0)]
+
+
+def test_printed_points_by_column():
+    """The Points column, not the mark or a wind reading next to it."""
+    from backend.parser import printed_points
+    h = '    Name                    Year School                  Finals  Wind  H#  Points'
+    assert printed_points('  1 Al Ames                    Alpha                     12.30   +1.2   1      10', h) == 10.0
+    assert printed_points('  9 Bo Bean                    Beta                      13.03   -0.4   3', h) is None
+    h = '    Name                    Year School                  Finals  Points'
+    assert printed_points('  3 Cy Cole                    Gamma                     20.67     2.50', h) == 2.5
+
+
 if __name__ == '__main__':
     qaqc._ensure_team_mapping()
     failed = 0

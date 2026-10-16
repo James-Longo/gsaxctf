@@ -64,6 +64,21 @@ def _is_xc_event(name):
     return bool(m and float(m.group(1)) > 2)
 
 
+def printed_points(line, header):
+    """The points a row prints under the header's "Points" column (Hy-Tek
+    right-aligns them under the word), or None: a scoring check from the
+    file's own numbers. Read by position, so a wind reading or heat number
+    elsewhere on the row is not taken for points."""
+    m = re.search(r'\bPoints\b', header or '')
+    if not m or not line:
+        return None
+    # (the mark ends just left of the column; points start inside it)
+    for t in re.finditer(r'(?<!\S)(\d{1,3}(?:\.\d{1,3})?)(?!\S)', line):
+        if m.start() - 1 <= t.start() and t.end() <= m.end() + 3:
+            return float(t.group(1))
+    return None
+
+
 class Sub5ColumnParser:
     def __init__(self, file_path, text=None):
         """Parse from a file path, or directly from `text` (html or plain)
@@ -1428,6 +1443,10 @@ class Sub5ColumnParser:
                                 mpl = re.match(r'\s*\*?(\d{1,4})\s', line)
                                 if mpl:
                                     entry["place"] = int(mpl.group(1))
+                                if not xc_event:
+                                    pts = printed_points(line, lines[header_row_idx])
+                                    if pts is not None:
+                                        entry["points"] = pts
                                 if xc_event and res_end > 0:
                                     tp = re.match(r'\s+(\d{1,3})(?=\s|$)', line[res_end:])
                                     if tp and 'H#' in lines[header_row_idx]:
@@ -1526,6 +1545,12 @@ class Sub5ColumnParser:
                                     "athletes": [],
                                     "type": anchor_type
                                 }
+                                mpl = re.match(r'\s*\*?(\d{1,4})\s', line)
+                                if mpl:
+                                    current_relay["place"] = int(mpl.group(1))
+                                pts = printed_points(line, lines[header_row_idx])
+                                if pts is not None:
+                                    current_relay["points"] = pts
                                 if relay_exhibition:
                                     current_relay["exhibition"] = True
                                 if ev.get("is_ms"):

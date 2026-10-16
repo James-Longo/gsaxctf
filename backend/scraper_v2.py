@@ -514,6 +514,26 @@ def fix_event_gender_from_label(data):
             ev['gender'] = 'Girls'
 
 
+def add_team_scores(data, input_path):
+    """Official team scores read from the file itself (teamscores.py) for a
+    parse that has none. Scores without a gender take the file's ("...boys")
+    or, failing that, the only gender its events have."""
+    from backend.parsers.teamscores import extract_team_scores, file_text
+    stem = os.path.basename(input_path)
+    fg = 'Girls' if re.search(r'girl|women|female|(?<![a-z])g(?:\.|_|$)', stem, re.I) else \
+        'Boys' if re.search(r'boy|(?<!wo)men(?![a-z])|(?<![fe])male|(?<![a-z])b(?:\.|_|$)', stem, re.I) else None
+    if fg is None:
+        gs = {e.get('gender') for e in data.get('events') or [] if isinstance(e, dict)} - {None, '', 'Mixed'}
+        fg = gs.pop() if len(gs) == 1 else None
+    try:
+        blocks = extract_team_scores(file_text(input_path), fg)
+    except Exception:  # noqa: BLE001 - a scores reader failure never fails a parse
+        blocks = []
+    if blocks:
+        data['team_rankings'] = blocks
+        data['team_rankings_source'] = 'teamscores'
+
+
 def merge_continued_events(data):
     """Two consecutive races with one label whose second part carries on
     from the first - places 53+ after 1-52 (a list printed in two columns),
@@ -1238,6 +1258,11 @@ def _parse_one_file(args):
                 # track: a race whose names all belong to the other sex
                 # (a sheet the parser read under one gender)
                 fix_event_gender_from_names(data_to_save, split=False)
+                # the official team scores, in every format a file prints
+                # them (backend/parsers/teamscores.py), when the parser
+                # read none: the score check needs them
+                if not data_to_save.get('team_rankings'):
+                    add_team_scores(data_to_save, input_path)
             meta = hytek_header_meta(text)
             if meta['venue'] and not data_to_save.get('venue'):
                 data_to_save['venue'] = meta['venue']
