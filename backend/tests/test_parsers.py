@@ -1382,6 +1382,26 @@ def test_track_audit_fixes_parser():
     assert res.get('date') == '2013-05-03', res.get('date')
 
 
+def test_split_mark_sheet():
+    """Telstar 2010-11 sheets: the mark split over Min/Ft and Sec/Inchs."""
+    from backend.parsers.splitmark import SplitMarkParser
+    t = """Place Athlete                  Team       Event        Min/Ft Sec/Inchs   Points
+  1 Ames, Al                    StD     Racewalk            9 04.0          8
+  1 Bean, Bo                    MtV     100 Dash                 11.7        8
+  2 Cole, Cy                    Lis     400 Dash            0 57.1          6
+  1 Dodd,Eck,Fisk,Gale          Lis     1600 Relay          3 54.8          8
+  3 Hart, Hal                   StD     Long Jump          16 04.5          4
+  8                                     Racewalk
+"""
+    assert SplitMarkParser.matches(t)
+    r = SplitMarkParser(None).parse(t, 'telstarboys_may3.pdf', 'Outdoor')
+    got = {e['event']: [(x.get('athlete') or x['school'], x['result']) for x in e['results']] for e in r['events']}
+    assert got == {'1600 Meter Race Walk': [('Ames, Al', '9:04.0')], '100 Meter Dash': [('Bean, Bo', '11.7')],
+                   '400 Meter Dash': [('Cole, Cy', '57.1')], '4x400 Meter Relay': [('Lis', '3:54.8')],
+                   'Long Jump': [('Hart, Hal', '16-04.50')]}, got
+    assert all(e['gender'] == 'Boys' for e in r['events'])
+
+
 if __name__ == '__main__':
     qaqc._ensure_team_mapping()
     failed = 0

@@ -971,6 +971,10 @@ def _parse_one_file(args):
         from backend.parsers.directathletics import DirectAthleticsParser
         if DirectAthleticsParser.matches(re.sub(r'<[^>]+>', '', text[:20000])):
             chain.insert(0, DirectAthleticsParser(_WORKER_DETECTOR.scraper))
+        # spreadsheet sheets with the mark split into Min/Ft and Sec/Inchs
+        from backend.parsers.splitmark import SplitMarkParser
+        if SplitMarkParser.matches(text):
+            chain.insert(0, SplitMarkParser(_WORKER_DETECTOR.scraper))
         # RunScore-style "=====" ruler tables: columns cut by the ruler
         from backend.parsers.rulertable import RulerTableParser
         if RulerTableParser.matches(re.sub(r'<[^>]+>', '', text[:200000])):
