@@ -39,6 +39,7 @@ VERIFICATION = os.path.join(BASE, 'backend', 'data', 'meet_verification.json')
 TABLES = [
     ('10-8-6-4-2-1', [10, 8, 6, 4, 2, 1]),
     ('10-8-6-5-4-3-2-1', [10, 8, 6, 5, 4, 3, 2, 1]),
+    ('10-8-6-4-3-2-1', [10, 8, 6, 4, 3, 2, 1]),      # SMAA / KVAC: seven places
     ('8-6-4-2-1', [8, 6, 4, 2, 1]),
     ('8-6-4-3-2-1', [8, 6, 4, 3, 2, 1]),
     ('6-4-3-2-1', [6, 4, 3, 2, 1]),
@@ -105,22 +106,28 @@ def _value(mark, event):
 def _races(parsed):
     """(gender, event, is_relay, division#) -> scoring rows (Finals only when
     the event has finals; exhibition and seed rows out)."""
-    out = collections.OrderedDict()
-    seen = collections.Counter()
+    blocks = collections.OrderedDict()
     for e in parsed.get('events') or []:
         if not isinstance(e, dict) or not e.get('results'):
             continue
         base = (e.get('gender'), e.get('event'), bool(e.get('is_relay')))
         rows = [r for r in e['results'] if r.get('type') != 'Seed' and not r.get('exhibition')]
-        if not rows:
-            continue
-        # a repeated all-Finals block of one event is a division of it
-        div = seen[base] if all(r.get('type') == 'Finals' for r in rows) else 0
-        seen[base] += 1
-        out.setdefault(base + (div,), []).extend(rows)
-    for k, rows in out.items():
-        fin = [r for r in rows if r.get('type') == 'Finals']
-        out[k] = fin or rows
+        if rows:
+            blocks.setdefault(base, []).append(rows)
+    out = collections.OrderedDict()
+    for base, bl in blocks.items():
+        # a prelim section is not a race of its own when the event has finals
+        fin = [[r for r in b if r.get('type') == 'Finals'] for b in bl]
+        fin = [b for b in fin if b]
+        use = fin or bl
+        seen = []
+        for b in use:
+            sig = sorted((r.get('athlete') or r.get('school'), r.get('result')) for r in b)
+            if sig in seen:
+                continue      # the whole report printed twice
+            seen.append(sig)
+            # a repeated finals block of one event is a division of it
+            out[base + (len(seen) - 1,)] = b
     return out
 
 
@@ -214,12 +221,48 @@ def compare(blocks, computed, teams):
             pick = same[0] if len(same) == 1 else named[0] if len(named) == 1 else None
             if pick:
                 row[1] = spare.pop(pick)
+        # A team split in two -- relays under the full name, individuals
+        # under a code or nickname ("Lawrence" / "Bulldogs", "Mta Road
+        # Runners" / "Mta") -- is short by exactly one unclaimed group's points.
+        for _ in range(3):
+            for row in got_by:
+                t, got, _h = row
+                short = t['score'] - got
+                if short <= 0.5 or not spare:
+                    continue
+                fit = [k for k, v in spare.items() if abs(v - short) <= 0.5]
+                if len(fit) == 1:
+                    row[1] = got + spare.pop(fit[0])
         for t, got, _ in got_by:
             d = got - t['score']
             total += abs(d)
             rows.append(dict(gender=g, team=t['team'], official=t['score'], computed=round(got, 2),
                              delta=round(d, 2)))
     return total, rows
+
+
+def _merge_divisions(blocks, teams):
+    """Several scores blocks for one sex (Junior / Senior / Open divisions,
+    each scored on its own): every printed point is in exactly one of them,
+    so their sum per team is what the printed points add up to."""
+    by_g = collections.OrderedDict()
+    for b in blocks:
+        by_g.setdefault(_gender_of(b), []).append(b)
+    out = []
+    for g, bl in by_g.items():
+        if len(bl) == 1:
+            out.append(bl[0])
+            continue
+        tot, names = collections.OrderedDict(), {}
+        for b in bl:
+            for t in b['teams']:
+                k = teams(t['team'], g)
+                tot[k] = tot.get(k, 0.0) + t['score']
+                names.setdefault(k, t['team'])
+        out.append({'gender': g, 'divisions': len(bl),
+                    'teams': [{'rank': i + 1, 'team': names[k], 'score': v}
+                              for i, (k, v) in enumerate(tot.items())]})
+    return out
 
 
 def verify(parsed, year, season, stem, results=None):
@@ -231,6 +274,12 @@ def verify(parsed, year, season, stem, results=None):
     races = _races(src)
     if not races:
         return dict(status='scores_only')
+    # a girls' file that also prints the boys' standings: nothing to check them against
+    sexes = {k[0] for k in races}
+    blocks = [b for b in blocks if _gender_of(b) in sexes or _gender_of(b) == 'Combined']
+    if not blocks:
+        return dict(status='rankings_other_gender')
+    blocks = _merge_divisions(blocks, teams)
     candidates = []
     pp = score_printed(races, teams)
     if pp is not None:

@@ -77,8 +77,10 @@ def printed_points(line, header):
     m = re.search(r'\bPoints\b', header or '')
     if not m or not line:
         return None
-    # (the mark ends just left of the column; points start inside it)
-    for t in re.finditer(r'(?<!\S)(\d{1,3}(?:\.\d{1,3})?)(?!\S)', line):
+    # (the mark ends just left of the column; points start inside it; a
+    # record note may be glued on: "10(State Record)"; a 3-decimal number
+    # there is a tie-break time, not points)
+    for t in re.finditer(r'(?<!\S)(\d{1,3}(?:\.\d{1,2})?)(?=\(|\s|$)', line):
         if m.start() - 1 <= t.start() and t.end() <= m.end() + 3:
             return float(t.group(1))
     return None

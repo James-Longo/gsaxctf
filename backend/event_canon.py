@@ -37,9 +37,9 @@ OUT_OF_SCOPE = re.compile(
 INNER_GENDER = re.compile(r"\b(men|boys|male)'?s?\b|\b(women|girls|female)'?s?\b", re.I)
 
 DIST_RE = re.compile(
-    r'\b(10000|5000|3200|3000|2000|1600|1500|1320|1000|880|800|600|500|440|400|300|220|200|150|110|100|'
+    r'\b(10000|5000|3200|3000|2000|1600|1500|1320|1000|880|800|600|500|440|400|300|240|220|200|150|110|100|'
     r'80|60|55|50|45|40)(?!\d)\s*(m\b|meters?\b|metre|yard|yd\b|y\b)?', re.I)
-RELAY_RE = re.compile(r'([43])\s*[xX]\s*(\d{2,4}|880|1?\s*mile|8)\b')
+RELAY_RE = re.compile(r'([43])\s*[xX]\s*(\d{2,4}|880|1?\s*mile|8)\b', re.I)
 
 TYPE_HURDLES = re.compile(r'hurd|\bhh\b|\bih\b|\blh\b|\bh\b$', re.I)
 TYPE_WALK = re.compile(r'race\s*walk|racewalk|\brw\b', re.I)
@@ -101,6 +101,8 @@ def canonical_event(raw, gender, season=None, level=None):
             gender = inner
         s = INNER_GENDER.sub(' ', s)
 
+    # a continuation page of the same event: "#36 Women's Shot Put (cont'd)"
+    s = re.sub(r"\(\s*cont(?:'?d|inued)?\.?\s*\)", ' ', s, flags=re.I)
     # obvious debris: commas (athlete bleed), dates, header words
     if JUNK.search(s):
         return None
@@ -124,7 +126,7 @@ def canonical_event(raw, gender, season=None, level=None):
             legs = m.group(1)    # a 3x55 shuttle or 3x1600 is not a 4x
             leg = m.group(2).replace(' ', '').lower()
             unit = 'Yard' if re.search(r'y(ar)?d', s, re.I) or leg == '880' else 'Meter'
-            if 'mile' in leg or leg == '1':
+            if 'mile' in leg or leg in ('1', '1mile'):
                 return gender, '3x1 Mile Relay' if s.replace(' ', '').lower().startswith('3x') else '4x1 Mile Relay'
             if leg == '8':
                 leg = '800'

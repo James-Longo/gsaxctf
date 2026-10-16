@@ -1402,6 +1402,30 @@ def test_split_mark_sheet():
     assert all(e['gender'] == 'Boys' for e in r['events'])
 
 
+def test_score_divisions_and_checker_races():
+    """Divisions scored on their own keep one block each; the checker sums
+    them. A prelim section is not a race when the event has finals, and a
+    report printed twice is one race."""
+    from backend.parsers.teamscores import extract_team_scores
+    from backend.track_verify import _races
+    t = """Men - Junior Division - Team Rankings - 5 Events Scored
+==============================================
+    1) Alpha High School         37        2) Beta High School   20
+Men - Senior Division - Team Rankings - 5 Events Scored
+==============================================
+    1) Beta High School         50        2) Alpha High School   12
+"""
+    b = extract_team_scores(t)
+    assert [(x['division'], x['teams'][0]['score']) for x in b] == [('Junior Division', 37.0), ('Senior Division', 50.0)]
+    fin = [{'athlete': 'A', 'school': 'X', 'result': '11.0', 'type': 'Finals', 'place': 1}]
+    pre = [{'athlete': 'A', 'school': 'X', 'result': '11.2', 'type': 'Prelims', 'place': 1}]
+    parsed = {'events': [{'event': '100 Meter Dash', 'gender': 'Boys', 'results': pre},
+                         {'event': '100 Meter Dash', 'gender': 'Boys', 'results': fin},
+                         {'event': '100 Meter Dash', 'gender': 'Boys', 'results': list(fin)}]}
+    races = _races(parsed)
+    assert list(races.values()) == [fin], races
+
+
 if __name__ == '__main__':
     qaqc._ensure_team_mapping()
     failed = 0

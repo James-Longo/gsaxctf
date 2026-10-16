@@ -163,6 +163,9 @@ def extract_team_scores(text, file_gender=None):
             i += 1
             continue
         hg = _gender(line)
+        # a division scored on its own: "Men - Junior Division - Team Rankings"
+        md = re.search(r"(?i)\b(?:women|men|girls|boys|female|male)'?s?\b\s*-?\s*(.*?)\s*-?\s*team\s+(?:rankings|scores)", line)
+        div = re.sub(r'\s+', ' ', md.group(1)).strip(' -') if md else ''
         mn, mt = EVENTS_N.search(line), THROUGH_N.search(line)
         n = int(mn.group(1)) if mn else int(mt.group(1)) if mt else None
         inline = _inline(line)
@@ -183,9 +186,13 @@ def extract_team_scores(text, file_gender=None):
                     r['rank'] = k + 1
             order += 1
             key = ((n or 0), order)
-            if g not in found or key >= found[g][0]:
-                found[g] = (key, {'gender': g, 'events_scored': n, 'teams': teams})
-    return [b for _, b in sorted(found.values(), key=lambda x: x[1]['gender'])]
+            fk = (g, div)
+            if fk not in found or key >= found[fk][0]:
+                blk = {'gender': g, 'events_scored': n, 'teams': teams}
+                if div:
+                    blk['division'] = div
+                found[fk] = (key, blk)
+    return [b for _, b in sorted(found.values(), key=lambda x: (x[1]['gender'], x[1].get('division', '')))]
 
 
 def file_text(path):

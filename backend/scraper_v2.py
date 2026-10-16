@@ -460,6 +460,11 @@ class _MostRowsParser:
         return best if best is not None else []
 
 
+# rows the sync leaves out, by (meet, reason): a rebuild writes them to
+# backend/data/sync_drops.json for QAQC
+SYNC_DROPS = __import__('collections').Counter()
+SYNC_DROP_WHAT = __import__('collections').Counter()   # (kind, season, raw label) -> rows
+
 _LABEL_BOYS = re.compile(r"\b(?:men|boys|male)'?s?\b", re.I)
 _LABEL_GIRLS = re.compile(r"\b(?:women|girls|female)'?s?\b", re.I)
 # a one-letter sex prefix on a hand-made sheet: "M 400m", "F High Jump"
@@ -2299,6 +2304,8 @@ class Sub5ScraperV2:
                     canon = canonical_event(event_name, gender or 'Boys', season=season,
                                             level=meet_level)
                     if canon is None:
+                        SYNC_DROPS[(meet_key, 'event out of scope / unreadable')] += len(results_list)
+                        SYNC_DROP_WHAT[('event', season, str(event_name)[:60])] += len(results_list)
                         continue
                     gender, event_canon_name = canon
                     full_event = f"{gender} {event_canon_name}"
@@ -2327,19 +2334,27 @@ class Sub5ScraperV2:
                             # — these are individual-event rows from two-column PDFs that bled into
                             # the relay section during parsing.
                             if re.match(r'^[A-Za-z][A-Za-z\'-]+,\s+[A-Za-z]', school):
+                                SYNC_DROPS[(meet_key, 'relay school looks like a name')] += 1
                                 continue
 
                         if not is_relay:
                             athlete_name = self.normalize_athlete_name(athlete_name)
                             # Reject leaked rows: individual athlete names never contain marks
                             if re.search(r'\d+[:.]\d+', athlete_name):
+                                SYNC_DROPS[(meet_key, 'mark in athlete name')] += 1
                                 continue
-                        if not athlete_name or not mark or mark.upper() in ["DNS", "SCR"]: continue
+                        if not athlete_name or not mark or mark.upper() in ["DNS", "SCR"]:
+                            SYNC_DROPS[(meet_key, 'no name / no mark / DNS')] += 1
+                            continue
                         # a hand time cut at its column edge: "13:14.0h" -> "13:14."
                         mark = re.sub(r'(?<=\d)\.$', '', mark)
-                        if not self.mark_is_valid_format(mark): continue
+                        if not self.mark_is_valid_format(mark):
+                            SYNC_DROPS[(meet_key, 'mark format')] += 1
+                            continue
                         mark = self.repair_mark(mark, full_event)
-                        if mark is None: continue
+                        if mark is None:
+                            SYNC_DROPS[(meet_key, 'mark impossible for event')] += 1
+                            continue
 
                         # Reject marks whose format contradicts the event type:
                         # time-format (M:SS.ss) in a field event, or distance-format (F-I) in a running event.
@@ -2348,12 +2363,13 @@ class Sub5ScraperV2:
                         _is_track_ev = any(k in _ev_low for k in ('dash', 'run', 'hurdles', 'mile', 'relay', '4x', 'walk'))
                         _has_time_fmt = ':' in mark and '.' in mark
                         _has_dist_fmt = bool(re.match(r'^\d+-\d+', mark))
-                        if _is_field_ev and _has_time_fmt and not _has_dist_fmt:
-                            continue
-                        if _is_track_ev and _has_dist_fmt and not _has_time_fmt:
+                        if (_is_field_ev and _has_time_fmt and not _has_dist_fmt) or \
+                                (_is_track_ev and _has_dist_fmt and not _has_time_fmt):
+                            SYNC_DROPS[(meet_key, 'mark type contradicts event')] += 1
                             continue
 
                         team_norm = None
+                        unit = None
                         if school:
                             # Results are filed under the school catalog: every
                             # spelling of a school (truncations, codes, mascots,
@@ -2370,7 +2386,12 @@ class Sub5ScraperV2:
                                 team_norm = school_catalog.store_name(unit)
                         if team_norm is None:
                             team_norm = self.normalize_team_name(school, all_teams=all_known_teams, level=meet_level)
-                        if not self.team_name_is_sane(team_norm) or self.is_likely_athlete_name(team_norm): continue
+                        # (a school the catalog placed is a school, whatever its
+                        # name looks like: "Union 122 (combined middle-school team)")
+                        if (not unit) and (not self.team_name_is_sane(team_norm) or self.is_likely_athlete_name(team_norm)):
+                            SYNC_DROPS[(meet_key, 'school unresolved')] += 1
+                            SYNC_DROP_WHAT[('school', season, f'{school} -> {team_norm}'[:80])] += 1
+                            continue
                         if is_relay and athlete_name == f"{school} Relay":
                             athlete_name = f"{team_norm} Relay"
                         
@@ -2641,6 +2662,9 @@ class Sub5ScraperV2:
                         loser = k1 if len(r1) < len(r2) or \
                             (len(r1) == len(r2) and k1[2] < k2[2]) else k2
                         drop_meets.add(loser)
+        for m in drop_meets:
+            SYNC_DROPS[(f'{m[0]}_{m[1]}_{m[2]}', 'meet posted twice (other copy kept)')] += \
+                len(meet_rows.get(m, ()))
         if drop_meets:
             self.report_progress(f'Dropping {len(drop_meets)} double-ingested meets '
                                  f'(e.g. {sorted(m[2] for m in drop_meets)[:3]})')
@@ -2658,6 +2682,12 @@ class Sub5ScraperV2:
 
         save_scrape_state(scrape_state)
         save_athletes(athletes)
+        if wipe:
+            with open(os.path.join(base_dir, 'backend', 'data', 'sync_drops.json'), 'w') as f:
+                json.dump(dict(by_meet=sorted([[k, r, n] for (k, r), n in SYNC_DROPS.items()],
+                                              key=lambda x: -x[2]),
+                               by_label=sorted([[k, s_, l, n] for (k, s_, l), n in SYNC_DROP_WHAT.items()],
+                                               key=lambda x: -x[3])), f, indent=0)
         rebuild_manifest()
         write_meet_links(self.web_url_mapping)
         # athlete identity: code layer + reviewed decisions -> one id per
