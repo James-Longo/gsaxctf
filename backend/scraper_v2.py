@@ -486,6 +486,15 @@ def strip_sex_prefix(data):
                     r['school'] = r['school'][2:]
 
 
+def is_short_name(name):
+    """A printed name of one surname ("Inhorn") or an initial and a surname
+    ("J Smith", "Smith, J.")."""
+    toks = re.findall(r"[A-Za-z']+", (name or '').replace("'", ''))
+    if len(toks) == 1:
+        return len(toks[0]) >= 2
+    return len(toks) == 2 and (len(toks[0]) == 1) != (len(toks[1]) == 1)
+
+
 _LEG_GRADE = re.compile(r'\s+(?:FR|SO|JR|SR|Fr|So|Jr|Sr|[5-9]|1[0-2])$')
 
 
@@ -2529,6 +2538,12 @@ class Sub5ScraperV2:
                             athlete_name = f"{team_norm} Relay"
                         
                         athlete_id = slugify_athlete(athlete_name, team_norm)
+                        # a surname-only ("Inhorn") or initial ("J Smith") name
+                        # can be several runners over the years (siblings): one
+                        # id per season, so the athlete catalog can attach each
+                        # season to the runner it belongs to
+                        if not is_relay and is_short_name(athlete_name):
+                            athlete_id = f'{athlete_id}--{year}-{season.lower()}'
                         performance_date = f"{date}T12:00:00" if date != "Unknown" else "Unknown"
                         
                         p = {

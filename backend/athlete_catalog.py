@@ -344,6 +344,10 @@ def build_entities(rows):
         if is_team_label(name, team):
             continue
         k = entity_key(unit, gender, name)
+        if _short_form(dict(toks=clean_name(name))):
+            # (one entry per season: the store files a short name per season,
+            # each to be attached to the runner it belongs to)
+            k = f'{k} #{year} {season}'
         e = ents.get(k)
         if e is None:
             e = ents[k] = dict(key=k, unit=unit, g=gender, name=name, toks=clean_name(name),
@@ -673,9 +677,31 @@ def cluster(ents, pairs, decisions):
         return x
 
     different = collections.defaultdict(set)
+    # a decision on a short name made before it was split by season applies
+    # to each of its seasons
+    seasons_of = collections.defaultdict(list)
+    for k in ents:
+        if ' #' in k:
+            seasons_of[k.split(' #', 1)[0]].append(k)
+
+    def expand(k):
+        return [k] if k in ents else seasons_of.get(k, [])
+
+    decided = []
     for pk, d in decisions.items():
-        a, b = pk.split('||')
-        if d.get('decision') == 'different':
+        a0, b0 = pk.split('||')
+        for a in expand(a0):
+            for b in expand(b0):
+                dec = d.get('decision')
+                if dec == 'same' and (a != a0 or b != b0):
+                    # (a season of the short name joins the runner only when
+                    # that runner was on the team that season)
+                    sa, sb = set(ents[a]['ays']), set(ents[b]['ays'])
+                    if not (sa <= sb or sb <= sa):
+                        continue
+                decided.append((a, b, dec))
+    for a, b, dec in decided:
+        if dec == 'different':
             different[a].add(b)
             different[b].add(a)
 
@@ -699,9 +725,8 @@ def cluster(ents, pairs, decisions):
         parent[rb] = ra
         members[ra] |= members.pop(rb)
 
-    for pk, d in decisions.items():
-        a, b = pk.split('||')
-        if d.get('decision') == 'same' and a in ents and b in ents:
+    for a, b, dec in decided:
+        if dec == 'same':
             union(a, b, 'reviewed')
     for p in pairs:
         if p['label'] == 'auto' and pair_key(p['a'], p['b']) not in decisions:
