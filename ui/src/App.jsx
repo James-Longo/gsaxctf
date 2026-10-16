@@ -348,8 +348,7 @@ function App() {
       }
       
       const pParsed = parseMark(p.mark, isDistanceEvent(p.event))
-      // (an exhibition mark - "X4:29.26" - is shown but never a PR or season best)
-      if (pParsed.valid && !p.exhibition) {
+      if (pParsed.valid) {
         // A performance is a PR if it's the first one OR better than any previous one in this season type
         if (!runningBests[prK] || isBetter(p.mark, runningBests[prK], p.event)) {
           runningBests[prK] = p.mark

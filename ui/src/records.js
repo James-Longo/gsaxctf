@@ -105,7 +105,6 @@ export function computeRecords(performances, { season, runnerId = (p) => p.athle
   for (const p of performances) {
     if (season && p.season !== season) continue
     if (fromYear && +p.year < +fromYear) continue
-    if (p.exhibition) continue          // (ran outside the scoring: never a record)
     const value = markValue(p.mark, p.event)
     if (value == null) continue
     const { gender, event } = splitGender(p.event)

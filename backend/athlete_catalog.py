@@ -1079,8 +1079,6 @@ def apply(catalog=None, quiet=False):
                 cid = member_of.get(aid, aid)
                 ev = p.get('event', '')
                 val, _ = js.parse_mark_value(p.get('mark', ''), ev)
-                if p.get('exhibition'):
-                    val = None      # an exhibition mark is shown, never a PR or season best
                 refs[(cid, ev, season)].append(((p.get('date') or ''), val, p.get('mark', ''),
                                                 year, path, i))
     # pass 2: flags per key, the same rules as json_store.recalculate_prs

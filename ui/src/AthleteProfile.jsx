@@ -25,7 +25,7 @@ const AthleteProfile = ({ performances, selectedAthlete }) => {
             if (!groups[groupKey]) groups[groupKey] = [];
 
             const parsed = parseMark(p.mark, isDistanceEvent(p.event));
-            if (parsed.valid && !p.exhibition) {   // (exhibition marks never count as bests)
+            if (parsed.valid) {
                 groups[groupKey].push({
                     ...p,
                     numericValue: parsed.value,
