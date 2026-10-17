@@ -46,8 +46,11 @@ _XC_SCORES_LINE = re.compile(r'^(?:\S+\s+){0,3}Team\s+Scores?$', re.I)
 # "Women 15-16 Shot Put", "100 Meter Dash Bantam Girls"). It goes on the
 # event as its age group, like a grade, and the event keeps its standard
 # name; those meets live in the summer track data (backend/sub5_summer.py).
+# Only meets listed there use it: a school meet's "300 Meter Hurdles
+# Intermediate" tag is ignored by the sync.
+_AGE_SPANS = (1, 4, 9, 10)          # 9-10, 50-54, 40-49, 19-29
 _AGE_GROUP = re.compile(
-    r'\b(?:(8)\s*(?:&|and)\s*(?:u\b|under)|(\d{1,2})-(\d{2})(?!\d)|(\d{2})\s*(?:&|and)\s*(?:over|up)'
+    r'\b(?:(8)\s*(?:&|and)\s*(?:u\b|under)|(?<![\d-])(\d{1,2})-(\d{2})(?![\d-])|(\d{2})\s*(?:&|and)\s*(?:over|up)'
     r'|(bantam|midget|intermediate)|(youth|young)(?=\s+(?:girls|boys|men|women)|\s*$))', re.I)
 
 
@@ -58,7 +61,7 @@ def age_group_of(label):
             return '8 & Under'
         if m.group(2):
             lo, hi = int(m.group(2)), int(m.group(3))
-            if lo < hi <= lo + 11:
+            if hi - lo in _AGE_SPANS:
                 return f'{lo}-{hi}'
             continue
         if m.group(4):
@@ -69,7 +72,7 @@ def age_group_of(label):
 
 def strip_age_group(label):
     """The label without its age division ("Girls 9-10 Long Jump" -> "Girls Long Jump")."""
-    out = _AGE_GROUP.sub(lambda m: '' if (m.group(2) is None or int(m.group(2)) < int(m.group(3)) <= int(m.group(2)) + 11)
+    out = _AGE_GROUP.sub(lambda m: '' if (m.group(2) is None or int(m.group(3)) - int(m.group(2)) in _AGE_SPANS)
                          else m.group(0), label or '')
     return re.sub(r'\s{2,}', ' ', out).strip()
 
@@ -771,9 +774,14 @@ class Sub5ColumnParser:
                     m_no_event = re.match(r'(\S+)\s+(.*)', f"{m_no_event.group(2)} "
                                           f"{_number_words(m_no_event.group(3))} {m_no_event.group(1).strip()}")
             # USATF JO Hy-Tek: "2000 Meter Run CC 8 & Under Division Girls"
+            # and its track events: "100 Meter Dash 8 & Under Division Girls",
+            # "Long Jump 11-12 Division Boys" (ResultsREG1JOTF7-9-12-1.htm)
             if not m_no_event:
                 m_late = re.match(r'^\s*(\d[\w .&/-]*?\b(?:Run|CC|XC)\b[\w .&/-]*?)\s+(Girls|Boys|Women|Men)\s*$',
-                                  line_clean, re.I)
+                                  line_clean, re.I) or re.match(
+                    r'^\s*([\w .&/-]*?\b(?:Dash|Hurdles|Relay|Jump|Put|Throw|Vault|Walk|Discus|'
+                    r'Javelin|Hammer|Pentathlon)\b[\w .&/-]*?\bDivision)\s+(Girls|Boys|Women|Men)\s*$',
+                    line_clean, re.I)
                 if m_late:
                     m_no_event = re.match(r'(\S+)\s+(.*)', f"{m_late.group(2)} {m_late.group(1).strip()}")
 

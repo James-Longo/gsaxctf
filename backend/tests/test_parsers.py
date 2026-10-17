@@ -1632,6 +1632,38 @@ def test_looselist_column_title_row_is_not_an_event():
     assert ll._event_header('DISCUS   HAND FAT PT', None) is not None
 
 
+def test_usatf_division_headers_with_gender_last():
+    """USATF Junior Olympic Hy-Tek prints "100 Meter Dash 8 & Under Division
+    Girls" (no event number, sex last); only the CC form was read, so
+    LooseList won ResultsREG1JOTF7-9-12-1.htm with marks in the club."""
+    text = '\n'.join([
+        '100 Meter Dash 8 & Under Division Girls',
+        '=' * 70,
+        '    Name                    Year Team                    Seed    Finals',
+        '=' * 70,
+        '  1 Golden, Princess             Westchester            15.71      15.14',
+        '  2 Moore, Alana                 Metro Eagles           15.68      15.16',
+        '',
+        'Long Jump 11-12 Division Boys',
+        '=' * 70,
+        '    Name                    Year Team                    Seed    Finals',
+        '=' * 70,
+        '  1 Flint, Allan                 Glencadia Bu         3.03m      3.30m',
+    ])
+    evs = Sub5ColumnParser('jo.htm', text=text).parse()['events']
+    assert [(e['gender'], e['event_name'] if 'event_name' in e else e['event'], e.get('age_group')) for e in evs] == \
+        [('Girls', '100 Meter Dash', '8 & Under'), ('Boys', 'Long Jump', '11-12')], evs
+    assert evs[0]['results'][0]['school'] == 'Westchester'
+
+
+def test_looselist_header_with_division_phrase():
+    """"4x100 Meter Relay 17-18 Division Men" was over the 35-character
+    header limit, so the relay rows joined the previous race (2016
+    Resultsmaine.htm)."""
+    assert LooseListParser()._event_header('4x100 Meter Relay 17-18 Division Men', None) is not None
+    assert LooseListParser()._event_header('4x100 Meter Relay Intermediate Girls', None) is not None
+
+
 if __name__ == '__main__':
     qaqc._ensure_team_mapping()
     failed = 0

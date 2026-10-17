@@ -249,7 +249,12 @@ class LooseListParser(BaseParser):
         if m and (m.group(1) or low.split()[0] != m.group(2)):
             g = (m.group(1) or '').strip()
             return ('Girls' if g.startswith(('g', 'w')) else 'Boys' if g else None, s)
-        if len(s) < 35 and EVENT_KEYWORDS.search(s) and not re.search(r'\d[:.]\d', s) \
+        # (a USATF division phrase doesn't count toward the length: "4x100
+        # Meter Relay 17-18 Division Men", 2016 Resultsmaine.htm; "4x100 Meter
+        # Relay Intermediate Girls", 2004 meusatf19june04.htm)
+        core = re.sub(r'\s*\b(?:(?:\d+\s*&\s*(?:under|over)|\d{1,2}-\d{2}|bantam|midget|youth|intermediate|young)'
+                      r'\s+division|(?:bantam|midget|youth|intermediate|young)\s+(?:girls|boys|men|women))\b', '', s, flags=re.I)
+        if len(core) < 35 and EVENT_KEYWORDS.search(s) and not re.search(r'\d[:.]\d', s) \
                 and not re.match(r'^\d+[.)]\s', s) and not re.search(r'record|school|results|scores', s, re.I):
             return (None, s)
         return None
