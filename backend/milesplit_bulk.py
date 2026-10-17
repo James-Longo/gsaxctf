@@ -9,6 +9,9 @@ MileSplit meet) of the chosen seasons:
   2. match   it to the meets we hold by date (within 2 days) and the set of
              schools: a meet we already have under another name is recorded
              as a "match" on its listing (never fetched again) and dropped;
+     A meet whose rows are mostly colleges, clubs or out-of-state schools is
+     skipped and its listing marked (MileSplit's own level tag, read by
+     `milesplit list`, keeps most of them from being fetched at all);
   3. check   every row complete, schools identified, team scores verified
              where the results print them, date in the season;
   4. accept  a meet that passes into backend/data/parsed_results/, or leave it
@@ -42,6 +45,7 @@ LISTINGS = os.path.join(DATA, 'meet_listings')
 MAX_INCOMPLETE = 0.01      # share of rows missing athlete/school/result a meet may carry
 MAX_UNRESOLVED = 0.05      # share of rows whose school the catalog cannot identify
 MATCH_OVERLAP = 0.6        # school overlap (of the smaller meet) that makes two meets one
+MIN_MAINE_SCHOOL = 0.5     # below this share of Maine school rows a meet is college/club/out-of-state: skipped
 
 
 def load_report():
@@ -130,6 +134,26 @@ def missing_listings(year, season):
     return out
 
 
+def maine_share(doc, year, season, cache):
+    """Share of rows whose school is a Maine high school, middle school or co-op."""
+    rows = [r for e in doc.get('events', []) for r in e.get('results', [])]
+    if not rows:
+        return 1.0
+    ok = sum(1 for r in rows if (cache.get((r.get('school') or '', year, season)) or '').startswith(('me-hs-', 'me-ms-', 'coop-')))
+    return ok / len(rows)
+
+
+def set_listing_kind(year, season, mid, kind, note):
+    p = os.path.join(LISTINGS, f'milesplit-{year}-{season}.json')
+    doc = json.load(open(p))
+    for m in doc['meets']:
+        if str(m['id']) == mid:
+            m['kind'] = kind
+            m['kind_checked'] = True
+            m['note'] = note
+    json.dump(doc, open(p, 'w'), indent=1)
+
+
 def set_listing_match(year, season, mid, stem, note):
     p = os.path.join(LISTINGS, f'milesplit-{year}-{season}.json')
     doc = json.load(open(p))
@@ -160,6 +184,12 @@ def stage_one(year, season, lst, held, cache):
     path = m.group(1)
     doc = json.load(open(path))
     ids, unresolved, nrows = school_ids(doc, year, season, cache)
+    maine = maine_share(doc, year, season, cache)
+    if nrows and maine < MIN_MAINE_SCHOOL:
+        os.remove(path)
+        set_listing_kind(year, season, lst['id'], 'open',
+                         f'auto (milesplit_bulk): {maine:.0%} of rows are Maine high or middle schools (college, club or out-of-state meet)')
+        return dict(status='skipped', why=[f'not a Maine school meet ({maine:.0%} Maine school rows)'])
     d = day(doc.get('date')) or day(lst.get('date') or '')
     for stem, hids, hday in held:
         if same_meet(ids, d, hids, hday):

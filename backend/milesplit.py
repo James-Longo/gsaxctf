@@ -642,23 +642,39 @@ def kind_of(name):
     if re.search(r'college|collegiate|university|ncaa|\barmy\b|\bnavy\b|\bair force\b|nescac|\bcolby\b|bates|bowdoin(?! relays)|\bumaine\b|husson|\bume\b|usm\b', n): return 'college'
     if re.search(r'twilight|road race|\b5k\b|masters|open\b', n): return 'open'
     return 'hs'
-def listing(year, season):
-    meets = []; seen = set()
+LIST_ROW = re.compile(r'<li class="meet-row"\s+data-meet-id="(\d+)".*?meet-row__day">([^<]+)<.*?<a class="meet-row__name" href="([^"]+)">([^<]+)</a>(?:\s*<span class="meet-row__venue">([^<]*)</span>)?', re.S)
+# MileSplit's own level tag (the list page's Level filter) -> our kind; it outranks the name guess
+MS_LEVEL_KIND = {'college': 'college', 'youth': 'youth', 'open': 'open', 'pro': 'open', 'ms': 'ms'}
+def list_pages(year, season, level=''):
+    """[(id, day, href, name, venue)] of every page of one season's meet list (one level, or all)."""
+    rows = []; seen = set()
     for page in range(1, 30):
-        url = 'https://me.milesplit.com/results?year=%s&season=%s&page=%d' % (year, MS_SEASON[season], page)
-        h = get(url, 'list-%s-%s-%d.html' % (year, season, page))
-        rows = re.findall(r'<li class="meet-row"\s+data-meet-id="(\d+)".*?meet-row__day">([^<]+)<.*?<a class="meet-row__name" href="([^"]+)">([^<]+)</a>(?:\s*<span class="meet-row__venue">([^<]*)</span>)?', h, re.S)
-        new = [r for r in rows if r[0] not in seen]
+        url = 'https://me.milesplit.com/results?year=%s&season=%s&page=%d' % (year, MS_SEASON[season], page) + ('&level=' + level if level else '')
+        h = get(url, 'list-%s-%s%s-%d.html' % (year, season, '-' + level if level else '', page))
+        new = [r for r in LIST_ROW.findall(h) if r[0] not in seen]
         if not new: break
-        for mid, day, href, name, venue in new:
-            seen.add(mid)
-            name = html.unescape(name).strip()
-            try:
-                date = time.strftime('%Y-%m-%d', time.strptime('%s %s' % (day.strip().split('-')[0].strip(), year), '%b %d %Y'))
-            except ValueError:
-                date = None
-            meets.append({'id': mid, 'name': name, 'date': date, 'venue': html.unescape(venue or '').strip(),
-                          'url': href.replace('/results', ''), 'kind': kind_of(name)})
+        seen.update(r[0] for r in new); rows += new
+    return rows
+def listing(year, season):
+    meets = []
+    level_of = {}
+    every = list_pages(year, season)
+    for lv, kind in MS_LEVEL_KIND.items():
+        rows = list_pages(year, season, lv)
+        if len(rows) >= 0.8 * len(every):
+            continue   # a level with no meets returns the whole list (MileSplit's 'pro' for Maine)
+        for r in rows:
+            level_of[r[0]] = kind
+    for mid, day, href, name, venue in every:
+        name = html.unescape(name).strip()
+        try:
+            date = time.strftime('%Y-%m-%d', time.strptime('%s %s' % (day.strip().split('-')[0].strip(), year), '%b %d %Y'))
+        except ValueError:
+            date = None
+        m = {'id': mid, 'name': name, 'date': date, 'venue': html.unescape(venue or '').strip(),
+             'url': href.replace('/results', ''), 'kind': level_of.get(mid) or kind_of(name)}
+        if mid in level_of: m['kind_source'] = 'milesplit level'
+        meets.append(m)
     out = os.path.join(BASE, 'data', 'meet_listings', 'milesplit-%s-%s.json' % (year, season))
     os.makedirs(os.path.dirname(out), exist_ok=True)
     if os.path.exists(out):   # keep readers' verdicts (match, kind, note) across re-listing
