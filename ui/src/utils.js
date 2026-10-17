@@ -208,3 +208,17 @@ export function isDistanceEvent(event) {
 // "/gsaxctf/" on the GitHub Pages project URL. Vite sets BASE_URL from the
 // `base` option (vite.config.js).
 export const asset = (path) => import.meta.env.BASE_URL + String(path).replace(/^\//, '')
+
+// Fetch a gzipped JSON file from public/. Decompresses in the browser unless
+// the server already decoded it.
+export const fetchGz = async (url) => {
+  const res = await fetch(url)
+  if (!res.ok) throw new Error(`HTTP ${res.status}`)
+  const buf = await res.arrayBuffer()
+  const bytes = new Uint8Array(buf)
+  if (bytes[0] === 0x1f && bytes[1] === 0x8b) {
+    const stream = new Response(buf).body.pipeThrough(new DecompressionStream('gzip'))
+    return JSON.parse(await new Response(stream).text())
+  }
+  return JSON.parse(new TextDecoder().decode(buf))
+}

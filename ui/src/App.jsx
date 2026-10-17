@@ -518,7 +518,7 @@ function App() {
           ) : activeTab === 'xc-courses' ? (
             <XCCourseExplorer />
           ) : activeTab === 'predictor' ? (
-            <ResultPredictor performances={allPerformances} runnerId={runnerId} athletes={allAthletes} />
+            <ResultPredictor />
           ) : activeTab === 'splits' ? (
             <SplitExplorer
               performances={allPerformances}

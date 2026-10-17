@@ -103,7 +103,7 @@ After ingesting, rebuild each one the new data touches, and check it:
 | XC course table (`ui/public/data/xc_courses.json.gz`) | `python3 -m backend.xc_course_model` | every new venue name mapped to its existing course in `backend/data/xc_course_aliases.json` (keys are the full lowercased venue as printed, e.g. "old town xc course"); compare factors with the published table and explain big moves |
 | XC postseason forecast (in season) | `python3 -m backend.routine sims` | duplicate runners in each field, every team's top seven against its roster |
 | Record boards, athlete pages, PRs | computed in the browser from the store | spot-check a team's board for marks that are new |
-| Owen's Predictor (track event-to-event fit, `ui/src/ResultPredictor.jsx`) | computed in the browser from the store, so the resync is its rebuild | after new track meets: open the Predictor tab, pick an event pair the new meets cover, and confirm the athlete count grew and no new point sits far off the line (a far-off point is usually a mis-typed mark or wrong event) |
+| Owen's Predictor (`ui/public/data/predictor.json.gz`) | `python3 -m backend.predictor_data`; the resync and `athlete_catalog apply` run it too | open the Predictor tab, pick an event pair the new meets cover, and confirm the athlete count grew and the line still fits the cloud (a fit that goes flat means marks outside `BOUNDS` in `backend/predictor_data.py` got through, or the bounds need widening for a real mark) |
 
 A new source brings new names: venue strings (course aliases), school
 spellings and mascots (school catalog), runner spellings (athlete catalog).

@@ -1,133 +1,49 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { ScatterChart, Scatter, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, ReferenceLine, Label } from 'recharts';
-import { parseMark, formatTime, formatDistance } from './utils';
+import { parseMark, formatTime, formatDistance, asset, fetchGz } from './utils';
 
-const INDIVIDUAL_TRACK_EVENTS = [
-  "Boys 55 Meter Dash", "Girls 55 Meter Dash",
-  "Boys 200 Meter Dash", "Girls 200 Meter Dash",
-  "Boys 400 Meter Dash", "Girls 400 Meter Dash",
-  "Boys 800 Meter Run", "Girls 800 Meter Run",
-  "Boys 1 Mile Run", "Girls 1 Mile Run",
-  "Boys 2 Mile Run", "Girls 2 Mile Run",
-  "Boys 55 Meter Hurdles", "Girls 55 Meter Hurdles"
-];
+// Most points the chart draws; the line is fit on every runner regardless.
+const MAX_POINTS = 2000;
 
-const INDIVIDUAL_FIELD_EVENTS = [
-  "Boys Long Jump", "Girls Long Jump",
-  "Boys Triple Jump", "Girls Triple Jump",
-  "Boys Shot Put", "Girls Shot Put",
-  "Boys High Jump", "Girls High Jump",
-  "Boys Pole Vault", "Girls Pole Vault"
-];
-
-const ALL_INDIVIDUAL_EVENTS = [...INDIVIDUAL_TRACK_EVENTS, ...INDIVIDUAL_FIELD_EVENTS];
-
-function isValidPerformance(perf, resultVal, isTrack) {
-    if (resultVal === null || isNaN(resultVal)) return false;
-
-    if (isTrack && resultVal < 5) return false;
-    if (isTrack && resultVal > 1800) return false;
-    if (!isTrack && resultVal < 1) return false;
-
-    if (perf.event === "Boys 55 Meter Hurdles" && resultVal > 30) return false;
-    if (perf.event === "Girls 55 Meter Hurdles" && resultVal > 30) return false;
-
-    if (perf.event === "Boys Shot Put" && resultVal > 5000) return false;
-    if (perf.event === "Girls Shot Put" && resultVal > 5000) return false;
-
-    if (perf.event === "Girls Pole Vault" && resultVal > 204) return false;
-    if (perf.event === "Boys Pole Vault" && resultVal > 204) return false;
-    if (perf.event === "Girls Pole Vault" && resultVal < 36) return false;
-    if (perf.event === "Boys Pole Vault" && resultVal < 36) return false;
-
-    if (perf.event === "Girls Triple Jump" && resultVal < 204) return false;
-
-    return true;
-}
-
-export default function ResultPredictor({ performances, runnerId, athletes }) {
+/**
+ * Owen's Predictor: predict one event's best from another's. Fits and every
+ * runner's bests come from backend/predictor_data.py (all teams, Indoor and
+ * Outdoor, runners merged across spellings); nothing is computed here.
+ */
+export default function ResultPredictor() {
+    const [data, setData] = useState(null);
+    const [error, setError] = useState(null);
     const [event1, setEvent1] = useState("Boys 200 Meter Dash");
     const [event2, setEvent2] = useState("Boys 55 Meter Dash");
     const [inputValue, setInputValue] = useState("7");
 
-    const nameOf = useMemo(() => new Map((athletes || []).map(a => [a.id, a.name])), [athletes]);
+    useEffect(() => {
+        fetchGz(asset('/data/predictor.json.gz')).then(setData).catch(e => setError(String(e)));
+    }, []);
 
     const analysisData = useMemo(() => {
-        if (!event1 || !event2 || !performances) return null;
+        const fit = data?.fits[`${event1}|${event2}`];
+        if (!fit) return null;
 
-        const isTrack1 = INDIVIDUAL_TRACK_EVENTS.includes(event1);
-        const isTrack2 = INDIVIDUAL_TRACK_EVENTS.includes(event2);
-
-        const athletesMap = {};
-
-        performances.forEach(perf => {
-            if (perf.event !== event1 && perf.event !== event2) return;
-            
-            const parsed = parseMark(perf.mark);
-            if (!parsed.valid || parsed.value === 0) return;
-
-            const isCurrentTrack = INDIVIDUAL_TRACK_EVENTS.includes(perf.event);
-            if (!isValidPerformance(perf, parsed.value, isCurrentTrack)) return;
-
-            // One point per runner: spellings the athlete catalog merged count together
-            const id = runnerId ? runnerId(perf) : perf.athlete_id;
-            if (!athletesMap[id]) {
-                athletesMap[id] = { athlete_id: id, name: nameOf.get(id) || perf.athlete_name, e1Marks: [], e2Marks: [] };
-            }
-
-            if (perf.event === event1) {
-                athletesMap[id].e1Marks.push(parsed.value);
-            } else if (perf.event === event2) {
-                athletesMap[id].e2Marks.push(parsed.value);
-            }
-        });
-
-        const dataPoints = [];
-        let sumX = 0, sumY = 0;
-
-        Object.values(athletesMap).forEach(ath => {
-            if (ath.e1Marks.length > 0 && ath.e2Marks.length > 0) {
-                // Event 1 (Predicted = Y)
-                const yVal = isTrack1 ? Math.min(...ath.e1Marks) : Math.max(...ath.e1Marks);
-                // Event 2 (Predictor = X)
-                const xVal = isTrack2 ? Math.min(...ath.e2Marks) : Math.max(...ath.e2Marks);
-                
-                dataPoints.push({ x: xVal, y: yVal, name: ath.name });
-                sumX += xVal;
-                sumY += yVal;
-            }
-        });
-
-        if (dataPoints.length < 2) return null;
-
-        const n = dataPoints.length;
-        const meanX = sumX / n;
-        const meanY = sumY / n;
-
-        let num = 0, den = 0;
-        dataPoints.forEach(pt => {
-            num += (pt.x - meanX) * (pt.y - meanY);
-            den += (pt.x - meanX) ** 2;
-        });
-
-        const slope = den === 0 ? 0 : num / den;
-        const intercept = meanY - slope * meanX;
-
-        const minX = Math.min(...dataPoints.map(d => d.x));
-        const maxX = Math.max(...dataPoints.map(d => d.x));
+        const ys = new Map(data.events[event1]);
+        const points = [];
+        for (const [i, x] of data.events[event2]) {
+            if (ys.has(i)) points.push({ x, y: ys.get(i), name: data.names[i] });
+        }
+        const step = Math.max(1, Math.ceil(points.length / MAX_POINTS));
+        const xs = points.map(d => d.x);
 
         return {
-            originalData: dataPoints,
-            slope,
-            intercept,
-            minX,
-            maxX,
-            isTrack1,
-            isTrack2,
-            n
+            originalData: points.filter((_, k) => k % step === 0),
+            slope: fit.slope,
+            intercept: fit.intercept,
+            minX: Math.min(...xs),
+            maxX: Math.max(...xs),
+            isTrack1: data.track.includes(event1),
+            isTrack2: data.track.includes(event2),
+            n: fit.n
         };
-
-    }, [performances, event1, event2, runnerId, nameOf]);
+    }, [data, event1, event2]);
 
     const format1 = analysisData?.isTrack1 ? formatTime : formatDistance;
     const format2 = analysisData?.isTrack2 ? formatTime : formatDistance;
@@ -141,10 +57,7 @@ export default function ResultPredictor({ performances, runnerId, athletes }) {
         return format1(predictedY);
     }, [analysisData, inputValue, format1]);
 
-    const event2Type = useMemo(() => {
-        if (INDIVIDUAL_FIELD_EVENTS.includes(event2)) return 'field';
-        return 'track';
-    }, [event2]);
+    const event2Type = data && !data.track.includes(event2) ? 'field' : 'track';
 
     // Reset input if switching between track and field to avoid invalid string pollution
     const [lastType, setLastType] = useState('track');
@@ -240,13 +153,13 @@ export default function ResultPredictor({ performances, runnerId, athletes }) {
                 <div className="filter-group">
                     <label>Predict This Event (Y)</label>
                     <select value={event1} onChange={(e) => setEvent1(e.target.value)}>
-                        {ALL_INDIVIDUAL_EVENTS.map(ev => <option key={ev} value={ev}>{ev}</option>)}
+                        {(data?.order || []).map(ev => <option key={ev} value={ev}>{ev}</option>)}
                     </select>
                 </div>
                 <div className="filter-group">
                     <label>Based on This Event (X)</label>
                     <select value={event2} onChange={(e) => setEvent2(e.target.value)}>
-                        {ALL_INDIVIDUAL_EVENTS.map(ev => <option key={ev} value={ev}>{ev}</option>)}
+                        {(data?.order || []).map(ev => <option key={ev} value={ev}>{ev}</option>)}
                     </select>
                 </div>
                 <div className="filter-group">
@@ -255,7 +168,15 @@ export default function ResultPredictor({ performances, runnerId, athletes }) {
                 </div>
             </div>
 
-            {analysisData ? (
+            {error ? (
+                <div style={{ padding: '40px', textAlign: 'center', backgroundColor: '#f1f5f9', borderRadius: '8px' }}>
+                    <p>Could not load the predictor data: {error}</p>
+                </div>
+            ) : !data ? (
+                <div style={{ padding: '40px', textAlign: 'center', backgroundColor: '#f1f5f9', borderRadius: '8px' }}>
+                    <p>Loading…</p>
+                </div>
+            ) : analysisData ? (
                 <div>
                     <div style={{ backgroundColor: '#f8fafc', padding: '20px', borderRadius: '8px', marginBottom: '30px', border: '1px solid #e2e8f0' }}>
                         <h3 style={{ marginTop: '0', color: '#1e293b' }}>Predicted {event1}</h3>
@@ -263,7 +184,7 @@ export default function ResultPredictor({ performances, runnerId, athletes }) {
                             {prediction}
                         </div>
                         <div style={{ color: '#64748b', fontSize: '0.9em' }}>
-                            <p style={{ margin: '0 0 5px 0' }}>Model built from <strong>{analysisData.n}</strong> athletes matching both events.</p>
+                            <p style={{ margin: '0 0 5px 0' }}>Model built from <strong>{analysisData.n.toLocaleString()}</strong> athletes matching both events{analysisData.originalData.length < analysisData.n ? ` (chart shows ${analysisData.originalData.length.toLocaleString()} of them)` : ''}.</p>
                             <p style={{ margin: '0' }}>Equation: y = {analysisData.slope.toFixed(4)}x + {analysisData.intercept.toFixed(4)}</p>
                         </div>
                     </div>

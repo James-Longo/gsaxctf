@@ -90,9 +90,9 @@ in the report, not re-reviewed.
 
 `python3 -m backend.routine sims` publishes the XC postseason forecast while
 the season's championship meets (backend/data/xc_groups.json) are still
-ahead. Track forecasts and Owen's Predictor are computed in the browser from
-the store and need nothing here beyond the resync; check them as listed in
-the "What new data feeds" table.
+ahead. Track forecasts are computed in the browser and need nothing here.
+Owen's Predictor is rebuilt by the resync and by `athlete_catalog apply`;
+check it as listed in the "What new data feeds" table.
 
 Each season, before the first championship meet, check
 backend/data/xc_groups.json against the coaches' schedule (dates, venues,

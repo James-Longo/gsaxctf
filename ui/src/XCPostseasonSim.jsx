@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo } from 'react'
-import { asset } from './utils'
+import { asset, fetchGz } from './utils'
 
 /**
  * XC postseason forecast: conference, regional and state meets simulated
@@ -8,17 +8,6 @@ import { asset } from './utils'
  * each simulation, so a state field is whoever qualified in that run.
  */
 
-const fetchGz = async (url) => {
-  const res = await fetch(url)
-  if (!res.ok) throw new Error(`HTTP ${res.status}`)
-  const buf = await res.arrayBuffer()
-  const bytes = new Uint8Array(buf)
-  if (bytes[0] === 0x1f && bytes[1] === 0x8b) {
-    const stream = new Response(buf).body.pipeThrough(new DecompressionStream('gzip'))
-    return JSON.parse(await new Response(stream).text())
-  }
-  return JSON.parse(new TextDecoder().decode(buf))
-}
 
 const pct = (x) => x == null ? '' : x >= 0.995 ? '>99%' : x > 0 && x < 0.005 ? '<1%' : `${Math.round(x * 100)}%`
 const pctCls = (x) => x == null ? '' : x >= 0.5 ? 'xs-hi' : x < 0.02 ? 'xs-lo' : ''

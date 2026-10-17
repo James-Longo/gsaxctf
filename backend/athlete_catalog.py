@@ -1113,6 +1113,9 @@ def apply(catalog=None, quiet=False):
             changed += 1
     say(f'PR flags: {changed} chunk files rewritten')
     _write_registry(catalog)
+    # Owen's Predictor reads the store with these merges
+    from backend import predictor_data
+    predictor_data.build(quiet=quiet)
     return changed
 
 

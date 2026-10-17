@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo } from 'react'
-import { asset } from './utils'
+import { asset, fetchGz } from './utils'
 import SearchSelect from './SearchSelect'
 
 /**
@@ -12,18 +12,6 @@ import SearchSelect from './SearchSelect'
  * course distance is involved anywhere.
  */
 
-const fetchGz = async (url) => {
-  const res = await fetch(url)
-  if (!res.ok) throw new Error(`HTTP ${res.status}`)
-  const buf = await res.arrayBuffer()
-  const bytes = new Uint8Array(buf)
-  if (bytes[0] === 0x1f && bytes[1] === 0x8b) {
-    const ds = new DecompressionStream('gzip')
-    const stream = new Response(buf).body.pipeThrough(ds)
-    return JSON.parse(await new Response(stream).text())
-  }
-  return JSON.parse(new TextDecoder().decode(buf))
-}
 
 const parseTime = (s) => {
   const m = String(s).trim().match(/^(\d{1,2}):([0-5]?\d)(?:\.(\d+))?$/)
