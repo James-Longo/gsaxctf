@@ -13,6 +13,7 @@ Checks:
   9. Grade consistency (conflicting grades in same season)
  10. Performance ID collisions across team files
  11. Meet scoring verification (computed scores vs official Team Rankings)
+ 16. Event sections whose median mark belongs to another event; unreadable times
 """
 
 import json
@@ -1956,6 +1957,104 @@ def check_gender_bleed(all_perfs, flags_out):
     print()
 
 
+SECTION_MIN_ROWS = 3
+SECTION_THROWS = re.compile(r'put|discus|javelin|hammer|weight', re.I)
+
+
+def _section_bounds(event):
+    """How far a section's median may sit from its event's typical section
+    median before the section looks like another event. Neighbouring races
+    are ~2x apart (200/400/800/mile/2 mile) and a triple jump is ~2x a long
+    jump, while whole middle-school, kids' and championship fields stay
+    within ~1.6x. Throws spread wider (lighter middle-school implements, New
+    England finals at 2x). Slow fields are real more often than fast ones,
+    so the low side is looser."""
+    if SECTION_THROWS.search(event):
+        return 1 / 2.6, 2.6
+    return 0.4, 1.8
+
+
+def check_event_sections(all_perfs, flags_out):
+    """An event section at one meet whose median mark belongs to another
+    event: a missed event header, a wrong gender header, meters read as
+    feet-inches, or field-relay team totals filed under the individual
+    event. Judged on the section's median, so one runner's great or bad day
+    never trips it; only a whole section does. Also flags times that cannot
+    be read ("7:70", seconds over 59). Flags only; nothing is dropped."""
+    import math
+    from backend.athlete_catalog import is_team_label
+    print('16. EVENT SECTIONS THAT LOOK LIKE ANOTHER EVENT')
+    sections = defaultdict(list)
+    malformed = []
+    for p in all_perfs:
+        ev = p.get('event', '')
+        if p.get('season') == 'XC' or not re.match(r'(Boys|Girls) ', ev) \
+                or re.search(r'relay|athlon|walk', ev, re.I):
+            continue
+        mark = str(p.get('mark', '')).strip()
+        m = re.fullmatch(r'\d+:(\d\d)(\.\d+)?', mark)
+        if m and int(m.group(1)) >= 60:
+            malformed.append(p)
+            continue
+        if is_team_label(p.get('athlete_name'), p.get('team')):
+            continue  # field relay team totals: the catalog already sets them apart
+        val, is_dist = parse_mark_value(mark, ev)
+        if val:
+            sections[(p.get('year'), p.get('season'), p.get('meet_name'), ev)].append(val)
+
+    medians = {k: sorted(v)[len(v) // 2] for k, v in sections.items() if len(v) >= SECTION_MIN_ROWS}
+    by_event = defaultdict(list)
+    for k, med in medians.items():
+        by_event[k[3]].append(med)
+    typical = {ev: sorted(v)[len(v) // 2] for ev, v in by_event.items() if len(v) >= 30}
+
+    def looks_like(event, med):
+        """The same-gender event of the same kind whose typical median is nearest."""
+        g = event.split(' ', 1)[0]
+        dist = bool(SECTION_THROWS.search(event)) or 'Jump' in event or 'Vault' in event
+        same = [e for e in typical if e.startswith(g + ' ')
+                and (bool(SECTION_THROWS.search(e)) or 'Jump' in e or 'Vault' in e) == dist]
+        best = min(same, key=lambda e: abs(math.log(med / typical[e])))
+        lo, hi = _section_bounds(best)
+        return best if lo <= med / typical[best] <= hi else 'no event (mark format?)'
+
+    odd = []
+    for k, med in medians.items():
+        ev = k[3]
+        if ev not in typical:
+            continue
+        lo, hi = _section_bounds(ev)
+        ratio = med / typical[ev]
+        if not lo <= ratio <= hi:
+            odd.append((k, med, ratio, len(sections[k]), looks_like(ev, med)))
+
+    if odd:
+        print(f'   [WARN] {len(odd)} event sections whose median mark belongs to another event:')
+        for (year, season, meet, ev), med, ratio, n, like in sorted(odd, key=lambda x: -abs(math.log(x[2])))[:15]:
+            print(f'     [{year} {season}] {meet[:34]:36s} {ev[:24]:26s} median {med:8.2f} '
+                  f'({ratio:.2f}x typical, n={n}) looks like {like}')
+        if len(odd) > 15:
+            print(f'     ... and {len(odd)-15} more.')
+        for (year, season, meet, ev), med, ratio, n, like in odd:
+            flags_out.append({'check': 'event-section', 'year': year, 'season': season,
+                              'meet': meet, 'event': ev, 'median': round(med, 2),
+                              'typical': round(typical[ev], 2), 'ratio': round(ratio, 2),
+                              'rows': n, 'looks_like': like})
+    else:
+        print('   [OK] Every event section looks like its event.')
+    if malformed:
+        print(f'   [WARN] {len(malformed)} times that cannot be read (seconds over 59):')
+        for p in malformed[:5]:
+            print(f"     [{p.get('year')} {p.get('season')}] {p.get('meet_name','')[:34]:36s} "
+                  f"{p.get('event','')[:24]:26s} {p.get('athlete_name','')[:24]} {p.get('mark')}")
+        for p in malformed:
+            flags_out.append({'check': 'malformed-time', 'year': p.get('year'), 'season': p.get('season'),
+                              'meet': p.get('meet_name'), 'event': p.get('event'),
+                              'athlete': p.get('athlete_name'), 'team': p.get('team'),
+                              'mark': p.get('mark'), 'perf_id': p.get('id')})
+    print()
+
+
 # ---------------------------------------------------------------------------
 # 12. Result order sanity
 # ---------------------------------------------------------------------------
@@ -2085,6 +2184,8 @@ def run_qaqc():
     check_duplicate_meets(all_perfs, flags)
     print(SEPARATOR)
     check_gender_bleed(all_perfs, flags)
+    print(SEPARATOR)
+    check_event_sections(all_perfs, flags)
     print(SEPARATOR)
     flags_path = os.path.join(BASE_DIR, 'backend', 'data', 'qaqc_flags.json')
     with open(flags_path, 'w', encoding='utf-8') as f:

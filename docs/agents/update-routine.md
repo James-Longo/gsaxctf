@@ -24,7 +24,9 @@ previous unfinished run are acceptable) and `git pull --ff-only`.
 
 1. `python3 -m backend.routine scrape` -- sub5 index pages for every season;
    new result files are downloaded, parsed and synced into the store; the
-   manifest, meet links and athlete catalog are rebuilt.
+   manifest, meet links and athlete catalog are rebuilt. A new youth/USATF
+   or college meet is listed in `backend/data/meet_scope.json` (see
+   `docs/agents/missing-meets.md`, "Not school track") and the sync rerun.
 2. If cross country is in season and Five K Sport files are pending: follow
    `docs/agents/fiveksport.md` with the built-in browser (tall viewport,
    OPEN_VIEWER_JS, EXTRACT_JS, `save`), then
@@ -44,6 +46,26 @@ For each **mismatch** in the new meets (most are rare, so read each one):
    backend/tests/test_parsers.py, re-parse that season) or source error
    (the official scores disagree with the file's own results; leave it and
    note it in the report).
+
+**Odd sections** (`odd_sections` in the same report; qaqc check 16): an event
+at one new meet whose *median* mark belongs to another event, such as a
+"Girls 200" field with 800 times (`looks_like` names the nearest event), or
+`no event (mark format?)` when the marks fit no event. Score verification
+misses these when a file prints no team scores. Each flag is judged on the
+whole field, so one runner's great or bad day never trips it. Real fields
+do look unusual, though (kids' meets, beginner middle school throws, New
+England finals), so never drop or relabel rows because of a flag alone:
+1. Read the source around that event. If the source shows the event the
+   parse gave it (a genuinely slow or strong field), it is fine; say so in
+   the report.
+2. Otherwise fix the cause like a mismatch: the parser (missed event or
+   gender header, meters read as feet-inches, columns crossed), or a
+   transcription for a one-off layout. Field relay team totals ("Brewer A"
+   in shot put) are expected at relay meets; the catalog, record boards and
+   predictor already leave them out.
+
+`unreadable_times` lists marks such as "7:70" (seconds over 59), always a
+parse or source error: find the right time in the source.
 
 **Parse confidence** (backend/meet_ledger.py): after the QAQC steps,
 `python3 -m backend.meet_ledger signoff --auto` signs off the new files whose
@@ -114,6 +136,7 @@ conference membership and divisions) and record the source in its
    rebuilds the site (.github/workflows/deploy-pages.yml). Confirm it with
    `gh run watch $(gh run list --workflow deploy-pages.yml -L1 --json databaseId -q '.[0].databaseId')`.
 5. Report to James (the run's final message): new meets and performances,
-   QAQC results (mismatches and what was done), Five K Sport files added,
+   QAQC results (mismatches, odd sections and unreadable times, and what was
+   done), Five K Sport files added,
    athlete review counts and the unsure list, forecast published or skipped,
    Pages deploy result. Keep it short.

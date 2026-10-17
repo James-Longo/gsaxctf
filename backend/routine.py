@@ -9,7 +9,7 @@ when verification fails, and the athlete-identity review.
 
     python3 -m backend.routine plan       # what's in season and what to run (JSON)
     python3 -m backend.routine scrape     # sub5: download, parse, sync (+ manifest, meet links, athlete catalog)
-    python3 -m backend.routine qaqc       # score verification of the meets added since the last run (JSON)
+    python3 -m backend.routine qaqc       # score verification + event-section check of the meets added since the last run (JSON)
     python3 -m backend.routine sims       # postseason forecasts for sports in their championship window
     python3 -m backend.routine check      # production build + tests
     python3 -m backend.routine publish --yes   # commit and push (GitHub Pages deploys on push)
@@ -150,8 +150,18 @@ def qaqc():
     counts = {}
     for v in report.values():
         counts[v] = counts.get(v, 0) + 1
+    # marks that belong to another event (qaqc check 16): a whole section's
+    # median, so a single great or bad day never shows up here
+    with contextlib.redirect_stdout(io.StringIO()):
+        perfs, _ = q.load_all_performances()
+        flags = []
+        q.check_event_sections(perfs, flags)
+    new_set = set(new)
+    odd = [f for f in flags if f"{f['year']}_{f['season']}_{f['meet']}" in new_set]
     out = dict(new_meets=len(new), by_status=counts,
                mismatches=[k for k, v in report.items() if v == 'mismatch'],
+               odd_sections=[f for f in odd if f['check'] == 'event-section'],
+               unreadable_times=[f for f in odd if f['check'] == 'malformed-time'],
                report=report)
     print(json.dumps(out, indent=1))
     return out
