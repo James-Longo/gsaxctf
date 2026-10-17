@@ -45,10 +45,12 @@ function isValidPerformance(perf, resultVal, isTrack) {
     return true;
 }
 
-export default function ResultPredictor({ performances }) {
+export default function ResultPredictor({ performances, runnerId, athletes }) {
     const [event1, setEvent1] = useState("Boys 200 Meter Dash");
     const [event2, setEvent2] = useState("Boys 55 Meter Dash");
     const [inputValue, setInputValue] = useState("7");
+
+    const nameOf = useMemo(() => new Map((athletes || []).map(a => [a.id, a.name])), [athletes]);
 
     const analysisData = useMemo(() => {
         if (!event1 || !event2 || !performances) return null;
@@ -67,14 +69,16 @@ export default function ResultPredictor({ performances }) {
             const isCurrentTrack = INDIVIDUAL_TRACK_EVENTS.includes(perf.event);
             if (!isValidPerformance(perf, parsed.value, isCurrentTrack)) return;
 
-            if (!athletesMap[perf.athlete_id]) {
-                athletesMap[perf.athlete_id] = { athlete_id: perf.athlete_id, name: perf.athlete_name, e1Marks: [], e2Marks: [] };
+            // One point per runner: spellings the athlete catalog merged count together
+            const id = runnerId ? runnerId(perf) : perf.athlete_id;
+            if (!athletesMap[id]) {
+                athletesMap[id] = { athlete_id: id, name: nameOf.get(id) || perf.athlete_name, e1Marks: [], e2Marks: [] };
             }
 
             if (perf.event === event1) {
-                athletesMap[perf.athlete_id].e1Marks.push(parsed.value);
+                athletesMap[id].e1Marks.push(parsed.value);
             } else if (perf.event === event2) {
-                athletesMap[perf.athlete_id].e2Marks.push(parsed.value);
+                athletesMap[id].e2Marks.push(parsed.value);
             }
         });
 
@@ -123,7 +127,7 @@ export default function ResultPredictor({ performances }) {
             n
         };
 
-    }, [performances, event1, event2]);
+    }, [performances, event1, event2, runnerId, nameOf]);
 
     const format1 = analysisData?.isTrack1 ? formatTime : formatDistance;
     const format2 = analysisData?.isTrack2 ? formatTime : formatDistance;
