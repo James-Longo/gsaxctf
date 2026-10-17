@@ -2365,7 +2365,7 @@ class Sub5ScraperV2:
                 #   2. date parsed from the file content
                 #   3. date embedded in the filename
                 stem = os.path.splitext(filename)[0]
-                candidates = [stem + ext for ext in (".htm", ".html", ".pdf")]
+                candidates = [filename] + [stem + ext for ext in (".htm", ".html", ".pdf")]
                 web_date_raw = None
                 for cand in candidates:
                     web_date_raw = self.web_date_mapping.get(f"{year}/{season}/{cand}")
@@ -2413,7 +2413,9 @@ class Sub5ScraperV2:
 
                 # Meet level context for team-name resolution: bare town names
                 # mean a different school in an MS meet than an HS meet.
-                low = re.sub(r'[-_.]+', ' ', f"{filename} {meet_name}".lower())
+                # "ms-<slug>": a MileSplit transcription's file prefix, not "middle school"
+                low = re.sub(r'[-_.]+', ' ', re.sub(r'^ms-(?=[a-z0-9])', '', f"{filename} {meet_name}").lower())
+                low = re.sub(r'\bst\.? doms?\b', 'st dominic', low)   # "St. Doms" is a school, not an MS code
                 if re.search(r'\bms\b|\bjh\b|middle school|junior high|elementary|\bmiddle\b|[a-z]ms(\b|\d)', low):
                     meet_level = 'ms'
                 elif re.search(r'\bcollege\b|university|collegiate|gnac|nescac', low):

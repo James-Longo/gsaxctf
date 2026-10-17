@@ -17,6 +17,7 @@ Checks:
 
 import json
 import os
+import glob
 import re
 from collections import defaultdict
 
@@ -1530,17 +1531,32 @@ def check_meet_scoring():
         ("large_8_places", {0: 10, 1: 8, 2: 6, 3: 5, 4: 4, 5: 3, 6: 2, 7: 1}, {0: 10, 1: 8, 2: 6, 3: 5, 4: 4, 5: 3, 6: 2, 7: 1}),
     ]
 
-    for year in sorted(os.listdir(ARCHIVE_BASE)):
-        year_path = os.path.join(ARCHIVE_BASE, year)
-        if not os.path.isdir(year_path):
-            continue
-        for season in sorted(os.listdir(year_path)):
-            season_path = os.path.join(year_path, season)
-            if not os.path.isdir(season_path):
+    # every archive file, plus the hand transcriptions that have no archive
+    # file (MileSplit "ms-", New England "ne-": parser *-manual)
+    def _meet_files():
+        for year in sorted(os.listdir(ARCHIVE_BASE)):
+            year_path = os.path.join(ARCHIVE_BASE, year)
+            if not os.path.isdir(year_path):
                 continue
-            for fn in sorted(os.listdir(season_path)):
-                if not fn.lower().endswith(('.htm', '.html', '.pdf')):
+            for season in sorted(os.listdir(year_path)):
+                season_path = os.path.join(year_path, season)
+                if not os.path.isdir(season_path):
                     continue
+                for fn in sorted(os.listdir(season_path)):
+                    if fn.lower().endswith(('.htm', '.html', '.pdf')):
+                        yield year, season, fn
+        for jp_ in sorted(glob.glob(os.path.join(PARSED_BASE, '*', '*', '*.json'))):
+            year, season, fn = jp_.split(os.sep)[-3:]
+            if not fn.startswith(('ms-', 'ne-')):
+                continue
+            try:
+                manual = str(json.load(open(jp_, encoding='utf-8')).get('parser', '')).endswith('-manual')
+            except Exception:
+                manual = False
+            if manual:
+                yield year, season, fn
+
+    for year, season, fn in _meet_files():
                 total_meets += 1
 
                 # Read the persisted parse (team_rankings included) rather

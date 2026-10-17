@@ -1516,6 +1516,30 @@ def test_field_relay_jumpers_keep_their_names():
     assert ev['Shot Put']['is_relay']
 
 
+def test_meet_level_ignores_milesplit_prefix():
+    """'ms-<slug>' names a MileSplit transcription, not a middle-school meet; real MS names still read as MS,
+    and 'St. Doms' is a school, not an MS code."""
+    from backend import school_catalog as sc
+    assert sc.meet_level('ms-smaa-boys-portland-thornton-academy-bonny-eagle-2014') is None
+    assert sc.meet_level('ms-mvc-st-doms-carrabec-madison-mt-valley-telstar-2014') is None
+    assert sc.meet_level('ms-madison-junior-high-cross-country-invitational-meet-2026') == 'ms'
+    assert sc.meet_level('MS_MEET_10_12_2017') == 'ms'
+    assert sc.meet_level('ms-girls-78 Southern Maine Middle School XC Festival Meet') == 'ms'
+
+
+def test_milesplit_xc_race_continued_over_pages():
+    """A Hy-Tek race split over pages repeats its title as '....Event 2 Boys 3k Run CC'; the pages are one race."""
+    from backend import milesplit
+    row = lambda p, n, s: f'{p:3d} {n:<26}7 {s:<20}{"12:%02d.00" % p:>11}{p:>5}'
+    text = '\n'.join([
+        '  Event 2  Boys 3k Run CC', '=' * 60, '    Name                    Year School                  Finals  Points', '=' * 60,
+        'Results - Men', row(1, 'Doe, John', 'Yarmouth Mid'), row(2, 'Roe, Jim', 'Greely Middl'),
+        '  ....Event 2  Boys 3k Run CC', row(3, 'Poe, Ed', 'Yarmouth Mid'), row(4, 'Moe, Al', 'Greely Middl'),
+    ])
+    events, _ = milesplit.parse_xc(text)
+    assert len(events) == 1 and [r['place'] for r in events[0]['results']] == [1, 2, 3, 4]
+
+
 if __name__ == '__main__':
     qaqc._ensure_team_mapping()
     failed = 0

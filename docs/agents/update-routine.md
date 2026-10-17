@@ -45,6 +45,15 @@ For each **mismatch** in the new meets (most are rare, so read each one):
    (the official scores disagree with the file's own results; leave it and
    note it in the report).
 
+**Parse confidence** (backend/meet_ledger.py): after the QAQC steps,
+`python3 -m backend.meet_ledger signoff --auto` signs off the new files whose
+team scores verify exactly with every school identified and nothing
+flagged. `python3 -m backend.meet_ledger review 20` then lists what still
+needs a reader, worst first. A `changed` file (signed off, but its source or
+parse has moved since) comes first: compare the new parse with the source;
+if it is right, sign it off again, and if the parse got worse, fix the
+parser. Report the counts per confidence level.
+
 **Gender conflicts**: `python3 -m backend.athlete_catalog stats` reports
 `gender_conflicts`, runners whose results are filed under both genders
 (the catalog keeps them one runner; the store id has no gender). A new one
@@ -52,6 +61,20 @@ usually means a race the parser read as the wrong sex: its `other` races in
 `gender_conflicts` (backend/data/athlete_catalog.json.gz) name the meet.
 Check new ones in this run's meets against the source file and fix the
 parser if it is a pattern.
+
+**MileSplit validation** (`docs/agents/missing-meets.md`, one Sonnet agent,
+one season at a time):
+1. *Gaps*: `python3 -m backend.milesplit list <year> <season>` for the
+   season in progress, then `python3 -m backend.meet_ledger build` and
+   `missing <year> <season>`. Each missing high-school or middle-school meet
+   is filled in the order of the procedure: sub5, the Internet Archive, the
+   host, MileSplit (or marked as one we hold, with `match`).
+2. *New school records*: every record-board change this run (a new best in
+   an event for any team, `ui/src/records.js`) is checked against the
+   meet's MileSplit page. A disagreement is settled by the procedure's
+   "MileSplit wins" rule and reported.
+3. *Mismatches*: a meet whose team scores still mismatch after the step
+   above is checked against MileSplit the same way.
 
 Five K Sport files are verified by `fiveksport sync` (every high-school
 results file with a team sheet must say `verified`).
@@ -77,12 +100,16 @@ conference membership and divisions) and record the source in its
 ## 5. Check, publish, report
 
 1. `python3 -m backend.routine check` -- production build and tests.
-2. Commit any code fixes made in step 3 with their own message first.
-3. `python3 -m backend.routine publish --yes -m "data: routine update <date>"`
+2. `python3 -m backend.store_drift 25` lists team-seasons that lost results
+   since the last commit. Trace each big drop (where did the rows go?) and
+   publish only when every one is explained: rows moved to the right school,
+   a duplicate removed. A drop with no reason is a bug; fix it first.
+3. Commit any code fixes made in step 3 with their own message first.
+4. `python3 -m backend.routine publish --yes -m "data: routine update <date>"`
    commits the data and pushes. The push is the deploy: GitHub Pages
    rebuilds the site (.github/workflows/deploy-pages.yml). Confirm it with
    `gh run watch $(gh run list --workflow deploy-pages.yml -L1 --json databaseId -q '.[0].databaseId')`.
-4. Report to James (the run's final message): new meets and performances,
+5. Report to James (the run's final message): new meets and performances,
    QAQC results (mismatches and what was done), Five K Sport files added,
    athlete review counts and the unsure list, forecast published or skipped,
    Pages deploy result. Keep it short.

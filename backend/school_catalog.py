@@ -520,7 +520,9 @@ def _load():
 def meet_level(meet_name: str = None, grade=None):
     """'ms' / 'college' / 'hs' / None from a file stem or meet name (same rule as scraper_v2)."""
     if meet_name:
-        low = re.sub(r'[-_.]+', ' ', meet_name.lower())
+        # "ms-<slug>": a MileSplit transcription's file prefix, not "middle school"
+        low = re.sub(r'[-_.]+', ' ', re.sub(r'^ms-(?=[a-z0-9])', '', meet_name).lower())
+        low = re.sub(r'\bst\.? doms?\b', 'st dominic', low)   # "St. Doms" is a school, not an MS code
         if re.search(r'\bms\b|\bjh\b|middle school|junior high|elementary|\bmiddle\b|[a-z]ms(\b|\d)|'
                      r'ms(boys|girls|invite|inv|xc|cc|champ|meet|results)|(boys|girls)ms\b', low):
             return 'ms'

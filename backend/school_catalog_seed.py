@@ -712,6 +712,18 @@ ME_MS = [
      ['Jefferson Village School', 'Jefferson Village', 'Jefferson Vi', 'Jefferson'], [], [], {}),
     ('me-ms-nobleboro', 'Nobleboro Central School', 'Nobleboro', None, ['Nobleboro Central School', 'Nobleboro'], [], [], {}),
     ('me-ms-bristol', 'Bristol Consolidated School', 'Pemaquid', None, ['Bristol Consolidated School', 'Bristol Consolidated'], [], [], {}),
+    # middle schools first seen in MileSplit's 2026 cross-country results
+    ('me-ms-mountain-view-pvmscc', 'Mountain View School', None, None, ['Mountain View School', 'Mountain View MS'], [], [], {}),
+    ('me-ms-upper-kennebec', 'Upper Kennebec Valley Middle School', 'Bingham', None,
+     ['Upper Kennebec Valley Middle School', 'Upper Kennebec Valley MS', 'Upper Kennebec MS', 'UKV MS'], [], [], {}),
+    ('me-ms-south-portland', 'South Portland Middle School', 'South Portland', None,
+     ['South Portland Middle School', 'South Portland MS'], [], [], {}),
+    ('me-ms-friends-portland', 'Friends School of Portland', 'Falmouth', None, ['Friends School of Portland', 'Friends School'], [], [], {}),
+    ('me-ms-st-johns-brunswick', "St. John's Catholic School", 'Brunswick', None, ["St. John's Catholic School", "St Johns Catholic School"], [], [], {}),
+    ('me-ms-st-michael-augusta', 'St. Michael School', 'Augusta', None, ['St. Michael School', 'St Michael School', 'St. Michael'], [], [], {}),
+    ('me-ms-mount-jefferson', 'Mount Jefferson Junior High', 'Lee', None, ['Mount Jefferson Junior High', 'Mt. Jefferson JH', 'Mount Jefferson JH'], [], [], {}),
+    ('me-ms-helen-dunn', 'Helen Dunn School', None, None, ['Helen Dunn School'], [], [], {}),
+    ('me-ms-berwick-academy', 'Berwick Academy (middle grades)', 'South Berwick', None, ['Berwick Academy (middle grades)'], [], [], {}),
     ('me-ms-boothbay', 'Boothbay Region Elementary School (middle grades)', 'Boothbay', None,
      ['Boothbay Middle School', 'Boothbay MS', 'Boothbay Middle', 'Boothbay Region Elementary'], [], [], {}),
     ('me-ms-wiscasset', 'Wiscasset Middle School', 'Wiscasset', None,
@@ -1210,6 +1222,13 @@ NOT_SCHOOLS = [
 # These outrank name matching and athlete evidence.
 # ---------------------------------------------------------------------------
 FILE_RULES = [
+    # single-letter codes at SMAA / York County meets, settled by the host and the runners' other meets
+    (['M'], None, (2012, 2013), r'marshwoodboys_sept14|marshwoodboysJV_sept21|kennebunkboys_sept7|marshwoodboys_april30', 'me-hs-marshwood'),
+    (['W'], 'Outdoor', (2016, 2016), r'APR-14-RESULTS', 'me-hs-wells'),
+    (['WTVL'], 'Indoor', (2007, 2007), r'usmrelays', 'me-hs-waterville'),
+    # 2008 Androscoggin Valley middle-school championship: every team is a middle school
+    (['MAMS', 'Mams'], 'Outdoor', (2008, 2008), r'Andy-Valley_Track_Championship_2008', 'me-ms-mt-ararat'),
+    (['BJH', '8t BJH', '7t BJH', '6t BJH'], 'Outdoor', (2008, 2008), r'Andy-Valley_Track_Championship_2008', 'me-ms-brunswick'),
     # 'LMS'
     (['LMS', 'Lms'], 'Outdoor', (2009, 2018),
      r'mtararatms_may15|andyvalleychamps|andyvallesmschamps|bathmiddle|trippms|Results-boys-3|Results-girls-3|'

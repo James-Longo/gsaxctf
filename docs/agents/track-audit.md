@@ -79,3 +79,11 @@ A pattern shared by many files is a parser fix. A file in a one-off layout
 that no parser reads (a coach's score sheet, an event grid) is transcribed
 by hand instead: `docs/agents/track-transcribe.md`, written to
 `backend/data/transcribed/`, which the pipeline prefers over any parse.
+
+**Sign off what is right.** Which files to audit comes from
+`python3 -m backend.meet_ledger review [N] [--season <year>/<season>]`
+(changed sign-offs first, then suspect, then unverified). A file whose
+stored rows you have checked against the source, row by row, and found
+complete and correct (after any fix and re-parse) is signed off:
+`python3 -m backend.meet_ledger signoff <parsed path> --by "<reviewer> <date>" --evidence "<what you compared>"`.
+It is then never audited again unless its source or its parse changes.
