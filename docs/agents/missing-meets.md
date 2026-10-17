@@ -89,6 +89,25 @@ stored), MileSplit's version is taken: it is often corrected after the meet
 - A difference that is plainly MileSplit's mistake (a mark that doesn't fit
   the place order, a runner in two heats at once) is left alone and noted.
 
+## What new data feeds (rerun before publishing)
+
+Added or corrected results reach the site through several built products.
+After ingesting, rebuild each one the new data touches, and check it:
+
+| Product | Rebuild | Check |
+|---|---|---|
+| Team store, manifest, meet links | `python3 -m backend.scraper_v2 --resync-only` | `python3 -m backend.store_drift 25`: every big drop explained |
+| School catalog (when seeds, rules or new school names change) | `python3 -m backend.build_school_catalog`, then the resync | new schools resolve to the right level (middle school vs high school) |
+| Athlete catalog (who is the same runner) | `python3 -m backend.athlete_catalog build` and `apply` | same-team spelling pairs in the new meets (see the roster review) |
+| Team-score verification, QAQC, ledger sign-offs | `python3 -m backend.routine qaqc`, `python3 -m backend.track_verify`, `python3 -m backend.meet_ledger build` and `signoff --auto` | mismatches in the new meets read and settled |
+| XC course table (`ui/public/data/xc_courses.json.gz`) | `python3 -m backend.xc_course_model` | every new venue name mapped to its existing course in `backend/data/xc_course_aliases.json` (keys are the full lowercased venue as printed, e.g. "old town xc course"); compare factors with the published table and explain big moves |
+| XC postseason forecast (in season) | `python3 -m backend.routine sims` | duplicate runners in each field, every team's top seven against its roster |
+| Record boards, athlete pages, PRs | computed in the browser from the store | spot-check a team's board for marks that are new |
+
+A new source brings new names: venue strings (course aliases), school
+spellings and mascots (school catalog), runner spellings (athlete catalog).
+Each one is a place the new data can split from the old.
+
 ## Not found
 
 Append one line per meet you looked for and could not find to

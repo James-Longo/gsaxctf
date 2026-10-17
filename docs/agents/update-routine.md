@@ -100,6 +100,8 @@ conference membership and divisions) and record the source in its
 ## 5. Check, publish, report
 
 1. `python3 -m backend.routine check` -- production build and tests.
+   Before it, rebuild every product the run's new data feeds (table in
+   `docs/agents/missing-meets.md`, "What new data feeds").
 2. `python3 -m backend.store_drift 25` lists team-seasons that lost results
    since the last commit. Trace each big drop (where did the rows go?) and
    publish only when every one is explained: rows moved to the right school,
