@@ -1,0 +1,37 @@
+--- a/backend/event_canon.py
++++ b/backend/event_canon.py
+@@ -45,6 +45,8 @@
+ TYPE_WALK = re.compile(r'race\s*walk|racewalk|\brw\b', re.I)
+ TYPE_STEEPLE = re.compile(r'steeple', re.I)
+ WHEELCHAIR = re.compile(r'wheelchair', re.I)
++# (an ambulatory para division: "Boys Shot Put Para Ambulatory", neresults.pdf)
++PARA = re.compile(r'\bpara\b|ambulatory', re.I)
+ MILE_RE = re.compile(r'\b(1|2|one|two)?\s*miles?\b', re.I)
+ MEDLEY = re.compile(r'medley', re.I)
+ PENTA = re.compile(r'pentathlon|heptathlon|decathlon', re.I)
+@@ -108,6 +110,7 @@
+         return None
+ 
+     wheelchair = bool(WHEELCHAIR.search(s))
++    adaptive = ' (Wheelchair)' if wheelchair else ' (Para Ambulatory)' if PARA.search(s) else ''
+     penta = PENTA.search(s)
+     if penta:
+         kind = penta.group(0).title()
+@@ -145,7 +148,7 @@
+     # field events
+     for pat, name in FIELD_EVENTS:
+         if pat.search(s):
+-            return gender, name + (' (Wheelchair)' if wheelchair else '')
++            return gender, name + adaptive
+ 
+     # miles
+     m = MILE_RE.search(s)
+@@ -169,7 +172,7 @@
+     if TYPE_HURDLES.search(s):
+         return gender, f'{dist} {unit} Hurdles'
+ 
+-    suffix = ' (Wheelchair)' if wheelchair else ''
++    suffix = adaptive
+     # dash for sprints, run for 600+ (metric convention used site-wide)
+     if unit == 'Meter':
+         kind = 'Dash' if dist <= 400 else 'Run'

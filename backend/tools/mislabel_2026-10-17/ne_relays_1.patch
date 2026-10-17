@@ -1,0 +1,54 @@
+--- a/backend/parser.py
++++ b/backend/parser.py
+@@ -137,6 +137,13 @@
+                     best_match = std
+                     max_len = len(std)
+ 
++        # an adaptive division is its own event ("Boys Shot Put Wheelchair",
++        # "Girls Shot Put Para Ambulatory"): event_canon files it apart
++        if max_len:
++            if re.search(r'wheelchair', low):
++                best_match += ' Wheelchair'
++            elif re.search(r'\bpara\b|ambulatory', low):
++                best_match += ' Para Ambulatory'
+         return best_match
+         
+     @staticmethod
+@@ -734,7 +741,17 @@
+                 # Require separator line for no-event-number headers to avoid false positives
+                 # (bib-first exports put the column ruler between the two)
+                 nxt = next((l for l in lines[i + 1:i + 4] if l.strip()), '')
+-                if (i + 1 < len(lines) and "====" in lines[i+1]) or (
++                # the ruler under a qualifier line ("Top 8 Advance by Time")
++                # or a PDF page break (a blank line) is still this header's
++                # (neresults2025.pdf: "Boys 55 Meter Hurdles" prelims were read
++                # into the 2 Mile Run; neresults.pdf: the Boys 800 into the 400)
++                ruler_below = False
++                for l in lines[i + 1:i + 4]:
++                    if not l.strip() or re.match(r'^\s*Top\s+\d+\b.*\bAdvance\b', l, re.I):
++                        continue
++                    ruler_below = '====' in l
++                    break
++                if ruler_below or (i + 1 < len(lines) and "====" in lines[i+1]) or (
+                         i + 2 < len(lines) and "====" in lines[i + 2]
+                         and re.search(r'\bName\b', lines[i + 1])
+                         and re.search(r'\b(School|Team)\b', lines[i + 1])) or (
+@@ -765,6 +782,18 @@
+                     is_header, gender, event_name = True, g, 'Run CC'
+                     lines[i - 1:i] = lines[i - 1:i]  # (no-op: keep the ruler with the event)
+ 
++            # the same page-break mark with no event number ("....Boys 2 Mile
++            # Run", neresults2025.pdf): no ruler follows it, so it only counts
++            # when it names the event in progress
++            if not is_header and current_event and line_clean.startswith('..'):
++                m_dots = re.match(r'^\.{2,}\s*(Girls|Boys|Women|Men|Mixed)\s+(\S.*)$', line_clean, re.I)
++                if m_dots:
++                    g = {'women': 'Girls', 'men': 'Boys'}.get(m_dots.group(1).lower(),
++                                                             m_dots.group(1).capitalize())
++                    if current_event['original_event_name'] == m_dots.group(2).strip() \
++                            and current_event['gender'] == g:
++                        is_header, gender, event_name = True, g, m_dots.group(2).strip()
++
+             # "....Event 2  Boys 1.9 Mile Run CC" is Hy-Tek's page-break
+             # continuation of the current event, not a new race
+             if is_header and current_event and line_clean.startswith('..') \

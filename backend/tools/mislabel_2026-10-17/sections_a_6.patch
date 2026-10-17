@@ -1,0 +1,13 @@
+--- a/backend/scraper_v2.py
++++ b/backend/scraper_v2.py
+@@ -1731,6 +1731,10 @@
+             return mark
+         if 'pentathlon' in ev or 'heptathlon' in ev or 'decathlon' in ev:
+             return mark
++        # a time of day for a track race ("8:01:22.36" for a 200: a heat
++        # timed on the clock, nokomisms17may2026.htm): no race time
++        if meters <= 3200 and re.fullmatch(r'\d{1,2}:\d{2}:\d{2}(?:\.\d+)?', str(mark).strip()):
++            return None
+         floor = meters * 0.095  # slightly faster than world record pace
+         mm = re.fullmatch(r'(\d{1,2})\.(\d{2})(?:\.\d+)?', str(mark).strip())
+         val = None

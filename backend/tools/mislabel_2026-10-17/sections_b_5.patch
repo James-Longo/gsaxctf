@@ -1,0 +1,49 @@
+--- a/backend/scraper_v2.py	2026-10-17 09:41:35.706984709 -0400
++++ b/backend/scraper_v2.py	2026-10-17 09:42:26.735879812 -0400
+@@ -528,6 +528,38 @@
+                     r['athlete'], r['school'] = m.group(1).strip(), m.group(2)
+ 
+ 
++# sprint races: (distance, hurdles) -> plausible school times in seconds
++_SPRINT_SECS = {(55, False): (6, 11), (60, False): (6.5, 12), (100, False): (10, 20),
++                (200, False): (20.5, 45), (300, False): (34, 70),
++                (55, True): (7, 15), (100, True): (12.5, 26), (110, True): (13, 26),
++                (300, True): (36, 80)}
++
++
++def fix_colon_decimals(data):
++    """Hand-typed sheets that type the decimal point as a colon
++    (wiscassetgirls_may10.pdf: Mile "5:50:4", 400m "1:07:8", 100m hurdles
++    "19:91"): no school race runs an hour, so "M:SS:T" is M:SS.T; and a
++    sprint's "SS:HH" is SS.HH when that reads as a time for the race (a
++    "5:46" under the 100 stays: a mile filed under the wrong event)."""
++    for e in data.get('events') or []:
++        if not isinstance(e, dict):
++            continue
++        label = str(e.get('event') or '')
++        d = re.search(r'\b(55|60|100|110|200|300)\s*(?:m\b|meters?\b|-?\s*(?:dash|hurdles?|hh|ih|lh))', label, re.I)
++        rng = None
++        if d and not re.search(r'(?i)relay|\dx\d|4\s*x', label):
++            rng = _SPRINT_SECS.get((int(d.group(1)), bool(re.search(r'(?i)hurd|\bhh\b|\bih\b|\blh\b', label))))
++        for r in e.get('results') or []:
++            m = str(r.get('result') or '')
++            t = re.fullmatch(r'(\d{1,2}):(\d{2}):(\d{1,2})', m)
++            if t and int(t.group(1)) < 30:
++                r['result'] = f'{t.group(1)}:{t.group(2)}.{t.group(3)}'
++                continue
++            t = re.fullmatch(r'(\d{1,2}):(\d{2})', m)
++            if t and rng and rng[0] <= float(f'{t.group(1)}.{t.group(2)}') <= rng[1]:
++                r['result'] = f'{t.group(1)}.{t.group(2)}'
++
++
+ def split_glued_grades(data):
+     """An individual row whose name ran into its class year ("McKechnic,
+     Nicholas SR" with no grade) or kept the unplaced marker ("--- Fillion,
+@@ -1411,6 +1443,7 @@
+                 fix_event_gender_from_names(data_to_save, split=False)
+                 strip_leg_grades(data_to_save)
+                 split_glued_grades(data_to_save)
++                fix_colon_decimals(data_to_save)
+                 # the 110m hurdles is a boys' event (BucksportMeet.pdf 2016 printed
+                 # it after "F 100 hurdles" with no "M")
+                 for _e in data_to_save.get('events') or []:

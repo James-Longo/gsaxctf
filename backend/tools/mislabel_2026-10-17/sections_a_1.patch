@@ -1,0 +1,14 @@
+--- a/backend/parser.py
++++ b/backend/parser.py
+@@ -306,6 +306,11 @@
+                 if re.search(r'\b(Last|Team|School)\s+$', l[:m.start()]):
+                     continue
+                 positions.append(m.start())
++            # (a right-hand column of relays only heads its tables "Team
++            # Relay Finals": no 'Name' marks it - southwestern 2016 page 6)
++            for m in re.finditer(r'\bTeam(?=\s+Relay\b)', l):
++                if m.start() >= 40:
++                    positions.append(m.start())
+         if not positions:
+             return page_text
+         # cluster x-positions (within 3 chars)

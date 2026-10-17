@@ -1,0 +1,16 @@
+--- a/backend/parser.py	2026-10-17 09:30:46.136207171 -0400
++++ b/backend/parser.py	2026-10-17 09:47:05.331408346 -0400
+@@ -796,6 +796,13 @@
+                                     for x in ["relay", "4x", "medley", "shuttle"]),
+                     "is_ms": is_ms_meet
+                 }
++                # a Hy-Tek field event coded "TM" (team): each row is a
++                # team's summed marks ("Boys Long Jump B - LJ- TM" / "1
++                # Leavitt, B   Leavitt   51-10.00", Resultswithscores.htm), a
++                # relay - not to be re-read as jumpers (_field_relay)
++                if re.search(r'-\s*TM\s*$', event_name) and \
++                        self._FIELD_LABEL.search(event_name):
++                    current_event.update(is_relay=True, _field_relay=True)
+             elif in_rankings:
+                 ranking_lines.append(line)
+             elif current_event:

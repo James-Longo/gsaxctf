@@ -1,0 +1,18 @@
+--- a/backend/parser.py
++++ b/backend/parser.py
+@@ -1547,6 +1547,15 @@
+                                         grade_val, school_val = mg.group(1), school_val[mg.end():]
+                                 else:
+                                     school_val = "Unknown"
++                                # the school cell printed a char or more left
++                                # of the header's "School" (pdftotext spaces
++                                # a right-column header on its own:
++                                # 12-28-1-b-results.pdf "School" at 102, the
++                                # rows' "Lewiston" at 101) leaves its first
++                                # letters on the name: "Beaulieu, Marissa    L"
++                                mt = re.search(r'\s{2,}(\S{1,6})$', name_val)
++                                if mt and school_val.startswith(mt.group(1)):
++                                    name_val = name_val[:mt.start()].strip()
+ 
+                                 # Strip trailing wind reading before cleaning
+                                 # (e.g. "14.02q -0.9" or "12.57 NWI" when single-space separated)

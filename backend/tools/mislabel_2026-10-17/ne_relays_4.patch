@@ -1,0 +1,17 @@
+--- a/backend/athlete_catalog.py
++++ b/backend/athlete_catalog.py
+@@ -224,6 +224,14 @@
+     n = re.sub(r'\s+', ' ', (name or '').strip())
+     if not n or re.search(r'relay|runner\s*\d|^team\b|unknown|^tbd', n, re.I):
+         return True
++    # field-relay team totals the parser filed as athletes: "Belfast, Girls
++    # One" (read "Girls One Belfast"), a winner's legs on its line ("Old
++    # Town A Jessica Pol", "Brewer A Teal Jackson/H"), EMITL's "A BREWER"
++    if re.match(r'(?i)(?:girls|boys) one\b', n) or re.search(r'\S\s[A-F]\s+\S.*/', n):
++        return True
++    m = re.match(r'^[A-F]\s+([A-Z][A-Z. ]+)$', n)
++    if m and m.group(1).lower().replace('.', '').strip() in (team or '').lower().replace('.', ''):
++        return True
+     m = re.match(r'^(.*\S)\s+([A-Fa-f]{1,2})$', n)
+     if m:
+         pre = m.group(1).lower().replace('.', '').strip()

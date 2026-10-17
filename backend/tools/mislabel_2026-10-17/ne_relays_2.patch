@@ -1,0 +1,131 @@
+--- a/backend/parser.py
++++ b/backend/parser.py
+@@ -691,6 +691,10 @@
+ 
+             # Header pattern: "Event 1  Girls 4x800 Meter Relay" or "Girls 55 Meter Dash"
+             m_event = re.search(r'Event\s+\d+\s+(Girls|Boys|Women|Men|Mixed)\s+(.*)', line_clean, re.IGNORECASE)
++            # ("Event 32  COED 1200 Sprint Medley", EMITL relays: was read
++            # into the Shot Put Relay above it)
++            if not m_event:
++                m_event = re.search(r'^Event\s+\d+\s+(Co-?ed)\s+(\S.*)', line_clean, re.IGNORECASE)
+             # college exports abbreviate: "Event 1  M 8k Run CC  Varsity"
+             if not m_event:
+                 m_event = re.search(r'^Event\s+\d+\s+([MWF])\s+(\S.*)', line_clean)
+@@ -725,6 +729,8 @@
+                 is_header = True
+                 gender = m_event.group(1).strip()
+                 gender = {'M': 'Boys', 'W': 'Girls', 'F': 'Girls'}.get(gender, gender)
++                if re.match(r'(?i)co-?ed$', gender):
++                    gender = 'Mixed'
+                 if len(gender) > 1:
+                     gender = gender.capitalize()
+                 if gender.lower() == "women": gender = "Girls"
+@@ -829,6 +835,8 @@
+ 
+         parsed_events = []
+         for ev, results in parsed_blocks:
++            if results and self._FIELD_LABEL.search(ev.get('original_event_name') or ev['event_name']):
++                results = self.field_team_entries(ev, results)
+             if results:
+                 parsed_events.append({
+                     "event": ev["event_name"],
+@@ -1229,6 +1237,99 @@
+ 
+     _FIELD_LABEL = re.compile(r'(?i)jump|vault|shot|discus|javelin|hammer|weight')
+ 
++    # a field event scored as team totals (each school's 2-3 marks added up)
++    # names its rows for the team, in one of these forms
++    _TEAM_NAMES = (
++        re.compile(r'^(?P<team>[^\s,][^,]*?\S)\s+(?P<tag>[A-F])$'),              # "Old Town A"
++        re.compile(r'^(?P<tag>[A-F])\s+(?P<team>[^\s(,][^,]*)$'),               # "A HAMPDEN" (EMITL)
++        re.compile(r'^(?P<team>\S.*?),\s*(?P<tag>[A-Z])$'),                     # "Leavitt, B", "Marshwood, M"
++        re.compile(r'^(?P<team>\S.*?),\s*(?P<tag>(?:Girls|Boys)\s+One)$', re.I),  # "Belfast, Girls One"
++    )
++    # a winner's legs printed on its line push the mark past the Finals
++    # column ("  1 Old Town A  Jessica Pollard/Ali King/Laura Martin  84-01.25  10",
++    # "  1 A Old Town   (Derek Barclay/Nathan Regan/Dane Crenshaw)  16-00.00  10")
++    _LEGS_ROW = re.compile(
++        r'^\s*(?P<place>\d{1,3})\s+(?P<label>\S.*?\s[A-F]|[A-F]\s+\S.*?)\s+\(?'
++        r'(?P<legs>[A-Z][^/()\d]*(?:/[^/()\d]+)+?)\)?\s+'
++        r'(?P<mark>\d{1,3}-\d{1,2}(?:\.\d+)?|\d{1,3}\.\d{1,2}m?)(?:\s+(?P<pts>\d+(?:\.\d+)?))?(?!\S)')
++
++    @staticmethod
++    def _team_like(team, tag, school, gender):
++        """A team label's school part matches the row's school column (a
++        prefix either way, or the school's initials: "Mt. Desert" / "MDI"),
++        or its tag is the sex ("B", "Girls One") or the school's initial
++        ("Marshwood, M")."""
++        t = re.sub(r'[^a-z ]', '', team.lower()).split()
++        s = re.sub(r'[^a-z ]', '', (school or '').lower()).strip()
++        if not t:
++            return False
++        if not s or '/' in (school or '') or s == 'unknown':
++            return True          # (the legs ran into the school column)
++        if t[0] in s or s.split()[0] in ' '.join(t):
++            return True
++        if len(t) >= 2 and s.replace(' ', '').startswith(''.join(w[0] for w in t)):
++            return True
++        tag = tag.lower()
++        return tag in (gender[:1].lower(), f'{gender.lower()} one') or (len(tag) == 1 and tag == t[0][0])
++
++    def field_team_entries(self, ev, rows):
++        """A field event whose rows are team totals ("Boys Shot Put Relay",
++        "Girls Shot Put TEAM", "Boys Long Jump B - LJ- TM", or rows named
++        "Leavitt, B" under a plain "Girls High Jump"): every row is a
++        school's entry, read as a relay row (school, mark, legs) so the
++        store files it as "<school> Relay", not as an athlete."""
++        # the winners' rows with legs on the line: read again whole
++        fixed = {}
++        for l in ev.get('lines') or []:
++            m = self._LEGS_ROW.match(l.replace('\xa0', ' '))
++            if m:
++                label = re.sub(r'\s+', ' ', m.group('label')).strip()
++                team = re.sub(r'^[A-F]\s+|\s+[A-F]$', '', label)
++                r = {'school': team, 'result': m.group('mark'), 'relay_label': label,
++                     'athletes': [x.strip() for x in m.group('legs').split('/') if x.strip()],
++                     'type': 'Finals', 'place': int(m.group('place'))}
++                if m.group('pts'):
++                    r['points'] = float(m.group('pts'))
++                fixed[r['place']] = r
++        votes = team = 0
++        for r in rows:
++            name = re.sub(r'\s+', ' ', (r.get('athlete') or '').replace('\xa0', ' ')).strip()
++            if not name:
++                continue
++            votes += 1
++            for p in self._TEAM_NAMES:
++                m = p.match(name)
++                if m and self._team_like(m.group('team'), m.group('tag'), r.get('school'), ev['gender']):
++                    team += 1
++                    break
++        labelled = ev.get('is_relay') or re.search(r'(?i)\b(?:relay|team|tm)\s*$',
++                                                    ev.get('original_event_name') or '')
++        already = ev.get('is_relay') and not votes      # (read as relay rows already)
++        named = team + len(fixed)
++        # (unlabelled: three rows at least - one "Hall, B" is a jumper with
++        # an initial)
++        if not already and not (votes and labelled and named >= 0.6 * votes) and \
++                not (votes >= 3 and named >= 0.9 * votes):
++            return rows
++        out = []
++        for r in rows:
++            if r.get('place') in fixed:
++                if fixed[r['place']] is not None:
++                    out.append(fixed[r['place']])
++                    fixed[r['place']] = None   # (one row per winner)
++                continue
++            r = dict(r)
++            name = r.pop('athlete', None)
++            r.pop('grade', None)
++            if name:
++                r['relay_label'] = re.sub(r'\s+', ' ', name.replace('\xa0', ' ')).strip()
++            r.setdefault('athletes', [])
++            out.append(r)
++        out += [r for r in fixed.values() if r is not None]   # (rows the column reading lost)
++        out.sort(key=lambda r: r.get('place') or 999)
++        ev['is_relay'] = True
++        return out
++
+     def parse_event_block(self, ev):
+         lines = ev["lines"]
+         # a field-event "relay" scored by adding up each team's jumpers

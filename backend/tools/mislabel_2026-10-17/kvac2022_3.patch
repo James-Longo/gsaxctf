@@ -1,0 +1,14 @@
+--- a/backend/parser.py
++++ b/backend/parser.py
+@@ -784,6 +784,11 @@
+ 
+                 # Normalize the event name
+                 normalized_name = self.normalize_event_name(event_name)
++                # ("Event 33 Boys 200 Meter Dash Wheelchair": a race of its
++                # own, kept apart from the 200 by event_canon at sync)
++                if re.search(r'wheelchair', event_name, re.I) and \
++                        not re.search(r'wheelchair', normalized_name, re.I):
++                    normalized_name += ' Wheelchair'
+ 
+                 current_event = {
+                     "gender": gender,

@@ -1,0 +1,191 @@
+[
+ {
+  "key": "2016_Outdoor_2016-pihs-tf-results",
+  "cause": "parse_layout",
+  "confidence": "high",
+  "evidence": "Two-column Hy-Tek pages; right column 'Name' at x=69, its header at x=62: '   4   Lillian Ashby  Ft. Fairfield  14.51   4       Girls 400 Meter Dash'. split_pdf_columns cuts at 63, so the cleaned text has 'irls 400 Meter Dash' / 'inals' and a stray 'G'/'F' on the left. The flat Hy-Tek reader never sees the 400/800 headers, so '2 Meagan Dube Car 1:08.39' (400) and '1 Alexis Rodriguez Car 2:37.93' (800) are filed as 'Girls 200 Meter Dash   F'. Same for Boys High Jump (holding Long/Triple Jump rows from the right column) and Girls Shot Put. 18 cut headers in the file.",
+  "parser": "backend/parser.py:Sub5ColumnParser.split_pdf_columns:_bound (lines 334-340, 'return max(0, x - 6)') via clean_pdf_text (line 374); rows then read by backend/parsers/hytek.py:HyTekBaseParser.parse_common_lines:44-51 (header needs 'Girls|Boys|Women|Men' at the start of the event text)",
+  "fix": "Already fixed by the other agent's kvac2022_1.patch (tested here: same result as my narrower alternative sections_b_1.patch, which cuts at the start of a split 'Girls/Boys/Event/Finals' word per page instead of per line; it changes 25 PDFs vs 68). No new patch needed. Re-parse result with kvac2022_1.patch: 92 -> 0 out-of-bounds rows, 484 -> 485 rows.",
+  "rows_affected": 74
+ },
+ {
+  "key": "2016_Outdoor_CentralMaineFreshmenresults",
+  "cause": "parse_layout",
+  "confidence": "high",
+  "evidence": "Same two-column Hy-Tek layout and cut as 2016-pihs: 16 headers come out as 'irls 400 Meter Dash', 'oys ...', 'inals'; the 400/800 rows land under Girls/Boys 200 and the right column's jumps under Boys Pole Vault. 8 more rows have school text in the mark field in the PDF itself ('Oliver, Connor  Scarborough,ME, ME42-06.50', 'Fuller, Kim  YARMOUTH,YARMOUTY, 13-04.00ME6'): the source's school column overflows into the mark. These 8 are not in the bundle's bad rows.",
+  "parser": "backend/parser.py:Sub5ColumnParser.split_pdf_columns:_bound (lines 334-340, 'return max(0, x - 6)') via clean_pdf_text (line 374); rows then read by backend/parsers/hytek.py:HyTekBaseParser.parse_common_lines:44-51 (header needs 'Girls|Boys|Women|Men' at the start of the event text)",
+  "fix": "Already fixed by the other agent's kvac2022_1.patch (tested here: same result as my narrower alternative sections_b_1.patch, which cuts at the start of a split 'Girls/Boys/Event/Finals' word per page instead of per line; it changes 25 PDFs vs 68). No new patch needed. Re-parse with kvac2022_1.patch: 54 -> 8 out-of-bounds rows (the 8 left are the glued 'school+mark' rows, a text-layer artifact; no fix proposed).",
+  "rows_affected": 44
+ },
+ {
+  "key": "2022_Indoor_results_01_06_2022",
+  "cause": "parse_wrong_event",
+  "confidence": "high",
+  "evidence": "Two causes. (1) The same split_pdf_columns cut: 6 right-column headers come out as 'irls Long Jump', 'irls Triple Jump', 'irls Shot Put', so those rows go under 'Girls High Jump' ('Brooke Chase ... 30-02.50' is a triple jump). (2) 'Boys 55 Meter Hurdles      2) Mountain Valley High School   24': the header line has the team rankings beside it, is >= 100 chars, and HyTekBaseParser.parse_common_lines only tests lines < 100 chars, so '1 Blagdon, Payton BBWHS 10.24' and '2 Benoit, Nate BBWHS 11.43' stay under 'Boys 1 Mile Run'.",
+  "parser": "backend/parser.py:Sub5ColumnParser.split_pdf_columns:_bound (lines 334-340, 'return max(0, x - 6)') via clean_pdf_text (line 374); rows then read by backend/parsers/hytek.py:HyTekBaseParser.parse_common_lines:44-51 (header needs 'Girls|Boys|Women|Men' at the start of the event text); backend/parsers/hytek.py:HyTekBaseParser.parse_common_lines:44 ('if len(line_clean) < 100')",
+  "fix": "kvac2022_1.patch fixes (1): 13 -> 2. sections_b_2.patch fixes (2): when a line is >= 100 chars, test its first 3+-space cell as the header if it starts with a gender word. With both: 13 -> 0. Patch 2 changes only lines >= 100 chars whose first cell is a gender + event; a scan of all track sources finds 5 PDFs (this one, CentralMaineFreshmen, aroostookmschamps, southwestern-championship, April 11 meet at York) and no HTML. southwestern goes 922 -> 939/944 rows; others unchanged.",
+  "rows_affected": 12
+ },
+ {
+  "key": "2021_Outdoor_APRIL-15-AT-YORK",
+  "cause": "parse_wrong_event",
+  "confidence": "high",
+  "evidence": "Hand-typed two-column sheet. Headers with column captions on the same line are missed: '    DISCUS                    HAND     FAT       PT   GIRLS SCORES' -> the boys discus ('1 Charpentier, Matt  YO  124-00') goes under Boys Long Jump; '300 HURDLES  HAND FAT  PT     LONG JUMP   HAND FAT PT' -> the girls long jump ('1 Coomey, Rori  M  16-04') goes under Girls Triple Jump. Also '4 X100' (with a space) is not read as a header.",
+  "parser": "backend/parsers/looselist.py:LooseListParser._event_header:220-245 (len(s) < 35 rule; 'low in EVENT_CANON' without normalising '4 X100')",
+  "fix": "sections_b_4.patch: strip trailing caption words (HAND, FAT, PT/PTS, PL, PLACE, TIME, MARK, SEED, FINALS, SCHOOL, TEAM, NAME) from a candidate header; normalise '4 x 100' -> '4x100' before the EVENT_CANON lookup. Result: 32 -> 0 out-of-bounds, 171 rows kept. Regression run over all 151 track files LooseList currently parses: 20 improve (e.g. york_may10 33->0, sanford12may04b 23->0, bonnyeagleboys_may14 22->0), none lose a correct event. 'April 11 meet at York.pdf' goes 0->12 and APR-14-RESULTS 3->6: those files were already mis-read two columns at a time, and the new headers only expose rows that were hidden under events outside the screen (they need a column split or a transcription).",
+  "rows_affected": 25
+ },
+ {
+  "key": "2013_Indoor_DEC%2020%20YORK%20V%20TRAIP",
+  "cause": "parse_wrong_event",
+  "confidence": "high",
+  "evidence": "Hand-typed two-column sheet. Headers that are a division/sex plus a bare distance are not headers to LooseList: 'SR. GIRLS 400' (rows '1 Lorrey, Jocelyn T 66.5') go under SR. GIRLS 55 HURDLES; 'GIRLS 800' ('1 Evans, Heather Y 2:45.1') goes under GIRLS MILE; 'SR. BOYS 400' ('1 LeBlanc, Brandon Y 58.4') goes under SR. 55 DASH. Not in the bundle but the same: 'JR. BOYS 200', 'SR. BOYS 200' and 'BOYS 800' (34 rows) are filed under Boys Long Jump, where their times do not parse as distances and are silently lost.",
+  "parser": "backend/parsers/looselist.py:LooseListParser._event_header:236-245 (EVENT_KEYWORDS needs dash/meter/run/m; only a bare '400' is in EVENT_CANON)",
+  "fix": "sections_b_4.patch (second hunk): a line that is an optional SR/JR/JV/frosh division, an optional sex word, and one race distance (55-3200, optional m/meters) is a header. Result: 21 -> 0 out-of-bounds; events now SR. GIRLS 400 (2), JR. GIRLS 400 (1), GIRLS 800 (12), JR./SR. BOYS 200 (14/12), BOYS 800 (8), SR./JR. BOYS 400 (3/4), matching the source. Same regression run as above.",
+  "rows_affected": 21
+ },
+ {
+  "key": "2010_Outdoor_wiscassetgirls_may10",
+  "cause": "units",
+  "confidence": "high",
+  "evidence": "Event x place grid typed with a colon for the decimal point: 'Mile Run ... Time: 5:50:4  5:59:2  6:03:7', '400m Dash ... Time: 1:07:8  1:09:4', '800m Run ... 2:39:6', '100m Hurdle ... Time: 19:91  20:32'. The parse keeps them as typed; the store reads 'M:SS:T' as hours. Field events in this sheet (heights typed 4’10” with curly quotes) are dropped entirely, and '53' / '14.8(con)' / '30.5(tie 1)' rows are lost.",
+  "parser": "backend/parsers/placegrid.py:PlaceGridParser.parse (keeps marks as typed); no normaliser in backend/scraper_v2.py post-processing (~line 1410)",
+  "fix": "sections_b_5.patch: fix_colon_decimals() in scraper_v2.py's track post-processing: 'M:SS:T' with M < 30 -> 'M:SS.T'; a sprint (55-300 m, not relays) 'SS:HH' -> 'SS.HH' only when that value is a plausible time for the race. Over all stored track parses it changes 172 marks in 10 files (6 Wiscasset 2010 sheets, leavitt_may5 '16:55h' 100H, BucksportMeet '20:04' 110H, LeavittResults5-23, portlandgirls_april28) and leaves mislabelled ones like graygirls4_30 '100 Meter Dash 5:46' alone. Re-parse: 19 -> 0 out-of-bounds here. The lost field events need a manual transcription (docs/agents/track-transcribe.md): this grid is a one-off layout.",
+  "rows_affected": 15
+ },
+ {
+  "key": "2022_Outdoor_YORK-APRIL-29",
+  "cause": "parse_wrong_event",
+  "confidence": "high",
+  "evidence": "pdftotext leaves a blank line between the header and its ruler: 'Boys Triple Jump' / '' / '=====' / 'Name Year Team Seed Finals Points'. The column parser's no-event-number header needs '====' on the very next line (or Name/School then '===='), so '1 Dunn, Liam  York High Sc  38-03.00' and the rest of the triple jump join Boys Long Jump (43 = 32 + 11). The other 2 bundle rows are genuine: '8 Bell, Madison  Old Orchard  1:59.31' under Girls 400 and '32 Butler, Juniper  Old Orchard  55.31' under Boys 200.",
+  "parser": "backend/parser.py:Sub5ColumnParser.parse:734-745 (the 'Require separator line' test on lines[i+1] / lines[i+2])",
+  "fix": "sections_b_6.patch: also accept a header when the line after it is blank and the next non-blank line is the '====' ruler. Result: 13 -> 2 (the 2 genuine). Regression run over the 16 track sources with this blank-line pattern: 6 change, all splitting a merged event correctly (halldale_may11 4x400/4x800, watervillegirls_may14 3200/100H, april-28-results Discus/Javelin, brunswick4_24 Race Walk/100H, 2025 neresults 400/800 (33 -> 2 out-of-bounds)), none lose rows.",
+  "rows_affected": 13
+ },
+ {
+  "key": "2017_Outdoor_Resultswithscores",
+  "cause": "other",
+  "confidence": "high",
+  "evidence": "Waterville Relays field-relay team totals, printed correctly in the source: 'Event 36  Boys Long Jump B - LJ- TM' / '1 Leavitt, B   Leavitt   51-10.00   10'; 'Event 38 Boys Triple Jump B - TJ - TM' / '1 Maine Central Instit, B  MCI  114-02.25'. Each mark is three jumpers' marks added up. The parse files them as individual Long/Triple Jump etc. with athlete 'Leavitt, B' (store: 'B Leavitt'). The athlete catalog already sets these apart (is_team_label) and predictor_data skips them (no runner id), so they do not reach the predictor; the screen flagged them because it ran over all store rows. Separate bug in the same file: in 'Event 18 Boys Long Jump Relay B - LJ - IN' the empty Seed column makes the points column the result for 15 of 37 rows ('1 Bowen, Caleb  Leavitt  19-03.00  3.33' parsed as result '3.33'); those marks are silently lost (they do not parse as distances).",
+  "parser": "backend/parser.py:Sub5ColumnParser.parse:793-800 (is_relay only from 'relay/4x/medley/shuttle'); parse_event_block:1241-1256 (field-relay re-read)",
+  "fix": "Optional, low priority: sections_b_3.patch marks a field event whose label ends '- TM' as a relay (and skips the field-relay jumper re-read, since 'Leavitt, G' rows do not match its [A-F] team-letter test). Tested on the 3 Waterville Relays files (2016 Results.htm-Relays, 2017 Resultswithscores, 2019 WTV-Relay-Results): all 28 TM events become relays, row counts unchanged. Caveats: rows keep only the team code ('MTA', not 'Mt. Ararat'), and the label still reads 'Long Jump', so check how the sync stores a relay row under a field label before applying. The '3.33' points-as-result bug needs its own look at the column anchoring (not done).",
+  "rows_affected": 34
+ },
+ {
+  "key": "2023_Outdoor_Nokomis-MS-boys-results",
+  "cause": "source_error",
+  "confidence": "high",
+  "evidence": "The file itself prints mile-length times under the 200: 'Boys 200 Meter Dash 7th/8th grade' / '1 Slowikowski, Nick  Center Drive  7:14.19  2' ... '7 Brown, Alec  Nokomis MS  8:07.05  1' (7 rows). The other 4 are genuine 5th/6th-grade marks: '4 Nadeau, Jesse Hermon MS 53.65' (200), '7 Nadeau, Jesse 1:52.88' (400), Archer Kelsey 1:53.50 (400), '15 Perkins, Hudson All Saints 8-06.00' (shot).",
+  "parser": "backend/parsers/column.py:ColumnStrategyParser (correct reading)",
+  "fix": "None in the parser. Drop or re-label the 7 rows of 'Boys 200 Meter Dash 7th/8th grade' by a manual transcription or a data-level exclusion; the event they belong to cannot be told from the file (probably the 1600).",
+  "rows_affected": 11
+ },
+ {
+  "key": "2023_Outdoor_brewerms9april2023",
+  "cause": "other",
+  "confidence": "high",
+  "evidence": "e.g. 'Boys Shot Put 5th/6th grade' / '15 Perkins, Hudson  All Saints  8-06.75'; 'Girls 200 Meter Dash 7th/8th grade' / '18 Tuohy, Sophia  Mattanawcook  1:06.00  2'; 'Girls 55 Meter Hurdles 7th/8th grade' / '20 Grant, Shelby  Piscataquis  21.63  3'. All 14 found under their own event.",
+  "parser": "backend/parsers/column.py:ColumnStrategyParser.parse -> backend/parser.py:Sub5ColumnParser.parse (correct here)",
+  "fix": "Genuine: every row is printed under that event in the source (checked row by row); 5th/6th- and 7th/8th-grade marks below the high-school-oriented BOUNDS (Long Jump >= 6-00, 55H <= 16.0, 400 <= 1:50, 200 <= 50.0, Shot >= 10-00, HJ >= 3-00). No parser change. Fix belongs in the screen: widen BOUNDS for meet_level 'ms' / '5th/6th grade' sections, or skip MS meets in this screen.",
+  "rows_affected": 14
+ },
+ {
+  "key": "2022_Outdoor_Nokomis-MS-results",
+  "cause": "other",
+  "confidence": "high",
+  "evidence": "e.g. 'Girls Long Jump 7th/8th grade' / '26 Boiselle, Angel  Nokomis MS  4-01.00'; 'Girls 400 Meter Dash 7th/8th grade' / '8 Young, Jazmyn  Central MS  1:50.99  1'. All 13 found under their own event.",
+  "parser": "backend/parsers/column.py:ColumnStrategyParser.parse -> backend/parser.py:Sub5ColumnParser.parse (correct here)",
+  "fix": "Genuine: every row is printed under that event in the source (checked row by row); 5th/6th- and 7th/8th-grade marks below the high-school-oriented BOUNDS (Long Jump >= 6-00, 55H <= 16.0, 400 <= 1:50, 200 <= 50.0, Shot >= 10-00, HJ >= 3-00). No parser change. Fix belongs in the screen: widen BOUNDS for meet_level 'ms' / '5th/6th grade' sections, or skip MS meets in this screen.",
+  "rows_affected": 13
+ },
+ {
+  "key": "2026_Outdoor_Old-Town-MS-results",
+  "cause": "other",
+  "confidence": "high",
+  "evidence": "e.g. 'Event 24  Girls Long Jump Varsity' / '40 Pinkham, Saige  Ellsworth MS  3-10.00'; 'Event 10  Girls 400 Meter Dash Varsity' / '13 Thompson, Jennifer  Mattanawcook  1:55.16  2'. All 12 found under their own event ('Evan Thacker' is printed under Girls Long Jump).",
+  "parser": "backend/parsers/column.py:ColumnStrategyParser.parse -> backend/parser.py:Sub5ColumnParser.parse (correct here)",
+  "fix": "Genuine: every row is printed under that event in the source (checked row by row); 5th/6th- and 7th/8th-grade marks below the high-school-oriented BOUNDS (Long Jump >= 6-00, 55H <= 16.0, 400 <= 1:50, 200 <= 50.0, Shot >= 10-00, HJ >= 3-00). No parser change. Fix belongs in the screen: widen BOUNDS for meet_level 'ms' / '5th/6th grade' sections, or skip MS meets in this screen.",
+  "rows_affected": 12
+ },
+ {
+  "key": "2010_Outdoor_orono%20ms%20meet%20girls%20results%205.11.10",
+  "cause": "other",
+  "confidence": "high",
+  "evidence": "e.g. 'Event 15 Girls Long Jump 5/6' / '21 Caitlyn Conley  Glenburn  3-06.50'; 'Event 17 Girls High Jump 5/6' / '9 Sarah Maxsimic  Center Drive 2-08.00'; 'Event 1 Girls 55 Meter Hurdles 5/6' / '14 Brook Robbins  Warrior TC  18.4h'. All 11 found.",
+  "parser": "backend/parsers/column.py:ColumnStrategyParser.parse -> backend/parser.py:Sub5ColumnParser.parse (correct here)",
+  "fix": "Genuine: every row is printed under that event in the source (checked row by row); 5th/6th- and 7th/8th-grade marks below the high-school-oriented BOUNDS (Long Jump >= 6-00, 55H <= 16.0, 400 <= 1:50, 200 <= 50.0, Shot >= 10-00, HJ >= 3-00). No parser change. Fix belongs in the screen: widen BOUNDS for meet_level 'ms' / '5th/6th grade' sections, or skip MS meets in this screen.",
+  "rows_affected": 11
+ },
+ {
+  "key": "2019_Outdoor_ResultsWSCohen_girls_may1",
+  "cause": "other",
+  "confidence": "high",
+  "evidence": "e.g. 'Event 41  Girls Long Jump 5th/6th grade' / '31 Bell, Rachel  Doughty  2-03.00'; 'Event 5  Girls 55 Meter Hurdles 5th/6th grade' / '5 Bryson, Brooklyn  Doughty  20.67'. All 11 found.",
+  "parser": "backend/parsers/column.py:ColumnStrategyParser.parse -> backend/parser.py:Sub5ColumnParser.parse (correct here)",
+  "fix": "Genuine: every row is printed under that event in the source (checked row by row); 5th/6th- and 7th/8th-grade marks below the high-school-oriented BOUNDS (Long Jump >= 6-00, 55H <= 16.0, 400 <= 1:50, 200 <= 50.0, Shot >= 10-00, HJ >= 3-00). No parser change. Fix belongs in the screen: widen BOUNDS for meet_level 'ms' / '5th/6th grade' sections, or skip MS meets in this screen.",
+  "rows_affected": 11
+ },
+ {
+  "key": "2011_Outdoor_middle_school_orono_girls_results_5.9.11",
+  "cause": "other",
+  "confidence": "medium",
+  "evidence": "Word-HTML page, rows run together in one paragraph; each mark sits inside its event: 'Event 15 Girls Long Jump 5/6 ... 21 Jamie Baker Brewer 5-10.00', 'Event 31 Girls 400 Meter Dash 7/8 ... 14 Madeline Callnan Center Drive 1:50.56', 'Event 11 Girls 800 Meter Run 5/6 ... 8 Valery Gillis Glenburn 5:33.95'. All 10 found.",
+  "parser": "backend/parsers/column.py:ColumnStrategyParser.parse -> backend/parser.py:Sub5ColumnParser.parse (correct here)",
+  "fix": "Genuine: every row is printed under that event in the source (checked row by row); 5th/6th- and 7th/8th-grade marks below the high-school-oriented BOUNDS (Long Jump >= 6-00, 55H <= 16.0, 400 <= 1:50, 200 <= 50.0, Shot >= 10-00, HJ >= 3-00). No parser change. Fix belongs in the screen: widen BOUNDS for meet_level 'ms' / '5th/6th grade' sections, or skip MS meets in this screen.",
+  "rows_affected": 10
+ },
+ {
+  "key": "2024_Outdoor_mdims30april2024-1",
+  "cause": "other",
+  "confidence": "high",
+  "evidence": "e.g. 'Girls Long Jump 5th/6th grade' / '16 Rea, Emma  Ellsworth MS  4-07.00'; 'Boys 800 Meter Run 5th/6th grade' / '8 Huynh, Bao  Ellsworth MS  4:31.74'. All 10 found.",
+  "parser": "backend/parsers/column.py:ColumnStrategyParser.parse -> backend/parser.py:Sub5ColumnParser.parse (correct here)",
+  "fix": "Genuine: every row is printed under that event in the source (checked row by row); 5th/6th- and 7th/8th-grade marks below the high-school-oriented BOUNDS (Long Jump >= 6-00, 55H <= 16.0, 400 <= 1:50, 200 <= 50.0, Shot >= 10-00, HJ >= 3-00). No parser change. Fix belongs in the screen: widen BOUNDS for meet_level 'ms' / '5th/6th grade' sections, or skip MS meets in this screen.",
+  "rows_affected": 10
+ },
+ {
+  "key": "2022_Outdoor_Camden-Rockport-MS-results-1",
+  "cause": "other",
+  "confidence": "high",
+  "evidence": "e.g. 'Girls Long Jump' / '28 Wynn Heninger  Jefferson Vi  3-04.00'; 'Girls 55 Meter Hurdles' / '15 Lorelei Parent  Oceanside Mi  26.40  2'; 'Boys Triple Jump' / '8 Beckett Haskell  Oceanside Mi  14-03.00'. All 10 found.",
+  "parser": "backend/parsers/column.py:ColumnStrategyParser.parse -> backend/parser.py:Sub5ColumnParser.parse (correct here)",
+  "fix": "Genuine: every row is printed under that event in the source (checked row by row); 5th/6th- and 7th/8th-grade marks below the high-school-oriented BOUNDS (Long Jump >= 6-00, 55H <= 16.0, 400 <= 1:50, 200 <= 50.0, Shot >= 10-00, HJ >= 3-00). No parser change. Fix belongs in the screen: widen BOUNDS for meet_level 'ms' / '5th/6th grade' sections, or skip MS meets in this screen.",
+  "rows_affected": 10
+ },
+ {
+  "key": "2016_Outdoor_brewerms_april26",
+  "cause": "other",
+  "confidence": "high",
+  "evidence": "e.g. 'Girls 400 Meter Dash 5th/6th grade' / '6 Keegan Day  Milford  1:54.82'; 'Girls Long Jump 5th/6th grade' / '24 Hannah McBrearity-Frye  Ellsworth  5-11.50'. All 10 found.",
+  "parser": "backend/parsers/column.py:ColumnStrategyParser.parse -> backend/parser.py:Sub5ColumnParser.parse (correct here)",
+  "fix": "Genuine: every row is printed under that event in the source (checked row by row); 5th/6th- and 7th/8th-grade marks below the high-school-oriented BOUNDS (Long Jump >= 6-00, 55H <= 16.0, 400 <= 1:50, 200 <= 50.0, Shot >= 10-00, HJ >= 3-00). No parser change. Fix belongs in the screen: widen BOUNDS for meet_level 'ms' / '5th/6th grade' sections, or skip MS meets in this screen.",
+  "rows_affected": 10
+ },
+ {
+  "key": "2024_Outdoor_nokomis1may2024",
+  "cause": "other",
+  "confidence": "high",
+  "evidence": "e.g. 'Boys 400 Meter Dash 5th/6th grade' / '4 Nadeau, Jesse  Hermon MS  2:01.92'; 'Girls 55 Meter Hurdles 5th/6th grade' / '5 Rolfe, Charolette  Nokomis MS  20.79'. All 10 found.",
+  "parser": "backend/parsers/column.py:ColumnStrategyParser.parse -> backend/parser.py:Sub5ColumnParser.parse (correct here)",
+  "fix": "Genuine: every row is printed under that event in the source (checked row by row); 5th/6th- and 7th/8th-grade marks below the high-school-oriented BOUNDS (Long Jump >= 6-00, 55H <= 16.0, 400 <= 1:50, 200 <= 50.0, Shot >= 10-00, HJ >= 3-00). No parser change. Fix belongs in the screen: widen BOUNDS for meet_level 'ms' / '5th/6th grade' sections, or skip MS meets in this screen.",
+  "rows_affected": 10
+ },
+ {
+  "key": "2017_Outdoor_Reeds-Brook-girls-1",
+  "cause": "other",
+  "confidence": "high",
+  "evidence": "e.g. 'Event 37  Girls Long Jump 5th/6th grade' / '27 Grover, Aireonna  Mattanawcook  3-06.50'; 'Event 23  Girls 800 Meter Run 5th/6th grade' / '4 Munoz, Sismai  Cohen  4:42.03'. All 10 found.",
+  "parser": "backend/parsers/column.py:ColumnStrategyParser.parse -> backend/parser.py:Sub5ColumnParser.parse (correct here)",
+  "fix": "Genuine: every row is printed under that event in the source (checked row by row); 5th/6th- and 7th/8th-grade marks below the high-school-oriented BOUNDS (Long Jump >= 6-00, 55H <= 16.0, 400 <= 1:50, 200 <= 50.0, Shot >= 10-00, HJ >= 3-00). No parser change. Fix belongs in the screen: widen BOUNDS for meet_level 'ms' / '5th/6th grade' sections, or skip MS meets in this screen.",
+  "rows_affected": 10
+ },
+ {
+  "key": "2018_Indoor_Indoor-14-Under-Meet-1",
+  "cause": "parse_wrong_event",
+  "confidence": "high",
+  "evidence": "USATF age-group meet: every bad row is an 8-and-under event, printed correctly: 'Event 3  Girls 8&U 55 Meter Dash' / '3 Shorette, Alexi  6 Unattached  12.98  2'; 'Event 17  Girls 8&U High Jump' / '3 Shorette, Alexi  2-02.00'. The parse keeps the age division only on some labels ('8&U 1500 Meter Run') and drops it on others ('55 Meter Dash', '200 Meter Dash', 'Shot Put', 'High Jump', 'Long Jump'), so canonical_event's OUT_OF_SCOPE test (8&U, 9-10, 11-12, 13-14) cannot see it and age-6/8 marks enter the store as ordinary events. The 9-10/11-12/13-14 rows of the same events are stored the same way (in bounds, so not flagged).",
+  "parser": "backend/parser.py:Sub5ColumnParser.normalize_event_name (~line 128-147: returns only the longest standard-event substring, so '8&U 55 Meter Dash' -> '55 Meter Dash'; '8&U 1500 Meter Run' survives only because 1500 is not a standard event) -> backend/event_canon.py:canonical_event OUT_OF_SCOPE",
+  "fix": "sections_b_7.patch: normalize_event_name returns the label unchanged when it carries an under-13 USATF division (8&U, 9-10, 11-12, bantam, midget), so canonical_event's OUT_OF_SCOPE drops it as designed. Tested: this meet 10 -> 0 out-of-bounds. Policy effect across the 20 track files with age divisions: 2,147 -> 1,269 store-eligible rows (878 under-13 rows leave the store, from 18 USATF/'14 & Under'/Kids meets). 13-14 and older stay as today (school-age runners). A first version that also kept 13-14/15-16/17-18 dropped far more (e.g. 2016 USATF female 186 -> 12) and was narrowed. James should confirm under-13 rows are meant to be out of the store.",
+  "rows_affected": 10
+ }
+]

@@ -1,0 +1,191 @@
+[
+ {
+  "key": "2016_Indoor_southwestern-championship-meet-results",
+  "cause": "parse_layout",
+  "confidence": "high",
+  "evidence": "Two-column Hy-Tek PDF. The right column's event header sits at Name-7 (\"Girls 400 Meter Dash JUNIOR DIVISION\" at col 68, \"Name\" at 75); the split cuts at Name-6, so clean_pdf_text gives \"irls 400 Meter Dash JUNIOR DIVISION\", \"oys Triple Jump JUNIOR DIVISION\" and \"oys Shot Put JUNIOR DIVISION\". HyTekSMAAParser needs \"Girls\"/\"Boys\" in the line (hytek.py:44), so those rows join the previous event: \"6 L Weyand Bonny Eagle 1:07.33\" (400) -> Girls 200 Meter Dash; \"A Dutremble 37-00.25\" (TJ) -> Boys Long Jump; \"J Dutremble 36-04.50\" (SP) -> Boys High Jump. Secondary: page 6's right column holds only relays (\"Team  Relay  Finals\", no \"Name\"), so that page is never split. Its \"Girls 4x200 Meter Relay OPEN DIVISION\" line is then over 100 characters, fails hytek.py:44, and 7 relay team rows land under Girls 2 Mile Run (not in the bundle, presumably dropped at sync). Remaining after all patches: 1 genuine row (M Syphers 55H prelim 16.46).",
+  "parser": "backend/parsers/hytek.py:HyTekSMAAParser via parse_common_lines:41-47 (flat rows; _MostRowsParser kept it over ColumnStrategy); root in backend/parser.py:Sub5ColumnParser.split_pdf_columns:294-347 (bound x-6 at line 340, slice at 345; called from clean_pdf_text:374)",
+  "fix": "Shared fix: kvac2022_1.patch (other agent) - verified here, identical results to my own version. Store-wide screen: 174 -> 8 out-of-bounds rows. sections_a_1.patch (also treat a \"Team  Relay\" header at x>=40 as a column start) -> 1, +21 rows. sections_a_4.patch (Medley header) adds the 1600 Sprint Medley relay.",
+  "rows_affected": 118
+ },
+ {
+  "key": "2021_Indoor_emitlfield_week4",
+  "cause": "parse_layout",
+  "confidence": "high",
+  "evidence": "Right-column headers cut to \"vent 21 Girls Long Jump Standing Bro\" and \"vent 25 Girls High Jump\", so the girls' standing-broad-jump rows (\"4 Alyssa Elliott SR Bangor 7-10.00\") are filed under Boys Shot Put, and the girls' HJ rows (\"2 Alyssa Elliott SR Bangor 5-00.00\") under Boys Triple Jump, with the year glued to the name (\"Alyssa Elliott         SR\"). Second cause (wrong event, from canonicalization): these are 2021 COVID-season modified events. \"Long Jump Standing Bro[ad]\" and \"Triple Jump Five Strider\" are normalized to Long Jump / Triple Jump (parser.py normalize_event_name:121-141; event_canon FIELD_EVENTS). Standing broad jumps of 5-10 to 9-04 are stored as long jumps, and 4 fall under the 6-ft bound.",
+  "parser": "backend/parser.py:Sub5ColumnParser (ColumnStrategyParser); backend/parser.py:Sub5ColumnParser.split_pdf_columns:294-347 (bound x-6 at line 340, slice at 345; called from clean_pdf_text:374); normalize_event_name:121-141; backend/event_canon.py:canonical_event:145",
+  "fix": "Shared fix: kvac2022_1.patch (other agent) - verified here, identical results to my own version. 69 -> 4. sections_a_2.patch (normalize_event_name keeps \"Standing\"/\"Strid\" labels whole) plus sections_a_3.patch (event_canon -> \"Standing Long Jump\" / \"Five Stride Jump\") -> 0. These also fix covid-21-week-3-results.pdf, and patch 3 alone fixes champ-field-results.pdf (flat label). 120 rows per file get the new names.",
+  "rows_affected": 69
+ },
+ {
+  "key": "2021_Outdoor_2021-04-10-usm-st-joes-results",
+  "cause": "parse_layout",
+  "confidence": "high",
+  "evidence": "\"Women 100 Meter Dash ... Women 1500 Meter Run\" side by side; the right header is cut and the rows join the left event: \"2 Dunton, Miranda Husson 5:22.22\" -> Women 800 Meter Run; \"1 Hoyle, Zachariah Southern Mai 4:06.20\" (Men 1500 Meter Run, line 170) -> Men 200 Meter Dash. Other issues: (a) this is a college meet (Husson, Plymouth State, USM, St Joseph's). The store should not hold it, and the meet-level exclusion did not catch it. (b) Metric field marks with points on one space (\"Kitchen, Janelle  Plymouth Sta  4.78m 4\") become the mark \"4.78m 4\" (units). They fail mark_is_valid_format at sync, so they are dropped rather than stored.",
+  "parser": "backend/parsers/hytek.py:HyTekSMAAParser (flat); backend/parser.py:Sub5ColumnParser.split_pdf_columns:294-347 (bound x-6 at line 340, slice at 345; called from clean_pdf_text:374)",
+  "fix": "Shared fix: kvac2022_1.patch (other agent) - verified here, identical results to my own version. My count: 55 -> 11 out-of-bounds; the 11 left are the metric \"x.xxm N\" long jumps (units). Recommend excluding the meet as college; failing that, meters need converting in the HyTek row reader.",
+  "rows_affected": 39
+ },
+ {
+  "key": "2019_Outdoor_hampden-meet-results",
+  "cause": "parse_layout",
+  "confidence": "high",
+  "evidence": "Same cut, seen from the left column's side: \"Girls Long Jump 5th/6th grade\" shares its line with the right column's \"Finals\" (Name-7). The left segment keeps the stray \"F\", the header is not recognised, and \"1 Crooker, Sophie RBMS 12-05.50\" (LJ) is filed under Girls High Jump. Boys 400 rows at 2:50+ are Boys 1600 rows the same way. Remaining 4 are genuine 5th/6th-grade marks printed under their own event: \"9 Zetterman, Nick All Saints 4:45.14\" (800), \"36 Loy, Jack Warriors 4-03.00\" (LJ), \"6 Elkadi, Jenna WSCS 18.11\" (55H), Jean-Jacques 200 50.26. (Of the 31 bundle rows, 27 are the cause named here.)",
+  "parser": "backend/parsers/looselist.py:LooseListParser (header read from cleaned text); backend/parser.py:Sub5ColumnParser.split_pdf_columns:294-347 (bound x-6 at line 340, slice at 345; called from clean_pdf_text:374)",
+  "fix": "Shared fix: kvac2022_1.patch (other agent) - verified here, identical results to my own version. 31 -> 4. The 4 left are real MS marks, not parse errors.",
+  "rows_affected": 31
+ },
+ {
+  "key": "2012_Outdoor_cmfroshresults",
+  "cause": "parse_layout",
+  "confidence": "high",
+  "evidence": "Right column \"Girls 800 Meter Run\" (line 19) is cut, and the left header picks up its stray letter (parsed label \"Girls 400 Meter Dash        F\"). So \"3 Caso, Georgia Cheverus,Portland 2:35.89\" (800) -> Girls 400 Meter Dash, and Girls TJ rows -> Girls Long Jump (\"Crocker, Morgan 30-02.50\"). Second cause (HyTek row reader): a school that reaches the mark column is glued to the mark, with one space or none: \"Swan, Olivia  Mt. Ararat,ME, ME 4-10.00\" and \"Yarmouth,Yarmouth, ME36.39\". HyTekSMAAParser.parse_row splits on 2+ spaces, so the mark becomes \"Mt. Ararat,ME, ME 4-10.00\" with school \"\" (74 rows, likely dropped at sync). Also \"Women 800 Sprint Medley\" is not a header (no \"Medley\" in hytek.py:43), so its relay teams were filed as Girls 1600 Meter Race Walk athletes.",
+  "parser": "backend/parsers/hytek.py:HyTekSMAAParser.parse_row:165-200 (mark at 192) and parse_common_lines:43-53; backend/parser.py:Sub5ColumnParser.split_pdf_columns:294-347 (bound x-6 at line 340, slice at 345; called from clean_pdf_text:374)",
+  "fix": "Shared fix: kvac2022_1.patch (other agent) - verified here, identical results to my own version. 60 -> 33 out-of-bounds. sections_a_4.patch (split a trailing mark off a glued school cell; \"Medley\" counts as a relay header) -> 0, with 43 schools restored and medley relays read as relays. Same gain on CentralMaineFreshmenresults.pdf (82 -> 32 empty schools). No change on the other 16 files whose stored parse is a flat HyTek list.",
+  "rows_affected": 22
+ },
+ {
+  "key": "2016_Indoor_2016-Maine-USATF-Indoor-Championship-female",
+  "cause": "parse_wrong_event",
+  "confidence": "high",
+  "evidence": "USATF age-group meet: \"Event 33  Girls 8&U Long Jump\" / \"4 Hoisington, Zoe  8 Brunswick  1.74m  5-08.50\"; \"Event 21 Girls 8&U 200 Meter Dash\" / \"Turner, Danielle 8 Central 52.68\". normalize_event_name maps \"8&U Long Jump\" to \"Long Jump\", so the age group is lost and event_canon.OUT_OF_SCOPE (8&U, 9-10 ... 17-18) can no longer drop it. 8-year-olds are stored as Girls Long Jump, and their Age column is read as grade (\"8\", \"10\", \"12\"). Events missing from the standard list keep the label and are dropped already (\"13-14 1500 Meter Race Walk\"), so behaviour is inconsistent.",
+  "parser": "backend/parser.py:Sub5ColumnParser.normalize_event_name:121-141 (called at 786)",
+  "fix": "sections_a_2.patch: leave a label holding an age division whole, for canonical_event to drop. 13 -> 0 here. Tested on the 13 youth/USATF files (2016 male, 2018 14-Under 1/3/4, 2019 Kids 1/2/5, 14-Under-3, 2022 MEUSATF, ...): about 1,000 youth rows leave the store, as OUT_OF_SCOPE intends. Policy note for James: this drops the 15-16 / 17-18 groups (high-school-age athletes) too. That is the existing rule; it just did not apply until now. Other files with such headers I listed but did not regress-test: 2013 USATF champs, 2014 USATF men/women, 2018 USATF champs, 14-Under-Meet-2, 2019 USATF-State, 2023 tom_eastler.",
+  "rows_affected": 13
+ },
+ {
+  "key": "2003_Indoor_blackbear03",
+  "cause": "parse_wrong_event",
+  "confidence": "high",
+  "evidence": "Field relays: \"Event 16  Girls High Jump Relay Relay\" lists team totals (\"1 Bangor, A  Bang  14-00.00*3.33333\", \"3 oldtown, A  Old T  12-10.00\") among individual jumpers. normalize_event_name makes it \"High Jump\" and the team rows become athletes (\"A Bangor\"). \"Event 17 Boys Pole Vault\" is a relay in the same format but does not say so (source quirk): \"1 Brewer boys, A Brew 32-00.00*\". Minor: points printed one space after the mark are glued on (\"6-04.00 2\" -> \"6-04.002\", parser.py:1561-1566).",
+  "parser": "backend/parser.py:Sub5ColumnParser (event label at 786, rows kept as individuals); post-processing in backend/scraper_v2.py:_parse_one_file ~1411",
+  "fix": "sections_a_5.patch: drop_field_relay_totals(data, text). When the file prints a field-event \"... Relay\" header, any field-event row named \"<team>, A-D\" whose surname starts with the school code (4 letters) or contains boys/girls is a team total and goes. 12 -> 0. Tested on all 71 files holding a field-relay header: 102 rows dropped, all team totals (Leavitt/MTA/Waterville/Gardiner \"..., B\" in Results.htm-Relays, WTV-Relay-Results, Resultswithscores).",
+  "rows_affected": 12
+ },
+ {
+  "key": "2026_Outdoor_nokomisms17may2026",
+  "cause": "source_error",
+  "confidence": "high",
+  "evidence": "Girls 200 heat 6 is printed as a time of day: \"38 Walker, Kaylee  Nokomis MS  8:01:21.25  6\" ... \"42 Mckay, Ava  Hermon MS  8:01:25.06  6\". The timer was not zeroed, so the real times cannot be recovered. The other 7 rows are genuine MS marks under their own event (Fitzgerald 400 1:58.77, 800 4:35.88; LJ 5-07.00, 5-04.50; Briscoe SP 9-11.50; Jones 400 1:55.81). (Of the 12 bundle rows, 5 are the cause named here.)",
+  "parser": "n/a (file content); sync check backend/scraper_v2.py:Sub5ScraperV2.repair_mark:1710-1757",
+  "fix": "sections_a_6.patch: repair_mark returns None (drop) for an h:mm:ss time in a race of 3200 m or less. Checked that 1:02:33.1 for a 10000 and normal times are unchanged. The other 7 rows: Not a parse error: the row is filed under the event the file prints, and the mark is a real middle-school (often 5th/6th-grade) mark outside predictor_data.BOUNDS (lines 29-42), which are high-school ranges (Long Jump >= 6 ft, Shot Put >= 10 ft, 200 <= 50 s, 400 <= 1:50, 55H <= 16.0 s). Fix: none in the parser. Either leave the screen as it is (Owen's Predictor is a high-school tool, so dropping these is harmless) or make the screen depend on the meet level for MS meets.",
+  "rows_affected": 12
+ },
+ {
+  "key": "2026_Outdoor_Wagner-results",
+  "cause": "other",
+  "confidence": "high",
+  "evidence": "Every bad row was found in the source under the event it is stored as (checked row by row). \"41 Cates, Dakota  Piscataquis  J5-09.75\" under \"Event 24 Girls Long Jump\"; \"17 Burnham, Alexis Piscataquis 16.05\" under \"Event 3 Girls 55 Meter Hurdles\"; \"27 Neff, Aliara Wagner MS 1:00.95\" under \"Event 14 Girls 200 Meter Dash\".",
+  "parser": "backend/parser.py:Sub5ColumnParser (ColumnStrategyParser), read correctly",
+  "fix": "Not a parse error: the row is filed under the event the file prints, and the mark is a real middle-school (often 5th/6th-grade) mark outside predictor_data.BOUNDS (lines 29-42), which are high-school ranges (Long Jump >= 6 ft, Shot Put >= 10 ft, 200 <= 50 s, 400 <= 1:50, 55H <= 16.0 s). Fix: none in the parser. Either leave the screen as it is (Owen's Predictor is a high-school tool, so dropping these is harmless) or make the screen depend on the meet level for MS meets.",
+  "rows_affected": 17
+ },
+ {
+  "key": "2008_Outdoor_ms_orono_boys_5.8.08",
+  "cause": "other",
+  "confidence": "high",
+  "evidence": "Every bad row was found in the source under the event it is stored as (checked row by row). \"Event 16 Boys Long Jump 5/6\": \"20 David Carmack All Saints 4-07.50\"; \"Event 10 Boys 400 Meter Dash 5/6\": \"9 Justin Chan Mattanawcook 1:50.4h\"; \"Event 2 Boys 55 Meter Hurdles 5/6\": \"Andrew Johnson ... 23.5h\".",
+  "parser": "backend/parser.py:Sub5ColumnParser (ColumnStrategyParser), read correctly",
+  "fix": "Not a parse error: the row is filed under the event the file prints, and the mark is a real middle-school (often 5th/6th-grade) mark outside predictor_data.BOUNDS (lines 29-42), which are high-school ranges (Long Jump >= 6 ft, Shot Put >= 10 ft, 200 <= 50 s, 400 <= 1:50, 55H <= 16.0 s). Fix: none in the parser. Either leave the screen as it is (Owen's Predictor is a high-school tool, so dropping these is harmless) or make the screen depend on the meet level for MS meets.",
+  "rows_affected": 14
+ },
+ {
+  "key": "2013_Outdoor_Busline%20meet%201%20Belfast",
+  "cause": "other",
+  "confidence": "high",
+  "evidence": "Every bad row was found in the source under the event it is stored as (checked row by row). \"Event 27 Girls Triple Jump\": \"14 Maia Miller Camden-Rockport 14-02.00\"; \"Event 25 Girls Long Jump\": \"54 Mahaley Witham Medomak 5-10.00\"; \"Event 12 Boys 400\": \"Gal Gilat 1:59.25\".",
+  "parser": "backend/parser.py:Sub5ColumnParser (ColumnStrategyParser), read correctly",
+  "fix": "Not a parse error: the row is filed under the event the file prints, and the mark is a real middle-school (often 5th/6th-grade) mark outside predictor_data.BOUNDS (lines 29-42), which are high-school ranges (Long Jump >= 6 ft, Shot Put >= 10 ft, 200 <= 50 s, 400 <= 1:50, 55H <= 16.0 s). Fix: none in the parser. Either leave the screen as it is (Owen's Predictor is a high-school tool, so dropping these is harmless) or make the screen depend on the meet level for MS meets.",
+  "rows_affected": 14
+ },
+ {
+  "key": "2016_Outdoor_Bucksport-MS-girls-results-4-27-16",
+  "cause": "other",
+  "confidence": "high",
+  "evidence": "Every bad row was found in the source under the event it is stored as (checked row by row). \"Girls Long Jump 5th/6th grade\" (Seed / Finals columns): \"Howard, Emma Bucksport 6-04.00 5-05.25\". The parse correctly took Finals 5-05.25. \"Girls 55 Meter Hurdles 7th/8th grade\": \"Golding, Bailey 17.72\".",
+  "parser": "backend/parser.py:Sub5ColumnParser (ColumnStrategyParser), read correctly",
+  "fix": "Not a parse error: the row is filed under the event the file prints, and the mark is a real middle-school (often 5th/6th-grade) mark outside predictor_data.BOUNDS (lines 29-42), which are high-school ranges (Long Jump >= 6 ft, Shot Put >= 10 ft, 200 <= 50 s, 400 <= 1:50, 55H <= 16.0 s). Fix: none in the parser. Either leave the screen as it is (Owen's Predictor is a high-school tool, so dropping these is harmless) or make the screen depend on the meet level for MS meets.",
+  "rows_affected": 11
+ },
+ {
+  "key": "2025_Outdoor_bucksport19may2025",
+  "cause": "other",
+  "confidence": "high",
+  "evidence": "Every bad row was found in the source under the event it is stored as (checked row by row). \"Boys Long Jump 5th/6th grade\": \"Cox, Jace Blue Hill MS 5-03.00\"; \"Girls 200 Meter Dash 5th/6th grade\": \"Bryn, Lydia Bucksport MS 52.39\"; \"Boys Shot Put 5th/6th grade\": \"Dill, Isaac 9-05.50\".",
+  "parser": "backend/parser.py:Sub5ColumnParser (ColumnStrategyParser), read correctly",
+  "fix": "Not a parse error: the row is filed under the event the file prints, and the mark is a real middle-school (often 5th/6th-grade) mark outside predictor_data.BOUNDS (lines 29-42), which are high-school ranges (Long Jump >= 6 ft, Shot Put >= 10 ft, 200 <= 50 s, 400 <= 1:50, 55H <= 16.0 s). Fix: none in the parser. Either leave the screen as it is (Owen's Predictor is a high-school tool, so dropping these is harmless) or make the screen depend on the meet level for MS meets.",
+  "rows_affected": 11
+ },
+ {
+  "key": "2017_Outdoor_Reeds-Brook-girls",
+  "cause": "other",
+  "confidence": "high",
+  "evidence": "Every bad row was found in the source under the event it is stored as (checked row by row). \"Event 37 Girls Long Jump 5th/6th grade\": \"Thomas, Alyssa GLEN 5-04.00\"; \"Event 39 Girls Long Jump 7th/8th grade\": \"56 Turgeon, Selina RBMS 2-01.75\" (printed as such, probably a typo in the source); \"Event 1 Girls 55 Meter Hurdles\": \"Langille, Montana 21.00\".",
+  "parser": "backend/parser.py:Sub5ColumnParser (ColumnStrategyParser), read correctly",
+  "fix": "Not a parse error: the row is filed under the event the file prints, and the mark is a real middle-school (often 5th/6th-grade) mark outside predictor_data.BOUNDS (lines 29-42), which are high-school ranges (Long Jump >= 6 ft, Shot Put >= 10 ft, 200 <= 50 s, 400 <= 1:50, 55H <= 16.0 s). Fix: none in the parser. Either leave the screen as it is (Owen's Predictor is a high-school tool, so dropping these is harmless) or make the screen depend on the meet level for MS meets.",
+  "rows_affected": 11
+ },
+ {
+  "key": "2013_Outdoor_Cohen%204-30-2013",
+  "cause": "other",
+  "confidence": "high",
+  "evidence": "Every bad row was found in the source under the event it is stored as (checked row by row). \"Event 15 Girls Long Jump 5th/6th grade\": \"25 Campbell, Olivia All Saints 5-11.50\"; \"Event 20 Boys Shot Put 5th/6th grade\": \"Skakle, Gavin Glenburn 7-11.00\".",
+  "parser": "backend/parser.py:Sub5ColumnParser (ColumnStrategyParser), read correctly",
+  "fix": "Not a parse error: the row is filed under the event the file prints, and the mark is a real middle-school (often 5th/6th-grade) mark outside predictor_data.BOUNDS (lines 29-42), which are high-school ranges (Long Jump >= 6 ft, Shot Put >= 10 ft, 200 <= 50 s, 400 <= 1:50, 55H <= 16.0 s). Fix: none in the parser. Either leave the screen as it is (Owen's Predictor is a high-school tool, so dropping these is harmless) or make the screen depend on the meet level for MS meets.",
+  "rows_affected": 10
+ },
+ {
+  "key": "2023_Outdoor_MDI-MS-girls-results",
+  "cause": "other",
+  "confidence": "high",
+  "evidence": "Every bad row was found in the source under the event it is stored as (checked row by row). \"Girls Long Jump 5th/6th grade\": \"Michaud, Adamae Bucksport MS 4-02.50\"; \"Girls 400 Meter Dash 5th/6th grade\": \"Pelletier, Patience Ellsworth MS 1:50.89\".",
+  "parser": "backend/parser.py:Sub5ColumnParser (ColumnStrategyParser), read correctly",
+  "fix": "Not a parse error: the row is filed under the event the file prints, and the mark is a real middle-school (often 5th/6th-grade) mark outside predictor_data.BOUNDS (lines 29-42), which are high-school ranges (Long Jump >= 6 ft, Shot Put >= 10 ft, 200 <= 50 s, 400 <= 1:50, 55H <= 16.0 s). Fix: none in the parser. Either leave the screen as it is (Owen's Predictor is a high-school tool, so dropping these is harmless) or make the screen depend on the meet level for MS meets.",
+  "rows_affected": 10
+ },
+ {
+  "key": "2022_Outdoor_Medomak-MS-results-1",
+  "cause": "other",
+  "confidence": "high",
+  "evidence": "Every bad row was found in the source under the event it is stored as (checked row by row). \"Boys Long Jump\": \"Cole Brooks Jefferson Vi 5-10.00\"; \"Boys 55 Meter Hurdles\": \"Lucas Baker Medomak MS 17.14\"; \"Girls 400 Meter Run\": \"Jessica Raburn 1:55.51\".",
+  "parser": "backend/parser.py:Sub5ColumnParser (ColumnStrategyParser), read correctly",
+  "fix": "Not a parse error: the row is filed under the event the file prints, and the mark is a real middle-school (often 5th/6th-grade) mark outside predictor_data.BOUNDS (lines 29-42), which are high-school ranges (Long Jump >= 6 ft, Shot Put >= 10 ft, 200 <= 50 s, 400 <= 1:50, 55H <= 16.0 s). Fix: none in the parser. Either leave the screen as it is (Owen's Predictor is a high-school tool, so dropping these is harmless) or make the screen depend on the meet level for MS meets.",
+  "rows_affected": 10
+ },
+ {
+  "key": "2025_Outdoor_2025-alms-tf-meet-1",
+  "cause": "other",
+  "confidence": "high",
+  "evidence": "Every bad row was found in the source under the event it is stored as (checked row by row). PDF, single column, headers read correctly (the column patch does not touch it): \"Event 18 Boys 400 Meter Dash\": \"Hamilton, Grayson Caribou MS 1:53.10\"; \"Event 1 Girls Shot Put\": \"Sponberg, Aliyah Presque Isle MS 9-09.50\".",
+  "parser": "backend/parser.py:Sub5ColumnParser (ColumnStrategyParser), read correctly",
+  "fix": "Not a parse error: the row is filed under the event the file prints, and the mark is a real middle-school (often 5th/6th-grade) mark outside predictor_data.BOUNDS (lines 29-42), which are high-school ranges (Long Jump >= 6 ft, Shot Put >= 10 ft, 200 <= 50 s, 400 <= 1:50, 55H <= 16.0 s). Fix: none in the parser. Either leave the screen as it is (Owen's Predictor is a high-school tool, so dropping these is harmless) or make the screen depend on the meet level for MS meets.",
+  "rows_affected": 10
+ },
+ {
+  "key": "2008_Outdoor_countymiddleschool_may28",
+  "cause": "other",
+  "confidence": "high",
+  "evidence": "Every bad row was found in the source under the event it is stored as (checked row by row). Seed and Finals columns (\"Name Year Team Seed Finals H# Points\"): \"Sinclair, Annie Limestone Middle 1:49.34 1:50.64 3\". The parse correctly took Finals.",
+  "parser": "backend/parser.py:Sub5ColumnParser (ColumnStrategyParser), read correctly",
+  "fix": "Not a parse error: the row is filed under the event the file prints, and the mark is a real middle-school (often 5th/6th-grade) mark outside predictor_data.BOUNDS (lines 29-42), which are high-school ranges (Long Jump >= 6 ft, Shot Put >= 10 ft, 200 <= 50 s, 400 <= 1:50, 55H <= 16.0 s). Fix: none in the parser. Either leave the screen as it is (Owen's Predictor is a high-school tool, so dropping these is harmless) or make the screen depend on the meet level for MS meets.",
+  "rows_affected": 10
+ },
+ {
+  "key": "2013_Outdoor_doughty_middlesch_girls_results_5.9.13",
+  "cause": "other",
+  "confidence": "high",
+  "evidence": "Every bad row was found in the source under the event it is stored as (checked row by row). \"Event 15 Girls Long Jump 5th/6th grade ... Cecilia Doering Holbrook-Dedham 5-06.25\"; \"Event 9 Girls 400 Meter Dash 5th/6th grade ... Lexi Meeker Milford 1:52.8h\".",
+  "parser": "backend/parser.py:Sub5ColumnParser (ColumnStrategyParser), read correctly",
+  "fix": "Not a parse error: the row is filed under the event the file prints, and the mark is a real middle-school (often 5th/6th-grade) mark outside predictor_data.BOUNDS (lines 29-42), which are high-school ranges (Long Jump >= 6 ft, Shot Put >= 10 ft, 200 <= 50 s, 400 <= 1:50, 55H <= 16.0 s). Fix: none in the parser. Either leave the screen as it is (Owen's Predictor is a high-school tool, so dropping these is harmless) or make the screen depend on the meet level for MS meets.",
+  "rows_affected": 10
+ },
+ {
+  "key": "2008_Outdoor_ms_orono_boys_5.1.08",
+  "cause": "other",
+  "confidence": "high",
+  "evidence": "Every bad row was found in the source under the event it is stored as (checked row by row). \"Event 10 Boys 400 Meter Dash 5/6\": \"Justin Chan Lincoln 1:50.2h\"; \"Event 20 Boys Shot Put 5/6\": \"Bradley Arnold Lincoln 4-09.00\".",
+  "parser": "backend/parser.py:Sub5ColumnParser (ColumnStrategyParser), read correctly",
+  "fix": "Not a parse error: the row is filed under the event the file prints, and the mark is a real middle-school (often 5th/6th-grade) mark outside predictor_data.BOUNDS (lines 29-42), which are high-school ranges (Long Jump >= 6 ft, Shot Put >= 10 ft, 200 <= 50 s, 400 <= 1:50, 55H <= 16.0 s). Fix: none in the parser. Either leave the screen as it is (Owen's Predictor is a high-school tool, so dropping these is harmless) or make the screen depend on the meet level for MS meets.",
+  "rows_affected": 10
+ }
+]

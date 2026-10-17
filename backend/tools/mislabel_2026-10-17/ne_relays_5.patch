@@ -1,0 +1,13 @@
+--- a/backend/scraper_v2.py
++++ b/backend/scraper_v2.py
+@@ -1738,7 +1738,9 @@
+             val = float(str(mark).strip()) if ':' not in str(mark) else None
+         except ValueError:
+             pass
+-        if val is not None and val < floor and mm and meters >= 400:
++        # (seconds of 60 or more are no time: a 55m hurdles "7.70" read into
++        # the 2 Mile Run is not 7:70 - neresults2025.pdf)
++        if val is not None and val < floor and mm and meters >= 400 and int(mm.group(2)) < 60:
+             repaired = int(mm.group(1)) * 60 + int(mm.group(2))
+             if floor <= repaired <= meters * 0.7:
+                 return f'{mm.group(1)}:{mm.group(2)}'

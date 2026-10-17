@@ -1,0 +1,28 @@
+--- a/backend/parser.py
++++ b/backend/parser.py
+@@ -42,6 +42,12 @@
+ _XC_SCORES_LINE = re.compile(r'^(?:\S+\s+){0,3}Team\s+Scores?$', re.I)
+ 
+ 
++# (the age groups event_canon.OUT_OF_SCOPE drops)
++_AGE_DIVISION = re.compile(r'bantam|midget|8\s*&\s*u\b|8 & under|(?<![\d-])(?:9-10|11-12|13-14|15-16|17-18|19-29|[3-9]\d-\d\d)(?![\d-])|'
++                           r'masters', re.I)
++_MODIFIED_EVENT = re.compile(r'\bstanding\b|\bstrid', re.I)
++
++
+ _NUMBER_WORDS = {'one': '1', 'two': '2', 'three': '3', 'four': '4', 'five': '5', 'six': '6'}
+ 
+ 
+@@ -125,6 +131,12 @@
+         Prioritizes the longest match to ensure more-specific events (e.g.
+         "1600 Meter Race Walk") win over less-specific ones ("1600 Meter Run").
+         """
++        # an age division (USATF "Girls 8&U Long Jump", "Women 15-16 Shot
++        # Put") or a modified event (2021 "Long Jump Standing Bro", "Triple
++        # Jump Five Strider") is not the standard event: the label stays
++        # whole, for the event canonicaliser to drop or name
++        if _AGE_DIVISION.search(event_name) or _MODIFIED_EVENT.search(event_name):
++            return event_name
+         best_match = event_name
+         max_len = 0
+         low = event_name.lower()

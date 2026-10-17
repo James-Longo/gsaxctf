@@ -1,0 +1,52 @@
+--- a/backend/scraper_v2.py
++++ b/backend/scraper_v2.py
+@@ -561,6 +561,41 @@
+                 r['place'] = i + 1
+ 
+ 
++_FIELD_LABEL = re.compile(r'(?i)jump|vault|\bshot\b|put\b|discus|javelin|throw')
++_TEAM_ENTRY = re.compile(r'^(.+?),\s*([A-Da-d])$')
++
++
++def drop_field_relay_totals(data, text):
++    """A field relay ("Event 16 Girls High Jump Relay": three jumpers'
++    heights summed, blackbear03.htm) lists each team's total as a row of
++    its own, named for the team and its relay letter ("Bangor, A",
++    "brewergrls, A", "Mt Desert boys, a" at 14-00.00): no athlete's mark.
++    In a file holding a field relay, a field-event row whose surname is its
++    school (the code's first four letters) or says boys / girls goes; the
++    jumpers' own marks stay. (The file's other field events count too:
++    blackbear03's "Boys Pole Vault" is a relay that does not say so.)"""
++    evs = [e for e in data.get('events') or [] if isinstance(e, dict) and 'results' in e]
++    # (the parse keeps "High Jump": the file's own header says relay)
++    if not re.search(r'(?i)\b(?:jump|vault|shot\s*put|discus|javelin|throw)\s+relay\b', text or ''):
++        return 0
++    n = 0
++    for e in evs:
++        if not _FIELD_LABEL.search(str(e.get('event') or '')):
++            continue
++        keep = []
++        for r in e['results']:
++            m = _TEAM_ENTRY.match((r.get('athlete') or '').strip()) if isinstance(r.get('athlete'), str) else None
++            if m:
++                sur = re.sub(r'[^a-z]', '', m.group(1).lower())
++                code = re.sub(r'[^a-z]', '', (r.get('school') or '').lower())[:4]
++                if (len(code) >= 3 and sur.startswith(code)) or re.search(r'boys|girls|grls', sur):
++                    n += 1
++                    continue
++            keep.append(r)
++        e['results'] = keep
++    return n
++
++
+ def fix_event_gender_from_label(data):
+     """An event label that names one gender ("3k Run CC 9-10 Division
+     Boys") outranks the gender a parser carried over from an earlier header;
+@@ -1409,6 +1444,7 @@
+                 # track: a race whose names all belong to the other sex
+                 # (a sheet the parser read under one gender)
+                 fix_event_gender_from_names(data_to_save, split=False)
++                drop_field_relay_totals(data_to_save, text)
+                 strip_leg_grades(data_to_save)
+                 split_glued_grades(data_to_save)
+                 # the 110m hurdles is a boys' event (BucksportMeet.pdf 2016 printed

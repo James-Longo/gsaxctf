@@ -1,0 +1,16 @@
+--- a/backend/event_canon.py
++++ b/backend/event_canon.py
+@@ -142,6 +142,13 @@
+             return gender, '4x400 Meter Relay'
+         return None  # relay without a resolvable distance
+ 
++    # the modified jumps of the 2021 COVID season ("Long Jump Standing
++    # Bro[ad]", "Triple Jump Five Strider"): not the long or triple jump
++    if re.search(r'\bstanding\b', s, re.I) and re.search(r'jump|broad|\bbro\b', s, re.I):
++        return gender, 'Standing Triple Jump' if re.search(r'triple', s, re.I) else 'Standing Long Jump'
++    if re.search(r'\b(?:five|5)[\s-]*strid', s, re.I):
++        return gender, 'Five Stride Jump'
++
+     # field events
+     for pat, name in FIELD_EVENTS:
+         if pat.search(s):

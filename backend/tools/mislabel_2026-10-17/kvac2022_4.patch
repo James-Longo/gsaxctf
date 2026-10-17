@@ -1,0 +1,11 @@
+--- a/backend/event_canon.py
++++ b/backend/event_canon.py
+@@ -152,7 +152,7 @@
+     if m and not DIST_RE.search(s):
+         n = (m.group(1) or '1').lower()
+         n = {'one': '1', 'two': '2'}.get(n, n)
+-        return gender, f'{n} Mile Run'
++        return gender, f'{n} Mile Run' + (' (Wheelchair)' if wheelchair else '')
+ 
+     # distance + type
+     m = DIST_RE.search(s)

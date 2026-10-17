@@ -1,0 +1,16 @@
+--- a/backend/parser.py	2026-10-17 09:30:46.136207171 -0400
++++ b/backend/parser.py	2026-10-17 09:52:54.248473793 -0400
+@@ -128,6 +128,13 @@
+         best_match = event_name
+         max_len = 0
+         low = event_name.lower()
++        # a USATF age division under 13 ("Girls 8&U 55 Meter Dash", "11-12
++        # Shot Put", Indoor-14-Under-Meet-1.htm) stays in the label:
++        # event_canon drops those races, and the standard name alone would
++        # file an 8-year-old's 12.98 as an ordinary 55 meter dash (13-14 and
++        # up are school-age runners the store keeps)
++        if re.search(r'\b8\s*&\s*u\b|8 & under|(?<![\d-])(?:9-10|11-12)(?![\d-])|bantam|midget', low):
++            return event_name
+ 
+         for std in self.standard_events:
+             # whole-number boundary: "2.1 Mile Run CC" is not "1 Mile Run",

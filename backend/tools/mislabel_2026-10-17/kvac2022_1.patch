@@ -1,0 +1,26 @@
+--- a/backend/parser.py
++++ b/backend/parser.py
+@@ -340,9 +340,21 @@
+             return max(0, x - 6)
+         bounds = [0] + [_bound(s) for s in starts[1:]] + [10 ** 6]
+         columns = [[] for _ in range(len(bounds) - 1)]
++
++        def _cut(l, b):
++            # a column's own header word can start a char or two left of
++            # the bound (Hy-Tek prints "Event 6 Boys ...", "Women 400 ...",
++            # "Finals" at Name-7, one left of Name-6): cut at the gap
++            # before that word, not inside it ("E" | "vent 6")
++            if 0 < b < len(l) and l[b - 1] != ' ' and l[b] != ' ':
++                for c in range(b - 1, max(0, b - 3) - 1, -1):
++                    if l[c - 1:c] == ' ' or c == 0:
++                        return c
++            return b
+         for l in lines:
+-            for i in range(len(bounds) - 1):
+-                seg = l[bounds[i]:bounds[i + 1]].rstrip()
++            cuts = [0] + [_cut(l, b) for b in bounds[1:-1]] + [10 ** 6]
++            for i in range(len(cuts) - 1):
++                seg = l[cuts[i]:cuts[i + 1]].rstrip()
+                 columns[i].append(seg)
+         return '\n'.join('\n'.join(col) for col in columns)
+ 

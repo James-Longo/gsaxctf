@@ -1,0 +1,15 @@
+--- a/backend/parser.py	2026-10-17 09:30:46.136207171 -0400
++++ b/backend/parser.py	2026-10-17 09:44:17.316493325 -0400
+@@ -734,7 +734,12 @@
+                 # Require separator line for no-event-number headers to avoid false positives
+                 # (bib-first exports put the column ruler between the two)
+                 nxt = next((l for l in lines[i + 1:i + 4] if l.strip()), '')
++                # (pdftotext can leave a blank line between the header and
++                # its ruler: YORK-APRIL-29.pdf "Boys Triple Jump" / "" /
++                # "====", read as the long jump's rows without it)
++                nb = [l for l in lines[i + 1:i + 4] if l.strip()]
+                 if (i + 1 < len(lines) and "====" in lines[i+1]) or (
++                        nb and "====" in nb[0] and lines[i + 1].strip() == '') or (
+                         i + 2 < len(lines) and "====" in lines[i + 2]
+                         and re.search(r'\bName\b', lines[i + 1])
+                         and re.search(r'\b(School|Team)\b', lines[i + 1])) or (
