@@ -228,7 +228,8 @@ KEY_FIXUPS = {
 # file 2-mile middle-school times under the high school's name and a "5K"
 # label, which rated seventh graders as the fastest runners in the state.
 NON_HS_MEET = re.compile(
-    r'middle|[-_ ]ms[-_ ]|^ms[-_ ]|[-_ ]ms$|alumni|masters|'
+    # (not '^ms-': that prefix names a MileSplit transcription, whatever its level)
+    r'middle|[-_ ]ms[-_ ]|^ms[_ ]|[-_ ]ms$|alumni|masters|'
     r'jh(s|xc|[-_ .]|$)|junior|\b6th|78th|'
     # middle-level leagues: every year these files carry grades they run at
     # median grade 7-8, so the years without grades are the same races

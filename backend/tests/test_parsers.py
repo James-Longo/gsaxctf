@@ -1527,6 +1527,15 @@ def test_meet_level_ignores_milesplit_prefix():
     assert sc.meet_level('ms-girls-78 Southern Maine Middle School XC Festival Meet') == 'ms'
 
 
+def test_xc_course_model_keeps_milesplit_meets():
+    """The course model / postseason forecast drop middle-school meets by name; a MileSplit file's 'ms-' prefix
+    is not one (it dropped every 2026 MileSplit meet from the forecast)."""
+    from backend import xc_course_model as cm
+    assert not cm.NON_HS_MEET.search('ms-ellsworth-invitational-2026')
+    assert cm.NON_HS_MEET.search('ms-tripp-ms-meet-2026')
+    assert cm.NON_HS_MEET.search('ms-madison-junior-high-cross-country-invitational-meet-2026')
+
+
 def test_milesplit_xc_race_continued_over_pages():
     """A Hy-Tek race split over pages repeats its title as '....Event 2 Boys 3k Run CC'; the pages are one race."""
     from backend import milesplit
