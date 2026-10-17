@@ -40,11 +40,14 @@ export default function SummerTrack({ view }) {
     return data.rows.map(r => Object.fromEntries(Object.entries(c).map(([k, i]) => [k, r[i]])))
   }, [data])
 
+  // Maine series clubs first; clubs seen only at Junior Olympic / regional meets after
   const clubs = useMemo(() => {
     const n = {}
     rows.forEach(r => { if (r.club) n[r.club] = (n[r.club] || 0) + 1 })
-    return Object.keys(n).sort()
-  }, [rows])
+    const series = new Set(data?.series_clubs || [])
+    const all = Object.keys(n).sort((a, b) => a.localeCompare(b))
+    return { series: all.filter(c => series.has(c)), other: all.filter(c => !series.has(c)) }
+  }, [rows, data])
 
   const meetOrder = useMemo(() => data
     ? data.meets.map((m, i) => ({ ...m, i })).sort((a, b) => (b.date || '').localeCompare(a.date || ''))
@@ -59,7 +62,14 @@ export default function SummerTrack({ view }) {
       <label>Club</label>
       <select value={club} onChange={e => setClub(e.target.value)}>
         <option value="All">All clubs</option>
-        {clubs.map(c => <option key={c} value={c}>{c}</option>)}
+        <optgroup label="Maine summer series clubs">
+          {clubs.series.map(c => <option key={c} value={c}>{c}</option>)}
+        </optgroup>
+        {clubs.other.length > 0 && (
+          <optgroup label="Other clubs (Junior Olympic meets)">
+            {clubs.other.map(c => <option key={c} value={c}>{c}</option>)}
+          </optgroup>
+        )}
       </select>
     </div>
   )

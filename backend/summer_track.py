@@ -90,11 +90,26 @@ CLUBS = [
     (r'^(oxfo|oxford)', 'Oxford Hills'),
     (r'^(waldo)', 'Waldo County Track Club'),
     (r'^(01-)?(un-|una|unat|unnat|unatt)', 'Unattached'),
+    (r'^ed riot', 'Orono Red Riots'),
+    (r'^bruns', 'Brunswick Rec'),
+    (r'^wiscasett?', 'Wiscasset Parks & Rec'),
+    (r'^poland', 'Poland Track Club'),
+    (r'^freeport (hs|high school)', 'Freeport High School'),
+    (r'^patriot (pole|pv|vault)', 'Patriot Pole Vault Club'),
+    (r'^maine (rw|race ?w)', 'Maine Racewalkers'),
+    (r'^sugarloaf', 'Sugarloaf Mountain'),
+    (r'^v-tesse', 'V-Tesse Track Club'),
+    (r'^camb\.? jets|^cambridge jets', 'Cambridge Jets'),
+    (r'^jeri(cho)? ?jets', 'Jericho Jets'),
+    (r'^inf(ant)? ?jesus', 'Infant Jesus TC'),
+    (r'^cool running', 'Cool Runnings'),
 ]
 
 
 def canon_club(raw):
     c = re.sub(r'\s+', ' ', raw or '').strip()
+    c = re.sub(r',\s*\S.*$', '', c) if not re.match(r'^[A-Z][a-z]+, [A-Z]', c) else c   # 'Dirigo R.C.,Bar Har': drop the town
+    c = re.sub(r"(\s+(?:[+-]?[jJxX]?\d[\d.:\-]*[mqQ]?|NWI|NT|ND|DQ|DNS|FOUL))+$", '', c).strip()     # seed / mark / wind columns run in
     for rx, name in CLUBS:
         if re.search(rx, c, re.I):
             return name
@@ -389,6 +404,7 @@ def parse():
 def build():
     """One file for the site: meets, and every scored row (place or mark) flattened."""
     meets, rows = [], []
+    dropped = 0
     for path in sorted(glob.glob(os.path.join(SUMMER, '[0-9]' * 4, '*.json'))):
         d = json.load(open(path))
         mi = len(meets)
@@ -403,15 +419,52 @@ def build():
                     continue           # DNS / DQ / NM
                 if re.match(r'^\d', r['club'] or ''):
                     continue           # a team-score line read as a row
+                if re.match(r"^'[A-Z]'", r['club'] or ''):
+                    dropped += 1
+                    continue           # a relay row filed under another event, club lost (sub5 parse)
                 rows.append([mi, e['gender'], e['age_group'], ev, r['place'], r['name'] or '',
                              canon_club(r['club']), r['mark'].rstrip('a'), r['value'], r.get('age'), r.get('aid') or '',
                              ', '.join(r.get('legs') or [])])
-    out = dict(built=dt.date.today().isoformat(),
+    # truncated spellings ('Providence Co', 'Amherst Track Cl') join the one longer
+    # name they begin; ambiguous prefixes stay as printed
+    n = {}
+    for r in rows:
+        n[r[6]] = n.get(r[6], 0) + 1
+    def key(c):
+        k = re.sub(r'[^a-z0-9]', '', c.lower().replace('&', 'and'))
+        return re.sub(r'(?:trackclub|trackcl|trackc|track|trac|tra|tr|tc)$', 'tc', k)
+    keys = {c: key(c) for c in n}
+    merge = {}
+    by_key = {}
+    for c, k in keys.items():
+        by_key.setdefault(k, []).append(c)
+    for k, cs in by_key.items():          # same name once spelled out: keep the commonest spelling
+        best = max(cs, key=lambda c: n[c])
+        for c in cs:
+            if c != best:
+                merge[c] = best
+    for c, k in keys.items():
+        if len(k) < 6 or c in merge:
+            continue
+        longer = sorted({key(o) for o, ko in keys.items() if o != c and ko.startswith(k) and len(ko) > len(k)}, key=len)
+        # one longer name, or a chain of cuts of one name ('Providence Co' < 'Providence Cobras')
+        if longer and all(longer[-1].startswith(x) for x in longer):
+            longer = {longer[-1]}
+        if len(longer) == 1:
+            target = max((o for o, ko in keys.items() if ko in longer), key=lambda o: n[o])
+            merge[c] = merge.get(target, target)
+    for r in rows:
+        r[6] = merge.get(r[6], r[6])
+    # clubs that race the Maine series (MileSplit / athletic.net meets) list first on the site
+    series = sorted({r[6] for r in rows if r[6] and meets[r[0]]['url'] and 'sub5' not in meets[r[0]]['url']
+                     and 'sub5.com' not in (meets[r[0]]['url'] or '')}, key=str.lower)
+    out = dict(built=dt.date.today().isoformat(), series_clubs=series,
                cols=['meet', 'gender', 'age_group', 'event', 'place', 'name', 'club', 'mark', 'value', 'age', 'aid', 'legs'],
                meets=meets, rows=rows)
     with gzip.open(OUT, 'wt', encoding='utf-8') as f:
         json.dump(out, f, separators=(',', ':'))
-    print(f'{len(meets)} meets, {len(rows)} rows -> {os.path.relpath(OUT, ROOT)}')
+    print(f'{len(meets)} meets, {len(rows)} rows -> {os.path.relpath(OUT, ROOT)}; '
+          f'{len(merge)} truncated club names merged; {dropped} misfiled relay rows dropped')
 
 
 if __name__ == '__main__':
