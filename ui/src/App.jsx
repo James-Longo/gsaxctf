@@ -19,6 +19,7 @@ import Footage from './Footage'
 import SplitExplorer from './SplitExplorer'
 import SearchSelect from './SearchSelect'
 import XCCourseExplorer from './XCCourseExplorer'
+import SummerTrack from './SummerTrack'
 import XCPostseasonSim from './XCPostseasonSim'
 import RecordBoard from './RecordBoard'
 
@@ -30,6 +31,8 @@ const SPORTS = {
   xc: { label: 'Cross Country', season: 'XC', tabs: ['history', 'sim', 'xc-courses'], team: [] },
   indoor: { label: 'Indoor', season: 'Indoor', tabs: TRACK_TABS, team: ['practice', 'footage'] },
   outdoor: { label: 'Outdoor', season: 'Outdoor', tabs: TRACK_TABS, team: ['practice', 'footage'] },
+  // USATF Maine Youth Summer Series: clubs and age groups, its own data (backend/summer_track.py)
+  summer: { label: 'Summer', season: 'Summer', tabs: ['history', 'records'], team: [] },
 }
 // Athlete Profiles opens on this runner when no athlete is chosen
 const DEFAULT_PROFILE_ATHLETE = 'owen-cannon-george-stevens-academy'
@@ -505,7 +508,9 @@ function App() {
             </div>
           ) : (
           <>
-          {activeTab === 'sim' ? (
+          {sport === 'summer' ? (
+            <SummerTrack view={activeTab} />
+          ) : activeTab === 'sim' ? (
             sport === 'xc'
               ? <XCPostseasonSim followTeam={selectedTeam} />
               : <PerformanceList performances={allPerformances} isBetter={isBetter} manifest={manifest} loadTeamData={loadTeamData} season={SPORTS[sport].season} />
