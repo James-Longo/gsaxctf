@@ -1549,6 +1549,89 @@ def test_milesplit_xc_race_continued_over_pages():
     assert len(events) == 1 and [r['place'] for r in events[0]['results']] == [1, 2, 3, 4]
 
 
+def test_event_sections_flag_fields_not_runners():
+    """qaqc check 16 judges a whole event at one meet by its median: a slow
+    field and one runner's freak mark pass; 800 times filed under the 200
+    and an unreadable "7:70" are flagged."""
+    def field(meet, event, marks):
+        return [dict(year='2020', season='Outdoor', meet_name=meet, event=event,
+                     athlete_name=f'Pat {n}', team='Some High School', mark=m)
+                for n, m in zip(['Ames', 'Bell', 'Cote', 'Dube', 'Ely'], marks)]
+    perfs = []
+    for i in range(40):
+        perfs += field(f'meet{i}', 'Girls 200 Meter Dash', ['28.10', '29.40', '30.20', '31.00', '32.50'])
+        perfs += field(f'meet{i}', 'Girls 800 Meter Run', ['2:30.1', '2:38.4', '2:45.0', '2:52.3'])
+    perfs += field('kids', 'Girls 200 Meter Dash', ['41.20', '44.80', '46.10'])          # slow but real
+    perfs += field('freak', 'Girls 200 Meter Dash', ['29.00', '30.10', '2:31.00'])       # one bad mark
+    perfs += field('swapped', 'Girls 200 Meter Dash', ['2:31.20', '2:40.80', '2:44.00'])  # the 800
+    perfs += field('typo', 'Girls 800 Meter Run', ['7:70'])
+    flags = []
+    qaqc.check_event_sections(perfs, flags)
+    odd = [(f['meet'], f.get('looks_like')) for f in flags if f['check'] == 'event-section']
+    assert odd == [('swapped', 'Girls 800 Meter Run')], odd
+    assert [f['mark'] for f in flags if f['check'] == 'malformed-time'] == ['7:70']
+
+
+def test_pdf_columns_keep_right_header_whole():
+    """Two-column Hy-Tek PDF pages print the right column's "Event N" line
+    one character left of where its rows' "Name" sits minus six; the split
+    cut "Event 7" to "vent 7" (meet-@-bowdoin-12-11-21-1-c.pdf), so the
+    mile's rows joined the 55 dash."""
+    left = ['Event 5  Girls 55 Meter Dash', '    Name                    School         Finals',
+            '  1 Doe, Ann                 Belfast         7.80']
+    right = ['Event 7  Girls 1 Mile Run', '    Name                    School         Finals',
+             '  1 Roe, Bea                Camden          5:41.20']
+    col = 60
+    lines = []
+    for i, (l, r) in enumerate(zip(left, right)):
+        start = col - 7 if i == 0 else col - 4   # the header one left of Name - 6
+        lines.append(l.ljust(start) + r)
+    out = Sub5ColumnParser.split_pdf_columns('\n'.join(lines))
+    assert 'Event 7  Girls 1 Mile Run' in out.splitlines(), out
+    assert all(not l.rstrip().endswith(' E') for l in out.splitlines()), out
+
+
+def test_age_group_labels():
+    """USATF divisions go on the event as its age group; the event keeps
+    its standard name (backend/sub5_summer.py)."""
+    from backend.parser import age_group_of, strip_age_group
+    cases = {'Girls 8&U Long Jump': '8 & Under', 'Women 15-16 Shot Put': '15-16',
+             '100 Meter Dash Bantam Girls': 'Bantam', 'Boys 4x100 Meter Relay': None,
+             'Boys 1600 Meter Run 7th/8th grade': None}
+    for label, want in cases.items():
+        assert age_group_of(label) == want, (label, age_group_of(label))
+    assert strip_age_group('Girls 9-10 800 Meter Race Walk') == 'Girls 800 Meter Race Walk'
+    # old Junior Olympic files: the parser takes the sex off the end first
+    assert age_group_of('100 Meter Dash Youth') == 'Youth'
+    # metres with no unit only where the whole event is metric
+    from backend.sub5_summer import _value
+    assert _value('3.45', 'Long Jump', metric=True) == 3.45
+    assert _value('3.45', 'Long Jump', metric=False) is None
+    assert _value('12-06.00', 'Shot Put') == 3.81
+
+
+def test_colon_typed_for_decimal():
+    """wiscassetgirls_may10.pdf typed "5:50:4" and a hurdles "19:91"; a mile
+    time filed under the 100 stays as printed."""
+    from backend.scraper_v2 import fix_colon_decimals
+    data = {'events': [{'event': '1600 Meter Run', 'results': [{'result': '5:50:4'}]},
+                       {'event': '100 Meter Hurdles', 'results': [{'result': '19:91'}]},
+                       {'event': '100 Meter Dash', 'results': [{'result': '5:46'}]}]}
+    fix_colon_decimals(data)
+    assert [e['results'][0]['result'] for e in data['events']] == ['5:50.4', '19.91', '5:46']
+
+
+def test_looselist_column_title_row_is_not_an_event():
+    """A Hy-Tek relay's column titles ("Team    Relay    Finals",
+    "Lane Team    Relay") read as an event header once the captions were
+    stripped, filing every relay under "Team Relay" (smaa-1-1.pdf); a
+    hand-typed header with captions ("DISCUS   HAND FAT PT") still reads."""
+    ll = LooseListParser()
+    assert ll._event_header('Team                       Relay       Finals', None) is None
+    assert ll._event_header('Lane Team                  Relay', None) is None
+    assert ll._event_header('DISCUS   HAND FAT PT', None) is not None
+
+
 if __name__ == '__main__':
     qaqc._ensure_team_mapping()
     failed = 0

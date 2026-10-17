@@ -42,6 +42,38 @@ _SECTION_GENDER = {'women': 'Girls', 'girls': 'Girls', 'men': 'Boys', 'boys': 'B
 _XC_SCORES_LINE = re.compile(r'^(?:\S+\s+){0,3}Team\s+Scores?$', re.I)
 
 
+# A youth / USATF age division in an event label ("Girls 8&U Long Jump",
+# "Women 15-16 Shot Put", "100 Meter Dash Bantam Girls"). It goes on the
+# event as its age group, like a grade, and the event keeps its standard
+# name; those meets live in the summer track data (backend/sub5_summer.py).
+_AGE_GROUP = re.compile(
+    r'\b(?:(8)\s*(?:&|and)\s*(?:u\b|under)|(\d{1,2})-(\d{2})(?!\d)|(\d{2})\s*(?:&|and)\s*(?:over|up)'
+    r'|(bantam|midget|intermediate)|(youth|young)(?=\s+(?:girls|boys|men|women)|\s*$))', re.I)
+
+
+def age_group_of(label):
+    """'8 & Under', '9-10', ..., '40 & Over', 'Bantam', 'Youth'; None if none."""
+    for m in _AGE_GROUP.finditer(label or ''):
+        if m.group(1):
+            return '8 & Under'
+        if m.group(2):
+            lo, hi = int(m.group(2)), int(m.group(3))
+            if lo < hi <= lo + 11:
+                return f'{lo}-{hi}'
+            continue
+        if m.group(4):
+            return f'{m.group(4)} & Over'
+        return (m.group(5) or m.group(6)).capitalize()
+    return None
+
+
+def strip_age_group(label):
+    """The label without its age division ("Girls 9-10 Long Jump" -> "Girls Long Jump")."""
+    out = _AGE_GROUP.sub(lambda m: '' if (m.group(2) is None or int(m.group(2)) < int(m.group(3)) <= int(m.group(2)) + 11)
+                         else m.group(0), label or '')
+    return re.sub(r'\s{2,}', ' ', out).strip()
+
+
 _NUMBER_WORDS = {'one': '1', 'two': '2', 'three': '3', 'four': '4', 'five': '5', 'six': '6'}
 
 
@@ -137,6 +169,13 @@ class Sub5ColumnParser:
                     best_match = std
                     max_len = len(std)
 
+        # an adaptive division is its own event ("Boys Shot Put Wheelchair",
+        # "Girls Shot Put Para Ambulatory"): event_canon files it apart
+        if max_len:
+            if re.search(r'wheelchair', low):
+                best_match += ' Wheelchair'
+            elif re.search(r'\bpara\b|ambulatory', low):
+                best_match += ' Para Ambulatory'
         return best_match
         
     @staticmethod
@@ -306,6 +345,11 @@ class Sub5ColumnParser:
                 if re.search(r'\b(Last|Team|School)\s+$', l[:m.start()]):
                     continue
                 positions.append(m.start())
+            # (a right-hand column of relays only heads its tables "Team
+            # Relay Finals": no 'Name' marks it - southwestern 2016 page 6)
+            for m in re.finditer(r'\bTeam(?=\s+Relay\b)', l):
+                if m.start() >= 40:
+                    positions.append(m.start())
         if not positions:
             return page_text
         # cluster x-positions (within 3 chars)
@@ -340,9 +384,21 @@ class Sub5ColumnParser:
             return max(0, x - 6)
         bounds = [0] + [_bound(s) for s in starts[1:]] + [10 ** 6]
         columns = [[] for _ in range(len(bounds) - 1)]
+
+        def _cut(l, b):
+            # a column's own header word can start a char or two left of
+            # the bound (Hy-Tek prints "Event 6 Boys ...", "Women 400 ...",
+            # "Finals" at Name-7, one left of Name-6): cut at the gap
+            # before that word, not inside it ("E" | "vent 6")
+            if 0 < b < len(l) and l[b - 1] != ' ' and l[b] != ' ':
+                for c in range(b - 1, max(0, b - 3) - 1, -1):
+                    if l[c - 1:c] == ' ' or c == 0:
+                        return c
+            return b
         for l in lines:
-            for i in range(len(bounds) - 1):
-                seg = l[bounds[i]:bounds[i + 1]].rstrip()
+            cuts = [0] + [_cut(l, b) for b in bounds[1:-1]] + [10 ** 6]
+            for i in range(len(cuts) - 1):
+                seg = l[cuts[i]:cuts[i + 1]].rstrip()
                 columns[i].append(seg)
         return '\n'.join('\n'.join(col) for col in columns)
 
@@ -691,6 +747,10 @@ class Sub5ColumnParser:
 
             # Header pattern: "Event 1  Girls 4x800 Meter Relay" or "Girls 55 Meter Dash"
             m_event = re.search(r'Event\s+\d+\s+(Girls|Boys|Women|Men|Mixed)\s+(.*)', line_clean, re.IGNORECASE)
+            # ("Event 32  COED 1200 Sprint Medley", EMITL relays: was read
+            # into the Shot Put Relay above it)
+            if not m_event:
+                m_event = re.search(r'^Event\s+\d+\s+(Co-?ed)\s+(\S.*)', line_clean, re.IGNORECASE)
             # college exports abbreviate: "Event 1  M 8k Run CC  Varsity"
             if not m_event:
                 m_event = re.search(r'^Event\s+\d+\s+([MWF])\s+(\S.*)', line_clean)
@@ -725,6 +785,8 @@ class Sub5ColumnParser:
                 is_header = True
                 gender = m_event.group(1).strip()
                 gender = {'M': 'Boys', 'W': 'Girls', 'F': 'Girls'}.get(gender, gender)
+                if re.match(r'(?i)co-?ed$', gender):
+                    gender = 'Mixed'
                 if len(gender) > 1:
                     gender = gender.capitalize()
                 if gender.lower() == "women": gender = "Girls"
@@ -734,7 +796,17 @@ class Sub5ColumnParser:
                 # Require separator line for no-event-number headers to avoid false positives
                 # (bib-first exports put the column ruler between the two)
                 nxt = next((l for l in lines[i + 1:i + 4] if l.strip()), '')
-                if (i + 1 < len(lines) and "====" in lines[i+1]) or (
+                # the ruler under a qualifier line ("Top 8 Advance by Time")
+                # or a PDF page break (a blank line) is still this header's
+                # (neresults2025.pdf: "Boys 55 Meter Hurdles" prelims were read
+                # into the 2 Mile Run; neresults.pdf: the Boys 800 into the 400)
+                ruler_below = False
+                for l in lines[i + 1:i + 4]:
+                    if not l.strip() or re.match(r'^\s*Top\s+\d+\b.*\bAdvance\b', l, re.I):
+                        continue
+                    ruler_below = '====' in l
+                    break
+                if ruler_below or (i + 1 < len(lines) and "====" in lines[i+1]) or (
                         i + 2 < len(lines) and "====" in lines[i + 2]
                         and re.search(r'\bName\b', lines[i + 1])
                         and re.search(r'\b(School|Team)\b', lines[i + 1])) or (
@@ -764,6 +836,18 @@ class Sub5ColumnParser:
                           not re.search(r'combin|new\s+england\s+qualif', ' '.join(lines[:i]) + fn, re.I)):
                     is_header, gender, event_name = True, g, 'Run CC'
                     lines[i - 1:i] = lines[i - 1:i]  # (no-op: keep the ruler with the event)
+
+            # the same page-break mark with no event number ("....Boys 2 Mile
+            # Run", neresults2025.pdf): no ruler follows it, so it only counts
+            # when it names the event in progress
+            if not is_header and current_event and line_clean.startswith('..'):
+                m_dots = re.match(r'^\.{2,}\s*(Girls|Boys|Women|Men|Mixed)\s+(\S.*)$', line_clean, re.I)
+                if m_dots:
+                    g = {'women': 'Girls', 'men': 'Boys'}.get(m_dots.group(1).lower(),
+                                                             m_dots.group(1).capitalize())
+                    if current_event['original_event_name'] == m_dots.group(2).strip() \
+                            and current_event['gender'] == g:
+                        is_header, gender, event_name = True, g, m_dots.group(2).strip()
 
             # "....Event 2  Boys 1.9 Mile Run CC" is Hy-Tek's page-break
             # continuation of the current event, not a new race
@@ -829,6 +913,8 @@ class Sub5ColumnParser:
 
         parsed_events = []
         for ev, results in parsed_blocks:
+            if results and self._FIELD_LABEL.search(ev.get('original_event_name') or ev['event_name']):
+                results = self.field_team_entries(ev, results)
             if results:
                 parsed_events.append({
                     "event": ev["event_name"],
@@ -836,6 +922,9 @@ class Sub5ColumnParser:
                     "is_relay": ev["is_relay"],
                     "results": results
                 })
+                age = age_group_of(ev.get("original_event_name") or ev["event_name"])
+                if age:
+                    parsed_events[-1]["age_group"] = age
                 if ev.get("section"):
                     parsed_events[-1]["section"] = ev["section"]
 
@@ -1229,6 +1318,99 @@ class Sub5ColumnParser:
 
     _FIELD_LABEL = re.compile(r'(?i)jump|vault|shot|discus|javelin|hammer|weight')
 
+    # a field event scored as team totals (each school's 2-3 marks added up)
+    # names its rows for the team, in one of these forms
+    _TEAM_NAMES = (
+        re.compile(r'^(?P<team>[^\s,][^,]*?\S)\s+(?P<tag>[A-F])$'),              # "Old Town A"
+        re.compile(r'^(?P<tag>[A-F])\s+(?P<team>[^\s(,][^,]*)$'),               # "A HAMPDEN" (EMITL)
+        re.compile(r'^(?P<team>\S.*?),\s*(?P<tag>[A-Z])$'),                     # "Leavitt, B", "Marshwood, M"
+        re.compile(r'^(?P<team>\S.*?),\s*(?P<tag>(?:Girls|Boys)\s+One)$', re.I),  # "Belfast, Girls One"
+    )
+    # a winner's legs printed on its line push the mark past the Finals
+    # column ("  1 Old Town A  Jessica Pollard/Ali King/Laura Martin  84-01.25  10",
+    # "  1 A Old Town   (Derek Barclay/Nathan Regan/Dane Crenshaw)  16-00.00  10")
+    _LEGS_ROW = re.compile(
+        r'^\s*(?P<place>\d{1,3})\s+(?P<label>\S.*?\s[A-F]|[A-F]\s+\S.*?)\s+\(?'
+        r'(?P<legs>[A-Z][^/()\d]*(?:/[^/()\d]+)+?)\)?\s+'
+        r'(?P<mark>\d{1,3}-\d{1,2}(?:\.\d+)?|\d{1,3}\.\d{1,2}m?)(?:\s+(?P<pts>\d+(?:\.\d+)?))?(?!\S)')
+
+    @staticmethod
+    def _team_like(team, tag, school, gender):
+        """A team label's school part matches the row's school column (a
+        prefix either way, or the school's initials: "Mt. Desert" / "MDI"),
+        or its tag is the sex ("B", "Girls One") or the school's initial
+        ("Marshwood, M")."""
+        t = re.sub(r'[^a-z ]', '', team.lower()).split()
+        s = re.sub(r'[^a-z ]', '', (school or '').lower()).strip()
+        if not t:
+            return False
+        if not s or '/' in (school or '') or s == 'unknown':
+            return True          # (the legs ran into the school column)
+        if t[0] in s or s.split()[0] in ' '.join(t):
+            return True
+        if len(t) >= 2 and s.replace(' ', '').startswith(''.join(w[0] for w in t)):
+            return True
+        tag = tag.lower()
+        return tag in (gender[:1].lower(), f'{gender.lower()} one') or (len(tag) == 1 and tag == t[0][0])
+
+    def field_team_entries(self, ev, rows):
+        """A field event whose rows are team totals ("Boys Shot Put Relay",
+        "Girls Shot Put TEAM", "Boys Long Jump B - LJ- TM", or rows named
+        "Leavitt, B" under a plain "Girls High Jump"): every row is a
+        school's entry, read as a relay row (school, mark, legs) so the
+        store files it as "<school> Relay", not as an athlete."""
+        # the winners' rows with legs on the line: read again whole
+        fixed = {}
+        for l in ev.get('lines') or []:
+            m = self._LEGS_ROW.match(l.replace('\xa0', ' '))
+            if m:
+                label = re.sub(r'\s+', ' ', m.group('label')).strip()
+                team = re.sub(r'^[A-F]\s+|\s+[A-F]$', '', label)
+                r = {'school': team, 'result': m.group('mark'), 'relay_label': label,
+                     'athletes': [x.strip() for x in m.group('legs').split('/') if x.strip()],
+                     'type': 'Finals', 'place': int(m.group('place'))}
+                if m.group('pts'):
+                    r['points'] = float(m.group('pts'))
+                fixed[r['place']] = r
+        votes = team = 0
+        for r in rows:
+            name = re.sub(r'\s+', ' ', (r.get('athlete') or '').replace('\xa0', ' ')).strip()
+            if not name:
+                continue
+            votes += 1
+            for p in self._TEAM_NAMES:
+                m = p.match(name)
+                if m and self._team_like(m.group('team'), m.group('tag'), r.get('school'), ev['gender']):
+                    team += 1
+                    break
+        labelled = ev.get('is_relay') or re.search(r'(?i)\b(?:relay|team|tm)\s*$',
+                                                    ev.get('original_event_name') or '')
+        already = ev.get('is_relay') and not votes      # (read as relay rows already)
+        named = team + len(fixed)
+        # (unlabelled: three rows at least - one "Hall, B" is a jumper with
+        # an initial)
+        if not already and not (votes and labelled and named >= 0.6 * votes) and \
+                not (votes >= 3 and named >= 0.9 * votes):
+            return rows
+        out = []
+        for r in rows:
+            if r.get('place') in fixed:
+                if fixed[r['place']] is not None:
+                    out.append(fixed[r['place']])
+                    fixed[r['place']] = None   # (one row per winner)
+                continue
+            r = dict(r)
+            name = r.pop('athlete', None)
+            r.pop('grade', None)
+            if name:
+                r['relay_label'] = re.sub(r'\s+', ' ', name.replace('\xa0', ' ')).strip()
+            r.setdefault('athletes', [])
+            out.append(r)
+        out += [r for r in fixed.values() if r is not None]   # (rows the column reading lost)
+        out.sort(key=lambda r: r.get('place') or 999)
+        ev['is_relay'] = True
+        return out
+
     def parse_event_block(self, ev):
         lines = ev["lines"]
         # a field-event "relay" scored by adding up each team's jumpers
@@ -1547,6 +1729,15 @@ class Sub5ColumnParser:
                                         grade_val, school_val = mg.group(1), school_val[mg.end():]
                                 else:
                                     school_val = "Unknown"
+                                # the school cell printed a char or more left
+                                # of the header's "School" (pdftotext spaces
+                                # a right-column header on its own:
+                                # 12-28-1-b-results.pdf "School" at 102, the
+                                # rows' "Lewiston" at 101) leaves its first
+                                # letters on the name: "Beaulieu, Marissa    L"
+                                mt = re.search(r'\s{2,}(\S{1,6})$', name_val)
+                                if mt and school_val.startswith(mt.group(1)):
+                                    name_val = name_val[:mt.start()].strip()
 
                                 # Strip trailing wind reading before cleaning
                                 # (e.g. "14.02q -0.9" or "12.57 NWI" when single-space separated)

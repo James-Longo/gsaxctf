@@ -45,6 +45,8 @@ TYPE_HURDLES = re.compile(r'hurd|\bhh\b|\bih\b|\blh\b|\bh\b$', re.I)
 TYPE_WALK = re.compile(r'race\s*walk|racewalk|\brw\b', re.I)
 TYPE_STEEPLE = re.compile(r'steeple', re.I)
 WHEELCHAIR = re.compile(r'wheelchair', re.I)
+# (an ambulatory para division: "Boys Shot Put Para Ambulatory", neresults.pdf)
+PARA = re.compile(r'\bpara\b|ambulatory', re.I)
 MILE_RE = re.compile(r'\b(1|2|one|two)?\s*miles?\b', re.I)
 MEDLEY = re.compile(r'medley', re.I)
 PENTA = re.compile(r'pentathlon|heptathlon|decathlon', re.I)
@@ -108,6 +110,7 @@ def canonical_event(raw, gender, season=None, level=None):
         return None
 
     wheelchair = bool(WHEELCHAIR.search(s))
+    adaptive = ' (Wheelchair)' if wheelchair else ' (Para Ambulatory)' if PARA.search(s) else ''
     penta = PENTA.search(s)
     if penta:
         kind = penta.group(0).title()
@@ -142,17 +145,24 @@ def canonical_event(raw, gender, season=None, level=None):
             return gender, '4x400 Meter Relay'
         return None  # relay without a resolvable distance
 
+    # the modified jumps of the 2021 COVID season ("Long Jump Standing
+    # Bro[ad]", "Triple Jump Five Strider"): not the long or triple jump
+    if re.search(r'\bstanding\b', s, re.I) and re.search(r'jump|broad|\bbro\b', s, re.I):
+        return gender, 'Standing Triple Jump' if re.search(r'triple', s, re.I) else 'Standing Long Jump'
+    if re.search(r'\b(?:five|5)[\s-]*strid', s, re.I):
+        return gender, 'Five Stride Jump'
+
     # field events
     for pat, name in FIELD_EVENTS:
         if pat.search(s):
-            return gender, name + (' (Wheelchair)' if wheelchair else '')
+            return gender, name + adaptive
 
     # miles
     m = MILE_RE.search(s)
     if m and not DIST_RE.search(s):
         n = (m.group(1) or '1').lower()
         n = {'one': '1', 'two': '2'}.get(n, n)
-        return gender, f'{n} Mile Run'
+        return gender, f'{n} Mile Run' + (' (Wheelchair)' if wheelchair else '')
 
     # distance + type
     m = DIST_RE.search(s)
@@ -169,7 +179,7 @@ def canonical_event(raw, gender, season=None, level=None):
     if TYPE_HURDLES.search(s):
         return gender, f'{dist} {unit} Hurdles'
 
-    suffix = ' (Wheelchair)' if wheelchair else ''
+    suffix = adaptive
     # dash for sprints, run for 600+ (metric convention used site-wide)
     if unit == 'Meter':
         kind = 'Dash' if dist <= 400 else 'Run'

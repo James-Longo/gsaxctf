@@ -528,6 +528,38 @@ def split_dash_codes(data):
                     r['athlete'], r['school'] = m.group(1).strip(), m.group(2)
 
 
+# sprint races: (distance, hurdles) -> plausible school times in seconds
+_SPRINT_SECS = {(55, False): (6, 11), (60, False): (6.5, 12), (100, False): (10, 20),
+                (200, False): (20.5, 45), (300, False): (34, 70),
+                (55, True): (7, 15), (100, True): (12.5, 26), (110, True): (13, 26),
+                (300, True): (36, 80)}
+
+
+def fix_colon_decimals(data):
+    """Hand-typed sheets that type the decimal point as a colon
+    (wiscassetgirls_may10.pdf: Mile "5:50:4", 400m "1:07:8", 100m hurdles
+    "19:91"): no school race runs an hour, so "M:SS:T" is M:SS.T; and a
+    sprint's "SS:HH" is SS.HH when that reads as a time for the race (a
+    "5:46" under the 100 stays: a mile filed under the wrong event)."""
+    for e in data.get('events') or []:
+        if not isinstance(e, dict):
+            continue
+        label = str(e.get('event') or '')
+        d = re.search(r'\b(55|60|100|110|200|300)\s*(?:m\b|meters?\b|-?\s*(?:dash|hurdles?|hh|ih|lh))', label, re.I)
+        rng = None
+        if d and not re.search(r'(?i)relay|\dx\d|4\s*x', label):
+            rng = _SPRINT_SECS.get((int(d.group(1)), bool(re.search(r'(?i)hurd|\bhh\b|\bih\b|\blh\b', label))))
+        for r in e.get('results') or []:
+            m = str(r.get('result') or '')
+            t = re.fullmatch(r'(\d{1,2}):(\d{2}):(\d{1,2})', m)
+            if t and int(t.group(1)) < 30:
+                r['result'] = f'{t.group(1)}:{t.group(2)}.{t.group(3)}'
+                continue
+            t = re.fullmatch(r'(\d{1,2}):(\d{2})', m)
+            if t and rng and rng[0] <= float(f'{t.group(1)}.{t.group(2)}') <= rng[1]:
+                r['result'] = f'{t.group(1)}.{t.group(2)}'
+
+
 def split_glued_grades(data):
     """An individual row whose name ran into its class year ("McKechnic,
     Nicholas SR" with no grade) or kept the unplaced marker ("--- Fillion,
@@ -1411,6 +1443,7 @@ def _parse_one_file(args):
                 fix_event_gender_from_names(data_to_save, split=False)
                 strip_leg_grades(data_to_save)
                 split_glued_grades(data_to_save)
+                fix_colon_decimals(data_to_save)
                 # the 110m hurdles is a boys' event (BucksportMeet.pdf 2016 printed
                 # it after "F 100 hurdles" with no "M")
                 for _e in data_to_save.get('events') or []:
@@ -1642,6 +1675,8 @@ class Sub5ScraperV2:
     def __init__(self, progress_callback=None):
         self.headers = {'User-Agent': 'Mozilla/5.0'}
         self.manual_fixes = self.load_manual_fixes()
+        from backend import sub5_summer
+        self.meet_scope = sub5_summer.load_scope()
         self.web_date_mapping = self.load_web_date_mapping()
         self.web_meet_mapping = self.load_web_meet_mapping()
         self.web_url_mapping = self.load_web_url_mapping()
@@ -1731,6 +1766,10 @@ class Sub5ScraperV2:
             return mark
         if 'pentathlon' in ev or 'heptathlon' in ev or 'decathlon' in ev:
             return mark
+        # a time of day for a track race ("8:01:22.36" for a 200: a heat
+        # timed on the clock, nokomisms17may2026.htm): no race time
+        if meters <= 3200 and re.fullmatch(r'\d{1,2}:\d{2}:\d{2}(?:\.\d+)?', str(mark).strip()):
+            return None
         floor = meters * 0.095  # slightly faster than world record pace
         mm = re.fullmatch(r'(\d{1,2})\.(\d{2})(?:\.\d+)?', str(mark).strip())
         val = None
@@ -1738,7 +1777,9 @@ class Sub5ScraperV2:
             val = float(str(mark).strip()) if ':' not in str(mark) else None
         except ValueError:
             pass
-        if val is not None and val < floor and mm and meters >= 400:
+        # (seconds of 60 or more are no time: a 55m hurdles "7.70" read into
+        # the 2 Mile Run is not 7:70 - neresults2025.pdf)
+        if val is not None and val < floor and mm and meters >= 400 and int(mm.group(2)) < 60:
             repaired = int(mm.group(1)) * 60 + int(mm.group(2))
             if floor <= repaired <= meters * 0.7:
                 return f'{mm.group(1)}:{mm.group(2)}'
@@ -2459,6 +2500,21 @@ class Sub5ScraperV2:
                 # the filename guess when it has one.
                 if isinstance(file_data, dict) and file_data.get('meet_level') in ('ms', 'hs', 'college'):
                     meet_level = file_data['meet_level']
+
+                # Meets that are not MPA school track (backend/data/meet_scope.json):
+                # youth / USATF age-group meets go to the summer track data,
+                # the rest (college meets) stay out of the store.
+                if meet_key in self.meet_scope.get('excluded', {}):
+                    continue
+                if meet_key in self.meet_scope.get('summer', {}):
+                    from backend import sub5_summer
+                    url = next((self.web_url_mapping.get(f"{year}/{season}/{c}") for c in
+                                (filename, meet_name + ".htm", meet_name + ".html", meet_name + ".pdf")
+                                if self.web_url_mapping.get(f"{year}/{season}/{c}")), None)
+                    sub5_summer.write_meet(year, season, meet_name,
+                                           file_data if isinstance(file_data, dict) else {'events': parsed_events},
+                                           date, course_name, url, self.normalize_athlete_name)
+                    continue
 
                 for event_block in parsed_events:
                     if isinstance(event_block, dict) and "results" in event_block:

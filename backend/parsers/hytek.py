@@ -1,6 +1,20 @@
 import re
 from .base import BaseParser
 
+
+def _split_glued_mark(parts, mark_idx):
+    """A school wide enough to reach its mark column leaves one space between
+    them ("Mt. Ararat,ME, ME 4-10.00", cmfroshresults.pdf) or none: the
+    trailing mark is the mark, the rest belongs to the school."""
+    p = parts[mark_idx]
+    # (or none at all: "Yarmouth,Yarmouth, ME36.39")
+    m = re.match(r'^(.*\S)\s+([A-Za-z]?\d[\d:.\'-]*[a-zA-Z*]*)$', p) or \
+        re.match(r'^(.*?[A-Za-z,])(J?\d[\d:.\'-]*[a-zA-Z*]*)$', p)
+    if m and re.search(r'[A-Za-z]{2}', m.group(1)) and (':' in m.group(2) or '.' in m.group(2)):
+        parts = parts[:mark_idx] + [m.group(1), m.group(2)] + parts[mark_idx + 1:]
+        mark_idx += 1
+    return parts, mark_idx
+
 class HyTekBaseParser(BaseParser):
     def __init__(self, scraper=None):
         super().__init__(scraper)
@@ -40,17 +54,26 @@ class HyTekBaseParser(BaseParser):
             
             # Header check
             # Look for lines starting with Gender and having common Track keywords
-            keywords = ["Dash", "Run", "Hurdles", "Relay", "Jump", "Put", "Throw", "Vault", "Discus", "Javelin", "Walk", "Pentathlon", "Heptathlon"]
-            if len(line_clean) < 100 and any(g in line_clean for g in ["Girls", "Boys", "Women", "Men"]):
-                ev_match = event_pattern.search(line_clean)
-                if ev_match and any(kw.lower() in line_clean.lower() for kw in keywords):
+            keywords = ["Dash", "Run", "Hurdles", "Relay", "Medley", "Jump", "Put", "Throw", "Vault", "Discus", "Javelin", "Walk", "Pentathlon", "Heptathlon"]
+            head = line_clean
+            if len(head) >= 100:
+                # a header with the page's other column beside it ("Boys 55
+                # Meter Hurdles      2) Mountain Valley High School  24":
+                # results_01_06_2022.pdf): the header is the line's first cell
+                head = re.split(r'\s{3,}', line_clean)[0]
+                if not re.match(r'(Girls|Boys|Women|Men)\s', head):
+                    head = line_clean
+            if len(head) < 100 and any(g in head for g in ["Girls", "Boys", "Women", "Men"]):
+                ev_match = event_pattern.search(head)
+                if ev_match and any(kw.lower() in head.lower() for kw in keywords):
                     current_gender = ev_match.group(1)
                     current_event = ev_match.group(2).strip()
                     i += 1
                     continue
             
             if current_event:
-                is_relay = "Relay" in current_event or "Relay" in line_clean
+                # ("Women 800 Sprint Medley": a relay that never says so)
+                is_relay = "Relay" in current_event or "Medley" in current_event or "Relay" in line_clean
                 
                 if is_relay:
                     # Relays are usually standard across formats
@@ -134,6 +157,7 @@ class HyTekStandardParser(HyTekBaseParser):
                  break
         
         if mark_idx == -1: return None, i
+        parts, mark_idx = _split_glued_mark(parts, mark_idx)
         
         mark = parts[mark_idx]
         school = " ".join(parts[grade_idx+1:mark_idx])
@@ -188,6 +212,7 @@ class HyTekSMAAParser(HyTekBaseParser):
                  break
         
         if mark_idx == -1: return None, i
+        parts, mark_idx = _split_glued_mark(parts, mark_idx)
         
         mark = parts[mark_idx]
         school = " ".join(parts[2:mark_idx])

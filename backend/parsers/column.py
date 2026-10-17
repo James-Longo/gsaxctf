@@ -39,6 +39,8 @@ class ColumnStrategyParser(BaseParser):
             })
             if ev.get('section'):
                 flat_events[-1]['section'] = ev['section']
+            if ev.get('age_group'):
+                flat_events[-1]['age_group'] = ev['age_group']
 
         # Keep team_rankings so QAQC scoring can verify meets without re-parsing
         return {

@@ -210,6 +210,14 @@ class LooseListParser(BaseParser):
 
     def _event_header(self, s, section_gender):
         """Return (gender_or_None, event_name) if s is an event header."""
+        # column captions typed on the header's own line ("DISCUS   HAND
+        # FAT   PT", APRIL-15-AT-YORK.pdf): not part of the event name
+        cap = r'(?:HAND|FAT|PTS?|PLC?|PLACE|TIME|MARKS?|SEED|FINALS?|SCHOOL|TEAM|NAME)'
+        s = re.sub(r'\s{2,}%s(?:\s+%s)*\s*$' % (cap, cap), '', s, flags=re.I) or s
+        # ... but a line that is all captions is a column-title row ("Team
+        # Relay   Finals" over a Hy-Tek relay, smaa-1-1.pdf), not an event
+        if re.match(r'^\s*(?:team|name|school|place|pl|lane|heat|bib)\b', s, re.I):
+            return None
         if len(s) > 70 or is_mark(s.split()[-1] if s.split() else ''):
             return None
         m = re.match(r'^Event\s+\d+\s+(Girls|Boys|Women|Men)\s+(.+)$', s, re.I)
@@ -229,8 +237,18 @@ class LooseListParser(BaseParser):
             return ('Girls' if g in ('Girls', 'Women') else 'Boys', m.group(2))
         # bare event header: "100m", "Shot Put", "1600 RW", "4x100"
         low = re.sub(r'\s+', ' ', s.lower().rstrip(':'))
+        low = re.sub(r'(\d)\s*x\s*(\d)', r'\1x\2', low)   # "4 X100"
         if low in EVENT_CANON:
             return (None, s)
+        # a bare distance under a division or sex: "SR. GIRLS 400", "JR.
+        # BOYS 200", "GIRLS 800" (DEC 20 YORK V TRAIP.pdf; the bare "400" is
+        # already a header above)
+        m = re.fullmatch(r'(?:(?:sr|jr|jv|varsity|frosh|freshmen|freshman)\.?\s*)?'
+                         r'((?:girls?|boys?|women|men)\s*)?(55|60|100|200|300|400|500|600|800|1000|1500|1600|3000|3200)'
+                         r'(?:\s*(?:m|meters?|y|yards?))?', low)
+        if m and (m.group(1) or low.split()[0] != m.group(2)):
+            g = (m.group(1) or '').strip()
+            return ('Girls' if g.startswith(('g', 'w')) else 'Boys' if g else None, s)
         if len(s) < 35 and EVENT_KEYWORDS.search(s) and not re.search(r'\d[:.]\d', s) \
                 and not re.match(r'^\d+[.)]\s', s) and not re.search(r'record|school|results|scores', s, re.I):
             return (None, s)
