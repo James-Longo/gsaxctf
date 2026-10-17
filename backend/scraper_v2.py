@@ -1599,6 +1599,38 @@ def write_meet_links(url_mapping=None):
         if url:
             year = path.split(os.sep)[-3]
             out.setdefault(f'{year}_XC', {})[os.path.splitext(os.path.basename(path))[0]] = url
+    # hand transcriptions link to where they were read: MileSplit "ms-" files to the
+    # meet's results page, New England "ne-" files to their official source
+    for path in glob.glob(os.path.join(base, 'backend', 'data', 'parsed_results', '*', '*', '*.json')):
+        fn = os.path.basename(path)
+        if not fn.startswith(('ms-', 'ne-')):
+            continue
+        try:
+            with open(path, encoding='utf-8') as f:
+                src = json.load(f).get('source') or {}
+        except (OSError, ValueError):
+            continue
+        url = src.get('url') if isinstance(src, dict) else None
+        url = url[0] if isinstance(url, list) and url else url
+        if not url:
+            continue
+        m = re.match(r'(https?://\w+\.milesplit\.com/meets/[^/]+)', url)
+        if m:
+            url = m.group(1) + '/results'
+        year, season = path.split(os.sep)[-3:-1]
+        out.setdefault(f'{year}_{season}', {})[os.path.splitext(fn)[0]] = url
+    # sub5 files recovered from the Internet Archive link to the archived copy
+    rec = os.path.join(base, 'backend', 'data', 'archive_recovered.txt')
+    if os.path.exists(rec):
+        for line in open(rec, encoding='utf-8').read().splitlines()[1:]:
+            parts = line.split('\t')
+            m = re.match(r'(\S+) \(archive capture (\d+)\)', parts[1]) if len(parts) > 1 else None
+            if not m:
+                continue
+            year, season, fname = parts[0].split('/')[-3:]
+            stem = os.path.splitext(fname)[0]
+            meets = out.setdefault(f'{year}_{season}', {})
+            meets.setdefault(stem, f'https://web.archive.org/web/{m.group(2)}/{m.group(1)}')
     import gzip
     dest = os.path.join(base, 'ui', 'public', 'data', 'meet_links.json.gz')
     with gzip.open(dest, 'wb', compresslevel=9) as f:

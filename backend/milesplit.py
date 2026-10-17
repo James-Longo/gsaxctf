@@ -11,7 +11,7 @@ milesplit-manual). `list` reads the season's meet list (every page) into
 backend/data/meet_listings/milesplit-<year>-<season>.json for the meet
 ledger (backend/meet_ledger.py); `kind` is a first guess from the name
 (hs, ms, youth, college, open) for the reader to correct.
-Env: MSHOST=ny.milesplit.com for meets hosted on another state subdomain, EXCLUDE=<result file ids> skips files (a meet page listing another meet's file), CANON=1 expands school abbreviations/mascots, MASC="Tigers=Biddeford High
+Env: MS_STAGE=<dir> writes under <dir>/<year>/<season>/ (staging), MSHOST=ny.milesplit.com for meets hosted on another state subdomain, EXCLUDE=<result file ids> skips files (a meet page listing another meet's file), CANON=1 expands school abbreviations/mascots, MASC="Tigers=Biddeford High
 School;..." maps a meet's mascots, CLASSFILES=1 tags events by class file.
 Cross country (season XC) goes through parse_xc_any: Meet Manager "NAME YR TEAM MARK H#" sheets, Hy-Tek
 "Event n" sheets, RaceTab, Run In A Race, tab sheets (Calais, Machias, Mount Abram, ELHS); team scores read with
@@ -639,7 +639,7 @@ def kind_of(name):
     n = name.lower()
     if re.search(r'middle|\bms\b|jr\.? high|junior high|grade|\b[5-8]th\b|elementary', n): return 'ms'
     if re.search(r'usatf|youth|junior olympic|\bjo\b|group [a-d]\b|age group', n): return 'youth'
-    if re.search(r'college|collegiate|university|ncaa|nescac|\bcolby\b|bates|bowdoin(?! relays)|\bumaine\b|husson|\bume\b|usm\b', n): return 'college'
+    if re.search(r'college|collegiate|university|ncaa|\barmy\b|\bnavy\b|\bair force\b|nescac|\bcolby\b|bates|bowdoin(?! relays)|\bumaine\b|husson|\bume\b|usm\b', n): return 'college'
     if re.search(r'twilight|road race|\b5k\b|masters|open\b', n): return 'open'
     return 'hs'
 def listing(year, season):
@@ -675,7 +675,9 @@ def main():
     cmd, slug = sys.argv[1], sys.argv[2]
     if cmd == 'list':
         listing(sys.argv[2], sys.argv[3]); return
-    OUT = os.path.join(BASE, 'data', 'parsed_results', sys.argv[3], sys.argv[4]) + '/' if cmd == 'write' else ''
+    # MS_STAGE=<dir>: write to <dir>/<year>/<season>/ instead of parsed_results (backend/milesplit_bulk.py)
+    OUT = os.path.join(os.environ.get('MS_STAGE') or os.path.join(BASE, 'data', 'parsed_results'), sys.argv[3], sys.argv[4]) + '/' if cmd == 'write' else ''
+    if OUT: os.makedirs(OUT, exist_ok=True)
     date, files, title, h = meetinfo(slug)
     if cmd=='info':
         print(slug, date, title[:80], [(f['name'],f['id'],f['isMeetPro']) for f in files]); return
