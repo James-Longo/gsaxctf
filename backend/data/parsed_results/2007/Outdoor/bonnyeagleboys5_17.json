@@ -1,6 +1,27 @@
 {
     "events": [
         {
+            "event": "4x800 Meter Relay",
+            "gender": "Boys",
+            "is_relay": false,
+            "results": [
+                {
+                    "school": "Biddeford",
+                    "result": "8:36.3",
+                    "athletes": [],
+                    "grade": "",
+                    "type": "Finals"
+                },
+                {
+                    "school": "TA",
+                    "result": "9:25.8",
+                    "athletes": [],
+                    "grade": "",
+                    "type": "Finals"
+                }
+            ]
+        },
+        {
             "event": "1600 Meter Race Walk",
             "gender": "Boys",
             "is_relay": false,
@@ -151,7 +172,14 @@
                     "result": "5-06.00",
                     "grade": "",
                     "type": "Finals"
-                },
+                }
+            ]
+        },
+        {
+            "event": "4x100 Meter Relay",
+            "gender": "Boys",
+            "is_relay": false,
+            "results": [
                 {
                     "school": "Biddeford",
                     "result": "46.6",
@@ -379,7 +407,7 @@
             ]
         },
         {
-            "event": "Tinkham M",
+            "event": "4x400 Meter Relay",
             "gender": "Boys",
             "is_relay": false,
             "results": [
@@ -577,5 +605,6 @@
             ]
         }
     ],
+    "parser": "LooseListParser",
     "team_rankings_source": "teamscores"
 }
