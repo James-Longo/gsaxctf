@@ -199,7 +199,9 @@ ME_HS = [
       'Maine Central Inst'], ['MCI'], ['Huskies'], {}),
     ('me-hs-gsa', 'George Stevens Academy', 'Blue Hill', 'George Stevens',
      ['George Stevens Academy', 'George Stevens', 'Geo Stevens', 'Geo. Stevens', 'George Stevens Acad',
-      'George Stevens Academy / Blue'], ['GSA'], ['Eagles'], {}),
+      'George Stevens Academy / Blue',
+      # Blue Hill Harbor School runners race as GSA's team: the combined label is GSA (James, 2026-10-17)
+      'GSA/Blue Hill', 'George Stevens Academy / Blue Hill Harbor', 'George Stevens/Blue Hill Harbor'], ['GSA'], ['Eagles'], {}),
     ('me-hs-fort-kent', 'Fort Kent Community High School', 'Fort Kent', 'Fort Kent',
      ['Fort Kent', 'Fort Kent Community', 'Ft. Kent', 'Ft Kent', 'Fort Kent HS', 'Fort Kent Community HS',
       'Fort Kent Community H.S.', 'Fort Kent High School'], ['FKCHS', 'FTKT', 'FK'], ['Warriors'], {}),
@@ -579,10 +581,6 @@ COOPS = [
     dict(id='coop-mattanawcook-penobscot', label='Mattanawcook/Penobscot Valley', host='me-hs-mattanawcook',
          members=['me-hs-mattanawcook', 'me-hs-penobscot-valley'], seasons=['XC', 'Outdoor'], genders=['Boys', 'Girls'],
          years=[None, None], labels=['Mattan/Penob'], evidence=['observed label only']),
-    dict(id='coop-gsa-blue-hill-harbor', label='George Stevens/Blue Hill Harbor', host='me-hs-gsa',
-         members=['me-hs-gsa', 'me-hs-blue-hill-harbor'], seasons=['XC', 'Indoor', 'Outdoor'], genders=['Boys', 'Girls'],
-         years=[None, None], labels=['GSA/Blue Hill', 'George Stevens Academy / Blue Hill Harbor'],
-         evidence=['observed label only']),
 ]
 
 # ---------------------------------------------------------------------------
