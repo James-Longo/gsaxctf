@@ -123,6 +123,7 @@ export default function XCPostseasonSim({ followTeam }) {
 
       <div className="xs-meta">
         <strong>{meet.name}</strong> · {gender} · {fmtDate(meet.date)}{meet.venue ? ` · ${meet.venue}` : ''}
+        {meet.asof && <> · forecast from results through {fmtDate(meet.asof)}</>}
       </div>
 
       <div className="xs-grid">

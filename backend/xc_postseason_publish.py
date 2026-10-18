@@ -5,6 +5,10 @@ site's data file, ui/public/data/xc_postseason.json.gz.
     python3 -m backend.xc_postseason_publish            # today's season, 5000 sims
     python3 -m backend.xc_postseason_publish --asof 2026-10-15 --sims 5000
 
+Each meet is forecast from results before it only: a meet already run (date on or
+before --asof) uses results through the day before it, so a past forecast stays as
+it was; meets still ahead use results through --asof. Each meet records its cutoff.
+
 The configuration is the one leave-one-season-out cross-validation chose
 (backend/xc_postseason_cv.py): the rating model with FORM_CARRY, and a noise
 model built from pseudo-backtest errors on every past season. The CV summary
@@ -20,7 +24,7 @@ import math
 import os
 import sys
 from collections import defaultdict
-from datetime import date
+from datetime import date, timedelta
 
 from backend import school_catalog as sc
 from backend import xc_course_model as cm
@@ -42,27 +46,43 @@ def forecast(year, asof, sims, seed=0, quiet=False):
     obs = xp.load()
     say(f'{len(obs):,} observations')
     groups = xp.load_groups(year)
-    cutoff = xp.season_day(year, asof)
     # error model from every past season, each predicted without itself
     calibs = {y: xp.Calibration(obs, exclude_year=y) for y in BACKTEST_YEARS}
     noise = xp.NoiseModel(xp.pseudo_backtest(obs, years=BACKTEST_YEARS, calibs=calibs))
     cal = xp.Calibration(obs)
     say('calibrated')
     name = lambda sid: groups['schools'].get(sid, {}).get('name') or xp.school_name(sid)
-    races = defaultdict(list)
-    for o in obs:
-        if o.year == year and (o.day is None or o.day <= cutoff):
-            races[o.aid].append(o)
+    # Every race is predicted from results before it, never after: a meet already
+    # run keeps the forecast it had the day before (its results feed only the meets
+    # after it); a meet still ahead uses everything through `asof`.
+    def meet_cut(m):
+        if not m.get('date'):
+            return asof
+        return min(asof, (date.fromisoformat(m['date']) - timedelta(days=1)).isoformat())
+    cut_of = {m['id']: meet_cut(m) for m in groups['meets']}
 
-    data = {}
-    for g in ('Boys', 'Girls'):
+    data = {'Boys': {}, 'Girls': {}}
+    race_ids = set()
+    for cut_date in sorted(set(cut_of.values())):
+      # ratings use results strictly before `cutoff`: through cut_date, the day before the race
+      cutoff = xp.season_day(year, cut_date) + 1
+      mids = {mid for mid, c in cut_of.items() if c == cut_date}
+      say(f'data through {cut_date}: {sorted(mids)}')
+      races = defaultdict(list)
+      for o in obs:
+          if o.year == year and (o.day is None or o.day < cutoff):
+              races[o.aid].append(o)
+      race_ids |= {o.race for v in races.values() for o in v}
+      for g in ('Boys', 'Girls'):
         ratings, _ = xp.season_ratings(obs, year, g, cutoff, cal, {})
         rat, school_of, _, res = xp.simulate_postseason(
             obs, year, g, cutoff, groups, cal, noise, sims=sims, seed=seed,
             form_carry=xp.FORM_CARRY, ratings=ratings)
         say(g, len(rat), 'rated')
-        gm = {}
+        gm = data[g]
         for mid, r in res.items():
+            if mid not in mids:
+                continue
             teams = []
             for t, v in r['teams'].items():
                 div, team = t if isinstance(t, tuple) else (None, t)
@@ -98,14 +118,13 @@ def forecast(year, asof, sims, seed=0, quiet=False):
                 aths.sort(key=lambda x: (x['div'] or '', x['med'], x['_e']))
             for x in aths:
                 x.pop('_e')
-            gm[mid] = dict(teams=teams, athletes=aths)
-        data[g] = gm
+            gm[mid] = dict(teams=teams, athletes=aths, asof=cut_date)
 
     meets = [{k: m[k] for k in ('id', 'name', 'date', 'venue') if k in m}
              | ({'divisions': list(m['divisions'])} if 'divisions' in m else {})
+             | {'asof': cut_of[m['id']]}
              for m in groups['meets']]
-    out = dict(year=year, asof=asof, sims=sims, meets=meets, data=data,
-               races=len({o.race for v in races.values() for o in v}))
+    out = dict(year=year, asof=asof, sims=sims, meets=meets, data=data, races=len(race_ids))
     try:
         with open(CV_SUMMARY, encoding='utf-8') as f:
             cv = json.load(f)

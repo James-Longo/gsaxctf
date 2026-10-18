@@ -1,1 +1,115 @@
-{"rows": [{"name": "Model, form carry 0.95 (used here)", "obj": 0.661, "inc": 0.781, "order": 0.541, "b3": 0.0641, "d": 0.0041, "dse": 0.0024, "better": 4, "worse": 1, "chosen": true}, {"name": "Boosted correction, carry 0.95, wider spread", "obj": 0.66, "inc": 0.783, "order": 0.537, "b3": 0.0623, "d": 0.0035, "dse": 0.0062, "better": 5, "worse": 4, "chosen": false}, {"name": "Model, form carry 0.65 (previous)", "obj": 0.657, "inc": 0.777, "order": 0.536, "b3": 0.064, "d": 0.0, "dse": 0.0, "better": 0, "worse": 0, "chosen": false}, {"name": "Average of model and course-adjusted ratings", "obj": 0.644, "inc": 0.767, "order": 0.521, "b3": 0.0662, "d": -0.0106, "dse": 0.0077, "better": 3, "worse": 6, "chosen": false}, {"name": "Course-adjusted average", "obj": 0.644, "inc": 0.767, "order": 0.521, "b3": 0.0683, "d": -0.0106, "dse": 0.0109, "better": 3, "worse": 5, "chosen": false}, {"name": "Festival race only", "obj": 0.623, "inc": 0.766, "order": 0.48, "b3": 0.0876, "d": -0.0285, "dse": 0.0157, "better": 2, "worse": 7, "chosen": false}, {"name": "Most recent 5K, no course adjustment", "obj": 0.578, "inc": 0.724, "order": 0.432, "b3": 0.0807, "d": -0.076, "dse": 0.0145, "better": 1, "worse": 9, "chosen": false}, {"name": "Season-best 5K, no course adjustment", "obj": 0.538, "inc": 0.686, "order": 0.391, "b3": 0.0932, "d": -0.116, "dse": 0.0164, "better": 1, "worse": 8, "chosen": false}], "cal": {"top3": {"0.0-0.2": [3362, 0.02676977989292088], "0.2-0.4": [210, 0.35714285714285715], "0.4-0.6": [150, 0.5333333333333333], "0.6-0.8": [151, 0.6026490066225165], "0.8-1.0": [587, 0.8739352640545145]}, "win": {"0.0-0.2": [4064, 0.015255905511811024], "0.2-0.4": [103, 0.2524271844660194], "0.4-0.6": [87, 0.4827586206896552], "0.6-0.8": [64, 0.546875], "0.8-1.0": [142, 0.8309859154929577]}, "top3_pred": {"0.0-0.2": 0.013, "0.2-0.4": 0.288, "0.4-0.6": 0.5, "0.6-0.8": 0.709, "0.8-1.0": 0.957}, "win_pred": {"0.0-0.2": 0.008, "0.2-0.4": 0.29, "0.4-0.6": 0.495, "0.6-0.8": 0.699, "0.8-1.0": 0.934}}, "n_podiums": 283, "folds": 10}
+{
+ "rows": [
+  {
+   "name": "Model, form carry 0.95 (used here)",
+   "obj": 0.71,
+   "inc": 0.831,
+   "order": 0.59,
+   "b3": 0.054,
+   "d": 0.0,
+   "dse": 0.0,
+   "better": 0,
+   "worse": 0,
+   "chosen": true
+  },
+  {
+   "name": "Model, form carry 0.85",
+   "obj": 0.709,
+   "inc": 0.831,
+   "order": 0.587,
+   "b3": 0.054,
+   "d": -0.0013,
+   "dse": 0.0013,
+   "better": 0,
+   "worse": 1,
+   "chosen": false
+  },
+  {
+   "name": "Model, wider race-day spread (x1.25)",
+   "obj": 0.704,
+   "inc": 0.83,
+   "order": 0.578,
+   "b3": 0.0534,
+   "d": -0.0076,
+   "dse": 0.0045,
+   "better": 1,
+   "worse": 4,
+   "chosen": false
+  },
+  {
+   "name": "Model, slower recency weighting (60 days)",
+   "obj": 0.701,
+   "inc": 0.828,
+   "order": 0.574,
+   "b3": 0.0544,
+   "d": -0.0087,
+   "dse": 0.0061,
+   "better": 4,
+   "worse": 4,
+   "chosen": false
+  }
+ ],
+ "cal": {
+  "top3": {
+   "0.0-0.2": [
+    2437,
+    0.02051702913418137
+   ],
+   "0.2-0.4": [
+    137,
+    0.32116788321167883
+   ],
+   "0.4-0.6": [
+    121,
+    0.5206611570247934
+   ],
+   "0.6-0.8": [
+    101,
+    0.6831683168316832
+   ],
+   "0.8-1.0": [
+    506,
+    0.9110671936758893
+   ]
+  },
+  "top3_pred": {
+   "0.0-0.2": 0.012,
+   "0.2-0.4": 0.288,
+   "0.4-0.6": 0.498,
+   "0.6-0.8": 0.702,
+   "0.8-1.0": 0.961
+  },
+  "win": {
+   "0.0-0.2": [
+    2979,
+    0.011413225914736489
+   ],
+   "0.2-0.4": [
+    90,
+    0.3
+   ],
+   "0.4-0.6": [
+    54,
+    0.5185185185185185
+   ],
+   "0.6-0.8": [
+    60,
+    0.6
+   ],
+   "0.8-1.0": [
+    119,
+    0.8739495798319328
+   ]
+  },
+  "win_pred": {
+   "0.0-0.2": 0.008,
+   "0.2-0.4": 0.291,
+   "0.4-0.6": 0.51,
+   "0.6-0.8": 0.688,
+   "0.8-1.0": 0.936
+  }
+ },
+ "n_podiums": 229,
+ "folds": 10,
+ "protocol": "each meet predicted from results before its own day (conference and regional meets: the simulated cascade from that cutoff; state meets: the actual state field). Comparisons d/dse/better/worse are paired per season against the model used here."
+}

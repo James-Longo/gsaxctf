@@ -290,6 +290,28 @@ function PostseasonSimulator({ performances, isBetter, manifest, loadTeamData, s
         };
     }, [performances, filterYear, filterSeason, filterEvent, competitionType]);
 
+    // A championship is simulated from results before it, never after: for a season whose
+    // championship is already in the data, results from its date on are left out.
+    const champCutoff = useMemo(() => {
+        if (!filteredData || filterYear === 'All' || filterSeason === 'All' || competitionType === 'Everyone') return null;
+        // championship file names: pvcsmall / pvclarge / pvc_sm_sch / pvcl / pvcls / PVC Small School /
+        // pvcemitl ... champ; state: classa / class_c_... / state_c / Class C State meet. Regular-season
+        // PVC meets ('week', 'meet 2', school lists), JV / freshman meets, KVAC class meets, college
+        // and USATF state meets are not the championship.
+        const rx = competitionType === 'States'
+            ? /class[\s_-]*[abc](?![a-z])|class[abc]|state[\s_-]*[abc](?![a-z])|^state[abc]|class.*state|state.*class/i
+            : /pvc[\s_-]*(small|sm(?![a-z])|sm[\s_-]|smboys|smgirl|large|lg|l\b|ls\b|l\d|lgboys|lggirls)|pvc.*(small|large)[\s_-]*sch|pvc.*champ/i;
+        let first = null;
+        filteredData.forEach(p => {
+            const m = p.meet_name || '';
+            if (!rx.test(m) || /jv|frosh|fresh|junior varsity|middle|week|kvac|college|usatf|^ms-pvc-(?!.*champ)/i.test(m)) return;
+            if (/meet[\s_-]*\d/i.test(m) && !/champ/i.test(m)) return;   // a numbered regular-season meet
+            const d = (p.date || '').slice(0, 10);
+            if (/^\d{4}-\d{2}-\d{2}$/.test(d) && (!first || d < first.date)) first = { date: d, meet: m };
+        });
+        return first;
+    }, [filteredData, filterYear, filterSeason, competitionType]);
+
     const teamPools = useMemo(() => {
         const pools = {};
         if (!performances) return pools;
@@ -311,6 +333,7 @@ function PostseasonSimulator({ performances, isBetter, manifest, loadTeamData, s
         (filteredData || []).forEach(p => {
             const markUpper = (p.mark || "").toUpperCase();
             if (['DQ', 'DNF', 'NH', 'DNS', 'NM', 'FOUL', 'SCR', 'ND', 'NT', 'X', 'NWI'].includes(markUpper)) return;
+            if (champCutoff && (p.date || '').slice(0, 10) >= champCutoff.date) return;
 
             const team = p.pvcTeam;
             if (!grouped[team]) grouped[team] = {};
@@ -365,7 +388,7 @@ function PostseasonSimulator({ performances, isBetter, manifest, loadTeamData, s
         });
 
         return pools;
-    }, [filteredData, isBetter, scoreMethod, seedPerfs]);
+    }, [filteredData, isBetter, scoreMethod, seedPerfs, champCutoff]);
 
     // Simulation Helpers and Core Logic
     const SCORING_RULES = [10, 8, 6, 4, 2, 1];
@@ -1611,6 +1634,12 @@ function PostseasonSimulator({ performances, isBetter, manifest, loadTeamData, s
                             <option value="Everyone">Everyone</option>
                         </select>
                     </div>
+                    {champCutoff && scoreMethod !== 'Seeds' && (
+                    <div className="filter-group sim-cutoff-note">
+                        <label>Results used</label>
+                        <span>before {champCutoff.date} ({champCutoff.meet})</span>
+                    </div>
+                    )}
                     <div className="filter-group">
                         <label>Optimize For</label>
                         <select value={targetTeam} onChange={e => setTargetTeam(e.target.value)}>

@@ -2,12 +2,12 @@
 xc_postseason_cv.py - leave-one-season-out cross-validation of the XC
 postseason forecast (PROTOTYPE).
 
-Each fold holds out one season and reproduces exactly what the forecast page
-shows for it: ratings from data through the forecast date, then the
-conference meets (by official division), the regionals, and the state meets
-with their fields decided inside each simulation by the MPA qualifying
-rules. A second checkpoint re-predicts the state meets from data through
-state day, as the page will be rerun after regionals.
+Each fold holds out one season and predicts every postseason meet the way the
+forecast page does: from results before that meet's own day and nothing after
+(James 2026-10-18: a race's prediction never sees its own or later results).
+Conference meets (by official division) and regionals are scored from the
+cascade simulated at each meet's cutoff; state meets from results before state
+day with the actual state field (known once regionals are run).
 
 Everything a method learns is refit without the held-out season: course
 factors and year-over-year carry-forward (Calibration(exclude_year=)), and
@@ -338,28 +338,33 @@ def _fold_task(args):
     if m['diet'] == 'festival' and rate_obs is None:
         return mi, year, []
     out = []
-    # checkpoint A: the forecast as of mid-October, whole cascade
+    # checkpoint A: every conference and regional meet predicted the day before it,
+    # from results before that day only (the live forecast's rule); the cascade is
+    # simulated from that cutoff and only the meets run that day are scored
     for g in ('Boys', 'Girls'):
         gm = [x for x in hist['groups']['meets'] if x['gender'] == g]
         if not gm:
             continue
         groups = {'schools': hist['groups']['schools'], 'meets': gm}
-        ratings = _rate(m, obs, year, g, hist['cutoff'], calibs[year], rate_obs, learned)
-        _, _, _, res = xp.simulate_postseason(
-            obs, year, g, hist['cutoff'], groups, calibs[year], noise, sims=sims,
-            seed=year, params=m['params'], form_carry=m['form_carry'], ratings=ratings)
-        for (mid, div), actual in hist['actual'].items():
-            if not mid.endswith(f'_{g}') and f'_{g}_' not in mid:
-                continue
-            teams = res.get(mid, {}).get('teams', {})
-            pred = {(t[1] if isinstance(t, tuple) else t): v for t, v in teams.items()
-                    if (div and isinstance(t, tuple) and t[0] == div) or (not div and not isinstance(t, tuple))}
-            sc = score_podium(pred, actual)
-            if sc:
-                stage = 'conference' if mid.startswith(('pvc', 'kvac')) else mid.split('_')[0]
-                out.append(dict(checkpoint='mid-October', stage=stage, meet=mid, div=div,
-                                gender=g, **sc))
-    # checkpoint B: state meets re-predicted from data through state day
+        for day in sorted({x['day'] for x in gm if not x['id'].startswith('state')}):
+            ratings = _rate(m, obs, year, g, day, calibs[year], rate_obs, learned)
+            _, _, _, res = xp.simulate_postseason(
+                obs, year, g, day, groups, calibs[year], noise, sims=sims,
+                seed=year, params=m['params'], form_carry=m['form_carry'], ratings=ratings)
+            todays = {x['id'] for x in gm if x['day'] == day and not x['id'].startswith('state')}
+            for (mid, div), actual in hist['actual'].items():
+                if mid not in todays:
+                    continue
+                teams = res.get(mid, {}).get('teams', {})
+                pred = {(t[1] if isinstance(t, tuple) else t): v for t, v in teams.items()
+                        if (div and isinstance(t, tuple) and t[0] == div) or (not div and not isinstance(t, tuple))}
+                sc = score_podium(pred, actual)
+                if sc:
+                    stage = 'conference' if mid.startswith(('pvc', 'kvac')) else mid.split('_')[0]
+                    out.append(dict(checkpoint='day before', stage=stage, meet=mid, div=div,
+                                    gender=g, **sc))
+    # (state meets: checkpoint B, from results before state day and the real state field)
+    # checkpoint B: state meets predicted from results before state day
     for x in hist['groups']['meets']:
         if not x['id'].startswith('state'):
             continue
@@ -377,7 +382,7 @@ def _fold_task(args):
                 for t, v in teams.items()}
         sc = score_podium(pred, hist['actual'][(x['id'], '')])
         if sc:
-            out.append(dict(checkpoint='after regionals', stage='state', meet=x['id'],
+            out.append(dict(checkpoint='day before', stage='state', meet=x['id'],
                             div='', gender=g, **sc))
     return mi, year, out
 
