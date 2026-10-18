@@ -120,6 +120,10 @@ def academic_year(year, season):
     return y if season == 'XC' else y - 1
 
 
+# files whose source tags them middle school (meet_level 'ms'); 'hs' is a converter default, not evidence
+FILE_MS = set()
+
+
 def scan(parsed_roots):
     """Yield row dicts from every parsed results file. Later roots override earlier ones per rel path."""
     files = {}
@@ -138,6 +142,8 @@ def scan(parsed_roots):
             d = {'events': d}
         meet = d.get('meet_name') or ''
         date = d.get('date') or ''
+        if d.get('meet_level') == 'ms':
+            FILE_MS.add(rel)   # the source's own level tag (MileSplit's Middle School list)
         for ei, e in enumerate(d.get('events') or []):
             if not isinstance(e, dict):
                 continue
@@ -238,6 +244,7 @@ def row_levels(rows):
       2. the school strings in the race that state a level ('Cape Elizabeth M. S.', 'Orono High School')
       3. numeric grades (5-8 vs 9-12)
       4. the file stem ('conymsboys_oct6', 'scarboroughmsinvite')
+    A file whose source tags it middle school (meet_level 'ms') is middle school before all of these.
       5. the meet name - weakest: it is often the venue ('Troy Howard Middle School' hosted a
          New England qualifier; 'Bowdoin College' hosts high-school indoor meets)."""
     race = collections.defaultdict(lambda: {'ex': collections.Counter(), 'gr': collections.Counter(), 'raws': set()})
@@ -256,7 +263,9 @@ def row_levels(rows):
     lv_of = {}
     for (rel, ev), d in race.items():
         lv = None
-        if EVENT_MS.search(ev):
+        if rel in FILE_MS:
+            lv = 'ms'
+        elif EVENT_MS.search(ev):
             lv = 'ms'
         elif EVENT_HS.search(ev):
             lv = 'hs'

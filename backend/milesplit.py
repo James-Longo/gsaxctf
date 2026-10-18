@@ -283,16 +283,22 @@ XC_STATUS = {'DNF', 'DQ', 'DNS', 'NT'}
 def xc_header(ln):
     """(gender, distance, division) of a race title line ("Girls 2.9 Mile Run Junior Varsity",
     "Event 4  Boys 5k Run CC Varsity", "Boys 5k varsity", "6th Grade Boys 1 Mile Run", "boys 1.5 mile"), else None."""
-    m = re.match(r'\s*(?:\.+)?(?:Event\s+\d+\s+)?(?:(\d\w*(?: (?:and|&) \d\w*)? Grade)\s+)?(Boys|Girls)\s+(\S.*?)\s*$', ln, re.I)
-    if not m or re.search(r'Team|Score|Results', m.group(3)): return None
-    d = re.search(r'(\d+(?:\.\d+)?)\s*(k|km|miles?|meters?|yards?|m)\b', m.group(3), re.I)
+    # RaceTab titles lead with the level: "Varsity Boys 5000 Meter Run", "Middle School Girls Two Mile Run"
+    m = re.match(r'\s*(?:\.+)?(?:Event\s+\d+\s+)?(?:(\d\w*(?: (?:and|&) \d\w*)? Grade)\s+)?'
+                 r'(?:(Varsity|Junior Varsity|JV|Middle School|Freshman|Open|Reserve|Novice)\s+)?(Boys|Girls)\s+(\S.*?)\s*$', ln, re.I)
+    if not m or re.search(r'Team|Score|Results', m.group(4)): return None
+    lvl = m.group(2)
+    rest = re.sub(r'(?i)\b(one|two|three|four|five)\b(?= mile)', lambda w: {'one': '1', 'two': '2', 'three': '3', 'four': '4', 'five': '5'}[w.group(1).lower()], m.group(4))
+    d = re.search(r'(\d+(?:\.\d+)?)\s*(k|km|miles?|meters?|yards?|m)\b', rest, re.I)
     if not d: return None
     unit = d.group(2).lower()
     if unit.startswith(('m', 'y')) and not unit.startswith('mile'): dist = '%gk' % (float(d.group(1)) / 1000)
     else: dist = d.group(1) + ('k' if unit.startswith('k') else ' Mile')
     gdiv = re.sub(r'(?<=\d)(?= (?:and|&))','th',m.group(1).replace('&','and')) if m.group(1) else None
-    div = gdiv or ('JV' if re.search(r'junior varsity|\bJV\b', m.group(3), re.I) else 'Freshman' if re.search(r'freshman', m.group(3), re.I) else 'Varsity')
-    return m.group(2).capitalize(), dist, div
+    lv = (lvl or '') + ' ' + rest
+    div = gdiv or ('JV' if re.search(r'junior varsity|\bJV\b|reserve', lv, re.I) else 'Freshman' if re.search(r'freshman', lv, re.I)
+                   else 'Middle School' if re.search(r'middle school', lv, re.I) else 'Varsity')
+    return m.group(3).capitalize(), dist, div
 def xc_name(n):
     n = re.sub(r'\s+', ' ', n).strip()
     m = re.match(r'^([^,]+),\s*(.+)$', n)
@@ -365,6 +371,11 @@ def parse_xc(text):
                 teamsec = {'g': g_, 'div': hh[2] if hh else 'Varsity', 'hdr': 'Team Scores', 'teams': []}
                 raw_rank.append((g_, teamsec['div'], 'Team Scores', teamsec['teams']))
             cur = None; continue
+        mts = re.match(r'(.*\S)\s+Team Scores\s*$', ln)
+        if mts and xc_header(mts.group(1)):   # RaceTab: "Varsity Boys 5000 Meter Run Team Scores"
+            hh_ = xc_header(mts.group(1))
+            teamsec = {'g': hh_[0], 'div': hh_[2], 'hdr': 'Team Scores', 'teams': []}
+            raw_rank.append((hh_[0], hh_[2], 'Team Scores', teamsec['teams'])); cur = None; continue
         if re.match(r'\s*(Girls|Boys|[MF])?\s*(Varsity|Junior Varsity|JV)?\s*(Girls|Boys)?\s*Team Scores', ln):
             g = re.search(r'Girls|Boys', ln)
             mf = re.match(r'\s*([MF])\s+Team Scores', ln)
@@ -402,9 +413,10 @@ def parse_xc(text):
         if not rm: continue
         f = re.split(r'\s{2,}', re.sub(r'^\d+\s+', '', rm.group(2)) if bib else re.sub(r'^#\s+\d*\s*', '', rm.group(2)))   # "1 #  486 Mathews, Ophelia": bib number before the name
         pts = None
-        while len(f) > 2 and re.fullmatch(r'\d{1,3}', f[-1]):
+        while len(f) > 2 and f[-1].strip() in ('--', '-'): f.pop()   # RaceTab prints "--" for a non-scoring runner
+        while len(f) > 2 and re.fullmatch(r'[a-z]?\d{1,3}', f[-1]):   # RaceTab flags some points ("z7")
             v = f.pop()
-            if pts is None and not heat: pts = int(v)
+            if pts is None and not heat: pts = int(re.sub(r'^[a-z]', '', v))
         mk = f.pop().strip()
         if not (re.fullmatch(XC_TIME, mk) or mk in XC_STATUS): note('XCROW?', ln); continue
         if f and re.fullmatch(XC_TIME, f[-1]) and len(f) > 2: f.pop()   # average mile column
@@ -516,6 +528,39 @@ def parse_xc_any(t):
             if tb:
                 for t in tb['teams']: t['score'] = int(t['score']) if t['score'] == int(t['score']) else t['score']
                 rk.append((h[0], h[2], 'Team Score', tb['teams']))
+        if not any(e[3] for e in evs):
+            # no "Boys 5k" title line: Five K Sport / Pine Tree sheets put the race in the heading block
+            # ("Boys Invitational Meet", "3.1 Miles", "DISTANCE: 5K"): read gender and distance there
+            evs, rk = [], []
+            lines = t.split('\n')
+            starts = [i for i, ln in enumerate(lines) if 'TmPl' in ln]
+            for si, st in enumerate(starts):
+                head = ' '.join(lines[max(0, st - 12):st])
+                g = re.search(r'(?i)\b(boys|girls|men|women)\b', head)
+                d = re.search(r'(?i)(\d+(?:\.\d+)?|\d,\d{3})\s*(k|km|miles?|meters?)\b', re.sub(r'(?i)(\d) (\d)/(\d)', lambda x: str(int(x.group(1)) + int(x.group(2)) / int(x.group(3))), head))
+                if not g: continue
+                gender = 'Girls' if g.group(1).lower() in ('girls', 'women') else 'Boys'
+                if d:
+                    num = float(d.group(1).replace(',', '')); unit = d.group(2).lower()
+                    dist = '%gk' % (num / 1000) if unit.startswith('m') and not unit.startswith('mile') else ('%g' % num) + ('k' if unit.startswith('k') else ' Mile')
+                else:
+                    dist = '5k'
+                div = 'JV' if re.search(r'(?i)junior varsity|\bJV\b', head) else 'Middle School' if re.search(r'(?i)middle school', head) else 'Varsity'
+                body = lines[st:starts[si + 1] if si + 1 < len(starts) else len(lines)]
+                rows = []
+                for ln in body:
+                    m = re.match(r'\s*(\d+)\s+(?:(\d+)\s+)?(\d+)\s+(\S.*?)\s+[MFmf]\s+(\S.*?)\s+(%s)\s*$' % XC_TIME, ln) or \
+                        re.match(r'\s*(\d+)\s+(?:(\d+)\s+)?(\d+)\s+(\S.*?)\s{2,}(?:\d{1,2}\s+)?([A-Za-z]\S*(?: \S+)*?)\s{2,}(%s)\s*$' % XC_TIME, ln)
+                    if m:
+                        r = {'place': int(m.group(1)), 'athlete': xc_name(m.group(4)), 'school': m.group(5), 'grade': '', 'result': m.group(6), 'type': 'Finals'}
+                        if m.group(2): r['team_place'] = int(m.group(2))
+                        rows.append(r)
+                if rows:
+                    evs.append((gender, dist, div, rows))
+                    tb = fk.read_team_scores('\n'.join(body), gender)
+                    if tb:
+                        for tt in tb['teams']: tt['score'] = int(tt['score']) if tt['score'] == int(tt['score']) else tt['score']
+                        rk.append((gender, div, 'Team Score', tb['teams']))
         return xc_finish(evs, rk)
     return parse_xc(t)
 

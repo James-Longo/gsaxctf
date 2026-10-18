@@ -21,7 +21,7 @@ Progress lives in backend/data/milesplit_bulk/report.json, keyed by MileSplit
 meet id, so a run can stop at any point and resume. Files under
 staged/ are the reader's queue (docs/agents/missing-meets.md).
 
-usage: python3 -m backend.milesplit_bulk stage --season XC --years 2025 2024 [--limit N]
+usage: python3 -m backend.milesplit_bulk stage --season XC --years 2025 2024 [--limit N] [--retry review]
        python3 -m backend.milesplit_bulk report [--season XC]
 """
 import argparse
@@ -130,7 +130,7 @@ def missing_listings(year, season):
         if r['year'] == year and r['season'] == season and r['status'] == 'missing':
             for x in r['listed']:
                 if x.get('site') == 'milesplit' and re.match(r'https?://me\.milesplit\.com/meets/\d+', x.get('url') or ''):
-                    out.append(dict(id=str(x['id']), url=x['url'], name=x.get('name'), date=r.get('date'), kind=r.get('kind')))
+                    out.append(dict(id=str(x['id']), url=x['url'], name=x.get('name'), date=r.get('date'), kind=x.get('kind') or r.get('kind')))
     return out
 
 
@@ -167,6 +167,8 @@ def set_listing_match(year, season, mid, stem, note):
 def stage_one(year, season, lst, held, cache):
     slug = re.search(r'/meets/([^/?#]+)', lst['url']).group(1)
     env = dict(os.environ, CANON='1', MS_STAGE=STAGED, PYTHONPATH=ROOT)
+    if lst.get('kind') == 'ms':
+        env['MSMODE'] = '1'   # middle-school meet: never expand a school to its high school's name
     try:
         r = subprocess.run([sys.executable, '-m', 'backend.milesplit', 'write', slug, str(year), season],
                            cwd=ROOT, env=env, capture_output=True, text=True, timeout=600)
@@ -183,6 +185,9 @@ def stage_one(year, season, lst, held, cache):
         return dict(status=status, why=[('no readable results: ' if unread else 'converter read no events: ') + msg.strip()[:300]])
     path = m.group(1)
     doc = json.load(open(path))
+    if lst.get('kind') == 'ms':   # MileSplit's own level tag: the store and catalog file it as middle school
+        doc['meet_level'] = 'ms'
+        json.dump(doc, open(path, 'w'), indent=1)
     ids, unresolved, nrows = school_ids(doc, year, season, cache)
     maine = maine_share(doc, year, season, cache)
     if nrows and maine < MIN_MAINE_SCHOOL:
@@ -211,13 +216,15 @@ def stage_one(year, season, lst, held, cache):
     return dict(status='accepted', file=os.path.relpath(dest, ROOT), rows=nrows)
 
 
-def stage(season, years, limit=None):
+def stage(season, years, limit=None, retry=()):
+    """Stage the missing listings of `years`; `retry` statuses (e.g. 'review') are staged again,
+    from the cached pages, after a converter fix."""
     rep = load_report()
     cache = {}
     done = 0
     for year in years:
         held = held_meets(year, season)
-        todo = [l for l in missing_listings(year, season) if l['id'] not in rep]
+        todo = [l for l in missing_listings(year, season) if l['id'] not in rep or rep[l['id']].get('status') in retry]
         print(f'{year} {season}: {len(todo)} listings to stage', flush=True)
         for lst in todo:
             if limit is not None and done >= limit:
@@ -249,9 +256,10 @@ def main():
     ap.add_argument('--season', default='XC')
     ap.add_argument('--years', nargs='*', type=int, default=[])
     ap.add_argument('--limit', type=int)
+    ap.add_argument('--retry', nargs='*', default=[], help="statuses to stage again, e.g. review")
     a = ap.parse_args()
     if a.cmd == 'stage':
-        summary(stage(a.season, a.years, a.limit), a.season)
+        summary(stage(a.season, a.years or list(range(2026, 2002, -1)), a.limit, tuple(a.retry)), a.season)
     else:
         summary(load_report(), a.season)
 

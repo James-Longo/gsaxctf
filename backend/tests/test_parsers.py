@@ -1536,6 +1536,37 @@ def test_xc_course_model_keeps_milesplit_meets():
     assert cm.NON_HS_MEET.search('ms-madison-junior-high-cross-country-invitational-meet-2026')
 
 
+def test_milesplit_racetab_xc():
+    """RaceTab sheets: the level leads the race title, points can carry a flag letter ("z7"), "--" marks a
+    non-scoring runner, and "<title> Team Scores" heads that race's team block."""
+    from backend import milesplit as ms
+    text = '''RaceTab 3 by MileSplit                    Registered to: x
+
+                Middle School Boys 3000 Meter Run
+=================================================================
+    Name                  Yr Team                      Time   Pts
+-----------------------------------------------------------------
+  1 Daniel Lyons             Brunswick Jr. High    11:10.00     1
+  2 Shaub Noh                Oxford Hills Middle   11:16.20     2
+  3 Temple Miller-Hodgkin    Mt. Ararat Middle Sc  12:03.90    z3
+  4 Aiden Simmons            Unattached            12:39.49    --
+
+          Middle School Boys 3000 Meter Run Team Scores
+=================================================================
+    Team                   Pts     1    2    3    4    5   (6)  (7)
+=================================================================
+  1 Brunswick Jr. High     25      1    3    4    8    9   10   12
+      Total Time: 57:54      Average: 11:34.68      1-5 Split: 55
+'''
+    ev, rk = ms.parse_xc_any(text)
+    assert len(ev) == 1 and ev[0]['gender'] == 'Boys' and 'Middle School' in ev[0]['event']
+    rows = ev[0]['results']
+    assert [r['athlete'] for r in rows] == ['Daniel Lyons', 'Shaub Noh', 'Temple Miller-Hodgkin', 'Aiden Simmons']
+    assert rows[2]['team_place'] == 3 and 'team_place' not in rows[3]
+    assert rk and rk[0]['teams'][0]['team'] == 'Brunswick Jr. High' and rk[0]['teams'][0]['score'] == 25
+    assert ms.xc_header('Varsity Girls Three Mile Run') == ('Girls', '3 Mile', 'Varsity')
+
+
 def test_milesplit_xc_race_continued_over_pages():
     """A Hy-Tek race split over pages repeats its title as '....Event 2 Boys 3k Run CC'; the pages are one race."""
     from backend import milesplit
