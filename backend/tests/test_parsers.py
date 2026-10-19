@@ -1893,6 +1893,133 @@ def test_collateral_guards_for_the_column_and_agate_fixes():
         [('4x800 Meter Relay', 2), ('High Jump', 2), ('Long Jump', 2), ('Shot Put', 1)], evs
 
 
+def test_milesplit_xc_title_variants_and_tight_columns():
+    """Hy-Tek / RaceTab sheets the MileSplit queue left unread: level and class prefixes and typed slips in
+    the race title, a school cut to its column one space before the time, a name filling its column one
+    space before the year, a course-record flag on the time, RaceTab 2008 "mm:ss:hh" times, "Wells  High
+    School" printed with a double space, typed "14.55" for 14:55, relay events closing the race above."""
+    from backend import milesplit as ms
+    assert ms.xc_header('Junior High Boys 1.5 Mile Run') == ('Boys', '1.5 Mile', 'Middle School')
+    assert ms.xc_header('Division 1             Varsity Boys 5000 Meter Run ') == ('Boys', '5k', 'Division 1')
+    assert ms.xc_header('Varsrity Boys 2.93 Mile Run') == ('Boys', '2.93 Mile', 'Varsity')
+    assert ms.xc_header('Class B Boys 5K Run') == ('Boys', '5k', 'Class B')
+    assert ms.xc_header('Mens 3,000 Meters Middle School Results') == ('Boys', '3k', 'Middle School')
+    assert ms.xc_header('Boys 1.5 Mile Run CC 6TH GRADE') == ('Boys', '1.5 Mile', '6th Grade')
+    assert ms.xc_header('Event 1  Boys 5k Combinded Results') is None          # an all-classes re-ranking
+    assert ms.xc_header('Event 3  Girls 3 x 1.7 Mile Relay') is None          # team times
+    assert ms.xc_header('Event 2  Boys JV') is None and ms.xc_header('Event 2  Boys JV', True) == ('Boys', '', 'JV')
+    text = '\n'.join([
+        '                   Varsity Girls 5000 Meter Run                   ',
+        '=================================================================',
+        '    Name                  Yr Team                      Time   Pts',
+        '-----------------------------------------------------------------',
+        '  1 Tristan Butterfield   SO Orono                 14:24.01R     1',
+        '  2 Jillian Richardson    10 Edward Little High S 21:47.00      2',
+        '  3 Maquila Dimasrantonio 11 Massabesic High Scho  21:48.00     3',
+        ' 78 Tristan Brown            Wells  High School    21:03.14   78',
+        ' 98 Abendroth,               Wells                24:02:00     33 ',
+        ' 99 Max Knutsen              SP                      15.36     --',
+        'Event 3  Girls 3 x 1.7 Mile Relay',
+        '  1 George Stevens Academy  \'A\'                        34:58.14  ',
+    ])
+    ev, _ = ms.parse_xc(text)
+    rows = ev[0]['results']
+    assert [(r['place'], r['school'], r['result']) for r in rows] == [
+        (1, 'Orono', '14:24.01'), (2, 'Edward Little High S', '21:47.00'), (3, 'Massabesic High Scho', '21:48.00'),
+        (78, 'Wells High School', '21:03.14'), (98, 'Wells', '24:02.00'), (99, 'SP', '15:36')], rows
+    assert rows[2]['athlete'] == 'Maquila Dimasrantonio' and rows[2]['grade'] == '11'
+
+
+def test_milesplit_xc_ruler_sheets_and_mixed_events():
+    """Five K Sport / SparkFlashGap sheets under an "=====" ruler (a name run past its column, a header
+    typed off its ruler, "*** TEAM SCORE ***" blocks), a Hy-Tek Mixed event printed by sex under
+    "Results - Women ...", and Run In A Race "Time Pace Year Team" rows."""
+    from backend import milesplit as ms
+    ruler = '\n'.join([
+        'Parker Pruett Middle School XC meet - 1.71 MILES',
+        'Boyss 1.71 Mile Run',
+        'Place TmPl No.  Name                   G G School           Time  ',
+        '===== ==== ==== ====================== = = ================ ===== ',
+        '    1    1  192 Joshua Bell            M 8 Blue Hill        11:22 ',
+        '    2    2  314 Sean Murray            M 8 Tremont          11:30 ',
+        '    3       292 Ian Brenner-Simpson    M   Mountain View    11:31 ',
+        '                  *********** BOYS TEAM SCORE **********',
+        '  1. Blue Hill       ',
+        '            1    5   10   13   14  (20) (27) =    43',
+    ])
+    ev, rk = ms.parse_xc_ruler(ruler)
+    assert [(e['event'], e['gender'], len(e['results'])) for e in ev] == [('1.71 Mile Run CC', 'Boys', 3)], ev
+    assert ev[0]['results'][2]['school'] == 'Mountain View' and rk[0]['teams'][0]['score'] == 43
+    cols = [(0, 5, 'place'), (6, 10, 'tmpl'), (11, 15, 'na'), (16, 34, 'yr'), (35, 38, 'yr'), (39, 59, 'school'), (60, 65, 'time')]
+    r = ms._ruler_cut('   11    9  268 Evan Schneider         Loranger Memorial Sc 15:46 ', cols)
+    assert (r['place'], r['team_place'], r['athlete'], r['school'], r['result']) == (11, 9, 'Evan Schneider', 'Loranger Memorial Sc', '15:46')
+    hy = '\n'.join([
+        'Event 8 Mixed 2.6 Mile Run Race # 8',
+        '================================================================',
+        '    Name                    Year School                  Finals',
+        '================================================================',
+        'Results - Women 2.6 Mile Run',
+        '  1 Johnson, Margaret        WJR BRUN                  19:29.60',
+        'Results - Men 2.6 Mile Run',
+        '  1 Shaughnessy, Will        MSR BRUN                  13:22.68',
+    ])
+    ev, _ = ms.parse_xc_any(hy)
+    assert [(e['event'], e['gender'], len(e['results'])) for e in ev] == \
+        [('2.6 Mile Run CC Race 8', 'Girls', 1), ('2.6 Mile Run CC Race 8', 'Boys', 1)], ev
+    ria = '\n'.join([
+        'Boys 4k Run',
+        'Place     Bib # Name                      Time        Pace  Year  Team           ',
+        '    1      90   Henry Horne               12:55.32    5:12  11    Freeport            ',
+        '    1  351 Sands, Jeremiah 17:13.19 3',
+    ])
+    ev, _ = ms.parse_xc_any(ria)
+    assert [(r['athlete'], r['grade'], r['school']) for r in ev[0]['results']] == [('Henry Horne', '11', 'Freeport')]
+
+
+def test_milesplit_xc_tab_lists_and_team_rows():
+    """Loose tab sheets (a header whose first cell is the race, "Place`", "9.26" typed for 9:26, a
+    "Place Team Time" relay-total table that is no race), typed "1 Name (School) 22:57" lists, and a team
+    row whose score sits one space after a cut name."""
+    from backend import milesplit as ms
+    tab = '\n'.join(['Freshman Boys 1.7 Mile Run\t\t\t\t', '\tBoys Freshman\tName\tSchool\tTime',
+                     '\t1\tDowning\tGorham\t10:30', '\t2\tHowland\tScarborough\t10.34'])
+    ev, _ = ms.parse_xc_tab(tab, loose=True)
+    assert [(e['event'], e['gender'], [r['result'] for r in e['results']]) for e in ev] == \
+        [('1.7 Mile Run CC Freshman', 'Boys', ['10:30', '10:34'])], ev
+    ev, _ = ms.parse_xc_tab('Place\tTeam\t\tTime\n1\tBrunswick \'A\'\t\t58:38:00', loose=True)
+    assert not any(e['results'] for e in ev)
+    ev, _ = ms.parse_xc_lists('Girls\n1 Alexa Johnson (Narraguagus) 22:57\n14 Jack Farnsworth (Sumner)22:29')
+    assert [(r['place'], r['athlete'], r['school']) for r in ev[0]['results']] == \
+        [(1, 'Alexa Johnson', 'Narraguagus'), (14, 'Jack Farnsworth', 'Sumner')]
+    text = '\n'.join([
+        'Event 2  Boys 2 Mile Run CC', '    Name                    Year School                  Finals  Points',
+        '  1 A B                    Presque Isle Middle Sc     12:00.00     1',
+        '                                   Team Scores',
+        ' 4 Presque Isle Middle Schoo 102    9    21    22     24    26    27',
+    ])
+    _, rk = ms.parse_xc(text)
+    t = rk[0]['teams'][0]
+    assert (t['team'], t['score'], t['places']) == ('Presque Isle Middle Schoo', 102, [9, 21, 22, 24, 26, 27]), t
+
+
+def test_milesplit_bulk_printed_points_and_held_races():
+    """milesplit_bulk: a recount that misses the sheet's tie rule is accepted only when every team's places
+    are its runners' printed team points (no scorer lost); a race already held at the same times is not
+    stored twice."""
+    from backend import milesplit_bulk as mb
+    rows = [{'place': p, 'athlete': 'R%d' % p, 'school': s, 'result': '20:%02d' % p, 'team_place': tp}
+            for p, s, tp in [(1, 'A', 1), (2, 'A', 2), (3, 'B', 3), (4, 'A', 4), (5, 'A', 5), (6, 'B', 6),
+                             (7, 'A', 7), (8, 'B', 8), (9, 'B', 9), (10, 'B', 10)]]
+    doc = {'events': [{'event': '5k Run CC', 'gender': 'Boys', 'results': rows}],
+           'team_rankings': [{'kind': 'xc', 'gender': 'Boys', 'event_idx': 0, 'teams': [
+               {'team': 'A', 'score': 19, 'places': [1, 2, 4, 5, 7]}, {'team': 'B', 'score': 36, 'places': [3, 6, 8, 9, 10]}]}]}
+    assert mb.printed_points_agree(doc)
+    doc['team_rankings'][0]['teams'][0].update(score=20, places=[1, 2, 4, 5, 8])   # not A's printed points
+    assert not mb.printed_points_agree(doc)
+    mb._HELD_RUNNERS[(1999, 'XC')] = {'held': mb._near({'events': [{'results': [dict(r, result='20:%02d.4' % r['place']) for r in rows]}]})}
+    assert mb.race_homes(doc, 1999, 'XC') == ['held']
+
+
 if __name__ == '__main__':
     qaqc._ensure_team_mapping()
     failed = 0

@@ -74,6 +74,18 @@ def words(s):
         'txt', 'pdf', 'json', 'varsity', 'female', 'male', 'men', 'women'}
 
 
+# words every other meet's name shares: a match on these alone is no evidence
+# ("Searsport Invitational" is not "Presque Isle Invitational", "MVC CHAMP" is not
+# the KVAC championship the same day)
+GENERIC = {'invitational', 'invite', 'invitation', 'championship', 'championships', 'champ', 'champs',
+           'cross', 'country', 'conference', 'league', 'regional', 'regionals', 'state', 'class',
+           'annual', 'open', 'relays', 'relay', 'dual', 'tri', 'quad', 'run', 'race', 'mile', 'miles',
+           'middle', 'junior', 'jv', 'wmc', 'kvac', 'mvc', 'smaa', 'pvc', 'sml', 'ccc', 'emitl', 'busline',
+           'triple', 'season', 'regular', 'home', 'opener', 'preview', 'fall', 'xc'}
+# words that make two meets on one day different meets ("Western Maine Class A" is not "Eastern Maine")
+OPPOSED = [{'eastern', 'western'}, {'northern', 'southern'}, {'large', 'small'}]
+
+
 def mile_meet_id(url):
     m = re.search(r'milesplit\.com/meets/(\d+)', url or '')
     return m.group(1) if m else None
@@ -319,17 +331,27 @@ def match(listing, meets, by_url, by_stem):
              and near(m['date'], listing.get('date'))]
     if not cands:
         return None
-    lw = words(listing.get('name'))
+    lw = words(listing.get('name')) - GENERIC
     def score(m):
         mw = words(m['name']) | {w for f in m['files'] for w in words(os.path.basename(f['path']))}
         glued = ' '.join(os.path.basename(f['path']).lower() for f in m['files'])
         return len(lw & mw) + sum(1 for w in lw - mw if len(w) >= 4 and w in glued)
+    lw_all = words(listing.get('name'))
+    def opposed(m):
+        mw = words(m['name']) | {w for f in m['files'] for w in words(os.path.basename(f['path']))}
+        return any(lw_all & o and mw & o and not lw_all & mw & o for o in OPPOSED)
+    # a held MileSplit meet under another MileSplit id is another meet (the same id matched above;
+    # a meet MileSplit lists twice is matched by a reader's "match")
+    cands = [m for m in cands if not opposed(m) and not (mid and any(mile_meet_id(u) for u in m['urls']))]
+    if not cands:
+        return None
     best = max(cands, key=score)
     same_day = [m for m in cands if near(m['date'], listing.get('date'), 0)]
     if score(best) > 0:
         return best
-    if len(same_day) == 1 and len(cands) == 1:
-        return best   # the only meet that day: likely the same one under another name
+    if len(same_day) == 1 and len(cands) == 1 and not mid:
+        return best   # the only meet that day: likely the same one under another name (a MileSplit listing
+                      # is left to milesplit_bulk, which compares the runners themselves)
     return None
 
 

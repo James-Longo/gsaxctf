@@ -7,13 +7,19 @@ MileSplit meet) of the chosen seasons:
              CANON=1) into backend/data/milesplit_bulk/staged/<year>/<season>/
              -- one request at a time, 3 s apart, pages cached;
   2. match   it to the meets we hold by date (within 2 days) and the set of
-             schools: a meet we already have under another name is recorded
-             as a "match" on its listing (never fetched again) and dropped;
+             schools, or by its runners at their times (every race 80%+ inside
+             one held file, whatever the dates say): a meet we already have
+             under another name is recorded as a "match" on its listing (never
+             fetched again) and dropped;
      A meet whose rows are mostly colleges, clubs or out-of-state schools is
      skipped and its listing marked (MileSplit's own level tag, read by
      `milesplit list`, keeps most of them from being fetched at all);
-  3. check   every row complete, schools identified, team scores verified
-             where the results print them, date in the season;
+  3. check   every row complete, schools identified (resolved with the file's name, as the store
+             does), team scores verified where the results print them (or every team's
+             places are its runners' printed team points: a tie rule the recount misses),
+             times in place order and under 90 minutes, every race's sex known, date in the
+             season and the sheet's own date agreeing with the listing; races already held
+             (the same runners at their times) are left out of a meet that adds new ones;
   4. accept  a meet that passes into backend/data/parsed_results/, or leave it
              staged with its reasons for a reader (status "review").
 
@@ -27,6 +33,7 @@ usage: python3 -m backend.milesplit_bulk stage --season XC --years 2025 2024 [--
 import argparse
 import collections
 import datetime as dt
+import glob
 import json
 import os
 import re
@@ -66,16 +73,18 @@ def day(s):
         return None
 
 
-def school_ids(doc, year, season, cache):
+def school_ids(doc, year, season, cache, fname=None):
+    """Catalog ids of the meet's schools and the count of rows the catalog cannot place; `fname`
+    (the file's name, as the store resolves it) brings in its per-file rules and middle-school level."""
     from backend import school_catalog as sc
     rows = [r for e in doc.get('events', []) for r in e.get('results', [])]
     ids, bad = set(), 0
     for r in rows:
         raw = r.get('school') or ''
-        k = (raw, year, season)
+        k = (raw, year, season, fname)
         if k not in cache:
             try:
-                cache[k] = sc.resolve(raw, year=year, season=season) if raw else None
+                cache[k] = sc.resolve(raw, year=year, season=season, meet_name=fname) if raw else None
             except Exception:  # noqa: BLE001
                 cache[k] = None
         if cache[k]:
@@ -91,6 +100,77 @@ def same_meet(a_ids, a_day, b_ids, b_day):
     return len(a_ids & b_ids) / min(len(a_ids), len(b_ids)) >= MATCH_OVERLAP and len(a_ids & b_ids) >= min(2, len(a_ids), len(b_ids))
 
 
+def _runner_key(r):
+    n = re.sub(r'^([^,]+),\s*(.+)$', r'\2 \1', (r.get('athlete') or '').lower())
+    t = re.match(r'(?:(\d+):)?(\d+):(\d+)', str(r.get('result') or ''))
+    return (' '.join(sorted(re.findall(r'[a-z]+', n))), int(t.group(1) or 0) * 3600 + int(t.group(2)) * 60 + int(t.group(3))) if n and t else None
+
+
+_HELD_RUNNERS = {}
+
+
+def _race_keys(e):
+    return {k for r in e.get('results', []) for k in [_runner_key(r)] if k}
+
+
+def _near(doc):
+    """[(runners at their seconds +-1, runner count)] per race of a file: MileSplit copies of a sub5 meet
+    are often hand-rounded ("16:50.00" for 16:49.98)."""
+    out = []
+    for e in doc.get('events', []):
+        ks = _race_keys(e)
+        if ks:
+            out.append(({(n, t + dd) for n, t in ks for dd in (-1, 0, 1)}, len(ks)))
+    return out
+
+
+def held_runners(year, season):
+    """{stem: [(near set, count)] per race} of every file we hold for the season (cached per run). A file
+    holding two or more of the season's other files is a combined re-ranking (the New England qualifier
+    list pools the class races; the store drops it): it is never taken for the copy of a race."""
+    if (year, season) not in _HELD_RUNNERS:
+        out = {}
+        for p in glob.glob(os.path.join(DATA, 'parsed_results', str(year), season, '*.json')):
+            try:
+                d = json.load(open(p))
+            except Exception:  # noqa: BLE001
+                continue
+            rs = _near(d)
+            if rs:
+                out[os.path.splitext(os.path.basename(p))[0]] = rs
+        allk = {k: set().union(*[x for x, _ in v]) for k, v in out.items()}
+        size = {k: sum(n for _, n in v) for k, v in out.items()}
+        for k in list(out):
+            inside = sum(1 for k2 in out if k2 != k and size[k2] >= 20 and size[k2] < size[k]
+                         and sum(1 for x in allk[k2] if x in allk[k]) >= 0.6 * len(allk[k2]))
+            if inside >= 2:
+                del out[k]
+        _HELD_RUNNERS[(year, season)] = out
+    return _HELD_RUNNERS[(year, season)]
+
+
+def race_homes(doc, year, season):
+    """Per race of the staged meet: the held file holding that race already (80%+ of its runners at their
+    times, in a held race at least 95% its size), else None. Races of fewer than 3 runners: 'small'."""
+    held = held_runners(year, season)
+    out = []
+    for e in doc.get('events', []):
+        rc = _race_keys(e)
+        if len(rc) < 3:
+            out.append('small')
+            continue
+        home = None
+        for stem, races in held.items():
+            for ns, n in races:
+                if n >= 0.95 * len(rc) and sum(1 for x in rc if x in ns) >= 0.8 * len(rc):
+                    home = stem
+                    break
+            if home:
+                break
+        out.append(home)
+    return out
+
+
 def check(doc, season, year):
     """Reasons a staged meet needs a reader (empty = accept)."""
     why = []
@@ -104,23 +184,94 @@ def check(doc, season, year):
     d = day(doc.get('date'))
     if not d or not (dt.date(year - (1 if season == 'Indoor' else 0), 8 if season == 'XC' else 1, 1) <= d <= dt.date(year, 12, 31)):
         why.append(f"date {doc.get('date')} outside the season")
+    for e in doc.get('events', []):   # times that cannot be a race's: out of place order, or hours long (a spreadsheet's clock cells)
+        secs = [_runner_key(dict(r, athlete='x'))[1] for r in e.get('results', []) if r.get('place') and _runner_key(dict(r, athlete='x'))]
+        back = sum(1 for a, b in zip(secs, secs[1:]) if b < a - 1)
+        if secs and (back > max(2, 0.05 * len(secs)) or max(secs) > 5400):
+            why.append(f"{e.get('gender')} {e.get('event')}: times out of place order ({back}) or over 90 minutes")
+    if doc.get('date_conflict'):
+        why.append(doc['date_conflict'])
+    mixed = [e for e in doc.get('events', []) if e.get('gender') not in ('Boys', 'Girls') and e.get('combined_race') is None and e.get('mixed_race') is None]
+    if mixed:   # a race the sheet names no sex for, whose first names do not settle it (surnames, initials)
+        why.append(f"{sum(len(e.get('results', [])) for e in mixed)} rows in a race of unknown sex")
     if season == 'XC':
         from backend.qaqc import xc_verify_parsed
         v = xc_verify_parsed(doc)
-        if v and v.get('status') not in ('verified', 'verified_close'):
+        if v and v.get('status') == 'mismatch' and printed_points_agree(doc):
+            note = (' Team scores: every team\'s places in the team block are its runners\' printed team points and add up'
+                    ' to its score; a recount from the finish order differs (tied finishers scored by the sheet\'s own rule).')
+            if note not in (doc.get('notes') or ''):
+                doc['notes'] = (doc.get('notes') or '') + note
+        elif v and v.get('status') not in ('verified', 'verified_close'):
             why.append(f"team scores {v.get('status')}")
     return why
 
 
+def printed_points_agree(doc):
+    """Every team block that a recount does not reproduce is the sheet's own arithmetic: each official team's
+    places are exactly one school's printed team points (the rows' Pts column), its first five add up to its
+    score, and the race's printed points run from 1 with no gap (no scoring runner missing)."""
+    from backend.qaqc import _xc_verify_block
+    blocks = [b for b in doc.get('team_rankings', []) if b.get('kind') == 'xc']
+    if not blocks:
+        return False
+    for b in blocks:
+        i = b.get('event_idx')
+        if not isinstance(i, int) or not 0 <= i < len(doc.get('events', [])):
+            return False
+        rows = doc['events'][i]['results']
+        v = _xc_verify_block(b, rows)
+        if not v or v['status'] != 'mismatch':
+            continue
+        tp = collections.defaultdict(list)
+        for r in rows:
+            if r.get('team_place'):
+                tp[(r.get('school') or '').strip()].append(r['team_place'])
+        cnt = collections.Counter(p for x in tp.values() for p in x)
+        if not cnt:
+            return False
+        gaps = len(set(range(1, max(cnt) + 1)) - set(cnt))
+        if gaps > sum(c - 1 for c in cnt.values()):   # a tie shares one place and leaves one unused; any other gap is a lost scorer
+            return False
+        sets = [sorted(x) for x in tp.values()]
+        for t in b.get('teams', []):
+            pl = sorted(t.get('places') or [])
+            if not pl or pl not in sets or sum(pl[:5]) != t.get('score'):
+                return False
+    return True
+
+
 def held_meets(year, season):
-    """[(stem, school ids, day)] for the meets we hold, from the ledger."""
+    """[(stem, school ids, day, [every file stem])] for the meets we hold, from the ledger."""
     led = json.load(open(os.path.join(DATA, 'meet_ledger.json')))['meets']
     out = []
     for r in led:
         if r['year'] == year and r['season'] == season and r['status'] == 'have':
-            stem = os.path.splitext(os.path.basename(r['files'][0]['path']))[0]
-            out.append((stem, set(r['schools']), day(r['date'] or '')))
+            stems = [os.path.splitext(os.path.basename(f['path']))[0] for f in r['files']]
+            out.append((stems[0], set(r['schools']), day(r['date'] or ''), stems))
     return out
+
+
+def _names(doc):
+    return {k[0] for e in doc.get('events', []) for r in e.get('results', []) for k in [_runner_key(r)] if k}
+
+
+def held_names(year, season, stems):
+    """First and last names of the runners in the held files `stems` (read from disk, cached)."""
+    out = set()
+    for st in stems:
+        k = (year, season, st)
+        if k not in _HELD_NAMES:
+            p = os.path.join(DATA, 'parsed_results', str(year), season, st + '.json')
+            try:
+                _HELD_NAMES[k] = _names(json.load(open(p)))
+            except Exception:  # noqa: BLE001
+                _HELD_NAMES[k] = set()
+        out |= _HELD_NAMES[k]
+    return out
+
+
+_HELD_NAMES = {}
 
 
 def missing_listings(year, season):
@@ -134,12 +285,12 @@ def missing_listings(year, season):
     return out
 
 
-def maine_share(doc, year, season, cache):
+def maine_share(doc, year, season, cache, fname=None):
     """Share of rows whose school is a Maine high school, middle school or co-op."""
     rows = [r for e in doc.get('events', []) for r in e.get('results', [])]
     if not rows:
         return 1.0
-    ok = sum(1 for r in rows if (cache.get((r.get('school') or '', year, season)) or '').startswith(('me-hs-', 'me-ms-', 'coop-')))
+    ok = sum(1 for r in rows if (cache.get((r.get('school') or '', year, season, fname)) or '').startswith(('me-hs-', 'me-ms-', 'coop-')))
     return ok / len(rows)
 
 
@@ -188,31 +339,64 @@ def stage_one(year, season, lst, held, cache):
     if lst.get('kind') == 'ms':   # MileSplit's own level tag: the store and catalog file it as middle school
         doc['meet_level'] = 'ms'
         json.dump(doc, open(path, 'w'), indent=1)
-    ids, unresolved, nrows = school_ids(doc, year, season, cache)
-    maine = maine_share(doc, year, season, cache)
+    ids, unresolved, nrows = school_ids(doc, year, season, cache, os.path.basename(path))
+    maine = maine_share(doc, year, season, cache, os.path.basename(path))
     if nrows and maine < MIN_MAINE_SCHOOL:
         os.remove(path)
         set_listing_kind(year, season, lst['id'], 'open',
                          f'auto (milesplit_bulk): {maine:.0%} of rows are Maine high or middle schools (college, club or out-of-state meet)')
         return dict(status='skipped', why=[f'not a Maine school meet ({maine:.0%} Maine school rows)'])
     d = day(doc.get('date')) or day(lst.get('date') or '')
-    for stem, hids, hday in held:
-        if same_meet(ids, d, hids, hday):
+    mine = _names(doc)
+    for stem, hids, hday, stems in held:
+        # (same day, same schools -- and the same runners: a middle-school festival and the
+        # conference championship two days later share every school, no runner)
+        hn = held_names(year, season, stems) if mine else set()
+        if same_meet(ids, d, hids, hday) and (not mine or not hn or len(mine & hn) >= 0.5 * min(len(mine), len(hn))):
             os.remove(path)
             set_listing_match(year, season, lst['id'], stem, 'auto (milesplit_bulk): same date and schools as the meet we hold')
             return dict(status='duplicate', match=stem)
+    homes = race_homes(doc, year, season)
+    real = [h for h in homes if h != 'small']
+    if real and all(real):   # every race already held (the same runners at their times), whatever the dates say
+        os.remove(path)
+        set_listing_match(year, season, lst['id'], real[0], 'auto (milesplit_bulk): the same runners at the same times as the meet we hold')
+        return dict(status='duplicate', match=real[0])
+    if any(h and h != 'small' for h in homes):   # some races held, some new: store the new ones only
+        gone = [(e['gender'], e['event'], h) for e, h in zip(doc['events'], homes) if h and h != 'small']
+        doc['events'] = [e for e, h in zip(doc['events'], homes) if not h or h == 'small']
+        keep = {(e['gender'], e['event']) for e in doc['events']}
+        doc['team_rankings'] = [b for b in doc.get('team_rankings', []) if (b.get('gender'), b.get('event_header')) in keep]
+        for b in doc['team_rankings']:
+            ix = [i for i, e in enumerate(doc['events']) if (e['gender'], e['event']) == (b.get('gender'), b.get('event_header'))]
+            if len(ix) == 1:
+                b['event_idx'] = ix[0]
+            else:
+                b.pop('event_idx', None)
+        doc['notes'] = (doc.get('notes') or '') + ' Races already held from another source left out (not stored twice): %s.' % '; '.join('%s %s (%s)' % x for x in gone)
+        json.dump(doc, open(path, 'w'), indent=1)
+        ids, unresolved, nrows = school_ids(doc, year, season, cache, os.path.basename(path))
     why = check(doc, season, year)
+    json.dump(doc, open(path, 'w'), indent=1)   # (check may add a note on the team scores)
     if nrows and unresolved > MAX_UNRESOLVED * nrows:
         why.append(f'{unresolved} rows with an unidentified school')
     rel = os.path.relpath(path, ROOT)
     if why:
         return dict(status='review', why=why, file=rel, rows=nrows)
     dest = os.path.join(DATA, 'parsed_results', str(year), season, os.path.basename(path))
-    if os.path.exists(dest):
-        return dict(status='review', why=['a file of this name is already in parsed_results'], file=rel, rows=nrows)
+    if os.path.exists(dest):   # another meet of the same name (a school's second home meet): the date tells them apart
+        try:
+            other = json.load(open(dest)).get('source', {}).get('url')
+        except Exception:  # noqa: BLE001
+            other = None
+        if other != doc.get('source', {}).get('url') and doc.get('date'):
+            dest = dest[:-5] + '-%s.json' % doc['date']
+        if os.path.exists(dest):
+            return dict(status='review', why=['a file of this name is already in parsed_results'], file=rel, rows=nrows)
     os.makedirs(os.path.dirname(dest), exist_ok=True)
     shutil.move(path, dest)
-    held.append((os.path.splitext(os.path.basename(dest))[0], ids, d))
+    held.append((os.path.splitext(os.path.basename(dest))[0], ids, d, [os.path.splitext(os.path.basename(dest))[0]]))
+    held_runners(year, season)[os.path.splitext(os.path.basename(dest))[0]] = _near(doc)
     return dict(status='accepted', file=os.path.relpath(dest, ROOT), rows=nrows)
 
 
