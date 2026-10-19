@@ -1943,6 +1943,19 @@ class Sub5ScraperV2:
                 pass
         return {"meet_corrections": [], "athlete_corrections": []}
 
+    def college_share(self, parsed_events, year, season, filename):
+        """Share of a meet's rows whose school the catalog places as a college."""
+        n = col = 0
+        for e in parsed_events:
+            if not isinstance(e, dict):
+                continue
+            for r in e.get('results', []):
+                n += 1
+                sid = school_catalog.resolve(r.get('school') or r.get('team') or '', year=str(year),
+                                             season=season, meet_name=filename) if (r.get('school') or r.get('team')) else None
+                col += bool(sid and sid.startswith('col-'))
+        return col / n if n else 0.0
+
     def normalize_team_name(self, name, all_teams=None, level='hs'):
         """Cached wrapper: school strings repeat constantly (same ~50 names per
         meet), and the fallback matching below is O(n log n) per call, so
@@ -2506,6 +2519,14 @@ class Sub5ScraperV2:
                 # the rest (college meets) stay out of the store.
                 if meet_key in self.meet_scope.get('excluded', {}):
                     continue
+                # College results never enter the store (James 2026-10-19): a meet
+                # whose rows are mostly colleges is skipped whole, so its unplaced
+                # strings ("Maine", "Thomas") can't become junk teams; college rows
+                # in a mixed open meet are dropped row by row below.
+                if self.college_share(parsed_events, year, season, filename) >= 0.5:
+                    SYNC_DROPS[(meet_key, 'college meet')] += sum(
+                        len(e.get('results', [])) for e in parsed_events if isinstance(e, dict))
+                    continue
                 if meet_key in self.meet_scope.get('summer', {}):
                     from backend import sub5_summer
                     url = next((self.web_url_mapping.get(f"{year}/{season}/{c}") for c in
@@ -2614,6 +2635,9 @@ class Sub5ScraperV2:
                             unit = school_catalog.store_unit(
                                 school, year=str(year), season=season, gender=gender,
                                 meet_name=filename, grade=r.get('grade'))
+                            if unit and unit.startswith('col-'):
+                                SYNC_DROPS[(meet_key, 'college row')] += 1
+                                continue
                             if unit:
                                 team_norm = school_catalog.store_name(unit)
                         if team_norm is None:
