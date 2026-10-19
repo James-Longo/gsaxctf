@@ -227,6 +227,13 @@ ME_HS = [
      ['BCS', 'BCHS'], ['Patriots'], {}),
     ('me-hs-penobscot-christian', 'Penobscot Christian School', 'Bangor', 'Penobscot Christian',
      ['Penobscot Christian', 'Penobscot Christian HS'], ['PCS'], [], {}),
+    # 2013 track: scored as its own team beside Central in the same meets; two of its runners
+    # had run 2012 XC for Central, which once pulled every "Highview Chr" row onto Central
+    ('me-hs-highview-christian', 'Highview Christian Academy', 'Charleston', 'Highview Christian',
+     ['Highview Christian', 'Highview Christian Academy', 'Highview Christian Academ', 'Highview Chr',
+      'Highview Christian Acad'], [], [], {}),
+    # MileSplit 2010 Camden Hills Invitational: two runners for this Camden private high school
+    ('me-hs-watershed', 'Watershed School', 'Camden', None, ['Watershed School', 'Watershed'], [], [], {}),
     ('me-hs-mssm', 'Maine School of Science and Mathematics', 'Limestone', 'MSSM',
      ['Maine School of Science and Mathematics', 'Maine School of Science & Math', 'Maine School of Science'],
      ['MSSM'], [], {}),
@@ -650,6 +657,9 @@ ME_MS = [
      {'notes': 'RSU 24, Hancock County (currently PK-5).'}),
     ('me-ms-hebron', 'Hebron Academy Middle School', 'Hebron', None, ['Hebron Academy Middle School', 'Hebron Academy MS'],
      ['HAMS'], [], {'notes': "'HAMS' in 2018 Tripp meets."}),
+    # MileSplit Triple C festival 2013: "Windham/Raymond", RSU 14's two middle schools scored as one team
+    ('me-ms-windham-raymond', 'Windham/Raymond (combined RSU 14 MS team)', 'Windham', None,
+     ['Windham/Raymond', 'Windham-Raymond'], [], [], {'kind': 'combined', 'members': ['me-ms-windham', 'me-ms-jordan-small']}),
     ('me-ms-durham-freeport', 'Durham/Freeport (combined RSU 5 MS team)', 'Freeport', None,
      ['Durham-Freeport', 'Freeport-Durham', 'Freeport-Durham FMS', 'Durham/Freeport'], [], [],
      {'kind': 'combined', 'members': ['me-ms-durham', 'me-ms-freeport']}),
@@ -668,7 +678,15 @@ ME_MS = [
     ('me-ms-brooksville', 'Brooksville Elementary School', 'Brooksville', None, ['Brooksville School', 'Brooksville'], [], [], {}),
     ('me-ms-blue-hill', 'Blue Hill Consolidated School', 'Blue Hill', None,
      ['Blue Hill Consolidated School', 'Blue Hill Consolidated', 'Blue Hill', 'Blue Hill MS', 'Blue Hill School'], [], [], {}),
-    ('me-ms-bay-school', 'Bay School', 'Blue Hill', None, ['Bay School'], [], [], {}),
+    ('me-ms-bay-school', 'Bay School', 'Blue Hill', None, ['Bay School', 'The Bay School'], [], [], {}),
+    # MileSplit Hancock County middle-school meets 2011-2014 (Airline, Coastal, PVMSCC small-school, Parker
+    # Pruett): a scored team "Hancock" / "Hancock School" beside Dedham, Surry, Bay School and Blue Hill
+    ('me-ms-hancock', 'Hancock Grammar School', 'Hancock', None,
+     ['Hancock Grammar School', 'Hancock Grammar', 'Hancock School', 'Hancock'], [], [], {}),
+    # MileSplit Parker Pruett MS meet 2011 (Sullivan): five runners
+    ('me-ms-swans-island', "Swan's Island School", "Swan's Island", None, ["Swan's Island School", "Swan's Island", 'Swans Island'], [], [], {}),
+    # MileSplit Airline Invitational 2012: two runners
+    ('me-ms-adams-castine', 'Adams School', 'Castine', None, ['Adams School'], [], [], {}),
     ('me-ms-penobscot', 'Penobscot Elementary School', 'Penobscot', None, ['Penobscot Elementary'], [], [], {}),
     ('me-ms-peninsula', 'Peninsula School', 'Prospect Harbor', None, ['Peninsula School'], [], [], {}),
     ('me-ms-orland', 'Orland Consolidated School', 'Orland', None, ['Orland School', 'Orland'], [], [], {}),
@@ -687,7 +705,8 @@ ME_MS = [
      ['Edna Drinkwater School', 'Edna Drinkwater', 'Edna Drinkwa', 'Drinkwater School', 'Drinkwater'], ['EDS'], [], {}),
     ('me-ms-camden-rockport', 'Camden-Rockport Middle School', 'Camden', None,
      ['Camden-Rockport Middle School', 'Camden Rockport Middle School', 'Camden Rockport MS', 'Camden-Rockport MS',
-      'Camden Rockport Middle'], ['CRMS'], [], {}),
+      'Camden Rockport Middle', 'Camden Hills Middle School'], ['CRMS'], [],
+     {'notes': "'Camden Hills Middle School' in 2012-2013 Busline MS championships: the district's middle school (its runners CRMS elsewhere)."}),
     ('me-ms-oceanside', 'Oceanside Middle School', 'Thomaston', None,
      ['Oceanside Middle School', 'Oceanside MS', 'Oceanside Middle'], ['OMS'], [], {}),
     ('me-ms-rockland', 'Rockland District Middle School', 'Rockland', None,
