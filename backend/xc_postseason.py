@@ -584,8 +584,11 @@ DEFAULTS = dict(
     slow_clip=2.5,     # races this many race_sd slower than the estimate
                        # (a fall, a sick day) are down-weighted
     use_prior=True,
-    program_icc=0.0,   # program effect: share of a runner's race-day result shared with the rest
-                       # of their school's runners that day (simulate_postseason)
+    program_icc=0.074, # program effect: share of a runner's race-day result shared with the rest
+                       # of their school's runners that day (simulate_postseason); measured
+                       # from teammates' misses at championships. Backtest 2026-10-18: podiums
+                       # unchanged, top-3 calibration in the 80-95% band 82% -> 86% observed for
+                       # about 88% stated (Brier3 -0.0004 +/- 0.0003, better in 6 of 10 seasons)
     pool_level=True,   # a runner with no prior season is pulled toward their gender/grade
                        # population (Calibration.level_prior); chosen by the per-race
                        # backtest 2026-10-18: podiums tie (+0.004 +/- 0.007, 6 of 8
