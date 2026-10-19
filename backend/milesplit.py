@@ -58,8 +58,9 @@ def meetinfo(slug):
     files = re.search(r'meetResultFiles = (\[.*?\]);', h)
     title = re.search(r'<title>(.*?)</title>', h, re.S).group(1).strip()
     if not files:
-        ids=sorted(set(re.findall(r'results/(\d+)/raw',h)))
-        files=[{'id':int(i),'name':'Results','isMeetPro':0} for i in ids]
+        ids=sorted(set(re.findall(r'results/(\d+)(?:/raw|\?type=formatted)',h)))   # older pages list the other files only in the results dropdown
+        nm={i:html.unescape(n).strip() for i,n in re.findall(r'results/(\d+)\?type=formatted"[^>]*>\s*([^<]+?)\s*</option>',h)}
+        files=[{'id':int(i),'name':nm.get(i,'Results'),'isMeetPro':0} for i in ids]
     return (date.group(1) if date else None), (json.loads(files.group(1)) if hasattr(files,'group') else files), html.unescape(title), h
 MARK = r"[xX]?(?:\d+:)?\d+(?:\.\d+)?[a-zA-Z]?|[xXjJ]?\d+-\d+(?:\.\d+)?[a-zA-Z]?|[xX]?(?:DQ|DNF|DNS|NH|FOUL|FAIL|ND|NT|SCR|DNQ)"
 STAT = {'DQ','DNF','NH','FOUL','FAIL','ND','NT','DNQ'}
@@ -578,7 +579,7 @@ def parse_xc_tab(text, loose=False):
         row = dict(zip(cols, f))
         if 'full name' in row: row['name'] = row['full name']   # "PLACE Time Full Name School" (KVAC 2023)
         if 'athlete' in row: name = row['athlete']
-        elif 'first name' in row: name = row['first name'] + ' ' + row['last name']
+        elif 'first name' in row: name = (row['first name'] + ' ' + row.get('last name', '')).strip()   # a row cut short before its last-name cell
         else: name = row.get('name', '')
         name = re.sub(r'\s*-\s+', '-', name)
         gr = ''
@@ -722,10 +723,117 @@ def parse_xc_any(t):
     ev_, rk_ = _parse_xc_any(t)
     if not any(e['results'] for e in ev_):   # (a fallback's read replaces the strict one only when it found runners:
         from backend.parsers.rulertable import RulerTableParser   # a file of team scores alone keeps its blocks)
-        for fb in ([parse_xc_ruler] if RulerTableParser.matches(t.replace('\xa0', ' ')) else []) + [parse_xc_lists]:
+        for fb in ([parse_xc_ruler] if RulerTableParser.matches(t.replace('\xa0', ' ')) else []) + [parse_xc_lists, parse_xc_columns, parse_xc_freetext]:
             e2, r2 = fb(t)
             if any(e['results'] for e in e2): return e2, r2
     return ev_, rk_
+def _xc_dist(text):
+    """'2.0 MILES', 'Distance: 2.75 miles', '5K' -> the race label's distance ('2 Mile', '2.75 Mile', '5k'), else ''."""
+    d = re.search(r'(?i)(\d+(?:\.\d+)?)\s*(k|km|miles?|mi)\b', text)
+    if not d: return ''
+    return ('%g' % float(d.group(1))) + ('k' if d.group(2).lower().startswith('k') else ' Mile')
+def parse_xc_columns(t):
+    """Tab tables read by their header row (sheets typed into a spreadsheet: 'Name School Place Time',
+    'First Last PLACE TEAM BIB # Finish Time'), or, with no header, rows of exactly name / school / time
+    in finishing order. Gender from a BOYS/GIRLS word in the header, the lines above it or the file's
+    title; distance from 'N MILES' / 'Distance: N miles' near the header (else none)."""
+    lines = t.split('\n'); evs = []; cur = None; cols = None
+    hint = 'Boys' if re.search(r'(?i)\bboys?\b|\bmen\b', lines[0] if lines else '') else 'Girls' if re.search(r'(?i)\bgirls?\b|\bwomen\b', lines[0] if lines else '') else (XC_HINT or '')
+    for li, ln in enumerate(lines):
+        cells = [c.strip() for c in ln.split('\t')]
+        low = [c.lower() for c in cells]
+        if len([c for c in cells if c]) == 1 and re.fullmatch(r'(?i)(boys?|girls?|men|women)(\s.*)?', next(c for c in cells if c)):
+            hint = 'Girls' if re.match(r'(?i)girl|women', next(c for c in cells if c)) else 'Boys'; continue
+        name_c = next((i for i, c in enumerate(low) if c in ('name', 'athlete', 'runner', 'athlete name')), None)
+        first_c = next((i for i, c in enumerate(low) if c in ('first', 'first name')), None); last_c = next((i for i, c in enumerate(low) if c in ('last', 'last name')), None)
+        time_c = next((i for i, c in enumerate(low) if c in ('time', 'finish time', 'final time', 'finals', 'mark', 'finish')), None)
+        if time_c is not None and (name_c is not None or (first_c is not None and last_c is not None)):
+            g = 'Boys' if re.search(r'(?i)\bboys?\b', ln) else 'Girls' if re.search(r'(?i)\bgirls?\b', ln) else ''
+            near = ' '.join(lines[max(0, li - 6):li + 2])
+            if not g:
+                gm = re.findall(r'(?i)\b(boys?|girls?)\b', ' '.join(lines[max(0, li - 6):li]))
+                g = ('Girls' if gm[-1].lower().startswith('g') else 'Boys') if gm else hint
+            cols = dict(name=name_c, first=first_c, last=last_c, time=time_c,
+                        place=next((i for i, c in enumerate(low) if c in ('place', 'pl', 'plc')), None),
+                        school=next((i for i, c in enumerate(low) if c in ('school', 'team', 'team name')), None),
+                        grade=next((i for i, c in enumerate(low) if c in ('grade', 'gr', 'yr', 'year')), None))
+            cur = [g, _xc_dist(near), 'Varsity', []]; evs.append(cur); continue
+        if cur is None or cols is None: continue
+        get = lambda k: cells[cols[k]] if cols.get(k) is not None and cols[k] < len(cells) else ''
+        tm = get('time'); mm = re.fullmatch(r'0:(\d{1,2}:\d{2}(?:\.\d+)?)', tm)
+        if mm: tm = mm.group(1)
+        name = get('name') or (get('first') + ' ' + get('last')).strip()
+        if not name or not re.fullmatch(XC_TIME, tm): continue
+        pl = get('place'); place = int(pl) if pl.isdigit() else len(cur[3]) + 1
+        r = {'place': place, 'athlete': xc_name(name), 'school': get('school'), 'grade': get('grade') if get('grade').isdigit() else '', 'result': tm, 'type': 'Finals'}
+        cur[3].append(r)
+    if not any(e[3] for e in evs):   # no header: [place, (team place), name, school, time], [name, school, time] or [name, time, school], in finishing order
+        rows = []
+        for ln in lines:
+            cells = [c.strip() for c in ln.split('\t') if c.strip()]
+            pl = None
+            while cells and cells[0].isdigit(): pl = int(cells[0]) if pl is None else pl; cells = cells[1:]
+            tix = [i for i, c in enumerate(cells) if re.fullmatch(XC_TIME, c)]
+            txt = [c for c in cells if not re.fullmatch(XC_TIME, c)]
+            if len(cells) == 3 and len(tix) == 1 and len(txt) == 2 and all(re.search(r'[A-Za-z]', c) and not re.search(r'\d', c) for c in txt):
+                rows.append({'place': pl or len(rows) + 1, 'athlete': xc_name(txt[0]), 'school': txt[1], 'grade': '', 'result': cells[tix[0]], 'type': 'Finals'})
+        if len(rows) >= 5:
+            evs = [[hint, _xc_dist(' '.join(lines[:4])), 'Varsity', rows]]
+    evs = [e for e in evs if e[3] and e[0]]
+    return xc_finish([tuple(e) for e in evs], [])
+def _split_school(words, year):
+    """'Charlie Jones North Haven' -> ('Charlie Jones', 'North Haven'): the longest run of trailing words
+    the school catalog places for the season, leaving at least two words of name; else None."""
+    from backend import school_catalog as sc
+    for k in range(min(5, len(words) - 2), 0, -1):
+        cand = ' '.join(words[-k:])
+        try:
+            if sc.resolve(cand, year=str(year), season='XC'):
+                return ' '.join(words[:-k]), cand
+        except Exception:  # noqa: BLE001
+            return None
+    return None
+def parse_xc_freetext(t):
+    """Typed lists: '1. Charlie Jones North Haven 15:00', '1. Finn Miller- Hebron' with the time on the next
+    line, or Kents Hill's three-line records ('1. 60' / 'Name' / '00:17:30.8 00:00:00.0 Boys KH'). A school
+    is split off only where the catalog knows it."""
+    year = sys.argv[3] if len(sys.argv) > 3 and sys.argv[3].isdigit() else '2000'
+    L = [l.strip() for l in t.split('\n')]
+    by = {}
+    i = 0
+    while i < len(L):
+        ln = L[i]
+        m = re.match(r'^(\d+)\.\s+(\S.*?)\s+(%s)$' % XC_TIME, ln)
+        if m:
+            sp = _split_school(m.group(2).split(), year)
+            if sp: by.setdefault(XC_HINT or 'Mixed', []).append({'place': int(m.group(1)), 'athlete': xc_name(sp[0]), 'school': sp[1], 'grade': '', 'result': m.group(3), 'type': 'Finals'})
+            i += 1; continue
+        m = re.match(r'^(\d+)\.\s+(\S.*?)\s*-\s+(\S.*)$', ln)
+        if m and i + 1 < len(L) and re.fullmatch(XC_TIME, L[i + 1]):
+            by.setdefault(XC_HINT or 'Mixed', []).append({'place': int(m.group(1)), 'athlete': xc_name(m.group(2)), 'school': m.group(3).strip(), 'grade': '', 'result': L[i + 1], 'type': 'Finals'})
+            i += 2; continue
+        m = re.match(r'^(\d+)\s+(?:(\d+)\s+)?\d+\s+([A-Za-z][^\d]*?)\s{2,}([A-Za-z][^\d]*?)\s{2,}(%s)$' % XC_TIME, ln)
+        if m:   # Five K Sport sheet without its 'TmPl' header: place, team place, bib, NAME, SCHOOL, time
+            hd = ' '.join(L[:12])
+            g = 'Girls' if re.search(r'(?i)\bgirls?\b|\bwomen\b', hd) else 'Boys' if re.search(r'(?i)\bboys?\b|\bmen\b', hd) else (XC_HINT or 'Mixed')
+            r_ = {'place': int(m.group(1)), 'athlete': xc_name(m.group(3)), 'school': m.group(4).strip(), 'grade': '', 'result': m.group(5), 'type': 'Finals'}
+            if m.group(2): r_['team_place'] = int(m.group(2))
+            by.setdefault(g, []).append(r_)
+            i += 1; continue
+        m = re.match(r'^(\d+)\.\s+\d*$', ln)
+        if m and i + 2 < len(L):
+            m3 = re.match(r'^(?:00:)?(%s)\s+\S+\s+(Boys|Girls|Men|Women)\s+(\S.*)$' % XC_TIME, L[i + 2].replace('\t', ' '))
+            if m3 and re.search(r'[A-Za-z]', L[i + 1]):
+                g = 'Girls' if m3.group(2) in ('Girls', 'Women') else 'Boys'
+                by.setdefault(g, []).append({'place': int(m.group(1)), 'athlete': xc_name(L[i + 1]), 'school': m3.group(3).strip(), 'grade': '', 'result': m3.group(1), 'type': 'Finals'})
+                i += 3; continue
+        i += 1
+    evs = []
+    for g, rows in by.items():
+        if len(rows) >= 5 and g != 'Mixed':
+            rows.sort(key=lambda r: r['place'])
+            evs.append((g, _xc_dist(' '.join(L[:8])), 'Varsity', rows))
+    return xc_finish(evs, [])
 def _parse_xc_any(t):
     if re.search(r'Pace\s+(?:(?:Grade|Year|Age)\s+)?(?:Team Name|School|Team)\b', t) or re.search(r'Bib #\s+Name\s+Time\s+(?:Pace\s+)?(?:Grade|Year|Age)\s+Team\b', t):
         return parse_xc_ria(t)   # Freeport sheets print "Grade  School"; others "Pace  Year  Team", "Time  Grade Team"
@@ -1000,6 +1108,12 @@ def main():
         u='https://%s/meets/%s/results/%s/raw'%(HOST,slug,f['id'])
         raw=get(u,'%s-%s.html'%(slug,f['id']))
         pre=re.findall(r'<pre[^>]*>(.*?)</pre>',raw,re.S)
+        if not pre:   # results typed into a spreadsheet are shown as a table, one row per line: read it as a tab sheet
+            body=re.search(r'id="meetResultsBody"[^>]*>(.*?)</div>',raw,re.S)
+            rows=re.findall(r'<tr[^>]*>(.*?)</tr>',body.group(1),re.S) if body else []
+            if rows:
+                lines=['\t'.join(html.unescape(re.sub(r'<[^>]+>','',c)).strip() for c in re.findall(r'<t[dh][^>]*>(.*?)</t[dh]>',r_,re.S)) for r_ in rows]
+                pre=[html.escape(f['name']+'\n'+'\n'.join(lines))]
         if not pre: print('no <pre> for',f['name']); paywalled.append(f['name']+' (no text)'); continue
         t=html.unescape(re.sub(r'<[^>]+>','',pre[0]))
         t=re.sub(r"(?<=[\w.)])((?:Mt\. )?[A-Z][\w.]*(?: [A-Z][\w.]*)* Track Hy-Tek's MEET MANAGER\t)",r'\n\1',t)   # page header glued to the last row/leg before the page break

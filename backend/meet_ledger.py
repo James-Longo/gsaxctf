@@ -385,7 +385,7 @@ def build():
         rows.append(dict(year=nf['year'], season=nf['season'], date=None, name=nf['text'], status='not_found',
                          schools=[], files=[], listed=[]))
     # a missing listing that a not-found line names (by MileSplit id) is not_found
-    nf_ids = {i for nf in load_not_found() for i in re.findall(r'\b(\d{6})\b', nf['text'])}
+    nf_ids = {i for nf in load_not_found() for i in re.findall(r'\b(\d{5,6})\b', nf['text'])}
     for r in rows:
         if r['status'] == 'missing' and any(x.get('id') in nf_ids for x in r['listed']):
             r['status'] = 'not_found'
