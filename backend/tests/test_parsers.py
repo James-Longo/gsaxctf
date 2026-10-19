@@ -1713,6 +1713,39 @@ def test_points_one_space_after_the_mark():
         [('19-07.00', 10.0), ('16-04.00', 2.33), ('16-04.00', 2.33), ('15-08.00', 0.33)], rows
 
 
+def test_racetab_time_relays_and_mark_field_events():
+    """RaceTab 3 headers: relays "Team ... Time Pts", field events "Name Yr
+    Team Mark Wind H# Pts". The column parser read only the running events,
+    so it won with half the meet (winthrop_april28.html: 152 of 307 rows)."""
+    text = '\n'.join([
+        '               Varsity Boys 4x800 Meter Relay               ',
+        '=' * 60,
+        '    Team                                          Time   Pts',
+        '=' * 60,
+        '  1 Alpha High School                         9:12.7     8',
+        '  2 Beta High School A                        9:37.5     6',
+        '                    Varsity Boys 1600 Meter Race Walk                     ',
+        '=' * 74,
+        '    Name                      Yr Team                           Time   Pts',
+        '=' * 74,
+        '  1 Al Ames                    9 Alpha High School           8:45.80     8',
+        '  2 Bo Bean                      Beta High School            9:08.20     6',
+        '                            Varsity Girls Discus Throw                             ',
+        '=' * 83,
+        '    Name                      Yr Team                           Mark  Wind H#   Pts',
+        '=' * 83,
+        '  1 Cy Cole                   10 Alpha High School            72-00   NWI  1     8',
+        '  2 Di Dunn                      Beta High School             62-04   NWI  2     6',
+    ])
+    evs = Sub5ColumnParser('racetab.htm', text=text).parse()['events']
+    got = [(e['gender'], e['event'], [(r.get('school'), r['result']) for r in e['results']]) for e in evs]
+    assert got == [
+        ('Boys', '4x800 Meter Relay', [('Alpha High School', '9:12.7'), ('Beta High School A', '9:37.5')]),
+        ('Boys', '1600 Meter Race Walk', [('Alpha High School', '8:45.80'), ('Beta High School', '9:08.20')]),
+        ('Girls', 'Discus', [('Alpha High School', '72-00'), ('Beta High School', '62-04')]),
+    ], got
+
+
 if __name__ == '__main__':
     qaqc._ensure_team_mapping()
     failed = 0

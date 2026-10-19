@@ -1465,7 +1465,9 @@ class Sub5ColumnParser:
                         yr_idx = re.search(r'\bAge\b', line).start()  # "W17" / "M40"
                     header_row_idx = i
             else:
-                if ("School" in line or "Team" in line) and ("Finals" in line or "Prelims" in line or "Seed" in line):
+                # (RaceTab: "    Team                    Time   Pts")
+                if ("School" in line or "Team" in line) and ("Finals" in line or "Prelims" in line or "Seed" in line
+                                                             or re.search(r'\bTime\b', line)):
                     school_idx = line.find("School") if "School" in line else line.find("Team")
                     header_row_idx = i
 
@@ -1479,9 +1481,10 @@ class Sub5ColumnParser:
                 elif "Seed" in line:
                     anchor_col = line.find("Seed") + len("Seed")
                     anchor_type = "Seed"
-                elif re.search(r'\bTime\b', line):
-                    # bib-first exports: "Comp#  Name  School  Time Points"
-                    anchor_col = re.search(r'\bTime\b', line).end()
+                elif re.search(r'\b(?:Time|Mark)\b', line):
+                    # bib-first exports: "Comp#  Name  School  Time Points";
+                    # RaceTab field events: "Name  Yr Team   Mark  Wind H#   Pts"
+                    anchor_col = re.search(r'\b(?:Time|Mark)\b', line).end()
                     anchor_type = "Finals"
                 
                 # Check for columns to the right of the result to establish a boundary
