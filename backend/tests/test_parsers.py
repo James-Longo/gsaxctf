@@ -1825,6 +1825,74 @@ def test_agate_labels_on_their_own_lines():
                    ('4 x 100 Relay', ['48.2', '48.6'])], got
 
 
+def test_field_relay_jumper_points_share_and_relay_continuation_page():
+    """Results.htm-Relays "Boys Long Jump Relay B - LJ - IN": the team
+    points share after a jumper's mark ("21-07.50    2.66") was read as the
+    mark. New England indoor 4x400: a continuation page's rows sit right of
+    the first page's columns, and every one was lost."""
+    text = '\n'.join([
+        'Event 18  Boys Long Jump Relay B - LJ - IN',
+        '=' * 73,
+        '    Name                    Year School                  Seed     Finals ',
+        '=' * 73,
+        '  1 Al Ames                      Alpha                          21-07.50    2.66',
+        '  2 Bo Bean                      Beta                           19-09.00    2   ',
+        '',
+        '  Girls 4x400 Meter Relay',
+        '=' * 67,
+        '    School                                               Finals H#',
+        '=' * 67,
+        "  1 Alpha-MA 'A'                                       3:55.70    5",
+        ' ....Girls 4x400 Meter Relay',
+        "  2 Beta-CT 'A'                                                       3:57.44   5",
+        '    1) Williams, Kiylah 12                               2) Duncan, Ann 11',
+        "  3 Gamma-RI 'A'                                                      4:01.22   4",
+    ])
+    evs = Sub5ColumnParser('relays.htm', text=text).parse()['events']
+    got = [(e['event'], [(r.get('school'), r['result']) for r in e['results']]) for e in evs]
+    assert got[0] == ('Long Jump', [('Alpha', '21-07.50'), ('Beta', '19-09.00')]), got
+    assert got[1] == ('4x400 Meter Relay', [("Alpha-MA 'A'", '3:55.70'), ("Beta-CT 'A'", '3:57.44'),
+                                            ("Gamma-RI 'A'", '4:01.22')]), got
+
+
+def test_collateral_guards_for_the_column_and_agate_fixes():
+    """Found by the run_all / compare2 check: a collapsed single-space relay
+    row is not read past the column (KVAC-Small-Medium-May-28-2021.pdf, where
+    the loose-list reading is whole); a left list's points cell is no
+    column start when a farther column has the votes (APR-14-RESULTS.pdf);
+    "Boys 4 x 100" is a relay header; agate text wrapped mid-label still
+    reads ("High" / "jump:1."), and an entry is not taken for a label
+    ("C. King, G, 5-2. Shot Put:")."""
+    from backend.parsers.newsprint import AgateParser
+    text = '\n'.join([
+        'Event 1 Girls 4x800 Meter Relay',
+        '=' * 80,
+        'School Seed Finals Points',
+        '=' * 80,
+        "1 Morse High School 'A' 11:16.66 10:47.74 10",
+    ])
+    evs = Sub5ColumnParser('kvac.pdf', text=text).parse()['events']
+    assert sum(len(e['results']) for e in evs) == 0, evs
+    rows = []
+    for i in range(1, 16):
+        rows.append(f'    NAME{i:<14}  TH   1:04.{i:02d}   5       DOW{i:<10}  TH   31.{i:02d}')
+        rows.append(f'{"":42}{i}   PINETTE{i:<8} W    24.{i:02d}     6')
+    cols = Sub5ColumnParser.split_layout_columns('\n'.join(rows)).splitlines()
+    assert any(l.rstrip().endswith('1:04.01   5') for l in cols), cols[:3]
+    assert LooseListParser()._event_header('Boys 4 x 100', None) == ('Boys', '4 x 100')
+    # (an exhibition relay with no place: kept, flagged)
+    assert LooseListParser()._parse_unranked_row('x   YORK B         Y    54.34', True) == \
+        {'school': 'YORK', 'result': '54.34', 'athletes': [], 'grade': '', 'type': 'Finals', 'exhibition': True}
+    text = '\n'.join([
+        'Gray', 'Gray-New Gloucester 70', 'Lake Region 65 Greely 44',
+        '3200 relay:1. Greely 8:55;', '2. Lake Region 9:37. High', 'jump:1. Burke (Gr) 6-0; 2.',
+        "OGrady (LR) 5-10. Long jump:1. Brookes", '(GNG) 17-4; 2. C. King, G, 5-2. Shot Put: M. Burgess, G, 52-6.',
+    ])
+    evs = AgateParser().parse(text, 'gray15april04b.htm', 'Outdoor')['events']
+    assert [(e['event'], len(e['results'])) for e in evs] == \
+        [('4x800 Meter Relay', 2), ('High Jump', 2), ('Long Jump', 2), ('Shot Put', 1)], evs
+
+
 if __name__ == '__main__':
     qaqc._ensure_team_mapping()
     failed = 0

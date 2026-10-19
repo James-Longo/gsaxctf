@@ -1683,7 +1683,17 @@ class Sub5ColumnParser:
                                     continue
                                 res_idx = k
                                 break
-                            
+                            # a field relay's jumper rows print the team
+                            # points share after the mark, with no Points
+                            # column ("21-07.50    2.66", Results.htm-Relays
+                            # "Boys Long Jump Relay B - LJ - IN"): the
+                            # feet-inches mark, not the points
+                            if res_idx > 1 and re.fullmatch(r'\d{1,2}\.\d{1,2}', parts[res_idx]):
+                                fi = [k for k in range(1, res_idx)
+                                      if re.fullmatch(r'\d{1,3}-\d{1,2}(?:\.\d+)?', parts[k])]
+                                if fi:
+                                    res_idx = fi[-1]
+
                             if res_idx != -1:
                                 res_val = parts[res_idx]
                                 # School/Name boundary depends on where the res_val is in the original line
@@ -1879,6 +1889,19 @@ class Sub5ColumnParser:
                                 res_val = p
                                 break
                         
+                        if not res_val and re.match(r'^\s*\d{1,3}\s+\S', line):
+                            # a continuation page's rows sit right of the
+                            # first page's columns (New England indoor 4x400,
+                            # "....Girls 4x400 Meter Relay"): the row's last
+                            # time, past the boundary
+                            # (a laid-out row only: the time stands in its
+                            # own column, after a wide gap; collapsed
+                            # single-space text is not read this way)
+                            tm = list(re.compile(r'(?<=\s\s)(x?(?:\d{1,2}:\d{2}\.\d{1,2}|\d{2}\.\d{2}))(?!\S)')
+                                      .finditer(line, right_boundary))
+                            if tm:
+                                res_val = tm[-1].group(1)
+                                right_boundary = len(line)
                         if not res_val and parts:
                              res_val = parts[-1]
 
