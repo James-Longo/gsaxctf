@@ -156,7 +156,9 @@ class LooseListParser(BaseParser):
                 current = {
                     'event': canon_event(ev_name),
                     'gender': gender or section_gender or 'Girls',
-                    'is_relay': bool(re.search(r'relay|medley|4x', ev_name, re.I)),
+                    # ("4 X 400": a relay by its canonical name too)
+                    'is_relay': bool(re.search(r'relay|medley|4x', ev_name, re.I)
+                                     or re.search(r'relay|medley', canon_event(ev_name), re.I)),
                     'results': [],
                 }
                 continue
@@ -212,7 +214,8 @@ class LooseListParser(BaseParser):
         """Return (gender_or_None, event_name) if s is an event header."""
         # column captions typed on the header's own line ("DISCUS   HAND
         # FAT   PT", APRIL-15-AT-YORK.pdf): not part of the event name
-        cap = r'(?:HAND|FAT|PTS?|PLC?|PLACE|TIME|MARKS?|SEED|FINALS?|SCHOOL|TEAM|NAME)'
+        # ("4 X 800   TM P MARK", york_may3.pdf)
+        cap = r'(?:HAND|FAT|PTS?|PLC?|PLACE|TIME|MARKS?|SEED|FINALS?|SCHOOL|TEAM|NAME|TM|P)'
         s = re.sub(r'\s{2,}%s(?:\s+%s)*\s*$' % (cap, cap), '', s, flags=re.I) or s
         # ... but a line that is all captions is a column-title row ("Team
         # Relay   Finals" over a Hy-Tek relay, smaa-1-1.pdf), not an event
@@ -232,7 +235,9 @@ class LooseListParser(BaseParser):
             return ('Girls' if g in ('girls', 'women') else 'Boys' if g else None,
                     re.sub(r'\s+', ' ', m.group(1)).strip())
         m = re.match(r'^(Girls|Boys|Women|Men)[:\s]+(.+)$', s, re.I)
-        if m and EVENT_KEYWORDS.search(m.group(2)) and not re.match(r'^\d+[.)]', m.group(2)):
+        # ("Boys 4 x 100": a relay with no keyword, April 11 meet at York)
+        if m and (EVENT_KEYWORDS.search(m.group(2)) or re.fullmatch(r'\d\s*x\s*\d{2,4}', m.group(2).strip(), re.I)) \
+                and not re.match(r'^\d+[.)]', m.group(2)):
             g = m.group(1).capitalize()
             return ('Girls' if g in ('Girls', 'Women') else 'Boys', m.group(2))
         # bare event header: "100m", "Shot Put", "1600 RW", "4x100"
@@ -240,6 +245,10 @@ class LooseListParser(BaseParser):
         low = re.sub(r'(\d)\s*x\s*(\d)', r'\1x\2', low)   # "4 X100"
         if low in EVENT_CANON:
             return (None, s)
+        # "800 WC": a wheelchair race
+        m = re.fullmatch(r'(100|200|400|800|1500|1600)\s*m?\s*wc', low)
+        if m:
+            return (None, f"{m.group(1)} Meter {'Dash' if int(m.group(1)) <= 400 else 'Run'} Wheelchair")
         # a bare distance under a division or sex: "SR. GIRLS 400", "JR.
         # BOYS 200", "GIRLS 800" (DEC 20 YORK V TRAIP.pdf; the bare "400" is
         # already a header above)
@@ -285,12 +294,23 @@ class LooseListParser(BaseParser):
         head = toks[:-1]
         if any(is_mark(t) for t in head):
             return None
+        # an exhibition relay: "x   YORK B         Y    54.34" (APR-14-RESULTS.pdf)
+        exhib = is_relay and len(head) >= 2 and head[0] in ('x', 'X')
+        if exhib:
+            head = head[1:]
+            if len(head) >= 2 and re.fullmatch(r'[A-Z]{1,3}', head[-1]):
+                head = head[:-1]            # (the team's code after its name)
+            if len(head) >= 2 and re.fullmatch(r'[A-D]', head[-1]):
+                head = head[:-1]            # (the relay letter)
         if is_relay or len(head) == 1:
             school = ' '.join(head)
             if not school or school[0].islower():
                 return None
-            return {'school': self._resolve_school(school), 'result': mark, 'athletes': [],
-                    'grade': '', 'type': 'Finals'}
+            row = {'school': self._resolve_school(school), 'result': mark, 'athletes': [],
+                   'grade': '', 'type': 'Finals'}
+            if exhib:
+                row['exhibition'] = True
+            return row
         # "Name [Name] CODE mark" — school code is a short trailing token
         if len(head) >= 2 and len(head[-1]) <= 3 and head[-1][0].isupper():
             return {'athlete': ' '.join(head[:-1]), 'school': self._resolve_school(head[-1]),
@@ -306,6 +326,10 @@ class LooseListParser(BaseParser):
         rest = m.group(2).strip()
         rest = re.sub(r'^#\s*\d+\s+', '', rest)  # bib numbers: "1 # 278 Jane Doe ..."
         rest = _normalize_feet_inch_marks(rest)   # 16' 1/2" (or mangled quotes)
+        rest = re.sub(r'(\d)-{1,2}tie\b', r'\1', rest, flags=re.I)   # "11.6--tie"
+        # a typed half inch: "32-2 ½", "17- ½"
+        rest = re.sub(r'(?<![\d.])(\d{1,3})-\s*½', r'\1-0.5', rest)
+        rest = re.sub(r'(?<![\d.])(\d{1,3}-\d{1,2})\s*½', r'\1.5', rest)
 
         # Preferred: 2+ space column split  "K. Martin    Traip    11.75    5"
         parts = [p for p in re.split(r'\s{2,}', rest) if p.strip()]
@@ -314,6 +338,12 @@ class LooseListParser(BaseParser):
             if school and not school.replace('.', '').isdigit():
                 return {'school': school, 'result': parts[1].rstrip('*qQjJ'),
                         'athletes': [], 'grade': '', 'type': 'Finals'}
+        # "LASSARD    TH 11:36.0": the code typed one space from the mark
+        if not is_relay and len(parts) == 2 and re.fullmatch(r'[A-Z]{1,3} \S+', parts[1]) \
+                and is_mark(parts[1].split()[1]) and re.search(r'[A-Za-z]{2}', parts[0]):
+            code, mark = parts[1].split()
+            return {'athlete': parts[0], 'school': self._resolve_school(code),
+                    'result': mark.rstrip('*qQjJ'), 'grade': '', 'type': 'Finals'}
         if len(parts) >= 3:
             mark_idx = None
             for i in range(len(parts) - 1, 0, -1):
@@ -334,8 +364,9 @@ class LooseListParser(BaseParser):
                     if g:
                         grade, school = g.group(1), g.group(2)
                     # dual-meet sheets put the points column (1-6) between
-                    # school and mark: "K. Parker  W  6  55.1"
-                    pts = re.match(r'^(.*\S)\s+[1-6]$', school)
+                    # school and mark: "K. Parker  W  6  55.1" (a code's
+                    # winner scores 8 in a tri meet: "Y    8   54.0")
+                    pts = re.match(r'^(.*\S)\s+[1-6]$', school) or re.match(r'^([A-Z]{1,3})\s+[1-9]$', school)
                     if pts:
                         school = pts.group(1)
                     return {'athlete': name, 'school': self._resolve_school(school), 'result': mark,
@@ -359,6 +390,12 @@ class LooseListParser(BaseParser):
         while first_mark - 1 > 0 and is_mark(toks[first_mark - 1]):
             first_mark -= 1
         head = toks[:first_mark]
+        # a points cell after the school code ("Kayla Gray  L  8 8.36.6",
+        # "NYA  NY 8 47.8"): not a grade, not part of the name
+        if len(head) >= 2 and re.fullmatch(r'[1-9]|10', head[-1]) and re.fullmatch(r'[A-Z]{1,3}', head[-2]):
+            head = head[:-1]
+            if is_relay and len(head) >= 2:
+                head = head[:-1]    # (the team's code after its name)
 
         if is_relay:
             school = ' '.join(head)

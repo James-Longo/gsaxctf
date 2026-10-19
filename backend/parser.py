@@ -271,18 +271,27 @@ class Sub5ColumnParser:
         column followed by its right, or the text unchanged when no page has
         a second column."""
         from collections import Counter
-        out, split = [], False
-        for page in text.split('\f'):
-            lines = page.splitlines()
-            votes = Counter(m.start() for l in lines for m in Sub5ColumnParser._COL_START.finditer(l)
-                            if m.start() >= 40)
-            if not votes:
-                out.append(page)
-                continue
-            best = max(votes, key=lambda c: sum(v for k, v in votes.items() if abs(k - c) <= 3))
-            if sum(v for k, v in votes.items() if abs(k - best) <= 3) < min_votes:
-                out.append(page)
-                continue
+
+        def columns(lines, depth=0):
+            if depth >= 3:
+                return [lines]
+            # (failing a column from x=40, one nearer the left edge, from
+            # x=25, only where the text left of it is blank or ends in a
+            # mark: "4 RUSSELL  TH  14.5   1 MORIN", a coach's two-column
+            # sheet; not a Hy-Tek row's grade column, "Al Ames   12 Alpha
+            # High School"; and not a points cell left of a farther column,
+            # "1:04.84   5       DOW", APR-14-RESULTS.pdf)
+            starts = [(m.start(), l) for l in lines for m in Sub5ColumnParser._COL_START.finditer(l)]
+            for votes in (Counter(s for s, l in starts if s >= 40),
+                          Counter(s for s, l in starts if s >= 25 and re.search(
+                              r'(?:^|\s)(?:\d+[:.-]\d+(?:\.\d+)?|DQ|DNF|NH|NM)$|^$', l[:s].rstrip()))):
+                if not votes:
+                    continue
+                best = max(votes, key=lambda c: sum(v for k, v in votes.items() if abs(k - c) <= 3))
+                if sum(v for k, v in votes.items() if abs(k - best) <= 3) >= min_votes:
+                    break
+            else:
+                return [lines]
             cut = min(k for k in votes if abs(k - best) <= 3)
             left, right = [], []
             for l in lines:
@@ -291,8 +300,15 @@ class Sub5ColumnParser:
                     c -= 1
                 left.append(l[:c].rstrip())
                 right.append(l[c:])
-            out.append('\n'.join(left + right))
-            split = True
+            # (three columns, york_may3.pdf: each side may split again)
+            return columns(left, depth + 1) + columns(right, depth + 1)
+
+        out, split = [], False
+        for page in text.split('\f'):
+            cols = columns(page.splitlines())
+            if len(cols) > 1:
+                split = True
+            out.append('\n'.join(l for c in cols for l in c))
         return '\f'.join(out) if split else text
 
     @staticmethod

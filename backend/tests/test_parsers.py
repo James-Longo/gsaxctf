@@ -1746,6 +1746,56 @@ def test_racetab_time_relays_and_mark_field_events():
     ], got
 
 
+def test_layout_columns_near_the_left_edge_and_three_wide():
+    """A coach's two-column sheet whose right column starts at x=37
+    (april%2014%20at%20York.pdf) was never split (only x>=40 counted); a
+    three-column sheet (york_may3.pdf) split once. A Hy-Tek row's grade
+    column ("Al Ames   12 Alpha") still never counts."""
+    left = ['100 METER DASH', '1 REASER  TH  13.7', '2 LOMASNEY  Y  14.2', '3 SPENCER  Y  14.2']
+    right = ['200 METERS', '1 BENNETT  Y  23.6', '2 JANDREAU  TH  24.0', '3 MARTIN  Y  24.3']
+    third = ['DISCUS', '1 Logan Archer  S  8  117-3', '2 Chase Gendron  NY  6  114-6', '3 Jack Neary  Y  4  104-01']
+    rows = [f'{a:<37}{b:<40}{c}' for a, b, c in zip(left * 4, right * 4, third * 4)]
+    out = Sub5ColumnParser.split_layout_columns('\n'.join(rows)).splitlines()
+    assert [l.strip() for l in out if l.strip()] == \
+        [l for l in left * 4] + [l for l in right * 4] + [l for l in third * 4], out
+    hytek = '\n'.join(f'  {i} Al Ames{i:<20}   12 Alpha High School      {12 + i / 10:.2f}' for i in range(1, 20))
+    assert Sub5ColumnParser.split_layout_columns(hytek) == hytek
+
+
+def test_looselist_coach_sheet_rows():
+    """Two-column York sheets: "4 X 400" is a relay, "LASSARD  TH 11:36.0"
+    (code one space from the mark), "11.6--tie", a typed half inch, a
+    winner's 8 points after the code ("Kayla Gray  L  8 8.36.6"), "TM P
+    MARK" captions and an "800 WC" wheelchair race."""
+    text = '\n'.join([
+        'GIRLS MEET AT YORK',
+        'YORK 129, LAKE 103, SEACOAST 66',
+        '  4 X 800             TM P MARK',
+        '1 York                Y  8 12.02.7',
+        '2 Lake                L  6 12.48.4',
+        '  RACEWALK',
+        '1 Kayla Gray          L  8 8.36.6',
+        '3 LASSARD              TH 11:36.0',
+        '  100 DASH',
+        '1 BENNETT, C          Y    11.6--tie',
+        '  TRIPLE JUMP',
+        '1   Sesmith             S    8   32-2 ½',
+        '5   Thompson            S    1   17- ½',
+        '  800 WC',
+        '1   Kristina Kouros     C    1   2:57.4h',
+    ])
+    evs = LooseListParser().parse(text, 'york.pdf', 'Outdoor')['events']
+    got = [(e['event'], e['is_relay'], [(r.get('athlete'), r['school'], r['result']) for r in e['results']])
+           for e in evs]
+    assert got == [
+        ('4x800 Meter Relay', True, [(None, 'York', '12.02.7'), (None, 'Lake', '12.48.4')]),
+        ('1600 Meter Race Walk', False, [('Kayla Gray', 'Lake', '8.36.6'), ('LASSARD', 'TH', '11:36.0')]),
+        ('100 Meter Dash', False, [('BENNETT, C', 'York', '11.6')]),
+        ('Triple Jump', False, [('Sesmith', 'Seacoast', '32-2.5'), ('Thompson', 'Seacoast', '17-0.5')]),
+        ('800 Meter Run Wheelchair', False, [('Kristina Kouros', 'C', '2:57.4h')]),
+    ], got
+
+
 if __name__ == '__main__':
     qaqc._ensure_team_mapping()
     failed = 0
