@@ -210,6 +210,10 @@ class ScaledNoise:
     def shift(self, n, prior):
         return self.base.shift(n, prior)
 
+    def draw_pooled(self, rng):
+        e = self.base.draw_pooled(rng)
+        return e if self.scale == 1.0 else e * self.scale
+
 
 # ---------------------------------------------------------------------------
 # Methods and folds
@@ -262,8 +266,11 @@ FINAL = [
 _G = {}
 
 
+SIM_ONLY = ('program_icc',)   # simulation settings: do not change ratings or error models
+
+
 def _pkey(params):
-    return json.dumps(params, sort_keys=True)
+    return json.dumps({k: v for k, v in params.items() if k not in SIM_ONLY}, sort_keys=True)
 
 
 def _pseudo_task(args):
@@ -374,7 +381,8 @@ def _fold_task(args):
         entries = xp.pick_entries(ratings, {t: {t} for t in {o.team for o in rows_}})
         if len(entries) < 20:
             continue
-        teams, _ = xp.simulate(ratings, entries, noise, sims=sims, seed=year)
+        teams, _ = xp.simulate(ratings, entries, noise, sims=sims, seed=year,
+                               icc=m['params'].get('program_icc', xp.DEFAULTS['program_icc']))
         n = len([t for t in teams if teams[t]['scored'] > 0])
         pred = {t: dict(place_dist=v['place_dist'],
                         exp_place_all=sum(p * c for p, c in v['place_dist'].items())

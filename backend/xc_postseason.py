@@ -584,6 +584,8 @@ DEFAULTS = dict(
     slow_clip=2.5,     # races this many race_sd slower than the estimate
                        # (a fall, a sick day) are down-weighted
     use_prior=True,
+    program_icc=0.0,   # program effect: share of a runner's race-day result shared with the rest
+                       # of their school's runners that day (simulate_postseason)
     pool_level=True,   # a runner with no prior season is pulled toward their gender/grade
                        # population (Calibration.level_prior); chosen by the per-race
                        # backtest 2026-10-18: podiums tie (+0.004 +/- 0.007, 6 of 8
@@ -1010,6 +1012,10 @@ class NoiseModel:
             return 0.0
         return self._shift.get(self.key(n, prior), 0.0)
 
+    def draw_pooled(self, rng):
+        """One miss from the pooled distribution (the program effect's shared draw)."""
+        return self.pooled[rng.randrange(len(self.pooled))]
+
     def draw(self, n, prior, rng, sd=None):
         if n == 0:
             # no race this season: use the measured misses of runners rated
@@ -1045,16 +1051,20 @@ def pick_entries(ratings, teams, max_entry=MAX_ENTRY):
     return out
 
 
-def simulate(ratings, entries, noise, sims=2000, seed=0):
-    """Monte Carlo one race. Returns per-team and per-athlete summaries."""
+def simulate(ratings, entries, noise, sims=2000, seed=0, icc=0.0):
+    """Monte Carlo one race. Returns per-team and per-athlete summaries.
+    icc: the program effect, share of a runner's result shared with their school's runners (see simulate_postseason)."""
     rng = random.Random(seed)
     aids = list(entries)
     team_place = defaultdict(lambda: defaultdict(int))
     team_score = defaultdict(list)
     ind_place = defaultdict(list)
+    w_own, w_team = math.sqrt(1 - icc), math.sqrt(icc)
     for _ in range(sims):
-        perf = [(ratings[a]['theta'] + noise.draw(ratings[a]['n'], ratings[a]['prior'], rng,
-                                                   ratings[a]['sd']), a)
+        tday = {t: noise.draw_pooled(rng) for t in set(entries.values())} if icc else {}
+        perf = [(ratings[a]['theta'] + w_own * noise.draw(ratings[a]['n'], ratings[a]['prior'], rng,
+                                                           ratings[a]['sd'])
+                 + (w_team * tday[entries[a]] if icc else 0.0), a)
                 for a in aids]
         perf.sort()
         order = [a for _, a in perf]
@@ -1328,6 +1338,43 @@ def simulate_postseason(obs, year, gender, cutoff, groups, calib, noise,
                        if i['class'] == m['class'] and i['region'] == m['region']]
         fields[mid] = [a for s in members for a in seven.get(s, [])]
 
+    # A regional already run (its day before `cutoff`) is not simulated for
+    # qualifying: its real results decide who goes on, by the same rule the
+    # simulation uses (top half of scoring teams, at least four, plus the top
+    # INDIVIDUAL_QUALIFIERS runners). The race is the one that day whose
+    # runners' schools are this regional's class and region.
+    actual_q, done = defaultdict(set), set()
+    for mid, m in meets.items():
+        if 'region' not in m:
+            continue
+        rday = m['day'] if m.get('day') is not None else season_day(year, m.get('date'))
+        if rday is None or rday >= cutoff:
+            continue
+        members = set(m['schools']) if 'schools' in m else {
+            s for s, i in groups['schools'].items() if i['class'] == m['class'] and i['region'] == m['region']}
+        races_ = defaultdict(list)
+        for o in obs:
+            if o.year == year and o.gender == gender and o.day == rday:
+                races_[o.race].append(o)
+        best = None
+        for rows_ in races_.values():
+            share = sum(o.team in members for o in rows_) / len(rows_)
+            if share >= 0.6 and len(rows_) >= 20 and (best is None or share > best[0]):
+                best = (share, rows_)
+        if best is None:
+            continue
+        rows_ = sorted((o for o in best[1] if o.team in members), key=lambda o: o.lt)
+        order_ = [o.aid for o in rows_]
+        sch = {o.aid: o.team for o in rows_}
+        ranked_, _ = score_race(order_, sch)
+        q_teams = {t for t, _, _ in ranked_[:team_qualifiers(len(ranked_))]}
+        q = {a for a in order_ if sch[a] in q_teams} | set(order_[:INDIVIDUAL_QUALIFIERS])
+        for a in q:
+            if a in ratings:
+                school_of.setdefault(a, sch[a])
+                actual_q[m['class']].add(a)
+        done.add(mid)
+
     rng = random.Random(seed)
     acc = defaultdict(lambda: dict(team_place=defaultdict(lambda: defaultdict(int)),
                                    team_scores=defaultdict(list),
@@ -1336,11 +1383,19 @@ def simulate_postseason(obs, year, gender, cutoff, groups, calib, noise,
                                    ind_div={}))
     a_carry = math.sqrt(form_carry)
     a_race = math.sqrt(1 - form_carry)
+    # program effect: a school's runners have good and bad days together (their
+    # misses correlate about 0.07 at championships). A share of each runner's draw
+    # is the program's, the rest their own; a runner's total spread is unchanged,
+    # a team score's spread grows
+    icc = dict(DEFAULTS, **(params or {})).get('program_icc', 0.0)
+    w_own, w_team = math.sqrt(1 - icc), math.sqrt(icc)
 
-    def run(mid, aids, form):
-        perf = sorted((ratings[a]['theta'] + a_carry * form[a] + a_race *
-                       noise.draw(ratings[a]['n'], ratings[a]['prior'], rng,
-                                  ratings[a]['sd']), a)
+    def run(mid, aids, form, tform):
+        tday = {t: noise.draw_pooled(rng) for t in {school_of[a] for a in aids}} if icc else {}
+        perf = sorted((ratings[a]['theta']
+                       + w_own * (a_carry * form[a] + a_race *
+                                  noise.draw(ratings[a]['n'], ratings[a]['prior'], rng, ratings[a]['sd']))
+                       + (w_team * (a_carry * tform[school_of[a]] + a_race * tday[school_of[a]]) if icc else 0.0), a)
                       for a in aids)
         order = [a for _, a in perf]
         st = acc[mid]
@@ -1378,9 +1433,10 @@ def simulate_postseason(obs, year, gender, cutoff, groups, calib, noise,
     for _ in range(sims):
         form = {a: noise.draw(ratings[a]['n'], ratings[a]['prior'], rng, ratings[a]['sd'])
                 for a in school_of}
+        tform = {t: noise.draw_pooled(rng) for t in set(school_of.values())} if icc else {}
         qual = defaultdict(set)
         for mid, aids in fields.items():
-            order, ranked = run(mid, aids, form)
+            order, ranked = run(mid, aids, form, tform)
             m = meets[mid]
             if 'region' not in m or ranked is None:
                 continue
@@ -1391,10 +1447,11 @@ def simulate_postseason(obs, year, gender, cutoff, groups, calib, noise,
                 acc[mid]['team_q'][t] += 1
             for a in q:
                 acc[mid]['ind_q'][a] += 1
-            qual[m['class']] |= q
+            if mid not in done:
+                qual[m['class']] |= q
         for mid, m in meets.items():
             if 'from' in m:
-                run(mid, sorted(qual[m['class']]), form)
+                run(mid, sorted(qual[m['class']] | actual_q[m['class']]), form, tform)
 
     results = {}
     for mid, st in acc.items():
