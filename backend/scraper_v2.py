@@ -2640,6 +2640,13 @@ class Sub5ScraperV2:
                                 continue
                             if unit:
                                 team_norm = school_catalog.store_name(unit)
+                        if team_norm is None and school.strip().lower() in school_catalog.shared_codes():
+                            # a code two schools print ('BRHS', 'FA', 'OHS') that this meet's evidence
+                            # did not place: never guessed (the fuzzy matcher made Foxcroft of
+                            # Fryeburg's 'FA' and teams named 'MTV')
+                            SYNC_DROPS[(meet_key, 'shared school code unplaced')] += 1
+                            SYNC_DROP_WHAT[('school', season, school[:80])] += 1
+                            continue
                         if team_norm is None:
                             team_norm = self.normalize_team_name(school, all_teams=all_known_teams, level=meet_level)
                         # (a school the catalog placed is a school, whatever its

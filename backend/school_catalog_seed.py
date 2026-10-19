@@ -1094,6 +1094,18 @@ CLUBS = [
     ('club-yes-bounders', 'Yes Bounders', None, None, ['Yes Bounders'], [], [], {'state': 'ME'}),
     ('club-lakers-tc', 'Lakers Track Club', 'Augusta', None, ['Lakers Track Club', 'Lakers Track', 'Lakers TC'], [], [],
      {'state': 'ME', 'notes': 'Augusta USATF youth club (USATF JO / Region 1 XC 2004, 2009-2012; Maine USATF 2015-2016).'}),
+    # middle-school XC meets 2011-2014 (Waterville JH meets, Winthrop MS invitational): a scored team
+    # "Sandy River"; every one of its runners in the summer data runs for SRTC, and they later run
+    # for Mt. Blue HS (the district fields "Mt. Blue JH" from 2017). The Farmington club's fall team.
+    ('club-sandy-river-tc', 'Sandy River Track Club (Farmington youth)', 'Farmington', None,
+     ['Sandy River', 'Sandy R', 'Sandy River Track Club', 'Sandy River TC', 'SRTC'], [], [],
+     {'state': 'ME', 'notes': "Fall middle-school XC team of the Farmington youth club, 2011-2014 (not a school)."}),
+    # Winthrop MS meets 2010: recreation-department youth teams, not schools (their runners
+    # later run for several high schools; summer clubs Lisbon Striders / Augusta)
+    ('club-lewiston-rec', 'Lewiston Recreation (youth)', 'Lewiston', None, ['Lewiston Rec', 'Lewiston Recreation'], [], [],
+     {'state': 'ME'}),
+    ('club-cony-rec', 'Cony Recreation (Augusta youth)', 'Augusta', None, ['Cony Recreation', 'Cony Rec'], [], [],
+     {'state': 'ME', 'notes': "Runners later at Cony HS; summer club Augusta."}),
 ]
 
 # ---------------------------------------------------------------------------
@@ -1239,6 +1251,21 @@ NOT_SCHOOLS = [
 # These outrank name matching and athlete evidence.
 # ---------------------------------------------------------------------------
 FILE_RULES = [
+    # shared codes (school_catalog.shared_codes()) placed per meet, 2026-10-19: the meet's conference
+    # and its runners' other meets that season settle each one
+    (['FA'], 'Outdoor', (2011, 2011), r'^wellsgirls_may3$', 'me-hs-fryeburg'),            # WMC meet; 33/36 runners Fryeburg elsewhere
+    (['FA'], 'XC', (2006, 2006), r'^lakeregion10_6$|^yarmouth9_15(girls|boys)$', 'me-hs-fryeburg'),   # WMC (meet title names Fryeburg Academy)
+    (['FA'], 'XC', (2011, 2011), r'^fryeburggirls_sept9$', 'me-hs-fryeburg'),          # Fryeburg's home meet
+    (['FA'], 'XC', (2013, 2013), r'Presque%20Isle%20invite%209-14-2013', 'me-hs-foxcroft'),   # PVC field; 149 rows Foxcroft elsewhere
+    (['FA'], 'XC', (2007, 2007), r'^central9_4$', 'me-hs-foxcroft'),                   # PVC meet at Central; Foxcroft elsewhere
+    (['LCS'], None, (2003, 2013), r'^pi17may03$|^pi21may03$|Presque%20Isle%20invite%209-14-2013', 'me-hs-limestone'),  # Aroostook meets; Limestone/MSSM elsewhere
+    (['Brhs', 'BRHS'], 'Indoor', (2005, 2008), r'^wmcweek3meet2$|^wmcmeet4$|^kvac2a$', 'me-hs-boothbay'),   # its runners Boothbay elsewhere (45 rows)
+    (['Fhs'], 'XC', (2005, 2005), r'^wmcchamps(jv|v)(boys|girls)$', 'me-hs-freeport'),   # Falmouth prints 'Falmouth' in the same files
+    (['Mad'], None, (2004, 2006), r'^mvc04g$|^monmouth9_20(girls|boys)$', 'me-hs-madison'),       # MVC meets
+    (['Mad'], 'XC', (2006, 2006), r'^presqueisle9_13girls$|^caribouinvitegirlsvarsity$', 'me-hs-madawaska'),  # Aroostook meets
+    (['PVHS'], 'Outdoor', (2008, 2008), r'^brewerboys5_2$|^pvcsmallboys$|^boys_orono_5\.9\.08$|^bucksportboys_may13$', 'me-hs-penobscot-valley'),  # 42 rows Penobscot Valley elsewhere
+    (['MHS'], 'Indoor', (2008, 2008), r'^smaaResultsB3$|^smaaboysweek4meet2$|^ResultsSMAA3week2$|^smaaweek3meet1boys$', 'me-hs-massabesic'),  # SMAA meets
+    (['Chs'], 'XC', (2021, 2021), r'^Laliberte-Junior-Varsity-2021$', 'me-hs-cony'),     # KVAC field; Cony elsewhere
     # single-letter codes at SMAA / York County meets, settled by the host and the runners' other meets
     (['M'], None, (2012, 2013), r'marshwoodboys_sept14|marshwoodboysJV_sept21|kennebunkboys_sept7|marshwoodboys_april30', 'me-hs-marshwood'),
     (['W'], 'Outdoor', (2016, 2016), r'APR-14-RESULTS', 'me-hs-wells'),

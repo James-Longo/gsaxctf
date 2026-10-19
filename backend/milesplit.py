@@ -924,6 +924,8 @@ def canon(sn):
     k=sn.lower().strip()
     # never turn a middle school, elementary or junior high into its high school
     if re.search(r'middle|\bm\.?s\.?$|\bms\b|\bj\.?h\.?$|jr\.? ?high|junior|elementary|\bgrade|\bcs\b|community school|\bk-?8\b', k): return sn
+    from backend.school_catalog import shared_codes
+    if k in shared_codes(): return sn   # a code two schools print: the catalog places it per meet
     for pat,nm in CANON:
         if re.search(pat,k): return nm
     return sn

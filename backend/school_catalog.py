@@ -605,6 +605,25 @@ def _resolve(raw_school, *, year, season, gender=None, meet_name=None, grade=Non
     return sid
 
 
+_SHARED = None
+
+
+def shared_codes():
+    """Lower-cased codes two or more Maine schools print ('brhs' Boothbay Region / Brewer, 'ohs'
+    Oceanside / Orono, 'whs' six schools). Only a meet's own evidence can place one; nothing may
+    expand or guess them globally."""
+    global _SHARED
+    if _SHARED is None:
+        cat, _, _ = _load()
+        claims = {}
+        for sid, s in cat['schools'].items():
+            if sid.startswith(('me-hs', 'me-ms')):
+                for c in s.get('codes', []):
+                    claims.setdefault(c.lower(), set()).add(sid)
+        _SHARED = {c for c, v in claims.items() if len(v) > 1}
+    return _SHARED
+
+
 def team_unit(sid, year, season, gender=None):
     """The scoring unit a school competed as: its co-op id when that co-op was active for this
     sport/season, gender and year (catalog 'active': years with evidence - the co-op label printed in
