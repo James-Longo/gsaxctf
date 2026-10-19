@@ -120,8 +120,17 @@ def _near(doc):
     for e in doc.get('events', []):
         ks = _race_keys(e)
         if ks:
-            out.append(({(n, t + dd) for n, t in ks for dd in (-1, 0, 1)}, len(ks)))
+            near = {(n, t + dd) for n, t in ks for dd in (-1, 0, 1)}
+            near |= _place_keys(e)
+            out.append((near, len(ks)))
     return out
+
+
+def _place_keys(e):
+    """('place', runner, place): the same race printed with wrong times in one copy (a re-keyed MileSplit
+    sheet whose times slip a row, or run 5:00 slow) still has its runners at the same places."""
+    return {('place', k[0], r.get('place')) for r in e.get('results', []) if r.get('place')
+            for k in [_runner_key(r)] if k}
 
 
 def held_runners(year, season):
@@ -151,7 +160,7 @@ def held_runners(year, season):
 
 def race_homes(doc, year, season):
     """Per race of the staged meet: the held file holding that race already (80%+ of its runners at their
-    times, in a held race at least 95% its size), else None. Races of fewer than 3 runners: 'small'."""
+    times, or 70%+ at their places, in a held race at least 95% its size), else None. Races of fewer than 3 runners: 'small'."""
     held = held_runners(year, season)
     out = []
     for e in doc.get('events', []):
@@ -162,7 +171,9 @@ def race_homes(doc, year, season):
         home = None
         for stem, races in held.items():
             for ns, n in races:
-                if n >= 0.95 * len(rc) and sum(1 for x in rc if x in ns) >= 0.8 * len(rc):
+                pk = _place_keys(e)
+                if n >= 0.95 * len(rc) and (sum(1 for x in rc if x in ns) >= 0.8 * len(rc)
+                                            or (len(pk) >= 0.8 * len(rc) and sum(1 for x in pk if x in ns) >= 0.7 * len(pk))):
                     home = stem
                     break
             if home:
