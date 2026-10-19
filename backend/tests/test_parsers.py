@@ -1796,6 +1796,35 @@ def test_looselist_coach_sheet_rows():
     ], got
 
 
+def test_agate_labels_on_their_own_lines():
+    """MaineToday agate (wellsboys4_30.htm, greelyboys_may3.pdf,
+    cheverusboys_may14.pdf): "1,600" and "3,200" labels, a label on its own
+    line after a wrapped score line, 3-digit field marks, feet'inches,
+    "18-5 1/2", a note on the label, relays with no places."""
+    from backend.parsers.newsprint import AgateParser
+    text = '\n'.join([
+        'MaineToday.com',
+        'Cape 92.66, Fryeburg 91.66, Wells 67 , Greater Portland',
+        'Christian 17.66',
+        '3,200 relay',
+        '1. Fryeburg, 9:59.8; 2. Cape, 10:09.0.',
+        '100',
+        '1. Vigent (W) 11.0; 2. Lail (FA) 12.6.',
+        '1,600',
+        '1. Moody (CE) 4:37.3; 2. Even (FA) 4:53.7.',
+        'Discus 1. Tomkins (FA) 106-07; 2. Beaulieu (W) 91-08.',
+        "Long jump (names jumbled): King, G, 17'11; N. Fortier, SV, 17'6.5.",
+        'Triple jump 1. Howland (K) 36-11; 2. Hays (K) 34-9 1/2.',
+        '4 x 100 Relay: NYA, 48.2; Greely, 48.6',
+    ])
+    evs = AgateParser().parse(text, 'wellsboys4_30.htm', 'Outdoor')['events']
+    got = [(e['event'], [r['result'] for r in e['results']]) for e in evs]
+    assert got == [('4x800 Meter Relay', ['9:59.8', '10:09.0']), ('100 Meter Dash', ['11.0', '12.6']),
+                   ('1600 Meter Run', ['4:37.3', '4:53.7']), ('Discus', ['106-07', '91-08']),
+                   ('Long Jump', ['17-11', '17-6.5']), ('Triple Jump', ['36-11', '34-9.5']),
+                   ('4 x 100 Relay', ['48.2', '48.6'])], got
+
+
 if __name__ == '__main__':
     qaqc._ensure_team_mapping()
     failed = 0

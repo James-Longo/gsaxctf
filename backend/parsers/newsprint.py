@@ -21,15 +21,20 @@ from .base import BaseParser
 from .looselist import canon_event, is_mark
 
 # label followed by ":" (any next entry) or directly by "1." (colon-less dialect)
+# (a label holds no ". " or ", ": "C. King, G, 5-2. Shot Put:" is an entry,
+# then the label "Shot Put")
 AGATE_EVENT_RE = re.compile(
-    r'(?:^|[.;]\s+)([A-Za-z0-9][\w,.  xX/-]{0,28}?)\s*(?::\s*(?=\d\.\s|[A-Z])|\s+(?=1\.\s))', re.M)
+    r'(?:^|[.;]\s+)([A-Za-z0-9](?:(?![.,]\s)[\w,.  xX/-]){0,28}?)\s*(?::\s*(?=\d\.\s|[A-Z])|\s+(?=1\.\s))', re.M)
 AGATE_ENTRY_RE = re.compile(
     r'(\d)\.\s*(?:\(tie\)\s*)?([^();:]+?)\s*(?:\(([^)]{1,60})\))?[,\s]*'
-    r'([\d]{1,2}[:.\-][\d:.\-]+)\s*[;.]')
+    r'(\d{1,3}[:.\-][\d:.\-]+)\s*[;.]')   # (3 digits: a discus "106-07")
 # comma variant: "Bouchey, SV, 17.7; J. Bagdon, GNG, 18.6" (place number optional)
 AGATE_COMMA_RE = re.compile(
     r'(?:\d\.\s*)?([A-Z][^,;:()]{1,30}?),\s*([A-Z][A-Za-z.\-]{0,8}),\s*'
-    r'([\d]{1,2}[:.\-][\d:.\-]+)\s*[;.]?')
+    r'(\d{1,3}[:.\-][\d:.\-]+)\s*[;.]?')
+AGATE_LINE_LABEL = re.compile(
+    r'(?i)(?:\d,?\d{2,4}(?:\s+(?:relay|hurdles|meters?))?|\d\s*x\s*\d{2,4}(?:\s+relay)?|(?:high|long|triple)\s+jump'
+    r'|pole\s*vault|shot\s*put|discus|javelin|race\s*walk|racewalk)(?:\s*\([^)]*\))?(?:\s*:|\s+1\.\s|\s*$)')
 MARK_TOKEN = re.compile(r'^\d{1,2}[:.\-][\d:.\-]*$')
 
 
@@ -69,7 +74,28 @@ class AgateParser(BaseParser):
         events_out = []
         for gender, body in sections:
             schools, score_idx = self._score_line_schools(body)
-            blob = ' '.join(l for i, l in enumerate(body) if i != score_idx)
+            # (a whole event label at the start of a line begins an event
+            # even when the line before ends without a period: "Christian
+            # 17.66" / "3,200 relay", wellsboys4_30.htm; "...SV, 20.0" /
+            # "100: Peters, GNG", greelyboys_may3.pdf. Newspaper text
+            # wrapped mid-label, "High" / "jump:1. Burke", joins as before)
+            blob = ''
+            for i, l in enumerate(body):
+                if i == score_idx:
+                    continue
+                if blob and not re.search(r'[.;:]$', blob) and AGATE_LINE_LABEL.match(l):
+                    blob += '; '
+                elif blob:
+                    blob += ' '
+                blob += l
+            # feet'inches: "168'3", "17'6.5" (greelyboys_may3.pdf)
+            blob = re.sub(r"(?<![\d'])(\d{1,3})'(\d{1,2}(?:\.\d+)?)(?![\d'])", r'\1-\2', blob)
+            # "18-5 1/2", "16-7 3/4"; a mark broken over a line ("41- 5")
+            blob = re.sub(r'(\d-) (\d)', r'\1\2', blob)
+            blob = re.sub(r'(?<![\d.])(\d{1,3}-\d{1,2}) ([13])/([24])(?!\d)',
+                          lambda m: m.group(1) + ('%.2f' % (int(m.group(2)) / int(m.group(3))))[1:].rstrip('0'), blob)
+            # a note on the event's label: "Long Jump (names jumbled):"
+            blob = re.sub(r'\s*\([^()]{12,90}\)(?=:)', '', blob)
             events_out.extend(self._parse_section(blob, gender, schools))
         if not events_out:
             return self._empty()
@@ -113,12 +139,15 @@ class AgateParser(BaseParser):
         for m in AGATE_EVENT_RE.finditer(blob):
             label = m.group(1).strip()
             low = re.sub(r'\s+', ' ', label.lower())
-            if EVENT_KEYWORDS.search(label) or re.match(r'^\d{2,4}\b', label) \
+            # ("1,600" / "3,200": a distance typed with a thousands comma)
+            if EVENT_KEYWORDS.search(label) or re.match(r'^\d{2,4}\b', re.sub(r'^(\d),(\d{3})\b', r'\1\2', label)) \
                     or low in EVENT_CANON:
                 markers.append((m.start(), m.end(), label))
         events = []
         for i, (s, e, label) in enumerate(markers):
             seg_end = markers[i + 1][0] if i + 1 < len(markers) else len(blob)
+            if seg_end < len(blob) and blob[seg_end] in '.;':
+                seg_end += 1    # (the last mark's own period: "5. Lail (FA) 12.6.")
             seg = blob[e:seg_end]
             ev_name = canon_event(label)
             is_relay = bool(re.search(r'relay|medley|4x', label, re.I))
@@ -126,7 +155,7 @@ class AgateParser(BaseParser):
             for m in AGATE_ENTRY_RE.finditer(seg):
                 place, who, code, mark = m.group(1), m.group(2).strip(), m.group(3), m.group(4)
                 mark = mark.rstrip('.;')
-                who = who.strip(' ,')
+                who = re.sub(r'\s+', ' ', who).strip(' ,')    # (a name across a line break)
                 # "A. Healey, SV" without parens: split the code off the name
                 if not code and ',' in who:
                     who, maybe_code = [x.strip() for x in who.rsplit(',', 1)]
@@ -138,7 +167,8 @@ class AgateParser(BaseParser):
                     school = who.strip(' ,')
                     legs = []
                     if code and not MARK_TOKEN.match(code) and len(code.split()) >= 3:
-                        legs = code.split()
+                        # ("Bibeau, Breshanhan, M. Frank, Nakanishi")
+                        legs = [x.strip() for x in code.split(',')] if ',' in code else code.split()
                     results.append({'school': resolve(school) if len(school) <= 5 else school,
                                     'result': mark, 'athletes': legs,
                                     'grade': '', 'type': 'Finals'})
@@ -148,11 +178,16 @@ class AgateParser(BaseParser):
             if not results and not is_relay:
                 # comma-separated variant without (parens): "Name, CODE, mark;"
                 for m in AGATE_COMMA_RE.finditer(seg):
-                    who, code, mark = m.group(1).strip(), m.group(2).strip(), m.group(3).rstrip('.;')
+                    who, code, mark = re.sub(r'\s+', ' ', m.group(1)).strip(), m.group(2).strip(), m.group(3).rstrip('.;')
                     if not is_mark(mark) and not re.match(r'^\d+-\d*$', mark):
                         continue
                     results.append({'athlete': who, 'school': resolve(code),
                                     'result': mark, 'grade': '', 'type': 'Finals'})
+            if not results and is_relay:
+                # relay teams with no places: "NYA, 48.2; Greely, 48.6; SV, 51.2"
+                for m in re.finditer(r"(?:^|[;:]\s*)([A-Z][A-Za-z .'-]{1,30}?),\s*(\d{1,2}[:.]\d[\d:.]*)\s*(?=[;.]|$)", seg):
+                    results.append({'school': resolve(m.group(1).strip()), 'result': m.group(2).rstrip('.'),
+                                    'athletes': [], 'grade': '', 'type': 'Finals'})
             if results:
                 events.append({'event': ev_name, 'gender': gender,
                                'is_relay': is_relay, 'results': results})
@@ -213,6 +248,11 @@ class MangledStreamParser(BaseParser):
                     results.append({'athlete': r.group(2).strip(), 'school': school,
                                     'result': r.group(4).rstrip('QqJj*'), 'grade': '',
                                     'type': rtype})
+            if not results and is_relay:
+                # relay teams with no places: "NYA, 48.2; Greely, 48.6; SV, 51.2"
+                for m in re.finditer(r"(?:^|[;:]\s*)([A-Z][A-Za-z .'-]{1,30}?),\s*(\d{1,2}[:.]\d[\d:.]*)\s*(?=[;.]|$)", seg):
+                    results.append({'school': resolve(m.group(1).strip()), 'result': m.group(2).rstrip('.'),
+                                    'athletes': [], 'grade': '', 'type': 'Finals'})
             if results:
                 events.append({'event': ev_name, 'gender': gender,
                                'is_relay': is_relay, 'results': results})
