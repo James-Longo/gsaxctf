@@ -32,15 +32,21 @@ SUMMER = os.path.join(BASE, 'data', 'summer')
 RAW = os.path.join(SUMMER, 'raw')
 OUT = os.path.join(ROOT, 'ui', 'public', 'data', 'summer.json.gz')
 
-TITLE = re.compile(r"^(?P<meet>.*?) - (?P<sex>Mens|Womens|Mixed) (?P<age>8 & Under|\d+-\d+|\d+(?: & Over)?|Open) (?P<event>.+?) Results$")
+TITLE = re.compile(r"^(?P<meet>.*?) - (?P<sex>Mens|Womens|Mixed) (?P<age>8 & Under|\d+-\d+|\d+(?: & Over)?|Open|INT) (?P<event>.+?) Results$")
 FIELD = ('jump', 'vault', 'put', 'shot', 'discus', 'javelin', 'throw', 'turbo', 'softball', 'hammer')
 SEX = {'Mens': 'Boys', 'Womens': 'Girls', 'Mixed': 'Mixed'}
 
 
 # One name per summer club. Results print the club many ways (town, code, truncation:
-# 'Blue Hill', 'Blue Hill Penins', 'Blue Hill Peninsula TC' are GSA's club). Codes
-# that could be two clubs (LRD, WR, WREC, Wja) stay as printed.
+# 'Blue Hill', 'Blue Hill Penins', 'Blue Hill Peninsula TC' are GSA's club). The bare
+# codes LRD, WR, WREC and Wja (2012-2021 MileSplit meets) were settled by their kids: the
+# same runners print under the spelled-out club in other years and later run for that
+# town's school (Lewiston, Windham, Winthrop, Woolwich-then-Morse/Wiscasset).
 CLUBS = [
+    (r'^lrd$', 'Lewiston Rec'),
+    (r'^wr$', 'Windham'),
+    (r'^wrec$', 'Winthrop Rec'),
+    (r'^wja$', 'Woolwich Junior Athletics'),
     (r'^(blue|bue) hill', 'Blue Hill Peninsula'),
     (r'^(orono|red riots?|rrtc)\b', 'Orono Red Riots'),
     (r'^(old town|ottc)\b', 'Old Town Track Club'),
@@ -60,7 +66,7 @@ CLUBS = [
     (r'^(augusta|aug)\b', 'Augusta Rec'),
     (r'^gardiner|^boys & girls club of gardiner', 'Gardiner'),
     (r'^(sandy river|srtc)\b', 'Sandy River Track Club'),
-    (r'^(auburn rec|aub$|auburn$)', 'Auburn Rec'),
+    (r'^(auburn rec|auburn parks|aub$|auburn$)', 'Auburn Rec'),
     (r'^(auburn running|a running pa)', 'Auburn Running Club'),
     (r'^(lewiston)\b', 'Lewiston Rec'),
     (r'^(lisbon|lis)\b', 'Lisbon Striders'),
@@ -110,6 +116,8 @@ def canon_club(raw):
     c = re.sub(r'\s+', ' ', raw or '').strip()
     c = re.sub(r',\s*\S.*$', '', c) if not re.match(r'^[A-Z][a-z]+, [A-Z]', c) else c   # 'Dirigo R.C.,Bar Har': drop the town
     c = re.sub(r"(\s+(?:[+-]?[jJxX]?\d[\d.:\-]*[mqQ]?|NWI|NT|ND|DQ|DNS|FOUL))+$", '', c).strip()     # seed / mark / wind columns run in
+    c = re.sub(r'\s*\.\.\.$', '', c)                     # athletic.net cuts long names: 'Auburn Parks & Recreatio...'
+    c = re.sub(r'(?:\s+-\s+[A-Z])+$', '', c)              # athletic.net squad letter: 'Noble Youth - B', relays 'Noble Youth - A - A'
     for rx, name in CLUBS:
         if re.search(rx, c, re.I):
             return name
@@ -153,7 +161,7 @@ def mark_value(mark, field):
 def parse_row(text, aid, tid, field, relay):
     cells = [c.strip() for c in text.split(' | ')]
     place = int(cells[0]) if cells and cells[0].isdigit() else None
-    if place is not None:
+    if place is not None or (cells and cells[0] in ('', '-', '--', 'X', 'x')):   # unplaced (DNS, NM, exhibition): place cell empty, '--' or 'X'
         cells = cells[1:]
     if not relay and cells and re.fullmatch(r"[A-Z][A-Z'.]{0,3}", cells[0]):
         cells = cells[1:]                      # the avatar's initials
@@ -186,7 +194,7 @@ def parse_capture(path):
                 meet['date'] = dt.datetime.strptime(meet['date'], '%b %d, %Y').date().isoformat()
             except ValueError:
                 pass
-            meet['venue'] = re.sub(r',?\s*ME US$', '', meet['venue']).strip()
+            meet['venue'] = re.sub(r',?\s*ME US$', '', re.sub(r'^[A-Z][a-z]{2} \d{1,2}, \d{4}\s*', '', meet['venue'])).strip()
             continue
         if line == '#skipped':
             return None
@@ -199,7 +207,7 @@ def parse_capture(path):
                 continue
             meet['name'] = meet['name'] or m.group('meet')
             event = m.group('event').strip()
-            ev = dict(gender=SEX[m.group('sex')], age_group=m.group('age'), event=event,
+            ev = dict(gender=SEX[m.group('sex')], age_group={'INT': '15-16'}.get(m.group('age'), m.group('age')), event=event,   # 'INT': Intermediate
                       relay=bool(re.search(r'relay|4x', event, re.I)), url=url, results=[])
             events.append(ev)
             continue
@@ -207,6 +215,8 @@ def parse_capture(path):
             continue
         text, aid, tid = (line.split('\t') + ['', ''])[:3]
         r = parse_row(text, aid, tid, is_field(ev['event']), ev['relay'])
+        if not r['club'] and not ev['relay']:
+            r['club'] = 'Unattached'           # athletic.net prints no team for an unattached entry
         if r['mark']:
             r['value'] = mark_value(r['mark'], is_field(ev['event']))
         r.pop('field', None)
