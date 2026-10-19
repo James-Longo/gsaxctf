@@ -478,6 +478,70 @@ class Calibration:
                 self.grade[(o.aid, o.year)] = o.grade
             self.meta[(o.aid, o.year)] = (o.gender, o.team, o.name)
         self._yoy(train)
+        self._trend(train, d)
+
+    def _trend(self, train, d):
+        """Population of in-season trends (partial pooling): for every
+        athlete-season with 3+ races over 2+ weeks, the least-squares slope of
+        race-corrected log time on day (per 30 days, negative = getting faster)
+        and its sampling variance. By gender and grade: the mean slope and the
+        spread of true slopes (observed spread less sampling noise). A runner's
+        own slope is shrunk toward their group's (season_ratings, trend=True)."""
+        days = sorted(o.day for o in train if o.day is not None)
+        self.mid_day = days[len(days) // 2] if days else 35
+        rows = defaultdict(list)
+        for o in train:
+            if o.race in d and o.day is not None:
+                rows[(o.aid, o.year)].append((o.day / 30.0, o.lt - d[o.race]))
+        gg = {}
+        for o in train:
+            if o.grade:
+                gg[(o.aid, o.year)] = (o.gender, o.grade)
+            else:
+                gg.setdefault((o.aid, o.year), (o.gender, None))
+        by = defaultdict(list)
+        s2 = DEFAULTS['race_sd'] ** 2
+        for k, pts in rows.items():
+            if len(pts) < 3:
+                continue
+            xs = [x for x, _ in pts]
+            if (max(xs) - min(xs)) * 30 < 14:
+                continue
+            mx = sum(xs) / len(xs)
+            sxx = sum((x - mx) ** 2 for x in xs)
+            my = sum(y for _, y in pts) / len(pts)
+            b = sum((x - mx) * (y - my) for x, y in pts) / sxx
+            g, gr = gg.get(k, (None, None))
+            by[(g, gr)].append((b, s2 / sxx))
+            by[(g, None)].append((b, s2 / sxx))
+        self.trend = {}
+        for k, v in by.items():
+            if len(v) < 50:
+                continue
+            bs = [b for b, _ in v]
+            mu = cm.median(bs)
+            spread = (1.4826 * cm.median([abs(b - mu) for b in bs])) ** 2
+            noise = cm.median([vv for _, vv in v])
+            self.trend[k] = (mu, math.sqrt(max(spread - noise, 0.01 ** 2)))
+
+    def _level_pop(self):
+        """Season ability by gender and grade across training seasons: (median, robust sd)."""
+        by = defaultdict(list)
+        for (aid, y), a in self.ability.items():
+            g = self.meta.get((aid, y), (None,))[0]
+            gr = self.grade.get((aid, y))
+            by[(g, gr)].append(a)
+            by[(g, None)].append(a)
+        self.level_pop = {k: (cm.median(v), 1.4826 * cm.median([abs(x - cm.median(v)) for x in v]))
+                          for k, v in by.items() if len(v) >= 50}
+
+    def level_prior(self, gender, grade):
+        if not hasattr(self, 'level_pop'):
+            self._level_pop()
+        return self.level_pop.get((gender, grade)) or self.level_pop.get((gender, None))
+
+    def trend_prior(self, gender, grade):
+        return self.trend.get((gender, grade)) or self.trend.get((gender, None))
 
     def _yoy(self, train):
         """Median change in ability from one season to the next, by gender and
@@ -520,6 +584,13 @@ DEFAULTS = dict(
     slow_clip=2.5,     # races this many race_sd slower than the estimate
                        # (a fall, a sick day) are down-weighted
     use_prior=True,
+    pool_level=True,   # a runner with no prior season is pulled toward their gender/grade
+                       # population (Calibration.level_prior); chosen by the per-race
+                       # backtest 2026-10-18: podiums tie (+0.004 +/- 0.007, 6 of 8
+                       # seasons), top-3 Brier better in 9 of 10 seasons
+    trend=False,       # per-runner in-season trend, pooled toward the gender/grade
+                       # population (Calibration._trend); the rating is the
+                       # trend line carried to race day
     fill_returning=False,  # fill empty championship spots with last season's
                            # non-seniors who have no race on file yet
     method='model',    # 'model' | 'raw_best' | 'raw_last' | 'course_best' |
@@ -562,14 +633,30 @@ def season_ratings(obs, year, gender, cutoff, calib, params=None, iterations=10)
             p = calib.prior(a, year, gender)
             if p:
                 pri[a] = p
+    if P['pool_level']:
+        # partial pooling of level: a runner with no prior season is pulled toward
+        # the population of their gender and grade (Calibration._level_pop)
+        for a, rs in by_a.items():
+            if a not in pri:
+                gr = max(rs, key=lambda o: o.day).grade
+                lp = calib.level_prior(gender, gr)
+                if lp:
+                    pri[a] = lp
     theta = {}
 
     def d_of(r):
         return (prior_r[r] or 0.0) + u[r]
 
+    tpri = {}
+    if P['trend']:
+        for a, rs in by_a.items():
+            last_ = max(rs, key=lambda o: o.day)
+            tpri[a] = calib.trend_prior(gender, last_.grade)
+    mid_day = getattr(calib, 'mid_day', 35)
+
     for _ in range(iterations):
         for a, rs in by_a.items():
-            theta[a] = _combine(a, rs, d_of, cutoff, pri.get(a), P)[0]
+            theta[a] = _combine(a, rs, d_of, cutoff, pri.get(a), P, tpri.get(a), mid_day)[0]
         res = defaultdict(list)
         for a, rs in by_a.items():
             if len(rs) < 2 and a not in pri:
@@ -596,7 +683,7 @@ def season_ratings(obs, year, gender, cutoff, calib, params=None, iterations=10)
 
     out = {}
     for a, rs in by_a.items():
-        th, sd, n = _combine(a, rs, d_of, cutoff, pri.get(a), P)
+        th, sd, n = _combine(a, rs, d_of, cutoff, pri.get(a), P, tpri.get(a), mid_day)
         last = max(rs, key=lambda o: o.day)
         out[a] = dict(theta=th, sd=sd, n=n, team=last.team, name=last.name,
                       last=last.day, prior=a in pri, grade=last.grade)
@@ -710,9 +797,14 @@ MIN_ANCHOR = 3
 MAX_OFF_NORM = 0.15
 
 
-def _combine(aid, rs, d_of, cutoff, prior, P):
+def _combine(aid, rs, d_of, cutoff, prior, P, tprior=None, mid_day=35):
     """Precision-weighted blend of this season's races and last season's
-    carried-forward rating, with recency weighting and slow-race clipping."""
+    carried-forward rating, with recency weighting and slow-race clipping.
+    With P['trend'] and a population trend prior: level and slope by weighted
+    least squares with the slope pooled toward the population, and the
+    rating read off the line at race day (`cutoff`)."""
+    if P.get('trend') and tprior:
+        return _combine_trend(rs, d_of, cutoff, prior, P, tprior, mid_day)
     ests = [(o.lt - d_of(o.race), math.exp(-(cutoff - o.day) / P['tau'])) for o in rs]
     s2 = P['race_sd'] ** 2
     terms = [(e, w / s2) for e, w in ests]
@@ -728,6 +820,39 @@ def _combine(aid, rs, d_of, cutoff, prior, P):
         terms = terms2
     prec = sum(w for _, w in terms)
     return th, math.sqrt(1.0 / prec), len(rs)
+
+
+def _combine_trend(rs, d_of, cutoff, prior, P, tprior, mid_day):
+    """Level a (at race day) and slope b (per 30 days): minimise
+    sum p_i (y_i - a - b x_i)^2 + (b - mu)^2 / sb^2 [+ prior pseudo-race at mid-season],
+    x_i = (day_i - cutoff) / 30. A 2x2 linear solve; slow races clipped as in _combine."""
+    mu, sb = tprior
+    sb *= P.get('trend_scale', 1.0)     # >1: less pooling toward the population trend
+    s2 = P['race_sd'] ** 2
+    pts = [((o.day - cutoff) / 30.0, o.lt - d_of(o.race), math.exp(-(cutoff - o.day) / P['tau']) / s2) for o in rs]
+    if prior:
+        pts.append(((mid_day - cutoff) / 30.0, prior[0], 1.0 / prior[1] ** 2))
+
+    def solve(pts_):
+        s0 = sum(p for _, _, p in pts_)
+        s1 = sum(p * x for x, _, p in pts_)
+        s2_ = sum(p * x * x for x, _, p in pts_) + 1.0 / sb ** 2
+        c0 = sum(p * y for _, y, p in pts_)
+        c1 = sum(p * x * y for x, y, p in pts_) + mu / sb ** 2
+        det = s0 * s2_ - s1 * s1
+        a = (c0 * s2_ - c1 * s1) / det
+        b = (s0 * c1 - s1 * c0) / det
+        return a, b, s2_ / det, lambda x: (s2_ - 2 * x * s1 + x * x * s0) / det
+    a, b, va, cov = solve(pts)
+    if P['slow_clip'] and len(pts) > 1:
+        lim = P['slow_clip'] * P['race_sd']
+        pts = [(x, y, p * (lim / (y - a - b * x) if y - a - b * x > lim else 1.0)) for x, y, p in pts]
+        a, b, va, cov = solve(pts)
+    if P.get('trend_eval') == 'last':
+        # no projection past the evidence: the pooled line where the runner last raced
+        x = (max(o.day for o in rs) - cutoff) / 30.0
+        return a + b * x, math.sqrt(max(cov(x), 1e-12)), len(rs)
+    return a, math.sqrt(va), len(rs)
 
 
 # ---------------------------------------------------------------------------
