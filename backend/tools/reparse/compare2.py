@@ -1,7 +1,7 @@
 """before/ vs after/: rows the sync will keep, per canonical event.
 Flags any file where a canonical event loses kept rows."""
 import glob, json, os, sys, collections
-sys.path.insert(0, '/home/james-longo/Projects/gsaxctf')
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))))
 from backend.event_canon import canonical_event
 B, A = sys.argv[1], sys.argv[2]
 

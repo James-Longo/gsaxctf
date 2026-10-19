@@ -14,8 +14,11 @@
   patches applied one at a time).
 - `scan_bounds.py`: track rows outside predictor BOUNDS, by meet.
 
-Never force-reparse a whole season folder (2011 Outdoor winthrop_april28 / leavitt_may11 parse worse
-with current code than their stored parses).
+Never force-reparse a whole season folder: some stored parses came from older parser paths. (2011
+Outdoor winthrop_april28 / leavitt_may11 parsed worse from e0da7ae68 on, when the column parser began
+winning RaceTab files with only their running events; fixed by reading RaceTab "Team ... Time" relay
+and "Mark" field headers.) The tools resolve the repo from their own path, so they also work in a
+git worktree.
 
 ## mislabel_2026-10-17/
 Diagnoses and proposed patches from the 2026-10-17 mislabeled-event agents. All but the ones listed below were applied in

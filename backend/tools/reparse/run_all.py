@@ -1,7 +1,7 @@
 """Parse every Indoor/Outdoor archive file with the repo's current code into
 <outdir>/<year>/<season>/<stem>.json (nothing in the repo is written)."""
 import multiprocessing as mp, os, sys, glob, time
-REPO = '/home/james-longo/Projects/gsaxctf'
+REPO = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 sys.path.insert(0, REPO); os.chdir(REPO)
 from backend import scraper_v2 as sv
 

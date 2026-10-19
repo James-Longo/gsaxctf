@@ -1,5 +1,6 @@
 import json, sys, os, shutil, glob, collections
-sys.path.insert(0, '/home/james-longo/Projects/gsaxctf'); os.chdir('/home/james-longo/Projects/gsaxctf')
+REPO = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
+sys.path.insert(0, REPO); os.chdir(REPO)
 from backend import scraper_v2 as sv
 from backend.event_canon import canonical_event
 R = sys.argv[1]

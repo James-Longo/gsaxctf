@@ -1,6 +1,6 @@
 """List Indoor/Outdoor rows outside predictor BOUNDS, grouped by meet."""
 import collections, json, os, sys
-sys.path.insert(0, '/home/james-longo/Projects/gsaxctf')
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))))
 from backend import json_store as js
 from backend.predictor_data import BOUNDS, TRACK, FIELD
 EV = {f'{g} {e}' for g in ('Boys', 'Girls') for e in TRACK + FIELD}

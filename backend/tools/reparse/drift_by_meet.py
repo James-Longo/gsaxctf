@@ -1,6 +1,6 @@
 """Rows lost per (year, season, meet) between HEAD's store and the working store."""
 import gzip, json, os, subprocess, sys, collections, glob
-os.chdir('/home/james-longo/Projects/gsaxctf')
+os.chdir(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))))
 scope = json.load(open('backend/data/meet_scope.json'))
 moved = set(scope['summer']) | set(scope['excluded'])
 def rows(blob):
