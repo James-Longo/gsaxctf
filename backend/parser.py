@@ -1750,6 +1750,21 @@ class Sub5ColumnParser:
                                 # Strip trailing wind reading before cleaning
                                 # (e.g. "14.02q -0.9" or "12.57 NWI" when single-space separated)
                                 res_val = re.sub(r'\s+(?:NWI\+?|[+-]?\d\.\d)\s*$', '', res_val, flags=re.IGNORECASE).strip()
+                                # points printed one space after the mark
+                                # ("16-04.00 2.33333", "13:23.25 4",
+                                # "5-02.00 .333333"): the mark alone, not
+                                # the two run together ("16-04.002")
+                                glued_pts = None
+                                mg = re.fullmatch(r'(\d{1,2}:\d{2}(?:\.\d+)?|\d{1,3}\.\d{1,2}|\d{1,3}-\d{1,2}(?:\.\d{1,2})?)'
+                                                  r'\s+(\d{1,2}(?:\.\d*)?|\.\d*)', res_val)
+                                if mg:
+                                    res_val = mg.group(1)
+                                    # (read off the whole row: the right
+                                    # boundary may cut "2.33333" to "2")
+                                    mp = re.match(r'\s+(\d{1,2}(?:\.\d+)?|\.\d+)(?=\s|$)',
+                                                  line[res_pos + len(res_val):]) if res_pos >= 0 else None
+                                    if mp:
+                                        glued_pts = round(float(mp.group(1)), 2)
 
                                 original_res = res_val
                                 if res_val.upper().lstrip("X") in STATUS_MARKS:
@@ -1793,6 +1808,9 @@ class Sub5ColumnParser:
                                     entry["place"] = int(mpl.group(1))
                                 if not xc_event:
                                     pts = printed_points(line, lines[header_row_idx])
+                                    if pts is None and glued_pts is not None and \
+                                            re.search(r'\b(?:Points|Pts)\b', lines[header_row_idx]):
+                                        pts = glued_pts
                                     if pts is not None:
                                         entry["points"] = pts
                                 if xc_event and res_end > 0:

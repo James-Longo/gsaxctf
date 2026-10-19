@@ -1695,6 +1695,24 @@ def test_looselist_header_with_division_phrase():
     assert LooseListParser()._event_header('4x100 Meter Relay Intermediate Girls', None) is not None
 
 
+def test_points_one_space_after_the_mark():
+    """Tie points printed one space after a field mark ("16-04.00 2.33333",
+    caribouboys_may9.htm) were run into it: "16-04.002"."""
+    text = '\n'.join([
+        'Event 28  Boys Long Jump',
+        '=' * 71,
+        '    Name                    Year School                  Finals  Points',
+        '=' * 71,
+        '  1 Al Ames                      Alpha                 19-07.00    10  ',
+        '  4 Bo Bean                      Beta                  16-04.00 2.33333',
+        '  4 Cy Cole                      Gamma                 16-04.00 2.33333',
+        '  7 Di Dunn                      Beta                  15-08.00 .333333',
+    ])
+    rows = Sub5ColumnParser('hj.htm', text=text).parse()['events'][0]['results']
+    assert [(r['result'], r.get('points')) for r in rows] == \
+        [('19-07.00', 10.0), ('16-04.00', 2.33), ('16-04.00', 2.33), ('15-08.00', 0.33)], rows
+
+
 if __name__ == '__main__':
     qaqc._ensure_team_mapping()
     failed = 0
