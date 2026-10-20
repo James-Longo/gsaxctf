@@ -13,7 +13,7 @@
    "college": 120,
    "club": 16,
    "x": 2,
-   "coop": 24
+   "coop": 25
   },
   "id_scheme": "me-hs-* Maine high schools, me-ms-* Maine middle/K-8, col-* colleges, oos-* out-of-state schools, club-* clubs, coop-* co-operative teams (sport/gender/year specific), x-* special"
  },
@@ -3550,6 +3550,50 @@
     ]
    },
    "raw_strings": 3
+  },
+  "coop-fox-islands": {
+   "name": "Fox Islands (North Haven/Vinalhaven)",
+   "level": "coop",
+   "state": "ME",
+   "names": [
+    "Fox Islands",
+    "Fox Island",
+    "H. Haven/Vinal",
+    "N. Haven/Vinal",
+    "North Haven/Vinalhaven"
+   ],
+   "codes": [],
+   "nicknames": [],
+   "members": [
+    "me-hs-north-haven",
+    "me-hs-vinalhaven"
+   ],
+   "seasons": [
+    "XC"
+   ],
+   "genders": [
+    "Boys",
+    "Girls"
+   ],
+   "curation": "seed",
+   "active": {
+    "XC": [
+     2004,
+     2005,
+     2006,
+     2007,
+     2008,
+     2009
+    ]
+   },
+   "rows": 35,
+   "seen": {
+    "XC": [
+     2004,
+     2009
+    ]
+   },
+   "raw_strings": 4
   },
   "coop-houlton-ghca": {
    "name": "Houlton/Greater Houlton",
@@ -9493,10 +9537,15 @@
     "North Haven HS",
     "North Haven Community"
    ],
-   "codes": [],
+   "codes": [
+    "NHCS"
+   ],
    "nicknames": [],
    "curation": "seed",
    "mpa": "North Haven",
+   "coop_of": [
+    "coop-fox-islands"
+   ],
    "mpa_class": {
     "xc_2026": [
      {
@@ -9512,7 +9561,7 @@
      }
     ]
    },
-   "rows": 1037,
+   "rows": 1031,
    "seen": {
     "XC": [
      2003,
@@ -9527,7 +9576,7 @@
      2018
     ]
    },
-   "raw_strings": 13
+   "raw_strings": 12
   },
   "me-hs-nya": {
    "name": "North Yarmouth Academy",
@@ -11365,6 +11414,9 @@
    "nicknames": [],
    "curation": "seed",
    "mpa": "Vinalhaven",
+   "coop_of": [
+    "coop-fox-islands"
+   ],
    "mpa_class": {
     "ot_2026": [
      {
@@ -34169,6 +34221,66 @@
     ],
     "Indoor": [
      2025
+    ]
+   }
+  },
+  {
+   "id": "coop-fox-islands",
+   "label": "Fox Islands (North Haven/Vinalhaven)",
+   "host": "me-hs-north-haven",
+   "members": [
+    "me-hs-north-haven",
+    "me-hs-vinalhaven"
+   ],
+   "seasons": [
+    "XC"
+   ],
+   "genders": [
+    "Boys",
+    "Girls"
+   ],
+   "years": [
+    2004,
+    2009
+   ],
+   "labels": [
+    "Fox Islands",
+    "Fox Island",
+    "H. Haven/Vinal",
+    "N. Haven/Vinal",
+    "North Haven/Vinalhaven"
+   ],
+   "evidence": [
+    "the label in 2004-2009 XC results (festival04gheats, festivalsectionsB 2005, classcboyswest 2007, focboyssections 2007, belfast9_13 2008, conyboys_sept25 2009)"
+   ],
+   "observed": {
+    "XC": [
+     2004,
+     2005,
+     2006,
+     2007,
+     2008,
+     2009
+    ]
+   },
+   "observed_sources": {
+    "result labels": [
+     "XC 2004",
+     "XC 2005",
+     "XC 2006",
+     "XC 2007",
+     "XC 2008",
+     "XC 2009"
+    ]
+   },
+   "active": {
+    "XC": [
+     2004,
+     2005,
+     2006,
+     2007,
+     2008,
+     2009
     ]
    }
   },

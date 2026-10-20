@@ -313,7 +313,7 @@ ME_HS = [
     ('me-hs-seacoast-christian', 'Seacoast Christian School', 'South Berwick', 'Seacoast Christian',
      ['Seacoast Christian', 'Seacoast Christian School', 'Seacoast Chr', 'Seacoast'], [], [], {}),
     ('me-hs-north-haven', 'North Haven Community School', 'North Haven', 'North Haven',
-     ['North Haven', 'North Haven HS', 'North Haven Community'], [], [], {}),
+     ['North Haven', 'North Haven HS', 'North Haven Community'], ['NHCS'], [], {}),
     ('me-hs-boothbay', 'Boothbay Region High School', 'Boothbay Harbor', 'Boothbay',
      ['Boothbay Region', 'Boothbay', 'Boothbay Region HS', 'Boothbay HS', 'Boothbay High School', 'Boothbay Reg',
       'Boothbay Regional High School', 'Boothbay Regional'],
@@ -507,6 +507,13 @@ COOPS = [
          labels=['Houlton/GHCA', 'Houlton/Hodg', 'Ghca / Houlton', 'Houlton High / GHCA', 'Houlton/Greater Houlton',
                  'Houlton/Greater Houlton Christian', 'Houlton/Gr. Houlton CA', 'Houlton/Greater Houlton CA'],
          evidence=['MPA XC 2026-27 C North "Houlton/Greater Houlton"', 'MPA OT 2025-26 C "Houlton/Greater Houlton (B)"']),
+    # North Haven + Vinalhaven cross-country team 'Fox Islands' / 'H. Haven/Vinal': printed only in XC
+    # 2004-2009 (Festival heats and sections, Class C West regionals, Camden Hills, Searsport, Belfast,
+    # Cony, LaLiberte); both schools race under their own names in every other season and year
+    dict(id='coop-fox-islands', label='Fox Islands (North Haven/Vinalhaven)', host='me-hs-north-haven',
+         members=['me-hs-north-haven', 'me-hs-vinalhaven'], seasons=['XC'], genders=['Boys', 'Girls'], years=[2004, 2009],
+         labels=['Fox Islands', 'Fox Island', 'H. Haven/Vinal', 'N. Haven/Vinal', 'North Haven/Vinalhaven'],
+         evidence=['the label in 2004-2009 XC results (festival04gheats, festivalsectionsB 2005, classcboyswest 2007, focboyssections 2007, belfast9_13 2008, conyboys_sept25 2009)']),
     dict(id='coop-bangor-christian-penobscot-christian', label='Bangor Christian/Penobscot Christian',
          host='me-hs-bangor-christian', members=['me-hs-bangor-christian', 'me-hs-penobscot-christian'],
          seasons=['XC', 'Outdoor'], genders=['Boys', 'Girls'], years=[None, None],
