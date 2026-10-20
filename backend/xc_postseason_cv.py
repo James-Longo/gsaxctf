@@ -26,10 +26,12 @@ Scores, per podium (one per meet, division and gender):
 Methods are ranked on (inclusion + order) / 2; Brier breaks near-ties.
 
 Individual times (James 2026-10-20: predictions are judged on podium teams, their
-order, and individual times): every race of 25+ runners on a 5K course with a
-known factor in the held-out season, each runner predicted from results before
-that day (season_ratings + the course factor), scored by the median absolute
-error and the mean error in seconds (`--time`, `time_summary`).
+order, and the individual times of each team's top five): every race of 25+
+runners on a 5K course with a known factor in the held-out season, each runner
+predicted from results before that day (season_ratings + the course factor),
+scored by the median absolute error and the mean error in seconds over each
+team's five scorers (teams with five finishers), then over everyone (`--time`,
+`time_summary`).
 
     python3 -m backend.xc_postseason_cv [--sims N] [--procs N] [--round 1|2]
 """
@@ -466,15 +468,25 @@ def _time_task(args):
             cache[k] = _rate(m, obs, year, r[1], r[3], cal)
         rat = cache[k]
         champ = bool(xp.CHAMP_FILE.search(r[4]) and not xp.NOT_CHAMP.search(r[4]) and r[3] >= 50)
+        # each runner's place on their own team in this race; only teams with five
+        # finishers score, so only their top five are a team's scorers
+        n_team, team_rank = defaultdict(int), {}
+        for o in sorted(rows, key=lambda o: o.lt):
+            n_team[o.team] += 1
+            team_rank[o.aid] = n_team[o.team]
+        # a raw-time baseline predicts the time itself; every other method a rating
+        # on the Belfast scale, moved to this course
+        shift = 0.0 if m['params'].get('method', 'model').startswith('raw') else f
         for o in rows:
             a = rat.get(o.aid)
             if a and a['n'] > 0:
-                out.append((r[1], o.grade, champ, r[3], o.aid, o.lt, a['theta'] + f))
+                scorer = bool(o.team) and n_team[o.team] >= xp.TEAM_MIN and team_rank[o.aid] <= xp.SCORERS
+                out.append((r[1], o.grade, champ, r[3], o.aid, o.lt, a['theta'] + shift, scorer))
     return mi, year, out
 
 
 def time_errors(methods, procs=12):
-    """name -> fold -> [(gender, grade, champ, day, aid, actual log, predicted log)]."""
+    """name -> fold -> [(gender, grade, champ, day, aid, actual log, predicted log, team scorer)]."""
     from multiprocessing import Pool
     _G['methods'] = methods
     res = defaultdict(dict)
@@ -493,7 +505,7 @@ def grade_shift_tables(rows_by_fold, min_rows=200):
         for f, rows in rows_by_fold.items():
             if f == y:
                 continue
-            for g, gr, _, _, _, a, p in rows:
+            for g, gr, _, _, _, a, p, *_ in rows:
                 if gr is not None:
                     by[f'{g}|{gr}'].append(a - p)
         out[str(y)] = {k: cm_median(v) for k, v in by.items() if len(v) >= min_rows}
@@ -506,11 +518,50 @@ def cm_median(v):
     return v[n // 2] if n % 2 else (v[n // 2 - 1] + v[n // 2]) / 2
 
 
+RECAL_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'data', 'xc_time_recal.json')
+
+
+def time_recalibration(rows_by_fold, max_miss=300, scorers=True):
+    """Linear recalibration of predicted times (James 2026-10-20): per gender,
+    predicted seconds P become P + a + b*P, fitted by least squares on the
+    misses (actual - predicted, within +-max_miss s) of every season but the one
+    being predicted ('all': every season, for the current one), over each team's
+    five scorers only (the runners whose times are judged). Monotone, so no
+    runner's order and no place changes; only the displayed times move."""
+    def fit(v):
+        n = len(v)
+        mx = sum(p for p, _ in v) / n
+        my = sum(r for _, r in v) / n
+        b = sum((p - mx) * (r - my) for p, r in v) / sum((p - mx) ** 2 for p, _ in v)
+        return [round(my - b * mx, 3), round(b, 6)]
+    out = {}
+    for hold in [None] + sorted(rows_by_fold):
+        key = 'all' if hold is None else str(hold)
+        out[key] = {}
+        for g in ('Boys', 'Girls'):
+            v = [(math.exp(r[6]), math.exp(r[5]) - math.exp(r[6]))
+                 for y, rows in rows_by_fold.items() if y != hold for r in rows
+                 if r[0] == g and abs(math.exp(r[5]) - math.exp(r[6])) <= max_miss
+                 and (not scorers or (len(r) > 7 and r[7]))]
+            out[key][g] = fit(v)
+    return out
+
+
+def write_time_recalibration(rows_by_fold, path=RECAL_PATH):
+    fits = time_recalibration(rows_by_fold)
+    with open(path, 'w', encoding='utf-8') as f:
+        json.dump(dict(note='P + a + b*P per gender, P = predicted seconds on the course; '
+                            'keyed by the season it is applied to (fitted without it), '
+                            "'all' for the current season. Written by xc_postseason_cv --time.",
+                       fits=fits), f, indent=1)
+    return fits
+
+
 def time_summary(rows_by_fold, keep=None):
     """Median absolute error and mean error, seconds. `keep` (a set of
     (fold, aid, day)) restricts every method to the same runners."""
     def stats(rs):
-        d = [math.exp(a) - math.exp(p) for *_, a, p in rs]
+        d = [math.exp(r[5]) - math.exp(r[6]) for r in rs]
         if not d:
             return None
         ad = sorted(abs(x) for x in d)
@@ -518,7 +569,9 @@ def time_summary(rows_by_fold, keep=None):
                     mae=sum(x for x in ad if x <= 300) / sum(1 for x in ad if x <= 300))
     rows = {y: [r for r in v if keep is None or (y, r[4], r[3]) in keep] for y, v in rows_by_fold.items()}
     allr = [r for v in rows.values() for r in v]
-    return dict(all=stats(allr), champ=stats([r for r in allr if r[2]]),
+    # what matters (James 2026-10-20): each team's top five in each race, its scorers
+    return dict(scorers=stats([r for r in allr if len(r) > 7 and r[7]]), all=stats(allr),
+                champ=stats([r for r in allr if r[2]]),
                 fold=dict((y, stats(v)['medae']) for y, v in rows.items() if v))
 
 
@@ -563,7 +616,15 @@ def calibration_table(podiums, key='pt3', bins=10):
     return {f'{b / bins:.1f}-{(b + 1) / bins:.1f}': (n, h / n) for b, (n, h) in sorted(acc.items())}
 
 
-TIMES = [
+# Every comparison includes the simplest predictions (James 2026-10-20): a runner's
+# last 5K time as run, their season best, and the course-adjusted average.
+BASELINES = [
+    method('last 5K time (simplest)', {'method': 'raw_last'}),
+    method('season-best 5K', {'method': 'raw_best'}),
+    method('course-adjusted average', {'method': 'course_mean'}),
+]
+
+TIMES = BASELINES + [
     method('model (current)'),
     method('in-season trend by grade', {'trend': True}),
     method('trend, rated at last race', {'trend': True, 'trend_eval': 'last'}),
@@ -584,7 +645,7 @@ def experiment(methods, sims, procs, log=print):
     plain = [m for m in methods if m['params'].get('grade_shift') != 'auto']
     times = time_errors(plain, procs)
     log('times done for', len(plain), 'methods')
-    tables = grade_shift_tables(times[plain[0]['name']])
+    tables = grade_shift_tables(times['model (current)'])
     for m in methods:
         if m['params'].get('grade_shift') == 'auto':
             m['params'] = dict(m['params'], grade_shift=tables)
@@ -609,6 +670,8 @@ if __name__ == '__main__':
     if a.time:
         times, pods, tables = experiment(methods, a.sims, a.procs)
         pickle.dump(dict(times=times, pods=pods, tables=tables), open(a.out, 'wb'))
+        if 'model (current)' in times:
+            write_time_recalibration(times['model (current)'])
         keep = None
         for name, rows in times.items():   # the runners every method rated
             k = {(y, r[4], r[3]) for y, v in rows.items() for r in v}
@@ -619,7 +682,8 @@ if __name__ == '__main__':
             p = pod.get(m['name'], {})
             print(f"{m['name']:30s} podium inclusion {p.get('inclusion', float('nan')):.3f} order {p.get('order', float('nan')):.3f} "
                   f"objective {p.get('objective', float('nan')):.3f}±{p.get('objective_se', float('nan')):.3f} | "
-                  f"time median |err| {t['all']['medae']:.1f}s mean {t['all']['bias']:+.1f}s "
+                  f"time team scorers {t['scorers']['medae']:.1f}s ({t['scorers']['bias']:+.1f}), "
+                  f"all {t['all']['medae']:.1f}s ({t['all']['bias']:+.1f}) "
                   f"(championships {t['champ']['medae']:.1f}s, {t['champ']['bias']:+.1f}s)", flush=True)
         raise SystemExit
     res = run(methods, sims=a.sims, procs=a.procs)

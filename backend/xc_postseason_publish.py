@@ -21,7 +21,10 @@ season. Only seasons with their regionals and states on file are published.
 A meet that has been run carries its result (`actual`): team places and scores
 computed from the finish times (by division where the meet is scored by
 division), every runner's place and time beside the prediction, and a summary.
-Predicted times are for the meet's own course on a typical day; how much faster
+Predicted times are for the meet's own course on a typical day, passed through a
+linear recalibration per gender fitted on past seasons' misses
+(backend/data/xc_time_recal.json, written by xc_postseason_cv --time; it moves
+times only, never the order). How much faster
 or slower the whole field ran than predicted that day (`day`) moves every runner
 together, so time misses are also given with it taken out.
 
@@ -54,6 +57,18 @@ INDEX = os.path.join(OUT_DIR, 'index.json')
 CV_SUMMARY = os.path.join(BASE, 'backend', 'data', 'xc_postseason_cv.json')
 BACKTEST_YEARS = [y for y in range(2015, 2026) if y != 2020]
 PAST_SIMS = 2000
+RECAL = os.path.join(BASE, 'backend', 'data', 'xc_time_recal.json')
+
+
+def recal_for(year):
+    """The linear time recalibration for a season, fitted without it
+    (backend/xc_postseason_cv.time_recalibration); 'all' for the current one."""
+    try:
+        with open(RECAL, encoding='utf-8') as f:
+            fits = json.load(f)['fits']
+    except (OSError, ValueError, KeyError):
+        return None
+    return fits.get(str(year)) or fits.get('all')
 
 
 def _mmss(lt):
@@ -128,10 +143,11 @@ def meet_members(meet, schools):
     return {s for s, i in schools.items() if i['class'] == meet['class']}
 
 
-def prediction_out(res, rat, school_of, races, noise, name, course_f):
+def prediction_out(res, rat, school_of, races, noise, name, course_f, recal=None):
     """The page's teams and athletes lists for one simulated meet. Athletes
     keep `_aid` and `_e` (log predicted time on the meet's course) for the
-    comparison; publish() drops them."""
+    comparison; publish() drops them. `recal`: this gender's (a, b) time
+    recalibration (recal_for), or None."""
     teams = []
     for t, v in res['teams'].items():
         div, team = t if isinstance(t, tuple) else (None, t)
@@ -151,7 +167,14 @@ def prediction_out(res, rat, school_of, races, noise, name, course_f):
     aths = []
     for a, v in res['athletes'].items():
         rr = rat[a]
-        e = rr['theta'] + noise.shift(rr['n'], rr['prior']) + (course_f or 0.0)
+        if recal:
+            # predicted seconds on the course, then the gender's recalibration
+            # line (it was fitted on these uncorrected times, so it replaces the
+            # noise model's median-miss shift)
+            p = math.exp(rr['theta'] + (course_f or 0.0))
+            e = math.log(p + recal[0] + recal[1] * p)
+        else:
+            e = rr['theta'] + noise.shift(rr['n'], rr['prior']) + (course_f or 0.0)
         aths.append(dict(
             name=rr['name'], school=name(school_of[a]), div=v.get('div'), grade=rr.get('grade'),
             t=_mmss(e), _e=e, _aid=a, n=rr['n'], start=round(v['start'], 3),
@@ -255,6 +278,7 @@ def _sort_aths(mid, aths):
 
 def predict_season(year, asof, sims, obs, noise, cal, seed=0, say=lambda *a: None):
     groups = xp.load_groups(year)
+    recal = recal_for('all')
     gname = lambda sid: groups['schools'].get(sid, {}).get('name') or xp.school_name(sid)
     # Every race is predicted from results before it, never after: a meet already
     # run keeps the prediction it had the day before (its results feed only the meets
@@ -293,7 +317,8 @@ def predict_season(year, asof, sims, obs, noise, cal, seed=0, say=lambda *a: Non
                     rows = race_rows(obs, year, g, xp.season_day(year, m['date']), members, res[mid]['athletes'])
                 course = rows[0].course if rows else tuple(m['course']) if m.get('course') else None
                 course_f = cal.course.get(course) if course else None
-                teams, aths = prediction_out(res[mid], rat, school_of, races, noise, gname, course_f)
+                teams, aths = prediction_out(res[mid], rat, school_of, races, noise, gname, course_f,
+                                             (recal or {}).get(g))
                 aths = _sort_aths(mid, aths)
                 out = dict(teams=teams, athletes=aths, asof=cut_date, course_known=course_f is not None)
                 if rows:
@@ -354,6 +379,7 @@ def past_season(year, sims, obs, cal, noise, say=lambda *a: None):
     hist = cv.history(obs, year)
     if not hist:
         return None
+    recal = recal_for(year)
     meets = hist['groups']['meets']
     # a state meet whose regionals are not all on file has an incomplete field
     regs = {m['id'] for m in meets if m['id'].startswith('reg_')}
@@ -397,7 +423,8 @@ def past_season(year, sims, obs, cal, noise, say=lambda *a: None):
                 members = meet_members(m, schools)
                 rows = race_rows(obs, year, g, day, members, res[m['id']]['athletes'])
                 course_f = cal.course.get(rows[0].course) if rows else None
-                teams, aths = prediction_out(res[m['id']], rat, school_of, races, noise, name, course_f)
+                teams, aths = prediction_out(res[m['id']], rat, school_of, races, noise, name, course_f,
+                                             (recal or {}).get(g))
                 aths = _sort_aths(m['id'], aths)
                 pid = ids[m['id']]
                 out = dict(teams=teams, athletes=aths, asof=_date(year, day - 1),
