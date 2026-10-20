@@ -276,7 +276,7 @@
    "raw": "MTA",
    "file": "2019/Outdoor/ResultsHALL.json",
    "rows": 144,
-   "flag": "company: me-hs-mt-ararat (0.13) -> me-hs-mt-abram (2.49)",
+   "flag": "company: me-hs-mt-ararat (0.13) -> me-hs-mt-abram (2.50)",
    "decision": "me-hs-mt-abram",
    "evidence": {
     "votes": {
@@ -320,7 +320,7 @@
    "raw": "MTA",
    "file": "2019/Outdoor/Resultshall-dale.json",
    "rows": 141,
-   "flag": "company: me-hs-mt-ararat (0.20) -> me-hs-mt-abram (1.75)",
+   "flag": "company: me-hs-mt-ararat (0.20) -> me-hs-mt-abram (1.73)",
    "decision": "me-hs-mt-abram",
    "evidence": {
     "votes": {
@@ -340,8 +340,8 @@
    "evidence": {
     "votes": {
      "me-hs-mt-abram": 52,
-     "me-hs-old-town": 1,
-     "me-hs-hampden": 1
+     "me-hs-hampden": 1,
+     "me-hs-old-town": 1
     },
     "athletes": 56,
     "with_evidence": 56
@@ -351,7 +351,7 @@
    "raw": "WAJH",
    "file": "2018/Outdoor/ResultsWinslowJuniorHighMeet.json",
    "rows": 138,
-   "flag": "athletes contradict name match (me-ms-warsaw -> me-ms-waterville, 60/61)",
+   "flag": "later high school: me-ms-warsaw -> me-ms-waterville (runners go on to Waterville)",
    "decision": "me-ms-waterville",
    "evidence": {
     "votes": {
@@ -379,7 +379,7 @@
    "raw": "Waterville",
    "file": "2011/Outdoor/WJHSResults_april30.json",
    "rows": 132,
-   "flag": "athletes contradict name match (me-hs-waterville -> me-ms-waterville, 38/56)",
+   "flag": "athletes contradict name match (me-hs-waterville -> me-ms-waterville, 55/56)",
    "decision": "me-ms-waterville",
    "evidence": {
     "votes": {
@@ -418,6 +418,21 @@
    }
   },
   {
+   "raw": "Lawrence",
+   "file": "2013/Outdoor/mtviewjh_may16.json",
+   "rows": 125,
+   "flag": "athletes contradict name match (me-hs-lawrence -> me-ms-lawrence, 14/59)",
+   "decision": "me-ms-lawrence",
+   "evidence": {
+    "votes": {
+     "me-ms-lawrence": 58,
+     "me-hs-kennebunk": 1
+    },
+    "athletes": 61,
+    "with_evidence": 59
+   }
+  },
+  {
    "raw": "BMS",
    "file": "2016/Outdoor/Results-BathMSmeet.json",
    "rows": 124,
@@ -435,21 +450,7 @@
    "raw": "Waterville",
    "file": "2013/Outdoor/watervillems_april27.json",
    "rows": 121,
-   "flag": "athletes contradict name match (me-ms-waterville -> me-hs-waterville, 35/60)",
-   "decision": "me-ms-waterville",
-   "evidence": {
-    "votes": {
-     "me-ms-waterville": 60
-    },
-    "athletes": 62,
-    "with_evidence": 60
-   }
-  },
-  {
-   "raw": "Waterville",
-   "file": "2013/Outdoor/watervillems_april27.json",
-   "rows": 121,
-   "flag": "athletes contradict name match (me-ms-waterville -> me-hs-waterville, 34/60)",
+   "flag": "athletes contradict name match (me-ms-waterville -> me-hs-waterville, 4/60)",
    "decision": "me-ms-waterville",
    "evidence": {
     "votes": {
@@ -492,22 +493,37 @@
    "raw": "Waterville",
    "file": "2013/Outdoor/ResultsLawrence%20JuniorHigh_april30.json",
    "rows": 119,
-   "flag": "athletes contradict name match (me-hs-waterville -> me-ms-waterville, 4/61)",
+   "flag": "athletes contradict name match (me-hs-waterville -> me-ms-waterville, 39/61)",
    "decision": "me-ms-waterville",
    "evidence": {
     "votes": {
      "me-ms-waterville": 60,
-     "me-hs-mt-view": 1
+     "me-ms-mt-view": 1
     },
     "athletes": 61,
     "with_evidence": 61
    }
   },
   {
+   "raw": "Lawrence",
+   "file": "2013/Outdoor/ResultsLawrence%20JuniorHigh_april30.json",
+   "rows": 119,
+   "flag": "athletes contradict name match (me-hs-lawrence -> me-ms-lawrence, 8/53)",
+   "decision": "me-ms-lawrence",
+   "evidence": {
+    "votes": {
+     "me-ms-lawrence": 52,
+     "me-hs-kennebunk": 1
+    },
+    "athletes": 56,
+    "with_evidence": 53
+   }
+  },
+  {
    "raw": "Waterville",
    "file": "2013/Outdoor/watervillejh_may7.json",
    "rows": 119,
-   "flag": "athletes contradict name match (me-hs-waterville -> me-ms-waterville, 47/55)",
+   "flag": "athletes contradict name match (me-hs-waterville -> me-ms-waterville, 34/55)",
    "decision": "me-ms-waterville",
    "evidence": {
     "votes": {
@@ -521,11 +537,11 @@
    "raw": "Winslow",
    "file": "2013/Outdoor/watervillems_april27.json",
    "rows": 118,
-   "flag": "athletes contradict name match (me-ms-winslow -> me-hs-winslow, 48/49)",
+   "flag": "athletes contradict name match (me-ms-winslow -> me-hs-winslow, 20/49)",
    "decision": "me-ms-winslow",
    "evidence": {
     "votes": {
-     "me-hs-winslow": 48,
+     "me-ms-winslow": 48,
      "me-hs-ellsworth": 1
     },
     "athletes": 49,
@@ -554,7 +570,7 @@
    "decision": "me-ms-messalonskee",
    "evidence": {
     "votes": {
-     "me-ms-messalonskee": 26
+     "me-ms-messalonskee": 27
     },
     "athletes": 37,
     "with_evidence": 28
@@ -564,28 +580,74 @@
    "raw": "Messalonskee",
    "file": "2021/Outdoor/results_messalonskee_2021_06_04.json",
    "rows": 117,
-   "flag": "athletes contradict name match (me-ms-mattanawcook -> me-ms-messalonskee, 24/28)",
+   "flag": "athletes contradict name match (me-ms-mattanawcook -> me-ms-messalonskee, 27/28)",
    "decision": "me-ms-messalonskee",
    "evidence": {
     "votes": {
-     "me-ms-messalonskee": 26
+     "me-ms-messalonskee": 27
     },
     "athletes": 37,
     "with_evidence": 28
    }
   },
   {
-   "raw": "Mount Blue",
-   "file": "2011/Outdoor/lawrenceMS_may3.json",
-   "rows": 115,
-   "flag": "athletes contradict name match (me-ms-mt-blue -> me-hs-mt-blue, 41/41)",
-   "decision": "me-ms-mt-blue",
+   "raw": "Winslow",
+   "file": "2013/Outdoor/watervillejh_may7.json",
+   "rows": 116,
+   "flag": "athletes contradict name match (me-hs-winslow -> me-ms-winslow, 47/48)",
+   "decision": "me-ms-winslow",
    "evidence": {
     "votes": {
-     "me-ms-mt-blue": 41
+     "me-ms-winslow": 47,
+     "me-hs-ellsworth": 1
     },
-    "athletes": 43,
-    "with_evidence": 41
+    "athletes": 50,
+    "with_evidence": 48
+   }
+  },
+  {
+   "raw": "Winslow",
+   "file": "2013/Outdoor/ResultsLawrence%20JuniorHigh_april30.json",
+   "rows": 114,
+   "flag": "athletes contradict name match (me-hs-winslow -> me-ms-winslow, 4/50)",
+   "decision": "me-ms-winslow",
+   "evidence": {
+    "votes": {
+     "me-ms-winslow": 49,
+     "me-hs-ellsworth": 1
+    },
+    "athletes": 51,
+    "with_evidence": 50
+   }
+  },
+  {
+   "raw": "WTVL",
+   "file": "2017/Outdoor/ResultsWin2.json",
+   "rows": 114,
+   "flag": "athletes contradict name match (me-hs-waterville -> me-ms-waterville, 10/10)",
+   "decision": "me-hs-waterville",
+   "evidence": {
+    "votes": {
+     "me-hs-waterville": 36,
+     "me-ms-waterville": 1
+    },
+    "athletes": 59,
+    "with_evidence": 46
+   }
+  },
+  {
+   "raw": "WTVL",
+   "file": "2017/Outdoor/ResultsWin2.json",
+   "rows": 114,
+   "flag": "athletes contradict name match (me-ms-waterville -> me-hs-waterville, 36/46)",
+   "decision": "me-hs-waterville",
+   "evidence": {
+    "votes": {
+     "me-hs-waterville": 36,
+     "me-ms-waterville": 1
+    },
+    "athletes": 59,
+    "with_evidence": 46
    }
   },
   {
@@ -617,24 +679,10 @@
    }
   },
   {
-   "raw": "Skowhegan",
-   "file": "2013/Outdoor/watervillems_april27.json",
-   "rows": 109,
-   "flag": "athletes contradict name match (me-ms-skowhegan -> me-hs-skowhegan, 28/32)",
-   "decision": "me-ms-skowhegan",
-   "evidence": {
-    "votes": {
-     "me-ms-skowhegan": 32
-    },
-    "athletes": 59,
-    "with_evidence": 32
-   }
-  },
-  {
    "raw": "Mount Blue",
    "file": "2011/Outdoor/WJHSResults_april30.json",
    "rows": 107,
-   "flag": "athletes contradict name match (me-hs-mt-blue -> me-ms-mt-blue, 3/38)",
+   "flag": "athletes contradict name match (me-hs-mt-blue -> me-ms-mt-blue, 38/38)",
    "decision": "me-ms-mt-blue",
    "evidence": {
     "votes": {
@@ -642,34 +690,6 @@
     },
     "athletes": 38,
     "with_evidence": 38
-   }
-  },
-  {
-   "raw": "Waterville",
-   "file": "2013/Outdoor/Mid%20coast%20relays.json",
-   "rows": 107,
-   "flag": "athletes contradict name match (me-ms-waterville -> me-hs-waterville, 25/48)",
-   "decision": "me-ms-waterville",
-   "evidence": {
-    "votes": {
-     "me-ms-waterville": 48
-    },
-    "athletes": 50,
-    "with_evidence": 48
-   }
-  },
-  {
-   "raw": "Waterville",
-   "file": "2013/Outdoor/Mid%20coast%20relays.json",
-   "rows": 107,
-   "flag": "athletes contradict name match (me-ms-waterville -> me-hs-waterville, 24/48)",
-   "decision": "me-ms-waterville",
-   "evidence": {
-    "votes": {
-     "me-ms-waterville": 48
-    },
-    "athletes": 50,
-    "with_evidence": 48
    }
   },
   {
@@ -713,48 +733,6 @@
     },
     "athletes": 40,
     "with_evidence": 40
-   }
-  },
-  {
-   "raw": "Lawrence",
-   "file": "2011/Outdoor/lawrenceMS_may3.json",
-   "rows": 105,
-   "flag": "athletes contradict name match (me-ms-lawrence -> me-hs-lawrence, 9/41)",
-   "decision": "me-ms-lawrence",
-   "evidence": {
-    "votes": {
-     "me-ms-lawrence": 40
-    },
-    "athletes": 46,
-    "with_evidence": 41
-   }
-  },
-  {
-   "raw": "WIND",
-   "file": "2013/Outdoor/scarboroughmiddle_may8.json",
-   "rows": 105,
-   "flag": "athletes contradict name match (me-hs-windham -> me-ms-windham, 8/8)",
-   "decision": "me-hs-windham",
-   "evidence": {
-    "votes": {
-     "me-hs-windham": 39
-    },
-    "athletes": 52,
-    "with_evidence": 48
-   }
-  },
-  {
-   "raw": "WIND",
-   "file": "2013/Outdoor/scarboroughmiddle_may8.json",
-   "rows": 105,
-   "flag": "athletes contradict name match (me-ms-windham -> me-hs-windham, 40/48)",
-   "decision": "me-hs-windham",
-   "evidence": {
-    "votes": {
-     "me-hs-windham": 39
-    },
-    "athletes": 52,
-    "with_evidence": 48
    }
   },
   {
@@ -837,7 +815,7 @@
    "decision": "me-ms-messalonskee",
    "evidence": {
     "votes": {
-     "me-ms-messalonskee": 33
+     "me-ms-messalonskee": 34
     },
     "athletes": 39,
     "with_evidence": 35
@@ -875,11 +853,11 @@
    "raw": "Lawrence",
    "file": "2013/Outdoor/watervillems_april27.json",
    "rows": 100,
-   "flag": "athletes contradict name match (me-ms-lawrence -> me-hs-lawrence, 45/50)",
+   "flag": "athletes contradict name match (me-ms-lawrence -> me-hs-lawrence, 13/50)",
    "decision": "me-ms-lawrence",
    "evidence": {
     "votes": {
-     "me-hs-lawrence": 45
+     "me-ms-lawrence": 50
     },
     "athletes": 51,
     "with_evidence": 50
@@ -889,7 +867,7 @@
    "raw": "Mt Blue",
    "file": "2013/Outdoor/watervillems_april27.json",
    "rows": 99,
-   "flag": "athletes contradict name match (me-ms-mt-blue -> me-hs-mt-blue, 32/38)",
+   "flag": "athletes contradict name match (me-ms-mt-blue -> me-hs-mt-blue, 9/38)",
    "decision": "me-ms-mt-blue",
    "evidence": {
     "votes": {
@@ -913,21 +891,6 @@
     },
     "athletes": 50,
     "with_evidence": 49
-   }
-  },
-  {
-   "raw": "WIND",
-   "file": "2013/Outdoor/southernmainems.json",
-   "rows": 97,
-   "flag": "athletes contradict name match (me-hs-windham -> me-ms-windham, 50/50)",
-   "decision": "me-hs-windham",
-   "evidence": {
-    "votes": {
-     "me-hs-windham": 39,
-     "me-ms-windham": 2
-    },
-    "athletes": 56,
-    "with_evidence": 50
    }
   },
   {
@@ -1160,7 +1123,7 @@
    "raw": "Mt Blue",
    "file": "2013/Outdoor/watervillejh_may7.json",
    "rows": 91,
-   "flag": "athletes contradict name match (me-hs-mt-blue -> me-ms-mt-blue, 3/37)",
+   "flag": "athletes contradict name match (me-hs-mt-blue -> me-ms-mt-blue, 4/37)",
    "decision": "me-ms-mt-blue",
    "evidence": {
     "votes": {
@@ -1176,11 +1139,11 @@
    "raw": "Messalonskee",
    "file": "2013/Outdoor/watervillems_april27.json",
    "rows": 91,
-   "flag": "athletes contradict name match (me-ms-messalonskee -> me-hs-messalonskee, 44/44)",
+   "flag": "athletes contradict name match (me-ms-messalonskee -> me-hs-messalonskee, 12/44)",
    "decision": "me-ms-messalonskee",
    "evidence": {
     "votes": {
-     "me-hs-messalonskee": 44
+     "me-hs-messalonskee": 12
     },
     "athletes": 47,
     "with_evidence": 44
@@ -1218,12 +1181,11 @@
    "raw": "GNG",
    "file": "2016/Outdoor/Results.json",
    "rows": 89,
-   "flag": "athletes contradict name match (me-hs-gray-ng -> me-ms-gray-ng, 10/12)",
+   "flag": "athletes contradict name match (me-hs-gray-ng -> me-ms-gray-ng, 8/10)",
    "decision": "me-ms-gray-ng",
    "evidence": {
     "votes": {
-     "me-ms-gray-ng": 10,
-     "me-hs-falmouth": 1
+     "me-ms-gray-ng": 10
     },
     "athletes": 54,
     "with_evidence": 12
@@ -1353,8 +1315,8 @@
    "evidence": {
     "votes": {
      "me-hs-mt-abram": 33,
-     "me-hs-old-town": 1,
-     "me-hs-hampden": 1
+     "me-hs-hampden": 1,
+     "me-hs-old-town": 1
     },
     "athletes": 38,
     "with_evidence": 37
@@ -1368,7 +1330,7 @@
    "decision": "me-ms-messalonskee",
    "evidence": {
     "votes": {
-     "me-ms-messalonskee": 33
+     "me-ms-messalonskee": 34
     },
     "athletes": 35,
     "with_evidence": 35
@@ -1449,7 +1411,7 @@
    "raw": "Falmouth",
    "file": "2008/Outdoor/triplec_june5.json",
    "rows": 86,
-   "flag": "athletes contradict name match (me-hs-falmouth -> me-ms-falmouth, 6/16)",
+   "flag": "athletes contradict name match (me-hs-falmouth -> me-ms-falmouth, 15/15)",
    "decision": "me-ms-falmouth",
    "evidence": {
     "votes": {
@@ -1457,6 +1419,20 @@
     },
     "athletes": 49,
     "with_evidence": 16
+   }
+  },
+  {
+   "raw": "Mt. View",
+   "file": "2013/Outdoor/mtviewjh_may16.json",
+   "rows": 86,
+   "flag": "athletes contradict name match (me-hs-mt-view -> me-ms-mt-view, 4/38)",
+   "decision": "me-ms-mt-view",
+   "evidence": {
+    "votes": {
+     "me-ms-mt-view": 37
+    },
+    "athletes": 41,
+    "with_evidence": 38
    }
   },
   {
@@ -1539,8 +1515,8 @@
    "evidence": {
     "votes": {
      "me-hs-mt-abram": 28,
-     "me-hs-old-town": 1,
-     "me-hs-hampden": 1
+     "me-hs-hampden": 1,
+     "me-hs-old-town": 1
     },
     "athletes": 34,
     "with_evidence": 32
@@ -1578,7 +1554,7 @@
    "raw": "Lawrence",
    "file": "2011/Outdoor/WJHSResults_april30.json",
    "rows": 83,
-   "flag": "athletes contradict name match (me-hs-lawrence -> me-ms-lawrence, 10/37)",
+   "flag": "athletes contradict name match (me-hs-lawrence -> me-ms-lawrence, 36/37)",
    "decision": "me-ms-lawrence",
    "evidence": {
     "votes": {
@@ -1621,7 +1597,7 @@
    "raw": "Mt Blue",
    "file": "2013/Outdoor/mtviewjh_may16.json",
    "rows": 82,
-   "flag": "athletes contradict name match (me-hs-mt-blue -> me-ms-mt-blue, 6/34)",
+   "flag": "athletes contradict name match (me-hs-mt-blue -> me-ms-mt-blue, 3/34)",
    "decision": "me-ms-mt-blue",
    "evidence": {
     "votes": {
@@ -1662,6 +1638,20 @@
    }
   },
   {
+   "raw": "Skowhegan",
+   "file": "2011/Outdoor/WJHSResults_april30.json",
+   "rows": 81,
+   "flag": "athletes contradict name match (me-hs-skowhegan -> me-ms-skowhegan, 29/29)",
+   "decision": "me-ms-skowhegan",
+   "evidence": {
+    "votes": {
+     "me-ms-skowhegan": 29
+    },
+    "athletes": 36,
+    "with_evidence": 29
+   }
+  },
+  {
    "raw": "Mt. View",
    "file": "2012/Outdoor/watervillems_may11.json",
    "rows": 81,
@@ -1670,6 +1660,20 @@
    "evidence": {
     "votes": {
      "me-ms-mt-view": 43
+    },
+    "athletes": 44,
+    "with_evidence": 43
+   }
+  },
+  {
+   "raw": "Lawrence",
+   "file": "2013/Outdoor/centralmainejhchamps.json",
+   "rows": 81,
+   "flag": "athletes contradict name match (me-ms-lawrence -> me-hs-lawrence, 8/43)",
+   "decision": "me-ms-lawrence",
+   "evidence": {
+    "votes": {
+     "me-ms-lawrence": 43
     },
     "athletes": 44,
     "with_evidence": 43
@@ -1735,48 +1739,6 @@
    }
   },
   {
-   "raw": "Waterville",
-   "file": "2011/Outdoor/JHCResults_may26.json",
-   "rows": 79,
-   "flag": "athletes contradict name match (me-hs-waterville -> me-ms-waterville, 24/41)",
-   "decision": "me-ms-waterville",
-   "evidence": {
-    "votes": {
-     "me-ms-waterville": 41
-    },
-    "athletes": 41,
-    "with_evidence": 41
-   }
-  },
-  {
-   "raw": "Waterville",
-   "file": "2013/Outdoor/centralmainejhchamps.json",
-   "rows": 79,
-   "flag": "athletes contradict name match (me-hs-waterville -> me-ms-waterville, 36/44)",
-   "decision": "me-ms-waterville",
-   "evidence": {
-    "votes": {
-     "me-ms-waterville": 44
-    },
-    "athletes": 44,
-    "with_evidence": 44
-   }
-  },
-  {
-   "raw": "LINC",
-   "file": "2013/Outdoor/southernmainems.json",
-   "rows": 79,
-   "flag": "athletes contradict name match (me-hs-lincoln-academy -> me-ms-lincoln-portland, 31/31)",
-   "decision": "me-hs-lincoln-academy",
-   "evidence": {
-    "votes": {
-     "me-hs-lincoln-academy": 28
-    },
-    "athletes": 36,
-    "with_evidence": 31
-   }
-  },
-  {
    "raw": "Madison",
    "file": "2013/Outdoor/watervillems_april27.json",
    "rows": 79,
@@ -1784,7 +1746,7 @@
    "decision": "me-ms-madison",
    "evidence": {
     "votes": {
-     "me-ms-madison": 23,
+     "me-hs-madison": 17,
      "me-ms-cohen": 1
     },
     "athletes": 29,
@@ -1809,7 +1771,7 @@
    "raw": "Falmouth",
    "file": "2016/Outdoor/Results.json",
    "rows": 78,
-   "flag": "athletes contradict name match (me-hs-falmouth -> me-ms-falmouth, 7/24)",
+   "flag": "athletes contradict name match (me-hs-falmouth -> me-ms-falmouth, 23/23)",
    "decision": "me-ms-falmouth",
    "evidence": {
     "votes": {
@@ -1866,50 +1828,6 @@
    }
   },
   {
-   "raw": "Waterville",
-   "file": "2021/Outdoor/Mt-View-MS-5-10-21.json",
-   "rows": 78,
-   "flag": "athletes contradict name match (me-ms-waterville -> me-hs-waterville, 3/3)",
-   "decision": "me-ms-waterville",
-   "evidence": {
-    "votes": {
-     "me-ms-waterville": 22
-    },
-    "athletes": 28,
-    "with_evidence": 23
-   }
-  },
-  {
-   "raw": "LINC",
-   "file": "2013/Outdoor/scarboroughmiddle_may8.json",
-   "rows": 77,
-   "flag": "athletes contradict name match (me-hs-lincoln-academy -> me-ms-lincoln-portland, 3/4)",
-   "decision": "me-hs-lincoln-academy",
-   "evidence": {
-    "votes": {
-     "me-hs-lincoln-academy": 28,
-     "me-ms-lyman-moore": 1
-    },
-    "athletes": 34,
-    "with_evidence": 32
-   }
-  },
-  {
-   "raw": "LINC",
-   "file": "2013/Outdoor/scarboroughmiddle_may8.json",
-   "rows": 77,
-   "flag": "athletes contradict name match (me-ms-lincoln-portland -> me-hs-lincoln-academy, 28/32)",
-   "decision": "me-hs-lincoln-academy",
-   "evidence": {
-    "votes": {
-     "me-hs-lincoln-academy": 28,
-     "me-ms-lyman-moore": 1
-    },
-    "athletes": 34,
-    "with_evidence": 32
-   }
-  },
-  {
    "raw": "Mountain Val",
    "file": "2023/Outdoor/ResultsTELSTAR-1.json",
    "rows": 77,
@@ -1927,7 +1845,7 @@
    "raw": "Messalonskee",
    "file": "2011/Outdoor/WJHSResults_april30.json",
    "rows": 76,
-   "flag": "athletes contradict name match (me-hs-messalonskee -> me-ms-messalonskee, 6/35)",
+   "flag": "athletes contradict name match (me-hs-messalonskee -> me-ms-messalonskee, 34/35)",
    "decision": "me-ms-messalonskee",
    "evidence": {
     "votes": {
@@ -1936,48 +1854,6 @@
     },
     "athletes": 37,
     "with_evidence": 35
-   }
-  },
-  {
-   "raw": "Mt. View",
-   "file": "2011/Outdoor/lawrenceMS_may18.json",
-   "rows": 76,
-   "flag": "athletes contradict name match (me-ms-mt-view -> me-hs-mt-view, 31/31)",
-   "decision": "me-ms-mt-view",
-   "evidence": {
-    "votes": {
-     "me-ms-mt-view": 31
-    },
-    "athletes": 32,
-    "with_evidence": 31
-   }
-  },
-  {
-   "raw": "Lawrence",
-   "file": "2011/Outdoor/JHCResults_may26.json",
-   "rows": 75,
-   "flag": "athletes contradict name match (me-hs-lawrence -> me-ms-lawrence, 5/31)",
-   "decision": "me-ms-lawrence",
-   "evidence": {
-    "votes": {
-     "me-ms-lawrence": 31
-    },
-    "athletes": 34,
-    "with_evidence": 31
-   }
-  },
-  {
-   "raw": "Messalonskee",
-   "file": "2011/Outdoor/lawrenceMS_may3.json",
-   "rows": 75,
-   "flag": "athletes contradict name match (me-ms-messalonskee -> me-hs-messalonskee, 4/37)",
-   "decision": "me-ms-messalonskee",
-   "evidence": {
-    "votes": {
-     "me-ms-messalonskee": 37
-    },
-    "athletes": 37,
-    "with_evidence": 37
    }
   },
   {
@@ -2006,21 +1882,6 @@
     },
     "athletes": 20,
     "with_evidence": 20
-   }
-  },
-  {
-   "raw": "Skowhegan",
-   "file": "2016/Outdoor/Mt-View-MS-girls.json",
-   "rows": 75,
-   "flag": "athletes contradict name match (me-ms-skowhegan -> me-hs-skowhegan, 5/6)",
-   "decision": "me-ms-skowhegan",
-   "evidence": {
-    "votes": {
-     "me-hs-skowhegan": 5,
-     "me-hs-oceanside": 1
-    },
-    "athletes": 31,
-    "with_evidence": 6
    }
   },
   {
@@ -2057,6 +1918,20 @@
     },
     "athletes": 28,
     "with_evidence": 28
+   }
+  },
+  {
+   "raw": "Mt. View",
+   "file": "2013/Outdoor/ResultsLawrence%20JuniorHigh_april30.json",
+   "rows": 74,
+   "flag": "athletes contradict name match (me-hs-mt-view -> me-ms-mt-view, 7/40)",
+   "decision": "me-ms-mt-view",
+   "evidence": {
+    "votes": {
+     "me-ms-mt-view": 40
+    },
+    "athletes": 40,
+    "with_evidence": 40
    }
   },
   {
@@ -2131,20 +2006,6 @@
    }
   },
   {
-   "raw": "Ellsworth",
-   "file": "2008/Outdoor/brewermiddleboys_may8.json",
-   "rows": 72,
-   "flag": "athletes contradict name match (me-hs-ellsworth -> me-ms-ellsworth, 18/18)",
-   "decision": "me-ms-ellsworth",
-   "evidence": {
-    "votes": {
-     "me-ms-ellsworth": 18
-    },
-    "athletes": 31,
-    "with_evidence": 18
-   }
-  },
-  {
    "raw": "Messalonskee",
    "file": "2018/Outdoor/Mt-View-MS-girls.json",
    "rows": 72,
@@ -2171,35 +2032,6 @@
     },
     "athletes": 55,
     "with_evidence": 13
-   }
-  },
-  {
-   "raw": "Skowhegan",
-   "file": "2013/Outdoor/centralmainejhchamps.json",
-   "rows": 71,
-   "flag": "athletes contradict name match (me-hs-skowhegan -> me-ms-skowhegan, 30/32)",
-   "decision": "me-ms-skowhegan",
-   "evidence": {
-    "votes": {
-     "me-ms-skowhegan": 31
-    },
-    "athletes": 44,
-    "with_evidence": 32
-   }
-  },
-  {
-   "raw": "Mt. Blue",
-   "file": "2013/Outdoor/centralmainejhchamps.json",
-   "rows": 71,
-   "flag": "athletes contradict name match (me-hs-mt-blue -> me-ms-mt-blue, 23/29)",
-   "decision": "me-ms-mt-blue",
-   "evidence": {
-    "votes": {
-     "me-ms-mt-blue": 23,
-     "me-hs-oxford-hills": 1
-    },
-    "athletes": 32,
-    "with_evidence": 29
    }
   },
   {
@@ -2248,20 +2080,6 @@
    }
   },
   {
-   "raw": "Ellsworth",
-   "file": "2008/Outdoor/brewermiddlegirls_may8.json",
-   "rows": 70,
-   "flag": "athletes contradict name match (me-hs-ellsworth -> me-ms-ellsworth, 18/18)",
-   "decision": "me-ms-ellsworth",
-   "evidence": {
-    "votes": {
-     "me-ms-ellsworth": 18
-    },
-    "athletes": 29,
-    "with_evidence": 18
-   }
-  },
-  {
    "raw": "WMS",
    "file": "2018/Outdoor/ResultsWJHS-1.json",
    "rows": 70,
@@ -2280,11 +2098,11 @@
    "raw": "Mt. View",
    "file": "2013/Outdoor/watervillems_april27.json",
    "rows": 69,
-   "flag": "athletes contradict name match (me-ms-mt-view -> me-hs-mt-view, 39/39)",
+   "flag": "athletes contradict name match (me-ms-mt-view -> me-hs-mt-view, 4/39)",
    "decision": "me-ms-mt-view",
    "evidence": {
     "votes": {
-     "me-hs-mt-view": 39
+     "me-ms-mt-view": 39
     },
     "athletes": 39,
     "with_evidence": 39
@@ -2361,17 +2179,18 @@
    }
   },
   {
-   "raw": "Mount Blue",
-   "file": "2011/Outdoor/JHCResults_may26.json",
+   "raw": "Newport",
+   "file": "2010/Outdoor/ellsworthmiddleboys_may18.json",
    "rows": 68,
-   "flag": "athletes contradict name match (me-hs-mt-blue -> me-ms-mt-blue, 4/39)",
-   "decision": "me-ms-mt-blue",
+   "flag": "athletes contradict name match (oos-auto-nh-newport -> club-warrior-tc, 5/26)",
+   "decision": "oos-auto-nh-newport",
    "evidence": {
     "votes": {
-     "me-ms-mt-blue": 39
+     "club-warrior-tc": 5,
+     "oos-auto-nh-newport": 1
     },
-    "athletes": 39,
-    "with_evidence": 39
+    "athletes": 27,
+    "with_evidence": 26
    }
   },
   {
@@ -2386,34 +2205,6 @@
     },
     "athletes": 27,
     "with_evidence": 26
-   }
-  },
-  {
-   "raw": "SMMS",
-   "file": "2017/Outdoor/ResultsLJHS2.json",
-   "rows": 68,
-   "flag": "athletes contradict name match (me-ms-spruce-mountain -> me-hs-spruce-mountain, 3/3)",
-   "decision": "me-hs-spruce-mountain",
-   "evidence": {
-    "votes": {
-     "me-hs-spruce-mountain": 3
-    },
-    "athletes": 23,
-    "with_evidence": 3
-   }
-  },
-  {
-   "raw": "SMMS",
-   "file": "2017/Outdoor/ResultsLJHS2.json",
-   "rows": 68,
-   "flag": "athletes contradict name match (me-hs-spruce-mountain -> me-ms-spruce-mountain, 3/3)",
-   "decision": "me-hs-spruce-mountain",
-   "evidence": {
-    "votes": {
-     "me-hs-spruce-mountain": 3
-    },
-    "athletes": 23,
-    "with_evidence": 3
    }
   },
   {
@@ -2503,6 +2294,20 @@
    }
   },
   {
+   "raw": "Mt. View",
+   "file": "2013/Outdoor/centralmainejhchamps.json",
+   "rows": 66,
+   "flag": "athletes contradict name match (me-ms-mt-view -> me-hs-mt-view, 5/41)",
+   "decision": "me-ms-mt-view",
+   "evidence": {
+    "votes": {
+     "me-ms-mt-view": 40
+    },
+    "athletes": 41,
+    "with_evidence": 41
+   }
+  },
+  {
    "raw": "Limestone/MSSM",
    "file": "2022/Outdoor/2022-alhs-tf-championship-boys-results.json",
    "rows": 66,
@@ -2518,34 +2323,34 @@
    }
   },
   {
-   "raw": "Winslow",
-   "file": "2011/Outdoor/lawrenceMS_may18.json",
-   "rows": 65,
-   "flag": "athletes contradict name match (me-ms-winslow -> me-hs-winslow, 3/25)",
-   "decision": "me-ms-winslow",
-   "evidence": {
-    "votes": {
-     "me-ms-winslow": 24
-    },
-    "athletes": 25,
-    "with_evidence": 25
-   }
-  },
-  {
    "raw": "Unattached",
    "file": "2018/Indoor/Indoor-14-Under-Meet-3.json",
    "rows": 65,
-   "flag": "athletes contradict name match (x-unattached -> me-ms-leonard, 15/26)",
+   "flag": "athletes contradict name match (x-unattached -> me-ms-leonard, 15/27)",
    "decision": "me-ms-leonard",
    "evidence": {
     "votes": {
      "me-ms-leonard": 16,
+     "me-ms-mirus": 1,
      "me-ms-cohen": 1,
-     "me-ms-brunswick": 1,
-     "me-ms-bonny-eagle": 1
+     "me-ms-brunswick": 1
     },
     "athletes": 30,
-    "with_evidence": 27
+    "with_evidence": 28
+   }
+  },
+  {
+   "raw": "Winslow",
+   "file": "2013/Outdoor/centralmainejhchamps.json",
+   "rows": 64,
+   "flag": "athletes contradict name match (me-ms-winslow -> me-hs-winslow, 3/31)",
+   "decision": "me-ms-winslow",
+   "evidence": {
+    "votes": {
+     "me-ms-winslow": 31
+    },
+    "athletes": 32,
+    "with_evidence": 31
    }
   },
   {
@@ -2602,6 +2407,20 @@
     },
     "athletes": 29,
     "with_evidence": 28
+   }
+  },
+  {
+   "raw": "Skowhegan",
+   "file": "2011/Outdoor/JHCResults_may26.json",
+   "rows": 63,
+   "flag": "athletes contradict name match (me-ms-skowhegan -> me-hs-skowhegan, 29/29)",
+   "decision": "me-ms-skowhegan",
+   "evidence": {
+    "votes": {
+     "me-ms-skowhegan": 29
+    },
+    "athletes": 32,
+    "with_evidence": 29
    }
   },
   {
@@ -2691,25 +2510,11 @@
    }
   },
   {
-   "raw": "Winslow",
-   "file": "2011/Outdoor/watervilleMS_may11.json",
-   "rows": 61,
-   "flag": "athletes contradict name match (me-ms-winslow -> me-hs-winslow, 2/24)",
-   "decision": "me-ms-winslow",
-   "evidence": {
-    "votes": {
-     "me-ms-winslow": 23
-    },
-    "athletes": 25,
-    "with_evidence": 24
-   }
-  },
-  {
    "raw": "Madisn",
    "file": "2013/Outdoor/centralmainejhchamps.json",
    "rows": 61,
-   "flag": "athletes contradict name match (me-hs-madison -> me-ms-madison, 17/24)",
-   "decision": "me-ms-madison",
+   "flag": "athletes contradict name match (me-hs-madison -> me-ms-madison, 23/24)",
+   "decision": "me-hs-madison",
    "evidence": {
     "votes": {
      "me-ms-madison": 23,
@@ -2732,21 +2537,6 @@
     },
     "athletes": 28,
     "with_evidence": 28
-   }
-  },
-  {
-   "raw": "Mt Blue Midd",
-   "file": "2016/Outdoor/Mt-View-MS-girls.json",
-   "rows": 61,
-   "flag": "athletes contradict name match (me-ms-mt-blue -> me-hs-mt-blue, 4/5)",
-   "decision": "me-ms-mt-blue",
-   "evidence": {
-    "votes": {
-     "me-hs-mt-blue": 4,
-     "me-hs-caribou": 1
-    },
-    "athletes": 26,
-    "with_evidence": 5
    }
   },
   {
@@ -2804,20 +2594,6 @@
     },
     "athletes": 31,
     "with_evidence": 3
-   }
-  },
-  {
-   "raw": "Brewer",
-   "file": "2008/Outdoor/brewermiddlegirls_may8.json",
-   "rows": 60,
-   "flag": "athletes contradict name match (me-hs-brewer -> me-ms-brewer, 17/17)",
-   "decision": "me-ms-brewer",
-   "evidence": {
-    "votes": {
-     "me-ms-brewer": 17
-    },
-    "athletes": 26,
-    "with_evidence": 17
    }
   },
   {
@@ -2892,6 +2668,21 @@
    }
   },
   {
+   "raw": "WTC",
+   "file": "2010/Outdoor/foxcroftmiddleboys_may13.json",
+   "rows": 59,
+   "flag": "file expansion: None -> club-warrior-tc",
+   "decision": "club-warrior-tc",
+   "evidence": {
+    "votes": {
+     "club-warrior-tc": 2,
+     "oos-auto-nh-newport": 1
+    },
+    "athletes": 24,
+    "with_evidence": 23
+   }
+  },
+  {
    "raw": "ORO",
    "file": "2013/Outdoor/Elsworth%20MS%205-14-2013.json",
    "rows": 59,
@@ -2935,20 +2726,6 @@
    }
   },
   {
-   "raw": "Mt. View",
-   "file": "2011/Outdoor/JHCResults_may26.json",
-   "rows": 58,
-   "flag": "athletes contradict name match (me-hs-mt-view -> me-ms-mt-view, 8/32)",
-   "decision": "me-ms-mt-view",
-   "evidence": {
-    "votes": {
-     "me-ms-mt-view": 32
-    },
-    "athletes": 35,
-    "with_evidence": 32
-   }
-  },
-  {
    "raw": "BUCS",
    "file": "2003/Outdoor/ham17may03.json",
    "rows": 57,
@@ -2966,7 +2743,7 @@
    "raw": "Winslow",
    "file": "2011/Outdoor/WJHSResults_april30.json",
    "rows": 57,
-   "flag": "athletes contradict name match (me-hs-winslow -> me-ms-winslow, 6/23)",
+   "flag": "athletes contradict name match (me-hs-winslow -> me-ms-winslow, 22/23)",
    "decision": "me-ms-winslow",
    "evidence": {
     "votes": {
@@ -2998,8 +2775,8 @@
    "decision": "me-ms-madison",
    "evidence": {
     "votes": {
-     "me-ms-madison": 13,
-     "me-hs-madison": 7
+     "me-ms-madison": 17,
+     "me-hs-madison": 3
     },
     "athletes": 21,
     "with_evidence": 20
@@ -3013,25 +2790,25 @@
    "decision": "me-ms-madison",
    "evidence": {
     "votes": {
-     "me-ms-madison": 13,
-     "me-hs-madison": 7
+     "me-ms-madison": 17,
+     "me-hs-madison": 3
     },
     "athletes": 22,
     "with_evidence": 20
    }
   },
   {
-   "raw": "Brewer",
-   "file": "2010/Outdoor/ellsworthmiddlegirls_may18.json",
+   "raw": "Messalonskee",
+   "file": "2013/Outdoor/centralmainejhchamps.json",
    "rows": 56,
-   "flag": "athletes contradict name match (me-hs-brewer -> me-ms-brewer, 21/22)",
-   "decision": "me-ms-brewer",
+   "flag": "athletes contradict name match (me-ms-messalonskee -> me-hs-messalonskee, 9/41)",
+   "decision": "me-ms-messalonskee",
    "evidence": {
     "votes": {
-     "me-ms-brewer": 21
+     "me-hs-messalonskee": 9
     },
-    "athletes": 25,
-    "with_evidence": 22
+    "athletes": 45,
+    "with_evidence": 41
    }
   },
   {
@@ -3074,20 +2851,6 @@
     },
     "athletes": 20,
     "with_evidence": 20
-   }
-  },
-  {
-   "raw": "Messalonskee",
-   "file": "2022/Outdoor/ResultsLJHMeet1.json",
-   "rows": 56,
-   "flag": "athletes contradict name match (me-hs-messalonskee -> me-ms-messalonskee, 4/21)",
-   "decision": "me-ms-messalonskee",
-   "evidence": {
-    "votes": {
-     "me-ms-messalonskee": 21
-    },
-    "athletes": 21,
-    "with_evidence": 21
    }
   },
   {
@@ -3158,6 +2921,20 @@
     },
     "athletes": 24,
     "with_evidence": 8
+   }
+  },
+  {
+   "raw": "Waterville J",
+   "file": "2017/Outdoor/Mt-view-MS-girls.json",
+   "rows": 55,
+   "flag": "athletes contradict name match (me-hs-waterville -> me-ms-waterville, 28/28)",
+   "decision": "me-hs-waterville",
+   "evidence": {
+    "votes": {
+     "me-hs-waterville": 25
+    },
+    "athletes": 33,
+    "with_evidence": 28
    }
   },
   {
@@ -3249,7 +3026,7 @@
    "raw": "Mta",
    "file": "2021/Outdoor/results_mvc_north_2021_05_26.json",
    "rows": 52,
-   "flag": "company: me-hs-mt-ararat (0.33) -> me-hs-mt-abram (3.26)",
+   "flag": "company: me-hs-mt-ararat (0.33) -> me-hs-mt-abram (3.25)",
    "decision": "me-hs-mt-abram",
    "evidence": {
     "votes": {
@@ -3274,20 +3051,6 @@
    }
   },
   {
-   "raw": "Carrabec",
-   "file": "2013/Outdoor/centralmainejhchamps.json",
-   "rows": 51,
-   "flag": "athletes contradict name match (me-hs-carrabec -> me-ms-carrabec, 9/15)",
-   "decision": "me-ms-carrabec",
-   "evidence": {
-    "votes": {
-     "me-ms-carrabec": 14
-    },
-    "athletes": 20,
-    "with_evidence": 15
-   }
-  },
-  {
    "raw": "Warrior TC",
    "file": "2010/Outdoor/orono%20ms%20meet%20boys%20results%205.11.10.json",
    "rows": 50,
@@ -3295,21 +3058,8 @@
    "decision": "club-warrior-tc",
    "evidence": {
     "votes": {
-     "oos-auto-nh-newport": 27
-    },
-    "athletes": 27,
-    "with_evidence": 27
-   }
-  },
-  {
-   "raw": "Warrior TC",
-   "file": "2010/Outdoor/orono%20ms%20meet%20boys%20results%205.11.10.json",
-   "rows": 50,
-   "flag": "athletes contradict name match (club-warrior-tc -> oos-auto-nh-newport, 27/27)",
-   "decision": "club-warrior-tc",
-   "evidence": {
-    "votes": {
-     "oos-auto-nh-newport": 27
+     "oos-auto-nh-newport": 5,
+     "club-warrior-tc": 2
     },
     "athletes": 27,
     "with_evidence": 27
@@ -3341,20 +3091,6 @@
     },
     "athletes": 20,
     "with_evidence": 17
-   }
-  },
-  {
-   "raw": "Ellsworth",
-   "file": "2010/Outdoor/ellsworthmiddlegirls_may18.json",
-   "rows": 49,
-   "flag": "athletes contradict name match (me-hs-ellsworth -> me-ms-ellsworth, 27/27)",
-   "decision": "me-ms-ellsworth",
-   "evidence": {
-    "votes": {
-     "me-ms-ellsworth": 27
-    },
-    "athletes": 27,
-    "with_evidence": 27
    }
   },
   {
@@ -3424,20 +3160,6 @@
    }
   },
   {
-   "raw": "Brewer",
-   "file": "2008/Outdoor/brewermiddleboys_may8.json",
-   "rows": 48,
-   "flag": "athletes contradict name match (me-hs-brewer -> me-ms-brewer, 15/15)",
-   "decision": "me-ms-brewer",
-   "evidence": {
-    "votes": {
-     "me-ms-brewer": 15
-    },
-    "athletes": 21,
-    "with_evidence": 15
-   }
-  },
-  {
    "raw": "MtA",
    "file": "2017/Outdoor/170502a_HS_Girls_Individual-Results.json",
    "rows": 48,
@@ -3449,6 +3171,20 @@
      "col-umaine": 1
     },
     "athletes": 18,
+    "with_evidence": 17
+   }
+  },
+  {
+   "raw": "Waterville J",
+   "file": "2017/Outdoor/Mt-View-MS-boys.json",
+   "rows": 48,
+   "flag": "athletes contradict name match (me-hs-waterville -> me-ms-waterville, 17/17)",
+   "decision": "me-hs-waterville",
+   "evidence": {
+    "votes": {
+     "me-hs-waterville": 11
+    },
+    "athletes": 22,
     "with_evidence": 17
    }
   },
@@ -3493,34 +3229,6 @@
     },
     "athletes": 24,
     "with_evidence": 24
-   }
-  },
-  {
-   "raw": "Piscataquis",
-   "file": "2008/Outdoor/brewermiddlegirls_may8.json",
-   "rows": 47,
-   "flag": "athletes contradict name match (me-hs-piscataquis -> me-ms-piscataquis, 17/17)",
-   "decision": "me-ms-piscataquis",
-   "evidence": {
-    "votes": {
-     "me-ms-piscataquis": 17
-    },
-    "athletes": 19,
-    "with_evidence": 17
-   }
-  },
-  {
-   "raw": "Carrabec",
-   "file": "2013/Outdoor/watervillems_april27.json",
-   "rows": 47,
-   "flag": "athletes contradict name match (me-ms-carrabec -> me-hs-carrabec, 11/14)",
-   "decision": "me-ms-carrabec",
-   "evidence": {
-    "votes": {
-     "me-ms-carrabec": 14
-    },
-    "athletes": 16,
-    "with_evidence": 14
    }
   },
   {
@@ -3582,34 +3290,6 @@
    }
   },
   {
-   "raw": "Winslow",
-   "file": "2011/Outdoor/JHCResults_may26.json",
-   "rows": 46,
-   "flag": "athletes contradict name match (me-hs-winslow -> me-ms-winslow, 5/22)",
-   "decision": "me-ms-winslow",
-   "evidence": {
-    "votes": {
-     "me-ms-winslow": 21
-    },
-    "athletes": 23,
-    "with_evidence": 22
-   }
-  },
-  {
-   "raw": "Messalonskee",
-   "file": "2011/Outdoor/JHCResults_may26.json",
-   "rows": 46,
-   "flag": "athletes contradict name match (me-hs-messalonskee -> me-ms-messalonskee, 4/32)",
-   "decision": "me-ms-messalonskee",
-   "evidence": {
-    "votes": {
-     "me-ms-messalonskee": 32
-    },
-    "athletes": 32,
-    "with_evidence": 32
-   }
-  },
-  {
    "raw": "PCMS",
    "file": "2013/Outdoor/Brewer%20MS%205-9-2013.json",
    "rows": 46,
@@ -3622,20 +3302,6 @@
     },
     "athletes": 24,
     "with_evidence": 18
-   }
-  },
-  {
-   "raw": "Mt Blue Midd",
-   "file": "2016/Outdoor/Mt-View-MS-boys.json",
-   "rows": 46,
-   "flag": "athletes contradict name match (me-ms-mt-blue -> me-hs-mt-blue, 6/6)",
-   "decision": "me-ms-mt-blue",
-   "evidence": {
-    "votes": {
-     "me-hs-mt-blue": 6
-    },
-    "athletes": 20,
-    "with_evidence": 6
    }
   },
   {
@@ -3723,20 +3389,6 @@
     },
     "athletes": 22,
     "with_evidence": 22
-   }
-  },
-  {
-   "raw": "Madison Midd",
-   "file": "2017/Outdoor/Mt-View-MS-boys.json",
-   "rows": 45,
-   "flag": "athletes contradict name match (me-ms-madison -> me-hs-madison, 3/3)",
-   "decision": "me-ms-madison",
-   "evidence": {
-    "votes": {
-     "me-ms-madison": 3
-    },
-    "athletes": 15,
-    "with_evidence": 3
    }
   },
   {
@@ -3966,20 +3618,6 @@
    }
   },
   {
-   "raw": "Ellsworth",
-   "file": "2010/Outdoor/ellsworthmiddleboys_may18.json",
-   "rows": 42,
-   "flag": "athletes contradict name match (me-hs-ellsworth -> me-ms-ellsworth, 24/24)",
-   "decision": "me-ms-ellsworth",
-   "evidence": {
-    "votes": {
-     "me-ms-ellsworth": 24
-    },
-    "athletes": 24,
-    "with_evidence": 24
-   }
-  },
-  {
    "raw": "MMS",
    "file": "2012/Outdoor/MedomakMSgirls_may9.json",
    "rows": 42,
@@ -4053,8 +3691,8 @@
    "raw": "SD",
    "file": "2021/Outdoor/results_2021_05_13-1.json",
    "rows": 42,
-   "flag": "file expansion: None -> me-hs-st-dominic",
-   "decision": "me-hs-st-dominic",
+   "flag": "file expansion: None -> me-ms-st-dominic",
+   "decision": "me-ms-st-dominic",
    "evidence": {
     "votes": {
      "me-hs-foxcroft": 1
@@ -4092,20 +3730,6 @@
    }
   },
   {
-   "raw": "ORO",
-   "file": "2009/Outdoor/hampdenmiddleschoolgirls_may21.json",
-   "rows": 40,
-   "flag": "athletes contradict name match (me-hs-orono -> me-ms-orono, 17/17)",
-   "decision": "me-hs-orono",
-   "evidence": {
-    "votes": {
-     "me-ms-orono": 17
-    },
-    "athletes": 17,
-    "with_evidence": 17
-   }
-  },
-  {
    "raw": "MMS",
    "file": "2012/Outdoor/MedomakMSboys_may9.json",
    "rows": 40,
@@ -4117,21 +3741,6 @@
     },
     "athletes": 15,
     "with_evidence": 15
-   }
-  },
-  {
-   "raw": "Waterville",
-   "file": "2016/Outdoor/Mt-View-MS-boys-1.json",
-   "rows": 40,
-   "flag": "athletes contradict name match (me-ms-waterville -> me-hs-waterville, 3/3)",
-   "decision": "me-ms-waterville",
-   "evidence": {
-    "votes": {
-     "me-ms-waterville": 14,
-     "me-hs-waterville": 2
-    },
-    "athletes": 17,
-    "with_evidence": 17
    }
   },
   {
@@ -4171,9 +3780,9 @@
    "evidence": {
     "votes": {
      "me-hs-scarborough": 19,
-     "me-ms-windham": 1,
      "me-hs-poland": 1,
-     "me-ms-bucksport": 1
+     "me-ms-bucksport": 1,
+     "me-ms-gray-ng": 1
     },
     "athletes": 38,
     "with_evidence": 33
@@ -4239,11 +3848,11 @@
    "raw": "Unattached",
    "file": "2018/Indoor/Indoor-14-Under-Meet-3.json",
    "rows": 39,
-   "flag": "athletes contradict name match (x-unattached -> me-ms-leonard, 11/21)",
+   "flag": "athletes contradict name match (x-unattached -> me-ms-leonard, 11/22)",
    "decision": "x-unattached",
    "evidence": {
     "votes": {
-     "me-ms-leonard": 15,
+     "me-ms-leonard": 14,
      "me-ms-cohen": 1,
      "me-ms-brunswick": 1
     },
@@ -4255,11 +3864,11 @@
    "raw": "Unattached",
    "file": "2018/Indoor/Indoor-14-Under-Meet-3.json",
    "rows": 39,
-   "flag": "athletes contradict name match (x-unattached -> me-ms-leonard, 15/24)",
+   "flag": "athletes contradict name match (x-unattached -> me-ms-leonard, 14/24)",
    "decision": "x-unattached",
    "evidence": {
     "votes": {
-     "me-ms-leonard": 15,
+     "me-ms-leonard": 14,
      "me-ms-cohen": 1,
      "me-ms-brunswick": 1
     },
@@ -4422,20 +4031,6 @@
    }
   },
   {
-   "raw": "Fal",
-   "file": "2008/XC/falmouthmiddle9_18.json",
-   "rows": 37,
-   "flag": "athletes contradict name match (me-hs-falmouth -> me-ms-falmouth, 18/18)",
-   "decision": "me-ms-falmouth",
-   "evidence": {
-    "votes": {
-     "me-ms-falmouth": 18
-    },
-    "athletes": 37,
-    "with_evidence": 18
-   }
-  },
-  {
    "raw": "GMS",
    "file": "2010/Outdoor/triplecinvite.json",
    "rows": 37,
@@ -4459,8 +4054,8 @@
    "evidence": {
     "votes": {
      "col-usm": 4,
-     "me-hs-deering": 1,
-     "me-hs-westbrook": 1
+     "me-hs-westbrook": 1,
+     "me-hs-deering": 1
     },
     "athletes": 22,
     "with_evidence": 6
@@ -4698,20 +4293,6 @@
    }
   },
   {
-   "raw": "CEN",
-   "file": "2010/Outdoor/ellsworthmiddleboys_may10.json",
-   "rows": 34,
-   "flag": "athletes contradict name match (me-hs-central -> me-ms-central, 13/13)",
-   "decision": "me-hs-central",
-   "evidence": {
-    "votes": {
-     "me-ms-central": 13
-    },
-    "athletes": 16,
-    "with_evidence": 13
-   }
-  },
-  {
    "raw": "Oceanside",
    "file": "2012/Outdoor/Troy%20Howard%20MS%204-26-2012%20boys.json",
    "rows": 34,
@@ -4779,20 +4360,6 @@
     },
     "athletes": 29,
     "with_evidence": 29
-   }
-  },
-  {
-   "raw": "Brewer",
-   "file": "2010/Outdoor/orono%20ms%20meet%20girls%20results%205.11.10.json",
-   "rows": 33,
-   "flag": "athletes contradict name match (me-ms-brewer -> me-hs-brewer, 6/20)",
-   "decision": "me-ms-brewer",
-   "evidence": {
-    "votes": {
-     "me-ms-brewer": 19
-    },
-    "athletes": 21,
-    "with_evidence": 20
    }
   },
   {
@@ -5093,20 +4660,6 @@
    }
   },
   {
-   "raw": "Madison Midd",
-   "file": "2017/Outdoor/Mt-view-MS-girls.json",
-   "rows": 30,
-   "flag": "athletes contradict name match (me-ms-madison -> me-hs-madison, 4/4)",
-   "decision": "me-ms-madison",
-   "evidence": {
-    "votes": {
-     "me-ms-madison": 4
-    },
-    "athletes": 12,
-    "with_evidence": 4
-   }
-  },
-  {
    "raw": "Mount Desert",
    "file": "2018/Outdoor/Almquist-girls.json",
    "rows": 30,
@@ -5174,20 +4727,6 @@
     },
     "athletes": 13,
     "with_evidence": 4
-   }
-  },
-  {
-   "raw": "Piscataquis",
-   "file": "2008/Outdoor/brewermiddleboys_may8.json",
-   "rows": 29,
-   "flag": "athletes contradict name match (me-hs-piscataquis -> me-ms-piscataquis, 15/15)",
-   "decision": "me-ms-piscataquis",
-   "evidence": {
-    "votes": {
-     "me-ms-piscataquis": 15
-    },
-    "athletes": 15,
-    "with_evidence": 15
    }
   },
   {
@@ -5378,20 +4917,6 @@
    }
   },
   {
-   "raw": "ORO",
-   "file": "2009/Outdoor/hampdenmiddleschoolboys_may21.json",
-   "rows": 27,
-   "flag": "athletes contradict name match (me-hs-orono -> me-ms-orono, 10/10)",
-   "decision": "me-hs-orono",
-   "evidence": {
-    "votes": {
-     "me-ms-orono": 10
-    },
-    "athletes": 10,
-    "with_evidence": 10
-   }
-  },
-  {
    "raw": "01-Unatt Maine",
    "file": "2009/XC/usatf_scarboroughnov1.json",
    "rows": 27,
@@ -5400,8 +4925,8 @@
    "evidence": {
     "votes": {
      "me-hs-scarborough": 17,
-     "me-ms-gray-ng": 1,
-     "me-ms-westbrook": 1
+     "me-ms-westbrook": 1,
+     "me-ms-gray-ng": 1
     },
     "athletes": 27,
     "with_evidence": 26
@@ -5567,20 +5092,6 @@
    }
   },
   {
-   "raw": "Brewer",
-   "file": "2008/Outdoor/fredalmquistgirls.json",
-   "rows": 25,
-   "flag": "athletes contradict name match (me-ms-brewer -> me-hs-brewer, 17/17)",
-   "decision": "me-ms-brewer",
-   "evidence": {
-    "votes": {
-     "me-ms-brewer": 17
-    },
-    "athletes": 19,
-    "with_evidence": 17
-   }
-  },
-  {
    "raw": "Jordan Small",
    "file": "2014/XC/ms-scarborough-middle-school-invitational-2014.json",
    "rows": 25,
@@ -5669,7 +5180,7 @@
    "raw": "Mt. Desert",
    "file": "2018/XC/20180924_ParkerPruett_Girls_results.txt.json",
    "rows": 25,
-   "flag": "company: me-ms-mdi-elementary (1.60) -> me-ms-mt-desert-elementary (9.55)",
+   "flag": "company: me-ms-mdi-elementary (1.60) -> me-ms-mt-desert-elementary (9.82)",
    "decision": "me-ms-mt-desert-elementary",
    "evidence": {
     "votes": {
@@ -5692,62 +5203,6 @@
     },
     "athletes": 25,
     "with_evidence": 9
-   }
-  },
-  {
-   "raw": "Brewer",
-   "file": "2008/Outdoor/fredalmquistboys.json",
-   "rows": 24,
-   "flag": "athletes contradict name match (me-ms-brewer -> me-hs-brewer, 15/15)",
-   "decision": "me-ms-brewer",
-   "evidence": {
-    "votes": {
-     "me-ms-brewer": 15
-    },
-    "athletes": 16,
-    "with_evidence": 15
-   }
-  },
-  {
-   "raw": "Ellsworth",
-   "file": "2008/Outdoor/fredalmquistboys.json",
-   "rows": 24,
-   "flag": "athletes contradict name match (me-ms-ellsworth -> me-hs-ellsworth, 18/18)",
-   "decision": "me-ms-ellsworth",
-   "evidence": {
-    "votes": {
-     "me-ms-ellsworth": 18
-    },
-    "athletes": 20,
-    "with_evidence": 18
-   }
-  },
-  {
-   "raw": "Ellsworth",
-   "file": "2008/Outdoor/fredalmquistgirls.json",
-   "rows": 24,
-   "flag": "athletes contradict name match (me-ms-ellsworth -> me-hs-ellsworth, 18/18)",
-   "decision": "me-ms-ellsworth",
-   "evidence": {
-    "votes": {
-     "me-ms-ellsworth": 18
-    },
-    "athletes": 20,
-    "with_evidence": 18
-   }
-  },
-  {
-   "raw": "Brewer",
-   "file": "2010/Outdoor/ellsworthmiddleboys_may18.json",
-   "rows": 24,
-   "flag": "athletes contradict name match (me-hs-brewer -> me-ms-brewer, 19/19)",
-   "decision": "me-ms-brewer",
-   "evidence": {
-    "votes": {
-     "me-ms-brewer": 19
-    },
-    "athletes": 19,
-    "with_evidence": 19
    }
   },
   {
@@ -5934,21 +5389,6 @@
    }
   },
   {
-   "raw": "GNG",
-   "file": "2015/XC/falmouthmiddle_sept24.json",
-   "rows": 23,
-   "flag": "athletes contradict name match (me-hs-gray-ng -> me-ms-gray-ng, 9/17)",
-   "decision": "me-ms-gray-ng",
-   "evidence": {
-    "votes": {
-     "me-ms-gray-ng": 17,
-     "me-hs-falmouth": 1
-    },
-    "athletes": 23,
-    "with_evidence": 19
-   }
-  },
-  {
    "raw": "Islesboro",
    "file": "2016/Outdoor/Camden-MS-boys.json",
    "rows": 23,
@@ -5960,6 +5400,21 @@
     },
     "athletes": 8,
     "with_evidence": 8
+   }
+  },
+  {
+   "raw": "Waterville",
+   "file": "2016/XC/10.5WinslowJHXC10.5.16.json",
+   "rows": 23,
+   "flag": "athletes contradict name match (me-ms-waterville -> me-hs-waterville, 10/11)",
+   "decision": "me-ms-waterville",
+   "evidence": {
+    "votes": {
+     "me-hs-waterville": 10,
+     "me-ms-camden-rockport": 1
+    },
+    "athletes": 23,
+    "with_evidence": 11
    }
   },
   {
@@ -5992,20 +5447,6 @@
    }
   },
   {
-   "raw": "Lincolnville",
-   "file": "2022/XC/busline-boys.txt.json",
-   "rows": 23,
-   "flag": "athletes contradict name match (me-ms-lincolnville -> me-ms-camden-rockport, 2/2)",
-   "decision": "me-ms-lincolnville",
-   "evidence": {
-    "votes": {
-     "me-ms-camden-rockport": 2
-    },
-    "athletes": 23,
-    "with_evidence": 2
-   }
-  },
-  {
    "raw": "DHS",
    "file": "2006/Outdoor/results-5-26-05-MVC.json",
    "rows": 22,
@@ -6023,7 +5464,7 @@
    "raw": "Falmouth",
    "file": "2007/XC/scarboroughinviteboys.json",
    "rows": 22,
-   "flag": "athletes contradict name match (me-ms-falmouth -> me-hs-falmouth, 16/16)",
+   "flag": "athletes contradict name match (me-ms-falmouth -> me-hs-falmouth, 11/11)",
    "decision": "me-ms-falmouth",
    "evidence": {
     "votes": {
@@ -6031,48 +5472,6 @@
     },
     "athletes": 22,
     "with_evidence": 16
-   }
-  },
-  {
-   "raw": "PCMS",
-   "file": "2008/Outdoor/ms_orono_boys_5.1.08.json",
-   "rows": 22,
-   "flag": "athletes contradict name match (me-ms-piscataquis -> me-hs-piscataquis, 3/13)",
-   "decision": "me-ms-piscataquis",
-   "evidence": {
-    "votes": {
-     "me-ms-piscataquis": 13
-    },
-    "athletes": 14,
-    "with_evidence": 13
-   }
-  },
-  {
-   "raw": "SAC",
-   "file": "2008/XC/thorntonmiddleboys9_23.json",
-   "rows": 22,
-   "flag": "athletes contradict name match (me-hs-sacopee -> me-ms-saco, 10/10)",
-   "decision": "me-ms-saco",
-   "evidence": {
-    "votes": {
-     "me-ms-saco": 10
-    },
-    "athletes": 22,
-    "with_evidence": 10
-   }
-  },
-  {
-   "raw": "SAC",
-   "file": "2008/XC/thorntonmiddleboys9_23.json",
-   "rows": 22,
-   "flag": "athletes contradict name match (me-ms-saco -> me-hs-sacopee, 10/10)",
-   "decision": "me-ms-saco",
-   "evidence": {
-    "votes": {
-     "me-ms-saco": 10
-    },
-    "athletes": 22,
-    "with_evidence": 10
    }
   },
   {
@@ -6158,20 +5557,6 @@
     },
     "athletes": 22,
     "with_evidence": 22
-   }
-  },
-  {
-   "raw": "Falm",
-   "file": "2015/XC/falmouthmiddle_sept24.json",
-   "rows": 22,
-   "flag": "athletes contradict name match (me-hs-falmouth -> me-ms-falmouth, 7/18)",
-   "decision": "me-ms-falmouth",
-   "evidence": {
-    "votes": {
-     "me-ms-falmouth": 18
-    },
-    "athletes": 22,
-    "with_evidence": 18
    }
   },
   {
@@ -6287,20 +5672,6 @@
    }
   },
   {
-   "raw": "Fal",
-   "file": "2007/XC/falmouthmiddle9_25.json",
-   "rows": 21,
-   "flag": "athletes contradict name match (me-hs-falmouth -> me-ms-falmouth, 5/15)",
-   "decision": "me-ms-falmouth",
-   "evidence": {
-    "votes": {
-     "me-ms-falmouth": 15
-    },
-    "athletes": 21,
-    "with_evidence": 15
-   }
-  },
-  {
    "raw": "Mt. Ararat",
    "file": "2008/XC/TrippBoys_oct15.json",
    "rows": 21,
@@ -6326,20 +5697,6 @@
     },
     "athletes": 13,
     "with_evidence": 3
-   }
-  },
-  {
-   "raw": "Free",
-   "file": "2015/XC/falmouthmiddle_sept24.json",
-   "rows": 21,
-   "flag": "athletes contradict name match (me-hs-freeport -> me-ms-freeport, 19/19)",
-   "decision": "me-ms-freeport",
-   "evidence": {
-    "votes": {
-     "me-ms-freeport": 19
-    },
-    "athletes": 21,
-    "with_evidence": 19
    }
   },
   {
@@ -6470,20 +5827,6 @@
    }
   },
   {
-   "raw": "Lincolnville",
-   "file": "2022/XC/busline-girls.txt.json",
-   "rows": 21,
-   "flag": "athletes contradict name match (me-ms-lincolnville -> me-ms-camden-rockport, 6/6)",
-   "decision": "me-ms-lincolnville",
-   "evidence": {
-    "votes": {
-     "me-ms-camden-rockport": 6
-    },
-    "athletes": 21,
-    "with_evidence": 6
-   }
-  },
-  {
    "raw": "Mt. Blue",
    "file": "2023/XC/XCWinslowJH23.10.18GIRLS.json",
    "rows": 21,
@@ -6601,20 +5944,6 @@
     },
     "athletes": 20,
     "with_evidence": 19
-   }
-  },
-  {
-   "raw": "Falmouth",
-   "file": "2012/XC/scarboroughinvitegirls.json",
-   "rows": 20,
-   "flag": "athletes contradict name match (me-ms-falmouth -> me-hs-falmouth, 2/2)",
-   "decision": "me-ms-falmouth",
-   "evidence": {
-    "votes": {
-     "me-hs-falmouth": 2
-    },
-    "athletes": 20,
-    "with_evidence": 2
    }
   },
   {
@@ -6789,22 +6118,6 @@
    }
   },
   {
-   "raw": "Bonny Eagle",
-   "file": "2012/XC/scarboroughinviteboys.json",
-   "rows": 19,
-   "flag": "athletes contradict name match (me-hs-bonny-eagle -> me-ms-bonny-eagle, 5/7)",
-   "decision": "me-ms-bonny-eagle",
-   "evidence": {
-    "votes": {
-     "me-ms-bonny-eagle": 5,
-     "me-hs-massabesic": 1,
-     "me-hs-marshwood": 1
-    },
-    "athletes": 19,
-    "with_evidence": 7
-   }
-  },
-  {
    "raw": "ORO",
    "file": "2015/Outdoor/almquistgirls15.json",
    "rows": 19,
@@ -6826,24 +6139,11 @@
    "decision": "me-ms-medomak",
    "evidence": {
     "votes": {
-     "me-ms-medomak": 13
+     "me-ms-medomak": 13,
+     "me-ms-gray-ng": 1
     },
     "athletes": 19,
     "with_evidence": 14
-   }
-  },
-  {
-   "raw": "Madison",
-   "file": "2016/XC/WinslowJHXC9.14.json",
-   "rows": 19,
-   "flag": "athletes contradict name match (me-hs-madison -> me-ms-madison, 7/7)",
-   "decision": "me-ms-madison",
-   "evidence": {
-    "votes": {
-     "me-ms-madison": 7
-    },
-    "athletes": 19,
-    "with_evidence": 7
    }
   },
   {
@@ -6950,7 +6250,7 @@
    "raw": "Mt. Desert E",
    "file": "2018/XC/airline-girls.txt.json",
    "rows": 19,
-   "flag": "company: me-ms-mdi-elementary (1.55) -> me-ms-mt-desert-elementary (9.27)",
+   "flag": "company: me-ms-mdi-elementary (1.55) -> me-ms-mt-desert-elementary (9.55)",
    "decision": "me-ms-mt-desert-elementary",
    "evidence": {
     "votes": {
@@ -7064,57 +6364,14 @@
    }
   },
   {
-   "raw": "Piscataquis",
-   "file": "2008/Outdoor/fredalmquistboys.json",
-   "rows": 18,
-   "flag": "athletes contradict name match (me-ms-piscataquis -> me-hs-piscataquis, 2/12)",
-   "decision": "me-ms-piscataquis",
-   "evidence": {
-    "votes": {
-     "me-ms-piscataquis": 12
-    },
-    "athletes": 14,
-    "with_evidence": 12
-   }
-  },
-  {
-   "raw": "Falmouth",
-   "file": "2008/XC/scarboroughmsinviteboys.json",
-   "rows": 18,
-   "flag": "athletes contradict name match (me-ms-falmouth -> me-hs-falmouth, 10/10)",
-   "decision": "me-ms-falmouth",
-   "evidence": {
-    "votes": {
-     "me-ms-falmouth": 10
-    },
-    "athletes": 18,
-    "with_evidence": 10
-   }
-  },
-  {
-   "raw": "Central",
-   "file": "2010/Outdoor/almquistboys.json",
-   "rows": 18,
-   "flag": "athletes contradict name match (me-ms-central -> me-hs-central, 10/11)",
-   "decision": "me-ms-central",
-   "evidence": {
-    "votes": {
-     "me-hs-central": 10
-    },
-    "athletes": 14,
-    "with_evidence": 11
-   }
-  },
-  {
    "raw": "Gray-New Gloucester",
    "file": "2015/XC/girls.json",
    "rows": 18,
-   "flag": "athletes contradict name match (me-ms-gray-ng -> me-hs-gray-ng, 12/14)",
+   "flag": "athletes contradict name match (me-ms-gray-ng -> me-hs-gray-ng, 4/6)",
    "decision": "me-ms-gray-ng",
    "evidence": {
     "votes": {
-     "me-ms-gray-ng": 16,
-     "me-hs-falmouth": 1
+     "me-ms-gray-ng": 16
     },
     "athletes": 18,
     "with_evidence": 18
@@ -7332,34 +6589,6 @@
    }
   },
   {
-   "raw": "Mt. Blue",
-   "file": "2024/XC/24.09.11XCWtvlJHGIRLS.json",
-   "rows": 18,
-   "flag": "athletes contradict name match (me-hs-mt-blue -> me-ms-mt-blue, 16/18)",
-   "decision": "me-ms-mt-blue",
-   "evidence": {
-    "votes": {
-     "me-ms-mt-blue": 18
-    },
-    "athletes": 18,
-    "with_evidence": 18
-   }
-  },
-  {
-   "raw": "Mt. Blue",
-   "file": "2024/XC/WinslowJHXC10.10.24GIRLS.json",
-   "rows": 18,
-   "flag": "athletes contradict name match (me-hs-mt-blue -> me-ms-mt-blue, 16/18)",
-   "decision": "me-ms-mt-blue",
-   "evidence": {
-    "votes": {
-     "me-ms-mt-blue": 18
-    },
-    "athletes": 18,
-    "with_evidence": 18
-   }
-  },
-  {
    "raw": "Valley",
    "file": "2025/XC/ms-mt-blue-middle-school-2025.json",
    "rows": 18,
@@ -7414,20 +6643,6 @@
     },
     "athletes": 17,
     "with_evidence": 15
-   }
-  },
-  {
-   "raw": "Falmouth",
-   "file": "2008/XC/scarboroughmsinvitegirls.json",
-   "rows": 17,
-   "flag": "athletes contradict name match (me-ms-falmouth -> me-hs-falmouth, 8/8)",
-   "decision": "me-ms-falmouth",
-   "evidence": {
-    "votes": {
-     "me-ms-falmouth": 8
-    },
-    "athletes": 17,
-    "with_evidence": 8
    }
   },
   {
@@ -7557,20 +6772,6 @@
    }
   },
   {
-   "raw": "Falmouth M.S.",
-   "file": "2015/XC/girls.json",
-   "rows": 17,
-   "flag": "athletes contradict name match (me-ms-falmouth -> me-hs-falmouth, 7/15)",
-   "decision": "me-ms-falmouth",
-   "evidence": {
-    "votes": {
-     "me-ms-falmouth": 15
-    },
-    "athletes": 17,
-    "with_evidence": 15
-   }
-  },
-  {
    "raw": "Car",
    "file": "2016/Outdoor/160517_HS_Boys_Individual-Results.json",
    "rows": 17,
@@ -7582,34 +6783,6 @@
     },
     "athletes": 7,
     "with_evidence": 7
-   }
-  },
-  {
-   "raw": "Mt. Blue Junior",
-   "file": "2019/XC/ResultsLJHXCGirls.json",
-   "rows": 17,
-   "flag": "athletes contradict name match (me-hs-mt-blue -> me-ms-mt-blue, 12/12)",
-   "decision": "me-ms-mt-blue",
-   "evidence": {
-    "votes": {
-     "me-ms-mt-blue": 12
-    },
-    "athletes": 17,
-    "with_evidence": 12
-   }
-  },
-  {
-   "raw": "GHCA",
-   "file": "2020/XC/PIMSatGHCAMiddleSchoolResults.json",
-   "rows": 17,
-   "flag": "athletes contradict name match (me-hs-greater-houlton-christian -> me-ms-ghca, 6/17)",
-   "decision": "me-ms-ghca",
-   "evidence": {
-    "votes": {
-     "me-ms-ghca": 6
-    },
-    "athletes": 17,
-    "with_evidence": 17
    }
   },
   {
@@ -7659,6 +6832,20 @@
    }
   },
   {
+   "raw": "Noble",
+   "file": "2007/XC/kittery9_26.json",
+   "rows": 16,
+   "flag": "athletes contradict name match (me-hs-noble -> me-ms-noble, 3/3)",
+   "decision": "me-ms-noble",
+   "evidence": {
+    "votes": {
+     "me-ms-noble": 3
+    },
+    "athletes": 16,
+    "with_evidence": 3
+   }
+  },
+  {
    "raw": "Brunswick Jr. High",
    "file": "2008/XC/Girls_AVML_XC_Championship_08.json",
    "rows": 16,
@@ -7700,20 +6887,6 @@
     },
     "athletes": 8,
     "with_evidence": 5
-   }
-  },
-  {
-   "raw": "CEN",
-   "file": "2010/Outdoor/ellsworthmiddlegirls_may10.json",
-   "rows": 16,
-   "flag": "athletes contradict name match (me-hs-central -> me-ms-central, 10/10)",
-   "decision": "me-hs-central",
-   "evidence": {
-    "votes": {
-     "me-ms-central": 10
-    },
-    "athletes": 12,
-    "with_evidence": 10
    }
   },
   {
@@ -7858,20 +7031,6 @@
    }
   },
   {
-   "raw": "Winslow",
-   "file": "2016/XC/10.5WinslowJHXC10.5.16.json",
-   "rows": 16,
-   "flag": "athletes contradict name match (me-hs-winslow -> me-ms-winslow, 4/14)",
-   "decision": "me-ms-winslow",
-   "evidence": {
-    "votes": {
-     "me-ms-winslow": 14
-    },
-    "athletes": 16,
-    "with_evidence": 14
-   }
-  },
-  {
    "raw": "Hall-Dale Middle",
    "file": "2017/XC/cony-jh-xc-boys.json",
    "rows": 16,
@@ -7883,6 +7042,20 @@
     },
     "athletes": 16,
     "with_evidence": 14
+   }
+  },
+  {
+   "raw": "Cony",
+   "file": "2019/XC/ms-cony-middle-school-cross-country-meet1-2019.json",
+   "rows": 16,
+   "flag": "athletes contradict name match (me-ms-cony -> me-hs-cony, 7/13)",
+   "decision": "me-ms-cony",
+   "evidence": {
+    "votes": {
+     "me-hs-cony": 7
+    },
+    "athletes": 16,
+    "with_evidence": 13
    }
   },
   {
@@ -8014,34 +7187,6 @@
    }
   },
   {
-   "raw": "Saco",
-   "file": "2008/XC/smmsaajuniorboys.json",
-   "rows": 15,
-   "flag": "athletes contradict name match (me-ms-saco -> me-hs-sacopee, 8/8)",
-   "decision": "me-hs-sacopee",
-   "evidence": {
-    "votes": {
-     "me-hs-sacopee": 8
-    },
-    "athletes": 15,
-    "with_evidence": 8
-   }
-  },
-  {
-   "raw": "Saco",
-   "file": "2008/XC/smmsaajuniorboys.json",
-   "rows": 15,
-   "flag": "athletes contradict name match (me-hs-sacopee -> me-ms-saco, 8/8)",
-   "decision": "me-hs-sacopee",
-   "evidence": {
-    "votes": {
-     "me-hs-sacopee": 8
-    },
-    "athletes": 15,
-    "with_evidence": 8
-   }
-  },
-  {
    "raw": "MA",
    "file": "2008/XC/tripp9-17BOYS.json",
    "rows": 15,
@@ -8127,34 +7272,6 @@
    }
   },
   {
-   "raw": "Lincoln",
-   "file": "2012/XC/ms-lyman-moore-ms-2012.json",
-   "rows": 15,
-   "flag": "athletes contradict name match (me-ms-lincoln-portland -> me-hs-lincoln-academy, 3/3)",
-   "decision": "me-ms-lincoln-portland",
-   "evidence": {
-    "votes": {
-     "me-hs-lincoln-academy": 3
-    },
-    "athletes": 15,
-    "with_evidence": 3
-   }
-  },
-  {
-   "raw": "Waterville",
-   "file": "2012/XC/watervillemsboys_sept12.json",
-   "rows": 15,
-   "flag": "athletes contradict name match (me-ms-waterville -> me-hs-waterville, 7/13)",
-   "decision": "me-ms-waterville",
-   "evidence": {
-    "votes": {
-     "me-ms-waterville": 14
-    },
-    "athletes": 15,
-    "with_evidence": 14
-   }
-  },
-  {
    "raw": "PCHS",
    "file": "2013/Outdoor/2013%20Almquist%20-%20girls.json",
    "rows": 15,
@@ -8190,25 +7307,11 @@
    "decision": "me-hs-mattanawcook",
    "evidence": {
     "votes": {
-     "me-ms-mattanawcook": 2,
-     "me-hs-mattanawcook": 2
+     "me-hs-mattanawcook": 2,
+     "me-ms-mattanawcook": 2
     },
     "athletes": 9,
     "with_evidence": 4
-   }
-  },
-  {
-   "raw": "Fal",
-   "file": "2015/XC/falmouthmiddle_sept24.json",
-   "rows": 15,
-   "flag": "athletes contradict name match (me-hs-falmouth -> me-ms-falmouth, 7/13)",
-   "decision": "me-ms-falmouth",
-   "evidence": {
-    "votes": {
-     "me-ms-falmouth": 13
-    },
-    "athletes": 15,
-    "with_evidence": 13
    }
   },
   {
@@ -8262,20 +7365,6 @@
    "flag": "file expansion: None -> oos-auto-nh-portsmouth",
    "decision": "oos-auto-nh-portsmouth",
    "evidence": null
-  },
-  {
-   "raw": "Mount Blue Junior High Scho",
-   "file": "2019/XC/ms-lawrence-junior-high-xc-meet-2019.json",
-   "rows": 15,
-   "flag": "athletes contradict name match (me-ms-mt-blue -> me-hs-mt-blue, 12/12)",
-   "decision": "me-ms-mt-blue",
-   "evidence": {
-    "votes": {
-     "me-ms-mt-blue": 12
-    },
-    "athletes": 15,
-    "with_evidence": 12
-   }
   },
   {
    "raw": "Fort Kent",
@@ -8492,20 +7581,6 @@
    }
   },
   {
-   "raw": "Waterville",
-   "file": "2012/XC/watervilleBoysJHChamp2012.json",
-   "rows": 14,
-   "flag": "athletes contradict name match (me-hs-waterville -> me-ms-waterville, 6/13)",
-   "decision": "me-ms-waterville",
-   "evidence": {
-    "votes": {
-     "me-ms-waterville": 14
-    },
-    "athletes": 14,
-    "with_evidence": 14
-   }
-  },
-  {
    "raw": "Mount Ararat High School",
    "file": "2015/Outdoor/ms-agricultural-track-and-field-classic-2015.json",
    "rows": 14,
@@ -8531,48 +7606,6 @@
     },
     "athletes": 10,
     "with_evidence": 10
-   }
-  },
-  {
-   "raw": "Wayn",
-   "file": "2015/XC/falmouthmiddle_sept24.json",
-   "rows": 14,
-   "flag": "athletes contradict name match (me-hs-waynflete -> me-ms-waynflete, 9/10)",
-   "decision": "me-ms-waynflete",
-   "evidence": {
-    "votes": {
-     "me-ms-waynflete": 9
-    },
-    "athletes": 14,
-    "with_evidence": 10
-   }
-  },
-  {
-   "raw": "Spruce Mountain",
-   "file": "2016/XC/WinslowJHXC9.14.json",
-   "rows": 14,
-   "flag": "athletes contradict name match (me-hs-spruce-mountain -> me-ms-spruce-mountain, 3/3)",
-   "decision": "me-ms-spruce-mountain",
-   "evidence": {
-    "votes": {
-     "me-ms-spruce-mountain": 3
-    },
-    "athletes": 14,
-    "with_evidence": 3
-   }
-  },
-  {
-   "raw": "Spruce Mountain",
-   "file": "2016/XC/WinslowJHXC9.14.json",
-   "rows": 14,
-   "flag": "athletes contradict name match (me-ms-spruce-mountain -> me-hs-spruce-mountain, 3/3)",
-   "decision": "me-ms-spruce-mountain",
-   "evidence": {
-    "votes": {
-     "me-ms-spruce-mountain": 3
-    },
-    "athletes": 14,
-    "with_evidence": 3
    }
   },
   {
@@ -8905,7 +7938,7 @@
    "raw": "MTAB",
    "file": "2010/Outdoor/mvcchamps.json",
    "rows": 13,
-   "flag": "company: me-hs-mattanawcook (0.92) -> me-hs-mt-abram (6.10)",
+   "flag": "company: me-hs-mattanawcook (0.92) -> me-hs-mt-abram (6.07)",
    "decision": "me-hs-mattanawcook",
    "evidence": {
     "votes": {
@@ -8920,7 +7953,7 @@
    "raw": "MTAB",
    "file": "2010/Outdoor/mvcchamps.json",
    "rows": 13,
-   "flag": "company: me-hs-mattanawcook (0.92) -> me-hs-mt-abram (6.10)",
+   "flag": "company: me-hs-mattanawcook (0.92) -> me-hs-mt-abram (6.07)",
    "decision": "me-hs-mattanawcook",
    "evidence": {
     "votes": {
@@ -9030,20 +8063,6 @@
    }
   },
   {
-   "raw": "Madison",
-   "file": "2012/XC/watervillemsboys_sept12.json",
-   "rows": 13,
-   "flag": "athletes contradict name match (me-ms-madison -> me-hs-madison, 7/11)",
-   "decision": "me-ms-madison",
-   "evidence": {
-    "votes": {
-     "me-ms-madison": 11
-    },
-    "athletes": 13,
-    "with_evidence": 11
-   }
-  },
-  {
    "raw": "PCHS",
    "file": "2013/Outdoor/2013%20Almquist%20-%20boys.json",
    "rows": 13,
@@ -9061,7 +8080,7 @@
    "raw": "Gray-New Gloucester",
    "file": "2015/XC/boys1.json",
    "rows": 13,
-   "flag": "athletes contradict name match (me-ms-gray-ng -> me-hs-gray-ng, 5/5)",
+   "flag": "athletes contradict name match (me-ms-gray-ng -> me-hs-gray-ng, 4/4)",
    "decision": "me-ms-gray-ng",
    "evidence": {
     "votes": {
@@ -9100,20 +8119,6 @@
    }
   },
   {
-   "raw": "Winslow",
-   "file": "2016/XC/WinslowJHXC9.14.json",
-   "rows": 13,
-   "flag": "athletes contradict name match (me-hs-winslow -> me-ms-winslow, 3/13)",
-   "decision": "me-ms-winslow",
-   "evidence": {
-    "votes": {
-     "me-ms-winslow": 13
-    },
-    "athletes": 13,
-    "with_evidence": 13
-   }
-  },
-  {
    "raw": "Mar",
    "file": "2016/XC/falmouthboys_august26.json",
    "rows": 13,
@@ -9125,34 +8130,6 @@
     },
     "athletes": 13,
     "with_evidence": 13
-   }
-  },
-  {
-   "raw": "Winslow Junior H.S.",
-   "file": "2016/XC/ms-scarborough-middle-school-invitational-2016.json",
-   "rows": 13,
-   "flag": "athletes contradict name match (me-ms-winslow -> me-hs-winslow, 8/12)",
-   "decision": "me-ms-winslow",
-   "evidence": {
-    "votes": {
-     "me-ms-winslow": 12
-    },
-    "athletes": 13,
-    "with_evidence": 12
-   }
-  },
-  {
-   "raw": "Winslow Junior H.S.",
-   "file": "2016/XC/ms-scarborough-middle-school-invitational-2016.json",
-   "rows": 13,
-   "flag": "athletes contradict name match (me-ms-winslow -> me-hs-winslow, 7/12)",
-   "decision": "me-ms-winslow",
-   "evidence": {
-    "votes": {
-     "me-ms-winslow": 12
-    },
-    "athletes": 13,
-    "with_evidence": 12
    }
   },
   {
@@ -9367,24 +8344,10 @@
    }
   },
   {
-   "raw": "Mt. Blue",
-   "file": "2024/XC/24.09.11XCWtvlJHBOYS.json",
-   "rows": 13,
-   "flag": "athletes contradict name match (me-hs-mt-blue -> me-ms-mt-blue, 8/13)",
-   "decision": "me-ms-mt-blue",
-   "evidence": {
-    "votes": {
-     "me-ms-mt-blue": 13
-    },
-    "athletes": 13,
-    "with_evidence": 13
-   }
-  },
-  {
    "raw": "Ma",
    "file": "2005/Outdoor/TAACI%20girls%2005.json",
    "rows": 12,
-   "flag": "company: me-hs-mattanawcook (0.12) -> me-hs-massabesic (1.15)",
+   "flag": "company: me-hs-mattanawcook (0.12) -> me-hs-massabesic (1.16)",
    "decision": "me-hs-massabesic",
    "evidence": null
   },
@@ -9446,20 +8409,6 @@
    }
   },
   {
-   "raw": "Central",
-   "file": "2010/Outdoor/almquistgirls.json",
-   "rows": 12,
-   "flag": "athletes contradict name match (me-ms-central -> me-hs-central, 10/10)",
-   "decision": "me-ms-central",
-   "evidence": {
-    "votes": {
-     "me-hs-central": 10
-    },
-    "athletes": 10,
-    "with_evidence": 10
-   }
-  },
-  {
    "raw": "Mt. Ararat",
    "file": "2010/XC/GirlsMSAndyValleyChamp.json",
    "rows": 12,
@@ -9516,17 +8465,138 @@
    }
   },
   {
-   "raw": "Waterville",
-   "file": "2012/XC/watervilleGirlsJHChamp2012.json",
+   "raw": "Dur",
+   "file": "2012/XC/ms-triple-c-ms-xc-falmouth-2012.json",
    "rows": 12,
-   "flag": "athletes contradict name match (me-hs-waterville -> me-ms-waterville, 7/11)",
-   "decision": "me-ms-waterville",
+   "flag": "athletes disagree with file rule (me-ms-durham -> me-ms-bonny-eagle, 3/9)",
+   "decision": "me-ms-durham",
    "evidence": {
     "votes": {
-     "me-ms-waterville": 12
+     "me-ms-bonny-eagle": 3,
+     "me-ms-cape-elizabeth": 1
     },
     "athletes": 12,
-    "with_evidence": 12
+    "with_evidence": 9
+   }
+  },
+  {
+   "raw": "Dur",
+   "file": "2012/XC/ms-triple-c-ms-xc-falmouth-2012.json",
+   "rows": 12,
+   "flag": "athletes disagree with file rule (me-ms-durham -> me-ms-bonny-eagle, 3/9)",
+   "decision": "me-ms-durham",
+   "evidence": {
+    "votes": {
+     "me-ms-bonny-eagle": 3,
+     "me-ms-cape-elizabeth": 1
+    },
+    "athletes": 12,
+    "with_evidence": 9
+   }
+  },
+  {
+   "raw": "Dur",
+   "file": "2012/XC/ms-triple-c-ms-xc-falmouth-2012.json",
+   "rows": 12,
+   "flag": "athletes disagree with file rule (me-ms-durham -> me-ms-bonny-eagle, 3/9)",
+   "decision": "me-ms-durham",
+   "evidence": {
+    "votes": {
+     "me-ms-bonny-eagle": 3,
+     "me-ms-cape-elizabeth": 1
+    },
+    "athletes": 12,
+    "with_evidence": 9
+   }
+  },
+  {
+   "raw": "Dur",
+   "file": "2012/XC/ms-triple-c-ms-xc-falmouth-2012.json",
+   "rows": 12,
+   "flag": "athletes disagree with file rule (me-ms-durham -> me-ms-bonny-eagle, 3/9)",
+   "decision": "me-ms-durham",
+   "evidence": {
+    "votes": {
+     "me-ms-bonny-eagle": 3,
+     "me-ms-cape-elizabeth": 1
+    },
+    "athletes": 12,
+    "with_evidence": 9
+   }
+  },
+  {
+   "raw": "Dur",
+   "file": "2012/XC/ms-triple-c-ms-xc-falmouth-2012.json",
+   "rows": 12,
+   "flag": "athletes disagree with file rule (me-ms-durham -> me-ms-bonny-eagle, 3/9)",
+   "decision": "me-ms-durham",
+   "evidence": {
+    "votes": {
+     "me-ms-bonny-eagle": 3,
+     "me-ms-cape-elizabeth": 1
+    },
+    "athletes": 12,
+    "with_evidence": 9
+   }
+  },
+  {
+   "raw": "Dur",
+   "file": "2012/XC/ms-triple-c-ms-xc-falmouth-2012.json",
+   "rows": 12,
+   "flag": "athletes disagree with file rule (me-ms-durham -> me-ms-bonny-eagle, 3/9)",
+   "decision": "me-ms-durham",
+   "evidence": {
+    "votes": {
+     "me-ms-bonny-eagle": 3,
+     "me-ms-cape-elizabeth": 1
+    },
+    "athletes": 12,
+    "with_evidence": 9
+   }
+  },
+  {
+   "raw": "Dur",
+   "file": "2012/XC/ms-triple-c-ms-xc-falmouth-2012.json",
+   "rows": 12,
+   "flag": "athletes disagree with file rule (me-ms-durham -> me-ms-bonny-eagle, 3/9)",
+   "decision": "me-ms-durham",
+   "evidence": {
+    "votes": {
+     "me-ms-bonny-eagle": 3,
+     "me-ms-cape-elizabeth": 1
+    },
+    "athletes": 12,
+    "with_evidence": 9
+   }
+  },
+  {
+   "raw": "Dur",
+   "file": "2012/XC/ms-triple-c-ms-xc-falmouth-2012.json",
+   "rows": 12,
+   "flag": "athletes disagree with file rule (me-ms-durham -> me-ms-bonny-eagle, 3/9)",
+   "decision": "me-ms-durham",
+   "evidence": {
+    "votes": {
+     "me-ms-bonny-eagle": 3,
+     "me-ms-cape-elizabeth": 1
+    },
+    "athletes": 12,
+    "with_evidence": 9
+   }
+  },
+  {
+   "raw": "Dur",
+   "file": "2012/XC/ms-triple-c-ms-xc-falmouth-2012.json",
+   "rows": 12,
+   "flag": "athletes disagree with file rule (me-ms-durham -> me-ms-bonny-eagle, 3/9)",
+   "decision": "me-ms-durham",
+   "evidence": {
+    "votes": {
+     "me-ms-bonny-eagle": 3,
+     "me-ms-cape-elizabeth": 1
+    },
+    "athletes": 12,
+    "with_evidence": 9
    }
   },
   {
@@ -9558,18 +8628,31 @@
    }
   },
   {
-   "raw": "Freeport M.S.",
-   "file": "2015/XC/boys1.json",
+   "raw": "Lawrence",
+   "file": "2015/XC/JHXCWtvl10-BOYS.json",
    "rows": 12,
-   "flag": "athletes contradict name match (me-ms-freeport -> me-hs-freeport, 6/10)",
-   "decision": "me-ms-freeport",
+   "flag": "athletes contradict name match (me-ms-lawrence -> me-hs-lawrence, 3/8)",
+   "decision": "me-ms-lawrence",
    "evidence": {
     "votes": {
-     "me-ms-freeport": 10,
-     "me-ms-durham": 1
+     "me-hs-lawrence": 3
     },
     "athletes": 12,
-    "with_evidence": 11
+    "with_evidence": 8
+   }
+  },
+  {
+   "raw": "Winslow",
+   "file": "2015/XC/XCWinslowJH9.23.json",
+   "rows": 12,
+   "flag": "athletes contradict name match (me-hs-winslow -> me-ms-winslow, 10/12)",
+   "decision": "me-ms-winslow",
+   "evidence": {
+    "votes": {
+     "me-ms-winslow": 12
+    },
+    "athletes": 12,
+    "with_evidence": 12
    }
   },
   {
@@ -9784,20 +8867,6 @@
    }
   },
   {
-   "raw": "Mt. Blue",
-   "file": "2024/XC/WinslowJHXC10.10.24BOYS.json",
-   "rows": 12,
-   "flag": "athletes contradict name match (me-hs-mt-blue -> me-ms-mt-blue, 6/11)",
-   "decision": "me-ms-mt-blue",
-   "evidence": {
-    "votes": {
-     "me-ms-mt-blue": 11
-    },
-    "athletes": 12,
-    "with_evidence": 11
-   }
-  },
-  {
    "raw": "Limestone/MS",
    "file": "2025/Outdoor/bangorgirls17may2025.json",
    "rows": 12,
@@ -9969,20 +9038,6 @@
    }
   },
   {
-   "raw": "SAC",
-   "file": "2008/XC/thorntonmiddlegirls9_23.json",
-   "rows": 11,
-   "flag": "athletes contradict name match (me-hs-sacopee -> me-ms-saco, 3/3)",
-   "decision": "me-ms-saco",
-   "evidence": {
-    "votes": {
-     "me-ms-saco": 3
-    },
-    "athletes": 11,
-    "with_evidence": 3
-   }
-  },
-  {
    "raw": "01-Old Town Trac",
    "file": "2009/Outdoor/Reg1JOupdate630.json",
    "rows": 11,
@@ -10008,6 +9063,20 @@
     },
     "athletes": 11,
     "with_evidence": 10
+   }
+  },
+  {
+   "raw": "Green M",
+   "file": "2010/XC/ResultsRegjoxc10.json",
+   "rows": 11,
+   "flag": "athletes contradict name match (col-green-mountain -> oos-vt-st-johnsbury-academy, 2/2)",
+   "decision": "oos-vt-st-johnsbury-academy",
+   "evidence": {
+    "votes": {
+     "oos-vt-st-johnsbury-academy": 2
+    },
+    "athletes": 11,
+    "with_evidence": 2
    }
   },
   {
@@ -10086,56 +9155,14 @@
    "raw": "MA",
    "file": "2012/Outdoor/telstarboys_may21.json",
    "rows": 11,
-   "flag": "athletes contradict name match (me-hs-mattanawcook -> me-hs-mt-ararat, 6/6)",
+   "flag": "athletes contradict name match (me-hs-mattanawcook -> me-hs-mt-ararat, 5/6)",
    "decision": "me-hs-mt-ararat",
    "evidence": {
     "votes": {
-     "me-hs-mt-ararat": 6
+     "me-hs-mt-ararat": 5
     },
     "athletes": 8,
     "with_evidence": 6
-   }
-  },
-  {
-   "raw": "Madison",
-   "file": "2012/XC/watervilleBoysJHChamp2012.json",
-   "rows": 11,
-   "flag": "athletes contradict name match (me-hs-madison -> me-ms-madison, 7/11)",
-   "decision": "me-ms-madison",
-   "evidence": {
-    "votes": {
-     "me-ms-madison": 11
-    },
-    "athletes": 11,
-    "with_evidence": 11
-   }
-  },
-  {
-   "raw": "Madison",
-   "file": "2012/XC/watervilleGirlsJHChamp2012.json",
-   "rows": 11,
-   "flag": "athletes contradict name match (me-hs-madison -> me-ms-madison, 5/7)",
-   "decision": "me-ms-madison",
-   "evidence": {
-    "votes": {
-     "me-ms-madison": 7
-    },
-    "athletes": 11,
-    "with_evidence": 7
-   }
-  },
-  {
-   "raw": "Waterville",
-   "file": "2012/XC/watervillemsgirls_sept12.json",
-   "rows": 11,
-   "flag": "athletes contradict name match (me-ms-waterville -> me-hs-waterville, 8/11)",
-   "decision": "me-ms-waterville",
-   "evidence": {
-    "votes": {
-     "me-ms-waterville": 11
-    },
-    "athletes": 11,
-    "with_evidence": 11
    }
   },
   {
@@ -10466,7 +9493,7 @@
    "raw": "Hawks",
    "file": "2008/Indoor/smaaweek3meet3boys.json",
    "rows": 10,
-   "flag": "company: me-hs-hermon (0.18) -> me-hs-scarborough (1.58)",
+   "flag": "company: me-hs-hermon (0.18) -> me-hs-scarborough (1.59)",
    "decision": "me-hs-marshwood",
    "evidence": {
     "votes": {
@@ -10520,20 +9547,6 @@
    }
   },
   {
-   "raw": "OH",
-   "file": "2010/XC/oxfordhillsmiddleboys_sept22.json",
-   "rows": 10,
-   "flag": "athletes contradict name match (me-hs-oak-hill -> me-hs-oxford-hills, 7/7)",
-   "decision": "me-hs-oxford-hills",
-   "evidence": {
-    "votes": {
-     "me-hs-oxford-hills": 7
-    },
-    "athletes": 10,
-    "with_evidence": 7
-   }
-  },
-  {
    "raw": "Monmouth",
    "file": "2011/XC/capitalareaboys_oct17.json",
    "rows": 10,
@@ -10545,36 +9558,6 @@
     },
     "athletes": 10,
     "with_evidence": 9
-   }
-  },
-  {
-   "raw": "Windham Middle School",
-   "file": "2012/XC/78boysl1.json",
-   "rows": 10,
-   "flag": "athletes contradict name match (me-ms-windham -> me-hs-windham, 5/5)",
-   "decision": "me-ms-windham",
-   "evidence": {
-    "votes": {
-     "me-hs-windham": 4,
-     "me-ms-windham": 1
-    },
-    "athletes": 10,
-    "with_evidence": 6
-   }
-  },
-  {
-   "raw": "Windham Middle School",
-   "file": "2012/XC/78boysl1.json",
-   "rows": 10,
-   "flag": "athletes contradict name match (me-ms-windham -> me-hs-windham, 4/6)",
-   "decision": "me-ms-windham",
-   "evidence": {
-    "votes": {
-     "me-hs-windham": 4,
-     "me-ms-windham": 1
-    },
-    "athletes": 10,
-    "with_evidence": 6
    }
   },
   {
@@ -10659,6 +9642,20 @@
     },
     "athletes": 10,
     "with_evidence": 3
+   }
+  },
+  {
+   "raw": "Madison",
+   "file": "2015/XC/JHXCWtvl10-BOYS.json",
+   "rows": 10,
+   "flag": "athletes contradict name match (me-ms-madison -> me-hs-madison, 8/8)",
+   "decision": "me-ms-madison",
+   "evidence": {
+    "votes": {
+     "me-ms-madison": 8
+    },
+    "athletes": 10,
+    "with_evidence": 8
    }
   },
   {
@@ -11043,21 +10040,6 @@
    }
   },
   {
-   "raw": "Madison",
-   "file": "2012/XC/watervillemsgirls_sept12.json",
-   "rows": 9,
-   "flag": "athletes contradict name match (me-ms-madison -> me-hs-madison, 5/8)",
-   "decision": "me-ms-madison",
-   "evidence": {
-    "votes": {
-     "me-ms-madison": 7,
-     "me-hs-valley": 1
-    },
-    "athletes": 9,
-    "with_evidence": 8
-   }
-  },
-  {
    "raw": "Waterville",
    "file": "2013/XC/ms-waterville-junior-high-xc-2013.json",
    "rows": 9,
@@ -11238,48 +10220,6 @@
    }
   },
   {
-   "raw": "Madison",
-   "file": "2020/XC/LJHXC2Girls-1.json",
-   "rows": 9,
-   "flag": "athletes contradict name match (me-hs-madison -> me-ms-madison, 2/9)",
-   "decision": "me-ms-madison",
-   "evidence": {
-    "votes": {
-     "me-ms-madison": 9
-    },
-    "athletes": 9,
-    "with_evidence": 9
-   }
-  },
-  {
-   "raw": "Madison",
-   "file": "2020/XC/Lawrence-Junior-High-Meet-Girls.json",
-   "rows": 9,
-   "flag": "athletes contradict name match (me-ms-madison -> me-hs-madison, 9/9)",
-   "decision": "me-ms-madison",
-   "evidence": {
-    "votes": {
-     "me-ms-madison": 9
-    },
-    "athletes": 9,
-    "with_evidence": 9
-   }
-  },
-  {
-   "raw": "LJHS",
-   "file": "2020/XC/Lawrence-Junior-High-XC-Boys.json",
-   "rows": 9,
-   "flag": "athletes contradict name match (me-ms-lawrence -> me-hs-lawrence, 7/8)",
-   "decision": "me-ms-lawrence",
-   "evidence": {
-    "votes": {
-     "me-hs-lawrence": 7
-    },
-    "athletes": 9,
-    "with_evidence": 8
-   }
-  },
-  {
    "raw": "OAK HILL",
    "file": "2021/XC/Maranacook-MS-9-21-21.json",
    "rows": 9,
@@ -11377,48 +10317,6 @@
     },
     "athletes": 4,
     "with_evidence": 3
-   }
-  },
-  {
-   "raw": "Messalonskee",
-   "file": "2024/XC/24.09.11XCWtvlJHBOYS.json",
-   "rows": 9,
-   "flag": "athletes contradict name match (me-hs-messalonskee -> me-ms-messalonskee, 9/9)",
-   "decision": "me-ms-messalonskee",
-   "evidence": {
-    "votes": {
-     "me-ms-messalonskee": 9
-    },
-    "athletes": 9,
-    "with_evidence": 9
-   }
-  },
-  {
-   "raw": "Messalonskee",
-   "file": "2024/XC/WinslowJHXC10.10.24BOYS.json",
-   "rows": 9,
-   "flag": "athletes contradict name match (me-hs-messalonskee -> me-ms-messalonskee, 8/8)",
-   "decision": "me-ms-messalonskee",
-   "evidence": {
-    "votes": {
-     "me-ms-messalonskee": 8
-    },
-    "athletes": 9,
-    "with_evidence": 8
-   }
-  },
-  {
-   "raw": "Winslow",
-   "file": "2024/XC/WinslowJHXC10.10.24GIRLS.json",
-   "rows": 9,
-   "flag": "athletes contradict name match (me-hs-winslow -> me-ms-winslow, 9/9)",
-   "decision": "me-ms-winslow",
-   "evidence": {
-    "votes": {
-     "me-ms-winslow": 9
-    },
-    "athletes": 9,
-    "with_evidence": 9
    }
   },
   {
@@ -11604,20 +10502,6 @@
    }
   },
   {
-   "raw": "Windham Middle School",
-   "file": "2012/XC/78girlsl1.json",
-   "rows": 8,
-   "flag": "athletes contradict name match (me-ms-windham -> me-hs-windham, 2/2)",
-   "decision": "me-ms-windham",
-   "evidence": {
-    "votes": {
-     "me-hs-windham": 2
-    },
-    "athletes": 8,
-    "with_evidence": 2
-   }
-  },
-  {
    "raw": "Hall Dale",
    "file": "2012/XC/CAL%20Invitational%20Results%20Girls.json",
    "rows": 8,
@@ -11626,20 +10510,6 @@
    "evidence": {
     "votes": {
      "me-ms-hall-dale": 8
-    },
-    "athletes": 8,
-    "with_evidence": 8
-   }
-  },
-  {
-   "raw": "Lawrence",
-   "file": "2012/XC/watervilleGirlsJHChamp2012.json",
-   "rows": 8,
-   "flag": "athletes contradict name match (me-hs-lawrence -> me-ms-lawrence, 4/8)",
-   "decision": "me-ms-lawrence",
-   "evidence": {
-    "votes": {
-     "me-ms-lawrence": 4
     },
     "athletes": 8,
     "with_evidence": 8
@@ -11688,31 +10558,31 @@
    }
   },
   {
-   "raw": "Waynflete",
-   "file": "2015/XC/boys1.json",
+   "raw": "Waterville",
+   "file": "2015/XC/XCWinslowJH9.23.json",
    "rows": 8,
-   "flag": "athletes contradict name match (me-ms-waynflete -> me-hs-waynflete, 6/6)",
-   "decision": "me-ms-waynflete",
+   "flag": "athletes contradict name match (me-hs-waterville -> me-ms-waterville, 6/8)",
+   "decision": "me-ms-waterville",
    "evidence": {
     "votes": {
-     "me-ms-waynflete": 6
+     "me-ms-waterville": 8
     },
     "athletes": 8,
-    "with_evidence": 6
+    "with_evidence": 8
    }
   },
   {
-   "raw": "Winslow Junior H.S.",
-   "file": "2015/XC/boys1.json",
+   "raw": "Madison",
+   "file": "2015/XC/ljhs2boys.json",
    "rows": 8,
-   "flag": "athletes contradict name match (me-ms-winslow -> me-hs-winslow, 5/7)",
-   "decision": "me-ms-winslow",
+   "flag": "athletes contradict name match (me-hs-madison -> me-ms-madison, 8/8)",
+   "decision": "me-ms-madison",
    "evidence": {
     "votes": {
-     "me-hs-winslow": 5
+     "me-ms-madison": 8
     },
     "athletes": 8,
-    "with_evidence": 7
+    "with_evidence": 8
    }
   },
   {
@@ -11842,24 +10712,10 @@
    }
   },
   {
-   "raw": "Waterville Junio",
-   "file": "2019/XC/CMLXCB2.json",
-   "rows": 8,
-   "flag": "athletes contradict name match (me-ms-waterville -> me-hs-waterville, 7/7)",
-   "decision": "me-hs-waterville",
-   "evidence": {
-    "votes": {
-     "me-hs-waterville": 7
-    },
-    "athletes": 8,
-    "with_evidence": 7
-   }
-  },
-  {
    "raw": "Oak Hill",
    "file": "2019/XC/oakhillboys_oct15.txt.json",
    "rows": 8,
-   "flag": "athletes contradict name match (me-hs-oak-hill -> me-ms-oak-hill, 5/7)",
+   "flag": "athletes contradict name match (me-hs-oak-hill -> me-ms-oak-hill, 7/7)",
    "decision": "me-ms-oak-hill",
    "evidence": {
     "votes": {
@@ -11873,7 +10729,7 @@
    "raw": "Oak Hill",
    "file": "2019/XC/oakhillgirls_oct15.txt.json",
    "rows": 8,
-   "flag": "athletes contradict name match (me-hs-oak-hill -> me-ms-oak-hill, 4/7)",
+   "flag": "athletes contradict name match (me-hs-oak-hill -> me-ms-oak-hill, 5/7)",
    "decision": "me-ms-oak-hill",
    "evidence": {
     "votes": {
@@ -11885,44 +10741,16 @@
   },
   {
    "raw": "Winslow",
-   "file": "2020/XC/Lawrence-Junior-High-Meet-Girls.json",
+   "file": "2020/XC/XCWinslowJH10.15.20girls.json",
    "rows": 8,
-   "flag": "athletes contradict name match (me-ms-winslow -> me-hs-winslow, 8/8)",
+   "flag": "athletes contradict name match (me-hs-winslow -> me-ms-winslow, 8/8)",
    "decision": "me-ms-winslow",
    "evidence": {
     "votes": {
-     "me-hs-winslow": 8
+     "me-ms-winslow": 8
     },
     "athletes": 8,
     "with_evidence": 8
-   }
-  },
-  {
-   "raw": "Waterville",
-   "file": "2020/XC/WtvlJHXC10.22.20boys.json",
-   "rows": 8,
-   "flag": "athletes contradict name match (me-hs-waterville -> me-ms-waterville, 5/8)",
-   "decision": "me-ms-waterville",
-   "evidence": {
-    "votes": {
-     "me-ms-waterville": 8
-    },
-    "athletes": 8,
-    "with_evidence": 8
-   }
-  },
-  {
-   "raw": "Madison",
-   "file": "2020/XC/WtvlJHXC10.22.20girls.json",
-   "rows": 8,
-   "flag": "athletes contradict name match (me-hs-madison -> me-ms-madison, 7/7)",
-   "decision": "me-ms-madison",
-   "evidence": {
-    "votes": {
-     "me-ms-madison": 7
-    },
-    "athletes": 8,
-    "with_evidence": 7
    }
   },
   {
@@ -12303,34 +11131,6 @@
    }
   },
   {
-   "raw": "Waynflete MS",
-   "file": "2007/XC/scarboroughinviteboys.json",
-   "rows": 7,
-   "flag": "athletes contradict name match (me-ms-waynflete -> me-hs-waynflete, 4/4)",
-   "decision": "me-ms-waynflete",
-   "evidence": {
-    "votes": {
-     "me-ms-waynflete": 4
-    },
-    "athletes": 7,
-    "with_evidence": 4
-   }
-  },
-  {
-   "raw": "Freeport",
-   "file": "2008/XC/scarboroughmsinviteboys.json",
-   "rows": 7,
-   "flag": "athletes contradict name match (me-ms-freeport -> me-hs-freeport, 2/2)",
-   "decision": "me-ms-freeport",
-   "evidence": {
-    "votes": {
-     "me-ms-freeport": 2
-    },
-    "athletes": 7,
-    "with_evidence": 2
-   }
-  },
-  {
    "raw": "STN",
    "file": "2009/Outdoor/Girls_Bangor_May_8_2009.json",
    "rows": 7,
@@ -12353,6 +11153,20 @@
    "evidence": {
     "votes": {
      "me-hs-stearns": 4
+    },
+    "athletes": 4,
+    "with_evidence": 4
+   }
+  },
+  {
+   "raw": "Bangor Christian",
+   "file": "2009/Outdoor/hampdenmiddleschoolboys_may21.json",
+   "rows": 7,
+   "flag": "athletes contradict name match (me-ms-bangor-christian -> me-hs-bangor-christian, 4/4)",
+   "decision": "me-ms-bangor-christian",
+   "evidence": {
+    "votes": {
+     "me-hs-bangor-christian": 4
     },
     "athletes": 4,
     "with_evidence": 4
@@ -12384,20 +11198,6 @@
     },
     "athletes": 2,
     "with_evidence": 2
-   }
-  },
-  {
-   "raw": "Oxford Hills",
-   "file": "2010/XC/BoysMSAndyValleyChamp.json",
-   "rows": 7,
-   "flag": "athletes contradict name match (me-hs-oxford-hills -> me-hs-oak-hill, 7/7)",
-   "decision": "me-hs-oxford-hills",
-   "evidence": {
-    "votes": {
-     "me-hs-oxford-hills": 7
-    },
-    "athletes": 7,
-    "with_evidence": 7
    }
   },
   {
@@ -12513,34 +11313,6 @@
    }
   },
   {
-   "raw": "Bonny Eagle",
-   "file": "2012/XC/6boysl1.json",
-   "rows": 7,
-   "flag": "athletes contradict name match (me-ms-bonny-eagle -> me-hs-bonny-eagle, 3/4)",
-   "decision": "me-ms-bonny-eagle",
-   "evidence": {
-    "votes": {
-     "me-ms-bonny-eagle": 4
-    },
-    "athletes": 7,
-    "with_evidence": 4
-   }
-  },
-  {
-   "raw": "Bonny Eagle",
-   "file": "2012/XC/78boysl1.json",
-   "rows": 7,
-   "flag": "athletes contradict name match (me-ms-bonny-eagle -> me-hs-bonny-eagle, 2/2)",
-   "decision": "me-ms-bonny-eagle",
-   "evidence": {
-    "votes": {
-     "me-ms-bonny-eagle": 2
-    },
-    "athletes": 7,
-    "with_evidence": 2
-   }
-  },
-  {
    "raw": "Lisbon",
    "file": "2012/XC/CAL%20Invitational%20Boys.json",
    "rows": 7,
@@ -12563,20 +11335,6 @@
    "evidence": {
     "votes": {
      "me-ms-gardiner": 6
-    },
-    "athletes": 7,
-    "with_evidence": 7
-   }
-  },
-  {
-   "raw": "Carrabec",
-   "file": "2012/XC/watervilleBoysJHChamp2012.json",
-   "rows": 7,
-   "flag": "athletes contradict name match (me-hs-carrabec -> me-ms-carrabec, 2/7)",
-   "decision": "me-ms-carrabec",
-   "evidence": {
-    "votes": {
-     "me-ms-carrabec": 7
     },
     "athletes": 7,
     "with_evidence": 7
@@ -12611,17 +11369,17 @@
    }
   },
   {
-   "raw": "Waynflete",
-   "file": "2015/XC/girls.json",
+   "raw": "Madison",
+   "file": "2015/XC/ljhs2.json",
    "rows": 7,
-   "flag": "athletes contradict name match (me-ms-waynflete -> me-hs-waynflete, 3/5)",
-   "decision": "me-ms-waynflete",
+   "flag": "athletes contradict name match (me-hs-madison -> me-ms-madison, 2/2)",
+   "decision": "me-ms-madison",
    "evidence": {
     "votes": {
-     "me-ms-waynflete": 4
+     "me-ms-madison": 2
     },
     "athletes": 7,
-    "with_evidence": 5
+    "with_evidence": 2
    }
   },
   {
@@ -12709,6 +11467,20 @@
    }
   },
   {
+   "raw": "Madison",
+   "file": "2018/XC/XCWatervilleJH18.09.27GirlsResults.json",
+   "rows": 7,
+   "flag": "athletes contradict name match (me-hs-madison -> me-ms-madison, 5/7)",
+   "decision": "me-ms-madison",
+   "evidence": {
+    "votes": {
+     "me-ms-madison": 7
+    },
+    "athletes": 7,
+    "with_evidence": 7
+   }
+  },
+  {
    "raw": "Winslow",
    "file": "2018/XC/XCWatervilleJH18.10.17BoysResults.json",
    "rows": 7,
@@ -12737,6 +11509,20 @@
    }
   },
   {
+   "raw": "Waterville",
+   "file": "2018/XC/XCWatervilleJH18.10.17GirlsResults.json",
+   "rows": 7,
+   "flag": "athletes contradict name match (me-hs-waterville -> me-ms-waterville, 2/6)",
+   "decision": "me-ms-waterville",
+   "evidence": {
+    "votes": {
+     "me-ms-waterville": 6
+    },
+    "athletes": 7,
+    "with_evidence": 6
+   }
+  },
+  {
    "raw": "Woodland School",
    "file": "2018/XC/alms-xc-meet-2-girls-results.json",
    "rows": 7,
@@ -12754,7 +11540,7 @@
    "raw": "Richmond",
    "file": "2019/XC/10-15-19-Winthrop-MS-Boys.json",
    "rows": 7,
-   "flag": "athletes contradict name match (me-ms-richmond -> me-hs-richmond, 7/7)",
+   "flag": "athletes contradict name match (me-ms-richmond -> me-hs-richmond, 2/7)",
    "decision": "me-ms-richmond",
    "evidence": {
     "votes": {
@@ -12796,7 +11582,7 @@
    "raw": "Oak Hill",
    "file": "2019/XC/10-22-19-Boys.txt.json",
    "rows": 7,
-   "flag": "athletes contradict name match (me-hs-oak-hill -> me-ms-oak-hill, 5/7)",
+   "flag": "athletes contradict name match (me-hs-oak-hill -> me-ms-oak-hill, 7/7)",
    "decision": "me-ms-oak-hill",
    "evidence": {
     "votes": {
@@ -12810,7 +11596,7 @@
    "raw": "Oak Hill",
    "file": "2019/XC/10-22-19-Girls.txt.json",
    "rows": 7,
-   "flag": "athletes contradict name match (me-hs-oak-hill -> me-ms-oak-hill, 3/6)",
+   "flag": "athletes contradict name match (me-hs-oak-hill -> me-ms-oak-hill, 4/6)",
    "decision": "me-ms-oak-hill",
    "evidence": {
     "votes": {
@@ -12821,17 +11607,17 @@
    }
   },
   {
-   "raw": "CONY",
-   "file": "2019/XC/10-29-19-Winthrop-Invitational-Boys.json",
+   "raw": "Winslow",
+   "file": "2019/XC/XCWtvlJH09.25.19Boys.json",
    "rows": 7,
-   "flag": "athletes contradict name match (me-ms-cony -> me-hs-cony, 6/6)",
-   "decision": "me-ms-cony",
+   "flag": "athletes contradict name match (me-hs-winslow -> me-ms-winslow, 7/7)",
+   "decision": "me-ms-winslow",
    "evidence": {
     "votes": {
-     "me-hs-cony": 6
+     "me-ms-winslow": 7
     },
     "athletes": 7,
-    "with_evidence": 6
+    "with_evidence": 7
    }
   },
   {
@@ -12849,17 +11635,17 @@
    }
   },
   {
-   "raw": "Waterville",
-   "file": "2020/XC/Lawrence-Junior-High-XC-Boys.json",
+   "raw": "Lawrence",
+   "file": "2020/XC/XCWinslowJH10.15.20boys.json",
    "rows": 7,
-   "flag": "athletes contradict name match (me-ms-waterville -> me-hs-waterville, 6/6)",
-   "decision": "me-ms-waterville",
+   "flag": "athletes contradict name match (me-hs-lawrence -> me-ms-lawrence, 7/7)",
+   "decision": "me-ms-lawrence",
    "evidence": {
     "votes": {
-     "me-ms-waterville": 6
+     "me-ms-lawrence": 7
     },
     "athletes": 7,
-    "with_evidence": 6
+    "with_evidence": 7
    }
   },
   {
@@ -13004,20 +11790,6 @@
   },
   {
    "raw": "Messalonskee",
-   "file": "2024/XC/WinslowJHXC10.10.24GIRLS.json",
-   "rows": 7,
-   "flag": "athletes contradict name match (me-hs-messalonskee -> me-ms-messalonskee, 7/7)",
-   "decision": "me-ms-messalonskee",
-   "evidence": {
-    "votes": {
-     "me-ms-messalonskee": 7
-    },
-    "athletes": 7,
-    "with_evidence": 7
-   }
-  },
-  {
-   "raw": "Messalonskee",
    "file": "2026/Outdoor/ResultsWinslowJHTM.json",
    "rows": 7,
    "flag": "athletes contradict name match (me-hs-messalonskee -> me-ms-messalonskee, 7/7)",
@@ -13060,20 +11832,6 @@
    }
   },
   {
-   "raw": "Wayn",
-   "file": "2007/XC/falmouthmiddle9_25.json",
-   "rows": 6,
-   "flag": "athletes contradict name match (me-hs-waynflete -> me-ms-waynflete, 4/4)",
-   "decision": "me-ms-waynflete",
-   "evidence": {
-    "votes": {
-     "me-ms-waynflete": 4
-    },
-    "athletes": 6,
-    "with_evidence": 4
-   }
-  },
-  {
    "raw": "La",
    "file": "2007/XC/lynxinvitational9_25.json",
    "rows": 6,
@@ -13085,20 +11843,6 @@
     },
     "athletes": 6,
     "with_evidence": 5
-   }
-  },
-  {
-   "raw": "Free",
-   "file": "2008/XC/falmouthmiddle9_18.json",
-   "rows": 6,
-   "flag": "athletes contradict name match (me-hs-freeport -> me-ms-freeport, 3/3)",
-   "decision": "me-ms-freeport",
-   "evidence": {
-    "votes": {
-     "me-ms-freeport": 3
-    },
-    "athletes": 6,
-    "with_evidence": 3
    }
   },
   {
@@ -13140,20 +11884,6 @@
      "me-hs-oxford-hills": 4
     },
     "athletes": 6,
-    "with_evidence": 4
-   }
-  },
-  {
-   "raw": "Bangor Christian",
-   "file": "2009/Outdoor/hampdenmiddleschoolboys_may21.json",
-   "rows": 6,
-   "flag": "athletes contradict name match (me-ms-bangor-christian -> me-hs-bangor-christian, 4/4)",
-   "decision": "me-ms-bangor-christian",
-   "evidence": {
-    "votes": {
-     "me-hs-bangor-christian": 4
-    },
-    "athletes": 4,
     "with_evidence": 4
    }
   },
@@ -13243,17 +11973,17 @@
    }
   },
   {
-   "raw": "Mountain Valley High School",
-   "file": "2011/XC/ms-mvc-h-d-st-doms-mad-telstar-carrabec-2011.json",
+   "raw": "Green M",
+   "file": "2011/XC/ResultsREG1JOXC11-1.json",
    "rows": 6,
-   "flag": "athletes contradict name match (me-hs-mountain-valley -> me-hs-valley, 2/2)",
-   "decision": "me-hs-mountain-valley",
+   "flag": "athletes contradict name match (col-green-mountain -> oos-vt-st-johnsbury-academy, 5/5)",
+   "decision": "oos-vt-st-johnsbury-academy",
    "evidence": {
     "votes": {
-     "me-hs-valley": 2
+     "oos-vt-st-johnsbury-academy": 5
     },
     "athletes": 6,
-    "with_evidence": 2
+    "with_evidence": 5
    }
   },
   {
@@ -13285,21 +12015,6 @@
    }
   },
   {
-   "raw": "Windham Middle School",
-   "file": "2012/XC/6boysl1.json",
-   "rows": 6,
-   "flag": "athletes contradict name match (me-ms-windham -> me-hs-windham, 2/2)",
-   "decision": "me-ms-windham",
-   "evidence": {
-    "votes": {
-     "me-hs-windham": 2,
-     "me-ms-windham": 1
-    },
-    "athletes": 6,
-    "with_evidence": 3
-   }
-  },
-  {
    "raw": "Scarborough",
    "file": "2012/XC/78boysl1.json",
    "rows": 6,
@@ -13322,34 +12037,6 @@
    "evidence": {
     "votes": {
      "me-ms-winthrop": 5
-    },
-    "athletes": 6,
-    "with_evidence": 5
-   }
-  },
-  {
-   "raw": "Skowhegan",
-   "file": "2012/XC/watervilleGirlsJHChamp2012.json",
-   "rows": 6,
-   "flag": "athletes contradict name match (me-hs-skowhegan -> me-ms-skowhegan, 3/5)",
-   "decision": "me-ms-skowhegan",
-   "evidence": {
-    "votes": {
-     "me-ms-skowhegan": 4
-    },
-    "athletes": 6,
-    "with_evidence": 5
-   }
-  },
-  {
-   "raw": "Carrabec",
-   "file": "2012/XC/watervillemsboys_sept12.json",
-   "rows": 6,
-   "flag": "athletes contradict name match (me-ms-carrabec -> me-hs-carrabec, 2/5)",
-   "decision": "me-ms-carrabec",
-   "evidence": {
-    "votes": {
-     "me-ms-carrabec": 5
     },
     "athletes": 6,
     "with_evidence": 5
@@ -13384,14 +12071,28 @@
    }
   },
   {
-   "raw": "Winslow Junior H.S.",
-   "file": "2015/XC/girls.json",
+   "raw": "Winslow",
+   "file": "2015/XC/ljhsxcboys.json",
    "rows": 6,
-   "flag": "athletes contradict name match (me-ms-winslow -> me-hs-winslow, 3/5)",
+   "flag": "athletes contradict name match (me-hs-winslow -> me-ms-winslow, 4/5)",
    "decision": "me-ms-winslow",
    "evidence": {
     "votes": {
-     "me-hs-winslow": 3
+     "me-ms-winslow": 5
+    },
+    "athletes": 6,
+    "with_evidence": 5
+   }
+  },
+  {
+   "raw": "Skowhegan",
+   "file": "2015/XC/ljhsxcgirls.json",
+   "rows": 6,
+   "flag": "athletes contradict name match (me-hs-skowhegan -> me-ms-skowhegan, 5/5)",
+   "decision": "me-ms-skowhegan",
+   "evidence": {
+    "votes": {
+     "me-ms-skowhegan": 5
     },
     "athletes": 6,
     "with_evidence": 5
@@ -13482,6 +12183,20 @@
    }
   },
   {
+   "raw": "Madison",
+   "file": "2018/XC/18.09.19XCWinslowJHGIRLScorrect.json",
+   "rows": 6,
+   "flag": "athletes contradict name match (me-ms-madison -> me-hs-madison, 2/6)",
+   "decision": "me-ms-madison",
+   "evidence": {
+    "votes": {
+     "me-ms-madison": 6
+    },
+    "athletes": 6,
+    "with_evidence": 6
+   }
+  },
+  {
    "raw": "Winslow",
    "file": "2018/XC/18.09.19XCWinslowJHrevisedBoys.json",
    "rows": 6,
@@ -13513,12 +12228,11 @@
    "raw": "WAJH",
    "file": "2018/XC/LJHS-Girls.json",
    "rows": 6,
-   "flag": "athletes contradict name match (me-ms-warsaw -> me-hs-waterville, 2/6)",
-   "decision": "me-hs-waterville",
+   "flag": "athletes disagree with file rule (me-ms-waterville -> me-hs-waterville, 2/6)",
+   "decision": "me-ms-waterville",
    "evidence": {
     "votes": {
-     "me-ms-waterville": 2,
-     "me-hs-waterville": 2
+     "me-ms-waterville": 6
     },
     "athletes": 6,
     "with_evidence": 6
@@ -13533,6 +12247,34 @@
    "evidence": {
     "votes": {
      "me-ms-winslow": 6
+    },
+    "athletes": 6,
+    "with_evidence": 6
+   }
+  },
+  {
+   "raw": "Waterville",
+   "file": "2018/XC/XCWatervilleJH18.09.27GirlsResults.json",
+   "rows": 6,
+   "flag": "athletes contradict name match (me-hs-waterville -> me-ms-waterville, 4/4)",
+   "decision": "me-ms-waterville",
+   "evidence": {
+    "votes": {
+     "me-ms-waterville": 4
+    },
+    "athletes": 6,
+    "with_evidence": 4
+   }
+  },
+  {
+   "raw": "Madison",
+   "file": "2018/XC/XCWatervilleJH18.10.17GirlsResults.json",
+   "rows": 6,
+   "flag": "athletes contradict name match (me-hs-madison -> me-ms-madison, 4/6)",
+   "decision": "me-ms-madison",
+   "evidence": {
+    "votes": {
+     "me-ms-madison": 6
     },
     "athletes": 6,
     "with_evidence": 6
@@ -13584,14 +12326,42 @@
    "raw": "Gardiner",
    "file": "2019/XC/10-22-19-Girls.txt.json",
    "rows": 6,
-   "flag": "athletes contradict name match (me-hs-gardiner -> me-ms-gardiner, 3/3)",
+   "flag": "athletes contradict name match (me-hs-gardiner -> me-ms-gardiner, 4/4)",
    "decision": "me-ms-gardiner",
    "evidence": {
     "votes": {
-     "me-ms-gardiner": 3
+     "me-ms-gardiner": 4
     },
     "athletes": 6,
-    "with_evidence": 3
+    "with_evidence": 4
+   }
+  },
+  {
+   "raw": "Waterville",
+   "file": "2019/XC/XCWtvlJH09.25.19Boys.json",
+   "rows": 6,
+   "flag": "athletes contradict name match (me-hs-waterville -> me-ms-waterville, 6/6)",
+   "decision": "me-ms-waterville",
+   "evidence": {
+    "votes": {
+     "me-ms-waterville": 6
+    },
+    "athletes": 6,
+    "with_evidence": 6
+   }
+  },
+  {
+   "raw": "Winslow",
+   "file": "2019/XC/XCWtvlJH09.25.19Girls.json",
+   "rows": 6,
+   "flag": "athletes contradict name match (me-hs-winslow -> me-ms-winslow, 6/6)",
+   "decision": "me-ms-winslow",
+   "evidence": {
+    "votes": {
+     "me-ms-winslow": 6
+    },
+    "athletes": 6,
+    "with_evidence": 6
    }
   },
   {
@@ -13606,62 +12376,6 @@
     },
     "athletes": 6,
     "with_evidence": 4
-   }
-  },
-  {
-   "raw": "Winslow Junior High Schoo",
-   "file": "2019/XC/ms-lawrence-junior-high-xc-meet-2019.json",
-   "rows": 6,
-   "flag": "athletes contradict name match (me-ms-winslow -> me-hs-winslow, 6/6)",
-   "decision": "me-ms-winslow",
-   "evidence": {
-    "votes": {
-     "me-hs-winslow": 6
-    },
-    "athletes": 6,
-    "with_evidence": 6
-   }
-  },
-  {
-   "raw": "Madison",
-   "file": "2020/XC/LJHXC2-Boys.json",
-   "rows": 6,
-   "flag": "athletes contradict name match (me-hs-madison -> me-ms-madison, 2/6)",
-   "decision": "me-ms-madison",
-   "evidence": {
-    "votes": {
-     "me-ms-madison": 6
-    },
-    "athletes": 6,
-    "with_evidence": 6
-   }
-  },
-  {
-   "raw": "Waterville",
-   "file": "2020/XC/LJHXC2-Boys.json",
-   "rows": 6,
-   "flag": "athletes contradict name match (me-hs-waterville -> me-ms-waterville, 3/6)",
-   "decision": "me-ms-waterville",
-   "evidence": {
-    "votes": {
-     "me-ms-waterville": 6
-    },
-    "athletes": 6,
-    "with_evidence": 6
-   }
-  },
-  {
-   "raw": "Madison",
-   "file": "2020/XC/Lawrence-Junior-High-XC-Boys.json",
-   "rows": 6,
-   "flag": "athletes contradict name match (me-ms-madison -> me-hs-madison, 6/6)",
-   "decision": "me-ms-madison",
-   "evidence": {
-    "votes": {
-     "me-ms-madison": 6
-    },
-    "athletes": 6,
-    "with_evidence": 6
    }
   },
   {
@@ -13864,11 +12578,11 @@
    "raw": "Upper Kennebec Valley High School",
    "file": "2025/XC/ms-east-west-conference-xc-championship-meet-2025.json",
    "rows": 6,
-   "flag": "athletes contradict name match (me-hs-upper-kennebec -> me-hs-valley, 5/5)",
+   "flag": "athletes contradict name match (me-hs-upper-kennebec -> me-hs-valley, 3/5)",
    "decision": "me-hs-upper-kennebec",
    "evidence": {
     "votes": {
-     "me-hs-valley": 5
+     "me-hs-valley": 3
     },
     "athletes": 6,
     "with_evidence": 5
@@ -13917,20 +12631,6 @@
    }
   },
   {
-   "raw": "GNG",
-   "file": "2007/XC/falmouthmiddle9_25.json",
-   "rows": 5,
-   "flag": "athletes contradict name match (me-hs-gray-ng -> me-ms-gray-ng, 4/4)",
-   "decision": "me-ms-gray-ng",
-   "evidence": {
-    "votes": {
-     "me-ms-gray-ng": 4
-    },
-    "athletes": 5,
-    "with_evidence": 4
-   }
-  },
-  {
    "raw": "Houlton High School",
    "file": "2008/XC/ms-eastern-maine-class-c-regional-2008.json",
    "rows": 5,
@@ -13959,62 +12659,6 @@
    }
   },
   {
-   "raw": "Saco",
-   "file": "2008/XC/smmsaajuniorgirls.json",
-   "rows": 5,
-   "flag": "athletes contradict name match (me-ms-saco -> me-hs-sacopee, 2/2)",
-   "decision": "me-ms-saco",
-   "evidence": {
-    "votes": {
-     "me-ms-saco": 2
-    },
-    "athletes": 5,
-    "with_evidence": 2
-   }
-  },
-  {
-   "raw": "Saco",
-   "file": "2008/XC/smmsaajuniorgirls.json",
-   "rows": 5,
-   "flag": "athletes contradict name match (me-hs-sacopee -> me-ms-saco, 2/2)",
-   "decision": "me-ms-saco",
-   "evidence": {
-    "votes": {
-     "me-ms-saco": 2
-    },
-    "athletes": 5,
-    "with_evidence": 2
-   }
-  },
-  {
-   "raw": "No",
-   "file": "2008/XC/thorntongirls_oct10.json",
-   "rows": 5,
-   "flag": "athletes contradict name match (oos-auto-vt-north -> me-hs-noble, 4/4)",
-   "decision": "oos-auto-vt-north",
-   "evidence": {
-    "votes": {
-     "me-hs-noble": 4
-    },
-    "athletes": 5,
-    "with_evidence": 4
-   }
-  },
-  {
-   "raw": "Greater Houlton",
-   "file": "2009/XC/focboyssections.json",
-   "rows": 5,
-   "flag": "athletes contradict name match (me-hs-greater-houlton-christian -> me-hs-houlton, 3/5)",
-   "decision": "me-hs-greater-houlton-christian",
-   "evidence": {
-    "votes": {
-     "me-hs-houlton": 3
-    },
-    "athletes": 5,
-    "with_evidence": 5
-   }
-  },
-  {
    "raw": "Houlton High School",
    "file": "2009/XC/ms-eastern-maine-class-c-regional-2009.json",
    "rows": 5,
@@ -14029,17 +12673,17 @@
    }
   },
   {
-   "raw": "Telstar",
-   "file": "2010/XC/MonmouthMSGirls.json",
+   "raw": "Oxford Hills",
+   "file": "2010/XC/GirlsMSAndyValleyChamp.json",
    "rows": 5,
-   "flag": "athletes contradict name match (me-ms-telstar -> me-hs-telstar, 2/2)",
-   "decision": "me-ms-telstar",
+   "flag": "athletes contradict name match (me-hs-oxford-hills -> me-ms-oxford-hills, 3/3)",
+   "decision": "me-ms-oxford-hills",
    "evidence": {
     "votes": {
-     "me-ms-telstar": 2
+     "me-ms-oxford-hills": 4
     },
     "athletes": 5,
-    "with_evidence": 2
+    "with_evidence": 4
    }
   },
   {
@@ -14054,20 +12698,6 @@
     },
     "athletes": 5,
     "with_evidence": 4
-   }
-  },
-  {
-   "raw": "Tel",
-   "file": "2010/XC/oxfordhillsmiddlegirls_sept22.json",
-   "rows": 5,
-   "flag": "athletes contradict name match (me-hs-telstar -> me-ms-telstar, 2/2)",
-   "decision": "me-ms-telstar",
-   "evidence": {
-    "votes": {
-     "me-ms-telstar": 2
-    },
-    "athletes": 5,
-    "with_evidence": 2
    }
   },
   {
@@ -14243,7 +12873,7 @@
    "raw": "Staples",
    "file": "2015/Outdoor/ResultsNewEngland151.json",
    "rows": 5,
-   "flag": "company: oos-auto-ct-unattached (1.40) -> oos-ct-staples-high-school (92.31)",
+   "flag": "company: oos-auto-ct-unattached (1.40) -> oos-ct-staples-high-school (92.15)",
    "decision": "oos-auto-ct-unattached",
    "evidence": {
     "votes": {
@@ -14271,7 +12901,7 @@
    "raw": "Staples",
    "file": "2015/Outdoor/ResultsNewEngland151.json",
    "rows": 5,
-   "flag": "company: oos-auto-ct-unattached (1.40) -> oos-ct-staples-high-school (92.31)",
+   "flag": "company: oos-auto-ct-unattached (1.40) -> oos-ct-staples-high-school (92.15)",
    "decision": "oos-auto-ct-unattached",
    "evidence": {
     "votes": {
@@ -14321,6 +12951,20 @@
     },
     "athletes": 5,
     "with_evidence": 4
+   }
+  },
+  {
+   "raw": "Spruce Mtn.",
+   "file": "2015/XC/ljhs2.json",
+   "rows": 5,
+   "flag": "athletes contradict name match (me-hs-spruce-mountain -> me-ms-spruce-mountain, 3/3)",
+   "decision": "me-ms-spruce-mountain",
+   "evidence": {
+    "votes": {
+     "me-ms-spruce-mountain": 3
+    },
+    "athletes": 5,
+    "with_evidence": 3
    }
   },
   {
@@ -14422,6 +13066,20 @@
    }
   },
   {
+   "raw": "Winslow",
+   "file": "2018/XC/XCWatervilleJH18.09.27GirlsResults.json",
+   "rows": 5,
+   "flag": "athletes contradict name match (me-hs-winslow -> me-ms-winslow, 2/5)",
+   "decision": "me-ms-winslow",
+   "evidence": {
+    "votes": {
+     "me-ms-winslow": 4
+    },
+    "athletes": 5,
+    "with_evidence": 5
+   }
+  },
+  {
    "raw": "Lawrence",
    "file": "2018/XC/XCWatervilleJH18.10.17BoysResults.json",
    "rows": 5,
@@ -14430,6 +13088,20 @@
    "evidence": {
     "votes": {
      "me-ms-lawrence": 5
+    },
+    "athletes": 5,
+    "with_evidence": 5
+   }
+  },
+  {
+   "raw": "Winslow",
+   "file": "2018/XC/XCWatervilleJH18.10.17GirlsResults.json",
+   "rows": 5,
+   "flag": "athletes contradict name match (me-hs-winslow -> me-ms-winslow, 2/5)",
+   "decision": "me-ms-winslow",
+   "evidence": {
+    "votes": {
+     "me-ms-winslow": 4
     },
     "athletes": 5,
     "with_evidence": 5
@@ -14464,14 +13136,14 @@
    }
   },
   {
-   "raw": "Madison",
-   "file": "2020/XC/WtvlJHXC10.22.20boys.json",
+   "raw": "HD",
+   "file": "2019/XC/ms-cony-middle-school-cross-country-meet1-2019.json",
    "rows": 5,
-   "flag": "athletes contradict name match (me-hs-madison -> me-ms-madison, 4/4)",
-   "decision": "me-ms-madison",
+   "flag": "athletes contradict name match (me-hs-hall-dale -> me-ms-hall-dale, 4/4)",
+   "decision": "me-hs-hall-dale",
    "evidence": {
     "votes": {
-     "me-ms-madison": 4
+     "me-hs-hall-dale": 2
     },
     "athletes": 5,
     "with_evidence": 4
@@ -14870,76 +13542,6 @@
    }
   },
   {
-   "raw": "Lawrence",
-   "file": "2024/XC/24.09.11XCWtvlJHBOYS.json",
-   "rows": 5,
-   "flag": "athletes contradict name match (me-hs-lawrence -> me-ms-lawrence, 5/5)",
-   "decision": "me-ms-lawrence",
-   "evidence": {
-    "votes": {
-     "me-ms-lawrence": 5
-    },
-    "athletes": 5,
-    "with_evidence": 5
-   }
-  },
-  {
-   "raw": "Winslow",
-   "file": "2024/XC/24.09.11XCWtvlJHBOYS.json",
-   "rows": 5,
-   "flag": "athletes contradict name match (me-hs-winslow -> me-ms-winslow, 4/4)",
-   "decision": "me-ms-winslow",
-   "evidence": {
-    "votes": {
-     "me-ms-winslow": 4
-    },
-    "athletes": 5,
-    "with_evidence": 4
-   }
-  },
-  {
-   "raw": "Waterville",
-   "file": "2024/XC/24.09.11XCWtvlJHGIRLS.json",
-   "rows": 5,
-   "flag": "athletes contradict name match (me-hs-waterville -> me-ms-waterville, 4/5)",
-   "decision": "me-ms-waterville",
-   "evidence": {
-    "votes": {
-     "me-ms-waterville": 5
-    },
-    "athletes": 5,
-    "with_evidence": 5
-   }
-  },
-  {
-   "raw": "Winslow",
-   "file": "2024/XC/24.09.11XCWtvlJHGIRLS.json",
-   "rows": 5,
-   "flag": "athletes contradict name match (me-hs-winslow -> me-ms-winslow, 5/5)",
-   "decision": "me-ms-winslow",
-   "evidence": {
-    "votes": {
-     "me-ms-winslow": 5
-    },
-    "athletes": 5,
-    "with_evidence": 5
-   }
-  },
-  {
-   "raw": "Lawrence",
-   "file": "2024/XC/24.09.11XCWtvlJHGIRLS.json",
-   "rows": 5,
-   "flag": "athletes contradict name match (me-hs-lawrence -> me-ms-lawrence, 5/5)",
-   "decision": "me-ms-lawrence",
-   "evidence": {
-    "votes": {
-     "me-ms-lawrence": 5
-    },
-    "athletes": 5,
-    "with_evidence": 5
-   }
-  },
-  {
    "raw": "Mount Desert",
    "file": "2024/XC/airline-invitational-boys.txt.json",
    "rows": 5,
@@ -15120,6 +13722,20 @@
     },
     "athletes": 3,
     "with_evidence": 3
+   }
+  },
+  {
+   "raw": "Monmouth",
+   "file": "2007/XC/MonmouthGirls10-4.json",
+   "rows": 4,
+   "flag": "athletes contradict name match (me-hs-monmouth -> me-ms-monmouth, 2/2)",
+   "decision": "me-ms-monmouth",
+   "evidence": {
+    "votes": {
+     "me-ms-monmouth": 4
+    },
+    "athletes": 4,
+    "with_evidence": 4
    }
   },
   {
@@ -15369,34 +13985,6 @@
    "evidence": null
   },
   {
-   "raw": "Gray New Gloucester",
-   "file": "2012/XC/scarboroughinvitegirls.json",
-   "rows": 4,
-   "flag": "athletes contradict name match (me-ms-gray-ng -> me-hs-gray-ng, 3/3)",
-   "decision": "me-ms-gray-ng",
-   "evidence": {
-    "votes": {
-     "me-hs-gray-ng": 3
-    },
-    "athletes": 4,
-    "with_evidence": 3
-   }
-  },
-  {
-   "raw": "Carrabec",
-   "file": "2012/XC/watervillemsgirls_sept12.json",
-   "rows": 4,
-   "flag": "athletes contradict name match (me-ms-carrabec -> me-hs-carrabec, 2/2)",
-   "decision": "me-ms-carrabec",
-   "evidence": {
-    "votes": {
-     "me-hs-carrabec": 2
-    },
-    "athletes": 4,
-    "with_evidence": 2
-   }
-  },
-  {
    "raw": "Pemetic Elementary School",
    "file": "2014/XC/ms-parker-pruett-middle-school-xc-meet-2014.json",
    "rows": 4,
@@ -15436,6 +14024,34 @@
     },
     "athletes": 4,
     "with_evidence": 3
+   }
+  },
+  {
+   "raw": "Waterville",
+   "file": "2015/XC/ljhsxcboys.json",
+   "rows": 4,
+   "flag": "athletes contradict name match (me-hs-waterville -> me-ms-waterville, 3/3)",
+   "decision": "me-ms-waterville",
+   "evidence": {
+    "votes": {
+     "me-ms-waterville": 3
+    },
+    "athletes": 4,
+    "with_evidence": 3
+   }
+  },
+  {
+   "raw": "Winslow",
+   "file": "2015/XC/ljhsxcgirls.json",
+   "rows": 4,
+   "flag": "athletes contradict name match (me-hs-winslow -> me-ms-winslow, 3/4)",
+   "decision": "me-ms-winslow",
+   "evidence": {
+    "votes": {
+     "me-ms-winslow": 4
+    },
+    "athletes": 4,
+    "with_evidence": 4
    }
   },
   {
@@ -15565,20 +14181,6 @@
    }
   },
   {
-   "raw": "HALL DALE",
-   "file": "2019/XC/10-15-19-Winthrop-MS-Boys.json",
-   "rows": 4,
-   "flag": "athletes contradict name match (me-ms-hall-dale -> me-hs-hall-dale, 2/2)",
-   "decision": "me-ms-hall-dale",
-   "evidence": {
-    "votes": {
-     "me-ms-hall-dale": 2
-    },
-    "athletes": 4,
-    "with_evidence": 2
-   }
-  },
-  {
    "raw": "Gardiner",
    "file": "2019/XC/10-22-19-Boys.txt.json",
    "rows": 4,
@@ -15597,13 +14199,55 @@
    "file": "2019/XC/10-22-19-Girls.txt.json",
    "rows": 4,
    "flag": "athletes contradict name match (me-hs-hall-dale -> me-ms-hall-dale, 2/2)",
-   "decision": "me-ms-hall-dale",
+   "decision": "me-hs-hall-dale",
    "evidence": {
     "votes": {
-     "me-ms-hall-dale": 2
+     "me-hs-hall-dale": 2
     },
     "athletes": 4,
-    "with_evidence": 2
+    "with_evidence": 4
+   }
+  },
+  {
+   "raw": "Hall Dale",
+   "file": "2019/XC/10-22-19-Girls.txt.json",
+   "rows": 4,
+   "flag": "athletes contradict name match (me-ms-hall-dale -> me-hs-hall-dale, 2/4)",
+   "decision": "me-hs-hall-dale",
+   "evidence": {
+    "votes": {
+     "me-hs-hall-dale": 2
+    },
+    "athletes": 4,
+    "with_evidence": 4
+   }
+  },
+  {
+   "raw": "Waterville",
+   "file": "2019/XC/19.09.11XCJHGIRLS.json",
+   "rows": 4,
+   "flag": "athletes contradict name match (me-ms-waterville -> me-hs-waterville, 4/4)",
+   "decision": "me-ms-waterville",
+   "evidence": {
+    "votes": {
+     "me-ms-waterville": 4
+    },
+    "athletes": 4,
+    "with_evidence": 4
+   }
+  },
+  {
+   "raw": "Madison",
+   "file": "2019/XC/19.09.18WinslowJHXCGirls.json",
+   "rows": 4,
+   "flag": "athletes contradict name match (me-ms-madison -> me-hs-madison, 2/3)",
+   "decision": "me-ms-madison",
+   "evidence": {
+    "votes": {
+     "me-ms-madison": 3
+    },
+    "athletes": 4,
+    "with_evidence": 3
    }
   },
   {
@@ -15618,6 +14262,34 @@
     },
     "athletes": 4,
     "with_evidence": 3
+   }
+  },
+  {
+   "raw": "Madison",
+   "file": "2019/XC/XCWtvlJH09.25.19Girls.json",
+   "rows": 4,
+   "flag": "athletes contradict name match (me-hs-madison -> me-ms-madison, 4/4)",
+   "decision": "me-ms-madison",
+   "evidence": {
+    "votes": {
+     "me-ms-madison": 4
+    },
+    "athletes": 4,
+    "with_evidence": 4
+   }
+  },
+  {
+   "raw": "Waterville",
+   "file": "2019/XC/XCWtvlJH09.25.19Girls.json",
+   "rows": 4,
+   "flag": "athletes contradict name match (me-hs-waterville -> me-ms-waterville, 4/4)",
+   "decision": "me-ms-waterville",
+   "evidence": {
+    "votes": {
+     "me-ms-waterville": 4
+    },
+    "athletes": 4,
+    "with_evidence": 4
    }
   },
   {
@@ -15915,98 +14587,14 @@
    }
   },
   {
-   "raw": "Madison",
-   "file": "2024/XC/24.09.11XCWtvlJHBOYS.json",
-   "rows": 4,
-   "flag": "athletes contradict name match (me-hs-madison -> me-ms-madison, 4/4)",
-   "decision": "me-ms-madison",
-   "evidence": {
-    "votes": {
-     "me-ms-madison": 4
-    },
-    "athletes": 4,
-    "with_evidence": 4
-   }
-  },
-  {
-   "raw": "Madison",
-   "file": "2024/XC/WinslowJHXC10.10.24BOYS.json",
-   "rows": 4,
-   "flag": "athletes contradict name match (me-hs-madison -> me-ms-madison, 3/3)",
-   "decision": "me-ms-madison",
-   "evidence": {
-    "votes": {
-     "me-ms-madison": 3
-    },
-    "athletes": 4,
-    "with_evidence": 3
-   }
-  },
-  {
-   "raw": "Skowhegan",
-   "file": "2024/XC/WinslowJHXC10.10.24BOYS.json",
-   "rows": 4,
-   "flag": "athletes contradict name match (me-hs-skowhegan -> me-ms-skowhegan, 3/3)",
-   "decision": "me-ms-skowhegan",
-   "evidence": {
-    "votes": {
-     "me-ms-skowhegan": 3
-    },
-    "athletes": 4,
-    "with_evidence": 3
-   }
-  },
-  {
-   "raw": "Winslow",
-   "file": "2024/XC/WinslowJHXC10.10.24BOYS.json",
-   "rows": 4,
-   "flag": "athletes contradict name match (me-hs-winslow -> me-ms-winslow, 4/4)",
-   "decision": "me-ms-winslow",
-   "evidence": {
-    "votes": {
-     "me-ms-winslow": 4
-    },
-    "athletes": 4,
-    "with_evidence": 4
-   }
-  },
-  {
-   "raw": "St Dom's",
-   "file": "2024/XC/ms-ccc-ms-xc-meet-at-lake-region-2024.json",
-   "rows": 4,
-   "flag": "athletes contradict name match (me-hs-st-dominic -> me-ms-st-dominic, 3/3)",
-   "decision": "me-hs-st-dominic",
-   "evidence": {
-    "votes": {
-     "me-ms-st-dominic": 3
-    },
-    "athletes": 4,
-    "with_evidence": 3
-   }
-  },
-  {
-   "raw": "St Dominic MS",
-   "file": "2024/XC/ms-mt-ararat-ms-xc-meet-2024.json",
-   "rows": 4,
-   "flag": "athletes contradict name match (me-ms-st-dominic -> me-hs-st-dominic, 3/3)",
-   "decision": "me-ms-st-dominic",
-   "evidence": {
-    "votes": {
-     "me-hs-st-dominic": 3
-    },
-    "athletes": 4,
-    "with_evidence": 3
-   }
-  },
-  {
    "raw": "Valley",
    "file": "2025/XC/10-10-25-Lisbon-HS-Boys.json",
    "rows": 4,
-   "flag": "athletes contradict name match (me-hs-valley -> me-hs-upper-kennebec, 4/4)",
+   "flag": "athletes contradict name match (me-hs-valley -> me-hs-upper-kennebec, 2/4)",
    "decision": "me-hs-valley",
    "evidence": {
     "votes": {
-     "me-hs-upper-kennebec": 4
+     "me-hs-upper-kennebec": 2
     },
     "athletes": 4,
     "with_evidence": 4
@@ -16099,10 +14687,24 @@
    }
   },
   {
+   "raw": "Noble",
+   "file": "2007/XC/smaamiddlerelaysboys.json",
+   "rows": 3,
+   "flag": "athletes contradict name match (me-ms-noble -> me-hs-noble, 2/2)",
+   "decision": "me-ms-noble",
+   "evidence": {
+    "votes": {
+     "me-ms-noble": 2
+    },
+    "athletes": 3,
+    "with_evidence": 2
+   }
+  },
+  {
    "raw": "Hawks",
    "file": "2008/Indoor/smaaweek3meet3boys.json",
    "rows": 3,
-   "flag": "company: me-hs-hermon (0.18) -> me-hs-marshwood (1.16)",
+   "flag": "company: me-hs-hermon (0.18) -> me-hs-marshwood (1.15)",
    "decision": "me-hs-marshwood",
    "evidence": {
     "votes": {
@@ -16141,48 +14743,6 @@
    }
   },
   {
-   "raw": "Saco",
-   "file": "2008/XC/smmsaaseniorboys.json",
-   "rows": 3,
-   "flag": "athletes contradict name match (me-ms-saco -> me-hs-sacopee, 2/2)",
-   "decision": "me-hs-sacopee",
-   "evidence": {
-    "votes": {
-     "me-hs-sacopee": 2
-    },
-    "athletes": 3,
-    "with_evidence": 2
-   }
-  },
-  {
-   "raw": "Saco",
-   "file": "2008/XC/smmsaaseniorboys.json",
-   "rows": 3,
-   "flag": "athletes contradict name match (me-hs-sacopee -> me-ms-saco, 2/2)",
-   "decision": "me-hs-sacopee",
-   "evidence": {
-    "votes": {
-     "me-hs-sacopee": 2
-    },
-    "athletes": 3,
-    "with_evidence": 2
-   }
-  },
-  {
-   "raw": "No",
-   "file": "2008/XC/thorntonboys_oct10.json",
-   "rows": 3,
-   "flag": "athletes contradict name match (oos-auto-vt-north -> me-hs-noble, 2/2)",
-   "decision": "oos-auto-vt-north",
-   "evidence": {
-    "votes": {
-     "me-hs-noble": 2
-    },
-    "athletes": 3,
-    "with_evidence": 2
-   }
-  },
-  {
    "raw": "Newport",
    "file": "2009/Outdoor/almquistgirls.json",
    "rows": 3,
@@ -16191,34 +14751,6 @@
    "evidence": {
     "votes": {
      "club-warrior-tc": 3
-    },
-    "athletes": 3,
-    "with_evidence": 3
-   }
-  },
-  {
-   "raw": "No",
-   "file": "2009/XC/westbrookboys_sept18.json",
-   "rows": 3,
-   "flag": "athletes contradict name match (oos-auto-vt-north -> me-hs-noble, 3/3)",
-   "decision": "oos-auto-vt-north",
-   "evidence": {
-    "votes": {
-     "me-hs-noble": 3
-    },
-    "athletes": 3,
-    "with_evidence": 3
-   }
-  },
-  {
-   "raw": "Central",
-   "file": "2010/Outdoor/almquistboys.json",
-   "rows": 3,
-   "flag": "athletes contradict name match (me-ms-central -> me-hs-central, 2/3)",
-   "decision": "me-ms-central",
-   "evidence": {
-    "votes": {
-     "me-hs-central": 2
     },
     "athletes": 3,
     "with_evidence": 3
@@ -16256,7 +14788,7 @@
    "raw": "Hawks",
    "file": "2011/Indoor/smaab3_jan22.json",
    "rows": 3,
-   "flag": "company: me-hs-hermon (0.20) -> me-hs-marshwood (2.27)",
+   "flag": "company: me-hs-hermon (0.19) -> me-hs-marshwood (2.27)",
    "decision": "me-hs-marshwood",
    "evidence": {
     "votes": {
@@ -16277,6 +14809,20 @@
      "me-hs-mt-ararat": 2
     },
     "athletes": 2,
+    "with_evidence": 2
+   }
+  },
+  {
+   "raw": "Mount Abram High School",
+   "file": "2011/XC/ms-mvc-carrabec-h-d-telstar-winthrop-madison-2011.json",
+   "rows": 3,
+   "flag": "athletes contradict name match (me-hs-mt-abram -> me-hs-mt-ararat, 2/2)",
+   "decision": "me-hs-mt-abram",
+   "evidence": {
+    "votes": {
+     "me-hs-mt-ararat": 2
+    },
+    "athletes": 3,
     "with_evidence": 2
    }
   },
@@ -16415,6 +14961,20 @@
    "evidence": {
     "votes": {
      "me-ms-mdi-elementary": 3
+    },
+    "athletes": 3,
+    "with_evidence": 3
+   }
+  },
+  {
+   "raw": "Spruce Mtn.",
+   "file": "2015/XC/JHXCWtvl10-GIRLS.json",
+   "rows": 3,
+   "flag": "athletes contradict name match (me-ms-spruce-mountain -> me-hs-spruce-mountain, 2/3)",
+   "decision": "me-ms-spruce-mountain",
+   "evidence": {
+    "votes": {
+     "me-ms-spruce-mountain": 3
     },
     "athletes": 3,
     "with_evidence": 3
@@ -16663,7 +15223,7 @@
    "decision": "me-ms-hall-dale",
    "evidence": {
     "votes": {
-     "me-ms-hall-dale": 2
+     "me-hs-hall-dale": 2
     },
     "athletes": 3,
     "with_evidence": 2
@@ -16712,42 +15272,14 @@
    }
   },
   {
-   "raw": "Madison Junior High Schoo",
-   "file": "2019/XC/ms-lawrence-junior-high-xc-meet-2019.json",
-   "rows": 3,
-   "flag": "athletes contradict name match (me-ms-madison -> me-hs-madison, 2/2)",
-   "decision": "me-ms-madison",
-   "evidence": {
-    "votes": {
-     "me-hs-madison": 2
-    },
-    "athletes": 3,
-    "with_evidence": 2
-   }
-  },
-  {
    "raw": "Waterville",
-   "file": "2020/XC/Lawrence-Junior-High-Meet-Girls.json",
+   "file": "2020/XC/XCWinslowJH10.15.20girls.json",
    "rows": 3,
-   "flag": "athletes contradict name match (me-ms-waterville -> me-hs-waterville, 3/3)",
+   "flag": "athletes contradict name match (me-hs-waterville -> me-ms-waterville, 3/3)",
    "decision": "me-ms-waterville",
    "evidence": {
     "votes": {
-     "me-hs-waterville": 2
-    },
-    "athletes": 3,
-    "with_evidence": 3
-   }
-  },
-  {
-   "raw": "Waterville",
-   "file": "2020/XC/Lawrence-Junior-High-Meet-Girls.json",
-   "rows": 3,
-   "flag": "athletes contradict name match (me-ms-waterville -> me-hs-waterville, 2/3)",
-   "decision": "me-ms-waterville",
-   "evidence": {
-    "votes": {
-     "me-hs-waterville": 2
+     "me-ms-waterville": 3
     },
     "athletes": 3,
     "with_evidence": 3
@@ -17028,76 +15560,6 @@
    }
   },
   {
-   "raw": "Waterville",
-   "file": "2024/XC/24.09.11XCWtvlJHBOYS.json",
-   "rows": 3,
-   "flag": "athletes contradict name match (me-hs-waterville -> me-ms-waterville, 2/3)",
-   "decision": "me-ms-waterville",
-   "evidence": {
-    "votes": {
-     "me-ms-waterville": 3
-    },
-    "athletes": 3,
-    "with_evidence": 3
-   }
-  },
-  {
-   "raw": "Skowhegan",
-   "file": "2024/XC/24.09.11XCWtvlJHBOYS.json",
-   "rows": 3,
-   "flag": "athletes contradict name match (me-hs-skowhegan -> me-ms-skowhegan, 3/3)",
-   "decision": "me-ms-skowhegan",
-   "evidence": {
-    "votes": {
-     "me-ms-skowhegan": 3
-    },
-    "athletes": 3,
-    "with_evidence": 3
-   }
-  },
-  {
-   "raw": "Waterville",
-   "file": "2024/XC/WinslowJHXC10.10.24BOYS.json",
-   "rows": 3,
-   "flag": "athletes contradict name match (me-hs-waterville -> me-ms-waterville, 2/3)",
-   "decision": "me-ms-waterville",
-   "evidence": {
-    "votes": {
-     "me-ms-waterville": 3
-    },
-    "athletes": 3,
-    "with_evidence": 3
-   }
-  },
-  {
-   "raw": "Waterville",
-   "file": "2024/XC/WinslowJHXC10.10.24GIRLS.json",
-   "rows": 3,
-   "flag": "athletes contradict name match (me-hs-waterville -> me-ms-waterville, 2/3)",
-   "decision": "me-ms-waterville",
-   "evidence": {
-    "votes": {
-     "me-ms-waterville": 3
-    },
-    "athletes": 3,
-    "with_evidence": 3
-   }
-  },
-  {
-   "raw": "Skowhegan",
-   "file": "2024/XC/WinslowJHXC10.10.24GIRLS.json",
-   "rows": 3,
-   "flag": "athletes contradict name match (me-hs-skowhegan -> me-ms-skowhegan, 3/3)",
-   "decision": "me-ms-skowhegan",
-   "evidence": {
-    "votes": {
-     "me-ms-skowhegan": 3
-    },
-    "athletes": 3,
-    "with_evidence": 3
-   }
-  },
-  {
    "raw": "Merrimack Valley-NH",
    "file": "2025/Indoor/neresults2025.json",
    "rows": 3,
@@ -17162,6 +15624,20 @@
    "flag": "company: me-hs-mattanawcook (0.17) -> me-hs-massabesic (1.07)",
    "decision": "me-hs-massabesic",
    "evidence": null
+  },
+  {
+   "raw": "Noble",
+   "file": "2007/XC/smaamiddlerelaysgirls.json",
+   "rows": 2,
+   "flag": "athletes contradict name match (me-ms-noble -> me-hs-noble, 1/1)",
+   "decision": "me-ms-noble",
+   "evidence": {
+    "votes": {
+     "me-ms-noble": 1
+    },
+    "athletes": 2,
+    "with_evidence": 1
+   }
   },
   {
    "raw": "Hawks",
@@ -17234,20 +15710,6 @@
    }
   },
   {
-   "raw": "No",
-   "file": "2009/XC/spboys_sept11.json",
-   "rows": 2,
-   "flag": "athletes contradict name match (oos-auto-vt-north -> me-hs-noble, 2/2)",
-   "decision": "oos-auto-vt-north",
-   "evidence": {
-    "votes": {
-     "me-hs-noble": 2
-    },
-    "athletes": 2,
-    "with_evidence": 2
-   }
-  },
-  {
    "raw": "Bangor Christian",
    "file": "2010/Outdoor/foxcroftmiddlegirls_may13.json",
    "rows": 2,
@@ -17262,24 +15724,10 @@
    }
   },
   {
-   "raw": "Tel",
-   "file": "2010/XC/oxfordhillsmiddleboys_sept22.json",
-   "rows": 2,
-   "flag": "athletes contradict name match (me-hs-telstar -> me-ms-telstar, 2/2)",
-   "decision": "me-ms-telstar",
-   "evidence": {
-    "votes": {
-     "me-ms-telstar": 2
-    },
-    "athletes": 2,
-    "with_evidence": 2
-   }
-  },
-  {
    "raw": "Hawks",
    "file": "2011/Indoor/smaag3_jan22.json",
    "rows": 2,
-   "flag": "company: me-hs-hermon (0.20) -> me-hs-marshwood (2.27)",
+   "flag": "company: me-hs-hermon (0.19) -> me-hs-marshwood (2.27)",
    "decision": "me-hs-marshwood",
    "evidence": {
     "votes": {
@@ -17360,34 +15808,6 @@
    }
   },
   {
-   "raw": "Freeport",
-   "file": "2012/XC/scarboroughinvitegirls.json",
-   "rows": 2,
-   "flag": "athletes contradict name match (me-ms-freeport -> me-hs-freeport, 2/2)",
-   "decision": "me-ms-freeport",
-   "evidence": {
-    "votes": {
-     "me-hs-freeport": 2
-    },
-    "athletes": 2,
-    "with_evidence": 2
-   }
-  },
-  {
-   "raw": "Skowhegan",
-   "file": "2012/XC/watervilleBoysJHChamp2012.json",
-   "rows": 2,
-   "flag": "athletes contradict name match (me-hs-skowhegan -> me-ms-skowhegan, 2/2)",
-   "decision": "me-ms-skowhegan",
-   "evidence": {
-    "votes": {
-     "me-ms-skowhegan": 2
-    },
-    "athletes": 2,
-    "with_evidence": 2
-   }
-  },
-  {
    "raw": "PiscataquisComm",
    "file": "2013/Outdoor/Brewer%20MS%205-9-2013.json",
    "rows": 2,
@@ -17424,6 +15844,62 @@
    "evidence": {
     "votes": {
      "me-hs-lake-region": 2
+    },
+    "athletes": 2,
+    "with_evidence": 2
+   }
+  },
+  {
+   "raw": "Spruce Mtn",
+   "file": "2015/XC/JHXCWtvl10-BOYS.json",
+   "rows": 2,
+   "flag": "athletes contradict name match (me-ms-spruce-mountain -> me-hs-spruce-mountain, 2/2)",
+   "decision": "me-ms-spruce-mountain",
+   "evidence": {
+    "votes": {
+     "me-ms-spruce-mountain": 2
+    },
+    "athletes": 2,
+    "with_evidence": 2
+   }
+  },
+  {
+   "raw": "Madison",
+   "file": "2015/XC/JHXCWtvl10-GIRLS.json",
+   "rows": 2,
+   "flag": "athletes contradict name match (me-ms-madison -> me-hs-madison, 2/2)",
+   "decision": "me-ms-madison",
+   "evidence": {
+    "votes": {
+     "me-ms-madison": 2
+    },
+    "athletes": 2,
+    "with_evidence": 2
+   }
+  },
+  {
+   "raw": "Carrabec",
+   "file": "2015/XC/WinslowJHXC10-BOYS.json",
+   "rows": 2,
+   "flag": "athletes contradict name match (me-ms-carrabec -> me-hs-carrabec, 1/2)",
+   "decision": "me-ms-carrabec",
+   "evidence": {
+    "votes": {
+     "me-hs-carrabec": 1
+    },
+    "athletes": 2,
+    "with_evidence": 2
+   }
+  },
+  {
+   "raw": "Spruce Mtn.",
+   "file": "2015/XC/ljhs2boys.json",
+   "rows": 2,
+   "flag": "athletes contradict name match (me-hs-spruce-mountain -> me-ms-spruce-mountain, 2/2)",
+   "decision": "me-ms-spruce-mountain",
+   "evidence": {
+    "votes": {
+     "me-ms-spruce-mountain": 2
     },
     "athletes": 2,
     "with_evidence": 2
@@ -17529,20 +16005,6 @@
   },
   {
    "raw": "Richmond",
-   "file": "2019/XC/10-15-19-Winthrop-MS-Girls.json",
-   "rows": 2,
-   "flag": "athletes contradict name match (me-ms-richmond -> me-hs-richmond, 2/2)",
-   "decision": "me-ms-richmond",
-   "evidence": {
-    "votes": {
-     "me-ms-richmond": 2
-    },
-    "athletes": 2,
-    "with_evidence": 2
-   }
-  },
-  {
-   "raw": "Richmond",
    "file": "2019/XC/10-22-19-Girls.txt.json",
    "rows": 2,
    "flag": "athletes contradict name match (me-hs-richmond -> me-ms-richmond, 2/2)",
@@ -17567,6 +16029,34 @@
     },
     "athletes": 2,
     "with_evidence": 2
+   }
+  },
+  {
+   "raw": "Lawrence",
+   "file": "2019/XC/19.09.11XCJHBOYS.json",
+   "rows": 2,
+   "flag": "athletes contradict name match (me-ms-lawrence -> me-hs-lawrence, 1/1)",
+   "decision": "me-ms-lawrence",
+   "evidence": {
+    "votes": {
+     "me-hs-lawrence": 1
+    },
+    "athletes": 2,
+    "with_evidence": 1
+   }
+  },
+  {
+   "raw": "Madison",
+   "file": "2019/XC/19.09.18WinslowJHXCBoys.json",
+   "rows": 2,
+   "flag": "athletes contradict name match (me-ms-madison -> me-hs-madison, 1/1)",
+   "decision": "me-ms-madison",
+   "evidence": {
+    "votes": {
+     "me-hs-madison": 1
+    },
+    "athletes": 2,
+    "with_evidence": 1
    }
   },
   {
@@ -17598,48 +16088,6 @@
    }
   },
   {
-   "raw": "Lawrence Junior High Scho",
-   "file": "2019/XC/ms-lawrence-junior-high-xc-meet-2019.json",
-   "rows": 2,
-   "flag": "athletes contradict name match (me-ms-lawrence -> me-hs-lawrence, 2/2)",
-   "decision": "me-ms-lawrence",
-   "evidence": {
-    "votes": {
-     "me-hs-lawrence": 2
-    },
-    "athletes": 2,
-    "with_evidence": 2
-   }
-  },
-  {
-   "raw": "Winslow",
-   "file": "2020/XC/Lawrence-Junior-High-XC-Boys.json",
-   "rows": 2,
-   "flag": "athletes contradict name match (me-ms-winslow -> me-hs-winslow, 2/2)",
-   "decision": "me-ms-winslow",
-   "evidence": {
-    "votes": {
-     "me-hs-winslow": 2
-    },
-    "athletes": 2,
-    "with_evidence": 2
-   }
-  },
-  {
-   "raw": "Messalonskee",
-   "file": "2020/XC/WtvlJHXC10.22.20boys.json",
-   "rows": 2,
-   "flag": "athletes contradict name match (me-hs-messalonskee -> me-ms-messalonskee, 2/2)",
-   "decision": "me-ms-messalonskee",
-   "evidence": {
-    "votes": {
-     "me-ms-messalonskee": 2
-    },
-    "athletes": 2,
-    "with_evidence": 2
-   }
-  },
-  {
    "raw": "Messalonskee",
    "file": "2020/XC/XCWinslowJH10.15.20boys.json",
    "rows": 2,
@@ -17648,6 +16096,20 @@
    "evidence": {
     "votes": {
      "me-ms-messalonskee": 2
+    },
+    "athletes": 2,
+    "with_evidence": 2
+   }
+  },
+  {
+   "raw": "Winslow",
+   "file": "2020/XC/XCWinslowJH10.15.20boys.json",
+   "rows": 2,
+   "flag": "athletes contradict name match (me-hs-winslow -> me-ms-winslow, 2/2)",
+   "decision": "me-ms-winslow",
+   "evidence": {
+    "votes": {
+     "me-ms-winslow": 2
     },
     "athletes": 2,
     "with_evidence": 2
@@ -17690,6 +16152,20 @@
    "evidence": {
     "votes": {
      "me-ms-spruce-mountain": 2
+    },
+    "athletes": 2,
+    "with_evidence": 2
+   }
+  },
+  {
+   "raw": "Wisc",
+   "file": "2022/XC/ms-lincolnville-home-meet-2022.json",
+   "rows": 2,
+   "flag": "athletes contradict name match (me-hs-wiscasset -> me-ms-wiscasset, 2/2)",
+   "decision": "me-hs-wiscasset",
+   "evidence": {
+    "votes": {
+     "me-ms-wiscasset": 2
     },
     "athletes": 2,
     "with_evidence": 2
@@ -17841,7 +16317,7 @@
    "raw": "Car",
    "file": "2009/Outdoor/halldale_may11.json",
    "rows": 1,
-   "flag": "company: me-hs-caribou (0.40) -> me-hs-carrabec (2.84)",
+   "flag": "company: me-hs-caribou (0.39) -> me-hs-carrabec (2.91)",
    "decision": "me-hs-carrabec",
    "evidence": {
     "votes": {
@@ -17855,7 +16331,7 @@
    "raw": "Hawks",
    "file": "2009/Outdoor/nobleboys_may13.json",
    "rows": 1,
-   "flag": "company: me-hs-hermon (0.17) -> me-hs-marshwood (2.26)",
+   "flag": "company: me-hs-hermon (0.17) -> me-hs-marshwood (2.25)",
    "decision": "me-hs-marshwood",
    "evidence": null
   },
@@ -17871,7 +16347,7 @@
    "raw": "Hawks",
    "file": "2011/Indoor/smaab3_jan22.json",
    "rows": 1,
-   "flag": "company: me-hs-hermon (0.20) -> me-hs-marshwood (2.27)",
+   "flag": "company: me-hs-hermon (0.19) -> me-hs-marshwood (2.27)",
    "decision": "me-hs-marshwood",
    "evidence": {
     "votes": {
@@ -17984,20 +16460,6 @@
    "flag": "file expansion: None -> oos-auto-nh-littleton",
    "decision": "oos-auto-nh-littleton",
    "evidence": null
-  },
-  {
-   "raw": "CONY",
-   "file": "2019/XC/10-29-19-Winthrop-Invitational-Girls.json",
-   "rows": 1,
-   "flag": "athletes contradict name match (me-ms-cony -> me-hs-cony, 1/1)",
-   "decision": "me-ms-cony",
-   "evidence": {
-    "votes": {
-     "me-hs-cony": 1
-    },
-    "athletes": 1,
-    "with_evidence": 1
-   }
   },
   {
    "raw": "Milton",
@@ -18186,23 +16648,23 @@
  "team_scores": {
   "summary": {
    "races": 1468,
-   "after_verified": 1171,
-   "after_teams_ok": 9230,
+   "after_verified": 1173,
+   "after_teams_ok": 9344,
    "teams": 11611,
    "after_failure_classes": {
-    "verified": 1171,
-    "team set differs": 39,
+    "verified": 1173,
+    "team set differs": 37,
     "points differ": 31,
     "finisher count differs": 227
    },
-   "after_official_names_agree": 9147,
-   "after_official_names_checked": 9189,
+   "after_official_names_agree": 9269,
+   "after_official_names_checked": 9313,
    "before_verified": 1169,
    "before_teams_ok": 9102,
    "before_official_names_agree": 8211,
    "before_official_names_checked": 9102,
-   "fixed_by_catalog": 12,
-   "broken_by_catalog": 10
+   "fixed_by_catalog": 13,
+   "broken_by_catalog": 9
   },
   "races": [
    {
@@ -20400,17 +18862,9 @@
      "verified": true,
      "teams_ok": 5,
      "class": "verified",
-     "names_agree": 4,
+     "names_agree": 5,
      "names_checked": 5,
-     "bad": [
-      [
-       "Southern Maine Catholic",
-       "raw:Smc",
-       92,
-       92,
-       "ok-name-differs:me-ms-southern-maine-catholic"
-      ]
-     ]
+     "bad": []
     },
     "before": {
      "verified": true,
@@ -21693,17 +20147,9 @@
      "verified": true,
      "teams_ok": 10,
      "class": "verified",
-     "names_agree": 9,
+     "names_agree": 10,
      "names_checked": 10,
-     "bad": [
-      [
-       "St. Dom's Boys Cross Coun",
-       "raw:St. Dom's Bcc",
-       277,
-       277,
-       "ok-name-differs:me-hs-st-dominic"
-      ]
-     ]
+     "bad": []
     },
     "before": {
      "verified": true,
@@ -21817,17 +20263,9 @@
      "verified": true,
      "teams_ok": 13,
      "class": "verified",
-     "names_agree": 12,
+     "names_agree": 13,
      "names_checked": 13,
-     "bad": [
-      [
-       "St. Dom's Girls Cross Cou",
-       "raw:St. Dom's Gcc",
-       371,
-       371,
-       "ok-name-differs:me-hs-st-dominic"
-      ]
-     ]
+     "bad": []
     },
     "before": {
      "verified": true,
@@ -22925,17 +21363,9 @@
      "verified": true,
      "teams_ok": 11,
      "class": "verified",
-     "names_agree": 10,
+     "names_agree": 11,
      "names_checked": 11,
-     "bad": [
-      [
-       "Windham Middle School",
-       "raw:WINH",
-       145,
-       145,
-       "ok-name-differs:me-ms-windham"
-      ]
-     ]
+     "bad": []
     },
     "before": {
      "verified": true,
@@ -22965,17 +21395,9 @@
      "verified": true,
      "teams_ok": 11,
      "class": "verified",
-     "names_agree": 10,
+     "names_agree": 11,
      "names_checked": 11,
-     "bad": [
-      [
-       "Windham Middle School",
-       "raw:WINH",
-       50,
-       50,
-       "ok-name-differs:me-ms-windham"
-      ]
-     ]
+     "bad": []
     },
     "before": {
      "verified": true,
@@ -25231,7 +23653,7 @@
       ],
       [
        "Windham Cross Country",
-       "Windsor VT",
+       "Windsor CT",
        73,
        73,
        "ok-name-differs:Windham High School"
@@ -25348,7 +23770,7 @@
       ],
       [
        "Windham Cross Country",
-       "Windsor VT",
+       "Windsor CT",
        75,
        75,
        "ok-name-differs:Windham High School"
@@ -25460,7 +23882,7 @@
      "bad": [
       [
        "Windham Cross Country",
-       "Windsor VT",
+       "Windsor CT",
        172,
        172,
        "ok-name-differs:Windham High School"
@@ -25499,7 +23921,7 @@
      "bad": [
       [
        "Windham Cross Country",
-       "Windsor VT",
+       "Windsor CT",
        186,
        186,
        "ok-name-differs:Windham High School"
@@ -30034,15 +28456,43 @@
      "verified": true,
      "teams_ok": 11,
      "class": "verified",
-     "names_agree": 8,
+     "names_agree": 1,
      "names_checked": 11,
      "bad": [
+      [
+       "Falmouth",
+       "me-ms-falmouth",
+       50,
+       50,
+       "ok-name-differs:me-hs-falmouth"
+      ],
+      [
+       "Greely",
+       "me-ms-greely",
+       85,
+       85,
+       "ok-name-differs:me-hs-greely"
+      ],
+      [
+       "Cape",
+       "me-ms-cape-elizabeth",
+       88,
+       88,
+       "ok-name-differs:me-hs-cape-elizabeth"
+      ],
       [
        "North Yarmouth",
        "me-ms-nya",
        120,
        120,
        "ok-name-differs:me-hs-nya"
+      ],
+      [
+       "Gray New Gloucester",
+       "me-ms-gray-ng",
+       153,
+       153,
+       "ok-name-differs:me-hs-gray-ng"
       ],
       [
        "Bonny Eagle",
@@ -30052,11 +28502,32 @@
        "ok-name-differs:me-hs-bonny-eagle"
       ],
       [
+       "Freeport",
+       "me-ms-freeport",
+       200,
+       200,
+       "ok-name-differs:me-hs-freeport"
+      ],
+      [
+       "Seacoast Christian School",
+       "me-ms-seacoast-christian",
+       216,
+       216,
+       "ok-name-differs:me-hs-seacoast-christian"
+      ],
+      [
        "Scarborough",
        "me-ms-scarborough",
        253,
        253,
        "ok-name-differs:me-hs-scarborough"
+      ],
+      [
+       "Lake Region",
+       "me-ms-lake-region",
+       309,
+       309,
+       "ok-name-differs:me-hs-lake-region"
       ]
      ]
     },
@@ -35899,7 +34370,7 @@
       ],
       [
        "Mirus Academy",
-       "raw:Mirus Academy",
+       "me-ms-mirus",
        546,
        447,
        "mismatch"
@@ -39981,8 +38452,8 @@
      "verified": true,
      "teams_ok": 40,
      "class": "verified",
-     "names_agree": 30,
-     "names_checked": 30,
+     "names_agree": 40,
+     "names_checked": 40,
      "bad": []
     },
     "before": {
@@ -40150,7 +38621,7 @@
       ],
       [
        "Mirus Academy",
-       "raw:Mirus Academy",
+       "me-ms-mirus",
        504,
        376,
        "mismatch"
@@ -45798,8 +44269,8 @@
        "Waterville Junior High",
        "me-ms-waterville",
        18,
-       null,
-       "no-team"
+       17,
+       "mismatch"
       ],
       [
        "Lawrence Junior High",
@@ -45814,13 +44285,6 @@
        59,
        null,
        "no-team"
-      ],
-      [
-       null,
-       "me-hs-waterville",
-       null,
-       17,
-       "extra-team"
       ]
      ]
     },
@@ -46345,7 +44809,7 @@
       ],
       [
        "Mirus Academy",
-       "raw:Mirus Academy",
+       "me-ms-mirus",
        411,
        302,
        "mismatch"
@@ -52752,15 +51216,15 @@
        "Waterville Junior High Sc",
        "me-ms-waterville",
        93,
-       null,
-       "no-team"
+       74,
+       "mismatch"
       ],
       [
        "Winslow Junior High Schoo",
        "me-ms-winslow",
        96,
-       null,
-       "no-team"
+       78,
+       "mismatch"
       ],
       [
        "Roamins",
@@ -52785,23 +51249,9 @@
       ],
       [
        null,
-       "me-hs-waterville",
-       null,
-       74,
-       "extra-team"
-      ],
-      [
-       null,
        "me-hs-mt-blue",
        null,
        27,
-       "extra-team"
-      ],
-      [
-       null,
-       "me-hs-winslow",
-       null,
-       78,
        "extra-team"
       ]
      ]
@@ -53343,14 +51793,14 @@
      "bad": [
       [
        "Skowhegan Area Middle Sch",
-       "Skowhegan Area High School",
+       "Skowhegan JH",
        70,
        null,
        "no-team"
       ],
       [
        "Lawrence Junior High Scho",
-       "Lawrence High School",
+       "Lawrence Junior High School",
        82,
        null,
        "no-team"
@@ -57397,7 +55847,7 @@
       ],
       [
        "Mirus Academy",
-       "raw:Mirus Academy",
+       "me-ms-mirus",
        227,
        198,
        "mismatch"
@@ -59106,8 +57556,8 @@
        "Lawrence Junior High Scho",
        "me-ms-lawrence",
        43,
-       null,
-       "no-team"
+       32,
+       "mismatch"
       ],
       [
        "Madison Junior High Schoo",
@@ -59118,10 +57568,10 @@
       ],
       [
        "Waterville JJ Cross Count",
-       "raw:Waterville JJ Cross Count",
+       "me-ms-waterville",
        67,
-       null,
-       "no-team"
+       53,
+       "mismatch"
       ],
       [
        "Messalonskee Junior High",
@@ -59136,20 +57586,6 @@
        104,
        null,
        "no-team"
-      ],
-      [
-       null,
-       "me-hs-lawrence",
-       null,
-       32,
-       "extra-team"
-      ],
-      [
-       null,
-       "me-ms-waterville",
-       null,
-       53,
-       "extra-team"
       ]
      ]
     },
@@ -59161,14 +57597,14 @@
      "bad": [
       [
        "Lawrence Junior High Scho",
-       "Lawrence High School",
+       "Lawrence Junior High School",
        43,
        32,
        "mismatch"
       ],
       [
        "Madison Junior High Schoo",
-       "Madison Area High School",
+       "Madison JH",
        49,
        38,
        "mismatch"
@@ -59177,22 +57613,29 @@
        "Waterville JJ Cross Count",
        "Waterville High School",
        67,
-       53,
-       "mismatch"
+       null,
+       "no-team"
       ],
       [
        "Messalonskee Junior High",
-       "Messalonskee High School",
+       "Messalonskee Middle School",
        75,
        null,
        "no-team"
       ],
       [
        "Winslow Junior High Schoo",
-       "Winslow High School",
+       "Winslow JH",
        104,
        null,
        "no-team"
+      ],
+      [
+       null,
+       "Waterville Junior High School",
+       null,
+       53,
+       "extra-team"
       ]
      ]
     }
@@ -59221,7 +57664,7 @@
       ],
       [
        "Waterville JJ Cross Count",
-       "raw:Waterville JJ Cross Count",
+       "me-ms-waterville",
        66,
        null,
        "no-team"
@@ -59230,8 +57673,8 @@
        "Winslow Junior High Schoo",
        "me-ms-winslow",
        67,
-       null,
-       "no-team"
+       42,
+       "mismatch"
       ],
       [
        "Messalonskee Junior High",
@@ -59246,13 +57689,6 @@
        100,
        null,
        "no-team"
-      ],
-      [
-       null,
-       "me-hs-winslow",
-       null,
-       42,
-       "extra-team"
       ]
      ]
     },
@@ -59264,7 +57700,7 @@
      "bad": [
       [
        "Madison Junior High Schoo",
-       "Madison Area High School",
+       "Madison JH",
        20,
        15,
        "mismatch"
@@ -59278,21 +57714,21 @@
       ],
       [
        "Winslow Junior High Schoo",
-       "Winslow High School",
+       "Winslow JH",
        67,
        42,
        "mismatch"
       ],
       [
        "Messalonskee Junior High",
-       "Messalonskee High School",
+       "Messalonskee Middle School",
        99,
        null,
        "no-team"
       ],
       [
        "Lawrence Junior High Scho",
-       "Lawrence High School",
+       "Lawrence Junior High School",
        100,
        null,
        "no-team"
@@ -61857,7 +60293,7 @@
       ],
       [
        "Kennebunk High School",
-       "Kennett",
+       "Kennedy",
        95,
        95,
        "ok-name-differs:Kennebunk High School"
@@ -61937,7 +60373,7 @@
      "bad": [
       [
        "Kennebunk High School",
-       "Kennett",
+       "Kennedy",
        39,
        39,
        "ok-name-differs:Kennebunk High School"
@@ -62191,7 +60627,7 @@
       ],
       [
        "Kennebunk High School",
-       "Kennett",
+       "Kennedy",
        62,
        62,
        "ok-name-differs:Kennebunk High School"
@@ -62279,7 +60715,7 @@
      "bad": [
       [
        "Kennebunk High School",
-       "Kennett",
+       "Kennedy",
        68,
        68,
        "ok-name-differs:Kennebunk High School"
@@ -71625,155 +70061,14 @@
     "gender": "Boys",
     "teams": 59,
     "official_last_place": 396,
-    "our_last_place": 382,
+    "our_last_place": 396,
     "after": {
-     "verified": false,
-     "teams_ok": 0,
-     "class": "team set differs",
-     "names_agree": 0,
-     "names_checked": 0,
-     "bad": [
-      [
-       "Hampden Academy",
-       "me-hs-hampden",
-       116,
-       109,
-       "mismatch"
-      ],
-      [
-       "Portland High School",
-       "me-hs-portland",
-       143,
-       135,
-       "mismatch"
-      ],
-      [
-       "Brunswick High School",
-       "me-hs-brunswick",
-       204,
-       197,
-       "mismatch"
-      ],
-      [
-       "Scarborough High School",
-       "me-hs-scarborough",
-       297,
-       285,
-       "mismatch"
-      ],
-      [
-       "Camden Hills Regional HS",
-       "me-hs-camden-hills",
-       306,
-       296,
-       "mismatch"
-      ],
-      [
-       "South Portland High Schoo",
-       "me-hs-south-portland",
-       331,
-       321,
-       "mismatch"
-      ],
-      [
-       "Greely High School",
-       "me-hs-greely",
-       333,
-       321,
-       "mismatch"
-      ],
-      [
-       "Bonny Eagle High School",
-       "me-hs-bonny-eagle",
-       375,
-       357,
-       "mismatch"
-      ],
-      [
-       "Burrillville High School,",
-       "oos-ri-burrillville-high-school",
-       377,
-       null,
-       "no-team"
-      ],
-      [
-       "Mt. Blue High School",
-       "me-hs-mt-blue",
-       386,
-       371,
-       "mismatch"
-      ],
-      [
-       "John Bapst Memorial HS",
-       "me-hs-john-bapst",
-       431,
-       413,
-       "mismatch"
-      ],
-      [
-       "Kennebunk High School",
-       "me-hs-kennebunk",
-       464,
-       447,
-       "mismatch"
-      ],
-      [
-       "Messalonskee High School",
-       "me-hs-messalonskee",
-       492,
-       474,
-       "mismatch"
-      ],
-      [
-       "Mt. Desert Island High Sc",
-       "me-hs-mdi",
-       499,
-       479,
-       "mismatch"
-      ],
-      [
-       "Lake Region High School",
-       "me-hs-lake-region",
-       499,
-       479,
-       "mismatch"
-      ],
-      [
-       "Bangor High School",
-       "me-hs-bangor",
-       532,
-       509,
-       "mismatch"
-      ],
-      [
-       "Cape Elizabeth High Schoo",
-       "me-hs-cape-elizabeth",
-       566,
-       545,
-       "mismatch"
-      ],
-      [
-       "Harwood Union High school",
-       "oos-vt-harwood-union-high-school",
-       578,
-       558,
-       "mismatch"
-      ],
-      [
-       "Marshwood High School",
-       "me-hs-marshwood",
-       593,
-       569,
-       "mismatch"
-      ],
-      [
-       "Gorham High School",
-       "me-hs-gorham",
-       595,
-       575,
-       "mismatch"
-      ]
-     ]
+     "verified": true,
+     "teams_ok": 59,
+     "class": "verified",
+     "names_agree": 59,
+     "names_checked": 59,
+     "bad": []
     },
     "before": {
      "verified": false,
@@ -71931,155 +70226,14 @@
     "gender": "Girls",
     "teams": 55,
     "official_last_place": 353,
-    "our_last_place": 339,
+    "our_last_place": 353,
     "after": {
-     "verified": false,
-     "teams_ok": 0,
-     "class": "team set differs",
-     "names_agree": 0,
-     "names_checked": 0,
-     "bad": [
-      [
-       "Bonny Eagle High School",
-       "me-hs-bonny-eagle",
-       80,
-       80,
-       "mismatch"
-      ],
-      [
-       "Cumberland High School, R",
-       "oos-auto-ri-cumberland",
-       100,
-       100,
-       "mismatch"
-      ],
-      [
-       "Orono High School",
-       "me-hs-orono",
-       195,
-       191,
-       "mismatch"
-      ],
-      [
-       "Marshwood High School",
-       "me-hs-marshwood",
-       228,
-       223,
-       "mismatch"
-      ],
-      [
-       "York High School",
-       "me-hs-york",
-       268,
-       261,
-       "mismatch"
-      ],
-      [
-       "Cape Elizabeth High Schoo",
-       "me-hs-cape-elizabeth",
-       278,
-       270,
-       "mismatch"
-      ],
-      [
-       "Falmouth High School",
-       "me-hs-falmouth",
-       298,
-       291,
-       "mismatch"
-      ],
-      [
-       "Harwood Union High school",
-       "oos-vt-harwood-union-high-school",
-       311,
-       303,
-       "mismatch"
-      ],
-      [
-       "Portland High School",
-       "me-hs-portland",
-       328,
-       320,
-       "mismatch"
-      ],
-      [
-       "Mt. Desert Island High Sc",
-       "me-hs-mdi",
-       375,
-       364,
-       "mismatch"
-      ],
-      [
-       "Camden Hills Regional HS",
-       "me-hs-camden-hills",
-       389,
-       376,
-       "mismatch"
-      ],
-      [
-       "Bangor High School",
-       "me-hs-bangor",
-       416,
-       402,
-       "mismatch"
-      ],
-      [
-       "Greely High School",
-       "me-hs-greely",
-       423,
-       410,
-       "mismatch"
-      ],
-      [
-       "Houlton/GHCA",
-       "coop-houlton-ghca",
-       449,
-       433,
-       "mismatch"
-      ],
-      [
-       "Kennebunk High School",
-       "me-hs-kennebunk",
-       474,
-       458,
-       "mismatch"
-      ],
-      [
-       "Lincoln Academy",
-       "me-hs-lincoln-academy",
-       557,
-       535,
-       "mismatch"
-      ],
-      [
-       "Yarmouth High School",
-       "me-hs-yarmouth",
-       573,
-       549,
-       "mismatch"
-      ],
-      [
-       "Mt. Blue High School",
-       "me-hs-mt-blue",
-       594,
-       572,
-       "mismatch"
-      ],
-      [
-       "Lake Region High School",
-       "me-hs-lake-region",
-       623,
-       598,
-       "mismatch"
-      ],
-      [
-       "Gorham High School",
-       "me-hs-gorham",
-       642,
-       616,
-       "mismatch"
-      ]
-     ]
+     "verified": true,
+     "teams_ok": 55,
+     "class": "verified",
+     "names_agree": 55,
+     "names_checked": 55,
+     "bad": []
     },
     "before": {
      "verified": true,
@@ -81931,7 +80085,7 @@
       ],
       [
        null,
-       "raw:Elm Street S",
+       "me-ms-elm-street",
        null,
        256,
        "extra-team"
@@ -87787,7 +85941,7 @@
       ],
       [
        null,
-       "raw:Elm Street S",
+       "me-ms-elm-street",
        null,
        297,
        "extra-team"
@@ -94735,6 +92889,118 @@
  },
  "store_team_splits": [
   {
+   "store_team": "Waterville Senior High School",
+   "rows": 25546,
+   "holds": [
+    {
+     "id": "me-hs-waterville",
+     "name": "Waterville Senior High School",
+     "rows": 25432
+    },
+    {
+     "id": "me-ms-waterville",
+     "name": "Waterville Junior High School",
+     "rows": 114
+    }
+   ]
+  },
+  {
+   "store_team": "Windham High School",
+   "rows": 23792,
+   "holds": [
+    {
+     "id": "me-hs-windham",
+     "name": "Windham High School",
+     "rows": 23581
+    },
+    {
+     "id": "me-ms-windham",
+     "name": "Windham Middle School",
+     "rows": 202
+    }
+   ]
+  },
+  {
+   "store_team": "Lawrence High School",
+   "rows": 21862,
+   "holds": [
+    {
+     "id": "me-hs-lawrence",
+     "name": "Lawrence High School",
+     "rows": 21471
+    },
+    {
+     "id": "me-ms-lawrence",
+     "name": "Lawrence Junior High School",
+     "rows": 372
+    }
+   ]
+  },
+  {
+   "store_team": "Winslow High School",
+   "rows": 16158,
+   "holds": [
+    {
+     "id": "me-hs-winslow",
+     "name": "Winslow High School",
+     "rows": 15729
+    },
+    {
+     "id": "me-ms-winslow",
+     "name": "Winslow Junior High School",
+     "rows": 429
+    }
+   ]
+  },
+  {
+   "store_team": "Lincoln Academy",
+   "rows": 15272,
+   "holds": [
+    {
+     "id": "me-hs-lincoln-academy",
+     "name": "Lincoln Academy",
+     "rows": 15115
+    },
+    {
+     "id": "me-ms-lincoln-portland",
+     "name": "Lincoln Middle School",
+     "rows": 156
+    }
+   ]
+  },
+  {
+   "store_team": "Skowhegan Area High School",
+   "rows": 15261,
+   "holds": [
+    {
+     "id": "me-hs-skowhegan",
+     "name": "Skowhegan Area High School",
+     "rows": 15073
+    },
+    {
+     "id": "me-ms-skowhegan",
+     "name": "Skowhegan Area Middle School",
+     "rows": 183
+    }
+   ]
+  },
+  {
+   "store_team": "Mount View High School",
+   "rows": 7302,
+   "holds": [
+    {
+     "id": "me-hs-mt-view",
+     "name": "Mount View High School",
+     "rows": 7076
+    },
+    {
+     "id": "me-ms-mt-view",
+     "name": "Mount View Middle School",
+     "rows": 226
+    }
+   ]
+  },
+  {
    "store_team": "HoultonGreater Houlton",
    "rows": 3307,
    "holds": [
@@ -94773,7 +93039,7 @@
   },
   {
    "store_team": "LimestoneMSSM",
-   "rows": 2650,
+   "rows": 2699,
    "holds": [
     {
      "id": "coop-limestone-mssm",
@@ -94783,7 +93049,7 @@
     {
      "id": "me-hs-limestone",
      "name": "Limestone Community School",
-     "rows": 237
+     "rows": 286
     }
    ]
   },
@@ -94852,6 +93118,38 @@
    ]
   },
   {
+   "store_team": "Madison Junior High School",
+   "rows": 1162,
+   "holds": [
+    {
+     "id": "me-ms-madison",
+     "name": "Madison Junior High School",
+     "rows": 1101
+    },
+    {
+     "id": "me-hs-madison",
+     "name": "Madison Area Memorial High School",
+     "rows": 61
+    }
+   ]
+  },
+  {
+   "store_team": "Newport",
+   "rows": 703,
+   "holds": [
+    {
+     "id": "oos-auto-nh-newport",
+     "name": "Newport",
+     "rows": 644
+    },
+    {
+     "id": "club-warrior-tc",
+     "name": "Warrior Track Club",
+     "rows": 59
+    }
+   ]
+  },
+  {
    "store_team": "Jay High School",
    "rows": 617,
    "holds": [
@@ -94864,6 +93162,38 @@
      "id": "me-hs-dirigo",
      "name": "Dirigo High School",
      "rows": 41
+    }
+   ]
+  },
+  {
+   "store_team": "P I",
+   "rows": 321,
+   "holds": [
+    {
+     "id": "me-hs-portland",
+     "name": "Portland High School",
+     "rows": 187
+    },
+    {
+     "id": "me-hs-poland",
+     "name": "Poland Regional High School",
+     "rows": 54
+    }
+   ]
+  },
+  {
+   "store_team": "N Middle",
+   "rows": 279,
+   "holds": [
+    {
+     "id": "me-hs-noble",
+     "name": "Noble High School",
+     "rows": 86
+    },
+    {
+     "id": "me-ms-noble",
+     "name": "Noble Middle School",
+     "rows": 48
     }
    ]
   },
@@ -94884,6 +93214,22 @@
    ]
   },
   {
+   "store_team": "Lim",
+   "rows": 65,
+   "holds": [
+    {
+     "id": "coop-limestone-mssm",
+     "name": "Limestone/MSSM",
+     "rows": 40
+    },
+    {
+     "id": "me-hs-limestone",
+     "name": "Limestone Community School",
+     "rows": 18
+    }
+   ]
+  },
+  {
    "store_team": "Staples High School",
    "rows": 42,
    "holds": [
@@ -94896,6 +93242,38 @@
      "id": "oos-auto-ct-unattached",
      "name": "Unattached",
      "rows": 5
+    }
+   ]
+  },
+  {
+   "store_team": "Win",
+   "rows": 39,
+   "holds": [
+    {
+     "id": "me-hs-winthrop",
+     "name": "Winthrop High School",
+     "rows": 14
+    },
+    {
+     "id": "me-hs-windham",
+     "name": "Windham High School",
+     "rows": 10
+    }
+   ]
+  },
+  {
+   "store_team": "DOMS",
+   "rows": 30,
+   "holds": [
+    {
+     "id": "me-hs-st-dominic",
+     "name": "St. Dominic Academy",
+     "rows": 20
+    },
+    {
+     "id": "me-ms-st-dominic",
+     "name": "St. Dominic Academy (middle grades)",
+     "rows": 10
     }
    ]
   }

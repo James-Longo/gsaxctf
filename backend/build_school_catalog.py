@@ -887,6 +887,13 @@ def category(method, decision, candidates, schools):
             'truncation': 'truncation', 'code': 'code', 'nickname': 'mascot', 'fuzzy': 'spelling (fuzzy)'}.get(base, base)
 
 
+def name_based(method):
+    """A decision read from the string itself (name, alias, truncation, unique code), not from per-file evidence."""
+    base = (method or '').split(' (')[0].split('+')[0]
+    base = base[len('salvaged:'):] if base.startswith('salvaged:') else base
+    return base in ('exact', 'stem', 'bare-name', 'truncation', 'code', 'file-expansion')
+
+
 def assemble(groups, rows, schools, coops, idx, args):
     # ---- raw string map -------------------------------------------------
     by_raw = collections.defaultdict(list)
@@ -907,7 +914,8 @@ def assemble(groups, rows, schools, coops, idx, args):
         by_season = collections.defaultdict(collections.Counter)
         for g in gs:
             ids[g.decision] += g.rows
-            lv[g.level or 'hs'][g.decision] += g.rows
+            if not g.decision or name_based(g.method):
+                lv[g.level or 'hs'][g.decision] += g.rows
             by_season[g.season][g.decision] += g.rows
             if g.decision:
                 methods[g.method or 'unresolved'] += g.rows
@@ -928,17 +936,22 @@ def assemble(groups, rows, schools, coops, idx, args):
             best = max((i for i in ids if i), key=lambda i: ids[i])
             entry['id'] = best
             entry['method'] = methods.most_common(1)[0][0]
-            if len([i for i in ids if i]) > 1 or ids.get(None):
+            # a meaning read from one file (seed FILE_RULES / FILE_CODES: 'K' is Kennebunk in this dual meet) is never
+            # the string's global meaning: such strings are context dependent, answered per file only
+            manual = any((g.method or '').startswith('manual') for g in gs)
+            if len([i for i in ids if i]) > 1 or ids.get(None) or manual:
                 entry['by_id'] = {str(k): v for k, v in ids.most_common()}
-                # level-split strings are context dependent
-                levels = {l: c.most_common(1)[0][0] for l, c in lv.items()}
+                # level-split strings are context dependent. The per-level answer (by_level, used for files the
+                # builder has not seen) comes from name matches only ('York' -> York HS / York MS); a level's answer
+                # made of per-file evidence (file rules, athlete continuity: 'M', 'D', 'T') is no rule for other files
+                levels = {l: c.most_common(1)[0][0] for l, c in lv.items() if c}
                 if len(set(levels.values()) - {None}) > 1:
                     entry['context_dependent'] = True
                     entry['by_level'] = {l: i for l, i in levels.items() if i}
                 # several schools, or a large unresolved share: the string has no context-free meaning
                 # ('Warriors', 'Win', 'M'); runtime resolution then needs the per-file overrides
                 distinct = {i for i in ids if i}
-                if len(distinct) > 1 and not entry.get('by_level') or ids.get(None, 0) >= 0.2 * rows_n:
+                if len(distinct) > 1 and not entry.get('by_level') or ids.get(None, 0) >= 0.2 * rows_n or manual:
                     entry['context_dependent'] = True
                 for g in gs:
                     if g.decision != best or entry.get('context_dependent'):

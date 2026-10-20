@@ -91,24 +91,36 @@ def mile_meet_id(url):
     return m.group(1) if m else None
 
 
-def schools_of(doc, year, season, resolve, cache):
-    """(catalog ids of the schools in a file, rows whose school doesn't resolve)."""
+def schools_of(doc, year, season, resolve, cache, meet_name=None):
+    """(catalog ids of the schools in a file, rows whose school doesn't resolve). Resolved as the sync
+    does: with the file's name (its per-file rules and overrides), each row's gender and grade."""
     out = set()
-    per_row = [r.get('school') for e in doc.get('events', []) for r in e.get('results', [])]
-    raws = set(per_row)
-    raws |= {t.get('team') for x in doc.get('team_rankings', []) if isinstance(x, dict) for t in x.get('teams', []) if isinstance(t, dict)}
-    for raw in raws:
-        if not raw:
-            continue
-        k = (raw, year, season)
+
+    def res(raw, gender=None, grade=None):
+        k = (raw, year, season, meet_name, gender, grade)
         if k not in cache:
             try:
-                cache[k] = resolve(raw, year=year, season=season)
+                cache[k] = resolve(raw, year=year, season=season, gender=gender, meet_name=meet_name, grade=grade)
             except Exception:
                 cache[k] = None
-        if cache[k]:
-            out.add(cache[k])
-    bad = sum(1 for raw in per_row if not raw or not cache.get((raw, year, season)))
+        return cache[k]
+    bad = 0
+    for e in doc.get('events', []):
+        g = e.get('gender') or None
+        for r in e.get('results', []):
+            raw = r.get('school')
+            sid = res(raw, g, r.get('grade') or None) if raw else None
+            if sid:
+                out.add(sid)
+            else:
+                bad += 1
+    for x in doc.get('team_rankings', []):
+        if isinstance(x, dict):
+            for t in x.get('teams', []):
+                if isinstance(t, dict) and t.get('team'):
+                    sid = res(t['team'], x.get('gender') or None)
+                    if sid:
+                        out.add(sid)
     return out, bad
 
 
@@ -261,7 +273,7 @@ def load_have():
             continue
         stem = os.path.splitext(os.path.basename(path))[0]
         rows = sum(len(e.get('results', [])) for e in doc.get('events', []))
-        schools, unresolved = schools_of(doc, int(year), season, school_catalog.resolve, cache)
+        schools, unresolved = schools_of(doc, int(year), season, school_catalog.resolve, cache, meet_name=os.path.basename(path))
         rel = os.path.relpath(path, os.path.dirname(BASE))
         files.append(dict(year=int(year), season=season, stem=stem, date=doc.get('date') or None,
                           name=doc.get('meet_name') or '', source=source_of(stem, doc), urls=urls_of(doc),

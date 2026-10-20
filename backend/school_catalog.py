@@ -209,9 +209,9 @@ def variants(raw: str, gender=None):
             state = m.group(1)
         t = head
         out += emit(t, 'comma-tail')
-    # ' NS' / '-NS' after a school is 'non-scoring' (relay-meet files: 'Cony NS', 'Brunswick Mix-NS'),
-    # not Nova Scotia (Nova Scotia schools print ' - NS' with spaces, handled below)
-    t2 = re.sub(r"(?:\s+|(?<=[a-z])-)NS$", '', t)
+    # ' NS' / '-NS' / " 'NS'" after a school is 'non-scoring' (relay-meet files: 'Cony NS', 'Brunswick Mix-NS',
+    # Mt. Blue Relays "Winslow 'NS'"), not Nova Scotia (Nova Scotia schools print ' - NS' with spaces, handled below)
+    t2 = re.sub(r"(?:\s+'?|(?<=[a-z])-)NS'?$", '', t)
     if t2 != t and not re.search(r'\s-\s*NS$', t):
         t = t2
         out += emit(t, 'non-scoring')
@@ -523,7 +523,7 @@ def meet_level(meet_name: str = None, grade=None):
         # "ms-<slug>": a MileSplit transcription's file prefix, not "middle school"
         low = re.sub(r'[-_.]+', ' ', re.sub(r'^ms-(?=[a-z0-9])', '', meet_name).lower())
         low = re.sub(r'\bst\.? doms?\b', 'st dominic', low)   # "St. Doms" is a school, not an MS code
-        if re.search(r'\bms\b|\bjh\b|middle school|junior high|elementary|\bmiddle\b|[a-z]ms(\b|\d)|'
+        if re.search(r'\bms\b|\bjh\b|middle school|junior high|elementary|middle(?!ton|bury|sex|boro)|^jh|jh(?:xc|cc|boys|girls|champ|meet)|[a-z]ms(\b|\d)|'
                      r'ms(boys|girls|invite|inv|xc|cc|champ|meet|results)|(boys|girls)ms\b', low):
             return 'ms'
         if re.search(r'\bcollege\b|university|collegiate|gnac|nescac|nescac|\bnaia\b|\bncaa\b', low):

@@ -27,6 +27,8 @@ years       [first, last] ACADEMIC year the school existed under this identity
             parse error, 'SMHS' before 2011 cannot be Spruce Mountain).
 """
 
+import re as _re
+
 # ---------------------------------------------------------------------------
 # Maine high schools (MPA members and other Maine secondary schools)
 # (id, display name, town, mpa name, names/aliases, codes, nicknames, extra)
@@ -54,7 +56,9 @@ ME_HS = [
      ['Messalonskee', 'Messalonskee HS', 'Messalonskeee', 'Messalonske'], ['MESS', 'MESSO', 'MHS'], ['Eagles'], {}),
     ('me-hs-mt-ararat', 'Mt. Ararat High School', 'Topsham', 'Mt. Ararat',
      ['Mt. Ararat', 'Mount Ararat', 'Mt Ararat', 'Mt. Ararat HS', 'Mt. Ararat High',
-      'Mount Ararat High School'], ['MTA', 'MAHS', 'MTAR'], ['Eagles'], {}),
+      'Mount Ararat High School',
+      # 2026-10-19: 'Ararat' (Mt. Blue relays 2018, Waterville 2012 HS meets), 'Mt, Ararat' (Mt. Blue 2019)
+      'Ararat', 'Mt, Ararat'], ['MTA', 'MAHS', 'MTAR'], ['Eagles'], {}),
     ('me-hs-skowhegan', 'Skowhegan Area High School', 'Skowhegan', 'Skowhegan',
      ['Skowhegan', 'Skowhegan Area', 'Skowhegan HS', 'Skowhegan High School', 'Skowhegan Area HS'],
      ['SAHS', 'SKOW', 'SKW', 'SKOH'], ['Indians', 'River Hawks'], {}),
@@ -245,7 +249,7 @@ ME_HS = [
      ['Washburn', 'Washburn District', 'Washburn HS', 'Washburn High School'], ['WDHS'], ['Beavers'], {}),
     ('me-hs-wisdom', 'Wisdom Middle/High School', 'St. Agatha', 'Wisdom', ['Wisdom', 'Wisdom HS'], [], ['Pioneers'], {}),
     ('me-hs-jonesport-beals', 'Jonesport-Beals High School', 'Jonesport', 'Jonesport-Beals',
-     ['Jonesport-Beals', 'Jonesport Beals', 'Jones-Beals', 'Jonesport-Beals HS'], ['JBHS'], ['Royals'], {}),
+     ['Jonesport-Beals', 'Jonesport Beals', 'Jones-Beals', 'Jonesport-Beals HS', 'J-Beals'], ['JBHS'], ['Royals'], {}),
     ('me-hs-east-grand', 'East Grand School', 'Danforth', 'East Grand',
      ['East Grand', 'East Grand HS', 'East Grand High School'], ['EG'], ['Lakers'], {}),
     ('me-hs-islesboro', 'Islesboro Central School', 'Islesboro', 'Islesboro',
@@ -351,7 +355,10 @@ ME_HS = [
     ('me-hs-st-dominic', 'St. Dominic Academy', 'Auburn', None,
      ['St. Dominic', 'St Dominic', 'Saint Dominic', 'St. Dominic Academy', 'Saint Dominic Academy',
       'St. Dominic Regional', 'St. Dominic Regional High School', "St. Dom's", 'St. Doms', 'St Doms', 'Saint Doms',
-      'St Dominic Regional High School'], ['STDM', 'SDA'], ['Saints'], {}),
+      'St Dominic Regional High School',
+      # 2026-10-19, XC: 'St D' (Lake Region invites 2005-09), 'Doms'/"Dom's" (NYA meets 2008), "St. Dom's Bcc/Gcc" (WMC 2006
+      # boys/girls cross country); St. Dominic is the only Maine 'St. D...' school, and each file's other teams are its WMC rivals
+      'St D', 'StD', 'Doms', "Dom's", "St. Dom's Bcc", "St. Dom's Gcc", 'Dominic Academy'], ['STDM', 'SDA'], ['Saints'], {}),
     ('me-hs-rockland', 'Rockland District High School', 'Rockland', None,
      ['Rockland', 'Rockland District', 'Rockland District HS', 'Rockland HS'], ['RDHS', 'ROCK'], ['Tigers'],
      {'years': [None, 2010], 'successor': 'me-hs-oceanside'}),
@@ -785,7 +792,10 @@ ME_MS = [
     ('me-ms-all-saints', 'All Saints Catholic School', 'Bangor', None,
      ['All Saints Catholic School', 'All Saints', 'All Saints School', 'All Saints CS', 'All Saints C'], ['ASCS'], [], {}),
     ('me-ms-st-dominic', 'St. Dominic Academy (middle grades)', 'Auburn', None,
-     ['St. Dominic Middle School', 'St Dominic MS', 'St Dominic M', 'St. Dominic MS'], [], [], {}),
+     ['St. Dominic Middle School', 'St Dominic MS', 'St Dominic M', 'St. Dominic MS',
+      # 'St DOMS MS' (2017 stdomms7); 'Doms'/"Dom's" also here so that in a middle-school meet they mean the middle grades
+      # ('DOMS' in the 2018/2021 WMC MS meets) and in a high-school meet the academy
+      'St DOMS MS', 'St Doms MS', 'Doms', "Dom's"], [], [], {}),
     # Aroostook
     ('me-ms-presque-isle', 'Presque Isle Middle School', 'Presque Isle', None,
      ['Presque Isle Middle School', 'Presque Isle MS', 'Presque Isle Middle'], ['PIMS'], [], {}),
@@ -934,7 +944,10 @@ ME_MS = [
     ('me-ms-bonny-eagle', 'Bonny Eagle Middle School', 'Buxton', None,
      ['Bonny Eagle Middle School', 'Bonny Eagle MS', 'Bonny Eagle Middle'], ['BEMS'], [], {}),
     ('me-ms-thornton', 'Thornton Academy Middle School', 'Saco', None,
-     ['Thornton Academy Middle School', 'Thornton Academy MS', 'Thornton Middle School', 'Thornton MS', 'Thornton Middle'], [], [], {}),
+     ['Thornton Academy Middle School', 'Thornton Academy MS', 'Thornton Middle School', 'Thornton MS', 'Thornton Middle'],
+     # 'TAMS' (2026-10-19): York County MS meets 2011-21, the 2011 York meet's team block spells it out ("Thornton Academy
+     # Middle School 57")
+     ['TAMS'], [], {}),
     # York
     ('me-ms-saco', 'Saco Middle School', 'Saco', None, ['Saco Middle School', 'Saco MS', 'Saco Middle', 'Saco'], ['SACO'], [], {}),
     ('me-ms-biddeford', 'Biddeford Middle School', 'Biddeford', None,
@@ -945,7 +958,10 @@ ME_MS = [
     ('me-ms-massabesic', 'Massabesic Middle School', 'Waterboro', None,
      ['Massabesic Middle School', 'Massabesic MS', 'Massabesic Middle'], [], [], {}),
     ('me-ms-shapleigh', 'Shapleigh Middle School', 'Kittery', None,
-     ['Shapleigh Middle School', 'Shapleigh MS', 'Shapleigh Middle', 'Shapleigh School', 'Shapleigh'], [], [],
+     # 'Kittery' / 'Kit' (2026-10-19): printed only in York County middle-school meets 2005-2022 (smmsaa, Wells MS, York
+     # County MS festival); 19-28 rows of each confirmed by their runners' other meets as Shapleigh
+     ['Shapleigh Middle School', 'Shapleigh MS', 'Shapleigh Middle', 'Shapleigh School', 'Shapleigh', 'Kittery', 'Kittery MS',
+      'Kittery Middle School'], ['KIT'], [],
      {'notes': "Kittery's middle school (feeds Traip). Not Shapleigh Memorial School in Shapleigh."}),
     ('me-ms-sanford', 'Sanford Middle School', 'Sanford', None,
      ['Sanford Middle School', 'Sanford MS', 'Sanford Middle', 'Sanford Junior High'], [], [], {}),
@@ -959,6 +975,18 @@ ME_MS = [
     ('me-ms-york', 'York Middle School', 'York', None, ['York Middle School', 'York MS', 'York Middle'], [], [], {}),
     ('me-ms-seacoast-christian', 'Seacoast Christian School (junior high)', 'South Berwick', None,
      ['Seacoast JH', 'Seacoast Christian JH'], [], [], {}),
+    # small K-8 schools printed by name in middle-school XC meets (2026-10-19)
+    ('me-ms-carrie-ricker', 'Carrie Ricker Middle School', 'Litchfield', None,
+     ['Carrie Ricker Middle School', 'Carrie Ricker MS', 'Carrie Ricker M S.', 'Carrie Ricker'], [], [],
+     {'notes': 'Monmouth MS meets 2008.'}),
+    ('me-ms-elm-street', 'Elm Street School', 'East Machias', None, ['Elm Street School', 'Elm Street'], [], [],
+     {'notes': "Airline invitationals 2024-25 ('Elm Street S')."}),
+    ('me-ms-cherryfield', 'Cherryfield Elementary School', 'Cherryfield', None,
+     ['Cherryfield Elementary School', 'Cherryfield School', 'Cherryfield'], [], [], {'notes': 'Airline invitational 2024.'}),
+    ('me-ms-south-bristol', 'South Bristol School', 'South Bristol', None, ['South Bristol School', 'South Bristol'], [], [],
+     {'notes': 'Great Salt Bay / Busline middle-school meets 2017.'}),
+    ('me-ms-mirus', 'Mirus Academy', None, None, ['Mirus Academy', 'Mirus'], [], [],
+     {'notes': 'Airline and Parker Pruett middle-school invitationals 2016-18; location not verified.'}),
 ]
 
 # ---------------------------------------------------------------------------
@@ -979,7 +1007,8 @@ COLLEGES = [
      ['University of Maine at Farmington', 'Maine-Farmington', 'Maine-Farmin', 'U ME Farmington', 'MaineFarmington', 'UMaine Farmington',
       'Farmington'], ['UMF'], ['Beavers'], {'state': 'ME'}),
     ('col-umpi', 'University of Maine at Presque Isle', 'Presque Isle', None,
-     ['University of Maine at Presque Isle', 'Maine-Presque Isle', 'Maine-Presqu'], ['UMPI'], ['Owls'], {'state': 'ME'}),
+     ['University of Maine at Presque Isle', 'Maine-Presque Isle', 'Maine-Presqu', 'UM Presque Isle'], ['UMPI'], ['Owls'],
+     {'state': 'ME'}),
     ('col-umfk', 'University of Maine at Fort Kent', 'Fort Kent', None,
      ['University of Maine at Fort Kent', 'Maine-Fort Kent', 'Maine-Fort K'], ['UMFK'], ['Bengals'], {'state': 'ME'}),
     ('col-uma', 'University of Maine at Augusta', 'Augusta', None,
@@ -1013,7 +1042,9 @@ COLLEGES = [
     ('col-middlebury', 'Middlebury College', 'Middlebury', None, ['Middlebury College', 'Middlebury'], [], [], {'state': 'VT'}),
     ('col-castleton', 'Castleton University', 'Castleton', None, ['Castleton University', 'Castleton', 'Castleton Un'], [], [], {'state': 'VT'}),
     ('col-vermont-state', 'Vermont State University', None, None, ['Vermont State', 'Vermont Stat', 'NVU-Johnson', 'Nvu-Johnson',
-                                                                    'Vermont Tech'], [], [], {'state': 'VT'}),
+                                                                    'NVU- Johnson', 'Vermont Tech',
+                                                                    # its Johnson campus's earlier name (NAC meets 2015-17)
+                                                                    'Johnson State College', 'Johnson State', 'Johnson St.'], [], [], {'state': 'VT'}),
     ('col-uconn', 'University of Connecticut', 'Storrs', None, ['University of Connecticut', 'Connecticut', 'UConn'], [], [], {'state': 'CT'}),
     ('col-uri', 'University of Rhode Island', 'Kingston', None, ['University of Rhode Island', 'Rhode Island'], ['URI'], [], {'state': 'RI'}),
     ('col-tufts', 'Tufts University', 'Medford', None, ['Tufts University', 'Tufts'], [], [], {'state': 'MA'}),
@@ -1031,7 +1062,7 @@ COLLEGES = [
      ['Bridgewater State', 'Bridgewater St.', 'Bridgewater St', 'Bridgewater'], [], [], {'state': 'MA'}),
     ('col-framingham-state', 'Framingham State University', 'Framingham', None, ['Framingham State', 'Framingham St'], [], [], {'state': 'MA'}),
     ('col-umass-boston', 'UMass Boston', 'Boston', None, ['UMass Boston', 'Umass Boston'], [], [], {'state': 'MA'}),
-    ('col-umass-dartmouth', 'UMass Dartmouth', 'Dartmouth', None, ['UMass Dartmouth', 'Umass Dartmouth', 'UMass Dartmo'], [], [],
+    ('col-umass-dartmouth', 'UMass Dartmouth', 'Dartmouth', None, ['UMass Dartmouth', 'Umass Dartmouth', 'UMass Dartmo', 'UM-Dart'], [], [],
      {'state': 'MA'}),
     ('col-umass-amherst', 'UMass Amherst', 'Amherst', None, ['UMass Amherst', 'Umass Amherst'], [], [], {'state': 'MA'}),
     ('col-umass-lowell', 'UMass Lowell', 'Lowell', None, ['UMass Lowell', 'Umass Lowell'], [], [], {'state': 'MA'}),
@@ -1066,7 +1097,7 @@ COLLEGES = [
     ('col-wesleyan', 'Wesleyan University', 'Middletown', None, ['Wesleyan University', 'Wesleyan'], [], [], {'state': 'CT'}),
     ('col-conn-college', 'Connecticut College', 'New London', None, ['Connecticut College'], [], [], {'state': 'CT'}),
     ('col-eastern-conn', 'Eastern Connecticut State University', 'Willimantic', None,
-     ['Eastern Connecticut State', 'Eastern Conn. St.', 'Eastern Conn St', 'Eastern Conn'], [], [], {'state': 'CT'}),
+     ['Eastern Connecticut State', 'Eastern Conn. St.', 'Eastern Conn St', 'Eastern Conn', 'E. Conn. St.'], [], [], {'state': 'CT'}),
     ('col-southern-conn', 'Southern Connecticut State University', 'New Haven', None,
      ['Southern Connecticut State', 'So Conn State', 'So. Conn. St'], [], [], {'state': 'CT'}),
     ('col-central-conn', 'Central Connecticut State University', 'New Britain', None, ['Central Connecticut', 'Cen Conn'], [], [],
@@ -1076,8 +1107,61 @@ COLLEGES = [
     ('col-salve-regina', 'Salve Regina University', 'Newport', None, ['Salve Regina'], [], [], {'state': 'RI'}),
     ('col-roger-williams', 'Roger Williams University', 'Bristol', None, ['Roger Williams', 'Roger Willia'], [], [], {'state': 'RI'}),
     ('col-plattsburgh', 'SUNY Plattsburgh', 'Plattsburgh', None, ['Plattsburgh State', 'Plattsburgh St'], [], [], {'state': 'NY'}),
-    ('col-army', 'U.S. Military Academy', 'West Point', None, ['Army'], [], [], {'state': 'NY'}),
+    ('col-army', 'U.S. Military Academy', 'West Point', None, ['Army', 'Army West Point'], [], [], {'state': 'NY'}),
     ('col-unb', 'University of New Brunswick', 'Fredericton', None, ['University of New Brunswick', 'UNB'], [], [], {'state': 'NB'}),
+    # colleges seen in XC college meets (Husson / Bowdoin / Bates / Thomas invitationals, NAC and DIII championships, UMD,
+    # Army-Maine duals), 2026-10-19; names as the results print them
+    ('col-umm', 'University of Maine at Machias', 'Machias', None,
+     ['University of Maine at Machias', 'Univ. Maine Machias', 'Maine-Machias', 'UMaine Machias'], [], [], {'state': 'ME'}),
+    ('col-unity', 'Unity College', 'Unity', None, ['Unity College', 'Unity'], [], [], {'state': 'ME'}),
+    ('col-yccc', 'York County Community College', 'Wells', None,
+     ['York County Community College', 'York County CC', 'YCCC'], [], [], {'state': 'ME'}),
+    ('col-kvcc', 'Kennebec Valley Community College', 'Fairfield', None,
+     ['Kennebec Valley Community College', 'Kennebec Valley CC'], [], [], {'state': 'ME'}),
+    ('col-lyndon', 'Northern Vermont University-Lyndon (Lyndon State College)', 'Lyndonville', None,
+     ['Lyndon State College', 'Lyndon State', 'NVU-Lyndon', 'NVU- Lyndon', 'NVU Lyndon', 'NVU-Lydon'], [], [], {'state': 'VT'}),
+    ('col-green-mountain', 'Green Mountain College', 'Poultney', None, ['Green Mountain College'], [], [],
+     {'state': 'VT', 'notes': "Bare 'Green Mountain' is also Green Mountain Union HS (VT) and a youth club: file rules only."}),
+    ('col-southern-vermont', 'Southern Vermont College', 'Bennington', None, ['Southern Vermont College'], [], [], {'state': 'VT'}),
+    ('col-western-new-england', 'Western New England University', 'Springfield', None,
+     ['Western New England University', 'Western New England', 'Western NE'], [], [], {'state': 'MA'}),
+    ('col-elms', 'Elms College', 'Chicopee', None, ['Elms College', 'Elms'], [], [], {'state': 'MA'}),
+    ('col-wentworth', 'Wentworth Institute of Technology', 'Boston', None,
+     ['Wentworth Institute of Technology', 'Wentworth Institute of Tech', 'Wentworth'], [], [], {'state': 'MA'}),
+    ('col-mcla', 'Massachusetts College of Liberal Arts', 'North Adams', None,
+     ['Massachusetts College of Liberal Arts', 'Mass. Liberal Arts', 'MCLA'], [], [], {'state': 'MA'}),
+    ('col-curry', 'Curry College', 'Milton', None, ['Curry College', 'Curry'], [], [], {'state': 'MA'}),
+    ('col-wheelock', 'Wheelock College', 'Boston', None, ['Wheelock College', 'Wheelock'], [], [], {'state': 'MA'}),
+    ('col-aic', 'American International College', 'Springfield', None,
+     ['American International College', "American Int'l"], [], [], {'state': 'MA'}),
+    ('col-mount-ida', 'Mount Ida College', 'Newton', None, ['Mount Ida College', 'Mount Ida'], [], [], {'state': 'MA'}),
+    ('col-anna-maria', 'Anna Maria College', 'Paxton', None, ['Anna Maria College', 'Anna Maria'], [], [], {'state': 'MA'}),
+    ('col-northern-essex', 'Northern Essex Community College', 'Haverhill', None,
+     ['Northern Essex Community College', 'Northern Essex CC', 'No. Essex'], [], [], {'state': 'MA'}),
+    ('col-rivier', 'Rivier University', 'Nashua', None, ['Rivier University', 'Rivier'], [], [], {'state': 'NH'}),
+    ('col-bryant', 'Bryant University', 'Smithfield', None, ['Bryant University', 'Bryant'], [], [], {'state': 'RI'}),
+    ('col-johnson-wales', 'Johnson & Wales University', 'Providence', None,
+     ['Johnson & Wales University', 'Johnson & Wales'], [], [], {'state': 'RI'}),
+    ('col-ccri', 'Community College of Rhode Island', 'Warwick', None,
+     ['Community College of Rhode Island', 'CC Rhode Island'], [], [], {'state': 'RI'}),
+    ('col-rpi', 'Rensselaer Polytechnic Institute', 'Troy', None, ['Rensselaer Polytechnic Institute', 'Rensselaer', 'RPI'], [], [],
+     {'state': 'NY'}),
+    ('col-suny-canton', 'SUNY Canton', 'Canton', None, ['SUNY Canton'], [], [], {'state': 'NY'}),
+    ('col-suny-poly', 'SUNY Polytechnic Institute', 'Utica', None, ['SUNY Polytechnic Institute', 'SUNY Poly'], [], [],
+     {'state': 'NY'}),
+    ('col-morrisville', 'Morrisville State College', 'Morrisville', None, ['Morrisville State College', 'Morrisville State'], [], [],
+     {'state': 'NY'}),
+    ('col-suny-cobleskill', 'SUNY Cobleskill', 'Cobleskill', None, ['SUNY Cobleskill'], [], [], {'state': 'NY'}),
+    ('col-suny-delhi', 'SUNY Delhi', 'Delhi', None, ['SUNY Delhi'], [], [], {'state': 'NY'}),
+    ('col-suny-new-paltz', 'SUNY New Paltz', 'New Paltz', None, ['SUNY New Paltz', 'New Paltz St.', 'New Paltz St', 'New Paltz State'],
+     [], [], {'state': 'NY'}),
+    ('col-cazenovia', 'Cazenovia College', 'Cazenovia', None, ['Cazenovia College'], [], [], {'state': 'NY'}),
+    ('col-adelphi', 'Adelphi University', 'Garden City', None, ['Adelphi University', 'Adelphi'], [], [], {'state': 'NY'}),
+    ('col-navy', 'U.S. Naval Academy', 'Annapolis', None, ['U.S. Naval Academy', 'Naval Academy'], [], [], {'state': 'MD'}),
+    ('col-salisbury', 'Salisbury University', 'Salisbury', None, ['Salisbury University'], [], [],
+     {'state': 'MD', 'notes': "Bare 'Salisbury' is also Salisbury School (CT): file rules only."}),
+    ('col-elmhurst', 'Elmhurst University', 'Elmhurst', None, ['Elmhurst University', 'Elmhurst College', 'Elmhurst'], [], [],
+     {'state': 'IL'}),
 ]
 
 # ---------------------------------------------------------------------------
@@ -1106,6 +1190,10 @@ CLUBS = [
      {'state': 'ME'}),
     ('club-cony-rec', 'Cony Recreation (Augusta youth)', 'Augusta', None, ['Cony Recreation', 'Cony Rec'], [], [],
      {'state': 'ME', 'notes': "Runners later at Cony HS; summer club Augusta."}),
+    # Winthrop MS championships 2021-24: 'Winthrop REC' is a scored youth team printed beside Winthrop's own middle school
+    # ('Winthrop MS' / 'Winthrop') in the same races: the recreation department's team, not a school
+    ('club-winthrop-rec', 'Winthrop Recreation (youth)', 'Winthrop', None, ['Winthrop REC', 'Winthrop Rec', 'Winthrop Recreation'],
+     [], [], {'state': 'ME'}),
 ]
 
 # ---------------------------------------------------------------------------
@@ -1301,3 +1389,547 @@ FILE_RULES = [
     (['Lakers', 'LAKERS'], None, (2006, 2010), r'wmc|foley|falmouth|lakeregion', 'me-hs-lake-region'),
     (['Lakers', 'LAKERS', 'Lakers Track'], None, (2004, 2016), r'usatf|reg1|region|\bjo\b|junior', 'club-lakers-tc'),
 ]
+
+# ---------------------------------------------------------------------------
+# Per-file codes (2026-10-19): single letters and short codes ('K', 'Sc', 'MW', 'Lim') printed in dual/tri meets,
+# read from each meet itself. Evidence per code, in the comment above its file:
+#   score N = ours   the meet's team-score block (parsed team block or the source's score table) prints N for the
+#                    named school, and re-scoring that code's finishers from our rows gives the same total
+#                    ('~' = within a few points: a missing or extra runner in the parse)
+#   named in ...     the school is named in the meet name / team block / source, and the code fits only it
+#   surnames a/b     a of the code's b runners' surnames (same gender, same school year) run for that school in
+#                    its other meets (these files print surnames only, so full-name continuity can't apply)
+# A code with none of these, or two fitting schools, is left out (unresolved). Key: (season, season-year, file stem).
+# ---------------------------------------------------------------------------
+FILE_CODES = {
+    # --- read by hand (2026-10-19); entries marked * replace an earlier wrong reading of the string ---
+    # 2003/XC/ftkentb03 "Fort Kent Invitational": the team block lists Washburn 187 and Limestone/MSSM 141 (no Washington
+    # Academy, a Downeast school); *Wash had been Washington Academy, 4/7 surnames are Washburn runners
+    ('XC', 2003, 'ftkentb03'): {'Lim': 'coop-limestone-mssm', 'Wash': 'me-hs-washburn'},
+    # 2005/XC/el9_2b (EL meet): source team scores list Medomak Valley 202, Morse, Brunswick, Gardiner (no Mountain Valley);
+    # *MV had been Mountain Valley, 7/7 surnames Medomak; Br 5/7 Brunswick, GA 3/3 Gardiner, Mo 6/7 Morse
+    ('XC', 2005, 'el9_2b'): {'Br': 'me-hs-brunswick', 'GA': 'me-hs-gardiner', 'Mo': 'me-hs-morse', 'MV': 'me-hs-medomak'},
+    # 2006/XC/greaterportlandmschamps: the file prints its own legend "School Abbreviations: BE = Bonny Eagle M.S., G = Gorham
+    # M.S., K = King M.S., L = Lincoln M.S., Ma = Mahoney M.S., Me = Memorial M.S., Mo = Lyman Moore M.S., Sc = Scarborough
+    # M.S., SMC = Southern Maine Catholic Schools, We = Wescott J.H.S." (*BE had been Bonny Eagle HS, *Ma Mattanawcook);
+    # G 35/44 surnames Gorham MS, Sc 18/20 Scarborough MS. 'Wi' is not in the legend: left unresolved.
+    ('XC', 2006, 'greaterportlandmschamps'): {
+        'BE': 'me-ms-bonny-eagle', 'G': 'me-ms-gorham', 'K': 'me-ms-king', 'L': 'me-ms-lincoln-portland',
+        'Ma': 'me-ms-mahoney', 'Me': 'me-ms-memorial-sp', 'Mo': 'me-ms-lyman-moore', 'Sc': 'me-ms-scarborough',
+        'SMC': 'me-ms-southern-maine-catholic', 'We': 'me-ms-westbrook'},
+    # 2006/XC/lawrence9_8boys/girls: source team scores list Oxford Hills (no Oak Hill); *OH had been Oak Hill, 6/7 surnames
+    # Oxford Hills (boys); B 8/8 and 19/19 Brunswick, G 5/5 Gardiner
+    ('XC', 2006, 'lawrence9_8boys'): {'B': 'me-hs-brunswick', 'G': 'me-hs-gardiner', 'OH': 'me-hs-oxford-hills'},
+    ('XC', 2006, 'lawrence9_8girls'): {'B': 'me-hs-brunswick', 'OH': 'me-hs-oxford-hills'},
+    # 2006/XC/marshwood{boys,girls}10_13 (Marshwood's home meet): source team scores Marshwood 19, Sanford 49, Massabesic 67;
+    # *Mar had been Maranacook (a KVAC school), surnames 4/4 Marshwood (girls); S 7/9 Sanford, N 4/5 Noble
+    ('XC', 2006, 'marshwoodboys10_13'): {'S': 'me-hs-sanford', 'Mar': 'me-hs-marshwood'},
+    ('XC', 2006, 'marshwoodgirls10_13'): {'N': 'me-hs-noble', 'Mar': 'me-hs-marshwood'},
+    # 2006/XC/westbrook9_27boys: source team scores Marshwood 41, Westbrook 111; *Md had been Maranacook, 7/9 surnames
+    # Marshwood (Md is Marshwood in 2003 marshwood3oct03b too)
+    ('XC', 2006, 'westbrook9_27boys'): {'We': 'me-hs-westbrook', 'Md': 'me-hs-marshwood'},
+    # 2007/XC/ellsworthjvboys: team block lists ELLSWORTH; *El had been Edward Little (not in the meet), 4/4 surnames Ellsworth
+    ('XC', 2007, 'ellsworthjvboys'): {'El': 'me-hs-ellsworth'},
+    # 2008/XC/lincoln9_26 (Lincoln Academy meet): CH 5/7 surnames Camden Hills; *MV had been Mountain Valley, 15/16 surnames
+    # Medomak Valley (a midcoast KVAC neighbour; Mountain Valley is in Rumford)
+    ('XC', 2008, 'lincoln9_26'): {'CH': 'me-hs-camden-hills', 'MV': 'me-hs-medomak'},
+    # 2008/XC/thorntonboys9_19: source team scores Cheverus 24, Windham 71; *W had been Westbrook, 9/9 surnames Windham
+    ('XC', 2008, 'thorntonboys9_19'): {'W': 'me-hs-windham'},
+    # 2008/XC/smmsaajuniorboys (Southern Maine middle-school meet): *Saco had been Sacopee Valley HS, 11/15 surnames Saco MS
+    # (entry with the 'Bid' entries below)
+    # 2010/XC/stjoes_oct8 "Boy`s Scores- Massabesic- 22; Biddeford- 45; Bonny Eagle- 65": *Ma had been Mattanawcook, 13/18
+    # surnames Massabesic; Bi 5/7 Biddeford; Mc 4/4 McAuley
+    ('XC', 2010, 'stjoes_oct8'): {'Bi': 'me-hs-biddeford', 'Mc': 'me-hs-mcauley', 'Ma': 'me-hs-massabesic'},
+    # 2012/XC/sanford{boys,girls}_oct12: team blocks Massabesic, Marshwood, Sanford, Noble (no Maranacook); *Mar/MAR had been
+    # Maranacook, 16/23 and 14/17 surnames Marshwood; Mas/MAS score 17/18 = ours; N 118~119 / 116 = ours; S 59 = ours
+    ('XC', 2012, 'sanfordboys_oct12'): {'Mas': 'me-hs-massabesic', 'N': 'me-hs-noble', 'Mar': 'me-hs-marshwood',
+                                        'MAr': 'me-hs-marshwood'},
+    ('XC', 2012, 'sanfordgirls_oct12'): {'MAS': 'me-hs-massabesic', 'N': 'me-hs-noble', 'S': 'me-hs-sanford',
+                                         'MAR': 'me-hs-marshwood'},
+    # 2018/XC/LJHS-Girls (junior-high meet): *WAJH had been Waterville HS, 5/6 surnames Waterville Junior High
+    ('XC', 2018, 'LJHS-Girls'): {'WAJH': 'me-ms-waterville'},
+    # 'Lim' / 'LIM' in Aroostook meets 2004-2011 (Caribou, Fort Kent, Limestone, Presque Isle, Aroostook invitationals): the
+    # Hy-Tek truncation of Limestone (the other 'Lim...' schools, Lincoln Academy and Lincolnville, never race in Aroostook);
+    # the Limestone/MSSM co-op is applied by team_unit in its active years
+    ('XC', 2004, 'cariboub1sept04'): {'Lim': 'me-hs-limestone'},
+    ('XC', 2005, 'fortkent9_6B'): {'Lim': 'me-hs-limestone'},
+    ('XC', 2005, 'fortkent9_6G'): {'Lim': 'me-hs-limestone'},
+    ('XC', 2005, 'limestone8_30B'): {'Lim': 'me-hs-limestone'},
+    ('XC', 2005, 'limestone8_30G'): {'Lim': 'me-hs-limestone'},
+    ('XC', 2009, 'piinvitevarsity'): {'LIM': 'me-hs-limestone'},
+    ('XC', 2011, 'aroostookinviteboys_sept16'): {'LIM': 'me-hs-limestone'},
+    ('XC', 2011, 'aroostookinvitegirls'): {'LIM': 'me-hs-limestone'},
+    # 2012/XC/scarboroughinvite{boys,girls} = the Scarborough Middle School invitational: a 2-mile race whose field includes
+    # Jordan Small, Cony Middle School, Memorial and North Yarmouth (NYA MS); bare town names are the middle schools (the girls'
+    # race already read most of them so; the boys' race had them as high schools)
+    ('XC', 2012, 'scarboroughinviteboys'): {
+        'Falmouth': 'me-ms-falmouth', 'Cape': 'me-ms-cape-elizabeth', 'Greely': 'me-ms-greely', 'Bonny Eagle': 'me-ms-bonny-eagle',
+        'Seacoast': 'me-ms-seacoast-christian', 'Freeport': 'me-ms-freeport', 'Gray New Gloucester': 'me-ms-gray-ng',
+        'Lake Region': 'me-ms-lake-region', 'Yarmouth': 'me-ms-harrison', 'Waynflete': 'me-ms-waynflete', 'WIN': 'me-ms-windham'},
+    ('XC', 2012, 'scarboroughinvitegirls'): {'Cape': 'me-ms-cape-elizabeth', 'WIN': 'me-ms-windham'},
+    # 2019 MileSplit "WMC: FA, NYA, SD, Yarm @ SV": YHS (a shared code: Yarmouth / York) is Yarmouth, the only Y-school named;
+    # York is an SMAA school
+    ('XC', 2019, 'ms-wmc-fa-nya-sd-yarm-sv-2019'): {'YHS': 'me-hs-yarmouth'},
+    # TRIPLE C MS XC @ Falmouth 2012: 'Dur' is Durham Community School (a Triple C school); its first three runners (Johnson G,
+    # Decker E, Rogers E) are 'Dur' at Falmouth on 9/24 too (they are listed under 'Bonny Eagle' at the Scarborough MS invite)
+    ('XC', 2012, 'ms-triple-c-ms-xc-falmouth-2012'): {'Dur': 'me-ms-durham'},
+    # 2009 York County middle-school meets (Sanford): Md 6/10, 8/8, 5/6 surnames Marshwood MS; N 3/6, 7/12 Noble MS;
+    # B 4/4 Biddeford MS (Y, Sa, Ke, Sf, Ki: no roster evidence, left unresolved)
+    ('XC', 2009, 'yorkcountymsboys7th8th'): {'Md': 'me-ms-marshwood', 'N': 'me-ms-noble', 'B': 'me-ms-biddeford'},
+    ('XC', 2009, 'yorkcountymsgirls7th8th'): {'Md': 'me-ms-marshwood', 'N': 'me-ms-noble'},
+    ('XC', 2009, 'yorkcountymsgirls6th'): {'Md': 'me-ms-marshwood'},
+    # 2007 SMAA middle-school junior boys: Bid 3/4 surnames Biddeford MS
+    ('XC', 2007, 'smaamiddlejuniorboys10_24'): {'Bid': 'me-ms-biddeford'},
+    # 2010 South Portland girls 9/17 (SMAA): No 3/4 surnames Noble (had been an automatic Vermont 'North' entry)
+    ('XC', 2010, 'southportlandgirls_sept17'): {'No': 'me-hs-noble'},
+    # 2010 TA middle-school meet: the source's score column reads "MSK 29, BMS 44, TAMS 58" (K's finishers score 29 = ours)
+    ('XC', 2010, 'thorntonmiddleboys_sept23'): {'K': 'me-ms-kennebunk', 'B': 'me-ms-biddeford', 'TA': 'me-ms-thornton'},
+    # 2011 "Middle School of the Kennebunks, Noble TAMS at York": team block "York Middle School 24, Thornton Academy Middle
+    # School 57, Middle School of the Kennebunks 64, Noble Middle School 104"
+    ('XC', 2011, 'yorkmsboys_oct5'): {'Y': 'me-ms-york', 'N': 'me-ms-noble'},
+    # 2014 Scarborough MS invitational (MileSplit, Middle School list): 'Gray New Glouste' is Gray-New Gloucester misspelled
+    ('XC', 2014, 'ms-scarborough-middle-school-invitational-2014'): {'Gray New Glouste': 'me-ms-gray-ng'},
+    # 2016 TAMS home meets 9/22: the source's score column prints 'MSK 15', 'WMS 61', 'TAMS 48', 'BMS 108' (each = ours for
+    # the same letter); in the 2018 TAMS meets the same letters are, by surnames, Wells MS (W 4/4) and Biddeford MS (B 14/14)
+    ('XC', 2016, 'tamsboys_sept22'): {'K': 'me-ms-kennebunk', 'W': 'me-ms-wells', 'B': 'me-ms-biddeford', 'T': 'me-ms-thornton'},
+    ('XC', 2016, 'tamsgirls_sept22'): {'K': 'me-ms-kennebunk', 'W': 'me-ms-wells', 'B': 'me-ms-biddeford', 'T': 'me-ms-thornton'},
+    # 2007 Mt. Blue girls 9/4 (KVAC): 'Sk' - Skowhegan is the only Maine 'Sk...' school (source names Skowhegan)
+    ('XC', 2007, 'mtbluegirls9_4'): {'Sk': 'me-hs-skowhegan'},
+    # 2021 MVC middle-school meet "Dir, Carr, Mad, Mt V, SP, Mt Ab, Telst": 'T' is Telstar, the only T-school named
+    ('XC', 2021, 'ms-mvc-dir-carr-mad-mt-v-sp-mt-mt-ab-telstar-2021'): {'T': 'me-ms-telstar', 'Mad': 'me-ms-madison'},  # Mad: Madison (an MVC school; Madawaska is in Aroostook)
+    # 'Bid' in York County middle-school meets 2005-2011 (York MS, SMAA middle, smmsaa, Biddeford MS's own meets): Biddeford MS
+    # (the Hy-Tek truncation; in the 2007 SMAA middle-school races its runners are Biddeford MS by continuity)
+    ('XC', 2005, 'yorkMSjg'): {'Bid': 'me-ms-biddeford'},
+    ('XC', 2005, 'yorkMSsb'): {'Bid': 'me-ms-biddeford'},
+    ('XC', 2005, 'yorkMSsg'): {'Bid': 'me-ms-biddeford'},
+    ('XC', 2007, 'smaamiddlejuniorgirls10_24'): {'Bid': 'me-ms-biddeford'},
+    ('XC', 2007, 'smaamiddlerelaysgirls'): {'Bid': 'me-ms-biddeford'},
+    ('XC', 2008, 'smmsaajuniorboys'): {'Saco': 'me-ms-saco', 'Bid': 'me-ms-biddeford'},
+    ('XC', 2011, 'biddefordmsboys_oct12'): {'Bid': 'me-ms-biddeford'},
+    ('XC', 2011, 'biddefordmsgirls_oct12'): {'Bid': 'me-ms-biddeford'},
+    # Chandler relays 2006 / 2009: 'FRE A' is Freeport's A team (FRE is Freeport in the 2008 Chandler relays and the WMC meets)
+    ('XC', 2006, 'chandlerrelays'): {'FRE A': 'me-hs-freeport'},
+    ('XC', 2009, 'chandlerrelays'): {'FRE A': 'me-hs-freeport'},
+    # 2015 Maine State (college) championship: Maine colleges only; 'U. of New' is UNE (UNH is not in the meet)
+    ('XC', 2015, '2015-Maine-State-XC-meet.dab_final-results'): {'U. of New': 'col-une'},
+    # 2015 NAC championship (North Atlantic Conference): Green Mountain College is an NAC member
+    ('XC', 2015, '2015-NAC-Championship.dab_final-results-Men'): {'Green Mountain': 'col-green-mountain'},
+    ('XC', 2015, '2015-NAC-Championship.dab_final-results-Women'): {'Green Mountain': 'col-green-mountain'},
+    # 2017 UMD (Dartmouth) invitational: a college meet
+    ('XC', 2017, 'UMD-Results-women-varsity'): {'Salisbury': 'col-salisbury'},
+    ('XC', 2017, 'UMD-Results-Womens-sub'): {'Salisbury': 'col-salisbury', 'Naval Academ': 'col-navy', 'CC Rhode Isl': 'col-ccri'},
+    # --- from the evidence script (meet evidence and surnames agree, or one alone is decisive) ---
+    # 2003/XC/cheverusb24sept03: Ch=Cheverus (score 36 = ours; named in source; surnames 7/8); N=Noble (score 120 = ours; named in source; surnames 5/5)
+    ('XC', 2003, 'cheverusb24sept03'): {'Ch': 'me-hs-cheverus', 'N': 'me-hs-noble'},
+    # 2003/XC/cheverusg24sept03: Ch=Cheverus (surnames 3/3); N=Noble (surnames 3/3); We=Westbrook (score 34 = ours; named in source; surnames 6/7)
+    ('XC', 2003, 'cheverusg24sept03'): {'Ch': 'me-hs-cheverus', 'N': 'me-hs-noble', 'We': 'me-hs-westbrook'},
+    # 2003/XC/marshwood3oct03b: C=Cheverus (score 52 = ours; named in source; surnames 4/11); Md=Marshwood (score 65 = ours; named in source; surnames 5/7); Wi=Windham (score 71 = ours; named in source; surnames 4/5)
+    ('XC', 2003, 'marshwood3oct03b'): {'C': 'me-hs-cheverus', 'Md': 'me-hs-marshwood', 'Wi': 'me-hs-windham'},
+    # 2003/XC/smaarelayteam "2003 SMAA Relay Meet": C=Cheverus (score 16 ~ ours ; named in source; surnames 3/4)
+    ('XC', 2003, 'smaarelayteam'): {'C': 'me-hs-cheverus'},
+    # 2003/XC/sp25sept03: M=Massabesic (score 85 = ours; named in source; surnames 7/7); Sc=Scarborough (score 35 = ours; named in source; surnames 8/9)
+    ('XC', 2003, 'sp25sept03'): {'M': 'me-hs-massabesic', 'Sc': 'me-hs-scarborough'},
+    # 2003/XC/westbrook10oct03b: D=Deering (score 30 = ours; named in source; surnames 6/9); S=Sanford (score 108 ~ ours 101; named in source; surnames 5/7)
+    ('XC', 2003, 'westbrook10oct03b'): {'D': 'me-hs-deering', 'S': 'me-hs-sanford'},
+    # 2003/XC/westbrook10oct03g: D=Deering (score 28 = ours; named in source; surnames 7/17); S=Sanford (score 30 = ours; named in source; surnames 10/11); We=Westbrook (score 109 = ours; named in source; surnames 6/6)
+    ('XC', 2003, 'westbrook10oct03g'): {'D': 'me-hs-deering', 'S': 'me-hs-sanford', 'We': 'me-hs-westbrook'},
+    # 2004/XC/cheverus15oct04b: C=Cheverus (score 78 ~ ours 80; named in source; surnames 8/8); D=Deering (score 38 = ours; named in source; surnames 6/7)
+    ('XC', 2004, 'cheverus15oct04b'): {'C': 'me-hs-cheverus', 'D': 'me-hs-deering'},
+    # 2004/XC/cheverus15oct04g: D=Deering (score 18 = ours; named in source; surnames 1/15)
+    ('XC', 2004, 'cheverus15oct04g'): {'D': 'me-hs-deering'},
+    # 2004/XC/fk8sept04b "Madawaska, Limestone/MSSM, Presque Isle at Fort Kent - September 8, 20": Lim=Limestone/MSSM (surnames 2/5)
+    ('XC', 2004, 'fk8sept04b'): {'Lim': 'coop-limestone-mssm'},
+    # 2004/XC/fk8sept04g "Madawaska, Limestone/MSSM, Presque Isle at Fort Kent - September 8, 20": Lim=Limestone/MSSM (surnames 4/8)
+    ('XC', 2004, 'fk8sept04g'): {'Lim': 'coop-limestone-mssm'},
+    # 2004/XC/fortfairfieldboys25august04 "Fort Kent, Madawaska, Limestone/MSSM at Fort Fairfield - Boys": Lim=Limestone/MSSM (surnames 2/6)
+    ('XC', 2004, 'fortfairfieldboys25august04'): {'Lim': 'coop-limestone-mssm'},
+    # 2004/XC/fortfairfieldgirls25august04 "Fort Kent, Madawaska, Limestone/MSSM at Fort Fairfield - Girls": Lim=Limestone/MSSM (surnames 5/7)
+    ('XC', 2004, 'fortfairfieldgirls25august04'): {'Lim': 'coop-limestone-mssm'},
+    # 2004/XC/hancock04bv "Hancock County Championships held at Searsport High School": SEA=Searsport District (named in meet name; surnames 1/1)
+    ('XC', 2004, 'hancock04bv'): {'SEA': 'me-hs-searsport'},
+    # 2004/XC/kennebunk15oct04b: B=Biddeford (score 62 ~ ours ; named in source; surnames 4/4)
+    ('XC', 2004, 'kennebunk15oct04b'): {'B': 'me-hs-biddeford'},
+    # 2004/XC/mcauley17sept04g: M=Catherine McAuley (score 20 = ours; named in source; surnames 11/13); N=Noble (score 66 = ours; named in source; surnames 7/8); P=Portland (score 87 = ours; named in source; surnames 6/7)
+    ('XC', 2004, 'mcauley17sept04g'): {'M': 'me-hs-mcauley', 'N': 'me-hs-noble', 'P': 'me-hs-portland'},
+    # 2004/XC/sanford8oct04b: D=Deering (score 38 = ours; named in source; surnames 7/9); S=Sanford (score 82 = ours; named in source; surnames 7/7); W=Westbrook (score 42 = ours; named in source; surnames 8/9)
+    ('XC', 2004, 'sanford8oct04b'): {'D': 'me-hs-deering', 'S': 'me-hs-sanford', 'W': 'me-hs-westbrook'},
+    # 2004/XC/sanford8oct04g: D=Deering (score 19 ~ ours 15; named in source; surnames 12/16); S=Sanford (score 61 ~ ours 56; named in source; surnames 7/8); W=Westbrook (score 93 ~ ours 88; named in source; surnames 6/6)
+    ('XC', 2004, 'sanford8oct04g'): {'D': 'me-hs-deering', 'S': 'me-hs-sanford', 'W': 'me-hs-westbrook'},
+    # 2004/XC/smaajvb04 "SMAA JV Championship Meet at Cheverus - Boys": K=Kennebunk (score 108 ~ ours 111; named in source+team block; surnames 11/11)
+    ('XC', 2004, 'smaajvb04'): {'K': 'me-hs-kennebunk'},
+    # 2005/XC/biddeford10_14girls "10/14/05 Kennebunk TA @ Biddeford girls": B=Biddeford (named in meet name; surnames 2/2)
+    ('XC', 2005, 'biddeford10_14girls'): {'B': 'me-hs-biddeford'},
+    # 2005/XC/eagleclassicgirls "MT. ARARAT MIDDLE SCHOOL - TOPSHAM, ME": Smc=Southern Maine Catholic (combined MS team) (score 92 = ours; named in source+team block)
+    ('XC', 2005, 'eagleclassicgirls'): {'Smc': 'me-ms-southern-maine-catholic'},
+    # 2005/XC/edwardlittle9_16B "Boys Meet at Edward little 9-16": C=Camden Hills Regional (surnames 4/8); M=Medomak Valley (surnames 4/4; 'm' is Medomak in the girls' race)
+    ('XC', 2005, 'edwardlittle9_16B'): {'C': 'me-hs-camden-hills', 'M': 'me-hs-medomak'},
+    # 2005/XC/edwardlittle9_16G "Girls Meet at Edward little 3.1 miles 9-16": L=Lewiston (surnames 5/6); c=Camden Hills Regional (surnames 5/10); m=Medomak Valley (surnames 4/5)
+    ('XC', 2005, 'edwardlittle9_16G'): {'L': 'me-hs-lewiston', 'c': 'me-hs-camden-hills', 'm': 'me-hs-medomak'},
+    # 2005/XC/sanford9_8G "Girlss meet at Sanford, 9/08/05": S=Sanford (named in meet name; surnames 5/5)
+    ('XC', 2005, 'sanford9_8G'): {'S': 'me-hs-sanford'},
+    # 2005/XC/southportland9_30B "9/30/05 Marshwood, TA, Westbrook at South Portland boys": M=Marshwood (named in meet name; surnames 2/2)
+    ('XC', 2005, 'southportland9_30B'): {'M': 'me-hs-marshwood'},
+    # 2005/XC/southportland9_30G "9/30/05 Marshwood, TA, Westbrook at South Portland girls": M=Marshwood (named in meet name)
+    ('XC', 2005, 'southportland9_30G'): {'M': 'me-hs-marshwood'},
+    # 2005/XC/traip10_7 "10/7/05--BOYS": C=Cape Elizabeth (score 22/28 = ours; named in source+team block; surnames 29/37); T=Robert W. Traip Academy (score 90 = ours; named in source+team block; surnames 9/9); W=Wells (score 89 = ours; named in team block; surnames 6/7)
+    ('XC', 2005, 'traip10_7'): {'C': 'me-hs-cape-elizabeth', 'T': 'me-hs-traip', 'W': 'me-hs-wells'},
+    # 2006/XC/biddeford9_15boys: P=Portland (surnames 6/6)
+    ('XC', 2006, 'biddeford9_15boys'): {'P': 'me-hs-portland'},
+    # 2006/XC/bonnyeagle9_8boys: P=Portland (score 37 = ours; named in source; surnames 8/9); S=Sanford (score 81 = ours; named in source; surnames 9/10)
+    ('XC', 2006, 'bonnyeagle9_8boys'): {'P': 'me-hs-portland', 'S': 'me-hs-sanford'},
+    # 2006/XC/capeelizabeth9_8 "September 8, 2006": FRE=Freeport (score 51/84 = ours; named in team block; surnames 18/25)
+    ('XC', 2006, 'capeelizabeth9_8'): {'FRE': 'me-hs-freeport'},
+    # 2006/XC/cheverus9_8boys: C=Cheverus (surnames 10/10); G=Gorham (surnames 6/6)
+    ('XC', 2006, 'cheverus9_8boys'): {'C': 'me-hs-cheverus', 'G': 'me-hs-gorham'},
+    # 2006/XC/cheverus9_8girls: C=Cheverus (surnames 10/10); G=Gorham (surnames 10/10)
+    ('XC', 2006, 'cheverus9_8girls'): {'C': 'me-hs-cheverus', 'G': 'me-hs-gorham'},
+    # 2006/XC/deering9_8girls: B=Biddeford (surnames 4/4); D=Deering (surnames 6/8); M=Massabesic (surnames 5/7); W=Westbrook (surnames 7/8)
+    ('XC', 2006, 'deering9_8girls'): {'B': 'me-hs-biddeford', 'D': 'me-hs-deering', 'M': 'me-hs-massabesic', 'W': 'me-hs-westbrook'},
+    # 2006/XC/deeringboys10_6: De=Deering (score 54 = ours; named in source; surnames 6/7)
+    ('XC', 2006, 'deeringboys10_6'): {'De': 'me-hs-deering'},
+    # 2006/XC/deeringgirls10_6: De=Deering (score 73 ~ ours 72; named in source; surnames 10/15); Sc=Scarborough (score 19 = ours; named in source; surnames 10/14); No=Noble (named in source; surnames 4/6; had been an automatic Vermont 'North' entry)
+    ('XC', 2006, 'deeringgirls10_6'): {'De': 'me-hs-deering', 'Sc': 'me-hs-scarborough', 'No': 'me-hs-noble'},
+    # 2006/XC/elboys9_1: Br=Brunswick (surnames 6/7); Mo=Morse (surnames 6/6)
+    ('XC', 2006, 'elboys9_1'): {'Br': 'me-hs-brunswick', 'Mo': 'me-hs-morse'},
+    # 2006/XC/elgirls9_1: Br=Brunswick (surnames 11/14)
+    ('XC', 2006, 'elgirls9_1'): {'Br': 'me-hs-brunswick'},
+    # 2006/XC/freeport9_15boys: F=Freeport (surnames 4/6); Y=York (surnames 13/13)
+    ('XC', 2006, 'freeport9_15boys'): {'F': 'me-hs-freeport', 'Y': 'me-hs-york'},
+    # 2006/XC/freeport9_15girls: F=Freeport (surnames 6/9); W=Waynflete School (surnames 4/4); Y=York (surnames 10/11)
+    ('XC', 2006, 'freeport9_15girls'): {'F': 'me-hs-freeport', 'W': 'me-hs-waynflete', 'Y': 'me-hs-york'},
+    # 2006/XC/gng9_15boys: F=Falmouth (surnames 13/13); W=Wells (surnames 5/5); SD=St. Dominic (surnames 4/4; SD is St. Dominic in the girls' race)
+    ('XC', 2006, 'gng9_15boys'): {'F': 'me-hs-falmouth', 'W': 'me-hs-wells', 'SD': 'me-hs-st-dominic'},
+    # 2006/XC/gng9_15girls: F=Falmouth (surnames 13/15); SD=St. Dominic Academy (surnames 3/5)
+    ('XC', 2006, 'gng9_15girls'): {'F': 'me-hs-falmouth', 'SD': 'me-hs-st-dominic'},
+    # 2006/XC/gorhamboys9_27: G=Gorham (surnames 10/11); K=Kennebunk (surnames 8/8); P=Portland (surnames 6/6)
+    ('XC', 2006, 'gorhamboys9_27'): {'G': 'me-hs-gorham', 'K': 'me-hs-kennebunk', 'P': 'me-hs-portland'},
+    # 2006/XC/gorhamgirls9_27: G=Gorham (surnames 3/3); N=Noble (surnames 4/4)
+    ('XC', 2006, 'gorhamgirls9_27'): {'G': 'me-hs-gorham', 'N': 'me-hs-noble'},
+    # 2006/XC/kennebunk9_15boys: K=Kennebunk (surnames 8/8)
+    ('XC', 2006, 'kennebunk9_15boys'): {'K': 'me-hs-kennebunk'},
+    # 2006/XC/kennebunk9_15girls: M=Massabesic (surnames 6/6)
+    ('XC', 2006, 'kennebunk9_15girls'): {'M': 'me-hs-massabesic'},
+    # 2006/XC/lakeregioninvite "August 26th, 2006 at Lake Region": StD=St. Dominic Academy (score 99/138 ~ ours ; named in team block; surnames 1/1); Win=Windham (score 70 = ours; named in team block; surnames 6/9)
+    ('XC', 2006, 'lakeregioninvite'): {'StD': 'me-hs-st-dominic', 'Win': 'me-hs-windham'},
+    # 2006/XC/massabesic9_22boys: G=Gorham (score 21 = ours; named in source; surnames 9/11)
+    ('XC', 2006, 'massabesic9_22boys'): {'G': 'me-hs-gorham'},
+    # 2006/XC/mcauley9_15boys: W=Westbrook (surnames 6/7)
+    ('XC', 2006, 'mcauley9_15boys'): {'W': 'me-hs-westbrook'},
+    # 2006/XC/mcauley9_15girls: M=Catherine McAuley (surnames 10/10); N=Noble (surnames 4/4); W=Westbrook (surnames 6/7)
+    ('XC', 2006, 'mcauley9_15girls'): {'M': 'me-hs-mcauley', 'N': 'me-hs-noble', 'W': 'me-hs-westbrook'},
+    # 2006/XC/mcauley9_8boys "Scarborough 16, Kennebunk 46": K=Kennebunk (named in meet name; surnames 4/4)
+    ('XC', 2006, 'mcauley9_8boys'): {'K': 'me-hs-kennebunk'},
+    # 2006/XC/mcauley9_8girls "SCARBOROUGH-30 MCAULEY-46 KENNEBUNK-51 AT MCAULEY": M=Catherine McAuley (named in meet name; surnames 11/13)
+    ('XC', 2006, 'mcauley9_8girls'): {'M': 'me-hs-mcauley'},
+    # 2006/XC/monmouth9_20boys "Monmouth Boys X-C Meet": Win=Winthrop (surnames 12/14)
+    ('XC', 2006, 'monmouth9_20boys'): {'Win': 'me-hs-winthrop'},
+    # 2006/XC/sanford9_14boys: D=Deering (surnames 9/11); G=Gorham (surnames 12/14); S=Sanford (surnames 14/16)
+    ('XC', 2006, 'sanford9_14boys'): {'D': 'me-hs-deering', 'G': 'me-hs-gorham', 'S': 'me-hs-sanford'},
+    # 2006/XC/sanford9_14girls: D=Deering (surnames 10/17); G=Gorham (surnames 8/9); S=Sanford (surnames 10/10)
+    ('XC', 2006, 'sanford9_14girls'): {'D': 'me-hs-deering', 'G': 'me-hs-gorham', 'S': 'me-hs-sanford'},
+    # 2006/XC/scarboroughmsinviteboys "Last Completed Event": WINH=Windham MS (score 145 = ours; named in source+team block)
+    ('XC', 2006, 'scarboroughmsinviteboys'): {'WINH': 'me-ms-windham'},
+    # 2006/XC/scarboroughmsinvitegirls "Scarborough Middle School Invitational": WINH=Windham MS (score 50 = ours; named in source+team block)
+    ('XC', 2006, 'scarboroughmsinvitegirls'): {'WINH': 'me-ms-windham'},
+    # 2006/XC/smaasecond7boys "Scarborough 27, Cheverus 52, Sanford 66, Thornton Academy 98,": C=Cheverus (named in meet name; surnames 5/5); K=Kennebunk (surnames 4/5); Sa=Sanford (named in meet name; surnames 2/4); Sc=Scarborough (named in meet name; surnames 10/10)
+    ('XC', 2006, 'smaasecond7boys'): {'C': 'me-hs-cheverus', 'K': 'me-hs-kennebunk', 'Sa': 'me-hs-sanford', 'Sc': 'me-hs-scarborough'},
+    # 2006/XC/smaasecond7girls "Kennebunk 24, Scarborough 48, McAuley 66, Thornton Academy 98,": D=Deering (surnames 3/3); M=Catherine McAuley (named in meet name; surnames 3/3); S=Scarborough (named in meet name; surnames 4/4)
+    ('XC', 2006, 'smaasecond7girls'): {'D': 'me-hs-deering', 'M': 'me-hs-mcauley', 'S': 'me-hs-scarborough'},
+    # 2006/XC/southportlandboys10_13: C=Cheverus (surnames 7/10); D=Deering (surnames 3/4); P=Portland (surnames 4/5)
+    ('XC', 2006, 'southportlandboys10_13'): {'C': 'me-hs-cheverus', 'D': 'me-hs-deering', 'P': 'me-hs-portland'},
+    # 2006/XC/southportlandgirls10_13: C=Cheverus (surnames 5/6); D=Deering (surnames 5/5); M=Catherine McAuley (surnames 7/9)
+    ('XC', 2006, 'southportlandgirls10_13'): {'C': 'me-hs-cheverus', 'D': 'me-hs-deering', 'M': 'me-hs-mcauley'},
+    # 2006/XC/spboys9_7: W=Windham (surnames 5/6)
+    ('XC', 2006, 'spboys9_7'): {'W': 'me-hs-windham'},
+    # 2006/XC/spgirls9_7: N=Noble (surnames 6/9)
+    ('XC', 2006, 'spgirls9_7'): {'N': 'me-hs-noble'},
+    # 2006/XC/windham9_27boys: B=Biddeford (surnames 3/3); S=Sanford (surnames 9/11)
+    ('XC', 2006, 'windham9_27boys'): {'B': 'me-hs-biddeford', 'S': 'me-hs-sanford'},
+    # 2006/XC/windham9_27girls: B=Biddeford (surnames 4/4); S=Sanford (surnames 8/8)
+    ('XC', 2006, 'windham9_27girls'): {'B': 'me-hs-biddeford', 'S': 'me-hs-sanford'},
+    # 2006/XC/yarmouth9_15boys: Y=Yarmouth (surnames 7/8)
+    ('XC', 2006, 'yarmouth9_15boys'): {'Y': 'me-hs-yarmouth'},
+    # 2006/XC/yarmouth9_15girls: Y=Yarmouth (surnames 8/9)
+    ('XC', 2006, 'yarmouth9_15girls'): {'Y': 'me-hs-yarmouth'},
+    # 2007/XC/cape10_5 "Boys XC @ Cape Elizabeth (Gull Crest Course)": T=Robert W. Traip Academy (surnames 8/8); W=Wells (score 73 = ours; named in team block; surnames 7/10); Y=York (score 42/48 = ours; named in team block; surnames 54/58)
+    ('XC', 2007, 'cape10_5'): {'T': 'me-hs-traip', 'W': 'me-hs-wells', 'Y': 'me-hs-york'},
+    # 2007/XC/cape9_7 "Boys XC @ Cape Elizabeth (Gull Crest Course)": FRE=Freeport (score 62/83 = ours; named in team block; surnames 31/34)
+    ('XC', 2007, 'cape9_7'): {'FRE': 'me-hs-freeport'},
+    # 2007/XC/elgirls8_31: B=Brunswick (surnames 16/19); L=Lewiston (surnames 4/6)
+    ('XC', 2007, 'elgirls8_31'): {'B': 'me-hs-brunswick', 'L': 'me-hs-lewiston'},
+    # 2007/XC/graygirls9_7 "Richmond, Lake Region, St. Doms @ Gray-New Gloucester Team Scores:": R=Richmond (named in meet name; surnames 1/1)
+    ('XC', 2007, 'graygirls9_7'): {'R': 'me-hs-richmond'},
+    # 2007/XC/kennebunkgirls10_11: B=Biddeford (surnames 4/4)
+    ('XC', 2007, 'kennebunkgirls10_11'): {'B': 'me-hs-biddeford'},
+    # 2007/XC/marshwoodboys9_14 "Sunny, low 70's": B=Biddeford (score 97 ~ ours 88; named in source+team block; surnames 6/7); M=Marshwood (score 45 ~ ours 60; named in source+team block; surnames 9/9); P=Portland (score 45 ~ ours 40; named in source+team block; surnames 8/8)
+    ('XC', 2007, 'marshwoodboys9_14'): {'B': 'me-hs-biddeford', 'M': 'me-hs-marshwood', 'P': 'me-hs-portland'},
+    # 2007/XC/marshwoodgirls9_14 "Sunny, low 70's": B=Biddeford (score 72 = ours; named in source+team block; surnames 4/5); M=Marshwood (score 74 = ours; named in source+team block; surnames 7/8); P=Portland (score 75 = ours; named in source+team block; surnames 3/5); S=Scarborough (score 17 = ours; named in source+team block; surnames 13/18)
+    ('XC', 2007, 'marshwoodgirls9_14'): {'B': 'me-hs-biddeford', 'M': 'me-hs-marshwood', 'P': 'me-hs-portland', 'S': 'me-hs-scarborough'},
+    # 2007/XC/noblemiddle10_17: B=Biddeford MS (score 52 = ours; named in source)
+    ('XC', 2007, 'noblemiddle10_17'): {'B': 'me-ms-biddeford'},
+    # 2007/XC/noblemiddlegirls10_17: B=Biddeford MS (score 99 ~ ours 82; named in source)
+    ('XC', 2007, 'noblemiddlegirls10_17'): {'B': 'me-ms-biddeford'},
+    # 2007/XC/richmondgirls9_15 "Boothbay, Greenville, Hyde, Kents Hill, @ Richmond Team Scores:": HY=Hyde School (named in meet name)
+    ('XC', 2007, 'richmondgirls9_15'): {'HY': 'me-hs-hyde'},
+    # 2007/XC/richmondmiddleboys9_15 "Monmouth, Durham, Valley, Litchfield, & Raymond @ Richmond Team Scores": Dur=Durham Community School (named in meet name; surnames 1/7)
+    ('XC', 2007, 'richmondmiddleboys9_15'): {'Dur': 'me-ms-durham'},
+    # 2007/XC/richmondmiddlegirls9_15 "Raymond, Durham, Litchfield, Monmouth, @ Richmond Team Scores:": Dur=Durham Community School (named in meet name; surnames 3/9)
+    ('XC', 2007, 'richmondmiddlegirls9_15'): {'Dur': 'me-ms-durham'},
+    # 2007/XC/smaajvboys: Ch=Cheverus (score 28 = ours; named in source; surnames 11/12); Go=Gorham (score 113 = ours; named in source; surnames 6/9); K=Kennebunk (score 158 ~ ours 162; named in source; surnames 6/8)
+    ('XC', 2007, 'smaajvboys'): {'Ch': 'me-hs-cheverus', 'Go': 'me-hs-gorham', 'K': 'me-hs-kennebunk'},
+    # 2007/XC/smaajvgirls: D=Deering (score 132 ~ ours 112; named in source; surnames 2/5); Go=Gorham (score 129 ~ ours ; named in source; surnames 3/4); Mc=Catherine McAuley (surnames 3/4); Sc=Scarborough (score 33 ~ ours 31; named in source; surnames 11/13)
+    ('XC', 2007, 'smaajvgirls'): {'D': 'me-hs-deering', 'Go': 'me-hs-gorham', 'Mc': 'me-hs-mcauley', 'Sc': 'me-hs-scarborough'},
+    # 2007/XC/thorntonjv9_19 "Boys meet at Marshwood, 10/03/05": M=Marshwood (named in meet name; surnames 2/3)
+    ('XC', 2007, 'thorntonjv9_19'): {'M': 'me-hs-marshwood'},
+    # 2007/XC/wellsboys9_14 "These are the Boys Cross Country results 9/14/07 @ Wells. Between Well": StD=St. Dominic Academy (surnames 9/11); W=Wells (named in meet name; surnames 6/6)
+    ('XC', 2007, 'wellsboys9_14'): {'StD': 'me-hs-st-dominic', 'W': 'me-hs-wells'},
+    # 2007/XC/wellsgirls9_14 "These are the girls results 9/14/07 @ Wells. Between Wells, St. Doms, ": StD=St. Dominic Academy (named in meet name; surnames 5/6); W=Wells (named in meet name; surnames 3/3)
+    ('XC', 2007, 'wellsgirls9_14'): {'StD': 'me-hs-st-dominic', 'W': 'me-hs-wells'},
+    # 2008/XC/biddefordboys9_13 "Deering-Westbrook @ Biddeford.. 3.1 miles Boys results": B=Biddeford (score 63 = ours; named in team block; surnames 7/8); D=Deering (score 55 = ours; named in meet name+team block; surnames 5/5); M=Massabesic (surnames 7/8); W=Westbrook (named in meet name; surnames 4/6)
+    ('XC', 2008, 'biddefordboys9_13'): {'B': 'me-hs-biddeford', 'D': 'me-hs-deering', 'M': 'me-hs-massabesic', 'W': 'me-hs-westbrook'},
+    # 2008/XC/biddefordboys_oct17 "Biddeford, Kennebunk, & Thornton Academy- Varsity Boys": B=Biddeford (named in meet name; surnames 5/7); K=Kennebunk (named in meet name; surnames 9/10)
+    ('XC', 2008, 'biddefordboys_oct17'): {'B': 'me-hs-biddeford', 'K': 'me-hs-kennebunk'},
+    # 2008/XC/biddefordgirls9_13 "Massabesic- Deering - Wetbrook @ Biddeford- Girls": B=Biddeford (score 73 = ours; named in meet name+team block; surnames 6/6); D=Deering (score 36 ~ ours 55; named in meet name+source+team block; surnames 9/12); M=Massabesic (score 19 = ours; named in meet name+source+team block; surnames 6/7)
+    ('XC', 2008, 'biddefordgirls9_13'): {'B': 'me-hs-biddeford', 'D': 'me-hs-deering', 'M': 'me-hs-massabesic'},
+    # 2008/XC/biddefordgirls_oct17 "Biddeford, Kennebunk, & Thornton Academy-": B=Biddeford (named in meet name; surnames 4/4); K=Kennebunk (named in meet name; surnames 11/11)
+    ('XC', 2008, 'biddefordgirls_oct17'): {'B': 'me-hs-biddeford', 'K': 'me-hs-kennebunk'},
+    # 2008/XC/biddefordjvboys_oct17 "Biddeford, Kennebunk, & Thornton Academy- JV Boys": B=Biddeford (named in meet name; surnames 3/4); K=Kennebunk (named in meet name; surnames 13/14)
+    ('XC', 2008, 'biddefordjvboys_oct17'): {'B': 'me-hs-biddeford', 'K': 'me-hs-kennebunk'},
+    # 2008/XC/bonnyeagleboys9_12 "Portland, Sanford, & TA at BE, 9/12/08": P=Portland (named in meet name; surnames 7/12); S=Sanford (named in meet name; surnames 10/10)
+    ('XC', 2008, 'bonnyeagleboys9_12'): {'P': 'me-hs-portland', 'S': 'me-hs-sanford'},
+    # 2008/XC/bonnyeaglegirls9_12 "Portland, Sanford, & TA at BE, 9/12/08": P=Portland (named in meet name; surnames 5/6); S=Sanford (named in meet name; surnames 10/12)
+    ('XC', 2008, 'bonnyeaglegirls9_12'): {'P': 'me-hs-portland', 'S': 'me-hs-sanford'},
+    # 2008/XC/cheverusgirls_oct3 "Meet of October 3, 2008 at Cheverus": B=Biddeford (surnames 5/6)
+    ('XC', 2008, 'cheverusgirls_oct3'): {'B': 'me-hs-biddeford'},
+    # 2008/XC/freeportboys_oct17: M=Maine Coast Waldorf School (score 55 ~ ours 152; named in source; surnames 7/7)
+    ('XC', 2008, 'freeportboys_oct17'): {'M': 'me-hs-maine-coast-waldorf'},
+    # 2008/XC/freeportmsboys_oct16: f=Freeport MS (surnames 6/6); g=Greely MS (score 25 ~ ours 41; named in source; surnames 10/15)
+    ('XC', 2008, 'freeportmsboys_oct16'): {'f': 'me-ms-freeport', 'g': 'me-ms-greely', 'c': 'me-ms-cape-elizabeth'},  # c: header "Opponents: Cape, Greely" (Freeport MS score sheet)
+    # 2008/XC/freeportmsgirls_oct16: f=Freeport MS (surnames 3/3); g=Greely MS (surnames 6/8)
+    ('XC', 2008, 'freeportmsgirls_oct16'): {'f': 'me-ms-freeport', 'g': 'me-ms-greely', 'c': 'me-ms-cape-elizabeth'},  # c: header "Opponents: Cape, Greely" (Freeport MS score sheet)
+    # 2008/XC/kennebunkgirls9_12 "Scarboro-31 McAuley-48 Kennebunk–53 2.91miles": K=Kennebunk (named in meet name; surnames 5/5); M=Catherine McAuley (named in meet name; surnames 6/6); S=Scarborough (named in meet name; surnames 9/9)
+    ('XC', 2008, 'kennebunkgirls9_12'): {'K': 'me-hs-kennebunk', 'M': 'me-hs-mcauley', 'S': 'me-hs-scarborough'},
+    # 2008/XC/lakeregion9_12 "Boys Results Team": Gr=Greely (score 15/19 = ours; named in source; surnames 35/37); SD=St. Dominic Academy (surnames 12/16)
+    ('XC', 2008, 'lakeregion9_12'): {'Gr': 'me-hs-greely', 'SD': 'me-hs-st-dominic'},
+    # 2008/XC/lakeregioninvite: SD=St. Dominic Academy (surnames 11/16)
+    ('XC', 2008, 'lakeregioninvite'): {'SD': 'me-hs-st-dominic'},
+    # 2008/XC/marshwood9_24 "South Portland, Thornton, & Westbrook at Marshwood 9/24/08": M=Marshwood (named in meet name; surnames 2/11); W=Westbrook (named in meet name)
+    ('XC', 2008, 'marshwood9_24'): {'M': 'me-hs-marshwood', 'W': 'me-hs-westbrook'},
+    # 2008/XC/marshwoodboys9_24 "South Portland, Thornton, & Westbrook at Marshwood 9/24/08": M=Marshwood (named in meet name; surnames 10/10); W=Westbrook (named in meet name; surnames 6/6)
+    ('XC', 2008, 'marshwoodboys9_24'): {'M': 'me-hs-marshwood', 'W': 'me-hs-westbrook'},
+    # 2008/XC/massabesicboys9_19 "Boys Meet-9-19-08 Bonny Eagle-South Portland-Kennebunk at Massabesic": K=Kennebunk (score 87 = ours; named in meet name+team block; surnames 6/7); M=Massabesic (named in meet name; surnames 8/9)
+    ('XC', 2008, 'massabesicboys9_19'): {'K': 'me-hs-kennebunk', 'M': 'me-hs-massabesic'},
+    # 2008/XC/massabesicboys_oct18 "Sanford-Marshwood-Noble-at Massabesic- Boys- 10/17/08": M=Massabesic (score 17 = ours; named in meet name+team block; surnames 13/15); MW=Marshwood (named in meet name; surnames 6/8); N=Noble (named in meet name; surnames 3/5); S=Sanford (score 66 ~ ours 68; named in meet name+team block; surnames 8/9)
+    ('XC', 2008, 'massabesicboys_oct18'): {'M': 'me-hs-massabesic', 'MW': 'me-hs-marshwood', 'N': 'me-hs-noble', 'S': 'me-hs-sanford'},
+    # 2008/XC/massabesicgirls9_19 "Girls meet- Kennebunk-Bonny Eadgle-South Portland at Massabesic- 9-19-": K=Kennebunk (score 44 = ours; named in meet name+team block; surnames 13/13); M=Massabesic (score 40 = ours; named in meet name+team block; surnames 3/4)
+    ('XC', 2008, 'massabesicgirls9_19'): {'K': 'me-hs-kennebunk', 'M': 'me-hs-massabesic'},
+    # 2008/XC/massabesicgirls_oct18 "Marshwood-Noble-Sanford at Massabesic-- 10?17/08 Girls": M=Massabesic (score 21 = ours; named in meet name+team block; surnames 5/7); MW=Marshwood (score 63 = ours; named in meet name+team block; surnames 13/13); N=Noble (score 81 = ours; named in meet name+team block; surnames 6/6); S=Sanford (score 76 = ours; named in meet name+team block; surnames 10/12)
+    ('XC', 2008, 'massabesicgirls_oct18'): {'M': 'me-hs-massabesic', 'MW': 'me-hs-marshwood', 'N': 'me-hs-noble', 'S': 'me-hs-sanford'},
+    # 2008/XC/mcauleyboys_oct17 "Results: Boys": Ch=Cheverus (surnames 8/8); D=Deering (surnames 8/8); P=Portland (surnames 3/4)
+    ('XC', 2008, 'mcauleyboys_oct17'): {'Ch': 'me-hs-cheverus', 'D': 'me-hs-deering', 'P': 'me-hs-portland'},
+    # 2008/XC/mcauleygirls_oct17 "Results: Girls": Ch=Cheverus (surnames 6/6); D=Deering (surnames 9/9); Mc=Catherine McAuley (surnames 6/6); P=Portland (surnames 3/4)
+    ('XC', 2008, 'mcauleygirls_oct17'): {'Ch': 'me-hs-cheverus', 'D': 'me-hs-deering', 'Mc': 'me-hs-mcauley', 'P': 'me-hs-portland'},
+    # 2008/XC/messalonskee9_20: E=Erskine Academy (score 59/73 = ours; named in source+team block; surnames 19/26); G=Gardiner Area (score 57/97 = ours; named in source+team block; surnames 8/13); L=Lewiston (score 20/42 = ours; named in source+team block; surnames 11/21); M=Messalonskee (score 56 = ours; named in source+team block; surnames 14/15); S=Skowhegan Area (score 93 = ours; named in source+team block; surnames 5/10)
+    ('XC', 2008, 'messalonskee9_20'): {'E': 'me-hs-erskine', 'G': 'me-hs-gardiner', 'L': 'me-hs-lewiston', 'M': 'me-hs-messalonskee', 'S': 'me-hs-skowhegan'},
+    # 2008/XC/sacomiddleboys_oct15: M=Marshwood MS (score 22 = ours; named in source; surnames 13/16); S=Saco MS (score 39 = ours; named in source; surnames 11/17)
+    ('XC', 2008, 'sacomiddleboys_oct15'): {'M': 'me-ms-marshwood', 'S': 'me-ms-saco'},
+    # 2008/XC/sacomiddlegirls_oct15: M=Marshwood MS (surnames 10/13); S=Saco MS (surnames 9/9)
+    ('XC', 2008, 'sacomiddlegirls_oct15'): {'M': 'me-ms-marshwood', 'S': 'me-ms-saco'},
+    # 2008/XC/traipgirls9_12 "Place Name School Time Column3": G=Gray-New Gloucester (surnames 5/5)
+    ('XC', 2008, 'traipgirls9_12'): {'G': 'me-hs-gray-ng'},
+    # 2009/XC/biddefordboys_oct9: G=Gorham (score 24 = ours; named in team block; surnames 12/12)
+    ('XC', 2009, 'biddefordboys_oct9'): {'G': 'me-hs-gorham'},
+    # 2009/XC/biddefordgirls_oct9: B=Biddeford (score 79 = ours; named in team block; surnames 6/6); G=Gorham (score 22 = ours; named in team block; surnames 8/8)
+    ('XC', 2009, 'biddefordgirls_oct9'): {'B': 'me-hs-biddeford', 'G': 'me-hs-gorham'},
+    # 2009/XC/bonnyeagleboys_sept16 "Massabesic, Kennebunk, South Portland @ Bonny Eagle—At St. Joseph’s co": K=Kennebunk (score 79 = ours; named in meet name+team block; surnames 13/20)
+    ('XC', 2009, 'bonnyeagleboys_sept16'): {'K': 'me-hs-kennebunk'},
+    # 2009/XC/bonnyeaglegirls_sept15 "Massabesic, Kennebunk, South Portland @ BE at St. Joseph’s college": K=Kennebunk (score 83 = ours; named in meet name+team block; surnames 7/8)
+    ('XC', 2009, 'bonnyeaglegirls_sept15'): {'K': 'me-hs-kennebunk'},
+    # 2009/XC/caribounightboys: GHC=Greater Houlton Christian Academy (surnames 4/5)
+    ('XC', 2009, 'caribounightboys'): {'GHC': 'me-hs-greater-houlton-christian'},
+    # 2009/XC/cheverusboys_oct9 "SMAA XC Boys Meet": K=Kennebunk (surnames 6/6)
+    ('XC', 2009, 'cheverusboys_oct9'): {'K': 'me-hs-kennebunk'},
+    # 2009/XC/cheverusgirls_oct9 "SMAA XC Girls Meet": C=Cheverus (surnames 10/10); K=Kennebunk (surnames 7/7); S=Sanford (surnames 5/5)
+    ('XC', 2009, 'cheverusgirls_oct9'): {'C': 'me-hs-cheverus', 'K': 'me-hs-kennebunk', 'S': 'me-hs-sanford'},
+    # 2009/XC/lakeregion_sept18 "High School 9/18/2009": M=Maine Coast Waldorf School (score 43 = ours; named in team block; surnames 9/11)
+    ('XC', 2009, 'lakeregion_sept18'): {'M': 'me-hs-maine-coast-waldorf'},
+    # 2009/XC/marshwood_oct9 "BOYS VARSITY": MC=Catherine McAuley (score 49 = ours; named in source; surnames 6/6); MW=Marshwood (score 22/40 = ours; named in source; surnames 28/29)
+    ('XC', 2009, 'marshwood_oct9'): {'MC': 'me-hs-mcauley', 'MW': 'me-hs-marshwood'},
+    # 2009/XC/marshwoodboys_sept17 "VARSITY BOYS": B=Biddeford (score 86 ~ ours 89; named in source; surnames 7/8); M=Marshwood (score 26/49 = ours; named in source; surnames 18/19); P=Portland (score 75 = ours; named in source; surnames 8/9)
+    ('XC', 2009, 'marshwoodboys_sept17'): {'B': 'me-hs-biddeford', 'M': 'me-hs-marshwood', 'P': 'me-hs-portland'},
+    # 2009/XC/marshwoodgirls_sept17: B=Biddeford (score 89 ~ ours 93; named in source; surnames 6/6); M=Marshwood (score 83 = ours; named in source; surnames 8/8); P=Portland (score 50 = ours; named in source; surnames 6/7); S=Scarborough (score 18 = ours; named in source; surnames 16/17)
+    ('XC', 2009, 'marshwoodgirls_sept17'): {'B': 'me-hs-biddeford', 'M': 'me-hs-marshwood', 'P': 'me-hs-portland', 'S': 'me-hs-scarborough'},
+    # 2009/XC/massabesicboys_oct9 "Windham, Portland @ Massabesic": P=Portland (named in meet name; surnames 9/9); W=Windham (named in meet name; surnames 17/19)
+    ('XC', 2009, 'massabesicboys_oct9'): {'P': 'me-hs-portland', 'W': 'me-hs-windham'},
+    # 2009/XC/massabesicboys_sept11 "Deering, Biddeford, Westbrook @Massabesic": B=Biddeford (score 82 ~ ours 89; named in meet name+team block; surnames 9/10); D=Deering (score 65 ~ ours 62; named in meet name+team block; surnames 8/11); W=Westbrook (score 65 ~ ours 62; named in meet name+team block; surnames 9/10)
+    ('XC', 2009, 'massabesicboys_sept11'): {'B': 'me-hs-biddeford', 'D': 'me-hs-deering', 'W': 'me-hs-westbrook'},
+    # 2009/XC/massabesicgirls_oct9 "Windham, Portland @ Massabesic": P=Portland (named in meet name; surnames 5/6); W=Windham (named in meet name; surnames 12/15)
+    ('XC', 2009, 'massabesicgirls_oct9'): {'P': 'me-hs-portland', 'W': 'me-hs-windham'},
+    # 2009/XC/massabesicgirls_sept11 "Deering , Biddeford , Westbrook @ Massabesic": B=Biddeford (named in meet name; surnames 8/8); D=Deering (named in meet name; surnames 10/12); W=Westbrook (named in meet name; surnames 1/1)
+    ('XC', 2009, 'massabesicgirls_sept11'): {'B': 'me-hs-biddeford', 'D': 'me-hs-deering', 'W': 'me-hs-westbrook'},
+    # 2009/XC/nobleboys_oct16: MW=Marshwood (score 49 ~ ours 46; named in source; surnames 15/18); S=Sanford (score 70 ~ ours 66; named in source; surnames 10/10)
+    ('XC', 2009, 'nobleboys_oct16'): {'MW': 'me-hs-marshwood', 'S': 'me-hs-sanford'},
+    # 2009/XC/noblegirls_oct16: MW=Marshwood (score 69 ~ ours 68; named in source; surnames 10/10); S=Sanford (score 54 = ours; named in source; surnames 10/13)
+    ('XC', 2009, 'noblegirls_oct16'): {'MW': 'me-hs-marshwood', 'S': 'me-hs-sanford'},
+    # 2009/XC/nyaboys_oct16 "XC Meet Results": M=Maine Coast Waldorf School (surnames 7/9)
+    ('XC', 2009, 'nyaboys_oct16'): {'M': 'me-hs-maine-coast-waldorf'},
+    # 2009/XC/nyagirls_oct16 "XC Meet Results": F=Freeport (surnames 5/5)
+    ('XC', 2009, 'nyagirls_oct16'): {'F': 'me-hs-freeport'},
+    # 2009/XC/sacomiddleboys_oct14: M=Marshwood MS (score 45 = ours; named in source); N=Noble MS (score 97 = ours; named in source); S=Saco MS (score 80 = ours; named in source); W=Wells Junior (score 21 = ours; named in source; surnames 16/19)
+    ('XC', 2009, 'sacomiddleboys_oct14'): {'M': 'me-ms-marshwood', 'N': 'me-ms-noble', 'S': 'me-ms-saco', 'W': 'me-ms-wells'},
+    # 2009/XC/sacomiddlegirls_oct14: M=Marshwood MS (score 31 ~ ours 21; named in source); N=Noble MS (score 78 ~ ours 63; named in source); S=Saco MS (score 65 ~ ours 49; named in source); W=Wells Junior (score 47 ~ ours ; named in source; surnames 3/4)
+    ('XC', 2009, 'sacomiddlegirls_oct14'): {'M': 'me-ms-marshwood', 'N': 'me-ms-noble', 'S': 'me-ms-saco', 'W': 'me-ms-wells'},
+    # 2009/XC/sanfordboys_sept11 "Sanford, B onny Eagle, Thorn": P=Portland (score 41 = ours; named in team block; surnames 10/11); S=Sanford (score 50 = ours; named in meet name+team block; surnames 11/11)
+    ('XC', 2009, 'sanfordboys_sept11'): {'P': 'me-hs-portland', 'S': 'me-hs-sanford'},
+    # 2009/XC/sanfordgirls_sept11 "Sanford, Bonny Eagle, Thornt": P=Portland (score 67 = ours; named in team block; surnames 4/5); S=Sanford (score 79 = ours; named in meet name+team block; surnames 12/13)
+    ('XC', 2009, 'sanfordgirls_sept11'): {'P': 'me-hs-portland', 'S': 'me-hs-sanford'},
+    # 2009/XC/thorntonmiddleboys_sept23: B=Biddeford MS (score 87 = ours; named in source); S=Saco MS (score 89 ~ ours 73; named in source)
+    ('XC', 2009, 'thorntonmiddleboys_sept23'): {'B': 'me-ms-biddeford', 'S': 'me-ms-saco', 'K': 'me-ms-kennebunk'},  # K: source score column 'MSK 48' = ours
+    # 2009/XC/thorntonmiddlegirls_sept23: B=Biddeford MS (score 98 = ours; named in source); S=Saco MS (score 72 = ours; named in source)
+    ('XC', 2009, 'thorntonmiddlegirls_sept23'): {'B': 'me-ms-biddeford', 'S': 'me-ms-saco', 'K': 'me-ms-kennebunk'},  # K: 'MSK 22' = ours
+    # 2009/XC/yarmouthboys_sept11 "Freeport 46": MER=Maine Coast Waldorf School (score 73 = ours; named in source; surnames 9/9)
+    ('XC', 2009, 'yarmouthboys_sept11'): {'MER': 'me-hs-maine-coast-waldorf'},
+    # 2009/XC/yarmouthgirls_sept11 "Freeport 31": FRE=Freeport (score 31 = ours; named in meet name+source; surnames 6/6)
+    ('XC', 2009, 'yarmouthgirls_sept11'): {'FRE': 'me-hs-freeport'},
+    # 2010/XC/Wellsboys_sept16 "Wells, Gray New Gloucester, Traip @ Wells 09-16-2010 Boys": G=Gray-New Gloucester (named in meet name; surnames 8/8); T=Robert W. Traip Academy (score 73 ~ ours 71; named in meet name+source; surnames 2/5); W=Wells (score 35 = ours; named in meet name+source; surnames 5/5)
+    ('XC', 2010, 'Wellsboys_sept16'): {'G': 'me-hs-gray-ng', 'T': 'me-hs-traip', 'W': 'me-hs-wells'},
+    # 2010/XC/Wellsgirls_sept16 "Wells, Gray New Gloucester, Traip @ Wells 09-16-2010 Girls": G=Gray-New Gloucester (named in meet name; surnames 6/8); T=Robert W. Traip Academy (named in meet name; surnames 4/4)
+    ('XC', 2010, 'Wellsgirls_sept16'): {'G': 'me-hs-gray-ng', 'T': 'me-hs-traip'},
+    # 2010/XC/biddefordboys_sept29 "SMAA Cross Country Sanford, Portland and Scarborough @ Biddeford 9/29/": P=Portland (named in meet name; surnames 8/8)
+    ('XC', 2010, 'biddefordboys_sept29'): {'P': 'me-hs-portland'},
+    # 2010/XC/biddefordgirls_sept29 "SMAA Cross Country Sanford, Portland and Scarborough @ Biddeford 9/29/": B=Biddeford (named in meet name; surnames 4/4); P=Portland (named in meet name; surnames 8/8); S=Sanford (named in meet name; surnames 7/11); Sc=Scarborough (named in meet name; surnames 15/18)
+    ('XC', 2010, 'biddefordgirls_sept29'): {'B': 'me-hs-biddeford', 'P': 'me-hs-portland', 'S': 'me-hs-sanford', 'Sc': 'me-hs-scarborough'},
+    # 2010/XC/marshwoodgirls_sept8 "GIRLS RESULTS 9/8/10 Marshwood, Scarborough,": M=Marshwood (score 73 = ours; named in meet name+team block; surnames 6/6); S=Scarborough (score 38 = ours; named in meet name+team block; surnames 16/20)
+    ('XC', 2010, 'marshwoodgirls_sept8'): {'M': 'me-hs-marshwood', 'S': 'me-hs-scarborough'},
+    # 2010/XC/nyagirls_oct15 "Royal River Park": G=Greely (score 78 = ours; named in team block; surnames 10/11); W=Waynflete School (score 44 = ours; named in team block; surnames 5/10)
+    ('XC', 2010, 'nyagirls_oct15'): {'G': 'me-hs-greely', 'W': 'me-hs-waynflete'},
+    # 2010/XC/sanfordboys_sept11 "Kennebunk, Gorham @ Sanford": S=Sanford (named in meet name; surnames 8/8)
+    ('XC', 2010, 'sanfordboys_sept11'): {'S': 'me-hs-sanford'},
+    # 2010/XC/sanfordboys_sept17 "Deering, Bonny Eagle @ Sanford": D=Deering (score 28 = ours; named in meet name+team block; surnames 6/8)
+    ('XC', 2010, 'sanfordboys_sept17'): {'D': 'me-hs-deering'},
+    # 2010/XC/sanfordboysjv_sept11 "Kennebunk, Gorham @ Sanford": S=Sanford (named in meet name; surnames 7/7)
+    ('XC', 2010, 'sanfordboysjv_sept11'): {'S': 'me-hs-sanford'},
+    # 2010/XC/sanfordgirls_sept11 "Kennebunk, Macauley, Gorham @ Sanford": S=Sanford (named in meet name; surnames 10/12)
+    ('XC', 2010, 'sanfordgirls_sept11'): {'S': 'me-hs-sanford'},
+    # 2010/XC/sanfordgirls_sept17 "Deering, Bonny Eagle @ Sanford": D=Deering (score 47 = ours; named in meet name+team block; surnames 4/7); S=Sanford (score 55 = ours; named in meet name+team block; surnames 6/7)
+    ('XC', 2010, 'sanfordgirls_sept17'): {'D': 'me-hs-deering', 'S': 'me-hs-sanford'},
+    # 2011/XC/bonnyeagle_sept16 "Boys 5000 Meters": McA=Catherine McAuley (surnames 7/8)
+    ('XC', 2011, 'bonnyeagle_sept16'): {'McA': 'me-hs-mcauley'},
+    # 2011/XC/kennebunk_oct7 "COURSE LENGTH approx. 2.92 miles": K=Kennebunk (surnames 8/9); P=Portland (surnames 5/8)
+    ('XC', 2011, 'kennebunk_oct7'): {'K': 'me-hs-kennebunk', 'P': 'me-hs-portland'},
+    # 2011/XC/massabesicboys_sept21 "Bonny Eagle, Cheveru,Kennebunk @ Massabesic_x000D_Boys Meet": C=Cheverus (score 33 = ours; named in meet name+team block; surnames 15/16); K=Kennebunk (named in meet name; surnames 18/18)
+    ('XC', 2011, 'massabesicboys_sept21'): {'C': 'me-hs-cheverus', 'K': 'me-hs-kennebunk'},
+    # 2011/XC/massabesicboys_sept9 "South Portland, Scarborough @ Massabesic": M=Massabesic (score 61 = ours; named in meet name+team block; surnames 8/8); SC=Scarborough (score 15 ~ ours 24; named in meet name+team block; surnames 6/8)
+    ('XC', 2011, 'massabesicboys_sept9'): {'M': 'me-hs-massabesic', 'SC': 'me-hs-scarborough'},
+    # 2011/XC/massabesicgirls_sept21 "Bonny Eagle, Cheverus, Kennebunk @ Massabesic_x000D_Girls meet_x000D_": C=Cheverus (score 28 ~ ours 27; named in meet name+source+team block; surnames 10/13); K=Kennebunk (score 77 ~ ours 75; named in meet name+source+team block; surnames 9/12); M=Massabesic (score 52 ~ ours 48; named in source+team block; surnames 12/13)
+    ('XC', 2011, 'massabesicgirls_sept21'): {'C': 'me-hs-cheverus', 'K': 'me-hs-kennebunk', 'M': 'me-hs-massabesic'},
+    # 2011/XC/massabesicgirls_sept9 "South Portland, Scarborough @ Massabesic": M=Massabesic (score 20 = ours; named in meet name+team block; surnames 10/12); SC=Scarborough (score 75 = ours; named in meet name+team block; surnames 7/8)
+    ('XC', 2011, 'massabesicgirls_sept9'): {'M': 'me-hs-massabesic', 'SC': 'me-hs-scarborough'},
+    # 2011/XC/poland_sept2 "Poland Regional High School": P=Poland Regional (score 90/111 = ours; named in meet name+source+team block; surnames 11/11)
+    ('XC', 2011, 'poland_sept2'): {'P': 'me-hs-poland'},
+    # 2011/XC/poland_sept30 "Poland Regional High School": P=Poland Regional (score 31/60 = ours; named in meet name+source+team block; surnames 14/14); W=Waynflete School (score 17/26 = ours; named in source+team block; surnames 18/18)
+    ('XC', 2011, 'poland_sept30'): {'P': 'me-hs-poland', 'W': 'me-hs-waynflete'},
+    # 2011/XC/sanfordboys_sept23 "Deering, Scarborough, Biddeford @ Sanford": B=Biddeford (named in meet name; surnames 9/9); D=Deering (score 57 = ours; named in meet name+team block; surnames 14/14); SC=Scarborough (named in meet name; surnames 20/20)
+    ('XC', 2011, 'sanfordboys_sept23'): {'B': 'me-hs-biddeford', 'D': 'me-hs-deering', 'SC': 'me-hs-scarborough'},
+    # 2011/XC/sanfordgirls_sept23 "Deering, Scarborough, Biddeford @ Sanford": B=Biddeford (named in meet name; surnames 2/3); D=Deering (score 71 ~ ours 63; named in meet name+team block); SA=Sanford (score 35 = ours; named in meet name+team block; surnames 10/12); SC=Scarborough (named in meet name; surnames 6/9)
+    ('XC', 2011, 'sanfordgirls_sept23'): {'B': 'me-hs-biddeford', 'D': 'me-hs-deering', 'SA': 'me-hs-sanford', 'SC': 'me-hs-scarborough'},
+    # 2011/XC/yorkjrboys "Jr Boys Middle School Cross Country Festival at Fort Foster": Y=York MS (surnames 3/3)
+    ('XC', 2011, 'yorkjrboys'): {'Y': 'me-ms-york'},
+    # 2011/XC/yorkmsgirls_oct5 "Middle School of the Kennebunks, Noble TAMS at York": Y=York MS (named in meet name; surnames 12/18)
+    ('XC', 2011, 'yorkmsgirls_oct5'): {'Y': 'me-ms-york'},
+    # 2012/XC/falmouthms_oct10 ", Cape Elizabeth, Friends @ Falmouth": Y=Frank H. Harrison MS (surnames 4/7)
+    ('XC', 2012, 'falmouthms_oct10'): {'Y': 'me-ms-harrison'},
+    # 2012/XC/falmouthms_sept24 "GNG @Falmouth 2.0 miles sunny, coool, dry": Dur=Durham Community School (surnames 4/8)
+    ('XC', 2012, 'falmouthms_sept24'): {'Dur': 'me-ms-durham'},
+    # 2012/XC/kennebunkboys_sept19 "Kennebunk - Boys XC Meet": C=Cheverus (score 50 = ours; named in source; surnames 17/17); K=Kennebunk (named in meet name; surnames 14/14); M=Massabesic (score 30 = ours; named in source; surnames 15/15)
+    ('XC', 2012, 'kennebunkboys_sept19'): {'C': 'me-hs-cheverus', 'K': 'me-hs-kennebunk', 'M': 'me-hs-massabesic'},
+    # 2012/XC/kennebunkgirls_sept19 "Kennebunk - Girls XC Me": C=Cheverus (surnames 7/7); M=Massabesic (surnames 10/10)
+    ('XC', 2012, 'kennebunkgirls_sept19'): {'C': 'me-hs-cheverus', 'M': 'me-hs-massabesic'},
+    # 2012/XC/kennebunkgirls_sept7 "Girls XC Meet @ Kennebunk": W=Westbrook (surnames 6/8)
+    ('XC', 2012, 'kennebunkgirls_sept7'): {'W': 'me-hs-westbrook'},
+    # 2012/XC/marshwoodboysJV_sept21 "Race Results - JV Boys 9/21/12 at Marshwood": G=Gorham (surnames 6/8); T=Thornton Academy (surnames 8/11)
+    ('XC', 2012, 'marshwoodboysJV_sept21'): {'G': 'me-hs-gorham', 'T': 'me-hs-thornton'},
+    # 2012/XC/marshwoodboys_sept14 "Race Results - Boys 9/14/12 at Marshwood": P=Portland (surnames 10/10); S=Scarborough (surnames 16/17)
+    ('XC', 2012, 'marshwoodboys_sept14'): {'P': 'me-hs-portland', 'S': 'me-hs-scarborough'},
+    # 2012/XC/marshwoodboys_sept21 "Race Results - Boys Varsity 9/21/12 at Marshwood": G=Gorham (surnames 7/7); T=Thornton Academy (surnames 6/6)
+    ('XC', 2012, 'marshwoodboys_sept21'): {'G': 'me-hs-gorham', 'T': 'me-hs-thornton'},
+    # 2012/XC/marshwoodgirls_sept14 "Race Results - Girls 9/14/12 at Marshwood": M=Marshwood (named in meet name; surnames 11/12); P=Portland (surnames 8/12); S=Scarborough (surnames 4/5)
+    ('XC', 2012, 'marshwoodgirls_sept14'): {'M': 'me-hs-marshwood', 'P': 'me-hs-portland', 'S': 'me-hs-scarborough'},
+    # 2012/XC/marshwoodgirls_sept21 "At Marshwood": M=Marshwood (named in meet name; surnames 9/10); MC=Catherine McAuley (surnames 5/6); T=Thornton Academy (surnames 11/13)
+    ('XC', 2012, 'marshwoodgirls_sept21'): {'M': 'me-hs-marshwood', 'MC': 'me-hs-mcauley', 'T': 'me-hs-thornton'},
+    # 2012/XC/nya_oct5 "Place Name Time Team Points": F=Freeport (score 27 = ours; named in team block; surnames 19/29); M=Maine Coast Waldorf School (score 51 = ours; named in team block; surnames 9/12)
+    ('XC', 2012, 'nya_oct5'): {'F': 'me-hs-freeport', 'M': 'me-hs-maine-coast-waldorf'},
+    # 2012/XC/polandboys_august31 "Poland Regional": F=Freeport (score 24 = ours; named in source+team block; surnames 19/20); P=Poland Regional (score 105 = ours; named in meet name+source+team block; surnames 9/9); W=Waynflete School (score 57 = ours; named in source+team block; surnames 9/10); Y=Yarmouth (score 53 = ours; named in source+team block; surnames 16/16)
+    ('XC', 2012, 'polandboys_august31'): {'F': 'me-hs-freeport', 'P': 'me-hs-poland', 'W': 'me-hs-waynflete', 'Y': 'me-hs-yarmouth'},
+    # 2012/XC/polandboys_sept28 "Poland Regional": F=Freeport (score 33 = ours; named in source+team block; surnames 18/19); P=Poland Regional (score 113 = ours; named in meet name+source+team block; surnames 7/7)
+    ('XC', 2012, 'polandboys_sept28'): {'F': 'me-hs-freeport', 'P': 'me-hs-poland'},
+    # 2012/XC/polandgirls_august31 "Poland Regional": F=Freeport (score 57 = ours; named in source+team block; surnames 6/10); P=Poland Regional (score 84 ~ ours 86; named in meet name+source+team block; surnames 6/6); W=Waynflete School (score 73 ~ ours 72; named in source+team block; surnames 6/8)
+    ('XC', 2012, 'polandgirls_august31'): {'F': 'me-hs-freeport', 'P': 'me-hs-poland', 'W': 'me-hs-waynflete'},
+    # 2012/XC/polandgirls_sept28 "Poland Regiona": F=Freeport (score 34 = ours; named in source+team block; surnames 4/9); P=Poland Regional (score 79 ~ ours 77; named in meet name+source+team block; surnames 7/7)
+    ('XC', 2012, 'polandgirls_sept28'): {'F': 'me-hs-freeport', 'P': 'me-hs-poland'},
+    # 2012/XC/sanfordboys_sept14 "BONNY EAGLE@SANFORD": B=Bonny Eagle (named in meet name; surnames 12/12)
+    ('XC', 2012, 'sanfordboys_sept14'): {'B': 'me-hs-bonny-eagle'},
+    # 2012/XC/sanfordgirls_sept14 "MacAuley, Bonny Eagle @ Sanford": B=Bonny Eagle (named in meet name; surnames 13/13); M=Catherine McAuley (surnames 6/7); S=Sanford (score 46 = ours; named in meet name+team block; surnames 15/16)
+    ('XC', 2012, 'sanfordgirls_sept14'): {'B': 'me-hs-bonny-eagle', 'M': 'me-hs-mcauley', 'S': 'me-hs-sanford'},
+    # 2012/XC/southportlandboys_sept14 "Boys SMAA Cross Country Meet_x000D_2.63 miles @ SP Municipal Golf Cour": G=Gorham (surnames 13/14); K=Kennebunk (surnames 10/11)
+    ('XC', 2012, 'southportlandboys_sept14'): {'G': 'me-hs-gorham', 'K': 'me-hs-kennebunk'},
+    # 2013/XC/southportland_sept20 "Girls Individual Results": D=Deering (score 93 = ours; named in team block; surnames 19/20)
+    ('XC', 2013, 'southportland_sept20'): {'D': 'me-hs-deering'},
+    # 2016/XC/Boys-meet-results.102F62F16-@-Marshwood-Sheet1 "Meet Results Deering, Scarborough & Thornton Academy @ Marshwood": D=Deering (named in meet name; surnames 13/14); M=Marshwood (named in meet name; surnames 13/13); S=Scarborough (named in meet name; surnames 24/25); T=Thornton Academy (named in meet name; surnames 9/10)
+    ('XC', 2016, 'Boys-meet-results.102F62F16-@-Marshwood-Sheet1'): {'D': 'me-hs-deering', 'M': 'me-hs-marshwood', 'S': 'me-hs-scarborough', 'T': 'me-hs-thornton'},
+    # 2016/XC/Girls-meet-results.102F62F16-@-Marshwood-Sheet1 "Meet Results Deering, Scarborough & Thornton Academy @ Marshwood": D=Deering (named in meet name; surnames 8/12); M=Marshwood (named in meet name; surnames 12/12); S=Scarborough (named in meet name; surnames 7/9); T=Thornton Academy (named in meet name; surnames 9/11)
+    ('XC', 2016, 'Girls-meet-results.102F62F16-@-Marshwood-Sheet1'): {'D': 'me-hs-deering', 'M': 'me-hs-marshwood', 'S': 'me-hs-scarborough', 'T': 'me-hs-thornton'},
+    # 2016/XC/TAMS-10-12-16-boys: M=Marshwood MS (score 15 = ours; named in source)
+    ('XC', 2016, 'TAMS-10-12-16-boys'): {'M': 'me-ms-marshwood'},
+    # 2016/XC/TAMS-10-12-16-girls: M=Marshwood MS (score 33 ~ ours 28; named in source)
+    ('XC', 2016, 'TAMS-10-12-16-girls'): {'M': 'me-ms-marshwood', 'T': 'me-ms-thornton'},  # T: the host, 'TAMS' in the score column
+    # 2016/XC/capeboys_sept2 "Meet: WMC Regular Season Meet #1": MC=Maine Coast Waldorf School (score 49 = ours; named in source+team block; surnames 9/12); Y=Yarmouth (score 38 = ours; named in source+team block; surnames 15/25)
+    ('XC', 2016, 'capeboys_sept2'): {'MC': 'me-hs-maine-coast-waldorf', 'Y': 'me-hs-yarmouth'},
+    # 2016/XC/capegirls_sept2 "Meet: WMC Regular Season Meet #1": MC=Maine Coast Waldorf School (score 80 = ours; named in source+team block; surnames 7/9); Y=Yarmouth (score 25 = ours; named in source+team block; surnames 6/8)
+    ('XC', 2016, 'capegirls_sept2'): {'MC': 'me-hs-maine-coast-waldorf', 'Y': 'me-hs-yarmouth'},
+    # 2017/XC/MS_MEET_10_12_2017 "BOYS NAME School Place Time Score TEAM TEAM SCORE": MCW=Maine Coast Waldorf School (middle grades) (surnames 24/25); WAY=Waynflete School (middle grades) (surnames 8/9)
+    ('XC', 2017, 'MS_MEET_10_12_2017'): {'MCW': 'me-ms-maine-coast-waldorf', 'WAY': 'me-ms-waynflete'},
+    # 2017/XC/XC-race-results-Boys-@-Marshwood-Sheet1 "Falmouth, Marshwood, Portland and Sanford @ Marshwood": F=Falmouth (score 24 = ours; named in meet name+team block; surnames 17/19); M=Marshwood (score 60 = ours; named in meet name+team block; surnames 10/11); P=Portland (score 60 = ours; named in meet name+team block; surnames 11/15); S=Sanford (score 97 = ours; named in meet name+team block; surnames 7/7)
+    ('XC', 2017, 'XC-race-results-Boys-@-Marshwood-Sheet1'): {'F': 'me-hs-falmouth', 'M': 'me-hs-marshwood', 'P': 'me-hs-portland', 'S': 'me-hs-sanford'},
+    # 2017/XC/XC-race-results-Girls-@-Marshwood-Sheet1 "Falmouth, Marshwood, Portland and Sanford @ Marshwood": F=Falmouth (score 24 = ours; named in meet name+team block; surnames 12/14); M=Marshwood (score 33 = ours; named in meet name+team block; surnames 13/13); P=Portland (score 93 = ours; named in meet name+team block; surnames 7/7); S=Sanford (score 101 = ours; named in meet name+team block; surnames 4/5)
+    ('XC', 2017, 'XC-race-results-Girls-@-Marshwood-Sheet1'): {'F': 'me-hs-falmouth', 'M': 'me-hs-marshwood', 'P': 'me-hs-portland', 'S': 'me-hs-sanford'},
+    # 2018/XC/MS_MEET_9_20_2018 "BOYS NAME School Place Time Score TEAM TEAM SCORE": MO=Molly Ockett MS (surnames 11/11); DOMS=St. Dominic middle grades (a WMC middle-school meet: GNG, WMS Whittier, MO, BATH are all middle schools)
+    ('XC', 2018, 'MS_MEET_9_20_2018'): {'MO': 'me-ms-molly-ockett', 'DOMS': 'me-ms-st-dominic'},
+    # 2018/XC/XC-race-results-@-Marshwood-Boys-Sheet1 "Biddeford, Gorham, Marshwood & Scarborough @ Marshwood": B=Biddeford (score 74 = ours; named in meet name+team block; surnames 11/12); G=Gorham (score 68 = ours; named in meet name+team block; surnames 13/13); M=Marshwood (score 84 = ours; named in meet name+team block; surnames 15/15); S=Scarborough (score 17 = ours; named in meet name+team block; surnames 23/24)
+    ('XC', 2018, 'XC-race-results-@-Marshwood-Boys-Sheet1'): {'B': 'me-hs-biddeford', 'G': 'me-hs-gorham', 'M': 'me-hs-marshwood', 'S': 'me-hs-scarborough'},
+    # 2018/XC/XC-race-results-@-Marshwood-Girls-Sheet1 "Biddeford, Gorham, Marshwood & Scarborough @ Marshwood": B=Biddeford (score 96 = ours; named in meet name+team block; surnames 5/6); G=Gorham (score 64 = ours; named in meet name+team block; surnames 11/11); M=Marshwood (score 40 = ours; named in meet name+team block; surnames 19/19); S=Scarborough (score 32 = ours; named in meet name+team block; surnames 13/16)
+    ('XC', 2018, 'XC-race-results-@-Marshwood-Girls-Sheet1'): {'B': 'me-hs-biddeford', 'G': 'me-hs-gorham', 'M': 'me-hs-marshwood', 'S': 'me-hs-scarborough'},
+    # 2018/XC/bonnyeaglegirls_sept21: D=Deering (score 79 = ours; named in source+team block; surnames 1/5); F=Falmouth (score 17 = ours; named in source+team block; surnames 15/16); W=Westbrook (score 56 = ours; named in source+team block; surnames 8/8)
+    ('XC', 2018, 'bonnyeaglegirls_sept21'): {'D': 'me-hs-deering', 'F': 'me-hs-falmouth', 'W': 'me-hs-westbrook'},
+    # 2018/XC/tamsboys_sept27: B=Biddeford MS (score 70 = ours; named in source; surnames 12/14); K=Middle School of the Kennebunks (score 20 = ours; named in source; surnames 15/17); W=Wells Junior (score 66 = ours; named in source; surnames 8/10)
+    ('XC', 2018, 'tamsboys_sept27'): {'B': 'me-ms-biddeford', 'K': 'me-ms-kennebunk', 'W': 'me-ms-wells'},
+    # 2018/XC/tamsgirls_sept27: B=Biddeford MS (score 79 ~ ours 74; named in source; surnames 10/11); K=Middle School of the Kennebunks (score 15 = ours; named in source; surnames 28/29); W=Wells Junior (surnames 4/4)
+    ('XC', 2018, 'tamsgirls_sept27'): {'B': 'me-ms-biddeford', 'K': 'me-ms-kennebunk', 'W': 'me-ms-wells'},
+    # 2019/XC/BHS-X-Country_HomeMeet_9.27.19-2: B=Biddeford (surnames 15/15); M=Massabesic (surnames 17/22); S=Scarborough (surnames 23/32)
+    ('XC', 2019, 'BHS-X-Country_HomeMeet_9.27.19-2'): {'B': 'me-hs-biddeford', 'M': 'me-hs-massabesic', 'S': 'me-hs-scarborough'},
+    # 2019/XC/MS_MEET_9_19_2019 "BOYS NAME School Place Time Score TEAM TEAM SCORE": JS=Jordan-Small MS (surnames 17/26)
+    ('XC', 2019, 'MS_MEET_9_19_2019'): {'JS': 'me-ms-jordan-small'},
+    # 2019/XC/XC-race-results-@-Marshwood-Boys-Sheet1-1 "Gorham, Kennebunk, Marshwood, Noble, Windham @ Marshwood": G=Gorham (score 86 = ours; named in meet name+team block; surnames 10/11); K=Kennebunk (score 15 = ours; named in meet name+team block; surnames 24/27); M=Marshwood (score 46 = ours; named in meet name+team block; surnames 23/23); N=Noble (score 101 = ours; named in meet name+team block; surnames 11/12); W=Windham (score 130 = ours; named in meet name+team block; surnames 9/11)
+    ('XC', 2019, 'XC-race-results-@-Marshwood-Boys-Sheet1-1'): {'G': 'me-hs-gorham', 'K': 'me-hs-kennebunk', 'M': 'me-hs-marshwood', 'N': 'me-hs-noble', 'W': 'me-hs-windham'},
+    # 2019/XC/XC-race-results-@-Marshwood-Girls-Sheet1-2 "Gorham, Kennebunk, Marshwood, Noble, Windham @ Marshwood": G=Gorham (score 76 = ours; named in meet name+team block; surnames 7/7); K=Kennebunk (score 107 = ours; named in meet name+team block; surnames 17/19); M=Marshwood (score 30 = ours; named in meet name+team block; surnames 16/16); N=Noble (score 110 = ours; named in meet name+team block; surnames 7/7)
+    ('XC', 2019, 'XC-race-results-@-Marshwood-Girls-Sheet1-2'): {'G': 'me-hs-gorham', 'K': 'me-hs-kennebunk', 'M': 'me-hs-marshwood', 'N': 'me-hs-noble'},
+    # 2019/XC/thorntonmsboys_oct9: B=Biddeford MS (score 86 ~ ours 68; named in source; surnames 13/14); M=Marshwood MS (surnames 12/16)
+    ('XC', 2019, 'thorntonmsboys_oct9'): {'B': 'me-ms-biddeford', 'M': 'me-ms-marshwood'},
+    # 2019/XC/thorntonmsgirls_oct9: B=Biddeford MS (score 93 = ours; named in source; surnames 7/8); M=Marshwood MS (surnames 21/25)
+    ('XC', 2019, 'thorntonmsgirls_oct9'): {'B': 'me-ms-biddeford', 'M': 'me-ms-marshwood'},
+    # 2021/XC/MS_MEET_10_5_2021 "BOYS NAME School Place Time Score TEAM TEAM SCORE": JS=Jordan-Small MS (surnames 7/13); DOMS=St. Dominic middle grades (WMC middle-school meet: GNG, JS, GREE are middle schools)
+    ('XC', 2021, 'MS_MEET_10_5_2021'): {'JS': 'me-ms-jordan-small', 'DOMS': 'me-ms-st-dominic'},
+}
+
+# Out-of-state schools printed 'Town, ST' at the Festival of Champions (2004-05 festival heats, 2022 FOC). The resolver reads
+# 'Word, Word' as a name glued into the school cell (debris), so these exact strings are placed here.
+FILE_RULES += [
+    (['Cumberland, RI'], 'XC', (2004, 2005), r'^festival', 'oos-auto-ri-cumberland'),
+    (['Canton, CT'], 'XC', (2005, 2005), r'^festival', 'oos-auto-ct-canton'),
+    (['Westerly, RI'], 'XC', (2004, 2004), r'^festival', 'oos-ri-westerly-high-school'),
+    (['Burrillville, RI'], 'XC', (2022, 2022), r'^foc', 'oos-ri-burrillville-high-school'),
+    (['Wheeler, RI'], 'XC', (2022, 2022), r'^foc', 'oos-ri-the-wheeler-school'),
+]
+
+FILE_RULES += [([raw], season, (year, year), '^' + _re.escape(stem) + '$', sid)
+               for (season, year, stem), codes in FILE_CODES.items() for raw, sid in codes.items()]
