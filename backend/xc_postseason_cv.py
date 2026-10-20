@@ -111,7 +111,7 @@ def history(obs, year):
         for t in teams:
             schools.setdefault(t, {'class': cls, 'region': region, 'name': t})
         meets.append({'id': mid, 'gender': g, 'class': cls, 'region': region,
-                      'schools': sorted(teams), 'day': rows[0].day})
+                      'schools': sorted(teams), 'day': rows[0].day, 'file': meet})
         actual[(mid, '')] = _order(rows)
     for (g, smeet), cls in state_class.items():
         rows = races[(year, g, smeet)]
@@ -147,7 +147,7 @@ def history(obs, year):
             if not divs:
                 continue
             m = {'id': mid, 'gender': g, 'schools': sorted({t for v in divs.values() for t in v}),
-                 'day': rows[0].day}
+                 'day': rows[0].day, 'file': meet}
             if len(divs) > 1:
                 m['divisions'] = divs
             meets.append(m)

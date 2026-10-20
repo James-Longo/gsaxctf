@@ -2401,6 +2401,26 @@ body {
   background: #f8fafc; color: #4a5568; cursor: pointer; font-size: 0.85rem;
 }
 .xs-more:hover { border-color: #800000; color: #800000; }
+.xs-year {
+  padding: 7px 10px; border: 1px solid #cbd5e0; border-radius: 8px; background: white;
+  color: #2d3748; font-weight: 600; font-size: 0.9rem; cursor: pointer; flex: none;
+}
+.xs-done { font-size: 0.75rem; }
+.xs-note { color: #718096; font-size: 0.82rem; }
+.xs-result { display: flex; flex-direction: column; gap: 12px; border-top: 2px solid #e2e8f0; padding-top: 14px; }
+.xs-h { margin: 0; font-size: 1.05rem; color: #2d3748; }
+.xs-sum { display: flex; flex-direction: column; gap: 6px; font-size: 0.88rem; color: #2d3748; }
+.xs-sum-row { display: flex; flex-wrap: wrap; gap: 4px 18px; align-items: baseline; }
+.xs-sum-div { font-size: 0.72rem; font-weight: 700; color: #718096; text-transform: uppercase; letter-spacing: 0.05em; min-width: 48px; }
+.xs-dim { color: #718096; }
+.xs-in { color: #2f855a; }
+.xs-out { color: #c53030; }
+.xs-dns { margin: 8px 0 0; font-size: 0.82rem; color: #718096; }
+.xs-sub-school { display: none; color: #718096; font-size: 0.78rem; }
+@media (max-width: 768px) {
+  .xs-col-team { display: none; }
+  .xs-sub-school { display: block; }
+}
 @media (max-width: 768px) {
   .xs-bar { flex-direction: column; gap: 10px; }
   .xs-meets { gap: 10px; }

@@ -23,7 +23,7 @@ import json
 import os
 import subprocess
 import sys
-from datetime import date
+from datetime import date, timedelta
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
@@ -77,17 +77,37 @@ def in_season(today=None):
     return sorted(s for s, w in windows.items() if _offset(w['start']) <= t <= _offset(w['end']))
 
 
+RESULT_GRACE = 9     # days after the last championship meet: the next Monday's
+                     # run still publishes, so the state meets get their results
+
+
 def xc_sim_due(today=None):
     """The XC forecast is published while this season's championship groups
-    exist and their last meet hasn't passed."""
+    exist, through the Monday after their last meet (which adds its result)."""
     today = today or date.today()
     groups = _load_json(os.path.join(DATA, 'xc_groups.json'), {}).get(str(today.year))
     if not groups:
         return False, 'no championship groups for this season (backend/data/xc_groups.json)'
     last = max(m['date'] for m in groups.get('meets', []))
-    if today.isoformat() > last:
+    if today > date.fromisoformat(last) + timedelta(days=RESULT_GRACE):
         return False, f'season over (last championship meet {last})'
     return True, f'championship meets through {last}'
+
+
+PAST_REFRESH = 28    # days: past seasons' forecasts are rebuilt about monthly, so
+                     # the database audit's corrections reach them
+
+
+def xc_past_due(today=None):
+    today = today or date.today()
+    ix = _load_json(os.path.join(UI, 'public', 'data', 'xc_postseason', 'index.json'), {})
+    built = [s.get('built') for s in ix.get('seasons', []) if s.get('kind') == 'backtest']
+    if not built or not all(built):
+        return True, 'no past seasons published'
+    oldest = min(built)
+    if today - date.fromisoformat(oldest) >= timedelta(days=PAST_REFRESH):
+        return True, f'past seasons last built {oldest}'
+    return False, f'past seasons built {oldest}'
 
 
 def plan():
@@ -177,15 +197,18 @@ def mark_reported():
 
 
 def sims():
-    """Publish the postseason forecasts that are due. Track forecasts are
-    computed in the browser, so only XC has a published file."""
+    """Publish the postseason forecasts that are due: this season's XC
+    forecast in season, and past seasons' forecasts against their results
+    about monthly. Track forecasts are computed in the browser."""
     due, why = xc_sim_due()
-    if not due:
-        print(json.dumps(dict(xc_postseason='skipped', why=why)))
+    past, why_past = xc_past_due()
+    print(json.dumps(dict(xc_postseason=dict(current=due, why=why, past=past, why_past=why_past))))
+    which = 'all' if due and past else 'current' if due else 'past' if past else None
+    if which is None:
         return False
     env = dict(os.environ, PYTHONHASHSEED='0', OMP_NUM_THREADS='1')
     r = subprocess.run([sys.executable, '-m', 'backend.xc_postseason_publish',
-                        '--asof', date.today().isoformat(), '--sims', '5000'],
+                        '--asof', date.today().isoformat(), '--sims', '5000', '--seasons', which],
                        cwd=BASE, env=env, capture_output=True, text=True)
     print(r.stderr[-600:])
     if r.returncode:
