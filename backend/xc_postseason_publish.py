@@ -433,6 +433,14 @@ def _past_task(year):
 # Files
 # ---------------------------------------------------------------------------
 
+def file_version(path):
+    """Short content hash: the page asks for <year>.json.gz?v=<this>, so a
+    rebuilt file is never read from a stale browser cache."""
+    import hashlib
+    with open(path, 'rb') as f:
+        return hashlib.sha1(f.read()).hexdigest()[:10]
+
+
 def write(out):
     os.makedirs(OUT_DIR, exist_ok=True)
     path = os.path.join(OUT_DIR, f'{out["year"]}.json.gz')
@@ -447,7 +455,7 @@ def write(out):
         index = {'seasons': []}
     seasons = {s['year']: s for s in index['seasons']}
     seasons[out['year']] = dict(year=out['year'], kind=out['kind'], asof=out['asof'],
-                                built=date.today().isoformat())
+                                built=date.today().isoformat(), v=file_version(path))
     index['seasons'] = sorted(seasons.values(), key=lambda s: -s['year'])
     with open(INDEX, 'w', encoding='utf-8') as f:
         json.dump(index, f, indent=1)

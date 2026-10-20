@@ -40,7 +40,7 @@ export default function XCPostseasonSim({ followTeam }) {
   const pickDiv = (d) => { setDivPick(d); setTeam(null); setShowAll(false); try { localStorage.setItem(DIV_KEY, d) } catch { /* private mode */ } }
 
   useEffect(() => {
-    fetch(asset('/data/xc_postseason/index.json'))
+    fetch(asset('/data/xc_postseason/index.json'), { cache: 'no-cache' })
       .then(r => { if (!r.ok) throw new Error(`HTTP ${r.status}`); return r.json() })
       .then(ix => { setSeasons(ix.seasons); setYear(ix.seasons[0].year) })
       .catch(e => setError(String(e)))
@@ -50,10 +50,11 @@ export default function XCPostseasonSim({ followTeam }) {
     if (!year) return
     let live = true
     setData(null); setMeetId(null)
-    fetchGz(asset(`/data/xc_postseason/${year}.json.gz`))
+    const v = seasons?.find(s => s.year === year)?.v
+    fetchGz(asset(`/data/xc_postseason/${year}.json.gz${v ? `?v=${v}` : ''}`))
       .then(d => { if (live) setData(d) }).catch(e => setError(String(e)))
     return () => { live = false }
-  }, [year])
+  }, [year, seasons])
 
   // open on the first meet the followed team is in; a past season can hold a
   // meet for one gender only, so a meet missing for this gender is replaced
