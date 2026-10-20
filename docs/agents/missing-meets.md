@@ -89,6 +89,16 @@ stored), MileSplit's version is taken: it is often corrected after the meet
 - A difference that is plainly MileSplit's mistake (a mark that doesn't fit
   the place order, a runner in two heats at once) is left alone and noted.
 
+**A whole race held from both keeps sub5's copy.** Measured 2026-10-19 over
+126 races held from both (6,535 runners): 96.8% identical times, 1.6% within
+a second (MileSplit's re-keyed copies round to whole seconds); the real
+disagreements were MileSplit errors every time (times slipping a row against
+the places, a block of times 5:00 slow, "MM:SS:hh" read as hours). So a
+MileSplit race whose runners are already held from sub5 at the same times or
+places is a duplicate (`milesplit_bulk.race_homes`), and the sync stores an
+XC runner posted twice for one race once. The rule above is for single rows
+the sub5 file can't settle, never for replacing a sub5 race wholesale.
+
 ## What new data feeds (rerun before publishing)
 
 Added or corrected results reach the site through several built products.

@@ -121,7 +121,17 @@ backend/data/xc_groups.json against the coaches' schedule (dates, venues,
 conference membership and divisions) and record the source in its
 `sources`.
 
-## 5. Check, publish, report
+## 5. Improve the database (after the week's results)
+
+With the week's results in and checked, spend the rest of the run on the
+second read of files that are not yet certain, newest first
+(docs/agents/database-audit.md): `python3 -m backend.db_audit queue --n 60`,
+three Sonnet reviewers of 20 files each, then apply the parser patterns and
+school codes they report and rebuild what those feed. 2026 is finished
+first, then 2025, and so on back. `python3 -m backend.db_audit progress` goes
+in the report.
+
+## 6. Check, publish, report
 
 1. `python3 -m backend.routine check` -- production build and tests.
    Before it, rebuild every product the run's new data feeds (table in
@@ -137,6 +147,7 @@ conference membership and divisions) and record the source in its
    `gh run watch $(gh run list --workflow deploy-pages.yml -L1 --json databaseId -q '.[0].databaseId')`.
 5. Report to James (the run's final message): new meets and performances,
    QAQC results (mismatches, odd sections and unreadable times, and what was
-   done), Five K Sport files added,
+   done), Five K Sport files added, the database audit (files per verdict,
+   progress for this year and the last two, `james` items),
    athlete review counts and the unsure list, forecast published or skipped,
    Pages deploy result. Keep it short.
