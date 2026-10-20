@@ -291,7 +291,7 @@ function ResultPanel({ actual, div, team, setTeam, query, followTeam, followedSc
             <thead>
               <tr>
                 <th className="num">Place</th><th>Team</th><th className="num">Score</th>
-                <th className="num" title="Place in the predicted order">Predicted</th>
+                <th className="num" title="Place in the predicted order">Predicted<br />place</th>
                 <th className="num" title="Median simulated score">Pred.<br />score</th>
                 <th className="num" title="Share of simulations in which the team finished in exactly this place">Chance</th>
               </tr>
@@ -326,10 +326,10 @@ function ResultPanel({ actual, div, team, setTeam, query, followTeam, followedSc
               <thead>
                 <tr>
                   <th className="num">Place</th>
-                  <th className="num" title="Actual minus predicted place">Place<br />diff</th>
+                  <th className="num" title="Place in the predicted order">Predicted<br />place</th>
                   <th>Runner</th><th className="xs-col-team">Team</th>
                   <th className="num">Time</th>
-                  <th className="num" title="Expected time on this course, typical conditions">Predicted</th>
+                  <th className="num" title="Expected time on this course, typical conditions">Predicted<br />time</th>
                   <th className="num" title="Actual minus predicted time">Diff</th>
                   <th className="num" title="Predicted finishing place in 80% of simulations">Range</th>
                 </tr>
@@ -345,9 +345,7 @@ function ResultPanel({ actual, div, team, setTeam, query, followTeam, followedSc
                       {divRow && <tr className="xs-div"><td colSpan={8}>{a.div}</td></tr>}
                       <tr className={a.school === followedSchool ? 'xs-follow' : ''}>
                         <td className="num">{a.place}</td>
-                        <td className="num" title={a.pr != null ? `Predicted place ${a.pr}` : undefined}>
-                          {a.pr == null ? '' : a.place === a.pr ? '0' : `${a.place > a.pr ? '+' : '−'}${Math.abs(a.place - a.pr)}`}
-                        </td>
+                        <td className="num">{a.pr ?? ''}</td>
                         <td>{a.name}{a.grade ? <span className="xs-gr"> {a.grade}</span> : null}
                           {a.p10 == null && <span className="xs-chip" title="Not in the predictions (no rated race before the meet, or outside the team's top seven)">not predicted</span>}
                           <div className="xs-sub-school">{a.school}</div></td>
