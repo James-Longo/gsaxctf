@@ -3,6 +3,7 @@ from bs4 import BeautifulSoup
 import re
 import os
 import json
+import collections
 from datetime import datetime
 from backend.parser import Sub5ColumnParser
 from backend.parsers.detector import FormatDetector
@@ -509,6 +510,28 @@ def strip_leg_grades(data):
                 r['athletes'] = [_LEG_GRADE.sub('', x).strip() for x in legs]
 
 
+def complete_cut_teams(data, text=''):
+    """A team typed with two spaces inside it on one row ("John  Bapst",
+    a Word page's grammar mark): the column reader keeps "John" and that
+    runner scores for a team of one. A one-row team that is the first word
+    of exactly one team the race's other rows spell (3+ rows), printed that
+    way in the file, is that team (a lone "SPRUCE" among "SPRUCE MT" rows,
+    typed so, is another entry)."""
+    plain = re.sub(r'<[^>]+>', '', text or '').replace('&nbsp;', ' ').replace('\xa0', ' ')
+    for e in data.get('events') or []:
+        rows = (e.get('results') or []) if isinstance(e, dict) else []
+        cnt = collections.Counter((r.get('school') or '').strip() for r in rows if isinstance(r, dict))
+        for r in rows:
+            sc = (r.get('school') or '').strip() if isinstance(r, dict) else ''
+            if not sc or cnt[sc] != 1 or not re.fullmatch(r"[A-Za-z][A-Za-z.']+", sc):
+                continue
+            full = [t for t, n in cnt.items() if n >= 3 and t.startswith(sc + ' ')
+                    and len(t.split()) == 2]
+            if len(full) == 1 and re.search(re.escape(sc) + r'\s{2,}' + re.escape(full[0].split()[1]) + r'\b',
+                                            plain, re.I):
+                r['school'] = full[0]
+
+
 _DASH_CODE = re.compile(r'^(.+?)\s+-\s+([A-Za-z]{1,5})$')
 
 
@@ -777,6 +800,44 @@ def drop_relay_team_totals(data, text, filename):
     data['events'] = keep
 
 
+def unshift_font_text(raw):
+    """A PDF whose embedded font maps every glyph 29 code points low (Gorham
+    2015: "7HDP  1DPH  7LPH" for "Team  Name  Time", the digits read as
+    control bytes): shift the text back when the shifted reading is a results
+    sheet. Layout padding stays as it is."""
+    if not raw or len(re.findall(r'[\x01-\x08\x0b\x0e-\x1f]', raw)) < 50:
+        return raw
+    dec = ''.join(c if c in ' \n\x0c\t' else chr(ord(c) + 29) for c in raw)
+    if len(re.findall(r'(?i)\b(?:name|time|team|place|school)\b', dec)) >= 2 and \
+            len(re.findall(r'\d:\d\d', dec)) >= 10:
+        return dec
+    return raw
+
+
+_UNPLACED_HY = re.compile(r"^ {4}[A-Z][A-Za-z'.-]+ .*\S\s+\d{1,2}:\d{2}\.\d{2} F\b")
+
+
+def number_unplaced_hytek(text):
+    """A Hy-Tek list printed without its place column (Bangor 2009:
+    "    Sam Nisbett     SR Bang     13:44.65 F    5:17.17", in finish
+    order under each "Name  Age Team" header): number each race's rows so
+    the Hy-Tek readers take them."""
+    lines = text.split('\n')
+    if sum(1 for l in lines if _UNPLACED_HY.match(l)) < 10:
+        return text
+    n = None
+    for i, l in enumerate(lines):
+        if re.match(r'^\s*Name\s+(?:Age|Yr|Year|Gr|Grade)?\s*Team\b', l):
+            n = 0
+        elif n is not None and _UNPLACED_HY.match(l):
+            n += 1
+            # (its Age column holds ages or classes: "18 Hampden Acad" /
+            # "SR Bang" - an age is no grade, so its cell is left blank)
+            lines[i] = re.sub(r'^(.{4}[A-Z].*?\S\s+)(\d{2})(?=\s+[A-Z])', lambda m: m.group(1) + '  ',
+                              f'{n:>3} ' + l[4:], count=1)
+    return '\n'.join(lines)
+
+
 def drop_duplicate_events(data):
     """A race listed twice: USATF JO pages re-rank the 15-18 race by age
     group ("5000 Meter Run Individual Girls / Results - Women 15-16"), team
@@ -966,11 +1027,17 @@ def _parse_one_file(args):
             raw = Sub5ColumnParser.pdf_to_text(input_path)
             if raw is None:
                 return (filename, 0, 'pdftotext unavailable')
+            if season_label == 'XC':
+                raw = unshift_font_text(raw)
             text = Sub5ColumnParser.clean_pdf_text(raw)
         else:
             with open(input_path, 'r', encoding='utf-8', errors='ignore') as f:
                 text = f.read()
-            if season_label == 'XC':
+            if season_label == 'XC' and open(input_path, 'rb').read(2) in (b'\xff\xfe', b'\xfe\xff'):
+                # a Word page saved as UTF-16 (byte-order mark first): read
+                # as utf-8 every other byte is a NUL
+                text = open(input_path, 'rb').read().decode('utf-16', errors='ignore')
+            elif season_label == 'XC':
                 # a Windows-1252 byte ("D\x92Orso") dropped by the utf-8 read
                 # pulls the rest of a fixed-width row one column left
                 raw_bytes = open(input_path, 'rb').read()
@@ -982,6 +1049,12 @@ def _parse_one_file(args):
                     # without them)
                     fixed = re.sub(rb'[\x91\x92]', b"'", re.sub(rb'[\x93\x94]', b'"',
                                    re.sub(rb'[\x96\x97]', b'-', raw_bytes)))
+                    # (Windows-1252 non-breaking spaces typed as a column's
+                    # padding - "Diego\xa0Villamarin\xa0\xa0\xa0JR": dropped,
+                    # the name runs into the grade and school. One beside
+                    # an ordinary space is a stray: "Calvin\xa0 Nelson",
+                    # "Matilda\xa0\xa0\xa0 Marks")
+                    fixed = re.sub(rb'(?<=[^ \xa0\r\n])\xa0+(?=[^ \xa0\r\n])', lambda m: b' ' * len(m.group()), fixed)
                     text = fixed.decode('utf-8', errors='ignore')
             # Word pages saved through a broken codepage carry U+FFFD for
             # every non-breaking space (KVACLeavittSept16boys.htm: 3,266 of
@@ -1022,6 +1095,10 @@ def _parse_one_file(args):
             text = re.sub(r'\b(\d{1,2})m\s+(\d{1,2})s\s+(\d{1,3})ms\b',
                           lambda m: f'{m.group(1)}:{int(m.group(2)):02d}.{m.group(3).rjust(3, "0")[:2]}'.rjust(len(m.group(0))),
                           text)
+            text = number_unplaced_hytek(text)
+            # ".18:11": a cell's time typed after a dot (Poland 2008)
+            if len(re.findall(r'>\s*\.\d{1,2}[:.]\d{2}\s*<', text)) >= 5:
+                text = re.sub(r'(>\s*)\.(\d{1,2}[:.]\d{2}\s*<)', r'\1\2', text)
         def _count(res):
             if isinstance(res, dict):
                 return sum(len(e.get('results', [])) for e in res.get('events', []))
@@ -1114,9 +1191,13 @@ def _parse_one_file(args):
         if MeetReportParser.matches(text):
             chain.insert(0, MeetReportParser(_WORKER_DETECTOR.scraper))
         # XCRun "PLC BIB PTS NAME TEAM TIME PACE" exports, same problem
-        from backend.parsers.xcrun import XCRunParser
+        from backend.parsers.xcrun import XCRunParser, XCRunTeamPagesParser
         if XCRunParser.matches(text):
             chain.insert(0, XCRunParser(_WORKER_DETECTOR.scraper))
+        # (its team pages posted without the overall list: every runner
+        # listed under his team with his overall place)
+        elif season_label == 'XC' and XCRunTeamPagesParser.matches(text):
+            chain.insert(0, XCRunTeamPagesParser(_WORKER_DETECTOR.scraper))
         # Randy Easter's MVC pages: overall list + team table with places
         from backend.parsers.easter import EasterParser
         if EasterParser.matches(text):
@@ -1146,7 +1227,7 @@ def _parse_one_file(args):
             chain.append(AgateParser(_WORKER_DETECTOR.scraper))
         chain.append(LooseListParser(_WORKER_DETECTOR.scraper))
         # plain "Place Name School Time" sheets with no event header
-        from backend.parsers.headertable import HeaderTableParser
+        from backend.parsers.headertable import HeaderTableParser, PlaceLaterTableParser
         chain.append(HeaderTableParser(_WORKER_DETECTOR.scraper))
         chain.append(PlaceGridParser(_WORKER_DETECTOR.scraper))
         chain.append(ParagraphNewsParser(_WORKER_DETECTOR.scraper))
@@ -1166,6 +1247,8 @@ def _parse_one_file(args):
         # hand-typed XC place lists (no event header, no ruler): last resort
         from backend.parsers.xclist import XCListParser
         chain.append(XCListParser(_WORKER_DETECTOR.scraper))
+        # header tables with the place column set after the name
+        chain.append(PlaceLaterTableParser(_WORKER_DETECTOR.scraper))
 
         # Accept the first parser yielding a real result set (>=5 rows);
         # otherwise keep whichever produced the most.
@@ -1338,7 +1421,7 @@ def _parse_one_file(args):
         # ~96 runners kept). Retry on the uncut layout text and the other
         # extractions; keep whichever holds the most runners.
         elif season_label == 'XC' and filename.lower().endswith('.pdf'):
-            n_times = sum(len(re.findall(r'(?<![\d:.])\d{1,2}:\d{2}(?:\.\d+)?(?![\d:])', l)) or
+            n_times = sum(len(re.findall(r'(?<![\d:.])(?:0{1,2}:)?\d{1,2}:\d{2}(?:\.\d+)?(?![\d:])', l)) or
                           # (two lists side by side timed "21:50:00": both count)
                           (lambda k: k if k >= 2 else 0)(len(re.findall(
                               r'(?<![\d:.])(?:[89]|[1-5]\d):\d{2}:\d{2}(?![\d:])', l)))
@@ -1434,6 +1517,7 @@ def _parse_one_file(args):
                                 _r[_f] = _r[_f].strip(' |')
                 merge_continued_events(data_to_save)
                 split_dash_codes(data_to_save)
+                complete_cut_teams(data_to_save, text)
                 fix_event_gender_from_names(data_to_save)
                 pre_drop_events = list(data_to_save.get('events') or [])
                 drop_sibling_gender_events(data_to_save, input_path)

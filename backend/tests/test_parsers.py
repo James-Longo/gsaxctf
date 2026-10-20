@@ -2020,6 +2020,245 @@ def test_milesplit_bulk_printed_points_and_held_races():
     assert mb.race_homes(doc, 1999, 'XC') == ['held']
 
 
+# XCRun team pages posted without the overall list (Boothbay 2012, Auburn MS
+# 2021): each team's runners under "TEAM  Places: N", two teams per line, a
+# long name wrapped onto the next line, a team's first runner printed on the
+# other block's header line.
+XCRUN_TEAM_PAGES = """\
+                                 PINE RIDGE CROSS COUNTRY
+ 09/12/2012                            BOYS RACE
+        Place TEAM                Points     SCORES                                        Ave Time       Spread
+          1    ASHFORD               15       1     2     3         4      5                :17:10        0:40
+          2    BELMONT               40       6     7     8         9     10                :18:30        0:30
+
+      ASHFORD                   Places:  15                             BELMONT                       Places:  40
+1     ARLO VANTREE         11      0:16:50        5:25        6         CODY MARLOWE            11       0:18:10     5:51
+2     BENNETT ROSSI        10      0:17:00        5:28        7         DEXTER                  12       0:18:20     5:54
+3     CALEB ORMSBY          9      0:17:10        5:31                  FAIRWEATHER-HOLM
+4     DARIUS PELL          12      0:17:20        5:35        8         EZRA QUILL               9       0:18:30     5:57
+5     EAMON TRASK          11      0:17:30        5:38        9         FINN GALLOWAY           10       0:18:40     6:00
+      CARVER                    Places:   0                   10        GUS HARTWELL            10       0:18:50     6:03
+11    HUGO LARK            10      0:19:30        6:17        12        IAN MOSS                11       0:19:40     6:20
+"""
+
+
+def test_xcrun_team_pages_rebuild_the_race_in_place_order():
+    from backend.parsers.xcrun import XCRunTeamPagesParser
+    assert XCRunTeamPagesParser.matches(XCRUN_TEAM_PAGES)
+    out = XCRunTeamPagesParser().parse(XCRUN_TEAM_PAGES, 'BoysScores.pdf', 'XC')
+    ev, = out['events']
+    rows = ev['results']
+    assert ev['gender'] == 'Boys' and [r['place'] for r in rows] == list(range(1, 13))
+    assert rows[6]['athlete'] == 'Dexter Fairweather-Holm'          # (the wrapped name)
+    assert rows[10]['school'] == 'Carver' and rows[11]['school'] == 'Belmont'
+    assert rows[0]['result'] == '16:50' and rows[0]['grade'] == '11'
+    assert out['date'] == '2012-09-12'
+    assert qaqc.xc_verify_parsed(out)['status'] == 'verified'
+    # (a page that also holds the overall PLC BIB PTS list is XCRunParser's)
+    assert not XCRunTeamPagesParser.matches('PLC BIB    PTS   NAME   TEAM   TIME\n' + XCRUN_TEAM_PAGES)
+
+
+# Hand-made sheets with the place column after the name (Caribou 2005,
+# Cheverus / SMAA second-seven 2008, Lee Academy 2020): typed cells matched to
+# the header's fields; a team-score table beside the list is dropped.
+PLACE_LATER = """\
+      BOYS Cross Country Meet 9-14-05
+                     NAME       C       TEAM   TIME IN   PLACE
+Arlo Vantree                            AVE     15:05      1
+Bennett Rossi                           BEL     15:37      2
+Caleb Ormsby                            AVE     15:43      3
+Darius Pell                              BEL    15:48      4
+Eamon Trask     AVE    16:01   5
+"""
+
+PLACE_LATER_SCORES = """\
+First     Last             School   Place        Score        Time                    Score
+Arlo      Vantree          A                 1            1   16:11 Ashford       A      17
+Bennett   Rossi            B                 2            2   16:17 Belmont       B      40
+Caleb     Ormsby           A                 3            3   16:49
+Darius    St. Pell         A                 4                16:53
+Eamon     Trask            B                 5            4   16:58
+"""
+
+
+def test_place_later_tables():
+    from backend.parsers.headertable import PlaceLaterTableParser
+    out = PlaceLaterTableParser().parse(PLACE_LATER, 'caribou9_14b.pdf', 'XC')
+    rows = out['events'][0]['results']
+    assert out['events'][0]['gender'] == 'Boys'
+    assert [(r['place'], r['athlete'], r['school'], r['result']) for r in rows][::4] == [
+        (1, 'Arlo Vantree', 'AVE', '15:05'), (5, 'Eamon Trask', 'AVE', '16:01')]
+    out = PlaceLaterTableParser().parse(PLACE_LATER_SCORES, 'XC_8_28_boys.pdf', 'XC')
+    rows = out['events'][0]['results']
+    assert [r['place'] for r in rows] == [1, 2, 3, 4, 5]
+    assert rows[0]['athlete'] == 'Vantree, Arlo' and rows[0]['school'] == 'A' and rows[0]['team_place'] == 1
+    assert rows[3]['athlete'] == 'St. Pell, Darius' and 'team_place' not in rows[3]
+    assert rows[1]['result'] == '16:17'                 # ("16:17 Belmont": the side table set apart)
+    assert rows[4]['team_place'] == 4                   # (not the side table's 17 / 40)
+
+
+# A timer's field names over a place-first sheet (MVC preview 2013):
+# "ovrallplc lname fname ltime team pts", the clock's zero hour, 0 points for
+# a non-scorer, points run into the team.
+TIMER_FIELDS = """\
+ovrallplc   lname           fname      ltime         team          pts
+    1       VANTREE         ARLO       00:17:24.26                  0
+    2       ROSSI           BENNETT    00:17:55.46   ASHFORD       1
+    3       ORMSBY          CALEB      00:18:03.68   BELMONT       2
+    4       PELL            DARIUS 00:18:10.57       ASHFORD       3
+    5       TRASK           EAMON      00:18:19.83   CEDAR VALLEY0
+    6       QUILL           EZRA       00:18:26.27   CEDAR VALLEY 4
+"""
+
+
+def test_header_table_timer_fields():
+    from backend.parsers.headertable import HeaderTableParser
+    out = HeaderTableParser().parse(TIMER_FIELDS, 'mvcpreviewboys_sept25.pdf', 'XC')
+    rows = out['events'][0]['results']
+    assert [r['place'] for r in rows] == [1, 2, 3, 4, 5, 6]
+    assert rows[0]['result'] == '17:24.26' and 'team_place' not in rows[0]
+    assert rows[1]['athlete'] == 'Rossi, Bennett' and rows[1]['team_place'] == 1
+    assert rows[3]['athlete'] == 'Pell, Darius' and rows[3]['result'] == '18:10.57'
+    assert rows[4]['school'] == 'Cedar Valley' and rows[5]['school'] == 'Cedar Valley'
+    assert rows[5]['team_place'] == 4
+
+
+UNPLACED_LIST = """\
+Medfield 29, Belmont 66
+
+Arlo Vantree (MED) 16:38
+Bennett Rossi (Bel) 16:55
+Caleb O’Mara (MED) 16:58
+Darius Pell ((MED) 17:08
+Eamon Trask (Bel) 17:32
+Ezra Quill (Bel) 17:33
+Finn Gall (MED) 17:38
+Gus Hart (Bel) 17:41
+Hugo Lark (MED) 17:53
+"""
+
+UNPLACED_PARAGRAPH = """<p>Girls` meet results: Ashford-27, Belmont-40</p><p> Vantree(A)-19:34, L. Rossi(B)-19:53,
+Ormsby(A)-21:11, Pell(A)-21:42, Trask(B)-21:44, Quill(B)-21:45, ME
+Gall(A)-21:57</p><p>Boys` Meet Results: Ashford-19</p><p> Hart(A)-16:43, Lark(B)-17:02, Moss(A)-17:34,
+Nash(A)-17:40, Oake(B)-17:45</p>"""
+
+COMMA_LIST = """\
+Boys Results
+1, Vantree, Ash Hill 17:11.79;
+2, Bennett Rossi, North Bay 17:29.36;
+3, Caleb Ormsby, Ash Hill 17:45.49;
+4, Darius Pell, Cedar 18:05.39;
+5, Eamon Trask, North Bay 18:37.91;
+6, Ezra Quill, Cedar 18:44.48;
+7, Finn Gall, Ash Hill 19:07.45;
+8, Gus Hart, Cedar 19:17.99;
+"""
+
+TEAM_FIRST = """\
+     Team    #          Name             Time               Team    #           Name              Time
+1     Ash   303     Vantree, Arlo       0:16:23      9     Bel    295      Rossi, Ben           0:19:37
+2     Bel   452     Ormsby, Cal         0:17:09      10    Ash    293     Pell, Dan            0:19:40
+3     Ash   456   Trask, Eamon          0:17:31      11    Bel    351    Quill, Ezra           0:19:47
+4     Ash   301       Gall, Finn        0:17:42      12    Ash    287     Hart, Gus            0:20:12
+5     Bel   292      Lark, Hugo         0:17:42      13    Bel    305      Moss, Ian            0:20:49
+6     Bel   451     Nash, Jon           0:17:58      14    Ash    Unk      Oake, Kit            0:26.:38
+7     Ash   458    Pike, Lou            0:18:05      15    Bel    300       Reed, Max           0:34.22
+8     Bel   280 Abdirahman, Ned         0:18:11      16    Ash    442     Shaw, Nat            0:35:22
+"""
+
+PLACE_TIME_NAME = """\
+Boys Results
+   1    18:09 Arlo Vantree SP               9      21:45 Ian Moss SC
+   2    18:43 Ben Rossi SP                  10     27 :45 Jon Nash SC
+   3    19:09 Cal Ormsby S                  11     29:07 Kit Oake
+   4    19:13 Dan Pell S
+   5    19:18 Eamon Trask SP
+   6    19:20 Ezra Quill SP
+   7    19:29 Finn Gall SC
+   8    19:52 Gus Hart SP
+"""
+
+
+def test_xclist_lists_without_places_and_odd_row_orders():
+    from backend.parsers.xclist import XCListParser
+    rows = XCListParser().parse(UNPLACED_LIST, 'medfieldboys9_21.pdf', 'XC')['events'][0]['results']
+    assert len(rows) == 9 and [(r['place'], r['athlete'], r['school']) for r in rows][:4] == [
+        (1, 'Arlo Vantree', 'MED'), (2, 'Bennett Rossi', 'Bel'), (3, 'Caleb O’Mara', 'MED'),
+        (4, 'Darius Pell', 'MED')]
+    evs = XCListParser().parse(UNPLACED_PARAGRAPH, 'ashford9_16.htm', 'XC')['events']
+    assert [(e['gender'], len(e['results'])) for e in evs] == [('Girls', 7), ('Boys', 5)]
+    assert evs[0]['results'][1]['athlete'] == 'L. Rossi' and evs[0]['results'][6]['school'] == 'A'
+    rows = XCListParser().parse(COMMA_LIST, 'ashinvite.pdf', 'XC')['events'][0]['results']
+    assert (rows[1]['athlete'], rows[1]['school'], rows[1]['result']) == ('Bennett Rossi', 'North Bay', '17:29.36')
+    rows = XCListParser().parse(TEAM_FIRST, 'ashboys.pdf', 'XC')['events'][0]['results']
+    assert [r['place'] for r in rows] == list(range(1, 17))
+    assert (rows[0]['athlete'], rows[0]['school'], rows[0]['result']) == ('Vantree, Arlo', 'Ash', '16:23')
+    assert rows[7]['athlete'] == 'Abdirahman, Ned' and rows[13]['athlete'] == 'Oake, Kit'
+    assert rows[13]['result'] == '26:38' and rows[14]['result'] == '34:22'     # (the sheet's typos)
+    rows = XCListParser().parse(PLACE_TIME_NAME, 'sanfordboys_oct2.pdf', 'XC')['events'][0]['results']
+    assert [r['place'] for r in rows] == list(range(1, 12))
+    assert (rows[0]['athlete'], rows[0]['school'], rows[0]['result']) == ('Arlo Vantree', 'SP', '18:09')
+    assert rows[9]['result'] == '27:45' and rows[10]['athlete'] == 'Kit Oake'
+
+
+def test_unplaced_hytek_rows_and_shifted_font_text():
+    from backend.scraper_v2 import number_unplaced_hytek, unshift_font_text
+    rows = '\n'.join('    Runner %s          %s Ashford             1%d:%02d.65 F        5:17.17'
+                     % (chr(65 + k) + chr(97 + k) * 3, 'SR' if k % 2 else '17', 3 + k // 6, 10 + k)
+                     for k in range(12))
+    out = number_unplaced_hytek('  1  Boys   2.6 Mile Run\n====\n    Name                     Age Team\n====\n' + rows)
+    lines = out.splitlines()[4:]
+    assert lines[0].startswith('  1 Runner Aaaa') and lines[11].startswith(' 12 Runner Llll')
+    assert ' 17 ' not in lines[0] and ' SR ' in lines[1]        # (an age is no grade: left blank)
+    assert number_unplaced_hytek(rows.splitlines()[0]) == rows.splitlines()[0]
+    plain = 'Team  Name  Time\n' + '\n'.join('%d  Ash  Vantree, Arlo  1%d:2%d' % (k, k, k) for k in range(10))
+    shifted = ''.join(c if c in ' \n' else chr(ord(c) - 29) for c in plain)
+    assert unshift_font_text(shifted) == plain
+    assert unshift_font_text(plain) == plain
+
+
+def test_team_cut_by_a_double_space_and_bib_after_place():
+    from backend.scraper_v2 import complete_cut_teams
+    from backend.parsers.xclist import XCListParser
+    rows = [{'athlete': 'R%d' % k, 'school': s} for k, s in enumerate(
+        ['Ashford', 'John Bapst', 'John', 'John Bapst', 'John Bapst', 'Spruce Mt', 'Spruce', 'Spruce Mt', 'Spruce Mt'])]
+    data = {'events': [{'results': rows}]}
+    complete_cut_teams(data, '  3 R2       FR <span class=GramE>John<span>&nbsp; </span>Bapst</span>  20:32\n'
+                             '  7 R6       6 SPRUCE                :17:41.0\n')
+    assert rows[2]['school'] == 'John Bapst'        # (printed "John  Bapst": one team)
+    assert rows[6]['school'] == 'Spruce'            # (printed "SPRUCE" alone: another entry)
+    bib = ('Finish                                                     Finish\n'
+           'Order       BIB#   Name                     School         Time\n' +
+           ''.join('  %2d         %d   Runner %s          Ashford        1%d:%02d.4\n'
+                   % (k, 340 + 3 * k, chr(64 + k) * 4, 8 + k // 6, 10 + k) for k in range(1, 11)))
+    rows = XCListParser().parse(bib, 'leavitt_boys.pdf', 'XC')['events'][0]['results']
+    assert [r['place'] for r in rows] == list(range(1, 11)) and rows[0]['athlete'] == 'Runner AAAA'
+
+
+def test_windows_1252_nbsp_padding_in_a_hytek_txt(tmp=None):
+    """Latin-1 non-breaking spaces typed as a fixed-width row's padding
+    ("Diego\\xa0Villamarin\\xa0\\xa0\\xa0JR St. Dominic"): read as spaces; a
+    stray one beside an ordinary space ("Calvin\\xa0 Nelson") is dropped."""
+    import tempfile
+    from backend.scraper_v2 import _parse_one_file
+    import json as _json
+    head = (b'Boys 5000 Meter Run Class C\r\n\r\nResults - Men Class C\r\n'
+            b'  1 Arlo Vantree              SR Ashford               17:19.64    1\r\n')
+    body = b''.join(b' %2d %s%s%s %s Cedar Valley Academy  1%d:%02d.%02d    %d\r\n' % (
+        k, b'Runner', b'\xa0', (b'X' * k).ljust(18, b'\xa0'), b'JR', 7 + k // 8, 20 + k, k, k)
+        for k in range(2, 12))
+    stray = b' 12 Calvin\xa0 Nelson             SO Ashford               19:59.10   12\r\n'
+    d = tempfile.mkdtemp()
+    src, out = os.path.join(d, 'class-c-boys.txt'), os.path.join(d, 'out.json')
+    open(src, 'wb').write(head + body + stray + b'\x92')     # (\x92: not utf-8)
+    _parse_one_file((src, out, 'XC'))
+    rows = _json.load(open(out))['events'][0]['results']
+    assert len(rows) == 12
+    assert rows[1]['athlete'] == 'Runner XX' and rows[1]['school'] == 'Cedar Valley Academy'
+    assert rows[1]['grade'] == 'JR'
+    assert rows[11]['athlete'] == 'Calvin Nelson' and rows[11]['school'] == 'Ashford'
+
+
 if __name__ == '__main__':
     qaqc._ensure_team_mapping()
     failed = 0

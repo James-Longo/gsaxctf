@@ -39,6 +39,55 @@ def _secs(t):
     return p[0] * 60 + p[1] if len(p) == 2 else p[0] * 3600 + p[1] * 60 + p[2]
 
 
+_NAME = r"[A-Z][A-Za-z.'’\-]*(?:,? [A-Z][A-Za-z.'’\-]*){1,3}"
+# a runner with no place: "Kasey Eaton (MED) 19:58" / "Glynn, Grace TA 20:41"
+_UNPLACED = [re.compile(r'^\s*(' + _NAME + r')\s*\(+([A-Za-z]{1,6})\)\s*(\d{1,2}:\d{2}(?:\.\d{1,2})?)\s*$'),
+             re.compile(r"^\s*([A-Z][A-Za-z.'’\-]+,\s+[A-Z][A-Za-z.'’\-]+(?: [A-Z][A-Za-z.'’\-]*)?)\s+"
+                        r"([A-Z]{1,4})\s+(\d{1,2}:\d{2}(?:\.\d{1,2})?)\s*$")]
+# the same run together as a paragraph: "Pagano(B)-19:34, L. Johnston(K)-19:53, ..."
+_PARA_TOKEN = r"[A-Z][A-Za-z.'’\-]*(?: {1,2}[A-Z][A-Za-z.'’\-]*){0,2}\s?\([A-Za-z]{1,5}\)\s?-\s?\d{1,2}:\d{2}"
+_PARA_RUN = re.compile(_PARA_TOKEN + r'(?:[,\s]+' + _PARA_TOKEN + r'){4,}')
+_PARA_CAP = re.compile(r"([A-Z][A-Za-z.'’\-]*(?: {1,2}[A-Z][A-Za-z.'’\-]*){0,2})\s?\(([A-Za-z]{1,5})\)\s?-\s?(\d{1,2}:\d{2})")
+
+
+def _ascending(times):
+    s = [_secs(t) for t in times]
+    return sum(1 for a, b in zip(s, s[1:]) if b < a - 1) <= 0.1 * len(s)
+
+
+def _number_unplaced(text):
+    """A list typed in finish order with no places: number each run of rows
+    (a run of 8+, in time order) so the place-anchored reader takes it."""
+    def para(m):
+        toks = _PARA_CAP.findall(m.group())
+        if not _ascending([t for _n, _c, t in toks]):
+            return m.group()
+        return '\n' + '\n'.join(f'{k}. {n} ({c}) {t}' for k, (n, c, t) in enumerate(toks, 1)) + '\n'
+    text = _PARA_RUN.sub(para, text)
+    lines = text.split('\n')
+    runs, cur = [], []
+    for i, l in enumerate(lines):
+        if not l.strip():
+            continue
+        if any(p.match(l) for p in _UNPLACED):
+            cur.append(i)
+            continue
+        if cur:
+            runs.append(cur)
+        cur = []
+    if cur:
+        runs.append(cur)
+    for run in runs:
+        if len(run) < 8:
+            continue
+        rows = [next(p.match(lines[i]) for p in _UNPLACED if p.match(lines[i])) for i in run]
+        if not _ascending([m.group(3) for m in rows]):
+            continue
+        for k, (i, m) in enumerate(zip(run, rows), 1):
+            lines[i] = f'{k}. {m.group(1)}   {m.group(2)}   {m.group(3)}'
+    return '\n'.join(lines)
+
+
 def _gender_of(text):
     m = None
     for m in _GENDER.finditer(text):
@@ -72,6 +121,52 @@ class XCListParser(BaseParser):
         # a timer's "18m 4s 980ms"
         text = re.sub(r'\b(\d{1,2})m\s+(\d{1,2})s\s+(\d{1,3})ms\b',
                       lambda m: f'{m.group(1)}:{int(m.group(2)):02d}.{m.group(3).rjust(3, "0")[:2]}', text)
+        text = _number_unplaced(text)
+        # "1, Widzgowski, Camden Hills 17:11.79;": place, name and school
+        # set apart by commas
+        cm = re.compile(r'(?m)^(\s*\d{1,3}),\s*([A-Za-z][^,\n]*?),\s*([A-Za-z][^,;\n]*?)\s+'
+                        r'(\d{1,2}:\d{2}(?:\.\d{1,2})?);?\s*$')
+        if len(cm.findall(text)) >= 8:
+            text = cm.sub(r'\1. \2   \3   \4', text)
+        # "Finish Order  BIB#  Name  School  Time" (Leavitt 2020): the bib
+        # after the place is no place ("   1         344   Logan Ouellette")
+        if re.search(r'(?im)^\s*order\s+bib#?\s+name\b', text):
+            bp = re.compile(r'(?m)^(\s*\d{1,3}[ \t]+)(\d{2,5})(?=[ \t]+[A-Za-z])')
+            if len(bp.findall(text)) >= 8:
+                text = bp.sub(lambda m: m.group(1) + ' ' * len(m.group(2)), text)
+        # "Overall Place  Team Place  First name  Last Name  School  Min  Sec
+        # Team Scorer" (Carrabec 2013): whole seconds in their own column,
+        # the team place (blank for a non-scorer) after the overall place
+        if re.search(r'(?im)\bfirst\s+name\s+last\s+name\s+school\s+min\s+sec\b', text):
+            ms = re.compile(r'(?m)^(\s*\d{1,3})\s+(?:\d{1,3}\s+)?([A-Za-z]\S*(?: {1,}\S+)*?)\s+(\d{1,2})\s+(\d{1,2})'
+                            r'(?:\s*N|\s+\d{1,2})?[ \t]*$')
+            rows = ms.findall(text)
+            if len(rows) >= 8:
+                # (a long last name run into the school: "Holt-AndrewsTelstar")
+                schools = {re.split(r'\s{2,}', r[1])[-1] for r in rows}
+
+                def unglue(mid):
+                    mg = re.search(r'(?<=[a-z])([A-Z][a-z]+(?: [A-Z][a-z.]+)?)$', mid)
+                    return mid[:mg.start()] + '   ' + mg.group(1) if mg and mg.group(1) in schools else mid
+                text = ms.sub(lambda m: f'{m.group(1)}. {unglue(m.group(2))}   {m.group(3)}:{int(m.group(4)):02d}', text)
+        # "1    18:09 John Clement SP": place, time, name, team code (two
+        # lists side by side; "27 :45" typed with a space)
+        ptn = re.compile(r"(?<!\S)(\d{1,3})(\s+)(\d{1,2}) ?(:\d{2}(?:\.\d{1,2})?) ([A-Z][A-Za-z.'’\-]*(?: [A-Z][A-Za-z.'’\-]*)+?)"
+                         r"(?: ([A-Z]{1,4}))?(?=\s{2,}|\s*$)")
+        if len(ptn.findall(text)) >= 8 and not re.search(r'(?m)^\s*\d{1,3}[.)]?\s+[A-Za-z]', text):
+            text = ptn.sub(lambda m: f'{m.group(1)}.{m.group(2)}{m.group(5)}   {m.group(6) or ""}   '
+                                     f'{m.group(3)}{m.group(4)}', text)
+        # "Team  Name  Time" sheets: the team code before the name
+        # ("1    Gor     Southard, Jesse     16:08     41   BE   Archer, Thomas   20:17")
+        tn = re.compile(r"(?<!\S)(\d{1,3})(\s+)([A-Z][A-Za-z]{1,5})((?:\s+(?:\d{2,4}|Unk)\s+)|\s{2,})([A-Z][A-Za-z.'’\-]*(?: [A-Z][A-Za-z.'’\-]*)*,"
+                        r"\s*[A-Z][A-Za-z.'’\- ]*?)(\s{2,})(?:0:)?(\d{1,2})(?:\.?:|\.)(\d{2}(?:\.\d{1,2})?)(?!\S)")
+        if re.search(r'(?im)^\s*(?:place\s+)?team\s+(?:(?:hip\s+)?#\s+)?name\s+time\b', text) and \
+                len(tn.findall(text)) >= 8:
+            # (same width, so a second list beside the first keeps its
+            # column; a bib between team and name is dropped)
+            # ("0:26.:38" / "0:34.22": the sheet's typos for 26:38, 34:22)
+            text = tn.sub(lambda m: f'{m.group(1)}.{m.group(2)[1:]}{m.group(5)}{re.sub(r"[0-9A-Za-z]", " ", m.group(4))}'
+                                    f'{m.group(3)}{m.group(6)}  {m.group(7)}:{m.group(8)}', text)
         # minutes and seconds in two columns ("Min Sec" / "17 31.4"), a
         # sex column before the name ("1   B   McClintock, Matt")
         if re.search(r'(?im)\bmin\s+sec\b', text):
