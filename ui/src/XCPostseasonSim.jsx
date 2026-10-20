@@ -173,7 +173,7 @@ export default function XCPostseasonSim({ followTeam }) {
                 <tr>
                   <th className="num">#</th><th>Runner</th><th>Team</th>
                   <th className="num" title="Expected time on the Festival of Champions course">Expected</th>
-                  <th className="num" title="Median simulated place (80% of simulations)">Place</th>
+                  <th className="num" title="Finishing place in 80% of simulations (10th to 90th percentile)">Range</th>
                   <th className="num">Top 10</th>
                   {isReg && <th className="num">States</th>}
                   {isState && <th className="num" title="Share of simulations in which the runner qualifies">In field</th>}
@@ -195,7 +195,7 @@ export default function XCPostseasonSim({ followTeam }) {
                     </td>
                     <td className="xs-school">{a.school}</td>
                     <td className="num" title={a.races.length ? a.races.map(r => `${r[0]}  ${r[1]}`).join('\n') : 'Rated from last season'}>{a.t}</td>
-                    <td className="num xs-range">{a.med} <span className="xs-spread">({a.p10}–{a.p90})</span></td>
+                    <td className="num xs-range">{a.p10 === a.p90 ? a.p10 : `${a.p10}–${a.p90}`}</td>
                     <td className={`num ${pctCls(a.top10)}`}>{pct(a.top10)}</td>
                     {isReg && <td className={`num ${pctCls(a.qual)}`}>{pct(a.qual)}</td>}
                     {isState && <td className={`num ${pctCls(a.start)}`}>{pct(a.start)}</td>}
