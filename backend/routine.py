@@ -10,7 +10,7 @@ when verification fails, and the athlete-identity review.
     python3 -m backend.routine plan       # what's in season and what to run (JSON)
     python3 -m backend.routine scrape     # sub5: download, parse, sync (+ manifest, meet links, athlete catalog)
     python3 -m backend.routine qaqc       # score verification + event-section check of the meets added since the last run (JSON)
-    python3 -m backend.routine sims       # postseason forecasts for sports in their championship window
+    python3 -m backend.routine sims       # postseason predictions for sports in their championship window
     python3 -m backend.routine check      # production build + tests
     python3 -m backend.routine publish --yes   # commit and push (GitHub Pages deploys on push)
 
@@ -82,7 +82,7 @@ RESULT_GRACE = 9     # days after the last championship meet: the next Monday's
 
 
 def xc_sim_due(today=None):
-    """The XC forecast is published while this season's championship groups
+    """The XC predictions are published while this season's championship groups
     exist, through the Monday after their last meet (which adds its result)."""
     today = today or date.today()
     groups = _load_json(os.path.join(DATA, 'xc_groups.json'), {}).get(str(today.year))
@@ -94,7 +94,7 @@ def xc_sim_due(today=None):
     return True, f'championship meets through {last}'
 
 
-PAST_REFRESH = 28    # days: past seasons' forecasts are rebuilt about monthly, so
+PAST_REFRESH = 28    # days: past seasons' predictions are rebuilt about monthly, so
                      # the database audit's corrections reach them
 
 
@@ -197,9 +197,9 @@ def mark_reported():
 
 
 def sims():
-    """Publish the postseason forecasts that are due: this season's XC
-    forecast in season, and past seasons' forecasts against their results
-    about monthly. Track forecasts are computed in the browser."""
+    """Publish the postseason predictions that are due: this season's XC
+    predictions in season, and past seasons' predictions against their results
+    about monthly. Track predictions are computed in the browser."""
     due, why = xc_sim_due()
     past, why_past = xc_past_due()
     print(json.dumps(dict(xc_postseason=dict(current=due, why=why, past=past, why_past=why_past))))

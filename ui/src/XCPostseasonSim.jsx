@@ -2,12 +2,12 @@ import React, { useState, useEffect, useMemo } from 'react'
 import { asset, fetchGz } from './utils'
 
 /**
- * XC postseason forecast: conference, regional and state meets simulated
+ * XC postseason predictions: conference, regional and state meets simulated
  * from every runner's season rating (backend/xc_postseason.py, published by
  * backend/xc_postseason_publish.py, one file per season). Regionals feed the
  * state meets inside each simulation, so a state field is whoever qualified
- * in that run. A meet that has been run shows its result beside the forecast;
- * past seasons are the backtest's forecasts, each meet predicted from results
+ * in that run. A meet that has been run shows its result beside the prediction;
+ * past seasons are the backtest's predictions, each meet predicted from results
  * before it.
  */
 
@@ -72,8 +72,8 @@ export default function XCPostseasonSim({ followTeam }) {
     return Object.entries(out).sort(([a], [b]) => a.localeCompare(b))
   }, [data])
 
-  if (error) return <div className="xs"><p>Could not load the forecast: {error}</p></div>
-  if (!data || !meetId || !seasons || !data.data[gender][meetId]) return <div className="xs"><p>Loading forecast...</p></div>
+  if (error) return <div className="xs"><p>Could not load the predictions: {error}</p></div>
+  if (!data || !meetId || !seasons || !data.data[gender][meetId]) return <div className="xs"><p>Loading predictions...</p></div>
 
   const meet = data.meets.find(m => m.id === meetId)
   const race = data.data[gender][meetId]
@@ -113,7 +113,7 @@ export default function XCPostseasonSim({ followTeam }) {
     <div className="xs">
       <div className="xs-bar">
         <select className="xs-year" aria-label="Season" value={year} onChange={e => setYear(Number(e.target.value))}>
-          {seasons.map(s => <option key={s.year} value={s.year}>{s.year}{s.kind === 'forecast' ? '' : ' (backtest)'}</option>)}
+          {seasons.map(s => <option key={s.year} value={s.year}>{s.year}{s.kind === 'backtest' ? ' (backtest)' : ''}</option>)}
         </select>
         <div className="xs-seg" role="group" aria-label="Gender">
           {['Boys', 'Girls'].map(g => (
@@ -152,7 +152,7 @@ export default function XCPostseasonSim({ followTeam }) {
 
       <div className="xs-meta">
         <strong>{meet.name}</strong> · {gender} · {fmtDate(meet.date)}{meet.venue ? ` · ${meet.venue}` : ''}
-        {meet.asof && <> · forecast from results through {fmtDate(meet.asof)}</>}
+        {meet.asof && <> · predicted from results through {fmtDate(meet.asof)}</>}
         {pastSeason && <span className="xs-note" title={`Model refit without ${data.year}; each meet predicted from results before it`}>Backtest</span>}
       </div>
 
@@ -248,7 +248,7 @@ export default function XCPostseasonSim({ followTeam }) {
   )
 }
 
-/** Forecast against what happened at a meet that has been run. */
+/** The prediction against what happened at a meet that has been run. */
 function ResultPanel({ actual, div, team, setTeam, query, followTeam, followedSchool }) {
   const [showAll, setShowAll] = useState(false)
   const inDiv = (x) => !div || div === 'All' || x.div === div
@@ -265,7 +265,7 @@ function ResultPanel({ actual, div, team, setTeam, query, followTeam, followedSc
 
   return (
     <div className="xs-result">
-      <h3 className="xs-h">Forecast vs result</h3>
+      <h3 className="xs-h">Predicted vs result</h3>
       <div className="xs-sum">
         {sums.map(([d, s]) => (
           <div key={d} className="xs-sum-row">
@@ -279,7 +279,7 @@ function ResultPanel({ actual, div, team, setTeam, query, followTeam, followedSc
         ))}
         {actual.day != null && (
           <div className="xs-sum-row xs-dim">
-            Field ran {Math.abs(actual.day * 100).toFixed(1)}% {actual.day < 0 ? 'faster' : 'slower'} than forecast.
+            Field ran {Math.abs(actual.day * 100).toFixed(1)}% {actual.day < 0 ? 'faster' : 'slower'} than predicted.
           </div>
         )}
       </div>
@@ -290,8 +290,8 @@ function ResultPanel({ actual, div, team, setTeam, query, followTeam, followedSc
             <thead>
               <tr>
                 <th className="num">Place</th><th>Team</th><th className="num">Score</th>
-                <th className="num" title="Place in the forecast's order">Forecast</th>
-                <th className="num" title="Median simulated score">Fc.<br />score</th>
+                <th className="num" title="Place in the predicted order">Predicted</th>
+                <th className="num" title="Median simulated score">Pred.<br />score</th>
                 <th className="num" title="Share of simulations in which the team finished in exactly this place">Chance</th>
               </tr>
             </thead>
@@ -326,10 +326,10 @@ function ResultPanel({ actual, div, team, setTeam, query, followTeam, followedSc
                 <tr>
                   <th className="num">Place</th><th>Runner</th><th className="xs-col-team">Team</th>
                   <th className="num">Time</th>
-                  <th className="num" title="Expected time on this course, typical conditions">Forecast</th>
-                  <th className="num" title="Actual minus forecast time">Diff</th>
-                  <th className="num" title="Forecast finishing place in 80% of simulations">Range</th>
-                  <th className="num" title="Actual minus forecast (median) place">Place<br />diff</th>
+                  <th className="num" title="Expected time on this course, typical conditions">Predicted</th>
+                  <th className="num" title="Actual minus predicted time">Diff</th>
+                  <th className="num" title="Predicted finishing place in 80% of simulations">Range</th>
+                  <th className="num" title="Actual minus predicted (median) place">Place<br />diff</th>
                 </tr>
               </thead>
               <tbody>
@@ -344,7 +344,7 @@ function ResultPanel({ actual, div, team, setTeam, query, followTeam, followedSc
                       <tr className={a.school === followedSchool ? 'xs-follow' : ''}>
                         <td className="num">{a.place}</td>
                         <td>{a.name}{a.grade ? <span className="xs-gr"> {a.grade}</span> : null}
-                          {a.p10 == null && <span className="xs-chip" title="Not in the forecast (no rated race before the meet, or outside the team's top seven)">not forecast</span>}
+                          {a.p10 == null && <span className="xs-chip" title="Not in the predictions (no rated race before the meet, or outside the team's top seven)">not predicted</span>}
                           <div className="xs-sub-school">{a.school}</div></td>
                         <td className="xs-school xs-col-team">{a.school}</td>
                         <td className="num">{a.t}</td>
@@ -353,7 +353,7 @@ function ResultPanel({ actual, div, team, setTeam, query, followTeam, followedSc
                         <td className={`num xs-range ${a.p10 == null ? '' : inside ? 'xs-in' : 'xs-out'}`}>
                           {a.p10 == null ? '' : <>{a.p10 === a.p90 ? a.p10 : `${a.p10}–${a.p90}`} {inside ? '✓' : '✗'}</>}
                         </td>
-                        <td className="num" title={a.med != null ? `Forecast place ${a.med}` : undefined}>
+                        <td className="num" title={a.med != null ? `Predicted place ${a.med}` : undefined}>
                           {a.med == null ? '' : a.place === a.med ? '0' : `${a.place > a.med ? '+' : '−'}${Math.abs(a.place - a.med)}`}
                         </td>
                       </tr>
@@ -367,7 +367,7 @@ function ResultPanel({ actual, div, team, setTeam, query, followTeam, followedSc
             <button className="xs-more" onClick={() => setShowAll(true)}>All {runners.length} runners</button>
           )}
           {dns.length > 0 && (
-            <p className="xs-dns">Forecast to run but not in the results: {dns.map(a => `${a.name} (${a.school})`).join(', ')}</p>
+            <p className="xs-dns">Predicted to run but not in the results: {dns.map(a => `${a.name} (${a.school})`).join(', ')}</p>
           )}
         </div>
       </div>

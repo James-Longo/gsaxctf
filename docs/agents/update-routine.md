@@ -14,7 +14,7 @@ deploy if any step below fails; report instead.
 
 `python3 -m backend.routine plan` prints what is in season (from the
 results' own season windows), whether Five K Sport applies (cross country),
-how many Five K Sport files are pending, whether the XC postseason forecast
+how many Five K Sport files are pending, whether the XC postseason predictions
 is due, and the athlete review queue size.
 
 Start from a clean, current checkout: `git status` (only data changes from a
@@ -108,14 +108,14 @@ reviewers, spot-check them, then import and run
 internal and stays on this computer. Pairs marked unsure are listed for James
 in the report, not re-reviewed.
 
-## 4. Postseason forecasts
+## 4. Postseason predictions
 
-`python3 -m backend.routine sims` publishes the XC postseason forecast while
+`python3 -m backend.routine sims` publishes the XC postseason predictions while
 the season's championship meets (backend/data/xc_groups.json) are still
 ahead, and once more the Monday after the last one: a meet that has been run
-shows its result beside its forecast. It also rebuilds past seasons'
-forecasts (the backtest, one file per season) about monthly, so the audit's
-corrections reach them. Track forecasts are computed in the browser and need
+shows its result beside its prediction. It also rebuilds past seasons'
+predictions (the backtest, one file per season) about monthly, so the audit's
+corrections reach them. Track predictions are computed in the browser and need
 nothing here.
 Owen's Predictor is rebuilt by the resync and by `athlete_catalog apply`;
 check it as listed in the "What new data feeds" table.
@@ -153,5 +153,5 @@ in the report.
    QAQC results (mismatches, odd sections and unreadable times, and what was
    done), Five K Sport files added, the database audit (files per verdict,
    progress for this year and the last two, `james` items),
-   athlete review counts and the unsure list, forecast published or skipped,
+   athlete review counts and the unsure list, predictions published or skipped,
    Pages deploy result. Keep it short.

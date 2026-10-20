@@ -1528,8 +1528,8 @@ def test_meet_level_ignores_milesplit_prefix():
 
 
 def test_xc_course_model_keeps_milesplit_meets():
-    """The course model / postseason forecast drop middle-school meets by name; a MileSplit file's 'ms-' prefix
-    is not one (it dropped every 2026 MileSplit meet from the forecast)."""
+    """The course model / postseason predictions drop middle-school meets by name; a MileSplit file's 'ms-' prefix
+    is not one (it dropped every 2026 MileSplit meet from the predictions)."""
     from backend import xc_course_model as cm
     assert not cm.NON_HS_MEET.search('ms-ellsworth-invitational-2026')
     assert cm.NON_HS_MEET.search('ms-tripp-ms-meet-2026')

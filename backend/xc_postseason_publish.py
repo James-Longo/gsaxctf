@@ -1,5 +1,5 @@
 """
-xc_postseason_publish.py - run the XC postseason forecast and write the
+xc_postseason_publish.py - run the XC postseason predictions and write the
 site's data files: one per season, ui/public/data/xc_postseason/<year>.json.gz,
 listed in ui/public/data/xc_postseason/index.json.
 
@@ -7,12 +7,12 @@ listed in ui/public/data/xc_postseason/index.json.
     python3 -m backend.xc_postseason_publish --asof 2026-10-15 --sims 5000
     python3 -m backend.xc_postseason_publish --seasons past      # every past season on file
 
-This season: each meet is forecast from results before it only: a meet already
+This season: each meet is predicted from results before it only: a meet already
 run (date on or before --asof) uses results through the day before it, so a
-past forecast stays as it was; meets still ahead use results through --asof.
+past prediction stays as it was; meets still ahead use results through --asof.
 Each meet records its cutoff.
 
-Past seasons are forecast the way the backtest scores them
+Past seasons are predicted the way the backtest scores them
 (backend/xc_postseason_cv.py): the season's meets are rebuilt from its own
 results files, each meet is predicted from results before its own day, and
 course factors, carry-forward and the error model are all refit without that
@@ -20,9 +20,9 @@ season. Only seasons with their regionals and states on file are published.
 
 A meet that has been run carries its result (`actual`): team places and scores
 computed from the finish times (by division where the meet is scored by
-division), every runner's place and time beside the forecast, and a summary.
-Forecast times are for the meet's own course on a typical day; how much faster
-or slower the whole field ran than forecast that day (`day`) moves every runner
+division), every runner's place and time beside the prediction, and a summary.
+Predicted times are for the meet's own course on a typical day; how much faster
+or slower the whole field ran than predicted that day (`day`) moves every runner
 together, so time misses are also given with it taken out.
 
 The configuration is the one leave-one-season-out cross-validation chose: the
@@ -30,7 +30,7 @@ rating model with FORM_CARRY, and a noise model built from pseudo-backtest
 errors on every past season. The CV summary shown on the page is
 backend/data/xc_postseason_cv.json.
 
-Run with PYTHONHASHSEED=0 for a reproducible forecast.
+Run with PYTHONHASHSEED=0 for reproducible predictions.
 """
 
 import argparse
@@ -83,13 +83,13 @@ def _div_label(raw):
 
 
 # ---------------------------------------------------------------------------
-# One meet: the forecast, then the result beside it
+# One meet: the prediction, then the result beside it
 # ---------------------------------------------------------------------------
 
 def race_rows(obs, year, gender, day, members, field):
     """The meet's race that day, restricted to the meet's schools, in
     finishing order: of the races whose runners are mostly this meet's
-    schools, the one holding most of the forecast `field` (a JV race the
+    schools, the one holding most of the predicted `field` (a JV race the
     same afternoon has the same schools but other runners)."""
     races = defaultdict(list)
     for o in obs:
@@ -128,9 +128,9 @@ def meet_members(meet, schools):
     return {s for s, i in schools.items() if i['class'] == meet['class']}
 
 
-def forecast_out(res, rat, school_of, races, noise, name, course_f):
+def prediction_out(res, rat, school_of, races, noise, name, course_f):
     """The page's teams and athletes lists for one simulated meet. Athletes
-    keep `_aid` and `_e` (log forecast time on the meet's course) for the
+    keep `_aid` and `_e` (log predicted time on the meet's course) for the
     comparison; publish() drops them."""
     teams = []
     for t, v in res['teams'].items():
@@ -163,16 +163,16 @@ def forecast_out(res, rat, school_of, races, noise, name, course_f):
 
 
 def compare(meet, rows, members, schools, teams, aths, name, course_known):
-    """The result beside the forecast: per division, actual team places and
+    """The result beside the prediction: per division, actual team places and
     scores (scored from the finish times, as the simulator scores), every
-    runner's place and time with their forecast, and summary measures."""
+    runner's place and time with their prediction, and summary measures."""
     fc_ath = {a['_aid']: a for a in aths}
     fc_team = {(t['div'], t['_id']): t for t in teams}
     rank = {}
-    for t in teams:                     # forecast order within each division
+    for t in teams:                     # predicted order within each division
         rank[(t['div'], t['_id'])] = sum(1 for u in teams if u['div'] == t['div'] and u['exp'] < t['exp']) + 1
     ran = {o.aid for o in rows}
-    # the day: how far the field as a whole ran from its forecast times
+    # the day: how far the field as a whole ran from its predicted times
     day = None
     if course_known:
         both = [o.lt - fc_ath[o.aid]['_e'] for o in rows if o.aid in fc_ath]
@@ -190,7 +190,7 @@ def compare(meet, rows, members, schools, teams, aths, name, course_known):
                               pred=rank.get((div, t)), pscore=f and f['score'],
                               p=f and round(f['_pd'].get(i + 1, 0.0), 3)))
         scored = {t for t, _, _ in ranked}
-        for t in teams:                 # forecast to score, but fewer than five finished
+        for t in teams:                 # predicted to score, but fewer than five finished
             if t['div'] == div and t['_id'] not in scored and t['appear'] >= 0.5:
                 out_t.append(dict(div=div, team=t['team'], store=t['store'], place=None, score=None,
                                   pred=rank.get((div, t['_id'])), pscore=t['score'], p=None))
@@ -248,11 +248,11 @@ def _sort_aths(mid, aths):
 # This season
 # ---------------------------------------------------------------------------
 
-def forecast(year, asof, sims, obs, noise, cal, seed=0, say=lambda *a: None):
+def predict_season(year, asof, sims, obs, noise, cal, seed=0, say=lambda *a: None):
     groups = xp.load_groups(year)
     gname = lambda sid: groups['schools'].get(sid, {}).get('name') or xp.school_name(sid)
     # Every race is predicted from results before it, never after: a meet already
-    # run keeps the forecast it had the day before (its results feed only the meets
+    # run keeps the prediction it had the day before (its results feed only the meets
     # after it); a meet still ahead uses everything through `asof`.
     def meet_cut(m):
         if not m.get('date'):
@@ -288,7 +288,7 @@ def forecast(year, asof, sims, obs, noise, cal, seed=0, say=lambda *a: None):
                     rows = race_rows(obs, year, g, xp.season_day(year, m['date']), members, res[mid]['athletes'])
                 course = rows[0].course if rows else tuple(m['course']) if m.get('course') else None
                 course_f = cal.course.get(course) if course else None
-                teams, aths = forecast_out(res[mid], rat, school_of, races, noise, gname, course_f)
+                teams, aths = prediction_out(res[mid], rat, school_of, races, noise, gname, course_f)
                 aths = _sort_aths(mid, aths)
                 out = dict(teams=teams, athletes=aths, asof=cut_date, course_known=course_f is not None)
                 if rows:
@@ -301,7 +301,7 @@ def forecast(year, asof, sims, obs, noise, cal, seed=0, say=lambda *a: None):
              | ({'divisions': list(m['divisions'])} if 'divisions' in m else {})
              | {'asof': cut_of[m['id']]}
              for m in groups['meets']]
-    out = dict(year=year, asof=asof, sims=sims, kind='forecast', meets=meets, data=data, races=len(race_ids))
+    out = dict(year=year, asof=asof, sims=sims, kind='prediction', meets=meets, data=data, races=len(race_ids))
     try:
         with open(CV_SUMMARY, encoding='utf-8') as f:
             cvs = json.load(f)
@@ -392,7 +392,7 @@ def past_season(year, sims, obs, cal, noise, say=lambda *a: None):
                 members = meet_members(m, schools)
                 rows = race_rows(obs, year, g, day, members, res[m['id']]['athletes'])
                 course_f = cal.course.get(rows[0].course) if rows else None
-                teams, aths = forecast_out(res[m['id']], rat, school_of, races, noise, name, course_f)
+                teams, aths = prediction_out(res[m['id']], rat, school_of, races, noise, name, course_f)
                 aths = _sort_aths(m['id'], aths)
                 pid = ids[m['id']]
                 out = dict(teams=teams, athletes=aths, asof=_date(year, day - 1),
@@ -474,7 +474,7 @@ def main():
                 write(out)
     if a.seasons in ('current', 'all'):
         year = int(a.asof[:4])
-        write(forecast(year, a.asof, a.sims, obs, xp.NoiseModel(rows), xp.Calibration(obs), say=say))
+        write(predict_season(year, a.asof, a.sims, obs, xp.NoiseModel(rows), xp.Calibration(obs), say=say))
 
 
 if __name__ == '__main__':
