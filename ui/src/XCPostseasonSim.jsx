@@ -153,7 +153,7 @@ export default function XCPostseasonSim({ followTeam }) {
       <div className="xs-meta">
         <strong>{meet.name}</strong> · {gender} · {fmtDate(meet.date)}{meet.venue ? ` · ${meet.venue}` : ''}
         {meet.asof && <> · forecast from results through {fmtDate(meet.asof)}</>}
-        {pastSeason && <span className="xs-note">Backtest: the model refit without {data.year}, each meet predicted only from results before it</span>}
+        {pastSeason && <span className="xs-note" title={`Model refit without ${data.year}; each meet predicted from results before it`}>Backtest</span>}
       </div>
 
       <div className="xs-grid">
@@ -274,12 +274,12 @@ function ResultPanel({ actual, div, team, setTeam, query, followTeam, followedSc
             {s.podium != null && <span><b>{s.podium} of 3</b> podium teams picked{s.order ? `, ${s.order} in the exact place` : ''}</span>}
             {s.in_range != null && <span><b>{pct(s.in_range)}</b> of {s.runners} runners inside their range <span className="xs-dim">(80% expected)</span></span>}
             {s.place_err != null && <span>typical place miss <b>{Math.round(s.place_err)}</b></span>}
-            {s.time_err != null && <span>typical time miss <b>{s.time_err} s</b> <span className="xs-dim">(day's conditions taken out)</span></span>}
+            {s.time_err != null && <span title="After removing the whole field's shift that day">typical time miss <b>{s.time_err} s</b></span>}
           </div>
         ))}
         {actual.day != null && (
           <div className="xs-sum-row xs-dim">
-            The whole field ran {Math.abs(actual.day * 100).toFixed(1)}% {actual.day < 0 ? 'faster' : 'slower'} than forecast: that day's weather and footing, shared by every runner.
+            Field ran {Math.abs(actual.day * 100).toFixed(1)}% {actual.day < 0 ? 'faster' : 'slower'} than forecast.
           </div>
         )}
       </div>
