@@ -324,12 +324,13 @@ function ResultPanel({ actual, div, team, setTeam, query, followTeam, followedSc
             <table className="performance-table xs-table">
               <thead>
                 <tr>
-                  <th className="num">Place</th><th>Runner</th><th className="xs-col-team">Team</th>
+                  <th className="num">Place</th>
+                  <th className="num" title="Actual minus predicted place">Place<br />diff</th>
+                  <th>Runner</th><th className="xs-col-team">Team</th>
                   <th className="num">Time</th>
                   <th className="num" title="Expected time on this course, typical conditions">Predicted</th>
                   <th className="num" title="Actual minus predicted time">Diff</th>
                   <th className="num" title="Predicted finishing place in 80% of simulations">Range</th>
-                  <th className="num" title="Actual minus predicted (median) place">Place<br />diff</th>
                 </tr>
               </thead>
               <tbody>
@@ -343,6 +344,9 @@ function ResultPanel({ actual, div, team, setTeam, query, followTeam, followedSc
                       {divRow && <tr className="xs-div"><td colSpan={8}>{a.div}</td></tr>}
                       <tr className={a.school === followedSchool ? 'xs-follow' : ''}>
                         <td className="num">{a.place}</td>
+                        <td className="num" title={a.pr != null ? `Predicted place ${a.pr}` : undefined}>
+                          {a.pr == null ? '' : a.place === a.pr ? '0' : `${a.place > a.pr ? '+' : '−'}${Math.abs(a.place - a.pr)}`}
+                        </td>
                         <td>{a.name}{a.grade ? <span className="xs-gr"> {a.grade}</span> : null}
                           {a.p10 == null && <span className="xs-chip" title="Not in the predictions (no rated race before the meet, or outside the team's top seven)">not predicted</span>}
                           <div className="xs-sub-school">{a.school}</div></td>
@@ -352,9 +356,6 @@ function ResultPanel({ actual, div, team, setTeam, query, followTeam, followedSc
                         <td className="num">{a.pt ? signed(secs(a.t) - secs(a.pt)) : ''}</td>
                         <td className={`num xs-range ${a.p10 == null ? '' : inside ? 'xs-in' : 'xs-out'}`}>
                           {a.p10 == null ? '' : <>{a.p10 === a.p90 ? a.p10 : `${a.p10}–${a.p90}`} {inside ? '✓' : '✗'}</>}
-                        </td>
-                        <td className="num" title={a.med != null ? `Predicted place ${a.med}` : undefined}>
-                          {a.med == null ? '' : a.place === a.med ? '0' : `${a.place > a.med ? '+' : '−'}${Math.abs(a.place - a.med)}`}
                         </td>
                       </tr>
                     </React.Fragment>

@@ -167,6 +167,11 @@ def compare(meet, rows, members, schools, teams, aths, name, course_known):
     scores (scored from the finish times, as the simulator scores), every
     runner's place and time with their prediction, and summary measures."""
     fc_ath = {a['_aid']: a for a in aths}
+    # each runner's place in the predicted list (within the division): the page's # column
+    listed, n_div = {}, defaultdict(int)
+    for a in aths:
+        n_div[a['div']] += 1
+        listed[a['_aid']] = n_div[a['div']]
     fc_team = {(t['div'], t['_id']): t for t in teams}
     rank = {}
     for t in teams:                     # predicted order within each division
@@ -200,9 +205,9 @@ def compare(meet, rows, members, schools, teams, aths, name, course_known):
             row = dict(div=div, name=o.name, school=name(o.team), grade=o.grade,
                        place=i + 1, t=_mmss(o.lt))
             if f:
-                row.update(pt=f['t'] if course_known else None, p10=f['p10'], p90=f['p90'], med=f['med'])
+                row.update(pt=f['t'] if course_known else None, p10=f['p10'], p90=f['p90'], pr=listed[o.aid])
                 hits.append(f['p10'] <= i + 1 <= f['p90'])
-                place_err.append(abs(i + 1 - f['med']))
+                place_err.append(abs(i + 1 - listed[o.aid]))
                 if day is not None:
                     t_err.append(abs(math.exp(o.lt) - math.exp(f['_e'] + day)))
             out_a.append(row)
