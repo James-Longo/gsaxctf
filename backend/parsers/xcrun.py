@@ -308,3 +308,158 @@ class XCRunParser(BaseParser):
                                                 for r in races):
             out['meet_level'] = 'ms'
         return out
+
+
+# XCRun's team pages posted without the overall list ("BOYS SCORES" files):
+# the "Place TEAM Points SCORES" table, then each team's runners under a
+# "TEAM   Places: 105" header, two teams side by side:
+#
+#       BOOTHBAY                  Places: 105                             MONMOUTH                      Places: 109
+# 1     ROBERT CAMPBELL      11      0:19:06        6:09        5         BEN BAILEY              11       0:19:27     6:16
+# 17    BAYLY                 9      0:21:29         6:55        10        DIEGO VILLAMARIN      12       0:20:12     6:31
+#       GAUGHAN-CARRASCO                                         18        ROBERT SHELLEY        11       0:21:29     6:56
+#
+# Every finisher is listed under his team with his overall place, so the
+# race is the union of the team lists in place order (a long name wraps onto
+# the next line in its own column).
+_TEAM_HDR = re.compile(r'(?P<team>[A-Za-z][^:]*?)\s+Places:\s*(?P<pl>\d+)')
+_TEAM_ROW = re.compile(
+    r'(?<!\S)(?P<place>\d{1,4})\s+(?P<name>[A-Za-z][^\d:]*?)\s+(?:(?P<grade>\d{1,2})\s+)?'
+    r'(?P<time>\d{1,2}:\d{2}:\d{2}(?:\.\d+)?|:\d{1,2}:\d{2}(?:\.\d+)?)'
+    r'(?:\s+(?P<pace>\d{1,2}:\d{2}))?(?!\S)')
+
+
+class XCRunTeamPagesParser(BaseParser):
+    @staticmethod
+    def matches(text):
+        return bool(text and _SCORES_HDR.search(text) and re.search(r'Places:\s*\d', text)
+                    and not _SIG.search(text))
+
+    def parse(self, text, meet_url, season_type):
+        empty = {'events': [], 'date': None, 'meet_name': None, 'team_rankings': []}
+        if not self.matches(text):
+            return empty
+        lines = text.splitlines()
+        races = []
+        mode = None
+        for i, line in enumerate(lines):
+            if _SCORES_HDR.search(line):
+                gender = title = None
+                for near in reversed(lines[max(0, i - 3):i]):
+                    m = _GENDER_WORD.search(near)
+                    if m:
+                        gender, title = _GMAP.get(m.group(1).lower()), near.strip()
+                        break
+                races.append({'gender': gender, 'title': title, 'teams': [], 'rows': [],
+                              'cols': [], 'team_at': {}, 'last': {}})
+                mode = 'scores'
+                continue
+            if not races:
+                continue
+            race = races[-1]
+            hdrs = list(_TEAM_HDR.finditer(line))
+            taken, seen = [], set()
+            if hdrs:
+                mode = 'teams'
+                for h in hdrs:
+                    col = h.start('team')
+                    if not any(abs(col - c) <= 4 for c in race['cols']):
+                        race['cols'].append(col)
+                        race['cols'].sort()
+                    b = self._block(race['cols'], col)
+                    race['team_at'][b] = h.group('team').strip()
+                    race['last'][b] = ('team', col)
+                    taken.append((h.start(), h.end()))
+                    seen.add(b)
+                # (the next team's first runner may share the header's line)
+                line = ''.join(' ' if any(a <= k < z for a, z in taken) else ch
+                               for k, ch in enumerate(line))
+            if mode == 'scores':
+                m = _SCORE_ROW.match(line)
+                if m and re.search(r'[A-Za-z]', m.group('team')):
+                    race['teams'].append({
+                        'rank': int(m.group('rank')), 'team': m.group('team').strip(),
+                        'score': float(m.group('score')),
+                        'places': [int(x) for x in m.group('places').split()]})
+                continue
+            if mode != 'teams':
+                continue
+            for m in _TEAM_ROW.finditer(line):
+                b = self._block(race['cols'], m.start())
+                team = race['team_at'].get(b)
+                if not team:
+                    continue
+                row = {'athlete': m.group('name').strip(), 'school': team,
+                       'result': _clean_time(m.group('time')), 'grade': m.group('grade') or '',
+                       'type': 'Finals', 'place': int(m.group('place'))}
+                if m.group('pace'):
+                    pace = int(m.group('pace')[:-3]) * 60 + int(m.group('pace')[-2:])
+                    if 180 <= pace <= 900:
+                        race.setdefault('miles', []).append(_secs(row['result']) / pace)
+                race['rows'].append(row)
+                race['last'][b] = ('row', m.start('name'), row)
+                seen.add(b)
+                taken.append((m.start(), m.end()))
+            # a name (or a team name) wrapped onto the next line, in its column
+            for s in re.finditer(r'\S(?:\S| (?=\S))*', line):
+                if any(a <= s.start() < z for a, z in taken) or re.search(r'\d', s.group()):
+                    continue
+                b = self._block(race['cols'], s.start())
+                last = race['last'].get(b)
+                if b in seen or not last:
+                    continue
+                if last[0] == 'row' and abs(s.start() - last[1]) <= 3:
+                    last[2]['athlete'] += ' ' + s.group()
+                elif last[0] == 'team' and abs(s.start() - last[1]) <= 3:
+                    t = race['team_at'][b]
+                    race['team_at'][b] = t + s.group() if re.search(r'[-/]', t) else t + '/' + s.group()
+                race['last'][b] = ('done',)
+                seen.add(b)
+            for b in range(len(race['cols'])):
+                if b not in seen and race['last'].get(b, ('',))[0] == 'row':
+                    race['last'][b] = ('done',)     # (a wrap only on the very next line)
+        fname = (meet_url or '').lower()
+        file_gender = ('Girls' if re.search(r'girl|women', fname)
+                       else 'Boys' if re.search(r'boy|\bmen', fname) else None)
+        from backend.parser import normalize_grade
+        events, rankings = [], []
+        for r in races:
+            if len(r['rows']) < 3:
+                continue
+            rows = sorted(r['rows'], key=lambda x: x['place'])
+            for x in rows:
+                x['athlete'] = proper_case_name(x['athlete'])
+                x['school'] = proper_case_team(x['school'])
+            nums = [int(x['grade']) for x in rows if str(x['grade']).isdigit()]
+            is_age = any(13 <= n <= 25 for n in nums)
+            for x in rows:
+                x['grade'] = '' if is_age else normalize_grade(x['grade'])
+            if len(r.get('miles', [])) >= 3:
+                ms = sorted(r['miles'])
+                event = _distance_label(ms[len(ms) // 2])
+            else:
+                event = 'Run CC'
+            gender = r['gender'] or file_gender or 'Boys'
+            events.append({'event': event, 'gender': gender, 'is_relay': False, 'results': rows})
+            if r['teams']:
+                rankings.append({'kind': 'xc', 'gender': gender, 'event_header': r['title'],
+                                 'event_idx': len(events) - 1, 'teams': r['teams']})
+        date = None
+        dm = re.search(r'(?m)^\s*(\d{2})/(\d{2})/(\d{4})\b', text)
+        if dm:
+            date = f'{dm.group(3)}-{dm.group(1)}-{dm.group(2)}'
+        title = next((l.strip() for l in lines if l.strip()), None)
+        out = {'events': events, 'date': date, 'meet_name': title, 'team_rankings': rankings}
+        if _MS_TITLE.search(title or ''):
+            out['meet_level'] = 'ms'
+        return out
+
+    @staticmethod
+    def _block(cols, col):
+        """The side-by-side column a cell starting at `col` sits in: a team's
+        places print a few columns left of its header."""
+        b = 0
+        for k, c in enumerate(cols):
+            if col >= c - 12:
+                b = k
+        return b

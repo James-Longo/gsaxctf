@@ -22,7 +22,7 @@ distance from the title ("Course length approximately 2.95 miles").
 import re
 from .base import BaseParser, proper_case_name, proper_case_team
 
-_PLACE_H = r'(?:place|plc|pl|pos|position|overall|count)'
+_PLACE_H = r'(?:place|plc|pl|pos|position|overall|count|ovrallplc)'   # ("ovrallplc  lname  fname  ltime": a timer's field names)
 _HEADER = re.compile(r'\b' + _PLACE_H + r'\b', re.I)
 _TIME = re.compile(r'^(?:\d{1,2}:)?\d{1,2}:\d{2}(?:\.\d+)?$|^\d{1,2}:\d{2};\d{2}$')
 _GENDER = re.compile(r"\b(girl'?s?|boy'?s?|women'?s?|men'?s?|female|male)\b", re.I)
@@ -37,7 +37,7 @@ _FIELDS = [
     (re.compile(r'^(fname|first(\s*name)?)$', re.I), 'first'),
     (re.compile(r'^(name|athlete|runner)$', re.I), 'name'),
     (re.compile(r'^(school|team|club|affiliation|team\s+name|school\s+name)$', re.I), 'school'),
-    (re.compile(r'^(time|mark|finish|result|final)s?$', re.I), 'time'),
+    (re.compile(r'^(time|mark|finish|result|final|ltime)s?$', re.I), 'time'),
     (re.compile(r'^(yr|gr|grade|year|cl)\.?$', re.I), 'grade'),
     (re.compile(r'^(bib#?|no|#)\.?$', re.I), 'bib'),
     (re.compile(r'^order$', re.I), 'skip'),
@@ -96,10 +96,12 @@ def _header_fields(seg):
             continue            # "Bib #"
         if f is None:
             rest = seg[seg.find(w.strip()):] if w.strip() in seg else ''
-            if 'place' in fields and 'time' in fields and ('name' in fields or 'last' in fields) and \
-                    re.search(r'\s{8,}' + re.escape(w.strip()), seg) and \
+            if 'place' in fields and 'time' in fields and ('name' in fields or 'last' in fields) and (
+                    re.search(r'\s{8,}' + re.escape(w.strip()), seg) and
                     not any(_field(x.strip()) in ('school', 'name', 'time', 'place')
-                            for x in re.findall(_WORD, rest, re.I)):
+                            for x in re.findall(_WORD, rest, re.I)) or
+                    # ("TIME      MA 31 (only 1 full team)": a team score)
+                    re.search(r'\s{4,}' + re.escape(w.strip()) + r'\s+\d', seg)):
                 break           # (a side table's cells set apart on the header row)
             return None
         if f == 'school' and 'school' in fields and re.match(r'(?i)team$', w.strip()):
@@ -620,7 +622,7 @@ class HeaderTableParser(BaseParser):
         # a long name run up to its time ("Z. Chase-Donaghue 20:45")
         if not any(_TIME.match(c.split()[0]) or re.fullmatch(r'\d{1,2}\.\d{1,2}', c) for c in rest):
             for i, c in enumerate(rest):
-                mt = re.match(r'^(.*[A-Za-z.]\d?)\s(\d{1,2}:\d{2}(?:\.\d+)?|\d{1,2}\.\d{1,2})$', c)
+                mt = re.match(r'^(.*[A-Za-z.]\d?)\s((?:\d{1,2}:)?\d{1,2}:\d{2}(?:\.\d+)?|\d{1,2}\.\d{1,2})$', c)
                 if mt:
                     rest[i:i + 1] = [mt.group(1), mt.group(2)]
                     break
@@ -645,6 +647,10 @@ class HeaderTableParser(BaseParser):
         before, after = rest[:tpos], rest[tpos + 1:]
         tcell = rest[tpos].split()
         row['result'] = re.sub(r'^(\d{1,2}:\d{2}):00$', r'\1', tcell[0])   # spreadsheet clock time
+        # a timer's clock reading with a zero hour ("00:21:23.00")
+        mz = re.fullmatch(r'0{1,2}:(\d{2}):(\d{2}(?:\.\d+)?)', row['result'])
+        if mz:
+            row['result'] = f'{int(mz.group(1))}:{mz.group(2)}'
         # "19:01:18" / "22:24;95": minutes:seconds:hundredths (no 4+ hour XC race)
         mh = re.fullmatch(r'(\d{1,2}):(\d{2})[:;](\d{2})', row['result'])
         if mh and int(mh.group(1)) >= 4:
@@ -694,6 +700,8 @@ class HeaderTableParser(BaseParser):
         if len(b) == len(fb) - 1 and 'grade' in fb and not any(
                 re.fullmatch(r'\d{1,2}|FR|SO|JR|SR', c, re.I) for c in b):
             fb = [f for f in fb if f != 'grade']     # an empty grade column
+        if len(b) == len(fb) - 1 and fb[:2] == ['last', 'first'] and len(b[0].split()) == 2:
+            b = b[0].split() + b[1:]    # ("D'ALESSANDRO MEGAN": one space between the two)
         if len(b) == len(fb):
             vals.update(zip(fb, b))
         elif len(b) == 1 and fb[:2] == ['name', 'school'] and re.fullmatch(r'[A-Za-z.]{1,8}', b[0]) and \
@@ -724,11 +732,18 @@ class HeaderTableParser(BaseParser):
         # with the next or be blank ("5:19 12     Falmouth", "5:34   Wells")
         toks = []
         for c in after:
+            if 'team_place' in f_after:
+                c = re.sub(r'(?<=[A-Za-z])(\d{1,3})$', r' \1', c)     # ("MOUNTAIN VALLEY0": points run into the team)
             parts = c.split()
             while parts and (re.fullmatch(r'\d{1,2}:\d{2}(?:\.\d+)?|\d{1,3}|FR|SO|JR|SR', parts[0])):
                 toks.append(parts.pop(0))
+            tail = []
+            # ("MOUNTAIN VALLEY 32": the team's points one space after it)
+            while 'team_place' in f_after and len(parts) > 1 and re.fullmatch(r'\d{1,3}', parts[-1]):
+                tail.insert(0, parts.pop())
             if parts:
                 toks.append(' '.join(parts))
+            toks += tail
         for f in f_after:
             if not toks:
                 break
@@ -761,7 +776,7 @@ class HeaderTableParser(BaseParser):
             return None
         if 'school' in fields and not school and len(re.findall(r'[A-Za-z]+', name)) >= 4:
             return None     # (the school run into the name cell: left to the fixed-width reading)
-        if 'team_place' in vals:
+        if vals.get('team_place'):      # (0: a runner who does not score)
             row['team_place'] = vals['team_place']
         if '_pace' in vals:
             row['_pace'] = vals['_pace']
@@ -776,4 +791,153 @@ class HeaderTableParser(BaseParser):
             row['grade'] = mgs.group(2)
         row['athlete'] = proper_case_name(name) if name.isupper() else name
         row['school'] = proper_case_team(school)
+        return row
+
+
+class PlaceLaterTableParser(BaseParser):
+    """Hand-made sheets whose place column is not the first one, which the
+    header-table reader (rows start with their place) passes over:
+
+        First       Last       School   Place        Score        Time         Score
+        Taylor      Dundas     C                 1            1   17:21   C       31
+                             NAME       C       TEAM   TIME IN   PLACE
+        Sam Sheehan                             CAR     15:05      1
+        Name         Time             Place      Team
+        Raymond               20:54           1 BE                BE
+
+    Cells are typed (the time, whole numbers, words) and matched to the
+    header's fields of the same type in order, before and after the time;
+    what follows the last field (a team-score table beside the list) is
+    dropped."""
+
+    _INT = ('place', 'team_place', 'bib')
+    _TEXT = ('name', 'first', 'last', 'school')
+
+    @staticmethod
+    def _header(line):
+        seg = re.sub(r'(?i)\btime\s+in\b', 'Time   ', line)
+        words = re.findall(_WORD, seg, re.I)
+        fields = []
+        for w in words:
+            f = _field(w.strip())
+            if f is None and re.fullmatch(r'(?i)c', w.strip()):
+                f = 'skip'          # (an empty one-letter column: "NAME  C  TEAM")
+            if f is None:
+                if 'place' in fields and 'time' in fields:
+                    break           # (a table set beside the list)
+                return None
+            if f == 'school' and 'school' in fields:
+                f = 'team_place'
+            fields.append(f)
+        if 'place' not in fields or 'time' not in fields or fields[0] == 'place' or \
+                not ('name' in fields or 'last' in fields):
+            return None
+        return fields
+
+    def parse(self, text, meet_url, season_type):
+        empty = {'events': [], 'date': None, 'meet_name': None, 'team_rankings': []}
+        if season_type != 'XC':
+            return empty
+        if '<' in text[:2000]:
+            if re.search(r'<tr\b', text, re.I) and not re.search(r'<pre\b', text, re.I):
+                text = _table_text(text)
+            else:
+                text = re.sub(r'<[^>]+>', ' ', text).replace('&nbsp;', ' ').replace('&amp;', '&')
+        lines = [l.rstrip() for l in text.replace('\xa0', ' ').splitlines()]
+        url_low = (meet_url or '').lower()
+        file_g = ('Girls' if re.search(r'girl|women|_g\b|g\.(pdf|htm)', url_low)
+                  else 'Boys' if re.search(r'boy|\bmen|_b\b|b\.(pdf|htm)', url_low) else None)
+        races, titles, cur = [], [], None
+        for line in lines:
+            if not line.strip():
+                continue
+            fields = self._header(line)
+            if fields:
+                cur = {'fields': fields, 'rows': {}, 'titles': list(titles),
+                       'gender': HeaderTableParser._title_gender(titles) or file_g}
+                races.append(cur)
+                titles = []
+                continue
+            row = self._row(line, cur['fields']) if cur else None
+            if row:
+                if row['place'] not in cur['rows']:
+                    cur['rows'][row['place']] = row
+                continue
+            if len(line.strip()) < 160:
+                titles.append(line.strip())
+        events = []
+        for r in races:
+            if len(r['rows']) < 5:
+                continue
+            rows = [r['rows'][p] for p in sorted(r['rows'])]
+            ts = [_secs(x['result']) for x in rows]
+            if sum(1 for a, b in zip(ts, ts[1:]) if b < a - 1) > 0.2 * len(ts):
+                continue        # (not a finish list)
+            dm = next((m for m in (_DIST.search(t) for t in r['titles']) if m), None)
+            if dm:
+                unit = dm.group(2).lower()
+                event = f'{dm.group(1)}k Run CC' if unit.startswith('k') else f'{dm.group(1)} Mile Run CC'
+            else:
+                event = 'Run CC'
+            events.append({'event': event, 'gender': r['gender'] or 'Boys', 'is_relay': False,
+                           'results': rows})
+        if not events:
+            return empty
+        title = next((l.strip() for l in lines if l.strip()), None)
+        return {'events': events, 'date': None, 'meet_name': title, 'team_rankings': []}
+
+    @classmethod
+    def _row(cls, line, fields):
+        cells = []
+        for c in re.split(r'\s{2,}', line.strip()):
+            mt = re.match(r'^(\S+) (\S.*)$', c)
+            # ("16:11 Cheverus": a team-score table set one space from the time)
+            cells += [mt.group(1), mt.group(2)] if mt and _TIME.match(mt.group(1)) else [c] if c else []
+        ti = next((i for i, c in enumerate(cells) if _TIME.match(c)), None)
+        if ti is None or ti == 0 and fields[0] != 'time':
+            return None
+        k = fields.index('time')
+        result = re.sub(r'^(\d{1,2}:\d{2}):00$', r'\1', cells[ti])
+        mh = re.fullmatch(r'(\d{1,2}):(\d{2})[:;](\d{2})', result)
+        if mh and int(mh.group(1)) >= 4:
+            result = f'{mh.group(1)}:{mh.group(2)}.{mh.group(3)}'     # (minutes:seconds:hundredths)
+
+        def typed(cs):
+            ints, words = [], []
+            for c in cs:
+                for tok in re.findall(r'\d+(?![\w:.])|[^\d\s](?:[^\s]| (?=\D))*', c):
+                    (ints if tok.isdigit() else words).append(tok.strip())
+            return ints, [w for w in words if re.search(r'[A-Za-z]', w)]
+
+        vals = {}
+        for before, fs, cs in ((True, fields[:k], cells[:ti]), (False, fields[k + 1:], cells[ti + 1:])):
+            ints, words = typed(cs)
+            # (after the time only the place: a score there is a team-score
+            # table's, printed beside the list)
+            ifs = [f for f in fs if f in cls._INT and (before or f == 'place')]
+            tfs = [f for f in fs if f in cls._TEXT]
+            for f, v in zip(ifs, ints):
+                vals.setdefault(f, int(v))
+            if not tfs:
+                continue
+            if len(words) > len(tfs) and tfs[-1] == 'school' and before:
+                words = words[:len(tfs) - 1] + [' '.join(words[len(tfs) - 1:])]
+            elif len(words) < len(tfs) and tfs[-1] == 'school' and len(words) >= 2:
+                vals.setdefault('school', words[-1])
+                words, tfs = words[:-1], tfs[:-1]
+            for f, v in zip(tfs, words):
+                vals.setdefault(f, v)
+        if not vals.get('place'):
+            return None
+        if 'last' in vals or 'first' in vals:
+            name = ', '.join(x for x in (vals.get('last', ''), vals.get('first', '')) if x)
+        else:
+            name = vals.get('name', '')
+        if not re.search(r'[A-Za-z]{2}', name):
+            return None
+        row = {'place': vals['place'], 'type': 'Finals', 'grade': '', 'result': result,
+               'athlete': proper_case_name(name) if name.isupper() else name,
+               'school': proper_case_team(vals.get('school', ''))}
+        if vals.get('team_place'):
+            row['team_place'] = vals['team_place']
         return row
