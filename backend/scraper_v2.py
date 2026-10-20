@@ -3029,6 +3029,55 @@ class Sub5ScraperV2:
                 collector[team] = [p for p in collector[team]
                                    if (p['year'], p['season'], p['meet_name']) not in drop_meets]
 
+        # One XC runner, one race: the same runner (team, name in any order) at the same time (within a
+        # second) on the same day in two files is one result posted twice -- a team-score page beside its
+        # overall list, a grade re-ranking, a MileSplit copy whose races are split differently from sub5's,
+        # boys and girls files that each hold a co-ed race. Keep the row from the fuller file, sub5 before
+        # a MileSplit copy, the finer time before a rounded one.
+        def _xc_secs(m):
+            mm = re.match(r'^(?:(\d+):)?(\d+):(\d+(?:\.\d+)?)$', str(m or '').strip())
+            return int(mm.group(1) or 0) * 3600 + int(mm.group(2)) * 60 + float(mm.group(3)) if mm else None
+        meet_size = {}
+        for perfs in collector.values():
+            for p in perfs:
+                if p['season'] == 'XC':
+                    k = (p['year'], p['meet_name'])
+                    meet_size[k] = meet_size.get(k, 0) + 1
+        dup_drop = set()
+        for team, perfs in collector.items():
+            groups = {}
+            for i, p in enumerate(perfs):
+                if p['season'] != 'XC' or not str(p.get('date') or '')[:4].isdigit():
+                    continue
+                t = _xc_secs(p.get('mark'))
+                if t is None:
+                    continue
+                nk = ' '.join(sorted(re.findall(r'[a-z]+', (p.get('athlete_name') or '').lower())))
+                groups.setdefault((nk, str(p['date'])[:10]), []).append((t, i))
+            for (nk, d_), lst in groups.items():
+                if len(lst) < 2:
+                    continue
+                lst.sort()
+                for a in range(len(lst)):
+                    ta, ia = lst[a]
+                    for b in range(a + 1, len(lst)):
+                        tb, ib = lst[b]
+                        if tb - ta > 1:
+                            break
+                        pa, pb = perfs[ia], perfs[ib]
+                        if pa['meet_name'] == pb['meet_name'] or (team, ia) in dup_drop or (team, ib) in dup_drop:
+                            continue
+                        def rank(p, t):
+                            return (not str(p['meet_name']).startswith('ms-'), meet_size.get((p['year'], p['meet_name']), 0),
+                                    t != int(t), str(p['meet_name']))
+                        loser = ib if rank(pa, ta) >= rank(pb, tb) else ia
+                        dup_drop.add((team, loser))
+                        SYNC_DROPS[(f"{perfs[loser]['year']}_XC_{perfs[loser]['meet_name']}", 'same runner and time in another file of the race (kept there)')] += 1
+        if dup_drop:
+            self.report_progress(f'Dropping {len(dup_drop)} XC rows posted twice')
+            for team in collector:
+                collector[team] = [p for i, p in enumerate(collector[team]) if (team, i) not in dup_drop]
+
         # Single commit: one load + dedup + PR recalc + write per team.
         self.report_progress(f"Committing {sum(len(v) for v in collector.values()):,} performances to {len(collector)} team files...")
         for i, (team_name, perfs) in enumerate(sorted(collector.items())):
