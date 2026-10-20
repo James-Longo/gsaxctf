@@ -291,7 +291,7 @@ function ResultPanel({ actual, div, team, setTeam, query, followTeam, followedSc
               <tr>
                 <th className="num">Place</th><th>Team</th><th className="num">Score</th>
                 <th className="num" title="Place in the forecast's order">Forecast</th>
-                <th className="num" title="Median simulated score">Fc. score</th>
+                <th className="num" title="Median simulated score">Fc.<br />score</th>
                 <th className="num" title="Share of simulations in which the team finished in exactly this place">Chance</th>
               </tr>
             </thead>
@@ -329,17 +329,18 @@ function ResultPanel({ actual, div, team, setTeam, query, followTeam, followedSc
                   <th className="num" title="Expected time on this course, typical conditions">Forecast</th>
                   <th className="num" title="Actual minus forecast time">Diff</th>
                   <th className="num" title="Forecast finishing place in 80% of simulations">Range</th>
+                  <th className="num" title="Actual minus forecast (median) place">Place<br />diff</th>
                 </tr>
               </thead>
               <tbody>
-                {shown.length === 0 && <tr><td colSpan={7} className="xs-empty">No runners match.</td></tr>}
+                {shown.length === 0 && <tr><td colSpan={8} className="xs-empty">No runners match.</td></tr>}
                 {shown.map((a, i) => {
                   const divRow = a.div !== lastRunnerDiv && a.div && div === 'All'
                   lastRunnerDiv = a.div
                   const inside = a.p10 != null && a.place >= a.p10 && a.place <= a.p90
                   return (
                     <React.Fragment key={`${a.name}|${a.school}|${i}`}>
-                      {divRow && <tr className="xs-div"><td colSpan={7}>{a.div}</td></tr>}
+                      {divRow && <tr className="xs-div"><td colSpan={8}>{a.div}</td></tr>}
                       <tr className={a.school === followedSchool ? 'xs-follow' : ''}>
                         <td className="num">{a.place}</td>
                         <td>{a.name}{a.grade ? <span className="xs-gr"> {a.grade}</span> : null}
@@ -351,6 +352,9 @@ function ResultPanel({ actual, div, team, setTeam, query, followTeam, followedSc
                         <td className="num">{a.pt ? signed(secs(a.t) - secs(a.pt)) : ''}</td>
                         <td className={`num xs-range ${a.p10 == null ? '' : inside ? 'xs-in' : 'xs-out'}`}>
                           {a.p10 == null ? '' : <>{a.p10 === a.p90 ? a.p10 : `${a.p10}–${a.p90}`} {inside ? '✓' : '✗'}</>}
+                        </td>
+                        <td className="num" title={a.med != null ? `Forecast place ${a.med}` : undefined}>
+                          {a.med == null ? '' : a.place === a.med ? '0' : `${a.place > a.med ? '+' : '−'}${Math.abs(a.place - a.med)}`}
                         </td>
                       </tr>
                     </React.Fragment>
