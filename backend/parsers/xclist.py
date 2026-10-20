@@ -128,6 +128,12 @@ class XCListParser(BaseParser):
                         r'(\d{1,2}:\d{2}(?:\.\d{1,2})?);?\s*$')
         if len(cm.findall(text)) >= 8:
             text = cm.sub(r'\1. \2   \3   \4', text)
+        # "Finish Order  BIB#  Name  School  Time" (Leavitt 2020): the bib
+        # after the place is no place ("   1         344   Logan Ouellette")
+        if re.search(r'(?im)^\s*order\s+bib#?\s+name\b', text):
+            bp = re.compile(r'(?m)^(\s*\d{1,3}[ \t]+)(\d{2,5})(?=[ \t]+[A-Za-z])')
+            if len(bp.findall(text)) >= 8:
+                text = bp.sub(lambda m: m.group(1) + ' ' * len(m.group(2)), text)
         # "Overall Place  Team Place  First name  Last Name  School  Min  Sec
         # Team Scorer" (Carrabec 2013): whole seconds in their own column,
         # the team place (blank for a non-scorer) after the overall place

@@ -3,6 +3,7 @@ from bs4 import BeautifulSoup
 import re
 import os
 import json
+import collections
 from datetime import datetime
 from backend.parser import Sub5ColumnParser
 from backend.parsers.detector import FormatDetector
@@ -507,6 +508,28 @@ def strip_leg_grades(data):
             if isinstance(legs, list) and legs and all(isinstance(x, str) for x in legs) \
                     and sum(1 for x in legs if _LEG_GRADE.search(x)) >= max(1, len(legs) - 1):
                 r['athletes'] = [_LEG_GRADE.sub('', x).strip() for x in legs]
+
+
+def complete_cut_teams(data, text=''):
+    """A team typed with two spaces inside it on one row ("John  Bapst",
+    a Word page's grammar mark): the column reader keeps "John" and that
+    runner scores for a team of one. A one-row team that is the first word
+    of exactly one team the race's other rows spell (3+ rows), printed that
+    way in the file, is that team (a lone "SPRUCE" among "SPRUCE MT" rows,
+    typed so, is another entry)."""
+    plain = re.sub(r'<[^>]+>', '', text or '').replace('&nbsp;', ' ').replace('\xa0', ' ')
+    for e in data.get('events') or []:
+        rows = (e.get('results') or []) if isinstance(e, dict) else []
+        cnt = collections.Counter((r.get('school') or '').strip() for r in rows if isinstance(r, dict))
+        for r in rows:
+            sc = (r.get('school') or '').strip() if isinstance(r, dict) else ''
+            if not sc or cnt[sc] != 1 or not re.fullmatch(r"[A-Za-z][A-Za-z.']+", sc):
+                continue
+            full = [t for t, n in cnt.items() if n >= 3 and t.startswith(sc + ' ')
+                    and len(t.split()) == 2]
+            if len(full) == 1 and re.search(re.escape(sc) + r'\s{2,}' + re.escape(full[0].split()[1]) + r'\b',
+                                            plain, re.I):
+                r['school'] = full[0]
 
 
 _DASH_CODE = re.compile(r'^(.+?)\s+-\s+([A-Za-z]{1,5})$')
@@ -1026,6 +1049,12 @@ def _parse_one_file(args):
                     # without them)
                     fixed = re.sub(rb'[\x91\x92]', b"'", re.sub(rb'[\x93\x94]', b'"',
                                    re.sub(rb'[\x96\x97]', b'-', raw_bytes)))
+                    # (Windows-1252 non-breaking spaces typed as a column's
+                    # padding - "Diego\xa0Villamarin\xa0\xa0\xa0JR": dropped,
+                    # the name runs into the grade and school. One beside
+                    # an ordinary space is a stray: "Calvin\xa0 Nelson",
+                    # "Matilda\xa0\xa0\xa0 Marks")
+                    fixed = re.sub(rb'(?<=[^ \xa0\r\n])\xa0+(?=[^ \xa0\r\n])', lambda m: b' ' * len(m.group()), fixed)
                     text = fixed.decode('utf-8', errors='ignore')
             # Word pages saved through a broken codepage carry U+FFFD for
             # every non-breaking space (KVACLeavittSept16boys.htm: 3,266 of
@@ -1488,6 +1517,7 @@ def _parse_one_file(args):
                                 _r[_f] = _r[_f].strip(' |')
                 merge_continued_events(data_to_save)
                 split_dash_codes(data_to_save)
+                complete_cut_teams(data_to_save, text)
                 fix_event_gender_from_names(data_to_save)
                 pre_drop_events = list(data_to_save.get('events') or [])
                 drop_sibling_gender_events(data_to_save, input_path)

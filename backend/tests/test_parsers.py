@@ -2217,6 +2217,48 @@ def test_unplaced_hytek_rows_and_shifted_font_text():
     assert unshift_font_text(plain) == plain
 
 
+def test_team_cut_by_a_double_space_and_bib_after_place():
+    from backend.scraper_v2 import complete_cut_teams
+    from backend.parsers.xclist import XCListParser
+    rows = [{'athlete': 'R%d' % k, 'school': s} for k, s in enumerate(
+        ['Ashford', 'John Bapst', 'John', 'John Bapst', 'John Bapst', 'Spruce Mt', 'Spruce', 'Spruce Mt', 'Spruce Mt'])]
+    data = {'events': [{'results': rows}]}
+    complete_cut_teams(data, '  3 R2       FR <span class=GramE>John<span>&nbsp; </span>Bapst</span>  20:32\n'
+                             '  7 R6       6 SPRUCE                :17:41.0\n')
+    assert rows[2]['school'] == 'John Bapst'        # (printed "John  Bapst": one team)
+    assert rows[6]['school'] == 'Spruce'            # (printed "SPRUCE" alone: another entry)
+    bib = ('Finish                                                     Finish\n'
+           'Order       BIB#   Name                     School         Time\n' +
+           ''.join('  %2d         %d   Runner %s          Ashford        1%d:%02d.4\n'
+                   % (k, 340 + 3 * k, chr(64 + k) * 4, 8 + k // 6, 10 + k) for k in range(1, 11)))
+    rows = XCListParser().parse(bib, 'leavitt_boys.pdf', 'XC')['events'][0]['results']
+    assert [r['place'] for r in rows] == list(range(1, 11)) and rows[0]['athlete'] == 'Runner AAAA'
+
+
+def test_windows_1252_nbsp_padding_in_a_hytek_txt(tmp=None):
+    """Latin-1 non-breaking spaces typed as a fixed-width row's padding
+    ("Diego\\xa0Villamarin\\xa0\\xa0\\xa0JR St. Dominic"): read as spaces; a
+    stray one beside an ordinary space ("Calvin\\xa0 Nelson") is dropped."""
+    import tempfile
+    from backend.scraper_v2 import _parse_one_file
+    import json as _json
+    head = (b'Boys 5000 Meter Run Class C\r\n\r\nResults - Men Class C\r\n'
+            b'  1 Arlo Vantree              SR Ashford               17:19.64    1\r\n')
+    body = b''.join(b' %2d %s%s%s %s Cedar Valley Academy  1%d:%02d.%02d    %d\r\n' % (
+        k, b'Runner', b'\xa0', (b'X' * k).ljust(18, b'\xa0'), b'JR', 7 + k // 8, 20 + k, k, k)
+        for k in range(2, 12))
+    stray = b' 12 Calvin\xa0 Nelson             SO Ashford               19:59.10   12\r\n'
+    d = tempfile.mkdtemp()
+    src, out = os.path.join(d, 'class-c-boys.txt'), os.path.join(d, 'out.json')
+    open(src, 'wb').write(head + body + stray + b'\x92')     # (\x92: not utf-8)
+    _parse_one_file((src, out, 'XC'))
+    rows = _json.load(open(out))['events'][0]['results']
+    assert len(rows) == 12
+    assert rows[1]['athlete'] == 'Runner XX' and rows[1]['school'] == 'Cedar Valley Academy'
+    assert rows[1]['grade'] == 'JR'
+    assert rows[11]['athlete'] == 'Calvin Nelson' and rows[11]['school'] == 'Ashford'
+
+
 if __name__ == '__main__':
     qaqc._ensure_team_mapping()
     failed = 0
