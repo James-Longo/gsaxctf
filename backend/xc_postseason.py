@@ -596,6 +596,7 @@ DEFAULTS = dict(
     trend=False,       # per-runner in-season trend, pooled toward the gender/grade
                        # population (Calibration._trend); the rating is the
                        # trend line carried to race day
+    grade_shift=None,  # see season_ratings
     fill_returning=False,  # fill empty championship spots with last season's
                            # non-seniors who have no race on file yet
     method='model',    # 'model' | 'raw_best' | 'raw_last' | 'course_best' |
@@ -687,9 +688,13 @@ def season_ratings(obs, year, gender, cutoff, calib, params=None, iterations=10)
                 u[r] -= shift
 
     out = {}
+    # grade_shift: {season: {'Boys|9': log shift}}, the typical miss of each
+    # gender and grade measured on other seasons (experiment; off by default)
+    gs = (P.get('grade_shift') or {}).get(str(year), {})
     for a, rs in by_a.items():
         th, sd, n = _combine(a, rs, d_of, cutoff, pri.get(a), P, tpri.get(a), mid_day)
         last = max(rs, key=lambda o: o.day)
+        th += gs.get(f'{gender}|{last.grade}', 0.0)
         out[a] = dict(theta=th, sd=sd, n=n, team=last.team, name=last.name,
                       last=last.day, prior=a in pri, grade=last.grade)
     if P['fill_returning']:
@@ -1240,7 +1245,7 @@ def _backtest_group(y, g, meet, day, div, rows, ratings, noise, sims):
 # postseason meet to the next, rather than fresh luck. Measured directly on
 # 3,124 regional -> state pairs (2015-2025) rated from the same cutoff:
 # Pearson 0.69. Chosen by leave-one-season-out cross-validation of the whole
-# forecast (10 folds, 283 podiums, scored on top-3 inclusion and order):
+# prediction (10 folds, 283 podiums, scored on top-3 inclusion and order):
 # 0.95 beat 0.65 by +0.004 +/- 0.002 (better in 4 seasons, worse in 1) with
 # unchanged calibration. A higher value also keeps each meet's draw closer to
 # the empirical error shape instead of blending two draws.
