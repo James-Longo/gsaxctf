@@ -1498,8 +1498,14 @@ def _parse_one_file(args):
                     for _e in (alt_results.get('events') if isinstance(alt_results, dict) else alt_results) or []:
                         for _r in (_e.get('results') or []) if isinstance(_e, dict) else []:
                             _l = lay.get((_e.get('gender'), _r.get('place'), _r.get('result')))
-                            if _l and _l.get('school') != _r.get('school'):
-                                _r['athlete'], _r['school'] = _l.get('athlete'), _l.get('school')
+                            ls, rs_, ra = (_l or {}).get('school') or '', _r.get('school') or '', _r.get('athlete') or ''
+                            lead = ls[:-len(rs_)].strip() if rs_ and ls.endswith(' ' + rs_) else ''
+                            # only the split itself: the school's first word read onto the name
+                            # ("L. Lam South" | "Portland" vs "L. Lam" | "South Portland"), never a sex
+                            # column the layout read into the school ("B FREE")
+                            if (len(lead) > 1 and ra.endswith(' ' + lead)) or \
+                                    (ls and ra.endswith(' ' + ls)):   # the school glued onto the name ("Rose Savio Falmouth" | "")
+                                _r['athlete'], _r['school'] = _l.get('athlete'), ls
                     results, best_n = alt_results, max(alt_n, best_n)
 
         # a hand transcription of a file no parser reads (one-off score
