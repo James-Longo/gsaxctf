@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo, useRef, useCallback } from 'react'
-import { isBetter, normalizeEvent, parseMark, isDistanceEvent, asset } from './utils'
+import { isBetter, normalizeEvent, parseMark, isDistanceEvent, asset, gradeLabel } from './utils'
 import PerformanceList from './PerformanceList'
 import PRPopCalculator from './PRPopCalculator'
 import './App.css'
@@ -451,7 +451,7 @@ function App() {
 
   const handleDownloadCsv = () => {
     const headers = ['Athlete', 'Event', 'Result', 'Gr', 'Team', 'Date', 'Meet', 'Season', 'Year']
-    const csvContent = [headers.join(','), ...filteredPerformances.map(p => [`"${p.athlete_name}"`,`"${p.event}"`,`"${p.mark}"`,`"${p.grade || ''}"`,`"${p.team}"`,`"${p.date.split('T')[0]}"`,`"${p.meet_name}"`,`"${p.season}"`,`"${p.year}"`].join(','))].join('\n')
+    const csvContent = [headers.join(','), ...filteredPerformances.map(p => [`"${p.athlete_name}"`,`"${p.event}"`,`"${p.mark}"`,`"${gradeLabel(p.grade)}"`,`"${p.team}"`,`"${p.date.split('T')[0]}"`,`"${p.meet_name}"`,`"${p.season}"`,`"${p.year}"`].join(','))].join('\n')
     const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' })
     const link = document.createElement('a'); link.href = URL.createObjectURL(blob); link.download = 'export.csv'; link.click()
   }
@@ -591,7 +591,6 @@ function App() {
                       <tr>
                         <th onClick={() => handleSort('date')}>Date</th>
                         {selectedAthlete.id === 'all' && <th>Athlete</th>}
-                        <th>Gr</th>
                         {!isXC && <th>Event</th>}
                         <th onClick={() => handleSort('mark')}>Result</th>
                         <th>Meet</th>
@@ -601,14 +600,13 @@ function App() {
                       {filteredPerformances.map(p => {
                         const hasSplits = p.splits && p.splits.length > 0
                         const isExpanded = expandedSplits.has(p.id)
-                        const colSpan = (selectedAthlete.id === 'all' ? 6 : 5) - (isXC ? 1 : 0)
+                        const colSpan = (selectedAthlete.id === 'all' ? 5 : 4) - (isXC ? 1 : 0)
                         const showPR = p.is_pr && !isXC
                         return (
                           <React.Fragment key={p.id}>
                             <tr className={showPR ? 'pr-row' : ''}>
-                              <td>{p.date.split('T')[0]}</td>
-                              {selectedAthlete.id === 'all' && <td>{p.athlete_name}</td>}
-                              <td>{p.grade}</td>
+                              <td>{p.date.split('T')[0]}{selectedAthlete.id !== 'all' && p.grade ? <span className="xs-gr"> {gradeLabel(p.grade)}</span> : null}</td>
+                              {selectedAthlete.id === 'all' && <td>{p.athlete_name}{p.grade ? <span className="xs-gr"> {gradeLabel(p.grade)}</span> : null}</td>}
                               {!isXC && <td>{normalizeEvent(p.event)}</td>}
                               <td>
                                 {p.mark}

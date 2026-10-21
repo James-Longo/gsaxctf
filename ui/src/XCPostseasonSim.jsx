@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo } from 'react'
-import { asset, fetchGz } from './utils'
+import { asset, fetchGz, gradeLabel } from './utils'
 
 /**
  * XC postseason predictions: conference, regional and state meets simulated
@@ -221,7 +221,7 @@ export default function XCPostseasonSim({ followTeam }) {
                   <tr className={a.school === followedSchool ? 'xs-follow' : ''}>
                     <td className="num">{rankOf.get(a)}</td>
                     <td>
-                      {a.name}{a.grade ? <span className="xs-gr"> {a.grade}</span> : null}
+                      {a.name}{a.grade ? <span className="xs-gr"> {gradeLabel(a.grade)}</span> : null}
                       {a.n === 0 && <span className="xs-chip" title="No race this season on file: rated from last season">prior</span>}
                     </td>
                     <td className="xs-school">{a.school}</td>
@@ -346,7 +346,7 @@ function ResultPanel({ actual, div, team, setTeam, query, followTeam, followedSc
                       <tr className={a.school === followedSchool ? 'xs-follow' : ''}>
                         <td className="num">{a.place}</td>
                         <td className="num">{a.pr ?? ''}</td>
-                        <td>{a.name}{a.grade ? <span className="xs-gr"> {a.grade}</span> : null}
+                        <td>{a.name}{a.grade ? <span className="xs-gr"> {gradeLabel(a.grade)}</span> : null}
                           {a.p10 == null && <span className="xs-chip" title="Not in the predictions (no rated race before the meet, or outside the team's top seven)">not predicted</span>}
                           <div className="xs-sub-school">{a.school}</div></td>
                         <td className="xs-school xs-col-team">{a.school}</td>

@@ -203,6 +203,21 @@ export function isDistanceEvent(event) {
 }
 
 
+// A school grade as shown on the site: FR/SO/JR/SR for high school and an
+// ordinal ("7th") below it, so a grade is never read as an age (summer
+// track lists ages).
+const CLASS_WORDS = { 9: 'FR', 10: 'SO', 11: 'JR', 12: 'SR' }
+export function gradeLabel(grade) {
+    const g = String(grade ?? '').trim().toUpperCase()
+    if (!g) return ''
+    if (/^\d{1,2}$/.test(g)) {
+        const n = parseInt(g, 10)
+        if (CLASS_WORDS[n]) return CLASS_WORDS[n]
+        if (n >= 1 && n <= 8) return n + (n === 1 ? 'st' : n === 2 ? 'nd' : n === 3 ? 'rd' : 'th')
+    }
+    return g
+}
+
 
 // Site files (public/) relative to the deploy base: "/" on gsaxctf.com,
 // "/gsaxctf/" on the GitHub Pages project URL. Vite sets BASE_URL from the
