@@ -1467,6 +1467,12 @@ FILE_CODES = {
     ('XC', 2011, 'aroostookinviteboys_sept16'): {'LIM': 'me-hs-limestone'},
     ('XC', 2011, 'aroostookinvitegirls'): {'LIM': 'me-hs-limestone'},
     ('Outdoor', 2011, 'aroostookboys'): {'Lim': 'me-hs-limestone'},
+    # 2025 small-schools championship (elementary and middle-school girls): 'Deer Isle' is the elementary/middle school;
+    # Belle Eaton ran for the high school only in the coastal meet
+    ('XC', 2025, 'small-school-girls.txt'): {'Deer Isle': 'me-ms-dis-elementary'},
+    # 2015/XC boys1, girls = the Scarborough Middle School Invitational (index): 'North Yarmouth A' is NYA's middle school
+    ('XC', 2015, 'boys1'): {'North Yarmouth A': 'me-ms-nya'},
+    ('XC', 2015, 'girls'): {'North Yarmouth A': 'me-ms-nya'},
     # 2012/XC/scarboroughinvite{boys,girls} = the Scarborough Middle School invitational: a 2-mile race whose field includes
     # Jordan Small, Cony Middle School, Memorial and North Yarmouth (NYA MS); bare town names are the middle schools (the girls'
     # race already read most of them so; the boys' race had them as high schools)
