@@ -620,26 +620,33 @@ def _short_form(e):
 
 
 def resolve_by_roster(roster, pairs):
-    """A surname-only ("Sanborn") or initial ("J Smith") name is the one
-    full-name runner on the roster it can be: same surname (and initial),
+    """A surname-only ("Sanborn"), first-name-only ("Hanna") or initial ("J
+    Smith") name is the one full-name runner on the roster it can be: same
+    surname (and initial) -- or, when no surname fits, same first name --
     on the team in every season the short name raced, never in one race
     with it. Exactly one such runner -> that pair merges; the short name's
-    other pairs are settled ('resolved'). Two or more -> it stays its own entry."""
-    full = [e for e in roster if len(e['toks']) >= 2 and all(len(t) >= 2 for t in e['toks'][:2])]
+    other pairs are settled ('resolved'). Two or more -> it stays its own
+    entry. A first-name match whose marks are more than 25% apart (a
+    "Taylor" who is someone's surname) is no match."""
+    full = [e for e in roster if len(e['toks']) >= 2 and all(len(t) >= 2 for t in e['toks'][:2])
+            and '/' not in e['name']]     # ("Robitaille/Hallsworth": two runners)
     by_key = {e['key']: e for e in roster}
     for e in roster:
         sf = _short_form(e)
         if not sf:
             continue
         kind, v = sf
-        cands = []
-        for f in full:
-            if kind == 'single':
-                ok = f['toks'][-1] == v
-            else:
-                ok = f['toks'][-1] == v[1] and f['toks'][0][0] == v[0]
-            if ok and set(e['ays']) <= set(f['ays']) and not (e['races'] & f['races']):
-                cands.append(f)
+
+        def fits(f, ok):
+            return ok and set(e['ays']) <= set(f['ays']) and not (e['races'] & f['races'])
+        if kind == 'single':
+            cands = [f for f in full if fits(f, f['toks'][-1] == v)]
+            if not cands:
+                cands = [f for f in full if fits(f, f['toks'][0] == v)]
+                if len(cands) == 1 and (_mark_gap(e, cands[0]) or 0) > .25:
+                    cands = []
+        else:
+            cands = [f for f in full if fits(f, f['toks'][-1] == v[1] and f['toks'][0][0] == v[0])]
         mine = [p for p in pairs if e['key'] in (p['a'], p['b']) and p['label'] == 'review']
         if len(cands) != 1:
             continue
