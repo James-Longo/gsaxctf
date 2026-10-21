@@ -1,3 +1,35 @@
 {
- "_doc": "Known XC course changes, each with a source. Venue (course-table display name) -> {'changes': [seasons a new course was first run], 'source': ...}; 'changes': [] records a venue confirmed never to have changed. Only add an entry when a source confirms it. Entries override automatic era detection (backend/xc_course_model.py)."
+ "_doc": "Known XC course changes, each with a source. Venue (course-table display name) -> {'changes': [seasons a new course was first run], 'source': ...}; 'changes': [] records a venue confirmed never to have changed. Only add an entry when a source confirms it. Entries override automatic era detection (backend/xc_course_model.py).",
+ "Oxford Hills": {
+  "changes": [2012],
+  "source": "Meets move to Roberts Farm, Norway: sub5 2012/XC/OHBoysOverall_sept21 header 'LOC: Roberts Farm' (9/21/2012), and Roberts Farm in every home-meet header 2015-2024; 2004-2011 files say 'at Oxford Hills'. Western Foothills Land Trust bought the farm in 2007 (https://www.nrcm.org/?p=83799)"
+ },
+ "South Portland": {
+  "changes": [2015, 2023],
+  "source": "2015: sub5 2016/XC/southportland_sept23.pdf '2.68 miles; new course as of 2015' (2.65 mi at SPHS 2007-2011). 2023: home meet moves to Wainwright Sports Complex, sub5 2023/XC/boys.txt & girls.txt header 'Wainwright Sports Complex' 5K (9/22/2023); earlier files say '@ South Portland High School' / 'SP Municipal Golf Course'"
+ },
+ "Freeport": {
+  "changes": [2008],
+  "source": "Freeport XC race page (https://runinarace.rezdy.com/88893/freeport-xc-race): coaches began building a home course in 2008, before that home meets were at Pineland. Result files agree: 2007 and 9/12/2008 'Course: 3.1 Miles at Pinland Farm', 10/17/2008 'Freeport XC Trail', 2009-2015 'Pownal Road Field', 2016+ 'Hunter Road Fields'"
+ },
+ "Marshwood": {
+  "changes": [2010, 2017],
+  "source": "2010: sub5 2010/XC/marshwoodgirls_sept8.pdf '@ Vaughan Woods - NEW COURSE' (Vaughan Woods State Park also 2007-2009). 2017: sub5 2017/XC/XC-race-results-*-@-Marshwood 'Marshwood Great Works School Course'; the 2018 files say 'Marshwood Great Works School Course (new)'"
+ },
+ "Lee Academy": {
+  "changes": [2011, 2012],
+  "source": "sub5 2011/XC/Lee%20Academy%20Invitational%20Meet%20Results 'New Course Distance: 2.7 Miles' (2009-2010 headers: 2.9 Miles); 2012/XC/leeinvite*.pdf 'Distance: 2.5 miles'"
+ },
+ "Orono High School": {
+  "changes": [2012],
+  "source": "sub5 2012/XC/riot_challenge_boys_10.4.12.htm '2.8 mile Course (new course, new record)'; from 2014 the Riot Challenge says '4K Course'. Before that the 4K node held the 2005-2007 'PVC Regular Season Short Course' (2.5 mi)"
+ },
+ "Ellsworth High School": {
+  "changes": [2011],
+  "source": "Ellsworth Invitational distance labels: '2.75 Mile Run CC' in 2003-2004 (sub5 ells03*/ells04*), 2007 JV and 2009 (MileSplit), then '3 Mile Run CC' from 2011 (MileSplit 2011, PVC 2012, 2014-2016) and 5K/3.11 mi from 2017. No 2010 meet in the store"
+ },
+ "Foxcroft Academy": {
+  "changes": [2012],
+  "source": "sub5 2009/XC/foxcroftboys_sept18.htm 'Boys 2.75 Mile Run CC' (2008-2010 files carry a wrong '5k' event label); from 2012 the headers say '3.1 miles at Foxcroft Academy'"
+ }
 }

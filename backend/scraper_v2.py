@@ -1759,6 +1759,7 @@ class Sub5ScraperV2:
     def __init__(self, progress_callback=None):
         self.headers = {'User-Agent': 'Mozilla/5.0'}
         self.manual_fixes = self.load_manual_fixes()
+        self.venue_fixes = {v['file']: v['venue'] for v in self.manual_fixes.get('venue_corrections', [])}
         from backend import sub5_summer
         self.meet_scope = sub5_summer.load_scope()
         self.web_date_mapping = self.load_web_date_mapping()
@@ -2527,6 +2528,9 @@ class Sub5ScraperV2:
                         break
                 course_name = (idx_meta.get('venue') or venue
                                or idx_meta.get('meet') or meet_name)
+                # where the index's venue is wrong, the file's own header says
+                # where the meet was (manual_fixes.json venue_corrections)
+                course_name = self.venue_fixes.get(f"{year}/{season}/{meet_name}", course_name)
 
                 # Date resolution hierarchy — every source is validated against
                 # the season window (year/season come from the index page the

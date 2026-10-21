@@ -198,7 +198,6 @@ KEY_FIXUPS = {
     'van cortland': 'van cortlandt',
     's portland': 'south portland',
     'spruce mtn': 'spruce mountain',
-    'pvcc orono': 'orono',
     'cumberland': 'twin brook',
     'topsham': 'mt ararat',
     'bath': 'hyde',
