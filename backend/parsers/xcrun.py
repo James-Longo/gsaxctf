@@ -33,6 +33,8 @@ _ROW_PTS = re.compile(
 _ROW_CLS = re.compile(
     r'(?<!\S)(?P<place>\d{1,4})\s+(?P<bib>\d{1,5})\s+(?P<pts>\d{1,4})\s+(?P<cls>[A-Z]{1,4})\s+'
     r'(?P<mid>[A-Za-z].*?)\s+(?P<time>' + _TIME + r')(?!\S)')
+# "DNF  34  0  ALEXANDRA CULP   WINTHROP   :   : 0.0": a starter who did not finish (no place, no time)
+_ROW_DNF = re.compile(r'^\s*(?P<st>DNF|DNS|DQ)\s+(?P<bib>\d{1,5})\s+(?P<pts>\d{1,4})\s+(?P<mid>[A-Za-z].*?)\s+:\s*:\s*0\.0\s*$')
 # "PLC NAME LOCATION BIB OA-PLC TEAM TIME BEHIND" (St. Dom's, Tripp, Brunswick
 # 2017-2023), split into "HSG - H.S. GIRLS" sections
 _ROW_OA = re.compile(
@@ -181,6 +183,15 @@ class XCRunParser(BaseParser):
                 if m:
                     race['gender'] = _GMAP.get(m.group(2).lower())
                     race['title'] = race['title'] or m.group(1).strip()
+            if mode == 'rows' and not cls_layout and not oa_layout:
+                md = _ROW_DNF.match(line)
+                if md and md.group('st') != 'DNS':
+                    split = _split_mid(md.group('mid'))
+                    if split and re.search(r'[A-Za-z]', split[2]):
+                        race['rows'].setdefault((99999, int(md.group('bib'))), {
+                            'athlete': proper_case_name(split[0].strip()), 'school': proper_case_team(split[2].strip()),
+                            'result': md.group('st'), 'grade': split[1], 'type': 'Finals'})
+                    continue
             if mode == 'rows':
                 for m in row_re.finditer(line):
                     split = _split_mid(m.group('mid')) if not oa_layout else \

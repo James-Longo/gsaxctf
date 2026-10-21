@@ -39,6 +39,10 @@ def normalize_grade(g):
 _SECTION_RE = re.compile(r'^(Class|Division|Section)\s+(\w{1,4}(?:\s*,\s*\w{1,4})*)\s+Results'
                          r'(?:\s*-\s*(Women|Men|Girls|Boys))?(?:\s+\d+\s*\w*\s*Run)?$', re.I)
 _SECTION_GENDER = {'women': 'Girls', 'girls': 'Girls', 'men': 'Boys', 'boys': 'Boys'}
+# heats and grade groups of one event, places restarting: "Results - Unseeded A" / "Results - Freshman Race"
+# (Festival by-section sheets), "Grade 9/10 - Men" (Southern Maine Classic)
+_SECTION2_RE = re.compile(r'^(?:Results\s*-\s*(?!(?:Women|Men|Girls|Boys)\b)((?:Unseeded|Seeded|Freshman|Frosh|JV|Varsity|Open|Heat|Section|Race)\b[\w .]{0,20}?)'
+                          r'|(Grade\s+\d{1,2}(?:\s*/\s*\d{1,2})?)\s*-\s*(Women|Men|Girls|Boys))\s*$', re.I)
 _XC_SCORES_LINE = re.compile(r'^(?:\S+\s+){0,3}Team\s+Scores?$', re.I)
 
 
@@ -737,6 +741,10 @@ class Sub5ColumnParser:
                 if _XC_SCORES_LINE.match(line_clean):
                     current_event['in_scores'] = True
                 m_sec = _SECTION_RE.match(line_clean)
+                m_s2 = None if m_sec else _SECTION2_RE.match(line_clean)
+                if m_s2:   # same handling as a class section: (kind, label, gender)
+                    m_sec = re.match(r'(Section)\s+(.+?)\s*(?:-\s*(\w+))?$', 'Section ' + (m_s2.group(1) or m_s2.group(2)).strip()
+                                     + (' - ' + m_s2.group(3) if m_s2.group(3) else ''))
                 # a Mixed race ranked by sex with no class ("Results - Women"
                 # ... "Results - Men"): each half is its own race
                 m_gs = None if m_sec else re.match(r'^Results\s*-\s*(Women|Men|Girls|Boys)\b(?:\s.*)?$', line_clean, re.I)

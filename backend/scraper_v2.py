@@ -282,6 +282,15 @@ _HYTEK_STOP_RE = re.compile(
     r'complete results|final results|rankings)$', re.I)
 
 
+def not_a_title(name):
+    """A header line a parser took for the meet's name: 'Results', 'at Bucksport High
+    School' (the venue line), 'Event 4 Boys 5k Run CC', a Hy-Tek license line."""
+    n = (name or '').strip()
+    return bool(re.fullmatch(r'(?i)results?', n) or re.match(r'(?i)at\s', n) or re.match(r'(?i)event\s+\d', n)
+                or re.search(r'(?i)licensed to|meet manager|contractor license', n)
+                or len(re.findall(r'\S\s{3,}\S', n)) >= 3)   # a column-header row ("Biddeford   Bonny Eagle   Cheverus ...")
+
+
 def hytek_header_meta(text):
     """Meet name / venue / host from a Hy-Tek Meet Manager header.
 
@@ -300,7 +309,7 @@ def hytek_header_meta(text):
     if not text:
         return out
     # .htm archives arrive as raw markup; the header lives inside <pre>
-    if '<' in text[:2000] and '</' in text[:8000].lower():
+    if '<' in text[:2000] and ('</' in text[:8000].lower() or re.match(r'\s*<(html|body|p|pre)\b', text, re.I)):
         try:
             from bs4 import BeautifulSoup
             soup = BeautifulSoup(text[:60000], 'html.parser')
@@ -309,19 +318,21 @@ def hytek_header_meta(text):
                 else soup.get_text('\n')
         except Exception:
             pass
-    lines = [l.strip() for l in text[:4000].splitlines()]
+    lines = [l.replace('\ufeff', '').strip() for l in text[:4000].splitlines()]
     lines = [l for l in lines if l]
     if not lines:
         return out
-    if 'HY-TEK' not in lines[0]:
+    if len(lines) > 1 and lines[0].startswith('Licensed to') and 'HY-TEK' in lines[1].upper():
+        lines = [lines[0] + '  ' + lines[1]] + lines[2:]   # a long license wraps onto two lines
+    if 'HY-TEK' not in lines[0].upper():
         # Hy-Tek .txt exports drop the license line and open with the
         # meet title itself:  "2025 Southern Regional XC Championships -
         # 10/25/2025" / "Twin Brook" / "Results"
-        if 'HY-TEK' in text[:4000] or not re.search(
+        if 'HY-TEK' in text[:4000].upper() or not re.search(
                 r'\s-\s+\d{1,2}/\d{1,2}/\d{2,4}', lines[0]):
             return out
         lines = [''] + lines
-    m = re.search(r'Licensed to\s+(.+?)\s{2,}HY-TEK', lines[0])
+    m = re.search(r'Licensed to\s+(.+?)\s{2,}HY-TEK', lines[0], re.I)
     if m:
         out['host'] = m.group(1).strip(' -')
     # locate the 'Results' marker inside the header block
@@ -1477,6 +1488,18 @@ def _parse_one_file(args):
                 alt_results, alt_n = _run_chain(Sub5ColumnParser.clean_pdf_text(rt), strict=True)
                 if alt_n >= 5 and _holes(alt_results) < _holes(results) and \
                         _count(alt_results) > _count(results) and _dups(alt_results) <= _dups(results):
+                    # (reading-order text has one space between cells: "L. Lam South Portland" splits
+                    # wrong; a row the layout read too keeps the layout's name and school)
+                    lay = {}
+                    for _e in (results.get('events') if isinstance(results, dict) else results) or []:
+                        for _r in (_e.get('results') or []) if isinstance(_e, dict) else []:
+                            if _r.get('school'):
+                                lay.setdefault((_e.get('gender'), _r.get('place'), _r.get('result')), _r)
+                    for _e in (alt_results.get('events') if isinstance(alt_results, dict) else alt_results) or []:
+                        for _r in (_e.get('results') or []) if isinstance(_e, dict) else []:
+                            _l = lay.get((_e.get('gender'), _r.get('place'), _r.get('result')))
+                            if _l and _l.get('school') != _r.get('school'):
+                                _r['athlete'], _r['school'] = _l.get('athlete'), _l.get('school')
                     results, best_n = alt_results, max(alt_n, best_n)
 
         # a hand transcription of a file no parser reads (one-off score
@@ -1544,8 +1567,11 @@ def _parse_one_file(args):
                 data_to_save['venue'] = meta['venue']
             # (a parser that skips dated lines takes the venue for the title)
             if meta['meet'] and (not data_to_save.get('meet_name')
-                                 or data_to_save.get('meet_name') == meta['venue']):
+                                 or data_to_save.get('meet_name') == meta['venue']
+                                 or not_a_title(data_to_save.get('meet_name'))):
                 data_to_save['meet_name'] = meta['meet']
+            elif not_a_title(data_to_save.get('meet_name')):
+                data_to_save['meet_name'] = None   # the season index names the meet
             if meta['host'] and not data_to_save.get('host'):
                 data_to_save['host'] = meta['host']
             # Junior-high / middle-school meets posted beside the high-school

@@ -503,8 +503,9 @@ PLC BIB   PTS        NAME               TEAM              TIME
 
 def test_xcrun_race_split_ages_and_distance():
     res = XCRunParser().parse(XCRUN_TWO, 'elxc2018-2.pdf', 'XC')
-    assert [(e['gender'], len(e['results'])) for e in res['events']] == [('Girls', 6), ('Boys', 3)]
+    assert [(e['gender'], len(e['results'])) for e in res['events']] == [('Girls', 7), ('Boys', 3)]
     g = res['events'][0]
+    assert (g['results'][-1]['athlete'], g['results'][-1]['result']) == ('Gia Gale', 'DNF')   # the DNF page joins its race
     assert g['event'] == '5k Run CC', g['event']            # 19:07.7 / 6:10 per mile
     assert all(r['grade'] == '' for r in g['results'])      # 15-17 = ages
     assert g['results'][0]['team_place'] == 1 and g['results'][0]['place'] == 1
@@ -2029,6 +2030,34 @@ def test_hytek_record_line_is_not_the_meet_date():
         '  1 Kialeigh Marston          SO Bonny Eagle           18:42.94    1',
         '  2 Shannon Conley            SR South Portland        18:59.21    2'])
     assert Sub5ColumnParser('foc13girlsoverall.txt', text=text).parse()['date'] == '2013-10-05'
+
+
+def test_audit_fixes_2026_10_21():
+    """Heats restarting at place 1 under one event ("Results - Unseeded A", "Grade 9/10 - Men") are
+    races of their own; a place typed twice takes the next; XCRun DNF rows are kept; an untitled
+    RunScore team list is read; a wrapped Hy-Tek license line and a mixed-case "Hy-Tek's" header."""
+    from backend.parser import _SECTION2_RE
+    assert _SECTION2_RE.match('Results - Unseeded A') and _SECTION2_RE.match('Grade 9/10 - Men')
+    assert not _SECTION2_RE.match('Results - Women') and not _SECTION2_RE.match('Results - Men Large School')
+    from backend.parsers.xcrun import _ROW_DNF
+    assert _ROW_DNF.match('DNF    34    0    ALEXANDRA CULP                     WINTHROP                  :   : 0.0')
+    from backend.parsers.xcscores import parse_xc_team_scores
+    rs = '\n'.join(['  157       142 PATRICK COX                   M OLD ORCHARD BEACH         36:33', '',
+                     '  1. YARMOUTH HIGH SCHOOL     ', '            2    3    4    5    7  (19) (26) =    21',
+                     '  2. FREEPORT HIGH SCHOOL     ', '            1    8   10   11   31  (56) (70) =    61'])
+    b = parse_xc_team_scores(rs)
+    assert [(t['team'], t['score'], t['places'][:5]) for t in b[0]['teams']] == \
+        [('YARMOUTH HIGH SCHOOL', 21.0, [2, 3, 4, 5, 7]), ('FREEPORT HIGH SCHOOL', 61.0, [1, 8, 10, 11, 31])], b
+    from backend.scraper_v2 import hytek_header_meta, not_a_title
+    h = hytek_header_meta('Licensed to Down East Sports Timing - Contractor License\n'
+                          "                 HY-TEK's Meet Manager 10/24/2025 07:06 AM\n"
+                          '        YORK COUNTY XC FESTIVAL 10 23 - 10/23/2025\n             NOBLE\n           Results\n')
+    assert (h['meet'], h['venue']) == ('YORK COUNTY XC FESTIVAL 10 23', 'NOBLE'), h
+    h = hytek_header_meta("Caribou High School          Hy-Tek's MEET MANAGER 2:33 PM 9/13/2025 Page 1\n"
+                          '2025 Caribou XC Invitational - 9/13/2025\n9/13/2025\nResults\n')
+    assert h['meet'] == '2025 Caribou XC Invitational', h
+    assert not_a_title('at Bucksport High School') and not_a_title('Event 4 Boys 5k Run CC') and \
+        not_a_title('Biddeford   Bonny Eagle   Cheverus   Deering') and not not_a_title('Bucksport Invitational')
 
 
 def test_milesplit_bulk_printed_points_and_held_races():

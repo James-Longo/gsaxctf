@@ -397,7 +397,8 @@ def parse_xc_team_scores(text):
           'teams': [{'rank', 'team', 'score', 'places': [int, ...]}, ...]}]
     Only blocks that carry per-team places (the XC signature) are kept."""
     if not text or not (re.search(r'team(?:<[^>]{0,200}>|&nbsp;|[^\w<&]){0,400}scores?', text, re.I) or
-                        _TEAM_RESULTS.search(text) or _INLINE_SCORES.search(text)):
+                        _TEAM_RESULTS.search(text) or _INLINE_SCORES.search(text) or
+                        re.search(r'(?m)^\s*\d{1,3}\.\s+[A-Za-z][^\n\d]*\n\s*(?:\(?\d{1,4}\)?\s+){4,}\(?\d{1,4}\)?\s*=\s*\d{1,4}\s*$', text)):
         return []
     if re.search(r"\*{3}\s*[A-Za-z' ]{0,30}TEAM\s+SCORES?\s*\*{3}", text, re.I):
         rs = parse_runscore_team_scores(text)
@@ -505,7 +506,15 @@ def parse_xc_team_scores(text):
                     cur['gender'] = _GENDER[msec.group(3).lower()]
             continue
         if cur is None:
-            continue
+            # RunScore's two-line rows with no title at all (Pine Tree Race Services sheets): "1. CAPE
+            # ELIZABETH" over "3  5  7  8  9 (10) (13) =  32" opens the block
+            mrt = _RS_TEAM.match(line)
+            nxt = next((l for l in lines[li + 1:li + 3] if l.strip()), '')
+            if mrt and mrt.group(1) == '1' and not re.search(r'\d', mrt.group(2)) and _RS_PLACES.match(nxt):
+                cur = {'kind': 'xc', 'gender': last_gender, 'event_header': last_event, 'teams': []}
+                blocks.append(cur)
+            else:
+                continue
         # RunScore's two-line rows without its starred title: "1. YORK" /
         # "2  4  5  6  9 (11) (12) =  26"
         mrt = _RS_TEAM.match(line)

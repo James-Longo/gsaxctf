@@ -32,6 +32,17 @@ _NOISE = re.compile(r'\b(?:record(?!,)|scores?|points|total|average|weather|cond
                     r'distance|course|site|date|place\s+name)\b|\bteams?:', re.I)   # (not "Sabine Sites")
 
 
+def _known_school(name):
+    """A school name the catalog knows as printed ("South Portland", "Thornton Academy")."""
+    try:
+        from backend import school_catalog as sc
+        _, _, idx = sc._load()
+        sid, method, _, weak = idx.match(name)
+        return bool(sid) and not weak and method.split('+')[0] in ('exact', 'stem')
+    except Exception:  # noqa: BLE001
+        return False
+
+
 def _secs(t):
     if not t:
         return None     # a time cut short at the source ("16:2"): no time
@@ -543,7 +554,7 @@ class XCListParser(BaseParser):
             multi = sorted((k for k, n in cnt.items() if n >= 2 and len(k) >= 2), key=len, reverse=True)
             for x in rows:
                 sc = x['school']
-                if sc and cnt[sc] == 1:
+                if sc and cnt[sc] == 1 and not _known_school(sc):   # ("South Portland" is a school, not "South" + Portland)
                     for k in multi:
                         if sc.endswith(' ' + k) and len(sc) > len(k) + 1:
                             x['athlete'] = (x['athlete'] + ' ' + sc[:-len(k)].strip()).strip()
@@ -580,6 +591,11 @@ class XCListParser(BaseParser):
                          else f'{dm.group(1)} Mile Run CC')
             else:
                 event = 'Run CC'
+            # the race's own title names its division ("Girls JV   Name   School   Time", "Boys Freshman")
+            dv = next((m.group(1) for t in r['titles'] for m in [re.search(
+                r'(?i)\b(JV|Junior Varsity|Freshm[ae]n|Frosh|Varsity)\b', t)] if m), None)
+            if dv:
+                event += ' ' + {'jv': 'JV', 'junior varsity': 'JV', 'frosh': 'Freshman', 'freshmen': 'Freshman'}.get(dv.lower(), dv.title())
             events.append({'event': event, 'gender': g, 'is_relay': False, 'results': rows,
                            '_guess': k in guessed and not order})
         # two unlabelled sheets gendered by the file name and alternation

@@ -327,7 +327,9 @@ def xc_header(ln, loose=False):
     if ge and not gdiv: gdiv = ge.group(1) + 'th Grade'   # "Boys 1.5 Mile Run CC 6TH GRADE"
     lv = (lvl or '') + ' ' + rest
     div = gdiv or ('JV' if re.search(r'junior[ -]varsity|\bJV\b|reserve', lv, re.I) else 'Freshman' if re.search(r'freshm[ae]n', lv, re.I)
-                   else 'Middle School' if re.search(r'middle school|junior high', lv, re.I) else 'Varsity')
+                   else 'Middle School' if re.search(r'middle school|junior high', lv, re.I)
+                   else 'Junior' if re.search(r'\bjr\.?\s*div\b|\bjunior\s+div|\bJR\b.*\bJUNIOR\b', lv, re.I)   # "3k Run jr div", "JR GIRLS JUNIOR"
+                   else 'Senior' if re.search(r'\bsr\.?\s*div\b|\bsenior\s+div|\bSR\b.*\bSENIOR\b', lv, re.I) else 'Varsity')
     if cls and div == 'Varsity': div = ('Division ' if cls.group(1).isdigit() else 'Class ') + cls.group(1).upper()
     return {'men': 'Boys', 'women': 'Girls'}.get(m.group(3).lower(), m.group(3).capitalize()), dist, div   # Meet Manager prints "Men 5k Run"
 def xc_name(n):
@@ -576,6 +578,9 @@ def parse_xc_tab(text, loose=False):
         if loose and cur is None and cols is not None and f[0].isdigit() and teamsec is None and \
                 any(c in cols for c in ('name', 'athlete', 'first name', 'last name', 'full name')):   # (a "Place Team Time" relay-total table is no race)
             cur = [XC_HINT or 'Mixed', '', 'Varsity', []]; raw_events.append(cur)
+        if cur is not None and cols is None and len(f) >= 5 and f[0].isdigit() and re.fullmatch(XC_TIME, f[3]) and \
+                not re.search(r'\d', f[1] + f[2] + f[4]):
+            cols = ['place', 'first name', 'last name', 'time', 'school']   # a race with no header row ("1  Bryanna  Hagopian  21:59.5  Madison")
         if cur is None or cols is None or not f[0].isdigit(): continue
         if squeeze: f = [f[0]] + [x for x in f[1:] if x]
         row = dict(zip(cols, f))

@@ -299,6 +299,13 @@ class HeaderTableParser(BaseParser):
                             key += 0.01
                         cur['rows'][key] = row
                         got = True
+                    elif row and row['place'] in cur['rows'] and k == 0 and row['place'] + 1 not in cur['rows'] and \
+                            cur['rows'][row['place']].get('athlete') != row.get('athlete') and \
+                            (_secs(row.get('result')) or 0) > (_secs(cur['rows'][row['place']].get('result')) or 1e9):
+                        # the same place typed twice ("8 Jon Perry 9:19" / "8 Liam Alexander 9:21"): the slower is next
+                        row['place'] += 1
+                        cur['rows'][row['place']] = row
+                        got = True
                     elif row and row['place'] not in cur['rows']:
                         cur['rows'][row['place']] = row
                         got = True
