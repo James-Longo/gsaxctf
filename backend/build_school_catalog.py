@@ -310,6 +310,9 @@ def build_groups(rows, idx, levels):
     """Group rows by (file, meet level, raw string). Returns (groups, row_keys)."""
     groups = {}
     keys = []
+    by_name = {e['name']: k for k, e in idx.schools.items()}
+    MG_TWIN = {by_name[e['name'][:-16]]: k for k, e in idx.schools.items()   # 'X' -> 'X (middle grades)'
+               if e.get('level') == 'ms' and e['name'].endswith(' (middle grades)') and e['name'][:-16] in by_name}
     for r, lvl in zip(rows, levels):
         year, season, rel, meet, date, ev, gender, relay, ath, school, grade = r[:11]
         raw = clean_raw(school)
@@ -353,6 +356,12 @@ def build_groups(rows, idx, levels):
             if sid and g.level == 'ms' and idx.schools[sid].get('level') == 'hs' and \
                     method.split('+')[0] in ('bare-name', 'truncation', 'stem', 'code', 'nickname'):
                 g.name = (sid, method, cands, True)
+            # a K-12 school's own name in a middle-school race is its middle grades' entry
+            # ('Islesboro Central School' in a grades 4-8 meet -> 'Islesboro Central School (middle grades)')
+            if sid and g.level == 'ms' and idx.schools[sid].get('level') == 'hs' and explicit_level(g.raw) != 'hs':
+                twin = MG_TWIN.get(sid)
+                if twin:
+                    g.name = sid, method, cands, weak = (twin, method + '+middle-grades', [twin], False)
             # truncations/bare names with same-stem entries at other levels need confirmation
             if sid and not weak and method.split('+')[0] in ('truncation', 'bare-name') and len(cands) == 1:
                 lv = idx.schools[sid].get('level')
