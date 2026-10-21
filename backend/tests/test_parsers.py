@@ -2002,6 +2002,35 @@ def test_milesplit_xc_tab_lists_and_team_rows():
     assert (t['team'], t['score'], t['places']) == ('Presque Isle Middle Schoo', 102, [9, 21, 22, 24, 26, 27]), t
 
 
+def test_milesplit_xc_scoring_place_columns_names_and_coops():
+    """"SCORING PLACE FIRST NAME LAST NAME TEAM TIME" (place in the second column, unscored rows 'x');
+    'Lutters,, Eliana'; a name cut at 20 characters that runs into the grade; co-op labels kept."""
+    from backend import milesplit as ms
+    tab = '\n'.join(['Boys 2 Mile Run', 'SCORING\tPLACE\tFIRST NAME\tLAST NAME\tTEAM\tTIME',
+                     '1\t1\tTodd\tKenny\tBath\t12:59', 'x\t2\tAl\tBee\tTripp\t13:10'])
+    ev, _ = ms.parse_xc_tab(tab, loose=True)
+    assert [(r['place'], r['athlete'], r.get('team_place')) for r in ev[0]['results']] == \
+        [(1, 'Todd Kenny', 1), (2, 'Al Bee', None)], ev
+    assert ms.xc_name('Lutters,, Eliana') == 'Eliana Lutters'
+    assert ms.canon('Houlton/GHCA') == 'Houlton/GHCA' and ms.canon('Boothbay/Wiscasset') == 'Boothbay/Wiscasset'
+    assert ms.canon('Maine School of') == 'Maine School of Science and Mathematics'
+
+
+def test_hytek_record_line_is_not_the_meet_date():
+    """'Meet: * 17:56.69  9/29/2012  Name' is when a record was set; the title dates the meet,
+    and a title's session time ('Week 2:55 - 1/15/05') is not a record."""
+    from backend.parser import Sub5ColumnParser
+    text = '\n'.join([
+        '             2013 Maine XC Festival of Champions - 10/5/2013', '                               Belfast, ME',
+        '  Event 1  Girls 5k Run CC', '=' * 60,
+        '      Course: # 17:48.00  10/30/2004  Cassie Hintz, Old Town',
+        '        Meet: * 17:56.69  9/29/2012   Bethanie Brown, Waterville',
+        '    Name                    Year School                  Finals  Points', '=' * 60,
+        '  1 Kialeigh Marston          SO Bonny Eagle           18:42.94    1',
+        '  2 Shannon Conley            SR South Portland        18:59.21    2'])
+    assert Sub5ColumnParser('foc13girlsoverall.txt', text=text).parse()['date'] == '2013-10-05'
+
+
 def test_milesplit_bulk_printed_points_and_held_races():
     """milesplit_bulk: a recount that misses the sheet's tie rule is accepted only when every team's places
     are its runners' printed team points (no scorer lost); a race already held at the same times is not

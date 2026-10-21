@@ -332,6 +332,7 @@ def xc_header(ln, loose=False):
     return {'men': 'Boys', 'women': 'Girls'}.get(m.group(3).lower(), m.group(3).capitalize()), dist, div   # Meet Manager prints "Men 5k Run"
 def xc_name(n):
     n = re.sub(r'\s+', ' ', n).strip()
+    n = re.sub(r',(\s*,)+', ',', n)   # 'Lutters,, Eliana'
     m = re.match(r'^([^,]+),\s*(.+)$', n)
     if m: n = m.group(2) + ' ' + m.group(1)
     if n.isupper() or n.islower():
@@ -544,10 +545,11 @@ def parse_xc_tab(text, loose=False):
                 if not (cur and not cur[3] and cur[0] == hf[0] and cur[1]):   # the title above already named the race (with its distance)
                     cur = [hf[0], hf[1], hf[2], []]; raw_events.append(cur)
                 teamsec = None; f = ['Place'] + f[1:]
-            lo_ = [x.lower() for x in f]
-            if 'place' in lo_[1:] and any(x in lo_ for x in ('name', 'athlete')): pidx = lo_.index('place')   # "BIB ATHLETE SCHOOL PLACE TIME"
-            elif lo_[0] in ('place', 'plc'): pidx = 0
-            if pidx and len(f) > pidx: f = [f[pidx]] + f[:pidx] + f[pidx + 1:]
+        lo_ = [x.lower() for x in f]
+        if 'place' in lo_[1:] and any(x in lo_ for x in ('name', 'athlete', 'first name', 'full name')):
+            pidx = lo_.index('place')   # "BIB ATHLETE SCHOOL PLACE TIME", "SCORING PLACE FIRST NAME LAST NAME TEAM TIME"
+        elif lo_[0] in ('place', 'plc'): pidx = 0
+        if pidx and len(f) > pidx: f = [f[pidx]] + f[:pidx] + f[pidx + 1:]
         if f[0].lower() in ('place', 'plc'):   # "PLC BIB PTS NAME [GRADE] TEAM TIME" (2024 MVC, Brunswick)
             cols = [{'plc': 'place', 'pts': 'points'}.get(x.lower(), x.lower()) for x in f]; squeeze = '' in cols[1:-1] or cols[-1] == ''
             if squeeze: cols = [x for x in cols if x]
@@ -597,7 +599,7 @@ def parse_xc_tab(text, loose=False):
         mgs = re.fullmatch(r'(\S.*?)\s+([5-9]|1[0-2])', sch_)
         if mgs and not gr: sch_, gr = mgs.group(1), mgs.group(2)   # "NYA 9": the grade typed after the school
         r = {'place': int(f[0]), 'athlete': xc_name(name), 'school': sch_, 'grade': gr, 'result': tm_, 'type': 'Finals'}
-        for k_ in ('team_points', 'points', 'score'):
+        for k_ in ('team_points', 'points', 'score', 'scoring'):
             if row.get(k_, '').isdigit() and int(row[k_]) > 0: r['team_place'] = int(row[k_])   # 0: a runner who does not score
         cur[3].append(r)
     return xc_finish([tuple(e) for e in raw_events], raw_rank)
@@ -992,7 +994,7 @@ def parse_tab5(text):
     return [e for e in events if e['results']],[]
 CANON=[ # school-name expansions; every rule anchored to the start of the name
     (r'^upper kennebec','Upper Kennebec Valley High School'),(r'^me acad','Maine Academy of Natural Sciences'),(r'^med$','Medomak Valley High School'),(r'^elgo$','Edward Little High School'),
-    (r'^hwood$','Marshwood High School'),(r'^br14$|^brhs$|^brun$|^brunswick','Brunswick High School'),(r'^gtr\.? houlton','Houlton High School'),(r'^maine cen','Maine Central Institute'),
+    (r'^hwood$','Marshwood High School'),(r'^br14$|^brhs$|^brun$|^brunswick','Brunswick High School'),(r'^gtr\.? houlton','Houlton High School'),(r'^maine cen','Maine Central Institute'),(r'^maine school of','Maine School of Science and Mathematics'),
     (r'^no\.? ?yarm|^northyarm','North Yarmouth Academy'),(r'^sp red','South Portland High School'),(r'^valley$','Mountain Valley High School'),(r'^saints$','St. Dominic Academy'),
     (r'^poland','Poland Regional High School'),(r'^bangor chr','Bangor Christian School'),(r'^bangor( high|^ h\.?s\.?)?$|^ban$','Bangor High School'),(r'^dexter|^dex$','Dexter Regional High School'),
     (r'^calais','Calais High School'),(r'^old town|^ot$','Old Town High School'),(r'^piscataquis|^pchs$','Piscataquis Community High School'),(r'^penquis|^pen$','Penquis Valley High School'),
@@ -1034,6 +1036,7 @@ def canon(sn):
     if re.search(r'middle|\bm\.?s\.?$|\bms\b|\bj\.?h\.?$|jr\.? ?high|junior|elementary|\bgrade|\bcs\b|community school|\bk-?8\b', k): return sn
     from backend.school_catalog import shared_codes
     if k in shared_codes(): return sn   # a code two schools print: the catalog places it per meet
+    if '/' in k: return sn   # 'Houlton/GHCA', 'Boothbay/Wiscasset': a co-op label, placed by the catalog
     for pat,nm in CANON:
         if re.search(pat,k): return nm
     return sn
@@ -1199,6 +1202,9 @@ def main():
             if gm:   # "Erin      17 Martin": a layout that prints the grade between the names
                 r['athlete'] = gm.group(1) + ' ' + gm.group(3)
                 r.setdefault('grade', gm.group(2)) if r.get('grade') else r.__setitem__('grade', gm.group(2))
+            gc = re.fullmatch(r'(\S+) ([4-9]|1[0-2]) (\S.*)', r.get('athlete') or '')
+            if gc and not r.get('grade'):   # "Liudvinaitis, Elizab 6 Lisbon": a name cut at 20 characters runs into the grade
+                r['athlete'], r['grade'] = gc.group(1) + ' ' + gc.group(3), gc.group(2)
             if 'athletes' in r:
                 r['athletes']=[re.sub(r'^\d+\s+','',a) for a in r['athletes']]
                 r['athletes']=[(lambda mm: mm.group(2)+' '+mm.group(1) if mm else a)(re.match(r'^([^,]+),\s+(.+)$',a)) for a in r['athletes']]
