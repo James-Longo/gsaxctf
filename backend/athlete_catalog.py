@@ -501,7 +501,9 @@ def _grad_check(a, b):
 
 def evaluate(a, b, rel, tf):
     """Evidence for one candidate pair and the code layer's label:
-    'auto' (merge), 'review' (queue) or 'reject' (two people)."""
+    'auto' (merge), 'reject' (two people: same race, graduation years),
+    'separate' (kept apart: the results contradict one runner) or, for a
+    one-token or initial name, 'review' until resolve_by_roster settles it."""
     major, minor = (a, b) if a['n'] >= b['n'] else (b, a)
     co_race = len(a['races'] & b['races'])
     co_meet = len(a['meets'] & b['meets'])
@@ -539,21 +541,28 @@ def evaluate(a, b, rel, tf):
         soft.append(f'marks differ {mgap:.0%}')
     if sib:
         soft.append('sibling risk (both first names common)')
+    # The rule (James, 2026-10-21): a runner stays on one team and never
+    # races against themself, so two spellings on one team that never share a race are
+    # one runner -- unless the results contradict it: graduation years that
+    # disagree, a combined span longer than a career, or (track only, where a
+    # runner's events show who they are) no event in common or marks far apart.
+    # Checked against 11,000 reviewed pairs: 99.4% of the pairs it merges were
+    # reviewed as one runner (XC pairs 98-99.7%), and the ones it keeps apart
+    # are where reviewers said "different" or could not say.
+    # A one-token or initial name ("Smith", "J Smith") is settled by the
+    # roster instead (resolve_by_roster).
+    track_only = 'xc' not in (a['fams'] | b['fams'])
+    keep_apart = [x for x in soft if x.startswith(('graduation year (weak)', 'combined span'))]
+    if track_only and fam_j == 0:
+        keep_apart.append('track: no event in common')
+    if track_only and mgap is not None and mgap > .25:
+        keep_apart.append(f'track: marks differ {mgap:.0%}')
     if neg:
         label = 'reject'
-    elif rel in ('trivial', 'concat'):
-        # the same words printed differently (case, order, a column's bleed
-        # "Nick Anderson     C") and never in one race: one runner (unless
-        # the name spans more seasons than one career can)
-        label = 'review' if any(x.startswith('combined span') for x in soft) else 'auto'
-    elif rel in ('typo_last', 'typo_first', 'nickname', 'prefix_first', 'truncated', 'leaddrop'):
-        # with no warning sign at all, roster reviewers called these the
-        # same runner 97-100% of the time (pilot, 2026-10-16)
-        label = 'auto' if not soft else 'review'
-    elif rel == 'typo_both':
-        label = 'auto' if (not soft and rare and minor['n'] <= 3) else 'review'
+    elif rel in ('single', 'initial'):
+        label = 'review'      # until the roster settles it
     else:
-        label = 'review'
+        label = 'separate' if keep_apart else 'auto'
     return dict(a=major['key'], b=minor['key'], relation=rel, label=label,
                 negatives=neg, soft=soft, co_race=co_race, co_meet=co_meet, span=span, gap=gap,
                 grad=gstat, mark_gap=None if mgap is None else round(mgap, 3),
@@ -596,6 +605,9 @@ def candidate_pairs(ents):
                 pairs.append(ev)
                 unit_pairs.append(ev)
         resolve_by_roster(lst, unit_pairs)
+        for p in unit_pairs:   # a short name the roster can't place stays its own entry
+            if p['label'] == 'review':
+                p['label'] = 'separate'
         unit_pairs = []
     return pairs
 
@@ -729,7 +741,7 @@ def cluster(ents, pairs, decisions):
         if dec == 'same':
             union(a, b, 'reviewed')
     for p in pairs:
-        if p['label'] == 'auto' and pair_key(p['a'], p['b']) not in decisions:
+        if p['label'] == 'auto' and decisions.get(pair_key(p['a'], p['b']), {}).get('decision') not in ('same', 'different'):
             union(p['a'], p['b'], 'auto')
     # One store id is one runner: the site resolves a profile by it, so a
     # name filed under both genders (a race the parser read as the wrong
