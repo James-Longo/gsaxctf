@@ -646,6 +646,11 @@ class Sub5ColumnParser:
                     # Check if this line is a record line
                     # Records usually look like "KVAC Record: R 9:57" or "R 10:00"
                     is_record = any(x in line.lower() for x in ["record:", "r  ", "ht:"])
+                    # Hy-Tek record lines print the mark, then the day it was set:
+                    # "Meet: * 17:56.69  9/29/2012  Bethanie Brown" / "'12 Champion: ..."
+                    # (the mark right before the date; a title's "Week 2:55 - 1/15/05" is a session time)
+                    if re.search(r'(\d:\d\d|\d+-\d\d)(\.\d+)?\s+[#*@!$%^&+]?\s*$', line[:m.start()]):
+                        is_record = True
                     if is_record:
                         continue
                     
