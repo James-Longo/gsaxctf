@@ -28503,6 +28503,13 @@
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
  },
+ "backend/data/parsed_results/2019/XC/biddeford-ms-boys.txt.json": {
+  "parse_sha": "d7f95acffbbe553e",
+  "source_sha": "f15c8bcc16bca123",
+  "date": "2026-10-21",
+  "by": "auto: team scores verified exactly, all schools identified, no flags",
+  "evidence": ""
+ },
  "backend/data/parsed_results/2019/XC/biddeford-ms-girls.txt.json": {
   "parse_sha": "21e43cd037fd3d0c",
   "source_sha": "a9335bcfd6c2ff91",
@@ -28710,6 +28717,13 @@
   "parse_sha": "3daa048a6a7d83ba",
   "source_sha": "24af143f033d8290",
   "date": "2026-10-16",
+  "by": "auto: team scores verified exactly, all schools identified, no flags",
+  "evidence": ""
+ },
+ "backend/data/parsed_results/2019/XC/dhs-girls-19.txt.json": {
+  "parse_sha": "4411667e963510b2",
+  "source_sha": "15d0001bfdb087d6",
+  "date": "2026-10-21",
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
  },
@@ -29375,6 +29389,13 @@
   "parse_sha": "6fe48bec71940ebc",
   "source_sha": "696e6ab4c5a6689a",
   "date": "2026-10-16",
+  "by": "auto: team scores verified exactly, all schools identified, no flags",
+  "evidence": ""
+ },
+ "backend/data/parsed_results/2019/XC/wells-girls-hs.txt.json": {
+  "parse_sha": "a8a6cc34e157bf46",
+  "source_sha": "6fe5957ef8f26bb2",
+  "date": "2026-10-21",
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
  },
@@ -40417,6 +40438,13 @@
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
  },
+ "backend/data/parsed_results/2025/XC/2025-Caribou-Invitational-Boys-JV.json": {
+  "parse_sha": "7dd4a9e9ac52d7e9",
+  "source_sha": "51a9675371d5e803",
+  "date": "2026-10-21",
+  "by": "audit fixes 2026-10-21 (audit: confirmed)",
+  "evidence": "meet name now the title \"2025 Caribou XC Invitational\" (header reader: mixed-case Hy-Tek); rows were already right"
+ },
  "backend/data/parsed_results/2025/XC/2025-Caribou-Invitational-Boys-Varsity.json": {
   "parse_sha": "9474831e71b55cbe",
   "source_sha": "cee0b52441a91194",
@@ -40571,6 +40599,20 @@
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
  },
+ "backend/data/parsed_results/2025/XC/9-23-25-boys-Copy.json": {
+  "parse_sha": "0872f4bfc45d5c0b",
+  "source_sha": "c60e812d18f23962",
+  "date": "2026-10-21",
+  "by": "audit fixes 2026-10-21 (audit: confirmed)",
+  "evidence": "the 4 DNF rows (\": : 0.0\") now kept (XCRun DNF pattern); 38 timed rows unchanged"
+ },
+ "backend/data/parsed_results/2025/XC/9-23-25-girls.json": {
+  "parse_sha": "eb181aaf9ec128cf",
+  "source_sha": "bc7b962d4709ca35",
+  "date": "2026-10-21",
+  "by": "audit fixes 2026-10-21 (audit: confirmed)",
+  "evidence": "the 3 DNF rows now kept; 46 timed rows unchanged; CONY surname-first names kept as printed (source)"
+ },
  "backend/data/parsed_results/2025/XC/9-30-25-Spruce-Boys.json": {
   "parse_sha": "adb1ea798070bc04",
   "source_sha": "79d6831cc66fb470",
@@ -40648,6 +40690,20 @@
   "by": "sonnet audit 2026-10-21 (audit: confirmed)",
   "evidence": "Combined boys+girls overall ranking (248 rows). All 248 source rows are in the parse with matching name, school (e.g. 'Morse Boys' -> me-hs-morse), mark and points; gender split by the school suffix ('Boys'/'Girls', 'Girl' for Edward Little) checked programmatically: 157 Boys event, 91 Girls event, 0 mismatches. Girls' place stays the combined overall place (e.g. '58 131 Boyle, McKenzie Dirigo Girls 17:47.59 58') as the source prints it. Source quirks: title line says 'LaLiberte Invitation 2025 - 8/27/2021' (parse date 2025-08-29 from the Hy-Tek header is right); some runners have no points (e.g. '63 Prout, Landon Mt. Ararat Boys 17:53.47' - non-scorers). Team totals in sibling LaLiberte-Team-Scores-Final-2025.json (not in this file)."
  },
+ "backend/data/parsed_results/2025/XC/Panther-results-by-grade-boys.json": {
+  "parse_sha": "351a8147be3f3f8d",
+  "source_sha": "ba021a69ea7ae01a",
+  "date": "2026-10-21",
+  "by": "audit fixes 2026-10-21 (audit: confirmed)",
+  "evidence": "meet name now \"2025 Panther 2 miler\" (title, not the venue line); rows were right"
+ },
+ "backend/data/parsed_results/2025/XC/Results-1.json": {
+  "parse_sha": "c534a054503d473d",
+  "source_sha": "9b0d874fc341633e",
+  "date": "2026-10-21",
+  "by": "audit fixes 2026-10-21 (audit: confirmed)",
+  "evidence": "meet name \"YORK COUNTY XC FESTIVAL 10 23\" (wrapped license line read), date 2025-10-23 (title and index); rows were right"
+ },
  "backend/data/parsed_results/2025/XC/Results-Boys-Meet-1-at-LCS-9-11-25.json": {
   "parse_sha": "bb934234b80d954e",
   "source_sha": "f0329813dd9f3e57",
@@ -40668,6 +40724,20 @@
   "date": "2026-10-16",
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
+ },
+ "backend/data/parsed_results/2025/XC/Resultsboysbysection4oct2025.json": {
+  "parse_sha": "13c093e2251cd5d8",
+  "source_sha": "702e47eca8da8c91",
+  "date": "2026-10-21",
+  "by": "audit fixes 2026-10-21 (audit: confirmed)",
+  "evidence": "four heats (Unseeded A/B, Freshman, Seeded) now four races, same 866 rows; date 2025-10-04; meet \"2025 Maine XC Festival of Champions\""
+ },
+ "backend/data/parsed_results/2025/XC/Resultsgirlsbysection4oct2025.json": {
+  "parse_sha": "90fe388ff3bd4e88",
+  "source_sha": "dd5ea774523e5ca4",
+  "date": "2026-10-21",
+  "by": "audit fixes 2026-10-21 (audit: confirmed)",
+  "evidence": "three heats now three races, same 631 rows; date 2025-10-04; meet name from title. Saint Andrew's/Lockview left unresolved (out of state, no state printed)"
  },
  "backend/data/parsed_results/2025/XC/Updated-MVC-2025-Boys.json": {
   "parse_sha": "c98c097aad2d3018",
@@ -40802,6 +40872,13 @@
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
  },
+ "backend/data/parsed_results/2025/XC/bucksinviteboyjv13sept2025.txt.json": {
+  "parse_sha": "0c01e870918deab4",
+  "source_sha": "9c2d129f65aed1b8",
+  "date": "2026-10-21",
+  "by": "audit fixes 2026-10-21 (audit: confirmed)",
+  "evidence": "meet name now \"Bucksport Invitational Cross Country Meet\""
+ },
  "backend/data/parsed_results/2025/XC/bucksinviteboyvarsity13sept2025.txt.json": {
   "parse_sha": "0bfd9394cf91b1b4",
   "source_sha": "f1d5874900e2fdd6",
@@ -40815,6 +40892,13 @@
   "date": "2026-10-16",
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
+ },
+ "backend/data/parsed_results/2025/XC/bucksinvitegjv13sept2025.txt.json": {
+  "parse_sha": "d39007c8ffb4f704",
+  "source_sha": "bd854f9066411730",
+  "date": "2026-10-21",
+  "by": "audit fixes 2026-10-21 (audit: confirmed)",
+  "evidence": "meet name now \"Bucksport Invitational Cross Country Meet\""
  },
  "backend/data/parsed_results/2025/XC/bucksportmsboys1oct2025.txt.json": {
   "parse_sha": "82c4f619fe6ef8da",
@@ -40962,6 +41046,13 @@
   "date": "2026-10-16",
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
+ },
+ "backend/data/parsed_results/2025/XC/ellsworthinvitejvboys6sept2025.txt.json": {
+  "parse_sha": "1b2cf490aabf35be",
+  "source_sha": "63fd136b51683292",
+  "date": "2026-10-21",
+  "by": "audit fixes 2026-10-21 (audit: confirmed)",
+  "evidence": "meet name now \"Ellsworth Invitational Cross Country Meet\""
  },
  "backend/data/parsed_results/2025/XC/ellsworthinvitejvgirls6sept2025.txt.json": {
   "parse_sha": "cce3d37a9738b8ab",
@@ -41474,6 +41565,13 @@
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
  },
+ "backend/data/parsed_results/2025/XC/ms-lincolnville-ms-2025.json": {
+  "parse_sha": "b4b257f7eaa88b91",
+  "source_sha": "111c7f9cb0cfdbe9",
+  "date": "2026-10-21",
+  "by": "audit fixes 2026-10-21 (audit: confirmed)",
+  "evidence": "girls race (55 rows, PLACE TIME Gender FIRST NAME ... layout) now read; boys 53 unchanged"
+ },
  "backend/data/parsed_results/2025/XC/ms-lyman-moore-middle-school-2025.json": {
   "parse_sha": "a5072429202d602b",
   "source_sha": "af17977333b3c423",
@@ -41522,6 +41620,13 @@
   "date": "2026-10-18",
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
+ },
+ "backend/data/parsed_results/2025/XC/ms-ms-ccc-xc-season-opener-2025.json": {
+  "parse_sha": "26659794f430c3da",
+  "source_sha": "ec82b52fbf313773",
+  "date": "2026-10-21",
+  "by": "audit fixes 2026-10-21 (audit: confirmed)",
+  "evidence": "place 53 Julien Fernez added as Gray New Gloucester MS gr 6 (blank school cell; same runner GNG MS at the 2025 GNG Invitational)"
  },
  "backend/data/parsed_results/2025/XC/ms-mt-ararat-high-school-meet-2025.json": {
   "parse_sha": "e0e3df2de828e528",
@@ -41649,6 +41754,13 @@
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
  },
+ "backend/data/parsed_results/2025/XC/ms-smmsac-xc-festival-2025-2025.json": {
+  "parse_sha": "60c0f8197e622486",
+  "source_sha": "e2c60eae73dd5e38",
+  "date": "2026-10-21",
+  "by": "audit fixes 2026-10-21 (audit: confirmed)",
+  "evidence": "jr div races (75 boys, 51 girls) now kept beside the sr div races (94, 73)"
+ },
  "backend/data/parsed_results/2025/XC/ms-so-portland-bonny-eagle-marshwood-windham-cheverus-2025.json": {
   "parse_sha": "705e62dd4b2e68fd",
   "source_sha": "bcbc1e84287ff167",
@@ -41698,12 +41810,26 @@
   "by": "sonnet audit 2026-10-21 (audit: confirmed)",
   "evidence": "77 boys + 43 girls rows match (names, grades, marks to 3 decimals). YarmouthMS -> Frank H. Harrison MS (Yarmouth), FreeportMS, GNG, Tripp, SVMS->Sacopee, NYA, St. John's correct. Team scores match printed (Boys YARMOUTHMS 25, GNG 53, FreeportMS 53, TRIPP 107; Girls 29/53/61/94); 'do not add up' warning is because unscored teams (St. John's, SVMS, NYA) are skipped in the source's place counting. Unscored-team list not stored in parse (fine)."
  },
+ "backend/data/parsed_results/2025/XC/ms-wells-invitational-2025.json": {
+  "parse_sha": "3d6544817f62f35c",
+  "source_sha": "9355ddbd6dba0614",
+  "date": "2026-10-21",
+  "by": "audit fixes 2026-10-21 (audit: confirmed)",
+  "evidence": "JR and SR races now four separate races (59/70 girls, 84/92 boys), places restart per race as printed"
+ },
  "backend/data/parsed_results/2025/XC/ms-western-maine-conference-championship-2025.json": {
   "parse_sha": "4b818f045b38f72c",
   "source_sha": "996f9369c26ded60",
   "date": "2026-10-19",
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
+ },
+ "backend/data/parsed_results/2025/XC/ms-windham-auburn-oxford-hills-smcwestbrook-2025.json": {
+  "parse_sha": "87b1d6d75a85fe5b",
+  "source_sha": "eff3ab53c16cf485",
+  "date": "2026-10-21",
+  "by": "audit fixes 2026-10-21 (audit: confirmed)",
+  "evidence": "'Hunte McAllister' -> Hunter McAllister gr 8 (the full-name copy of the race)"
  },
  "backend/data/parsed_results/2025/XC/ms-winslow-junior-high-cross-country-meet-2025.json": {
   "parse_sha": "970f3436edb58bd7",
@@ -42020,12 +42146,40 @@
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
  },
+ "backend/data/parsed_results/2025/XC/smaaboys.json": {
+  "parse_sha": "b60f8fca30e980af",
+  "source_sha": "a963c056496c070c",
+  "date": "2026-10-21",
+  "by": "audit fixes 2026-10-21 (audit: confirmed)",
+  "evidence": "Liam Alexander (printed place 8 twice) now place 9; 15 individual rows; meet \"SMAA XC Relays\". The relay leg grid is not read (names run together in the PDF text)"
+ },
+ "backend/data/parsed_results/2025/XC/smaarelaysfroshjv.json": {
+  "parse_sha": "26486fac86b6f505",
+  "source_sha": "ac8cd82e42732780",
+  "date": "2026-10-21",
+  "by": "audit fixes 2026-10-21 (audit: confirmed)",
+  "evidence": "South Portland / Thornton Acadmey / Bonny Eagle split fixed; races named JV/Freshman; Girls Freshman rows read with schools"
+ },
+ "backend/data/parsed_results/2025/XC/smaarelaysgirls.json": {
+  "parse_sha": "f20a503a948a7852",
+  "source_sha": "2b92343b2675c697",
+  "date": "2026-10-21",
+  "by": "audit fixes 2026-10-21 (audit: confirmed)",
+  "evidence": "Mackenzie Shields (printed place 8 twice) now place 9; meet name left to the index (no title printed)"
+ },
  "backend/data/parsed_results/2025/XC/small-school-boys.txt.json": {
   "parse_sha": "a4dc8d4772363b47",
   "source_sha": "f1d7dc8357256279",
   "date": "2026-10-16",
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
+ },
+ "backend/data/parsed_results/2025/XC/small-school-girls.txt.json": {
+  "parse_sha": "668ae57f16005e36",
+  "source_sha": "caab4e3ce8588da5",
+  "date": "2026-10-21",
+  "by": "audit fixes 2026-10-21 (audit: confirmed)",
+  "evidence": "'Deer Isle' here is Deer Isle-Stonington Elementary (file rule); rows were right"
  },
  "backend/data/parsed_results/2025/XC/smcboysoverall13sept2025.txt.json": {
   "parse_sha": "444068029f6aec6c",
@@ -42034,12 +42188,26 @@
   "by": "sonnet audit 2026-10-21 (audit: confirmed)",
   "evidence": "All 512 finishers + 2 DNF (Wyatt Sholl Falmouth, Kieran Palmer Amherst-Pelham) verified programmatically against source: place, name, grade, school string, finals, points all agree; team scores (35 teams, Amherst-Pelham 76 ... Old Orchard Beach 1179) match source. Only open item: school \"North Shore\" parses to \"?\" (rows 58 Kai Oakley gr 11 18:20.80, 136 Daniel Schoudel gr 10 19:17.85, 138 John Ricci gr 10 19:18.70, 244 Cristian Perez gr 10 20:51.29; source \"58 Kai Oakley 11 North Shore 5:54.4 18:20.80 2\"). Not a Maine team: it has no catalog entry, appears only in this meet (and its sections twin) in the 2025 XC data, the same invitational has Massachusetts teams (Amherst-Pelham), and no team score is printed for it (fewer than 5 runners). Evidence missing: state/town of \"North Shore\" (a Massachusetts North Shore Technical HS? other?). Ask James which school this is, or whether to create an oos entry. Boothbay/Wiscasset correctly kept as coop-boothbay-wiscasset. [orchestrator: every row matches; the open school strings ('Saint Andrew's', 'Avon View', 'Lockview', 'North Shore') are out-of-state teams printed without a state; left unresolved, not guessed (no Maine product uses them)]"
  },
+ "backend/data/parsed_results/2025/XC/smcboyssections13sept2025.json": {
+  "parse_sha": "25c8787dfa4f7195",
+  "source_sha": "e374f91cb87a91c8",
+  "date": "2026-10-21",
+  "by": "audit fixes 2026-10-21 (audit: confirmed)",
+  "evidence": "Grade 9/10 and Grade 11/12 now two races (262/252), same rows; meet name from title"
+ },
  "backend/data/parsed_results/2025/XC/smcgirlsoverall13sept2025.txt.json": {
   "parse_sha": "f5cfd1c26c95062e",
   "source_sha": "30fd12f9bfba6d10",
   "date": "2026-10-21",
   "by": "sonnet audit 2026-10-21 (audit: confirmed)",
   "evidence": "All 304 finishers + 4 DNF (Cooper Kitch Brunswick, Ashlynne Libby Windham, Ella Boyer Cape Elizabeth, Isabel Carr Yarmouth) verified programmatically against source: place, name, grade, school string, finals all agree; team scores (26 teams, Freeport 109, Falmouth 150, Cheverus 156 ...) match. Only open item: school \"North Shore\" parses to \"?\" (row 4 Joanna Kenney gr 12 18:43.13, 26 Sloane Bonvicino gr 9 20:52.36, 100 Nicoletta Kenney gr 12 23:37.63, 292 Isabella Glazarev gr 10 35:55.59). No catalog entry, appears nowhere else in 2025 XC data except this meet and its sections twin; no team score printed. Evidence missing: state/town of \"North Shore\" (probably the same Massachusetts team as the boys; Amherst-Pelham is also in this meet). Ask James which school it is, or to create an oos entry. Boothbay/Wiscasset kept as coop-boothbay-wiscasset. [orchestrator: every row matches; the open school strings ('Saint Andrew's', 'Avon View', 'Lockview', 'North Shore') are out-of-state teams printed without a state; left unresolved, not guessed (no Maine product uses them)]"
+ },
+ "backend/data/parsed_results/2025/XC/smcgirlssections13sept2025.json": {
+  "parse_sha": "4e85a4c9f99e0a3c",
+  "source_sha": "264256afd9c82dd1",
+  "date": "2026-10-21",
+  "by": "audit fixes 2026-10-21 (audit: confirmed)",
+  "evidence": "Grade 9/10 and 11/12 now two races (126/182), same rows; North Shore left unresolved (out of state)"
  },
  "backend/data/parsed_results/2025/XC/south-a-boys.txt.json": {
   "parse_sha": "ad20165ace6c7b83",
@@ -42094,6 +42262,13 @@
   "parse_sha": "eb0d0fda94f56a41",
   "source_sha": "be7703b1999346c6",
   "date": "2026-10-16",
+  "by": "auto: team scores verified exactly, all schools identified, no flags",
+  "evidence": ""
+ },
+ "backend/data/parsed_results/2025/XC/wells-boys-preliminary.txt.json": {
+  "parse_sha": "c02e762f737c5041",
+  "source_sha": "daf368b008e6f1fb",
+  "date": "2026-10-21",
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
  },
@@ -42180,6 +42355,20 @@
   "date": "2026-10-20",
   "by": "sonnet audit pilot 2026-10-20 (audit: confirmed)",
   "evidence": "All 53 events compared row by row: place, name, school, mark identical, incl. exhibition relays printed with X prefix (e.g. 'X2:10.43' South Portland, parsed 2:10.43 with place None). Schools Bonny Eagle, Falmouth Hig, Massabesic H, South Portla all right. Team tables match (Women Jr South Portland 93, Massabesic 23, Falmouth 20, Bonny Eagle 7; Men Jr 80/40.5/15/11.5; Men Sr 96/31/12/4; Men Open 41/21/17/14; Women Sr 76/26/22/10; Open 27/26/22/12). 'team scores do not add up' = sheet's scoring, not a parse issue. Same note as Results-meet-3: events carry no Junior/Senior/Open division label."
+ },
+ "backend/data/parsed_results/2026/Indoor/ResultsSMAA-2.json": {
+  "parse_sha": "18b8ea8ad6cf4cb7",
+  "source_sha": "49fc7408dbccc6be",
+  "date": "2026-10-21",
+  "by": "audit fixes 2026-10-21 (audit: confirmed)",
+  "evidence": "'1600 Sprint Medley Open Division' canonicalizes to Sprint Medley Relay (event_canon); no store effect"
+ },
+ "backend/data/parsed_results/2026/Indoor/ResultsSMAA4.json": {
+  "parse_sha": "14f374fc5bbf5dfb",
+  "source_sha": "5a5a017ecdde3973",
+  "date": "2026-10-21",
+  "by": "audit fixes 2026-10-21 (audit: confirmed)",
+  "evidence": "'1600 Sprint Medley Open Division' canonicalizes to Sprint Medley Relay; no store effect"
  },
  "backend/data/parsed_results/2026/Indoor/SCORES-1.json": {
   "parse_sha": "2d206fd915069057",
@@ -42313,6 +42502,13 @@
   "date": "2026-10-19",
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
+ },
+ "backend/data/parsed_results/2026/Outdoor/2026-alms-tf-championship-results.json": {
+  "parse_sha": "6a3bd06b1b23ffa3",
+  "source_sha": "545acdae45110d67",
+  "date": "2026-10-21",
+  "by": "audit fixes 2026-10-21 (audit: confirmed)",
+  "evidence": "Boys 400 page-2 hundredths restored by transcription override (1:18.74, 1:19.64, 1:19.68); meet name \"2026 ALMS T&F Championships\"; GHCA relays to the middle-grades entry"
  },
  "backend/data/parsed_results/2026/Outdoor/Bath-MS-results.json": {
   "parse_sha": "7e4c503485e34169",
@@ -42652,10 +42848,10 @@
  },
  "backend/data/parsed_results/2026/XC/ms-busline-championship-xc-meet-2026.json": {
   "parse_sha": "2726967c2e0dae4c",
-  "source_sha": "eddd90abb90d03dd",
-  "date": "2026-10-16",
-  "by": "auto: team scores verified exactly, all schools identified, no flags",
-  "evidence": ""
+  "source_sha": "9dc3d13983991930",
+  "date": "2026-10-21",
+  "by": "audit fixes 2026-10-21 (audit: confirmed)",
+  "evidence": "'Islesboro Central School' now Islesboro middle grades (twin rule); North Haven has no MS entry (K-12), kept"
  },
  "backend/data/parsed_results/2026/XC/ms-calais-invitational-2026.json": {
   "parse_sha": "c15becef07135e05",
@@ -43028,6 +43224,13 @@
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
  },
+ "backend/data/parsed_results/2026/XC/ms-mount-abram-meet-2026.json": {
+  "parse_sha": "c779174113318924",
+  "source_sha": "2e9c2a9af14bacd7",
+  "date": "2026-10-21",
+  "by": "audit fixes 2026-10-21 (audit: confirmed)",
+  "evidence": "'MTA' rows now Mt. Abram (per-meet code)"
+ },
  "backend/data/parsed_results/2026/XC/ms-mt-ararat-middle-school-home-meet-1-2026.json": {
   "parse_sha": "bb50c2b26402ae3d",
   "source_sha": "d032695a2fd0e3c3",
@@ -43120,11 +43323,11 @@
   "evidence": ""
  },
  "backend/data/parsed_results/2026/XC/ms-poland-waynflete-wellsgray-ng-2026.json": {
-  "parse_sha": "c05b3e21129a9ab9",
-  "source_sha": "e7c59b630cd4f990",
-  "date": "2026-10-16",
-  "by": "auto: team scores verified exactly, all schools identified, no flags",
-  "evidence": ""
+  "parse_sha": "d5a70631f6f1b187",
+  "source_sha": "554c134867144d99",
+  "date": "2026-10-21",
+  "by": "audit fixes 2026-10-21 (audit: confirmed)",
+  "evidence": "grades of Alexander Curtis (9) and Nicholas Smith (11) filled from the full listing"
  },
  "backend/data/parsed_results/2026/XC/ms-portland-biddeford-cheverus-marshwoodgorham-2026.json": {
   "parse_sha": "c65d0e45d023a298",
@@ -43160,6 +43363,13 @@
   "date": "2026-10-21",
   "by": "sonnet audit 2026-10-21 (audit: confirmed)",
   "evidence": "Event 1 Girls JV (8), Event 2 Boys JV (17), Event 3 Girls Varsity (35), Event 4 Boys Varsity (43): rows, places and races match, JV and varsity not merged. Truncated schools (Brewer High, Ellsworth Hi, Old Town Hig, Central Aroostoo, MSSM, Foxcroft Aca) map correctly. \"Houlton/GHCA\" (14 rows) resolved to me-hs-houlton, consistent with the 2026 convention in the other milesplit-manual files (Cony, Caribou, Red Riot, Border Bash, PVC). Hy-Tek points column dropped (fine)."
+ },
+ "backend/data/parsed_results/2026/XC/ms-pvc-xc-championship-2026.json": {
+  "parse_sha": "060d9904d0369d89",
+  "source_sha": "f8d1145b2f367e99",
+  "date": "2026-10-21",
+  "by": "audit fixes 2026-10-21 (audit: confirmed)",
+  "evidence": "'Houlton/GHCA' kept as printed on all 13 rows; the totals-only team-score blocks are not stored (no places)"
  },
  "backend/data/parsed_results/2026/XC/ms-pvckvac-crossover-meet-2026.json": {
   "parse_sha": "2b99578a89b78338",
