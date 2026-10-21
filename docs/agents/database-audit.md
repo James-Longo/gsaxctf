@@ -14,6 +14,13 @@ step 6).
 
 ## Orchestrator (the routine)
 
+0. When the audit reaches a new year, first fetch whatever that year's sub5
+   index links that we don't hold (`Sub5ScraperV2().download_missing_files`
+   and `parse_all_files` for the year's seasons, then the resync). The ledger
+   lists only what MileSplit lists, so a meet posted only on sub5 (as .txt,
+   say) is invisible to it: 573 such 2003-2012 XC files were found this way on
+   2026-10-21. Sort the new files against held races before the resync: a
+   race held from MileSplit gives way to the sub5 file.
 1. First apply what earlier reviews found: `python3 -m backend.db_audit fixes`
    lists the `fixed` verdicts whose fix hasn't reached the parse yet (parser
    patterns, school codes, transcription overrides still to write). Do them
