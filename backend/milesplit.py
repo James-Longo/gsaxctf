@@ -1216,11 +1216,19 @@ def main():
             if x['gender']=='Mixed':
                 part=next((e for e in mx['events'] if e.get('combined_race') is not None or e['gender']!='Mixed'),None)
                 if part: x['gender']=part['gender']; x['event_header']=part['event']
-    if sys.argv[4]=='XC':   # one race printed in two files ("Complete" and "updated results"): keep the fuller list
+    if sys.argv[4]=='XC':   # one race printed in two files ("Complete" and "updated results"): keep the fuller list,
+        def _full(e):       # and of two equal lists the one with grades and whole names (a Hy-Tek copy cuts names at 20 characters)
+            rs=e['results']
+            return (sum(1 for r in rs if r.get('place')), sum(1 for r in rs if r.get('grade')), sum(len(r.get('athlete') or '') for r in rs), len(rs))
         keep={}
         for i_,e in enumerate(events):
             k_=(e['gender'],e['event'])
-            if k_ not in keep or len(e['results'])>=len(events[keep[k_]]['results']): keep[k_]=i_
+            if k_ not in keep or _full(e)>=_full(events[keep[k_]]): keep[k_]=i_
+        for i_,e in enumerate(events):   # unplaced rows (DNF) only the other copy prints are added to the kept one
+            k_=(e['gender'],e['event'])
+            if keep[k_]!=i_:
+                base=events[keep[k_]]['results']; have={(r.get('athlete') or '').lower() for r in base}
+                base+=[r for r in e['results'] if not r.get('place') and (r.get('athlete') or '').lower() not in have]
         events=[e for i_,e in enumerate(events) if keep[(e['gender'],e['event'])]==i_]
     sub_note=''
     if sys.argv[4]=='XC' and len(events)>2:   # two races printed as one list, interleaved by place ("Varsity Girls" in a KVAC "Complete" file:
