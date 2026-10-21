@@ -249,6 +249,8 @@ def variants(raw: str, gender=None):
     # season / program words and years at the end: 'Mtb Track'12', 'Bru 06-07', 'Elhs Boys Out', "'A'"
     for _ in range(4):
         t2 = re.sub(r"\s*'?[A-D]'$", '', t)
+        if t2 != t:   # the squad letter alone first: "Union 122 'A'" is Union 122 before it is a "Union" + year
+            out += emit(t2, 'season-words')
         t2 = re.sub(r"[\s\-]*'?\d{2,4}(\s*-\s*\d{2,4})?$", '', t2)
         t2 = re.sub(r'(?<=[A-Za-z])\d$', '', t2)                # 'BRU7', 'WIN1'
         t2 = re.sub(r'(?i)(?<=[a-z])(boys|girls)$', '', t2)
