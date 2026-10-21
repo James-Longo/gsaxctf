@@ -14,8 +14,8 @@ deploy if any step below fails; report instead.
 
 `python3 -m backend.routine plan` prints what is in season (from the
 results' own season windows), whether Five K Sport applies (cross country),
-how many Five K Sport files are pending, whether the XC postseason predictions
-is due, and the athlete review queue size.
+how many Five K Sport files are pending, and whether the XC postseason
+predictions are due.
 
 Start from a clean, current checkout: `git status` (only data changes from a
 previous unfinished run are acceptable) and `git pull --ff-only`.
@@ -101,12 +101,10 @@ one season at a time):
 Five K Sport files are verified by `fiveksport sync` (every high-school
 results file with a team sheet must say `verified`).
 
-**Athlete identity** (`docs/agents/athlete-review.md`): review up to
-**10 batches of 20 pairs** per run, newest runners first, with Sonnet
-reviewers, spot-check them, then import and run
-`python3 -m backend.athlete_catalog build` and `apply`. The decisions file is
-internal and stays on this computer. Pairs marked unsure are listed for James
-in the report, not re-reviewed.
+**Athlete identity**: `python3 -m backend.athlete_catalog build` and `apply`
+settle every spelling pair by rule (same team, never in one race, nothing in
+the results against it; see the module docstring). Nothing is reviewed by a
+person. Report the stats line.
 
 ## 4. Postseason predictions
 
@@ -153,5 +151,5 @@ in the report.
    QAQC results (mismatches, odd sections and unreadable times, and what was
    done), Five K Sport files added, the database audit (files per verdict,
    progress for this year and the last two, `james` items),
-   athlete review counts and the unsure list, predictions published or skipped,
+   the athlete catalog stats line, predictions published or skipped,
    Pages deploy result. Keep it short.

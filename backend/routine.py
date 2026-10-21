@@ -121,11 +121,6 @@ def plan():
         out['fiveksport_pending'] = len(fiveksport.pending(today.year)) if 'XC' in seasons else 0
     except Exception as e:  # noqa: BLE001 - network
         out['fiveksport_pending'] = f'unavailable: {e}'
-    try:
-        from backend import athlete_catalog as ac
-        out['athlete_review_queue'] = ac.load_catalog().get('stats', {}).get('review_queue')
-    except Exception:  # noqa: BLE001
-        pass
     print(json.dumps(out, indent=1))
     return out
 
