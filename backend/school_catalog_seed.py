@@ -1466,6 +1466,7 @@ FILE_CODES = {
     ('XC', 2009, 'piinvitevarsity'): {'LIM': 'me-hs-limestone'},
     ('XC', 2011, 'aroostookinviteboys_sept16'): {'LIM': 'me-hs-limestone'},
     ('XC', 2011, 'aroostookinvitegirls'): {'LIM': 'me-hs-limestone'},
+    ('Outdoor', 2011, 'aroostookboys'): {'Lim': 'me-hs-limestone'},
     # 2012/XC/scarboroughinvite{boys,girls} = the Scarborough Middle School invitational: a 2-mile race whose field includes
     # Jordan Small, Cony Middle School, Memorial and North Yarmouth (NYA MS); bare town names are the middle schools (the girls'
     # race already read most of them so; the boys' race had them as high schools)
@@ -1932,6 +1933,8 @@ FILE_CODES = {
 # 'Word, Word' as a name glued into the school cell (debris), so these exact strings are placed here.
 FILE_RULES += [
     (['Cumberland, RI'], 'XC', (2004, 2005), r'^festival', 'oos-auto-ri-cumberland'),
+    # 2003 prints bare 'Cumberland': its runners (Holgate, McGinnis, Turcotte) are 'Cumberland, RI' in 2004
+    (['Cumberland'], 'XC', (2003, 2003), r'^festival(boys|girls)', 'oos-auto-ri-cumberland'),
     (['Canton, CT'], 'XC', (2005, 2005), r'^festival', 'oos-auto-ct-canton'),
     (['Westerly, RI'], 'XC', (2004, 2004), r'^festival', 'oos-ri-westerly-high-school'),
     (['Burrillville, RI'], 'XC', (2022, 2022), r'^foc', 'oos-ri-burrillville-high-school'),
