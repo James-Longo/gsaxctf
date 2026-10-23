@@ -1359,7 +1359,28 @@ FILE_RULES = [
     (['M'], 'XC', (2009, 2009), r'^massabesicboys_(sept11|oct9)$', 'me-hs-massabesic'),   # '... @ Massabesic' (the girls' files of these meets: Massabesic)
     (['w'], 'XC', (2010, 2010), r'^messalonskeeboys_sept17$', 'me-hs-waterville'),        # every other W on the sheet is Waterville
     (['Sc'], 'XC', (2011, 2011), r'^massabesicgirls_sept9$', 'me-hs-scarborough'),        # Massabesic-Scarborough dual; 'SC' beside it
-    (['N'], 'XC', (2009, 2009), r'^noble(boys|girls)_oct16$', 'me-hs-noble'),           # index: 'Noble, Marshwood, Massabesic, Sanford'            # 2-mile middle-school meet at GNG (Gray-NG, Whittier, Molly Ockett, St. Dom's MS)
+    (['N'], 'XC', (2009, 2009), r'^noble(boys|girls)_oct16$', 'me-hs-noble'),           # index: 'Noble, Marshwood, Massabesic, Sanford'
+    # 2005 Ellsworth Invitational: the team-score list names Caribou, York, Hampden, Falmouth ('Fox' separately),
+    # Lee, and no-score Ellsworth, Winthrop, Orono ('S' left: Sanford or Shead; 'B' left: no B team listed)
+    (['C'], 'XC', (2005, 2005), r'^ellsworthinvite\.txt$', 'me-hs-caribou'),
+    (['Y'], 'XC', (2005, 2005), r'^ellsworthinvite\.txt$', 'me-hs-york'),
+    (['H'], 'XC', (2005, 2005), r'^ellsworthinvite\.txt$', 'me-hs-hampden'),
+    (['E'], 'XC', (2005, 2005), r'^ellsworthinvite\.txt$', 'me-hs-ellsworth'),
+    (['F'], 'XC', (2005, 2005), r'^ellsworthinvite\.txt$', 'me-hs-falmouth'),
+    (['L'], 'XC', (2005, 2005), r'^ellsworthinvite\.txt$', 'me-hs-lee'),
+    (['W'], 'XC', (2005, 2005), r'^ellsworthinvite\.txt$', 'me-hs-winthrop'),
+    (['O'], 'XC', (2005, 2005), r'^ellsworthinvite\.txt$', 'me-hs-orono'),
+    (['FA'], 'XC', (2005, 2005), r'^fryeburg9_16\.txt$', 'me-hs-fryeburg'),           # Fryeburg's home meet
+    (['Ma'], 'XC', (2006, 2006), r'^fortfosterboys10_11$', 'me-ms-massabesic'),        # 'Kittery vs. York and Massabesic' middle-school meet
+    (['STN'], 'XC', (2006, 2006), r'^wolverineinvite$|^lynxinvitevarsity', 'me-hs-stearns'),   # Michael Rioux: Stearns in central9_5 and the PVC files
+    (['STN'], 'XC', (2007, 2007), r'^mattanawcook9_4$', 'me-hs-stearns'),              # Elizabeth Haven: Stearns at Old Town 9/22/07
+    (['Rich'], 'XC', (2007, 2007), r'^richmondmiddle(boys|girls)9_15$', 'me-ms-richmond'),   # index: Richmond, Monmouth, Durham, Valley, Litchfield, Raymond - Middle School
+    (['Ray'], 'XC', (2007, 2007), r'^richmondmiddle(boys|girls)9_15$', 'me-ms-jordan-small'),   # Raymond's middle school
+    (['Val'], 'XC', (2007, 2007), r'^richmondmiddle(boys|girls)9_15$', 'me-ms-upper-kennebec'),  # Valley's middle grades
+    (['BC'], 'XC', (2004, 2004), r'^central7sept04girls$', 'me-hs-bangor-christian'),  # Casey McGill: Bangor Christian in pvc04jvg
+    (['OH'], 'XC', (2003, 2003), r'^wtvl03[bg]$', 'me-hs-oxford-hills'),              # team list prints Oxford Hills, no Oak Hill
+    (['SUN'], 'XC', (2003, 2003), r'^bucksinvite03$', 'me-hs-sumner'),
+    (['UM'], 'XC', (2003, 2003), r'^bucksinvite03$', 'me-hs-sumner'),                 # Andrew Brunton: '9 Sumner 19:06.9' elsewhere that fall; a high-school meet            # 2-mile middle-school meet at GNG (Gray-NG, Whittier, Molly Ockett, St. Dom's MS)
     (['LR'], 'XC', (2018, 2018), r'^MS_MEET_9_20_2018$', 'me-ms-lake-region'),         # same meet
     (['MO'], 'XC', (2015, 2017), r'^MS_MEET_9_10_2015$|^MS_MEET_9_19_2017$', 'me-ms-molly-ockett'),   # GNG middle-school meets; MO is Molly Ockett in the 2018 one
     (['JS'], 'XC', (2017, 2017), r'^MS_MEET_10_12_2017$', 'me-ms-jordan-small'),        # GNG middle-school meet; its runners 'Raymond' (Jordan-Small MS) elsewhere
