@@ -6509,6 +6509,13 @@
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
  },
+ "backend/data/parsed_results/2008/XC/kvacgirls.txt.json": {
+  "parse_sha": "b98bb3bb7a483a6c",
+  "source_sha": "07c16b1ed3fc0120",
+  "date": "2026-10-23",
+  "by": "auto: team scores verified exactly, all schools identified, no flags",
+  "evidence": ""
+ },
  "backend/data/parsed_results/2008/XC/kvacjvboys.txt.json": {
   "parse_sha": "9dab112f73ade3d9",
   "source_sha": "c6483d71143dfc43",
@@ -12872,6 +12879,13 @@
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
  },
+ "backend/data/parsed_results/2011/XC/winthropms_oct22.json": {
+  "parse_sha": "a0f7346932b743e3",
+  "source_sha": "be74c3e70c550e84",
+  "date": "2026-10-23",
+  "by": "auto: team scores verified exactly, all schools identified, no flags",
+  "evidence": ""
+ },
  "backend/data/parsed_results/2011/XC/wmboyscombined.txt.json": {
   "parse_sha": "39e5a8f534a6d085",
   "source_sha": "450b39efc0e1b94a",
@@ -14531,6 +14545,13 @@
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
  },
+ "backend/data/parsed_results/2012/XC/lynxinvite_sept25.json": {
+  "parse_sha": "24afe21197a205b2",
+  "source_sha": "8646d068f995f247",
+  "date": "2026-10-23",
+  "by": "sonnet audit (score mismatch, 2026-10-23) (audit: source-error)",
+  "evidence": "Parse matches the source (4 races: Boys Varsity 26, Boys JV 7, Girls Varsity 8, Girls JV 9; ';' times read as ':'). Boys varsity totals reproduce by a rule the checker lacks: SIX scorers per team, teams with fewer than 5 finishers (MA 3, BC 3) removed from the places: Orono places 1,3,4,8,9,10 = 35 (printed 35), Lee Academy 2,6,7,13,14,16 = 58 (58), Central 5,11,12,18,19,20 = 85 (85). Girls varsity team Orono printed 24: Orono's six girls are overall 1,2,3,5,6,7 -> 24 only if the lone Lee Academy girl (4th) is NOT removed, but then the same sheet's boys would be 2+4+5+12+13+15 = 51 for Orono instead of 35 (the boys need the incomplete teams removed). With the boys' method (remove incomplete teams) the girls come out 1+2+3+4+5+6 = 21. So the sheet applies two different methods; girls Orono 24 vs 21 is the source error (this is also why teams_off=2). Checker-rule note: six scorers per team on this sheet."
+ },
  "backend/data/parsed_results/2012/XC/maranacookboys_august31.json": {
   "parse_sha": "02fa44641b4e6859",
   "source_sha": "5cd3b2e48ace357f",
@@ -15175,6 +15196,20 @@
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
  },
+ "backend/data/parsed_results/2012/XC/polandgirls_august31.json": {
+  "parse_sha": "98b511ada066f155",
+  "source_sha": "92b78406a3df8281",
+  "date": "2026-10-23",
+  "by": "sonnet audit (score mismatch, 2026-10-23) (audit: source-error)",
+  "evidence": "Parse matches the source (48 rows; second page is an empty template). Y = Yarmouth here (title 'Freeport, Yarmouth, Waynflete, Poland' and printed team list Yarmouth/Freeport/Waynflete/Poland). Rows give: Yarmouth top-5 places 2,4,5,8,9 = 28 (printed 28, only top-5 reproduces it: top-4 would be 19), Freeport 6,7,13,18,19 = 63 (printed 57), Waynflete 3,11,17,33,36 = 100 (73), Poland (6 finishers) 1,20,29,34,42 = 126 (84). Printed Poland 84 = 1+20+29+34 (its top FOUR), and Y 28 needs five scorers, so the sheet's own scoring is inconsistent; no combination of removing teams or of 3-7 scorers gives printed 57/73 for Freeport/Waynflete. Printed order Yarmouth<Freeport<Waynflete<Poland agrees with the rows but the totals do not."
+ },
+ "backend/data/parsed_results/2012/XC/polandgirls_sept28.json": {
+  "parse_sha": "55e9396a3ae8d88b",
+  "source_sha": "d9b4a85c12720d43",
+  "date": "2026-10-23",
+  "by": "sonnet audit (score mismatch, 2026-10-23) (audit: source-error)",
+  "evidence": "Parse matches the source (41 rows). Y here is York, not Yarmouth: the printed team results say 'York 53' (and the title line 'Freeport, Yarmouth, Waynflete, Poland' is a leftover from the Aug 31 template); York runner Annie Graziano (23:42 here as 'Graziano, A' Y) appears for York in other 2012 files. Rows: York 1,7,14,15,16 = 53 (printed 53), Freeport 4,5,6,9,10 = 34 (printed 34). Gray-New Gloucester has 5 finishers (3,8,25,33,41) = 110 but is printed 77; Poland (7 finishers 2,13,22,24,35,36,40) = 96 but printed 79. Removing any set of teams only lowers a total, and no removal set gives 77/79 together with 53/34; and the printed order (GNG 77 ahead of Poland 79) is the reverse of the rows (Poland 96 < GNG 110). GNG printed 77 = 3+8+25+41 (skips Hersom, 33), so printed values are not derivable from the finish order."
+ },
  "backend/data/parsed_results/2012/XC/portlandboys_sept21.txt.json": {
   "parse_sha": "ebdc8c269bf507f6",
   "source_sha": "6854f2d143c35d2d",
@@ -15244,6 +15279,13 @@
   "date": "2026-10-16",
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
+ },
+ "backend/data/parsed_results/2012/XC/sanfordboys_oct12.json": {
+  "parse_sha": "1b4bf3e523452d65",
+  "source_sha": "076486a8ed2dd8c2",
+  "date": "2026-10-23",
+  "by": "sonnet audit (score mismatch, 2026-10-23) (audit: source-error)",
+  "evidence": "Parse matches the source (69 rows; 'MAr' for Driver is Marshwood; 36 Scarpelli 21:27 is printed out of time order, place kept). The sheet prints a team-place list per team: Massabesic 1,2,3,5,6 (6th/7th 16,18) = 17; Marshwood 4,7,8,12,13 (14,17) = 44; Sanford 9,10,11,15,19 (21,22) = 64; Noble 20,23,24,25,26 = 118. Rule that reproduces them: only a team's first 7 runners take a team place (8th+ are skipped, so Sanford's 5th, overall 22, becomes 19 after Marshwood's 8th-10th are skipped); the checker's 67 for Sanford (9,10,11,15,22) comes from not skipping 8th+. Under that rule Mas 17, Mar 44, S 64 reproduce; Noble's rows give 21,23,24,25,26 = 119 but is printed 20,...=118: Pomereau (Noble, 20:27, overall 24) is placed team place 20 and Talbot (Sanford, 20:21, overall 23) team place 21, but Talbot finished before Pomereau, so Talbot should be 20 and Pomereau 21 (Sanford's 6th/7th are listed 21,22 and the sequence 19,20,21,22 has Talbot and Pomereau swapped). Noble 118 should be 119 by the sheet's own rows. Checker-rule: 7 runners per team take places (explains Sanford 64)."
  },
  "backend/data/parsed_results/2012/XC/sanfordgirls_oct12.json": {
   "parse_sha": "ddfe4b0515f1e99c",
@@ -15377,6 +15419,13 @@
   "date": "2026-10-16",
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
+ },
+ "backend/data/parsed_results/2012/XC/washburninvitegirls.json": {
+  "parse_sha": "269e0c57b80c6449",
+  "source_sha": "e12e05f4a70017c1",
+  "date": "2026-10-23",
+  "by": "sonnet audit (score mismatch, 2026-10-23) (audit: source-error)",
+  "evidence": "Parse matches the source (23 rows). Printed: Washburn 16, Greater Houlton Christian 59 (Fort Kent has 4 finishers, no score). Rows: Washburn 1,2,3,4,6 = 16 (matches). Fort Kent (7,9,15,19) is incomplete, so removed from the places: GHCA Destinee 5, Lauren (overall 10) -> 8, Sara (12) -> 10, Olivia (20) -> 16, Caitlin Miles (23) -> 19: 5+8+10+16+19 = 58, not 59. If Fort Kent is not removed GHCA = 5+10+12+20+23 = 70. No removal set of teams or 3-7 scorers gives 16 and 59 together; the printed 59 is one more than the sheet's rows give. The source's date (8/23/12) is also missing from the parse (date None)."
  },
  "backend/data/parsed_results/2012/XC/watervillemsgirls_sept12.json": {
   "parse_sha": "66c4146e9b606653",
@@ -16190,6 +16239,13 @@
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
  },
+ "backend/data/parsed_results/2013/XC/gng_sept27.json": {
+  "parse_sha": "948d4a2ec802339a",
+  "source_sha": "dc3bb0b7fbfd98d0",
+  "date": "2026-10-23",
+  "by": "sonnet audit (score mismatch, 2026-10-23) (audit: source-error)",
+  "evidence": "Parse matches the source (Girls 33 rows + Garcia GNG DNF unplaced; Boys 43 rows; the sheet's own Score column is parsed as tp). Rule that reproduces the sheet: remove nothing (all four teams have 5+), a team's first 5 score, only each team's first 7 get a Score/team place (8th+ blank, e.g. Faria CAPE 8th has none). Boys: GNG 1+3+8+9+10=31, MERR 2+4+6+11+18=41, CAPE 5+7+12+14+17=55 all equal the printed 31/41/55; Boys POL printed 99 but its Score column reads 13,15,21,23,25 = 97. Girls: CAPE 1+2+3+7+8=21 matches 21; MERR printed 44 but its Score column 4,5,6,12,13 = 40; POL printed 71 but 14,17,19,20,24 = 94; GNG printed 71 but 11,16,18,21,23 = 89 (POL and GNG both 71 is also impossible to be a tie here: they differ by 5 on the sheet's own Score column, and POL printed above GNG with the same total). So 4 printed totals contradict the sheet's own Score column."
+ },
  "backend/data/parsed_results/2013/XC/lalibertevarsity.json": {
   "parse_sha": "d54eaa0a42bb2130",
   "source_sha": "081b8911f7bb2400",
@@ -16791,6 +16847,13 @@
   "date": "2026-10-16",
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
+ },
+ "backend/data/parsed_results/2013/XC/scarboroughboys2_sept20.json": {
+  "parse_sha": "007c4558e1c0e0b7",
+  "source_sha": "65de13f15a415c42",
+  "date": "2026-10-23",
+  "by": "sonnet audit (score mismatch, 2026-10-23) (audit: confirmed)",
+  "evidence": "File is page 2 of a Hy-Tek two-page result (Down East Sports Timing, SCARBORO-WESTBROOK-SANFORD-CHEVERUS 9/20/2013): only finish places 53-68 (no times; Hy-Tek 'Rankings' page, tp= is the team place of the Westbrook rows 56/68 = 27/28), while the Team Scores table is for the whole race. Page 1 is scarborouighboys1_sept20.html (places 1-54 with times). Combining page 1 (54 rows) + page 2 (55-68) = 68 finishers and scoring only teams with 5+ finishers, first 7 per team taking team places, top 5 summed: Scarborough 1,2,3,5,6 = 17; Sanford 8,11,13,14,21 = 67; Cheverus 4,16,17,18,19 = 74; Westbrook 10,12,15,23,26 = 86; these equal the printed 17/67/74/86 and the printed team-place lists (Scarborough 1 2 3 5 6 9...; Sanford 8 11 13 14 21 24 25; Cheverus 4 16 17 18 19 20 22; Westbrook 10 12 15 23 26 27 28) exactly. The rows on this page cannot reproduce them alone (page 2 holds no scorers' times and none of the first 52 places), so the checker should combine the two pages or skip this page. Minor: page 2 row 54 'Brown, Matthew CHEV' and 53 'Martin, Ben' repeat page 1 rows 53/54 (Martin Sanford XC, Brown Cheverus High School); CHEV = Cheverus. Rows here carry no mark."
  },
  "backend/data/parsed_results/2014/Indoor/class_b_girls_state_ind_2014.json": {
   "parse_sha": "303c83e9c2425be2",
@@ -18122,6 +18185,13 @@
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
  },
+ "backend/data/parsed_results/2015/XC/GSA-Girls-Meet.json": {
+  "parse_sha": "a3aa4c548ebde02d",
+  "source_sha": "b67802bca1e5db60",
+  "date": "2026-10-23",
+  "by": "sonnet audit (score mismatch, 2026-10-23) (audit: source-error)",
+  "evidence": "Transcription already exists and matches the PDF. Girls 15/50 verify (top 7 per team take places, incomplete teams removed: GSA 1+2+3+4+5 = 15 (Bucksport finisher 4 removed), WA 50). Boys printed GSA 18, WA 51, Bucksport 71. Same rule gives GSA 1+2+3+5+7=18 and WA 6+9+11+12+13=51, but Bucksport (exactly 5 finishers: Gonzsy 7, Clement 24, Burbank 34, Sawyer 35, Peddle 36, all five score) has team places 4+14+17+18+19=72, not 71. Team places of the 3 scoring teams must be distinct integers; no rule that reproduces GSA 18 and WA 51 changes Bucksport's five places. One-point arithmetic slip in the printed total."
+ },
  "backend/data/parsed_results/2015/XC/Girls-CHS-XC-Homecoming-Meet-9-25-15.json": {
   "parse_sha": "565bfe37480446b3",
   "source_sha": "a841d30e3eb2ec95",
@@ -18135,6 +18205,13 @@
   "date": "2026-10-16",
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
+ },
+ "backend/data/parsed_results/2015/XC/Girls-Updated-Results-NYA1.json": {
+  "parse_sha": "90abbe21b36c18c7",
+  "source_sha": "7e661d763033382a",
+  "date": "2026-10-23",
+  "by": "sonnet audit (score mismatch, 2026-10-23) (audit: source-error)",
+  "evidence": "Parse matches the source (57 rows). Greely 38, Kennebunk 39, Maine Coast Waldorf 44 come out. Poland printed 112 with place list '20 20 21 25 26 27 28' = 20+20+21+25+26. Rows: Grenier 23rd overall = team place 20 (NYA's 3 finishers removed: 19,22 ahead), Lloyd 24 = 21, Gaul printed place 24 (duplicate of Lloyd's 24; 26:34.0 tied with Goldberg-Courtney 26) Pts printed 20 (duplicate of Grenier's). The Pts column goes 20,21,20,23: 22 is never used and MCW's Goldberg-Courtney is 23, so Gaul is team place 22. Poland = 20+21+22+25+26 = 114, not 112; the printed 112 is built from the duplicated 20."
  },
  "backend/data/parsed_results/2015/XC/GirlsMVC15Results.json": {
   "parse_sha": "4dc11c31cc667058",
@@ -18156,6 +18233,13 @@
   "date": "2026-10-19",
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
+ },
+ "backend/data/parsed_results/2015/XC/HS_MEET_9_11_2015.json": {
+  "parse_sha": "8ecb9307ceca9591",
+  "source_sha": "83e3cce8facb60de",
+  "date": "2026-10-23",
+  "by": "sonnet audit (score mismatch, 2026-10-23) (audit: source-error)",
+  "evidence": "Parse matches source (58 girls, 61 boys, Score column kept as team place). Boys 34/52/70/78 and Girls YAR 36, YORK 45, GNG 95 all come out with the sheet's rule (7 per team take team places; 8th+ blank in the Score column). Girls Fryeburg printed 62; the sheet's own Score column for FRYE is Lastra 2, Carty 3, Norkin 13, Zoe Maguire 20, Grzyb 21 (then Thompson 24, Forbes 25 as displacers) = 59. 62 only arises if Glessner (YAR 8th) and Yauch (YORK 8th) also took team places (cap 8: 2+3+13+21+23=62), which would also change GNG to 102, contradicting the printed 95 under the same sheet."
  },
  "backend/data/parsed_results/2015/XC/Islesboro-Race-Results.json": {
   "parse_sha": "e6543349f298a850",
@@ -18374,6 +18458,13 @@
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
  },
+ "backend/data/parsed_results/2015/XC/XCWinslowHS9.4.15.json": {
+  "parse_sha": "1b7b937521947ba7",
+  "source_sha": "b47836782c0bb06c",
+  "date": "2026-10-23",
+  "by": "sonnet audit (score mismatch, 2026-10-23) (audit: source-error)",
+  "evidence": "Parse matches source (42 girls, 78 boys). With 7 runners per team taking places and incomplete teams (Belfast girls, 3) removed: Girls Camden 25, Morse 74, Cony 79, Erskine 82, Winslow 103 all come out exactly; Boys Camden 45, Belfast 59, Cony 72, Morse 91, Erskine 106 come out. Boys Winslow printed 152: its five scorers (Martin 6, Witham 39, Gurney 41, N. Reynolds 43, Yang 57) take team places 6+34+36+37+40=153 (no timing ties among them or ahead that change it; the other five totals fix the rule). One-point slip in the printed Winslow total."
+ },
  "backend/data/parsed_results/2015/XC/XCWinslowJH9.23.json": {
   "parse_sha": "9764dec9ea05da60",
   "source_sha": "beb2062b4fdb087f",
@@ -18478,6 +18569,13 @@
   "date": "2026-10-16",
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
+ },
+ "backend/data/parsed_results/2015/XC/brogangirlsvarsity.json": {
+  "parse_sha": "04502141bd0e1449",
+  "source_sha": "a41f650fc0983beb",
+  "date": "2026-10-23",
+  "by": "sonnet audit (score mismatch, 2026-10-23) (audit: source-error)",
+  "evidence": "Parse matches source (19 rows). Printed: Cape Elizabeth 1-3-4-5-7=20, South Portland 2-6-8-9-11=36, Cheverus 7-11 NS, Portland 15-17 NS. Cape (1,3,4,5,7) comes out: Friberg 8th overall = 7 with Cheverus' Train (7th) removed. SP rows: Bourassa 6, Porterfield 9th->8, Duong 10th->9, Francis 12th->10 (Cheverus Train 7 and Turner 11 both removed ahead of her) = 2+6+8+9+10=35. The two printed place lists together (1,3,4,5,7 + 2,6,8,9,11) leave team place 10 unused although only 10 runners from the two scoring teams precede; SP's 11 would need Turner (Cheverus 11) to be counted while Train (Cheverus 7) is not, which the Cape list contradicts."
  },
  "backend/data/parsed_results/2015/XC/busline-boys-results.txt.json": {
   "parse_sha": "dc6c3fdbe70811c3",
@@ -19269,6 +19367,13 @@
   "date": "2026-10-16",
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
+ },
+ "backend/data/parsed_results/2015/XC/scarboroughboys2.json": {
+  "parse_sha": "12483b928165989b",
+  "source_sha": "83d48a332225f62b",
+  "date": "2026-10-23",
+  "by": "sonnet audit (score mismatch, 2026-10-23) (audit: confirmed)",
+  "evidence": "This is page 2 of a Hy-Tek results print (places 53-76 only, 24 rows) followed by the whole-race Team Scores table; places 1-52 are in backend/data/sub5_archive/2015/XC/scarboroughboys.html (parsed as scarboroughboys.json, 52 rows, no team table). Parse of this page matches the source. Scoring the two files' rows as one race (76 rows, top 7 per team, 5+ finishers): Scarborough 22 (1,2,5,6,8,9,15), Biddeford (Tigers) 58 (3,10,12,16,17,23,27), Portland (Bulldogs) 72 (4,7,19,20,22,24,26), Massabesic 77 (11,13,14,18,21,25,28), identical place lists to the printed table. Checker rule needed: a continuation page's team table is checked against the previous page's rows combined (same stem + '2')."
  },
  "backend/data/parsed_results/2015/XC/skowheganboys_sept4.txt.json": {
   "parse_sha": "01f2410fce7c1422",
@@ -20642,6 +20747,13 @@
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
  },
+ "backend/data/parsed_results/2016/XC/BrunswickBoysResults.json": {
+  "parse_sha": "dcb270de1e8594d4",
+  "source_sha": "360f4d8420ffa67c",
+  "date": "2026-10-23",
+  "by": "sonnet audit (score mismatch, 2026-10-23) (audit: confirmed)",
+  "evidence": "Parse matches source (82 rows incl. grades, TEAM names, bibs). The sheet prints a PTS column and the team-score table. Printed totals are exactly the sums of the printed PTS of each team's top five (the parse carries them as tp): Mt Ararat 2+3+6+9+14=34, Brunswick 1+5+8+10+11=35, Bath 4+12+16+21+32=85, Oxford Hills 7+23+24+26+27=107, Auburn 13+19+20+31+33=116, Tripp 1+17+29+35+36=118. Rule: PTS ranks only each team's first 7 runners (8th+ get 0) and Jonathan Schomaker (Tripp, tied 2nd with Satterfield at 10:20.4) takes PTS 1 for Tripp without displacing anyone else (everyone behind him is one lower: Tirrell place 18 = pts 17). Verified by script: field = top 7 per team, minus Schomaker -> 35/34/85/107/116, Tripp 1+17+29+35+36. The checker misses it because the PTS column repeats 1 (Patterson and Schomaker), so a printed-points column is not taken as-is. 6 of 6 teams reproduce by printed points."
+ },
  "backend/data/parsed_results/2016/XC/BrunswickGirlsResults.json": {
   "parse_sha": "f22b947bbe3c3790",
   "source_sha": "295e3ffa3d47d48f",
@@ -20894,6 +21006,13 @@
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
  },
+ "backend/data/parsed_results/2016/XC/WatervilleHSXC9_9_16.json": {
+  "parse_sha": "43321bd4eee8b760",
+  "source_sha": "1f0b016c3fdd813a",
+  "date": "2026-10-23",
+  "by": "sonnet audit (score mismatch, 2026-10-23) (audit: source-error)",
+  "evidence": "Parse matches source (77 rows; 4 DNF rows correctly absent). Printed: Oxford Hills 55, Waterville 63, Brewer 70, Hampden 71, Messalonskee 118, Winslow 155, Skowhegan 178; MCI and Spruce Mountain NS. With MCI and Spruce Mountain removed and only each team's first 7 runners taking places (the checker's cap rule), six totals reproduce exactly: OH 5,7,8,15,20=55; Waterville 2,6,9,11,35=63; Brewer 10,12,13,16,19=70; Hampden 1,4,17,23,26=71; Messalonskee 3,14,27,36,38=118; Winslow 18,24,30,40,43=155. Skowhegan's five finishers (28 Perkins, 38 Garcia, 44 Malek, 64 VanVliet, 75 Guimont) are team places 25,33,34,42,45 = 179, printed 178: one point off its own rows."
+ },
  "backend/data/parsed_results/2016/XC/WatervilleHSXC9_9_16Girls.json": {
   "parse_sha": "a7bb81b469eec245",
   "source_sha": "d59a3efaf25cf488",
@@ -20914,6 +21033,13 @@
   "date": "2026-10-16",
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
+ },
+ "backend/data/parsed_results/2016/XC/WinslowXC9.2.16Girls.json": {
+  "parse_sha": "7118a4c9fe0bee94",
+  "source_sha": "e4d309e6c514667b",
+  "date": "2026-10-23",
+  "by": "sonnet audit (score mismatch, 2026-10-23) (audit: source-error)",
+  "evidence": "Parse matches source (23 rows). Printed: Cony 18, Morse 47, Winslow 59, Belfast NS, MCI NS. With Belfast (3) and MCI (3) removed Cony team places 1,2,3,5,7 = 18 OK. Morse has only four finishers (Albertson 5, Doran 11, Durgan 12, Pryor 13) and Winslow only four (Morin 7, Rogers 10, Stevens 22, Wiswell 23): their team places sum to 4+9+10+11 = 34 and 6+8+16+17 = 47 respectively, yet the sheet prints 47 and 59, scores that would need a fifth runner each that the sheet does not list (a team with 4 finishers cannot score). Printed totals not derivable from the listed rows."
  },
  "backend/data/parsed_results/2016/XC/XC-Meet-Results-FK-8_24_16-Girls.json": {
   "parse_sha": "50670b2997a20fbf",
@@ -21048,6 +21174,13 @@
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
  },
+ "backend/data/parsed_results/2016/XC/capegirls_sept2.json": {
+  "parse_sha": "586549ca22582268",
+  "source_sha": "14b68a6ac730fbea",
+  "date": "2026-10-23",
+  "by": "sonnet audit (score mismatch, 2026-10-23) (audit: source-error)",
+  "evidence": "Parse matches the source (54 rows, places/teams/times as printed; '23;16' read 23:16). Printed Girls Team Scores: Yarmouth 25, Cape Elizabeth 38, Maine Coast 80, GNG 94, Lake Region 108. With top 5 of 5+-finisher teams scoring and 6th/7th displacing, Y 1+2+6+7+9=25, CE 3+4+8+11+12=38, MC 5+15+19+20+21=80, GNG 10+17+18+24+25=94 all come out. Lake Region has exactly 5 finishers (Blais 17, Braker 26, Chadwick 36, Toole 37, Colson 46), so all five score and their team places are fixed: 16+22+28+29+33=128, not the printed 108 (a 20-point slip; no cap/min-team rule changes it, every other team would move)."
+ },
  "backend/data/parsed_results/2016/XC/caribou-invite-boys-jv.json": {
   "parse_sha": "38e7f6364ed96646",
   "source_sha": "1b50bf67000d1f5c",
@@ -21075,6 +21208,13 @@
   "date": "2026-10-16",
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
+ },
+ "backend/data/parsed_results/2016/XC/city_meet_16.json": {
+  "parse_sha": "268d75f04b640549",
+  "source_sha": "5dc3869f3aeea32f",
+  "date": "2026-10-23",
+  "by": "sonnet audit (score mismatch, 2026-10-23) (audit: source-error)",
+  "evidence": "Boys 15/52/59 verified. Girls: printed Cheverus 29, Deering 37, Portland 59 (MGA NS). Cheverus 3+4+5+6+11=29 and Deering 1+2+8+12+14=37 come out. Portland: sheet Points column for its runners is 7,9,10,13,20 (Witkowski 20) = 59, but that column is internally broken: Deering's Tumavicus is 15 and the next scorer Callahan is printed 19, so places 16,17,18 are used by no one (the only runners between are x-marked non-scorers: Ye 16, Cott 18; MGA is NS), and every later scorer is shifted +3 (Witkowski 20, Hungerford 21, Snyder 22, Swift 23 instead of 17,18,19,20). By the sheet's own finish order Portland scores 7+9+10+13+17=56 (what the rows give). Printed 59 follows only from the shifted Points column. Parse matches source (Hackett MGA printed 14:39.9, probably 24:39.9, kept as printed)."
  },
  "backend/data/parsed_results/2016/XC/class-a-boys.txt.json": {
   "parse_sha": "501d216441841748",
@@ -23197,6 +23337,20 @@
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
  },
+ "backend/data/parsed_results/2017/XC/Lee-Academy-Girls-Results.json": {
+  "parse_sha": "44d3abadcfdb8b2c",
+  "source_sha": "29e9ff6f345e593a",
+  "date": "2026-10-23",
+  "by": "sonnet audit (score mismatch, 2026-10-23) (audit: confirmed)",
+  "evidence": "Parse matches source (36 rows). Printed: Narraguagus 48, Mattanakeuk 49, Shead 59, Washington Academy 100. Rule that reproduces all four exactly: runners of Calais (2 finishers) and Machias (6, four of them the JV Top 5) take no team places; every other runner, including those of incomplete teams Lee (4), Jonesport-Beals (1), Central (1), still displaces. Team places then: Narraguagus 4,6,9,14,15=48; Mattanakeuk 1,5,8,13,22=49; Shead 2,3,10,20,24=59; Washington Academy 7,17,23,26,27=100. The standard rules (incomplete teams removed: 44/42/49/80; all teams in: 58/61/73/124; JV removed) do not hit it. Caveat: the rule keeps incomplete teams' runners as displacers but drops Machias, which the table does not list; four decisive matches out of four, so treated as the sheet's rule."
+ },
+ "backend/data/parsed_results/2017/XC/Lee-Academy-Invitational-Results.json": {
+  "parse_sha": "4eb451eae5d400a6",
+  "source_sha": "14b82a15ef15770c",
+  "date": "2026-10-23",
+  "by": "sonnet audit (score mismatch, 2026-10-23) (audit: source-error)",
+  "evidence": "Parse matches source (55 rows; Connor Cook source mark '21.51' read 21:51, consistent with order between 20:51/21:04 and 22:03). Printed: Mattanawcook 48, Lee Academy 50, Calais 70, Washington Academy 87, Machias 117. Scoring varsity (JV Top 5 Brooks, Cormier, Tibbetts, Sumner, Gadwah removed) and incomplete teams (Jonesport-Beals 2, Schenck 1, Narraguagus 1 left, Central 0, Dexter 0) removed: Mattanawcook team places 5,6,7,12,18 = 48 OK and Lee 4,9,10,13,14 = 50 OK. The other three do not come out from the sheet's own rows: Calais team places 2,3,15,19,35 = 74 (printed 70); Washington Academy 1,11,17,28,32 = 89 (printed 87); Machias 8,20,24,26,29 = 107 (printed 117, and Machias would still be last). No cap, JV, incomplete-team combination or one/two-runner school swap reproduces all five."
+ },
  "backend/data/parsed_results/2017/XC/LisbonGirslScores.json": {
   "parse_sha": "e25186ad5797aeba",
   "source_sha": "685db8986765cdd1",
@@ -23714,6 +23868,13 @@
   "date": "2026-10-16",
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
+ },
+ "backend/data/parsed_results/2017/XC/erskine_sept27.json": {
+  "parse_sha": "63e5de3bd4056167",
+  "source_sha": "bf0b53de79a8f4c8",
+  "date": "2026-10-23",
+  "by": "sonnet audit (score mismatch, 2026-10-23) (audit: source-error)",
+  "evidence": "Parse matches source: boys 24 rows, girls 21 rows (Madison Carter 26:21.6 sits at place 20 after 34:54.8 as printed; leaving as printed). Sheet has a team-place column and prints two blocks: Erskine 17 / Skowhegan 45 and Erskine 17 / Skowhegan 43. Boys by the team-place column: Erskine 1,2,3,5,6 = 17 OK; Skowhegan 4,7,9,11,12 = 43 OK. Girls: Erskine 1,2,3,5,6 = 17 OK; Skowhegan's team places are Bellrose 4, Carey Lee 9, Bonnett 10, Carter 11, Tittle 12 = 46, printed 45. Raw places confirm (girls Skowhegan after removing Nokomis/MCI/etc.). So the girls Skowhegan 45 contradicts the sheet's own team-place column (46)."
  },
  "backend/data/parsed_results/2017/XC/falmouth.json": {
   "parse_sha": "84d7a4d116b9515c",
@@ -25479,6 +25640,13 @@
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
  },
+ "backend/data/parsed_results/2018/Outdoor/scores_CAL_05_29_18.json": {
+  "parse_sha": "a9fd621097b7b534",
+  "source_sha": "a453596599302987",
+  "date": "2026-10-23",
+  "by": "auto: team scores verified exactly, all schools identified, no flags",
+  "evidence": ""
+ },
  "backend/data/parsed_results/2018/Outdoor/scores_maranacook_05_11_18-1.json": {
   "parse_sha": "b90e67d97d2373aa",
   "source_sha": "996f3a7b34d19851",
@@ -25801,6 +25969,13 @@
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
  },
+ "backend/data/parsed_results/2018/XC/LA-X-Country-Results-Boys-.json": {
+  "parse_sha": "ac1c0a0c31f5049c",
+  "source_sha": "390d7395549f9b5c",
+  "date": "2026-10-23",
+  "by": "sonnet audit (score mismatch, 2026-10-23) (audit: source-error)",
+  "evidence": "Parse matches source (41 rows, schools, times). Printed: Lee Academy 28, Calais 48, Washington Academy 54, Central 97. Scoring varsity only (the 5 Lee JV runners Garcia, E. Allard, Toby, Beach, Sprague removed) with Narraguagus(2), Mattanawcook(2), Shead(1) removed as incomplete teams: Washington Academy places 1,11,13,14,15... = 54 and Central 97 reproduce exactly. Lee's top five are then team places 2,4,5,6,8 = 25 (printed 28) and Calais 3,7,9,12,21 = 51 (printed 48); the two errors are equal and opposite (+3/-3, sum 76 both ways). No single-runner school swap, JV/incomplete-team combination or <=4-runner removal reproduces 28/48 together with 54/97. Two printed totals contradict the sheet's own finish order."
+ },
  "backend/data/parsed_results/2018/XC/LA-X-Country-Results-Girls-.json": {
   "parse_sha": "8b2aa334ed1c7fc2",
   "source_sha": "7941600e949adff1",
@@ -25856,6 +26031,13 @@
   "date": "2026-10-16",
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
+ },
+ "backend/data/parsed_results/2018/XC/Lincolnville.Meet_.9.20.18.Girls_.json": {
+  "parse_sha": "493b38454ddc14d7",
+  "source_sha": "8d3172ffd2fce2d2",
+  "date": "2026-10-23",
+  "by": "sonnet audit (score mismatch, 2026-10-23) (audit: source-error)",
+  "evidence": "Parse matches source (75 rows incl. Hazel Van Dis ICS 23:47 listed after 23:48, as printed). Printed team scores: Lincolnville 21, CRMS 34, Appleton 114, Drinkwater 133, THMS 148. With ICS (1 runner) removed as incomplete: Lincolnville team places 1,2,3,6,9 = 21 OK; CRMS 4,5,7,8,10 = 34 OK; Appleton 15,16,18,20,45 -> 114 OK; THMS 24,25,31,33,35 -> 148 OK. Drinkwater (EDS): team places 17,29,30,43,44 = 163, printed 133 (30 less; EDS's five places per the sheet's own rows sum to 163, and 163 would still be 5th/last, so the printed order 133 < THMS 148 contradicts the sheet's rows). Looks like a typo 163 -> 133."
  },
  "backend/data/parsed_results/2018/XC/Lisbon-Boys-10-5-18.json": {
   "parse_sha": "5cc19fc2d193c9ca",
