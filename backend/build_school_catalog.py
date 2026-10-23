@@ -66,7 +66,7 @@ def seed_entries():
                      curation='seed')
             if mpa:
                 e['mpa'] = mpa
-            for k in ('years', 'notes', 'successor', 'kind', 'bare_ok', 'members'):
+            for k in ('years', 'notes', 'successor', 'kind', 'bare_ok', 'members', 'middle_grades'):
                 if k in extra:
                     e[k] = extra[k]
             schools[sid] = e
@@ -174,7 +174,7 @@ HS_GRADES = {'9', '10', '11', '12', '09', 'FR', 'SO', 'JR', 'SR'}
 
 
 class Group:
-    __slots__ = ('rel', 'raw', 'year', 'season', 'ay', 'rows', 'athletes', 'level', 'gender', 'name',
+    __slots__ = ('rel', 'raw', 'year', 'season', 'ay', 'rows', 'athletes', 'level', 'meet_level', 'gender', 'name',
                  'decision', 'method', 'candidates', 'weak', 'evidence', 'flags')
 
     def __init__(self, rel, raw, year, season):
@@ -183,6 +183,7 @@ class Group:
         self.rows = 0
         self.athletes = set()
         self.level = None
+        self.meet_level = None
         self.gender = None
         self.name = None
         self.decision = None
@@ -238,6 +239,24 @@ def explicit_level(raw):
     return None
 
 
+_INDEX_MEETS = None
+
+
+def index_meet(rel):
+    """The meet name sub5's season index gives a file ('<year>/<season>/<stem>.json'), or ''."""
+    global _INDEX_MEETS
+    if _INDEX_MEETS is None:
+        _INDEX_MEETS = {}
+        try:
+            with open(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'web_meet_mapping.json'), encoding='utf-8') as fh:
+                for k, v in json.load(fh).items():
+                    if isinstance(v, dict) and v.get('meet'):
+                        _INDEX_MEETS[os.path.splitext(k)[0]] = v['meet']
+        except (OSError, ValueError):
+            pass
+    return _INDEX_MEETS.get(os.path.splitext(rel)[0].replace(os.sep, '/'), '')
+
+
 def row_levels(rows):
     """Meet level for every row, decided per race (file + event), strongest signal first:
       1. the event name ('Girls 2 Mile Middle School', 'Class A', 'Varsity')
@@ -263,7 +282,9 @@ def row_levels(rows):
     lv_of = {}
     for (rel, ev), d in race.items():
         lv = None
-        if rel in FILE_MS:
+        if rel in FILE_MS and (os.path.basename(rel).startswith('ms-') or d['ex']['ms'] or d['ex']['hs'] < 3):
+            # (a sub5 parse's tag can come from the venue line - 'Troy Howard Middle School, Belfast'
+            # hosted the 2004 state meet - so school strings that say high school outrank it)
             lv = 'ms'
         elif EVENT_MS.search(ev):
             lv = 'ms'
@@ -280,6 +301,14 @@ def row_levels(rows):
         if lv is None:
             stem_ = os.path.splitext(os.path.basename(rel))[0]
             lv = sc.meet_level(stem_)
+        if lv is None:
+            # the sub5 index's meet title, before its venue and race list, when it says junior high or
+            # middle school and nothing else ('Junior High Meet at Waterville: Girls - Boys'; never
+            # 'XC Meet at Troy Howard Middle School' or 'Scarborough Invitational - Girls Middle School - ... Varsity')
+            title = re.split(r'\s+at\s+|:', index_meet(rel), 1)[0]
+            if re.search(r'(?i)\b(junior high|jr\.? high|middle school)\b', title) and \
+                    not re.search(r'(?i)high school|varsity|\bjv\b|\bhs\b|class [a-d]\b', title):
+                lv = 'ms'
         lv_of[(rel, ev)] = lv
     # meet-name fallback (needs a row to read the meet name)
     out = []
@@ -313,6 +342,8 @@ def build_groups(rows, idx, levels):
     by_name = {e['name']: k for k, e in idx.schools.items()}
     MG_TWIN = {by_name[e['name'][:-16]]: k for k, e in idx.schools.items()   # 'X' -> 'X (middle grades)'
                if e.get('level') == 'ms' and e['name'].endswith(' (middle grades)') and e['name'][:-16] in by_name}
+    # a high school whose middle grades are a school of another name ('Valley' -> Upper Kennebec Valley MS)
+    MG_TWIN.update({k: e['middle_grades'] for k, e in idx.schools.items() if e.get('middle_grades') in idx.schools})
     for r, lvl in zip(rows, levels):
         year, season, rel, meet, date, ev, gender, relay, ath, school, grade = r[:11]
         raw = clean_raw(school)
@@ -335,6 +366,7 @@ def build_groups(rows, idx, levels):
     for g in groups.values():
         grades = g.name
         tot = grades['ms'] + grades['hs']
+        g.meet_level = g.level   # the race's own level, before the group's grades fill it in
         if g.level is None and tot >= 3 and grades['ms'] / tot >= 0.8:
             g.level = 'ms'
         gender = g.gender.most_common(1)[0][0] if g.gender else None
@@ -358,7 +390,7 @@ def build_groups(rows, idx, levels):
                 g.name = (sid, method, cands, True)
             # a K-12 school's own name in a middle-school race is its middle grades' entry
             # ('Islesboro Central School' in a grades 4-8 meet -> 'Islesboro Central School (middle grades)')
-            if sid and g.level == 'ms' and idx.schools[sid].get('level') == 'hs' and explicit_level(g.raw) != 'hs':
+            if sid and g.meet_level == 'ms' and idx.schools[sid].get('level') == 'hs' and explicit_level(g.raw) != 'hs':
                 twin = MG_TWIN.get(sid)
                 if twin:
                     g.name = sid, method, cands, weak = (twin, method + '+middle-grades', [twin], False)
@@ -520,13 +552,22 @@ def decide(groups, schools, passes=3):
                 if base in ('exact', 'stem') and same_level and 'level-context' not in g.method:
                     # an exact full-name match is kept, but the conflict is reported
                     continue
-                if not same_level and (g.level or sc.level_of(sc.norm(g.raw))):
+                to_meet_level = schools[g.decision].get('level') in ('ms', 'hs') and \
+                    schools.get(top, {}).get('level') == g.level
+                if not same_level and (g.level or sc.level_of(sc.norm(g.raw))) and not to_meet_level:
                     # the level came from the meet or the string itself; athletes seen at another
                     # level the same year are more likely a mis-levelled file elsewhere: report only
+                    # (athletes at the meet's own level correct a name matched at the other level)
                     continue
                 g.decision, g.method, g.weak = top, f'athlete-continuity (overrode {g.method})', False
                 changed += 1
             elif strong_ev:
+                lv_top = schools.get(top, {}).get('level')
+                if g.meet_level in ('ms', 'hs') and lv_top in ('ms', 'hs') and lv_top != g.meet_level:
+                    # the race's level is known: middle schoolers seen later at the high school
+                    # ('Deer Isle St' in a middle-school league race) stay at their level (a group
+                    # graded 'MS' in a varsity race is the high school's middle schoolers: not this)
+                    continue
                 prev = g.decision
                 how = 'athlete-continuity'
                 if g.candidates and top in g.candidates:

@@ -525,7 +525,7 @@ def meet_level(meet_name: str = None, grade=None):
         # "ms-<slug>": a MileSplit transcription's file prefix, not "middle school"
         low = re.sub(r'[-_.]+', ' ', re.sub(r'^ms-(?=[a-z0-9])', '', meet_name).lower())
         low = re.sub(r'\bst\.? doms?\b', 'st dominic', low)   # "St. Doms" is a school, not an MS code
-        if re.search(r'\bms\b|\bjh\b|middle school|junior high|elementary|middle(?!ton|bury|sex|boro)|^jh|xcjh|jh(?:xc|cc|boys|girls|champ|meet)|[a-z]ms(\b|\d)|'
+        if re.search(r'\bms\b|\bjh\b|middle school|junior high|elementary|middle(?!ton|bury|sex|boro)|^jh|xcjh|juniorhigh|jh(?:xc|cc|boys|girls|champ|meet)|[a-z]ms(\b|\d)|'
                      r'ms(boys|girls|invite|inv|xc|cc|champ|meet|results)|(boys|girls)ms\b', low):
             return 'ms'
         if re.search(r'\bcollege\b|university|collegiate|gnac|nescac|nescac|\bnaia\b|\bncaa\b', low):

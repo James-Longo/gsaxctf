@@ -1530,6 +1530,7 @@ def test_meet_level_ignores_milesplit_prefix():
     assert sc.meet_level('XCJH21.09.29results-1 GIRLS RESULTS') == 'ms'
     assert sc.meet_level('19.09.11XCJHBOYS') == 'ms'
     assert sc.meet_level('XCHSWtvlWins22.09.09GIRLSFINAL') is None
+    assert sc.meet_level('watervilljuniorhigh_sept11') == 'ms'
 
 
 def test_xc_course_model_keeps_milesplit_meets():

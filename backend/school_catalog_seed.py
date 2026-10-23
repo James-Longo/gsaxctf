@@ -302,7 +302,8 @@ ME_HS = [
       'No. Yarmouth Academy'], ['NYA'], ['Panthers'], {}),
     ('me-hs-richmond', 'Richmond High School', 'Richmond', 'Richmond',
      ['Richmond', 'Richmond HS', 'Richmond High'], ['RICH', 'RIC'], ['Bobcats'], {}),
-    ('me-hs-valley', 'Valley High School', 'Bingham', 'Valley', ['Valley', 'Valley HS'], [], ['Cavaliers'], {}),
+    ('me-hs-valley', 'Valley High School', 'Bingham', 'Valley', ['Valley', 'Valley HS'], [], ['Cavaliers'],
+     {'middle_grades': 'me-ms-upper-kennebec'}),
     ('me-hs-forest-hills', 'Forest Hills Consolidated School', 'Jackman', 'Forest Hills',
      ['Forest Hills', 'Forest Hills HS'], [], ['Tigers'], {}),
     ('me-hs-maine-coast-waldorf', 'Maine Coast Waldorf School', 'Freeport', 'Maine Coast Waldorf',
@@ -396,7 +397,8 @@ ME_HS = [
     ('me-hs-means', 'Maine Academy of Natural Sciences', 'Hinckley', None,
      ['Maine Academy of Natural Sciences', 'MeANS'], [], [], {}),
     ('me-hs-upper-kennebec', 'Upper Kennebec Valley Junior-Senior High School', 'Bingham', None,
-     ['Upper Kennebec Valley', 'Upper Kennebec', 'Upper Kenneb'], [], [], {'successor': 'me-hs-valley'}),
+     ['Upper Kennebec Valley', 'Upper Kennebec', 'Upper Kenneb'], [], [],
+     {'successor': 'me-hs-valley', 'middle_grades': 'me-ms-upper-kennebec'}),
     ('me-hs-st-thomas', 'Saint Thomas Aquinas', 'Dover-Foxcroft', None, [], [], [], {}),
     ('me-hs-elan', 'Elan School', 'Poland', None,
      ['Elan', 'Elan School', 'The Elan School', 'ELAN School'], ['ELAN'], [],
@@ -745,8 +747,11 @@ ME_MS = [
     ('me-ms-bristol', 'Bristol Consolidated School', 'Pemaquid', None, ['Bristol Consolidated School', 'Bristol Consolidated'], [], [], {}),
     # middle schools first seen in MileSplit's 2026 cross-country results
     ('me-ms-mountain-view-pvmscc', 'Mountain View School', None, None, ['Mountain View School', 'Mountain View MS'], [], [], {}),
+    # Bingham's middle grades: 'Quimby (Valley) Middle School' in 2011; 'Valley' / 'Upper Kenneb' in the
+    # junior-high meets (the Hartwells and Lays of 2024-26, Levi Short and Harry Louis of 2021)
     ('me-ms-upper-kennebec', 'Upper Kennebec Valley Middle School', 'Bingham', None,
-     ['Upper Kennebec Valley Middle School', 'Upper Kennebec Valley MS', 'Upper Kennebec MS', 'UKV MS'], [], [], {}),
+     ['Upper Kennebec Valley Middle School', 'Upper Kennebec Valley MS', 'Upper Kennebec MS', 'UKV MS',
+      'Quimby (Valley) Middle School'], [], [], {}),
     ('me-ms-south-portland', 'South Portland Middle School', 'South Portland', None,
      ['South Portland Middle School', 'South Portland MS'], [], [], {}),
     ('me-ms-friends-portland', 'Friends School of Portland', 'Falmouth', None, ['Friends School of Portland', 'Friends School'], [], [], {}),
@@ -1349,6 +1354,11 @@ FILE_RULES = [
     # shared codes (school_catalog.shared_codes()) placed per meet, 2026-10-19: the meet's conference
     # and its runners' other meets that season settle each one
     (['FA'], 'Outdoor', (2011, 2011), r'^wellsgirls_may3$', 'me-hs-fryeburg'),            # WMC meet; 33/36 runners Fryeburg elsewhere
+    (['Spruce'], 'XC', (2021, 2021), r'^cal-?xc-?championships?(boys|girls)$', 'me-ms-spruce-mountain'),   # CAL Junior High Championship; its runners Spruce Mountain MS elsewhere
+    (['GREE'], 'XC', (2018, 2018), r'^MS_MEET_9_20_2018$', 'me-ms-greely'),            # 2-mile middle-school meet at GNG (Gray-NG, Whittier, Molly Ockett, St. Dom's MS)
+    (['LR'], 'XC', (2018, 2018), r'^MS_MEET_9_20_2018$', 'me-ms-lake-region'),         # same meet
+    (['MO'], 'XC', (2015, 2017), r'^MS_MEET_9_10_2015$|^MS_MEET_9_19_2017$', 'me-ms-molly-ockett'),   # GNG middle-school meets; MO is Molly Ockett in the 2018 one
+    (['JS'], 'XC', (2017, 2017), r'^MS_MEET_10_12_2017$', 'me-ms-jordan-small'),        # GNG middle-school meet; its runners 'Raymond' (Jordan-Small MS) elsewhere
     (['FA'], 'XC', (2006, 2006), r'^lakeregion10_6$|^yarmouth9_15(girls|boys)$', 'me-hs-fryeburg'),   # WMC (meet title names Fryeburg Academy)
     (['FA'], 'XC', (2011, 2011), r'^fryeburggirls_sept9$', 'me-hs-fryeburg'),          # Fryeburg's home meet
     (['FA'], 'XC', (2013, 2013), r'Presque%20Isle%20invite%209-14-2013', 'me-hs-foxcroft'),   # PVC field; 149 rows Foxcroft elsewhere
