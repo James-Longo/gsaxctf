@@ -1526,6 +1526,10 @@ def test_meet_level_ignores_milesplit_prefix():
     assert sc.meet_level('ms-madison-junior-high-cross-country-invitational-meet-2026') == 'ms'
     assert sc.meet_level('MS_MEET_10_12_2017') == 'ms'
     assert sc.meet_level('ms-girls-78 Southern Maine Middle School XC Festival Meet') == 'ms'
+    # Waterville's junior-high files put XC before JH ('XCJH21.09.29results-1', '19.09.11XCJHBOYS')
+    assert sc.meet_level('XCJH21.09.29results-1 GIRLS RESULTS') == 'ms'
+    assert sc.meet_level('19.09.11XCJHBOYS') == 'ms'
+    assert sc.meet_level('XCHSWtvlWins22.09.09GIRLSFINAL') is None
 
 
 def test_xc_course_model_keeps_milesplit_meets():
