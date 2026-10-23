@@ -549,8 +549,12 @@ def decide(groups, schools, passes=3):
                 if flag not in g.flags:
                     g.flags.append(flag)
                 same_level = schools[g.decision]['level'] == schools.get(top, {}).get('level')
-                if base in ('exact', 'stem') and same_level and 'level-context' not in g.method:
-                    # an exact full-name match is kept, but the conflict is reported
+                if base in ('exact', 'stem') and same_level and 'level-context' not in g.method \
+                        and not (g.decision.startswith('oos-auto') and
+                                 not re.search(r'\S\s*[-,(]?\s*\b(VT|NH|MA|RI|CT|NY)\)?$', g.raw or '')):
+                    # an exact full-name match is kept, but the conflict is reported (not a match to an
+                    # automatic out-of-state entry named by a bare string: 'Lincoln' (RI) for Lincoln Academy;
+                    # a printed state, 'Lake Region VT', stays)
                     continue
                 to_meet_level = schools[g.decision].get('level') in ('ms', 'hs') and \
                     schools.get(top, {}).get('level') == g.level

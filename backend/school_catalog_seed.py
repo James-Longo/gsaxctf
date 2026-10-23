@@ -1355,7 +1355,11 @@ FILE_RULES = [
     # and its runners' other meets that season settle each one
     (['FA'], 'Outdoor', (2011, 2011), r'^wellsgirls_may3$', 'me-hs-fryeburg'),            # WMC meet; 33/36 runners Fryeburg elsewhere
     (['Spruce'], 'XC', (2021, 2021), r'^cal-?xc-?championships?(boys|girls)$', 'me-ms-spruce-mountain'),   # CAL Junior High Championship; its runners Spruce Mountain MS elsewhere
-    (['GREE'], 'XC', (2018, 2018), r'^MS_MEET_9_20_2018$', 'me-ms-greely'),            # 2-mile middle-school meet at GNG (Gray-NG, Whittier, Molly Ockett, St. Dom's MS)
+    (['GREE'], 'XC', (2017, 2018), r'^MS_MEET_10_12_2017$|^MS_MEET_9_20_2018$', 'me-ms-greely'),
+    (['M'], 'XC', (2009, 2009), r'^massabesicboys_(sept11|oct9)$', 'me-hs-massabesic'),   # '... @ Massabesic' (the girls' files of these meets: Massabesic)
+    (['w'], 'XC', (2010, 2010), r'^messalonskeeboys_sept17$', 'me-hs-waterville'),        # every other W on the sheet is Waterville
+    (['Sc'], 'XC', (2011, 2011), r'^massabesicgirls_sept9$', 'me-hs-scarborough'),        # Massabesic-Scarborough dual; 'SC' beside it
+    (['N'], 'XC', (2009, 2009), r'^noble(boys|girls)_oct16$', 'me-hs-noble'),           # index: 'Noble, Marshwood, Massabesic, Sanford'            # 2-mile middle-school meet at GNG (Gray-NG, Whittier, Molly Ockett, St. Dom's MS)
     (['LR'], 'XC', (2018, 2018), r'^MS_MEET_9_20_2018$', 'me-ms-lake-region'),         # same meet
     (['MO'], 'XC', (2015, 2017), r'^MS_MEET_9_10_2015$|^MS_MEET_9_19_2017$', 'me-ms-molly-ockett'),   # GNG middle-school meets; MO is Molly Ockett in the 2018 one
     (['JS'], 'XC', (2017, 2017), r'^MS_MEET_10_12_2017$', 'me-ms-jordan-small'),        # GNG middle-school meet; its runners 'Raymond' (Jordan-Small MS) elsewhere
