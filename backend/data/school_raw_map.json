@@ -1,10 +1,10 @@
 {
 "_meta": {
 "methods_by_rows": {
-"exact/alias": 1687030,
+"exact/alias": 1686993,
 "code": 263613,
 "truncation": 120168,
-"athlete-continuity": 60603,
+"athlete-continuity": 61028,
 "mascot": 28481,
 "bare name + level context": 23861,
 "unresolved": 19625,
@@ -12,7 +12,7 @@
 "co-op label": 12527,
 "state-tagged (auto entry)": 11222,
 "spelling (fuzzy)": 3580,
-"file-expansion": 3495,
+"file-expansion": 3107,
 "blank": 2331,
 "debris-salvage": 1767,
 "ambiguous": 1215,
@@ -28,7 +28,7 @@
 "debris-salvage": 913,
 "code": 811,
 "debris": 805,
-"athlete-continuity": 601,
+"athlete-continuity": 602,
 "truncation": 545,
 "spelling (fuzzy)": 307,
 "co-op label": 79,
@@ -36,7 +36,7 @@
 "manual (file rule)": 49,
 "mascot": 44,
 "ambiguous": 38,
-"file-expansion": 16,
+"file-expansion": 15,
 "later-hs": 3
 },
 "distinct_strings": 12471,
@@ -1485,8 +1485,8 @@
 "id": "me-hs-winslow",
 "method": "exact",
 "by_id": {
-"me-hs-winslow": 6345,
-"me-ms-winslow": 1475
+"me-hs-winslow": 6330,
+"me-ms-winslow": 1490
 },
 "context_dependent": true,
 "by_level": {
@@ -3854,8 +3854,8 @@
 "id": "me-hs-madison",
 "method": "exact",
 "by_id": {
-"me-hs-madison": 2580,
-"me-ms-madison": 399
+"me-hs-madison": 2555,
+"me-ms-madison": 424
 },
 "context_dependent": true,
 "by_level": {
@@ -11008,11 +11008,8 @@
 2022
 ],
 "id": "me-ms-waterville",
-"method": "file-expansion (was unresolved)",
-"flags": [
-"file expansion: None -> me-ms-waterville"
-],
-"how": "file-expansion"
+"method": "athlete-continuity",
+"how": "athlete-continuity"
 },
 "Tripp Middle School": {
 "rows": 544,
@@ -19862,10 +19859,6 @@
 ],
 "id": "me-ms-waterville",
 "method": "exact",
-"flags": [
-"athletes contradict name match (me-ms-waterville -> me-hs-waterville, 4/8)",
-"athletes contradict name match (me-ms-waterville -> me-hs-waterville, 8/8)"
-],
 "how": "exact/alias"
 },
 "Leavitt High School": {
@@ -21274,9 +21267,6 @@
 ],
 "id": "me-ms-winslow",
 "method": "exact",
-"flags": [
-"athletes contradict name match (me-ms-winslow -> me-hs-winslow, 7/7)"
-],
 "how": "exact/alias"
 },
 "Searsport District High School": {
@@ -35231,6 +35221,9 @@
 "XC": "me-ms-madison",
 "Outdoor": "me-hs-madison"
 },
+"flags": [
+"athletes contradict name match (me-hs-madison -> me-ms-madison, 12/12)"
+],
 "how": "athlete-continuity"
 },
 "John Bapst Memoria High School": {
@@ -226918,14 +226911,14 @@
 "MA": "me-hs-mattanawcook"
 },
 "2021/XC/XCJH21.09.22results": {
-"Madison": "me-hs-madison",
+"Madison": "me-ms-madison",
 "Waterville": "me-ms-waterville",
-"Winslow": "me-hs-winslow"
+"Winslow": "me-ms-winslow"
 },
 "2021/XC/XCJH21.09.29results-1": {
-"Madison": "me-hs-madison",
+"Madison": "me-ms-madison",
 "Waterville": "me-ms-waterville",
-"Winslow": "me-hs-winslow"
+"Winslow": "me-ms-winslow"
 },
 "2021/XC/aboysnorth.txt": {
 "Brunswick": "me-hs-brunswick",
@@ -238725,9 +238718,9 @@
 "HoultonGreater Houlton": {
 "id": "coop-houlton-ghca",
 "held": {
-"coop-houlton-ghca": 2468,
+"coop-houlton-ghca": 2464,
 "me-hs-houlton": 622,
-"me-hs-greater-houlton-christian": 193
+"me-hs-greater-houlton-christian": 189
 }
 },
 "HoultonHodgdonGHCA": "coop-houlton-hodgdon",
@@ -238754,7 +238747,6 @@
 "id": "oos-auto-ct-immaculate-danbury",
 "basis": "name only (no joined rows)"
 },
-"IncrediBells": null,
 "Independ": "oos-auto-vt-independ",
 "Indian Island School": "me-ms-indian-island",
 "Indoor TF": null,
@@ -238777,7 +238769,6 @@
 "Isobel W": null,
 "JACQ": null,
 "JH Gillis Regional High School": "oos-ns-j-h-gillis-regional-high-school",
-"Jab": null,
 "James F Doughty School": "me-ms-doughty",
 "Janakis": null,
 "Jay High School": "me-hs-jay",
@@ -239024,7 +239015,6 @@
 "MJR MTA": null,
 "MKennebunk": null,
 "MLangley Afb": null,
-"MM": null,
 "MSO Lewiston XC": null,
 "MSR BRUN": null,
 "MSR MTA": null,
@@ -239957,7 +239947,6 @@
 "WBrewer": null,
 "WBucksport": null,
 "WDedham": "me-ms-dedham",
-"WE Cheated": null,
 "WHolden": "me-ms-dedham",
 "WIS": null,
 "WKennebunk": null,
@@ -240000,7 +239989,6 @@
 },
 "Waterville Junior High School": "me-ms-waterville",
 "Waterville Senior High School": "me-hs-waterville",
-"Waydsb": null,
 "Wayland": "oos-auto-ma-wayland",
 "Waynflete School": "me-hs-waynflete",
 "Waynflete School middle grades": "me-ms-waynflete",
@@ -240184,7 +240172,6 @@
 "id": null,
 "basis": "name only (no joined rows)"
 },
-"dunkin": null,
 "dward Little High Sc": {
 "id": null,
 "basis": "name only (no joined rows)"
@@ -240309,12 +240296,10 @@
 "id": null,
 "basis": "name only (no joined rows)"
 },
-"power rangers": null,
 "raiders": {
 "id": null,
 "basis": "name only (no joined rows)"
 },
-"rainbow soccer": null,
 "reely High Scho": {
 "id": null,
 "basis": "name only (no joined rows)"
@@ -240353,7 +240338,6 @@
 "id": null,
 "basis": "name only (no joined rows)"
 },
-"team Martin": null,
 "tral High School": {
 "id": null,
 "basis": "name only (no joined rows)"
