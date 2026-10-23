@@ -2,15 +2,15 @@
 "_meta": {
 "methods_by_rows": {
 "exact/alias": 1687639,
-"code": 262274,
+"code": 262235,
 "truncation": 120490,
-"athlete-continuity": 61370,
+"athlete-continuity": 61817,
 "mascot": 28481,
 "bare name + level context": 23911,
-"unresolved": 19851,
-"manual (file rule)": 15173,
+"unresolved": 19829,
+"manual (file rule)": 15238,
 "co-op label": 12527,
-"state-tagged (auto entry)": 11176,
+"state-tagged (auto entry)": 10725,
 "spelling (fuzzy)": 3580,
 "file-expansion": 2857,
 "blank": 2331,
@@ -22,13 +22,13 @@
 "co-op label -> host (co-op not active)": 183
 },
 "methods_by_strings": {
-"exact/alias": 4072,
-"unresolved": 2549,
-"state-tagged (auto entry)": 1573,
+"exact/alias": 4073,
+"unresolved": 2547,
+"state-tagged (auto entry)": 1571,
 "debris-salvage": 913,
 "code": 807,
 "debris": 804,
-"athlete-continuity": 606,
+"athlete-continuity": 609,
 "truncation": 547,
 "spelling (fuzzy)": 307,
 "co-op label": 79,
@@ -5209,15 +5209,14 @@
 "method": "athlete-continuity",
 "by_id": {
 "me-hs-marshwood": 508,
+"me-hs-massabesic": 415,
 "None": 411,
-"me-hs-massabesic": 361,
 "me-ms-marshwood": 158,
 "me-hs-monmouth": 121,
 "me-hs-maine-coast-waldorf": 121,
 "me-hs-mcauley": 101,
 "me-ms-monmouth": 87,
 "me-hs-madison": 84,
-"me-hs-mt-blue": 54,
 "me-hs-messalonskee": 15,
 "me-hs-morse": 13,
 "me-hs-medomak": 4,
@@ -6260,11 +6259,12 @@
 2003,
 2024
 ],
-"id": "oos-auto-ri-lincoln",
-"method": "exact",
+"id": "me-ms-lincoln-portland",
+"method": "exact+level-context",
 "by_id": {
-"oos-auto-ri-lincoln": 678,
 "me-ms-lincoln-portland": 656,
+"me-hs-lincoln-academy": 407,
+"oos-auto-ri-lincoln": 271,
 "me-ms-mattanawcook": 180
 },
 "context_dependent": true,
@@ -6273,8 +6273,8 @@
 "ms": "me-ms-lincoln-portland"
 },
 "by_season": {
-"Indoor": "oos-auto-ri-lincoln",
-"Outdoor": "oos-auto-ri-lincoln",
+"Indoor": "me-hs-lincoln-academy",
+"Outdoor": "me-ms-lincoln-portland",
 "XC": "me-ms-lincoln-portland"
 },
 "flags": [
@@ -6284,7 +6284,7 @@
 "athletes contradict name match (me-ms-mattanawcook -> me-ms-lincoln-portland, 20/29)",
 "athletes contradict name match (oos-auto-ri-lincoln -> me-hs-lincoln-academy, 10/10)"
 ],
-"how": "state-tagged (auto entry)"
+"how": "exact/alias"
 },
 "Bucksport High School": {
 "rows": 1492,
@@ -7407,10 +7407,15 @@
 "id": "me-hs-greely",
 "method": "code",
 "by_id": {
-"me-hs-greely": 1083,
-"me-ms-greely": 150
+"me-hs-greely": 1060,
+"me-ms-greely": 173
 },
 "context_dependent": true,
+"by_season": {
+"Outdoor": "me-hs-greely",
+"XC": "me-ms-greely",
+"Indoor": "me-hs-greely"
+},
 "flags": [
 "athletes contradict name match (me-hs-greely -> me-ms-greely, 7/9)"
 ],
@@ -8400,12 +8405,13 @@
 "id": "me-hs-mt-blue",
 "method": "code",
 "by_id": {
-"me-hs-mt-blue": 926,
-"me-hs-massabesic": 7
+"me-hs-mt-blue": 910,
+"me-hs-massabesic": 23
 },
 "context_dependent": true,
 "flags": [
-"athletes contradict name match (me-hs-mt-blue -> me-hs-massabesic, 2/2)"
+"athletes contradict name match (me-hs-mt-blue -> me-hs-massabesic, 2/2)",
+"athletes contradict name match (me-hs-mt-blue -> me-hs-massabesic, 2/3)"
 ],
 "how": "code"
 },
@@ -12002,12 +12008,12 @@
 "id": "me-hs-scarborough",
 "method": "athlete-continuity",
 "by_id": {
-"me-hs-scarborough": 309,
-"None": 108,
+"me-hs-scarborough": 310,
+"None": 107,
 "me-ms-scarborough": 20
 },
 "context_dependent": true,
-"unresolved_rows": 108,
+"unresolved_rows": 107,
 "how": "athlete-continuity"
 },
 "Worcester St": {
@@ -12958,13 +12964,13 @@
 "id": "me-hs-noble",
 "method": "athlete-continuity",
 "by_id": {
-"me-hs-noble": 152,
+"me-hs-noble": 156,
 "me-ms-noble": 121,
-"None": 107,
+"None": 103,
 "me-hs-nya": 3
 },
 "context_dependent": true,
-"unresolved_rows": 107,
+"unresolved_rows": 103,
 "how": "athlete-continuity"
 },
 "YO": {
@@ -35731,14 +35737,19 @@
 2005,
 2019
 ],
-"id": "oos-auto-ma-gardner",
-"method": "exact",
+"id": "me-hs-gardiner",
+"method": "athlete-continuity (overrode exact)",
+"by_id": {
+"me-hs-gardiner": 39,
+"oos-auto-ma-gardner": 3
+},
+"context_dependent": true,
 "flags": [
 "athletes contradict name match (oos-auto-ma-gardner -> me-hs-gardiner, 13/13)",
 "athletes contradict name match (oos-auto-ma-gardner -> me-hs-gardiner, 2/2)",
 "athletes contradict name match (oos-auto-ma-gardner -> me-hs-gardiner, 6/6)"
 ],
-"how": "state-tagged (auto entry)"
+"how": "athlete-continuity"
 },
 "Barrington-RI": {
 "rows": 42,
@@ -47454,7 +47465,7 @@
 "context_dependent": true,
 "flags": [
 "athletes contradict name match (oos-ct-staples-high-school -> oos-auto-ct-unattached, 2/2)",
-"company: oos-auto-ct-unattached (1.40) -> oos-ct-staples-high-school (82.25)"
+"company: oos-auto-ct-unattached (1.40) -> oos-ct-staples-high-school (82.19)"
 ],
 "how": "exact/alias"
 },
@@ -53382,6 +53393,15 @@
 ],
 "id": "oos-auto-nh-merrimack-va",
 "method": "exact",
+"by_id": {
+"oos-auto-nh-merrimack-va": 11,
+"oos-auto-nh-merrimack-valley": 5
+},
+"context_dependent": true,
+"by_season": {
+"XC": "oos-auto-nh-merrimack-va",
+"Outdoor": "oos-auto-nh-merrimack-valley"
+},
 "flags": [
 "athletes contradict name match (oos-auto-nh-merrimack-va -> oos-auto-nh-merrimack-valley, 2/2)"
 ],
@@ -58902,9 +58922,15 @@
 2004,
 2004
 ],
-"id": null,
-"method": "unresolved",
-"how": "unresolved"
+"id": "me-hs-lincoln-academy",
+"method": "athlete-continuity",
+"by_id": {
+"me-hs-lincoln-academy": 9,
+"None": 3
+},
+"context_dependent": true,
+"unresolved_rows": 3,
+"how": "athlete-continuity"
 },
 "Gorham High School indoor tra": {
 "rows": 12,
@@ -70882,9 +70908,9 @@
 2003,
 2003
 ],
-"id": null,
-"method": "unresolved",
-"how": "unresolved"
+"id": "me-hs-lincoln-academy",
+"method": "athlete-continuity",
+"how": "athlete-continuity"
 },
 "Catskills Cougars": {
 "rows": 7,
@@ -79843,10 +79869,11 @@
 "method": "athlete-continuity",
 "by_id": {
 "me-hs-westbrook": 3,
-"None": 2
+"None": 1,
+"me-hs-waterville": 1
 },
 "context_dependent": true,
-"unresolved_rows": 2,
+"unresolved_rows": 1,
 "how": "athlete-continuity"
 },
 "Central HS": {
@@ -171471,7 +171498,7 @@
 "Gorham": "me-hs-gorham",
 "Greely": "me-hs-greely",
 "Lake Region": "me-hs-lake-region",
-"Lincoln": "oos-auto-ri-lincoln",
+"Lincoln": "me-hs-lincoln-academy",
 "Maranacook": "me-hs-maranacook",
 "Mountain Valley": "me-hs-mountain-valley",
 "Poland": "me-hs-poland",
@@ -171531,7 +171558,7 @@
 "Gorham": "me-hs-gorham",
 "Greely": "me-hs-greely",
 "Lake Region": "me-hs-lake-region",
-"Lincoln": "oos-auto-ri-lincoln",
+"Lincoln": "me-hs-lincoln-academy",
 "Maranacook": "me-hs-maranacook",
 "Poland": "me-hs-poland",
 "Wells": "me-hs-wells",
@@ -171786,10 +171813,12 @@
 },
 "2004/Indoor/kvacboys": {
 "Hall Dale": "me-hs-hall-dale",
+"Lin Acad": null,
 "Rockland": "me-hs-rockland"
 },
 "2004/Indoor/kvacgirls": {
 "Hall Dale": "me-hs-hall-dale",
+"Lin Acad": "me-hs-lincoln-academy",
 "Rockland": "me-hs-rockland"
 },
 "2004/Indoor/smaaboys": {
@@ -174525,6 +174554,7 @@
 "Wiscasset": "me-hs-wiscasset"
 },
 "2005/Outdoor/newengland05boys": {
+"Gardner": "oos-auto-ma-gardner",
 "Spaulding": "oos-auto-nh-spaulding"
 },
 "2005/Outdoor/newengland05girls": {
@@ -182423,7 +182453,7 @@
 "Cony": "me-hs-cony",
 "EL": "me-hs-edward-little",
 "Lawrence": "me-hs-lawrence",
-"Lincoln": "oos-auto-ri-lincoln",
+"Lincoln": "me-hs-lincoln-academy",
 "Messalonskee": "me-hs-messalonskee",
 "Mt. Ararat": "me-hs-mt-ararat",
 "Mt. Blue": "me-hs-mt-blue",
@@ -182433,7 +182463,7 @@
 },
 "2008/Indoor/kvacmeet10": {
 "Lawrence": "me-hs-lawrence",
-"Lincoln": "oos-auto-ri-lincoln",
+"Lincoln": "me-hs-lincoln-academy",
 "Messalonskee": "me-hs-messalonskee",
 "Mt. Blue": "me-hs-mt-blue",
 "Waterville": "me-hs-waterville"
@@ -182455,7 +182485,7 @@
 "Cony": "me-hs-cony",
 "Lawrence": "me-hs-lawrence",
 "Lewiston": "me-hs-lewiston",
-"Lincoln": "oos-auto-ri-lincoln",
+"Lincoln": "me-hs-lincoln-academy",
 "Mt Blue": "me-hs-mt-blue",
 "WIN": "me-hs-winslow"
 },
@@ -182868,14 +182898,14 @@
 },
 "2008/Outdoor/belfast4_17boys": {
 "Brewer": "me-hs-brewer",
-"Lincoln": "oos-auto-ri-lincoln",
+"Lincoln": "me-hs-lincoln-academy",
 "Lincoln Academy": "me-hs-lincoln-academy",
 "Messalonskee": "me-hs-messalonskee",
 "Messalonskee High School": "me-hs-messalonskee"
 },
 "2008/Outdoor/belfast4_17girls": {
 "Brewer": "me-hs-brewer",
-"Lincoln": "oos-auto-ri-lincoln",
+"Lincoln": "me-hs-lincoln-academy",
 "Lincoln Academy": "me-hs-lincoln-academy",
 "Messalonskee": "me-hs-messalonskee",
 "Messalonskee High School": "me-hs-messalonskee"
@@ -184028,7 +184058,7 @@
 "2008/XC/belfast9_13": {
 "Isleboro": "me-hs-islesboro",
 "Islesboro": "me-hs-islesboro",
-"Lincoln": "oos-auto-ri-lincoln",
+"Lincoln": "me-hs-lincoln-academy",
 "Medomak": "me-hs-medomak",
 "Rockland": "me-hs-rockland",
 "Winslow": "me-hs-winslow"
@@ -184539,7 +184569,7 @@
 "Lawrence": "me-hs-lawrence",
 "Lewiston": "me-hs-lewiston",
 "Limestone/MSSM": "coop-limestone-mssm",
-"Lincoln": "oos-auto-ri-lincoln",
+"Lincoln": "me-hs-lincoln-academy",
 "Lisbon": "me-hs-lisbon",
 "MDI": "me-hs-mdi",
 "Maranacook": "me-hs-maranacook",
@@ -184617,7 +184647,7 @@
 "Lawrence": "me-hs-lawrence",
 "Lewiston": "me-hs-lewiston",
 "Limestone/MSSM": "coop-limestone-mssm",
-"Lincoln": "oos-auto-ri-lincoln",
+"Lincoln": "me-hs-lincoln-academy",
 "Lisbon": "me-hs-lisbon",
 "MDI": "me-hs-mdi",
 "Maranacook": "me-hs-maranacook",
@@ -187587,7 +187617,7 @@
 "2009/XC/bonnyeagleboys_sept16": {
 "BE": "me-hs-bonny-eagle",
 "K": "me-hs-kennebunk",
-"M": "me-hs-mt-blue"
+"M": "me-hs-massabesic"
 },
 "2009/XC/bonnyeaglegirls_sept15": {
 "BE": "me-hs-bonny-eagle",
@@ -187834,7 +187864,7 @@
 "Islesboro": "me-hs-islesboro",
 "Lawrence": "me-hs-lawrence",
 "Lewiston": "me-hs-lewiston",
-"Lincoln": "oos-auto-ri-lincoln",
+"Lincoln": "me-hs-lincoln-academy",
 "Lisbon": "me-hs-lisbon",
 "MDI": "me-hs-mdi",
 "Maranacook": "me-hs-maranacook",
@@ -187871,7 +187901,7 @@
 "Islesboro": "me-hs-islesboro",
 "Lawrence": "me-hs-lawrence",
 "Lewiston": "me-hs-lewiston",
-"Lincoln": "oos-auto-ri-lincoln",
+"Lincoln": "me-hs-lincoln-academy",
 "Lisbon": "me-hs-lisbon",
 "MDI": "me-hs-mdi",
 "Maranacook": "me-hs-maranacook",
@@ -188150,14 +188180,14 @@
 "S": "me-hs-scarborough"
 },
 "2009/XC/massabesicboys_oct9": {
-"M": "me-hs-mt-blue",
+"M": "me-hs-massabesic",
 "P": "me-hs-portland",
 "W": "me-hs-windham"
 },
 "2009/XC/massabesicboys_sept11": {
 "B": "me-hs-biddeford",
 "D": "me-hs-deering",
-"M": "me-hs-mt-blue",
+"M": "me-hs-massabesic",
 "W": "me-hs-westbrook"
 },
 "2009/XC/massabesicgirls_oct9": {
@@ -188269,15 +188299,15 @@
 "Sk": "me-hs-skowhegan"
 },
 "2009/XC/nobleboys_oct16": {
-"MB": "me-hs-mt-blue",
+"MB": "me-hs-massabesic",
 "MW": "me-hs-marshwood",
-"N": null,
+"N": "me-hs-noble",
 "S": "me-hs-sanford"
 },
 "2009/XC/noblegirls_oct16": {
 "MB": "me-hs-massabesic",
 "MW": "me-hs-marshwood",
-"N": null,
+"N": "me-hs-noble",
 "S": "me-hs-sanford"
 },
 "2009/XC/nyaboys_oct16": {
@@ -191483,7 +191513,7 @@
 "Kennebunk": "me-hs-kennebunk",
 "Lawrence": "me-hs-lawrence",
 "Lewiston": "me-hs-lewiston",
-"Lincoln": "oos-auto-ri-lincoln",
+"Lincoln": "me-hs-lincoln-academy",
 "Lisbon": "me-hs-lisbon",
 "MDI": "me-hs-mdi",
 "Madison": "me-hs-madison",
@@ -191566,7 +191596,7 @@
 "Kennebunk": "me-hs-kennebunk",
 "Lawrence": "me-hs-lawrence",
 "Lewiston": "me-hs-lewiston",
-"Lincoln": "oos-auto-ri-lincoln",
+"Lincoln": "me-hs-lincoln-academy",
 "Lisbon": "me-hs-lisbon",
 "MDI": "me-hs-mdi",
 "Madison": "me-hs-madison",
@@ -191821,7 +191851,7 @@
 "EL": "me-hs-edward-little",
 "El": "me-hs-edward-little",
 "W": "me-hs-waterville",
-"w": null
+"w": "me-hs-waterville"
 },
 "2010/XC/messalonskeegirls_sept17": {
 "El": "me-hs-edward-little",
@@ -195127,7 +195157,7 @@
 "Kennebunk": "me-hs-kennebunk",
 "Lawrence": "me-hs-lawrence",
 "Lewiston": "me-hs-lewiston",
-"Lincoln": "oos-auto-ri-lincoln",
+"Lincoln": "me-hs-lincoln-academy",
 "Lisbon": "me-hs-lisbon",
 "MDI": "me-hs-mdi",
 "Madison": "me-hs-madison",
@@ -195207,7 +195237,7 @@
 "Kennebunk": "me-hs-kennebunk",
 "Lawrence": "me-hs-lawrence",
 "Lewiston": "me-hs-lewiston",
-"Lincoln": "oos-auto-ri-lincoln",
+"Lincoln": "me-hs-lincoln-academy",
 "Lisbon": "me-hs-lisbon",
 "MDI": "me-hs-mdi",
 "Madison": "me-hs-madison",
@@ -195459,7 +195489,7 @@
 "2011/XC/massabesicgirls_sept9": {
 "M": "me-hs-massabesic",
 "SC": "me-hs-scarborough",
-"Sc": null
+"Sc": "me-hs-scarborough"
 },
 "2011/XC/mcauleyboys_oct6": {
 "Massabesic": "me-hs-massabesic",
@@ -198233,7 +198263,7 @@
 "Gray New Gloucester": "me-hs-gray-ng",
 "Greely": "me-hs-greely",
 "Hermon": "me-hs-hermon",
-"Lincoln": "oos-auto-ri-lincoln",
+"Lincoln": "me-hs-lincoln-academy",
 "Lincoln Academy": "me-hs-lincoln-academy",
 "Medomak": "me-hs-medomak",
 "Mt Desert": "me-hs-mdi",
@@ -198728,7 +198758,8 @@
 },
 "2012/XC/New%20England%20HS%20XC%20boys%20results.txt": {
 "Fryeburg": "me-hs-fryeburg",
-"Merriconeag": "me-hs-maine-coast-waldorf"
+"Merriconeag": "me-hs-maine-coast-waldorf",
+"Merrimack Va": "oos-auto-nh-merrimack-va"
 },
 "2012/XC/New%20England%20HS%20XC%20girls%20results.txt": {
 "MDI": "me-hs-mdi",
@@ -199086,7 +199117,7 @@
 "Hermon": "me-hs-hermon",
 "Lawrence": "me-hs-lawrence",
 "Lewiston": "me-hs-lewiston",
-"Lincoln": "oos-auto-ri-lincoln",
+"Lincoln": "me-hs-lincoln-academy",
 "Lisbon": "me-hs-lisbon",
 "MDI": "me-hs-mdi",
 "Madison": "me-hs-madison",
@@ -199176,7 +199207,7 @@
 "Hermon": "me-hs-hermon",
 "Lawrence": "me-hs-lawrence",
 "Lewiston": "me-hs-lewiston",
-"Lincoln": "oos-auto-ri-lincoln",
+"Lincoln": "me-hs-lincoln-academy",
 "Lisbon": "me-hs-lisbon",
 "MDI": "me-hs-mdi",
 "Madison": "me-hs-madison",
@@ -200416,6 +200447,7 @@
 "Falmouth": "me-hs-falmouth",
 "Freeport": "me-hs-freeport",
 "Fryeburg": "me-hs-fryeburg",
+"Gardner": "me-hs-gardiner",
 "Gray New Gloucester": "me-hs-gray-ng",
 "Greely": "me-hs-greely",
 "Hermon": "me-hs-hermon",
@@ -200443,6 +200475,7 @@
 "Falmouth": "me-hs-falmouth",
 "Freeport": "me-hs-freeport",
 "Fryeburg": "me-hs-fryeburg",
+"Gardner": "oos-auto-ma-gardner",
 "Gray New Gloucester": "me-hs-gray-ng",
 "Greely": "me-hs-greely",
 "Hermon": "me-hs-hermon",
@@ -204401,7 +204434,7 @@
 "Hermon": "me-hs-hermon",
 "Lawrence": "me-hs-lawrence",
 "Lewiston": "me-hs-lewiston",
-"Lincoln": "oos-auto-ri-lincoln",
+"Lincoln": "me-hs-lincoln-academy",
 "Lisbon": "me-hs-lisbon",
 "MDI": "me-hs-mdi",
 "Madison": "me-hs-madison",
@@ -204677,7 +204710,7 @@
 "Hermon": "me-hs-hermon",
 "Lawrence": "me-hs-lawrence",
 "Lewiston": "me-hs-lewiston",
-"Lincoln": "oos-auto-ri-lincoln",
+"Lincoln": "me-hs-lincoln-academy",
 "Lisbon": "me-hs-lisbon",
 "MDI": "me-hs-mdi",
 "Madison": "me-hs-madison",
@@ -207241,7 +207274,7 @@
 "Wayn": "me-ms-waynflete"
 },
 "2015/XC/ms-kvac-rich-ersk-ocean-medomak-lincoln-2015": {
-"Lincoln": "oos-auto-ri-lincoln",
+"Lincoln": "me-hs-lincoln-academy",
 "Oceanside High School": "me-hs-oceanside"
 },
 "2015/XC/ms-lake-region-invitational-2015": {
@@ -211831,7 +211864,7 @@
 "Greely": "me-hs-greely",
 "Hermon": "me-hs-hermon",
 "Lake Region": "me-hs-lake-region",
-"Lincoln": "oos-auto-ri-lincoln",
+"Lincoln": "me-hs-lincoln-academy",
 "Lincoln Academy": "me-hs-lincoln-academy",
 "Mattanawcook Academy": "me-hs-mattanawcook",
 "Mount Desert": "me-hs-mdi",
@@ -212053,7 +212086,7 @@
 "Greely": "me-hs-greely",
 "Hermon": "me-hs-hermon",
 "Lake Region": "me-hs-lake-region",
-"Lincoln": "oos-auto-ri-lincoln",
+"Lincoln": "me-hs-lincoln-academy",
 "Lincoln Academy": "me-hs-lincoln-academy",
 "Mattanawcook": "me-hs-mattanawcook",
 "Mattanawcook Academy": "me-hs-mattanawcook",
@@ -212615,7 +212648,7 @@
 "2017/Outdoor/Morse-boys": {
 "Brunswick": "me-hs-brunswick",
 "Lewiston": "me-hs-lewiston",
-"Lincoln": "oos-auto-ri-lincoln",
+"Lincoln": "me-hs-lincoln-academy",
 "Lincoln Academy": "me-hs-lincoln-academy",
 "Medomak": "me-hs-medomak",
 "Oceanside": "me-hs-oceanside",
@@ -212624,17 +212657,19 @@
 "2017/Outdoor/Morse-girls": {
 "Brunswick": "me-hs-brunswick",
 "Lewiston": "me-hs-lewiston",
-"Lincoln": "oos-auto-ri-lincoln",
+"Lincoln": "me-hs-lincoln-academy",
 "Lincoln Academy": "me-hs-lincoln-academy",
 "Medomak": "me-hs-medomak",
 "Oceanside": "me-hs-oceanside"
 },
 "2017/Outdoor/Mt-View-boys": {
 "Camden Hills": "me-hs-camden-hills",
+"Gardner": "me-hs-gardiner",
 "Nokomis": "me-hs-nokomis"
 },
 "2017/Outdoor/Mt-View-girls": {
 "Camden Hills": "me-hs-camden-hills",
+"Gardner": "me-hs-gardiner",
 "Nokomis": "me-hs-nokomis"
 },
 "2017/Outdoor/NOBResults": {
@@ -214064,7 +214099,7 @@
 },
 "2017/XC/MS_MEET_10_12_2017": {
 "GNG": "me-ms-gray-ng",
-"GREE": "me-hs-greely",
+"GREE": "me-ms-greely",
 "JS": "me-ms-jordan-small",
 "MCW": "me-ms-maine-coast-waldorf",
 "SDA": "me-ms-st-dominic",
@@ -214582,7 +214617,7 @@
 "Lake Region": "me-hs-lake-region",
 "Lawrence": "me-hs-lawrence",
 "Lewiston": "me-hs-lewiston",
-"Lincoln": "oos-auto-ri-lincoln",
+"Lincoln": "me-hs-lincoln-academy",
 "Lincoln Academy": "me-hs-lincoln-academy",
 "Lisbon": "me-hs-lisbon",
 "MDI": "me-hs-mdi",
@@ -215987,7 +216022,7 @@
 "2018/Indoor/class-b-results": {
 "FR": null,
 "Lawrence": "me-hs-lawrence",
-"Lincoln": "oos-auto-ri-lincoln",
+"Lincoln": "me-hs-lincoln-academy",
 "Lincoln Academy": "me-hs-lincoln-academy",
 "Mt. View": "me-hs-mt-view",
 "Nokomis": "me-hs-nokomis",
@@ -220937,6 +220972,7 @@
 "Cumberland": "oos-auto-ri-cumberland",
 "Falmouth": "me-hs-falmouth",
 "Freeport": "me-hs-freeport",
+"Gardner": "oos-auto-ma-gardner",
 "Gorham": "me-hs-gorham",
 "Greely": "me-hs-greely",
 "Kennebunk": "me-hs-kennebunk",
@@ -223928,7 +223964,7 @@
 "Greely": "me-hs-greely",
 "Hermon": "me-hs-hermon",
 "Lawrence": "me-hs-lawrence",
-"Lincoln": "oos-auto-ri-lincoln",
+"Lincoln": "me-hs-lincoln-academy",
 "Lincoln Academy": "me-hs-lincoln-academy",
 "Mattanawcook": "me-hs-mattanawcook",
 "Medomak": "me-hs-medomak",
@@ -224374,7 +224410,7 @@
 "Camden": "me-hs-camden-hills",
 "Cony": "me-hs-cony",
 "Lawrence": "me-hs-lawrence",
-"Lincoln": "oos-auto-ri-lincoln",
+"Lincoln": "me-hs-lincoln-academy",
 "Lincoln Academy": "me-hs-lincoln-academy",
 "Medomak": "me-hs-medomak",
 "Nokomis": "me-hs-nokomis",
@@ -224546,7 +224582,7 @@
 "2020/XC/Cony_XC_Boys_Results_10_16_2020": {
 "Cony": "me-hs-cony",
 "Gardiner": "me-hs-gardiner",
-"Lincoln": "oos-auto-ri-lincoln"
+"Lincoln": "me-hs-lincoln-academy"
 },
 "2020/XC/Cony_XC_Boys_Scoring_10_02_2020": {
 "Cony": "me-hs-cony",
@@ -224562,7 +224598,7 @@
 "2020/XC/Cony_XC_Girls_Results_10_16_2020": {
 "Cony": "me-hs-cony",
 "Gardiner": "me-hs-gardiner",
-"Lincoln": "oos-auto-ri-lincoln"
+"Lincoln": "me-hs-lincoln-academy"
 },
 "2020/XC/Cony_XC_Girls_Scoring_10_02_2020": {
 "Cony": "me-hs-cony",
@@ -229076,6 +229112,7 @@
 "Lisbon": "me-hs-lisbon",
 "Littleton": null,
 "Marshwood": "me-hs-marshwood",
+"Merrimack Va": "oos-auto-nh-merrimack-va",
 "Milton": null,
 "Old Town": "me-hs-old-town",
 "Orono": "me-hs-orono",
@@ -235203,6 +235240,7 @@
 "Lewiston": "me-hs-lewiston",
 "Lisbon": "me-hs-lisbon",
 "Marshwood": "me-hs-marshwood",
+"Merrimack Va": "oos-auto-nh-merrimack-valley",
 "Messalonskee": "me-hs-messalonskee",
 "Milton": "oos-auto-ma-milton",
 "Mount Desert": "me-hs-mdi",
@@ -238440,7 +238478,13 @@
 },
 "Gardiner Regional Middle School": "me-ms-gardiner",
 "GardinerLisbonMaranacook indoor track": "me-hs-gardiner",
-"Gardner": "oos-auto-ma-gardner",
+"Gardner": {
+"id": "me-hs-gardiner",
+"held": {
+"me-hs-gardiner": 39,
+"oos-auto-ma-gardner": 5
+}
+},
 "Gaston": null,
 "Gavin R": null,
 "Gb": {
@@ -238867,9 +238911,21 @@
 "me-hs-mssm": 11
 }
 },
-"Lin Acad": null,
+"Lin Acad": {
+"id": "me-hs-lincoln-academy",
+"held": {
+"me-hs-lincoln-academy": 16,
+"None": 3
+}
+},
 "Lin Sudbury": "oos-auto-ma-lin-sudbury",
-"Lincoln": "oos-auto-ri-lincoln",
+"Lincoln": {
+"id": "me-hs-lincoln-academy",
+"held": {
+"me-hs-lincoln-academy": 350,
+"oos-auto-ri-lincoln": 304
+}
+},
 "Lincoln Academy": "me-hs-lincoln-academy",
 "Lincoln Middle School": "me-ms-lincoln-portland",
 "LincolnSudbury": "oos-auto-ma-lincoln-sudbury",
@@ -239061,7 +239117,13 @@
 },
 "Merrimack": "oos-auto-nh-merrimack",
 "Merrimack V": "oos-auto-nh-merrimack-v",
-"Merrimack Va": "oos-auto-nh-merrimack-va",
+"Merrimack Va": {
+"id": "oos-auto-nh-merrimack-va",
+"held": {
+"oos-auto-nh-merrimack-va": 9,
+"oos-auto-nh-merrimack-valley": 4
+}
+},
 "Merrimack Val": "oos-auto-nh-merrimack-val",
 "Merrimack Valley": "oos-auto-nh-merrimack-valley",
 "Merrimck Val": "oos-auto-nh-merrimck-val",
@@ -239177,7 +239239,13 @@
 "MtPleasant": "oos-auto-ri-mt-pleasant",
 "Murdock": null,
 "N Attleboro": "oos-auto-ma-n-attleboro",
-"N Middle": null,
+"N Middle": {
+"id": "me-hs-noble",
+"held": {
+"None": 141,
+"me-hs-noble": 4
+}
+},
 "N Quincy": "oos-auto-ma-n-quincy",
 "N Smithfield": null,
 "N WATSON": null,
@@ -244232,20 +244300,6 @@
 "how": "unresolved"
 },
 {
-"raw": "Lin Acad",
-"rows": 12,
-"seasons": {
-"Indoor": 12
-},
-"years": [
-2004,
-2004
-],
-"id": null,
-"method": "unresolved",
-"how": "unresolved"
-},
-{
 "raw": "Gorham High School indoor tra",
 "rows": 12,
 "seasons": {
@@ -246341,20 +246395,6 @@
 "rows": 7,
 "seasons": {
 "Outdoor": 7
-},
-"years": [
-2003,
-2003
-],
-"id": null,
-"method": "unresolved",
-"how": "unresolved"
-},
-{
-"raw": "Lin",
-"rows": 7,
-"seasons": {
-"XC": 7
 },
 "years": [
 2003,
