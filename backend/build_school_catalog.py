@@ -888,6 +888,9 @@ def main(argv=None):
         schools.update(auto)
         idx = sc.Index(schools)
         groups, keys = build_groups(rows, idx, levels)
+    bad = sorted({r[4] for r in seed.FILE_RULES if r[4] not in schools})
+    if bad:
+        sys.exit(f'FILE_RULES name schools not in the catalog: {bad}')
     relevel(groups, idx)
     global KEYS
     KEYS = keys

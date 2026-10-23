@@ -1367,7 +1367,7 @@ FILE_RULES = [
     (['H'], 'XC', (2005, 2005), r'^ellsworthinvite\.txt$', 'me-hs-hampden'),
     (['E'], 'XC', (2005, 2005), r'^ellsworthinvite\.txt$', 'me-hs-ellsworth'),
     (['F'], 'XC', (2005, 2005), r'^ellsworthinvite\.txt$', 'me-hs-falmouth'),
-    (['L'], 'XC', (2005, 2005), r'^ellsworthinvite\.txt$', 'me-hs-lee'),
+    (['L'], 'XC', (2005, 2005), r'^ellsworthinvite\.txt$', 'me-hs-lee-academy'),
     (['W'], 'XC', (2005, 2005), r'^ellsworthinvite\.txt$', 'me-hs-winthrop'),
     (['O'], 'XC', (2005, 2005), r'^ellsworthinvite\.txt$', 'me-hs-orono'),
     (['FA'], 'XC', (2005, 2005), r'^fryeburg9_16\.txt$', 'me-hs-fryeburg'),           # Fryeburg's home meet
