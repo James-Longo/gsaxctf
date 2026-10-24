@@ -1467,6 +1467,7 @@ FILE_RULES = [
     (['ISL'], 'XC', (2007, 2007), r'^medomakboys9_21$', 'me-hs-islesboro'),   # score line 'Islesboro NS'
     (['Narraquaqus'], 'XC', (2003, 2026), r'.', 'me-hs-narraguagus'),   # alias: 2019 bucksport-boys-jv misspelling; unambiguous (HS meet, Narrag in lee Sept19 resolves to
     (['Gray-N Glouceste'], 'XC', (2003, 2026), r'.', 'me-hs-gray-ng'),   # alias: 2012 New England HS XC boys: truncated 'Gray-N Glouceste' (Will Shafer, 11) - only Gray-Ne
+    (['Wisc'], 'XC', (2023, 2023), r'^(Boys|Girls)-Cross-Country-Meet-9-14-23$', 'me-ms-wiscasset'),   # middle-school league; Kai Morse is Wiscasset MS in busline/gsb/troy-howard 2023
     # 2026-10-24 unresolved-school review, batch 2
     (['F'], 'XC', (2004, 2004), r'^cape7oct04[bg]\.txt$', 'me-hs-falmouth'),   # Title lists Falmouth; only F team
     (['Y'], 'XC', (2004, 2004), r'^cape7oct04[bg]\.txt$', 'me-hs-yarmouth'),   # Title lists Yarmouth; only Y team
