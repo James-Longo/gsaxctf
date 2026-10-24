@@ -1,0 +1,60 @@
+{
+ "source": "backend/data/sub5_archive/2022/XC/Falmouth-Middle-School-Boys-Team.pdf",
+ "meet_name": "Falmouth Middle School Boys Cross Country",
+ "date": null,
+ "venue": null,
+ "events": [],
+ "team_rankings": [
+  {
+   "kind": "xc",
+   "gender": "Boys",
+   "event_header": "Run CC",
+   "teams": [
+    {
+     "rank": 1,
+     "team": "Scarborough",
+     "score": 27.0,
+     "places": [
+      1,
+      3,
+      4,
+      7,
+      12,
+      19,
+      21
+     ]
+    },
+    {
+     "rank": 2,
+     "team": "Gorham",
+     "score": 46.0,
+     "places": [
+      2,
+      6,
+      10,
+      13,
+      15,
+      16,
+      17
+     ]
+    },
+    {
+     "rank": 3,
+     "team": "Falmouth",
+     "score": 47.0,
+     "places": [
+      5,
+      8,
+      9,
+      11,
+      14,
+      18,
+      20
+     ]
+    }
+   ],
+   "event_idx": 0
+  }
+ ],
+ "notes": "Team-score-only file. Copy of the parse's team scores (all match the printed sheet and re-add from the printed places: top five of each team) with the metadata fixed: the parse took the sheet's banner '*********** TEAM SCORE **********' as the meet name, left gender null and the date 'Unknown Date'. Written with the meet name of the matching results file (Falmouth Middle School Boys Cross Country, from the sub5 file name Boys-Results), gender Boys, date null (no date printed; the results file has none either). Team names as printed (Falmouth, Gorham, Scarborough). The 'places' lists are the printed team places including the 6th/7th (bracketed) displacers. PARSER PATTERN: ColumnStrategyParser on a '*** TEAM SCORE ***' sheet uses the banner as meet name and cannot tell gender; both come from the file name."
+}

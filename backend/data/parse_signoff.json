@@ -32591,6 +32591,13 @@
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
  },
+ "backend/data/parsed_results/2021/XC/2021-caribou-invite-results.json": {
+  "parse_sha": "8897e0115c19e596",
+  "source_sha": "50498fbb42fe4e81",
+  "date": "2026-10-24",
+  "by": "sonnet audit (second read, 2026-10-24) (audit: confirmed)",
+  "evidence": "All 16 events checked: 7 girls heats (8,7,4,5,7,6,6 rows), 7 boys heats (8,8,8,9,7,8,8; Number 3 continues on page 3 with places 6-8), boys JV 23, girls JV 10; place, name, year, school, time and Points (team_place) agree. Heats kept as separate races as printed. Schools: PI = me-hs-presque-isle, Houlton/GHCA = coop-houlton-ghca, MSSM = me-hs-mssm, Fort Kent Chs, Hodgdon HS, John Bapst, Old Town, Ellsworth, Brewer, Foxcroft, Caribou all correct. No team scores printed."
+ },
  "backend/data/parsed_results/2021/XC/2021-ccs-xc-boys-results.json": {
   "parse_sha": "e3424f3de8df038f",
   "source_sha": "b5bbf9f0877c81e0",
@@ -32620,11 +32627,18 @@
   "evidence": ""
  },
  "backend/data/parsed_results/2021/XC/2CORRECTEDXCWtvlWinsHS21.09.json": {
-  "parse_sha": "611f84b9a50e5231",
+  "parse_sha": "d2ecee2e336591b3",
   "source_sha": "dc2df6a5b5ddbeaa",
-  "date": "2026-10-16",
-  "by": "auto: team scores verified exactly, all schools identified, no flags",
-  "evidence": ""
+  "date": "2026-10-24",
+  "by": "sonnet audit (second read, 2026-10-24) (audit: source-error)",
+  "evidence": "Existing override (title lines and DNF fix). All four races (varsity girls 55, varsity boys 65, JV girls 20 + 2 DNF, JV boys 54) re-compared with the PDF: names, schools, marks (mm.ss -> mm:ss) agree; team scores (girls Bangor 43, Camden Hills 63, Maranacook 84, Waterville 93, Hampden 108, Messalonskee 143, Gardiner 150, Oxford Hills 235; boys Bangor 23, Hampden 53, Messalonskee 72, Camden Hills 146, Oxford Hills 155, Erskine 162, Gardiner 196, Maranacook 200, Winslow 202, Waterville 251) match. Source error: varsity girls prints place '9' twice ('9 Natalia Charles 20:21' and '9 Haley Williams 20:25'); the parse has Haley Williams as 10 (next printed place is 11). Meet title in the override is 'VARSITY GIRLS'; sub5 index name is 'Waterville, Bangor, Hampden, Camden Hills, Maranacook, Messalonskee, Gardiner, Oxford Hills, Winslow, Winthrop' (Waterville), date Sept 2021."
+ },
+ "backend/data/parsed_results/2021/XC/AUB101321B.json": {
+  "parse_sha": "07f0a5ead67767d5",
+  "source_sha": "a3fda84ee124ac29",
+  "date": "2026-10-24",
+  "by": "sonnet audit (second read, 2026-10-24) (audit: confirmed)",
+  "evidence": "57 rows match (place, name, grade, team, time with leading ':'). Auburn MS 10/13/21 boys: Lewiston, Memorial (South Portland, me-ms-memorial-sp), Auburn, Windham, Friends School, Mahoney all middle schools correct. '57 COMPETITORS' = 57 rows."
  },
  "backend/data/parsed_results/2021/XC/AUB101321BT.json": {
   "parse_sha": "20b00ec4af1ab0d5",
@@ -32633,12 +32647,26 @@
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
  },
+ "backend/data/parsed_results/2021/XC/AUB101321G.json": {
+  "parse_sha": "24e37224ee5fe227",
+  "source_sha": "2a8890ccd546dccb",
+  "date": "2026-10-24",
+  "by": "sonnet audit (second read, 2026-10-24) (audit: confirmed)",
+  "evidence": "42 rows match (place, name, grade, team, time); '42 COMPETITORS'. Schools Windham, Mahoney, Lewiston, Friends School, Memorial, Auburn resolve to the middle schools."
+ },
  "backend/data/parsed_results/2021/XC/AUB101321GT.json": {
   "parse_sha": "d827383d5228858a",
   "source_sha": "fe1274e3d74349f9",
   "date": "2026-10-19",
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
+ },
+ "backend/data/parsed_results/2021/XC/Boothbay-17-21-GIRLS.json": {
+  "parse_sha": "e9307eb76709da15",
+  "source_sha": "29215865d374ef4a",
+  "date": "2026-10-24",
+  "by": "sonnet audit (second read, 2026-10-24) (audit: confirmed)",
+  "evidence": "15 finishers match; 4 DNF (Spruce) omitted. 'HALE DALE' (3 rows) resolves to me-hs-hall-dale = Hall-Dale per the meet title (Boothbay-Wiscasset, Richmond, Spruce Mt, Telstar, Dirigo, Hall-Dale)."
  },
  "backend/data/parsed_results/2021/XC/Boys-Meet-Results-@-Marshwood-10_7_21-Sheet1.json": {
   "parse_sha": "1a07ac54079fd66a",
@@ -32668,6 +32696,20 @@
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
  },
+ "backend/data/parsed_results/2021/XC/County-XC-Championship-2021-team-scores.json": {
+  "parse_sha": "f49a6d271e19b8e4",
+  "source_sha": "33cb9311381d7fbc",
+  "date": "2026-10-24",
+  "by": "sonnet audit (second read, 2026-10-24) (audit: confirmed)",
+  "evidence": "Team-score-only sheet: girls Houlton/GHCA 13, Fort Kent 35, Presque Isle 42; boys Presque Isle 12, MSSM 31, as printed. They are not reproducible from the individual file's raw places (county scoring rule), copied as printed."
+ },
+ "backend/data/parsed_results/2021/XC/County-XC-Championship-Girls.json": {
+  "parse_sha": "b8f779138cc82ff8",
+  "source_sha": "86a12053351ae400",
+  "date": "2026-10-24",
+  "by": "sonnet audit (second read, 2026-10-24) (audit: confirmed)",
+  "evidence": "Zone4 print (revised 10/6/21, times already reduced 1 minute): Female 20 finishers, Male 16 finishers, all match (name, school, time); DNS rows omitted. Schools Houlton/GHCA, Presque Isle, Fort Kent, MSSM, Hodgdon correct. Layout has bib/school on the next line; parse reads it correctly."
+ },
  "backend/data/parsed_results/2021/XC/Dirigo-HS-10-6-21.json": {
   "parse_sha": "86af2b47763fd344",
   "source_sha": "733ac24e8b8bb22f",
@@ -32689,6 +32731,34 @@
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
  },
+ "backend/data/parsed_results/2021/XC/Falmouth-HS-Boys-Results-2021.txt.json": {
+  "parse_sha": "e84f2922767dec79",
+  "source_sha": "50005a19b1668516",
+  "date": "2026-10-24",
+  "by": "sonnet audit (second read, 2026-10-24) (audit: confirmed)",
+  "evidence": "56 rows match (place, TmPl as team_place, name as printed incl. '(John) Emmo Whited', surname-first Westbrook names, school, time). SP = me-hs-south-portland per meet; Falmouth, Westbrook, Thornton Academy correct. Team_place values match the printed TmPl column."
+ },
+ "backend/data/parsed_results/2021/XC/Falmouth-HS-Boys-Team-Results-2021.txt.json": {
+  "parse_sha": "89b5dc9890fe0e31",
+  "source_sha": "5c3714a7c894a8a0",
+  "date": "2026-10-24",
+  "by": "sonnet audit (second read, 2026-10-24) (audit: confirmed)",
+  "evidence": "Team score block: SP 33, Falmouth 46, Westbrook 68, Thornton 72, each reproduces from the top-5 places listed (e.g. SP 2+4+5+10+12=33)."
+ },
+ "backend/data/parsed_results/2021/XC/Falmouth-HS-Girls-Results-2021.txt.json": {
+  "parse_sha": "8dff84fbf7b97eba",
+  "source_sha": "2a2f161dbe2a2318",
+  "date": "2026-10-24",
+  "by": "sonnet audit (second read, 2026-10-24) (audit: source-error)",
+  "evidence": "40 rows match the source exactly, but place 1 'Jaz Vanderhoof Thornton Academy 0:01' has an impossible time: the winner is ahead of 22:58 (place 2) and the printed team score counts her as TA's 1st scorer. The source's time is wrong (true time unknown, below 22:58). Row kept as printed; the single flag is this mark."
+ },
+ "backend/data/parsed_results/2021/XC/Falmouth-HS-Girls-Team-Results-2021.txt.json": {
+  "parse_sha": "b15e4bb396bb50d5",
+  "source_sha": "75f6995d3d02f999",
+  "date": "2026-10-24",
+  "by": "sonnet audit (second read, 2026-10-24) (audit: confirmed)",
+  "evidence": "Team scores Falmouth 30, Thornton Academy 43, Westbrook 80, SP 83 reproduce from the listed top-5 places (e.g. TA 1+3+10+13+16=43)."
+ },
  "backend/data/parsed_results/2021/XC/Girls-Meet-Results-@-Marshwood-10_7_21-Sheet1.json": {
   "parse_sha": "c5bb6cf1280f86f9",
   "source_sha": "d28ced0836544e3c",
@@ -32702,6 +32772,13 @@
   "date": "2026-10-16",
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
+ },
+ "backend/data/parsed_results/2021/XC/Laliberte-Junior-Varsity-2021.json": {
+  "parse_sha": "086b8934180089c3",
+  "source_sha": "8a9c50113d2fdb0b",
+  "date": "2026-10-24",
+  "by": "sonnet audit (second read, 2026-10-24) (audit: confirmed)",
+  "evidence": "One JV race of 47 runners in the source, boys and girls mixed; sex given by the team label (B/G, Boys/Girls). Parse splits into boys 33 and girls 14 rows, every row checked: the 14 girls (places 9,15,20,28,29,30,37,38,39,40,41,44,46,47) are exactly the 'G'/'Girls' teams. Places keep the combined order. Schools: 'Chs' = Cony HS (meet at Cony; Dos Santos is a Cony runner), 'Elhs' = Edward Little, Mt. Blue HS B/G, Mt. Ararat HS, Morse, Monmouth, Erskine, Messalonskee, Gardiner, Maranacook, Oxford Hills correct."
  },
  "backend/data/parsed_results/2021/XC/Lawrence-XC-Boys-Results.json": {
   "parse_sha": "6128ef10aa282884",
@@ -32732,11 +32809,11 @@
   "evidence": ""
  },
  "backend/data/parsed_results/2021/XC/MVC-Results-2021.json": {
-  "parse_sha": "fab5bc40224dfa85",
+  "parse_sha": "864071e9c80015f6",
   "source_sha": "08460c02490034a4",
-  "date": "2026-10-16",
-  "by": "auto: team scores verified exactly, all schools identified, no flags",
-  "evidence": ""
+  "date": "2026-10-24",
+  "by": "sonnet audit (second read, 2026-10-24) (audit: confirmed)",
+  "evidence": "XCRun, 33 girls + 60 boys, all rows match (place, name, grade, team, time, team place). Team scores match (girls Monmouth 29, Boothbay/Wiscasset 32, Spruce Mt 64; boys Boothbay/Wiscasset 48, Monmouth 54, Winthrop 62, Lisbon 82, Mt Abram 115, Madison 145). Stray '\u00c6' glyphs on names (JULIA\u00c6 WELLS) already stripped. Source prints some names Last First without comma (THERRIAULT ABBIGAIL, SPAULDING MEGAN, SUPRENANT ROBERT, all Dirigo); parse keeps them as printed."
  },
  "backend/data/parsed_results/2021/XC/Maranacook-Girls-9-3-21.json": {
   "parse_sha": "f53470bce10a079e",
@@ -32759,6 +32836,13 @@
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
  },
+ "backend/data/parsed_results/2021/XC/Mt.-Blue-Home-Meet-9_3_21-Boys.json": {
+  "parse_sha": "9c65cd746abfdc70",
+  "source_sha": "2d2d7e125d2abdec",
+  "date": "2026-10-24",
+  "by": "auto: team scores verified exactly, all schools identified, no flags",
+  "evidence": ""
+ },
  "backend/data/parsed_results/2021/XC/OCT-7-RESULTS.json": {
   "parse_sha": "1a21b78f03126f91",
   "source_sha": "e896f2987b8e79ac",
@@ -32767,9 +32851,16 @@
   "evidence": ""
  },
  "backend/data/parsed_results/2021/XC/Oxford-Hills-9-27-21.json": {
-  "parse_sha": "ab75f46312bd7090",
+  "parse_sha": "cf73338f2c217768",
   "source_sha": "f52f3fc79d0e6ad5",
-  "date": "2026-10-16",
+  "date": "2026-10-24",
+  "by": "sonnet audit (second read, 2026-10-24) (audit: confirmed)",
+  "evidence": "XCRun, 21 girls + 37 boys + 1 DNF; all rows match the PDF (place, name, grade, team, time, team place) and team scores match (girls Mt Ararat 20, Lewiston 55, Oxford Hills 60; boys Mt Ararat 24, Oxford Hills 44, Lewiston 64). Source name quirks kept as printed: 'SNOW ALEX' (Alex Snow), 'TECENO TECENO', 'WARD WARD'; girls' 49:56 marks for the last Oxford Hills/Lewiston runners are as printed."
+ },
+ "backend/data/parsed_results/2021/XC/Race-results.json": {
+  "parse_sha": "17ad407a731ef8cf",
+  "source_sha": "a4997665d62fe286",
+  "date": "2026-10-24",
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
  },
@@ -32991,11 +33082,11 @@
   "evidence": ""
  },
  "backend/data/parsed_results/2021/XC/Winthrop-Results-9-17-21.json": {
-  "parse_sha": "22e90946534a9495",
+  "parse_sha": "db63f6728feb0630",
   "source_sha": "53565a2b5aa30e09",
-  "date": "2026-10-16",
-  "by": "auto: team scores verified exactly, all schools identified, no flags",
-  "evidence": ""
+  "date": "2026-10-24",
+  "by": "sonnet audit (second read, 2026-10-24) (audit: confirmed)",
+  "evidence": "XCRun, 14 girls + 29 boys; all rows match (place, name, grade, team, time, team place); team scores match (girls Monmouth 15; boys Monmouth 37, Lisbon 47, Mt Abram 66, Oak Hill 74). Stray '\u00ca' glyphs already stripped."
  },
  "backend/data/parsed_results/2021/XC/XCJH21.09.22results.json": {
   "parse_sha": "f1516733bf39c629",
@@ -33003,6 +33094,13 @@
   "date": "2026-10-16",
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
+ },
+ "backend/data/parsed_results/2021/XC/XCJH21.09.29results-1.json": {
+  "parse_sha": "973c94495c0d0082",
+  "source_sha": "821826f7b3852fa5",
+  "date": "2026-10-24",
+  "by": "sonnet audit (second read, 2026-10-24) (audit: confirmed)",
+  "evidence": "Girls 15 rows and boys 19 rows match the source (place, name, school, time '9.01' = 9:01). Valley = Upper Kennebec Valley MS (me-ms-upper-kennebec), middle-school meet of Madison, Winslow, Waterville, Valley. Printed team scores (girls Madison 15, Winslow 47; boys Valley 27, Madison 43, Waterville 53) are copied as printed; they do not reproduce from the sheet's own rows (e.g. Winslow girls 47 with only 4 finishers, Waterville/Valley girls NS), so 'team scores do not add up' is the source's. 7 implausible flags are real slow times."
  },
  "backend/data/parsed_results/2021/XC/aboysnorth.txt.json": {
   "parse_sha": "ce4a4a9926111b26",
@@ -33215,11 +33313,11 @@
   "evidence": ""
  },
  "backend/data/parsed_results/2021/XC/cboyssouth.txt.json": {
-  "parse_sha": "85fd64e288a19c8f",
+  "parse_sha": "0ed3f011238dc833",
   "source_sha": "69934cce9226bd78",
-  "date": "2026-10-16",
-  "by": "auto: team scores verified exactly, all schools identified, no flags",
-  "evidence": ""
+  "date": "2026-10-24",
+  "by": "sonnet audit (second read, 2026-10-24) (audit: confirmed)",
+  "evidence": "103 rows (100 + 3 DNF) all match the source (place, name, class year, school, time) by script; team scores match (Maine Coast 53, Boothbay-Wiscasset 59, Monmouth 115, Winthrop 128, ...). Source name quirk kept: 'Campra Francesco' (Frankie Campra, Telstar). Mt. Abrams = Mt. Abram."
  },
  "backend/data/parsed_results/2021/XC/ce-home-meet-girls.txt.json": {
   "parse_sha": "79328f486e017028",
@@ -33250,11 +33348,11 @@
   "evidence": ""
  },
  "backend/data/parsed_results/2021/XC/cgirlssouth.txt.json": {
-  "parse_sha": "5aae8609e56b5961",
+  "parse_sha": "27283317ff0fb4d4",
   "source_sha": "c8823c8b1192c070",
-  "date": "2026-10-16",
-  "by": "auto: team scores verified exactly, all schools identified, no flags",
-  "evidence": ""
+  "date": "2026-10-24",
+  "by": "sonnet audit (second read, 2026-10-24) (audit: confirmed)",
+  "evidence": "65 rows all match (script); team scores match (Maranacook 47, Waynflete 53, Monmouth 70, Maine Coast 75, Boothbay-Wiscasset 104, Spruce Mountain 180). 'Hal Dale' = Hall-Dale, 'Mt. Abrams' = Mt. Abram."
  },
  "backend/data/parsed_results/2021/XC/class-b-boys.txt.json": {
   "parse_sha": "98afc7a90c15caf5",
@@ -33299,11 +33397,11 @@
   "evidence": ""
  },
  "backend/data/parsed_results/2021/XC/classcgirls.txt.json": {
-  "parse_sha": "753492fc6a355579",
+  "parse_sha": "5ecafc5cb4d50863",
   "source_sha": "bb30f61525ad1b0d",
-  "date": "2026-10-16",
-  "by": "auto: team scores verified exactly, all schools identified, no flags",
-  "evidence": ""
+  "date": "2026-10-24",
+  "by": "sonnet audit (second read, 2026-10-24) (audit: confirmed)",
+  "evidence": "66 finishers + DNF Olympia Farrell, all match (script); team scores match (Orono 38, Houlton/GHCA 45, Maranacook 87, Monmouth 98, Waynflete 111, George Stevens 135)."
  },
  "backend/data/parsed_results/2021/XC/coastal-boys.txt.json": {
   "parse_sha": "1926dde37b189d1e",
@@ -33320,11 +33418,11 @@
   "evidence": ""
  },
  "backend/data/parsed_results/2021/XC/combinedgirls.txt.json": {
-  "parse_sha": "245bc5a313ed4036",
+  "parse_sha": "9715f06c975a336e",
   "source_sha": "d46223048e5e3d1c",
-  "date": "2026-10-16",
-  "by": "auto: team scores verified exactly, all schools identified, no flags",
-  "evidence": ""
+  "date": "2026-10-24",
+  "by": "sonnet audit (second read, 2026-10-24) (audit: confirmed)",
+  "evidence": "266 rows all match the source (place, name, year, school, mark, points compared by script; only difference is a double space in 'Monmouth  Academy'); 31 team scores match (Bonny Eagle 95 ... John Bapst 911). Schools all resolved."
  },
  "backend/data/parsed_results/2021/XC/cony-homecoming-cross-country-meet-boys.json": {
   "parse_sha": "7e310dd9a781f556",
@@ -33957,11 +34055,11 @@
   "evidence": ""
  },
  "backend/data/parsed_results/2021/XC/saco-girls-21-xc.txt.json": {
-  "parse_sha": "3db203b7b01acbc6",
+  "parse_sha": "6192ed24aa70a43e",
   "source_sha": "646c534d0b0b5327",
-  "date": "2026-10-16",
-  "by": "auto: team scores verified exactly, all schools identified, no flags",
-  "evidence": ""
+  "date": "2026-10-24",
+  "by": "sonnet audit (second read, 2026-10-24) (audit: confirmed)",
+  "evidence": "Parse is the existing 2026-10-23 override. All 75 girls rows checked against source (place, TmPl, name, school, Ftime); 'BRIGHAM MCCANN M MASSABESIC' is in the girls TEAM SCORE block so he stays in the girls race. Team scores Kennebunk 47, York 57, Massabesic 82, Saco 86, Wells 87 match the printed block; team_place on scorers matches."
  },
  "backend/data/parsed_results/2021/XC/saxlboysvarsity.txt.json": {
   "parse_sha": "d44f9d53caac5cd8",
@@ -34978,6 +35076,13 @@
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
  },
+ "backend/data/parsed_results/2022/XC/Brunswick-HS-9-2-22girls.json": {
+  "parse_sha": "6f905ae9320f4b1c",
+  "source_sha": "941a11e89d0b316f",
+  "date": "2026-10-24",
+  "by": "sonnet audit (second read, 2026-10-24) (audit: confirmed)",
+  "evidence": "60 competitors = 53 finishers + 7 DNF, all place/name/school/time/grade rows match (names as printed: 'Johnson Jaden', 'Avery Steenstr'). Schools: Camden, Brunswick, Medomak, Morse, Boothbay/Wiscasset (coop) all right. The source prints no team scores (PTS column is individual points; Camden scores 0)."
+ },
  "backend/data/parsed_results/2022/XC/Brunswick-HS-9-22-22.json": {
   "parse_sha": "e05d3f0bfa45e6fc",
   "source_sha": "e5a3bd5d95bff72a",
@@ -35083,12 +35188,26 @@
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
  },
+ "backend/data/parsed_results/2022/XC/Mt-Blue-Relays-2022.json": {
+  "parse_sha": "34a8bb779193aff1",
+  "source_sha": "1162b365e50b77c2",
+  "date": "2026-10-24",
+  "by": "sonnet audit (second read, 2026-10-24) (audit: confirmed)",
+  "evidence": "Girls 121 and boys 159 rows, every place/name/school/time matches (names are 'Last First' as printed; 'Poole ?' first name is a '?' in the source; slow girls 27:23:00-30:44:00 and boys 26:16:00 are spreadsheet h:mm:ss for 27:23 etc., parsed as 27:23). School ids all right. The sheet's team tables print team TIMES (sum of five, e.g. Lincoln Academy 'A' 72:02:00 = Hufnagel 13:12 + Burmeister 13:42 + Hall 14:34 + Kallin 15:06 + Thompson 15:28), not points, so no team_rankings is expected. Distance is not printed (event 'Run CC')."
+ },
  "backend/data/parsed_results/2022/XC/Oxford-Hills-Results-9-23-22.json": {
   "parse_sha": "ecd83878568e370f",
   "source_sha": "3ef2e024b030b5c1",
   "date": "2026-10-16",
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
+ },
+ "backend/data/parsed_results/2022/XC/Results-F1.json": {
+  "parse_sha": "2995d37918c36cbf",
+  "source_sha": "f0fd3ca9fc5c8f72",
+  "date": "2026-10-24",
+  "by": "sonnet audit (second read, 2026-10-24) (audit: source-error)",
+  "evidence": "Four HY-TEK events (6th and 7-8 grade, girls and boys; 'WELLS MS - 9/15/2022'), 45/45/50/70 rows, all match the source row by row (place, name, school, mark, points), team scores match (e.g. 6th girls: Saco 40, Noble 54, Sanford 71, York 83, Wells 99). The source itself prints NO finish times for the whole 'Event 2 Boys 1 Mile Run CC 6TH' (45 rows, Finals column blank, only places and points), so those rows carry no mark (the flag). Middle-school schools resolve to me-ms-* (Kittery -> me-ms-shapleigh, i.e. Shapleigh Middle School, Kittery)."
  },
  "backend/data/parsed_results/2022/XC/Results-F3-1.json": {
   "parse_sha": "be7690e571a479cc",
@@ -35115,6 +35234,13 @@
   "parse_sha": "f79240f1ad5afa18",
   "source_sha": "893ab7829c71a7d4",
   "date": "2026-10-16",
+  "by": "auto: team scores verified exactly, all schools identified, no flags",
+  "evidence": ""
+ },
+ "backend/data/parsed_results/2022/XC/SEP-15-RESULTS.json": {
+  "parse_sha": "b15decb9138dd4dd",
+  "source_sha": "50caaebcd42357ed",
+  "date": "2026-10-24",
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
  },
@@ -35349,6 +35475,13 @@
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
  },
+ "backend/data/parsed_results/2022/XC/class-b-boys-results.txt.json": {
+  "parse_sha": "ea3f60fac34eb39a",
+  "source_sha": "220dc8ef8c48533c",
+  "date": "2026-10-24",
+  "by": "auto: team scores verified exactly, all schools identified, no flags",
+  "evidence": ""
+ },
  "backend/data/parsed_results/2022/XC/class-b-boys-south.txt.json": {
   "parse_sha": "5107bcb017a8cfb4",
   "source_sha": "13241f986affcfd4",
@@ -35496,12 +35629,89 @@
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
  },
+ "backend/data/parsed_results/2022/XC/event-1.json": {
+  "parse_sha": "ebbc47400bdb2888",
+  "source_sha": "6bde9a9b4a5a46b2",
+  "date": "2026-10-24",
+  "by": "sonnet audit (second read, 2026-10-24) (audit: confirmed)",
+  "evidence": "Quabaook Relays 9/10/2022 (Hy-Tek heat sheet; one mixed race, Women and Men sections split into Girls/Boys correctly): 7+7 rows (girls+boys), all name/school/time rows match. 'Boothbay XC' -> me-hs-boothbay is the host of the Boothbay/Wiscasset coop (the same girls ran as Boothbay/Wiscasset at Brunswick 9/2/22), as in quabacookboys. Event name keeps the heat label '# N Athlete' (parser leaves the '# 1 Athlete' heat tag in the event name; rows unaffected). Source prints no team scores (this file)."
+ },
+ "backend/data/parsed_results/2022/XC/event-2.json": {
+  "parse_sha": "034f4955964c572c",
+  "source_sha": "2ec6b980618e94da",
+  "date": "2026-10-24",
+  "by": "sonnet audit (second read, 2026-10-24) (audit: confirmed)",
+  "evidence": "Quabaook Relays 9/10/2022 (Hy-Tek heat sheet; one mixed race, Women and Men sections split into Girls/Boys correctly): 6+8 rows (girls+boys), all name/school/time rows match. 'Boothbay XC' -> me-hs-boothbay is the host of the Boothbay/Wiscasset coop (the same girls ran as Boothbay/Wiscasset at Brunswick 9/2/22), as in quabacookboys. Event name keeps the heat label '# N Athlete' (parser leaves the '# 1 Athlete' heat tag in the event name; rows unaffected). Source prints no team scores (this file)."
+ },
+ "backend/data/parsed_results/2022/XC/event-3.json": {
+  "parse_sha": "73a058c8144273dc",
+  "source_sha": "0bd5072a01a73725",
+  "date": "2026-10-24",
+  "by": "sonnet audit (second read, 2026-10-24) (audit: confirmed)",
+  "evidence": "Quabaook Relays 9/10/2022 (Hy-Tek heat sheet; one mixed race, Women and Men sections split into Girls/Boys correctly): 7+8 rows (girls+boys), all name/school/time rows match. 'Boothbay XC' -> me-hs-boothbay is the host of the Boothbay/Wiscasset coop (the same girls ran as Boothbay/Wiscasset at Brunswick 9/2/22), as in quabacookboys. Event name keeps the heat label '# N Athlete' (parser leaves the '# 1 Athlete' heat tag in the event name; rows unaffected). Source prints no team scores (this file)."
+ },
+ "backend/data/parsed_results/2022/XC/event-4.json": {
+  "parse_sha": "209ea0414569f8f2",
+  "source_sha": "ed0a83cda23d1b01",
+  "date": "2026-10-24",
+  "by": "sonnet audit (second read, 2026-10-24) (audit: confirmed)",
+  "evidence": "Quabaook Relays 9/10/2022 (Hy-Tek heat sheet; one mixed race, Women and Men sections split into Girls/Boys correctly): 7+7 rows (girls+boys), all name/school/time rows match. 'Boothbay XC' -> me-hs-boothbay is the host of the Boothbay/Wiscasset coop (the same girls ran as Boothbay/Wiscasset at Brunswick 9/2/22), as in quabacookboys. Event name keeps the heat label '# N Athlete' (parser leaves the '# 1 Athlete' heat tag in the event name; rows unaffected). Source prints no team scores (this file)."
+ },
+ "backend/data/parsed_results/2022/XC/event-5.json": {
+  "parse_sha": "1968689bf5197a3a",
+  "source_sha": "6281b204211167b4",
+  "date": "2026-10-24",
+  "by": "sonnet audit (second read, 2026-10-24) (audit: confirmed)",
+  "evidence": "Quabaook Relays 9/10/2022 (Hy-Tek heat sheet; one mixed race, Women and Men sections split into Girls/Boys correctly): 5+8 rows (girls+boys), all name/school/time rows match. 'Boothbay XC' -> me-hs-boothbay is the host of the Boothbay/Wiscasset coop (the same girls ran as Boothbay/Wiscasset at Brunswick 9/2/22), as in quabacookboys. Event name keeps the heat label '# N Athlete' (parser leaves the '# 1 Athlete' heat tag in the event name; rows unaffected). Source prints no team scores (this file)."
+ },
+ "backend/data/parsed_results/2022/XC/event-6.json": {
+  "parse_sha": "ea5277a17bbbe64a",
+  "source_sha": "8c74f956210b668e",
+  "date": "2026-10-24",
+  "by": "sonnet audit (second read, 2026-10-24) (audit: confirmed)",
+  "evidence": "Quabaook Relays 9/10/2022 (Hy-Tek heat sheet; one mixed race, Women and Men sections split into Girls/Boys correctly): 9+9 rows (girls+boys), all name/school/time rows match. 'Boothbay XC' -> me-hs-boothbay is the host of the Boothbay/Wiscasset coop (the same girls ran as Boothbay/Wiscasset at Brunswick 9/2/22), as in quabacookboys. Event name keeps the heat label '# N Athlete' (parser leaves the '# 1 Athlete' heat tag in the event name; rows unaffected). Source prints no team scores (this file)."
+ },
+ "backend/data/parsed_results/2022/XC/event-7.json": {
+  "parse_sha": "15a09c0daf959ec2",
+  "source_sha": "f8a023e88913910a",
+  "date": "2026-10-24",
+  "by": "sonnet audit (second read, 2026-10-24) (audit: confirmed)",
+  "evidence": "Quabaook Relays 9/10/2022 (Hy-Tek heat sheet; one mixed race, Women and Men sections split into Girls/Boys correctly): 8+9 rows (girls+boys), all name/school/time rows match. 'Boothbay XC' -> me-hs-boothbay is the host of the Boothbay/Wiscasset coop (the same girls ran as Boothbay/Wiscasset at Brunswick 9/2/22), as in quabacookboys. Event name keeps the heat label '# N Athlete' (parser leaves the '# 1 Athlete' heat tag in the event name; rows unaffected). Source prints no team scores (this file)."
+ },
  "backend/data/parsed_results/2022/XC/falmouth-boys-xc-22-hs.txt.json": {
   "parse_sha": "f55884258f810cdc",
   "source_sha": "369fcdca7ee3d6ac",
   "date": "2026-10-16",
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
+ },
+ "backend/data/parsed_results/2022/XC/foc2022boysbyheat.json": {
+  "parse_sha": "f03e92bc72e1957a",
+  "source_sha": "2ad7ad605f39ca33",
+  "date": "2026-10-24",
+  "by": "sonnet audit (second read, 2026-10-24) (audit: confirmed)",
+  "evidence": "682 rows compared programmatically with the source (Unseeded 275, Freshman 164, Seeded 243): place, name, grade, school, time and DNF ('--') rows all match; the three races are one 5k event with places restarting per race (house convention for Festival of Champions). One source oddity: Atticus Blue, Medomak, grade printed '28' (typo), parse leaves the grade blank. 'Royals TC' (Calder and Conlan MacKenzie) is a club team, not in the catalog, appears nowhere else; unresolved is right. Out-of-state teams resolve (Burrillville RI, Wheeler RI, Mt. St. Charles RI, Harwood VT, King's Edgehill NS). No team scores printed."
+ },
+ "backend/data/parsed_results/2022/XC/foc2022girlsbyheat.json": {
+  "parse_sha": "6e19af157bbc007b",
+  "source_sha": "73e20fa212b69399",
+  "date": "2026-10-24",
+  "by": "sonnet audit (second read, 2026-10-24) (audit: confirmed)",
+  "evidence": "533 rows compared programmatically (Unseeded 194, Freshman 149, Seeded 190): place, name, grade, school, time and the 8 DNF rows all match; races merged into one 5k event as in other FOC years. 'Royals TC' (Anna Robinson) is a club, unresolved correctly; Cumberland RI, Burrillville RI, Wheeler RI, Mt. St. Charles RI, Harwood VT, King's Edgehill NS resolve. No team scores printed."
+ },
+ "backend/data/parsed_results/2022/XC/focboys2022.txt.json": {
+  "parse_sha": "543271e9eedcca08",
+  "source_sha": "1f82ccd56845e0aa",
+  "date": "2026-10-24",
+  "by": "sonnet audit (second read, 2026-10-24) (audit: confirmed)",
+  "evidence": "678 finishers + 4 DNF (Gilman Taylor, Luka Topalovic, Trey Belyea, Gavin Peck) all match the source (place, name, year, school, mark, points compared programmatically). Team scores verified. Unresolved: 'Royals TC' (2 rows) is a club team, correctly unresolved. Out-of-state teams resolved: Burrillville RI, Wheeler RI, Mt. St. Charles (Woonsocket RI), King's Edgehill NS, Harwood (Harwood Union VT). Source oddity: place 398 Atticus Blue printed year '28' (parse leaves the grade blank)."
+ },
+ "backend/data/parsed_results/2022/XC/focgirls2022.txt.json": {
+  "parse_sha": "49401e2dcfa2ae4c",
+  "source_sha": "764c5bdd10d30835",
+  "date": "2026-10-24",
+  "by": "sonnet audit (second read, 2026-10-24) (audit: confirmed)",
+  "evidence": "526 finishers + 7 DNF all match the source (place, name, year, school, mark, points compared programmatically); team scores verified. 'Royals TC' (Anna Robinson) is a club team, correctly unresolved. Cumberland RI, Burrillville RI, Wheeler RI, Mt. St. Charles RI, King's Edgehill NS and Harwood (VT) are out of state and resolved as such."
  },
  "backend/data/parsed_results/2022/XC/gng-girls-22.txt.json": {
   "parse_sha": "260cc2edf0c737a3",
@@ -35682,6 +35892,13 @@
   "parse_sha": "ee8f173dab896fe9",
   "source_sha": "fb3f8e82639d70e1",
   "date": "2026-10-16",
+  "by": "auto: team scores verified exactly, all schools identified, no flags",
+  "evidence": ""
+ },
+ "backend/data/parsed_results/2022/XC/marshwoodboys8sept2022.json": {
+  "parse_sha": "62964d434260d0e6",
+  "source_sha": "397e713ef1f6d979",
+  "date": "2026-10-24",
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
  },
@@ -35908,6 +36125,13 @@
   "date": "2026-10-18",
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
+ },
+ "backend/data/parsed_results/2022/XC/mtblueboys_sept2.json": {
+  "parse_sha": "4a935ae72a9afb05",
+  "source_sha": "d09fc8442e6d496a",
+  "date": "2026-10-24",
+  "by": "sonnet audit (second read, 2026-10-24) (audit: confirmed)",
+  "evidence": "27 rows, all in the source (places 1-27, names, schools, grades, marks agree; Brey McCamish grade '--' left blank). Schools Mt. Blue/Spruce Mountain/Cony/Gardiner match the sub5 index name 'Mt. Blue, Cony, Gardiner, Spruce Mountain'. No team scores or date printed (none in the parse)."
  },
  "backend/data/parsed_results/2022/XC/panther-boys.txt.json": {
   "parse_sha": "bc4c5ca8bba93287",

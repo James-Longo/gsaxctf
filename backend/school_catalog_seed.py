@@ -618,6 +618,7 @@ ME_MS = [
     # 2026-10-24 store-team review: schools printed in XC meets and missing from the catalog
     ('me-ms-madison-athens', 'Madison/Athens (combined MS team)', 'Madison', None,
      ['Madison/Athens', 'MadisonAthens', 'Madison-Athens', 'Madison Athens'], [], [], {}),   # scored as one team, 2005 Central Maine MS league
+    ('me-ms-st-brigid', 'St. Brigid School', 'Portland', None, ['St. Brigid School', "St. Brigid's", "St Brigid's", 'St. Brigid', 'St Brigid'], [], [], {}),   # Portland K-8; 2022 Falmouth MS meets
     ('me-ms-islesford', 'Islesford School', 'Cranberry Isles', None, ['Islesford School', 'Islesford', 'Isleford'], [], [], {}),
     # Penobscot / Hancock / Waldo / Knox / Washington
     ('me-ms-doughty', 'James F. Doughty School', 'Bangor', None,
@@ -1472,6 +1473,10 @@ FILE_RULES = [
     (['Deer Isle Stonni'], 'XC', (2023, 2023), r'^ellsworth-varsity-boys\.txt$', 'me-hs-deer-isle'),   # truncated column
     (['T'], 'XC', (2023, 2023), r'^thorntongirls8sept2023$', 'me-hs-thornton'),   # 'TA-Falmouth-Noble-Portland'
     (['MCW'], 'XC', (2023, 2023), r'^2023-CAPE-ELIZABETH-BOYS-XC\.txt$', 'me-hs-maine-coast-waldorf'),   # Quinn Chessa: Maine Coast Waldorf in 2023 files
+    (['HALE DALE'], 'XC', (2021, 2021), r'^Boothbay-17-21-(BOYS|GIRLS)$', 'me-hs-hall-dale'),   # meet title lists Hall-Dale
+    (['Conners Emer'], 'XC', (2022, 2022), r'^airline-invitation-mixed-race\.txt$', 'me-ms-conners-emerson'),   # the meet's girls file: Conners Emerson School
+    (['SCC'], 'XC', (2022, 2022), r'^marshwoodboys8sept2022$', 'me-hs-seacoast-christian'),   # Aaron Geaslen; index lists Seacoast Christian
+    (['SC'], 'XC', (2022, 2022), r'^SEP-15-RESULTS$', 'me-hs-seacoast-christian'),   # 'SEACOAST ns' in the team block
     # 2026-10-24 unresolved-school review, batch 2
     (['F'], 'XC', (2004, 2004), r'^cape7oct04[bg]\.txt$', 'me-hs-falmouth'),   # Title lists Falmouth; only F team
     (['Y'], 'XC', (2004, 2004), r'^cape7oct04[bg]\.txt$', 'me-hs-yarmouth'),   # Title lists Yarmouth; only Y team
