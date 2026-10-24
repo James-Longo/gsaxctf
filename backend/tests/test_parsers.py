@@ -179,6 +179,10 @@ def test_xcrun_layout():
     assert res['date'] == '2025-09-16'
     v = qaqc.xc_verify_parsed(res)
     assert v['status'] == 'verified', v
+    # a stray PDF glyph on a name ('KingstonÊ Lavallee', 'AbbyÊ\\ Hopkins') is not part of it
+    first = XCRUN.split('ABEL', 1)
+    glued = XCRunParser().parse(first[0] + 'ABEL\u00ca\\' + first[1], '9-16-25-Maranacook-Boys.pdf', 'XC')
+    assert glued['events'][0]['results'][0]['athlete'] == 'Abel Acorn', glued['events'][0]['results'][0]
 
 
 def test_gender_suffix_split():
