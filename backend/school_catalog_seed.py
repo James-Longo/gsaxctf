@@ -1488,6 +1488,22 @@ FILE_RULES = [
     # 2026-10-24 second read, batch 5 (2019-2020)
     (['Hogdon'], 'XC', (2020, 2020), r'^2020-houlton-xc-boys-results$', 'me-hs-hodgdon'),
     (['Mt, Ararat'], 'XC', (2019, 2019), r'^mtbluegirls$', 'me-hs-mt-ararat'),
+    # 2026-10-24 second read, batch 6 (2018-2019)
+    (['Wash Ac'], 'XC', (2019, 2019), r'^lee(boys|girls)_sept19\.txt$', 'me-hs-washington-academy'),
+    (['Lee Ac'], 'XC', (2019, 2019), r'^lee(boys|girls)_sept19\.txt$', 'me-hs-lee-academy'),
+    (['Narrag'], 'XC', (2019, 2019), r'^lee(boys|girls)_sept19\.txt$', 'me-hs-narraguagus'),
+    (['J - Beals', 'J- Beals', 'J-Beals', 'Beals'], 'XC', (2019, 2019), r'^lee(boys|girls)_sept19\.txt$', 'me-hs-jonesport-beals'),
+    (['WIN'], 'XC', (2019, 2019), r'^tfmm6results1colcourier1(-1)?$', 'me-ms-windham'),
+    (['Ma'], 'XC', (2019, 2019), r'^thorntonms(boys|girls)_oct9$', 'me-ms-massabesic'),
+    (['WSR Cape', 'MSR Cape'], 'XC', (2018, 2018), r'^Results-R-6$', 'me-hs-cape-elizabeth'),
+    (['WFR Mt.B XC', 'MSO Mt.B XC'], 'XC', (2018, 2018), r'^Results-R-6$', 'me-hs-mt-blue'),
+    (['WFR Bhs CC 2018', 'MFR Bhs CC 2018'], 'XC', (2018, 2018), r'^Results-R-6$', 'me-hs-brunswick'),
+    (['WSR Lewiston XC', 'MJR Lewiston XC'], 'XC', (2018, 2018), r'^Results-R-6$', 'me-hs-lewiston'),
+    (['WJR York High School'], 'XC', (2018, 2018), r'^Results-R-6$', 'me-hs-york'),
+    (['WJR Morse High School'], 'XC', (2018, 2018), r'^Results-R-6$', 'me-hs-morse'),
+    (['WSR Leavitt High School'], 'XC', (2018, 2018), r'^Results-R-6$', 'me-hs-leavitt'),
+    (['WSO Mt. Ararat High'], 'XC', (2018, 2018), r'^Results-R-6$', 'me-hs-mt-ararat'),
+    (['Woodland Woodchucks'], 'XC', (2018, 2018), r'^(cariboums(boys|girls)_oct3|alms.*)$', 'me-ms-woodland'),
     # 2026-10-24 unresolved-school review, batch 2
     (['F'], 'XC', (2004, 2004), r'^cape7oct04[bg]\.txt$', 'me-hs-falmouth'),   # Title lists Falmouth; only F team
     (['Y'], 'XC', (2004, 2004), r'^cape7oct04[bg]\.txt$', 'me-hs-yarmouth'),   # Title lists Yarmouth; only Y team

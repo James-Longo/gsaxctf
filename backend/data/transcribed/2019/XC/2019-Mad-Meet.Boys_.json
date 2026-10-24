@@ -284,7 +284,28 @@
    ]
   }
  ],
- "team_rankings": [],
+ "team_rankings": [
+  {
+   "gender": "Boys",
+   "teams": [
+    {
+     "rank": 1,
+     "team": "Washburn",
+     "score": 28
+    },
+    {
+     "rank": 2,
+     "team": "Madawaska",
+     "score": 45
+    },
+    {
+     "rank": 3,
+     "team": "Fort Kent",
+     "score": 62
+    }
+   ]
+  }
+ ],
  "parser": null,
- "notes": "Parse lost every name and place on the pdf's 'Place Name Bib Team name Time Points' layout (athlete field held the team name, place held the bib, places 1-12 missing, 31 of 34 rows unplaced). All 34 rows re-read: place, name, team, time. Teams as printed: Washburn, Madawaska, Fort Kent, Houlton, Fort Fairfield (scoring list 'Houlton/GHCA' = unscored team; runners print 'Houlton'). Date from the title 'Madawaska XC Meet 9/5/19'. Parser pattern: bib column between Name and Team shifts the columns."
+ "notes": "Parse lost every name and place on the pdf's 'Place Name Bib Team name Time Points' layout (athlete field held the team name, place held the bib, places 1-12 missing, 31 of 34 rows unplaced). All 34 rows re-read: place, name, team, time. Teams as printed: Washburn, Madawaska, Fort Kent, Houlton, Fort Fairfield (scoring list 'Houlton/GHCA' = unscored team; runners print 'Houlton'). Date from the title 'Madawaska XC Meet 9/5/19'. Parser pattern: bib column between Name and Team shifts the columns. Added the printed BOYS TEAM SCORING (Washburn 28, Madawaska 45, Fort Kent 62; Houlton/GHCA and Fort Fairfield print unscored); the points column reproduces them."
 }

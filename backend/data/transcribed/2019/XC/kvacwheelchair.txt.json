@@ -1,0 +1,25 @@
+{
+ "source": "backend/data/sub5_archive/2019/XC/kvacwheelchair.txt.htm",
+ "meet_name": "2019  KVAC XC Championship Meet",
+ "date": "2019-10-19",
+ "school_codes": {},
+ "events": [
+  {
+   "event": "2 Mile Run CC Wheelchair",
+   "gender": "Boys",
+   "is_relay": false,
+   "results": [
+    {
+     "place": 1,
+     "athlete": "Jonathan Schomaker",
+     "school": "Leavitt",
+     "grade": "SO",
+     "result": "47:35.6",
+     "type": "Finals"
+    }
+   ]
+  }
+ ],
+ "team_rankings": [],
+ "notes": "Single row unchanged (1 Jonathan Schomaker, SO, Leavitt, 47:35.6). Fixed: the source event is 'Event 5  Boys 2 Mile Run CC Wheelchair' but the parse named it '2 Mile Run' (Boys), which would put a wheelchair mark into the boys 2-mile run; named '2 Mile Run CC Wheelchair' like the 2020/2021 KVAC wheelchair files ('5k Run CC Wheelchair'). Meet and date as parsed (2019 KVAC XC Championship Meet, 10/19/2019, Cony High School). PARSER PATTERN: ColumnStrategyParser on 'Boys 2 Mile Run CC Wheelchair' drops 'CC Wheelchair' (the '5k Run CC Wheelchair' header keeps it)."
+}

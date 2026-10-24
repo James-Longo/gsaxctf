@@ -1,0 +1,153 @@
+{
+ "source": "backend/data/sub5_archive/2019/XC/q-relay-5.pdf",
+ "meet_name": "4th Annual Quabacook Relays - 2019",
+ "date": "2019-09-14",
+ "school_codes": {
+  "BRUN": "Brunswick",
+  "Cape": "Cape Elizabeth",
+  "MTA": "Mt. Ararat",
+  "Mt.B XC": "Mt. Blue",
+  "York Girls XC": "York",
+  "Cony High School": "Cony",
+  "Lewiston XC": "Lewiston",
+  "Edward Little HS": "Edward Little"
+ },
+ "events": [
+  {
+   "event": "2.6 Mile Run Race # 5",
+   "gender": "Girls",
+   "is_relay": false,
+   "results": [
+    {
+     "place": 1,
+     "athlete": "Wheeler, Mary",
+     "school": "Mt. Ararat",
+     "grade": "10",
+     "result": "18:48.39",
+     "type": "Finals"
+    },
+    {
+     "place": 2,
+     "athlete": "Reusch, Moriah",
+     "school": "Mt. Blue",
+     "grade": "9",
+     "result": "19:07.52",
+     "type": "Finals"
+    },
+    {
+     "place": 3,
+     "athlete": "Hembberger, Aela",
+     "school": "Brunswick",
+     "grade": "10",
+     "result": "19:37.56",
+     "type": "Finals"
+    },
+    {
+     "place": 4,
+     "athlete": "Brown, Jillian",
+     "school": "Cony",
+     "grade": "",
+     "result": "19:52.38",
+     "type": "Finals"
+    },
+    {
+     "place": 5,
+     "athlete": "Hesser, Marcella",
+     "school": "Cape Elizabeth",
+     "grade": "10",
+     "result": "23:41.37",
+     "type": "Finals"
+    },
+    {
+     "place": 6,
+     "athlete": "Corey, Johanna",
+     "school": "Edward Little",
+     "grade": "",
+     "result": "46:34.20",
+     "type": "Finals"
+    }
+   ]
+  },
+  {
+   "event": "2.6 Mile Run Race # 5",
+   "gender": "Boys",
+   "is_relay": false,
+   "results": [
+    {
+     "place": 1,
+     "athlete": "Chamberland, Andrew",
+     "school": "Mt. Ararat",
+     "grade": "11",
+     "result": "15:29.93",
+     "type": "Finals"
+    },
+    {
+     "place": 2,
+     "athlete": "Dinnerstein, Isaac",
+     "school": "Cape Elizabeth",
+     "grade": "11",
+     "result": "16:04.23",
+     "type": "Finals"
+    },
+    {
+     "place": 3,
+     "athlete": "Avery, Caleb",
+     "school": "Morse",
+     "grade": "11",
+     "result": "16:19.68",
+     "type": "Finals"
+    },
+    {
+     "place": 4,
+     "athlete": "Hoes, Aubrey",
+     "school": "Mt. Blue",
+     "grade": "12",
+     "result": "16:34.54",
+     "type": "Finals"
+    },
+    {
+     "place": 5,
+     "athlete": "Pols, Dolan",
+     "school": "Brunswick",
+     "grade": "10",
+     "result": "16:35.00",
+     "type": "Finals"
+    },
+    {
+     "place": 6,
+     "athlete": "Coffin, Sam",
+     "school": "Cony",
+     "grade": "",
+     "result": "18:11.87",
+     "type": "Finals"
+    },
+    {
+     "place": 7,
+     "athlete": "Hartley, Weston",
+     "school": "Edward Little",
+     "grade": "",
+     "result": "18:15.87",
+     "type": "Finals"
+    },
+    {
+     "place": 8,
+     "athlete": "Levesque, Tyler",
+     "school": "Lewiston",
+     "grade": "10",
+     "result": "18:47.40",
+     "type": "Finals"
+    },
+    {
+     "place": 9,
+     "athlete": "Delile, Zachary",
+     "school": "Lawrence",
+     "grade": "11",
+     "result": "19:27.40",
+     "type": "Finals"
+    }
+   ]
+  }
+ ],
+ "team_rankings": [],
+ "notes": "All 15 rows of the parse unchanged (place, name, time checked against the Hy-Tek sheet by script; Women and Men sections split into Girls and Boys). Changes: the source Year column holds gender+class (WFR/WSO/WJR/WSR, MFR/MSO/MJR/MSR = Freshman/Sophomore/Junior/Senior; blank class 'W'/'M' only for Cony and Edward Little rows) and the parse dropped it; it is now the grade 9/10/11/12 (11 rows; blank where only W/M is printed), and the schools are the bare team names (same override as q-relay-8-jv). Team strings: BRUN=Brunswick, Cape=Cape Elizabeth, MTA=Mt. Ararat, Mt.B XC=Mt. Blue, York Girls XC=York, Cony High School=Cony, Edward Little HS=Edward Little, Lewiston XC=Lewiston, Lawrence=Lawrence High School (Fairfield), Morse (host school Mt. Ararat Track/Morse). Event name kept as the parser's ('2.6 Mile Run Race # N'). No team scores on this sheet (Quabacookteamscores.html holds them). PARSER PATTERN: Hy-Tek 'Year School' where Year is 'WJR'/'MSO' etc.: the class is dropped."
+}

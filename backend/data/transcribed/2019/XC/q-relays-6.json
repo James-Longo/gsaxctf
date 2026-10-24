@@ -1,0 +1,185 @@
+{
+ "source": "backend/data/sub5_archive/2019/XC/q-relays-6.pdf",
+ "meet_name": "4th Annual Quabacook Relays - 2019",
+ "date": "2019-09-14",
+ "school_codes": {
+  "BRUN": "Brunswick",
+  "Cape": "Cape Elizabeth",
+  "MTA": "Mt. Ararat",
+  "Mt.B XC": "Mt. Blue",
+  "York Girls XC": "York",
+  "Cony High School": "Cony",
+  "Lewiston XC": "Lewiston",
+  "Edward Little HS": "Edward Little"
+ },
+ "events": [
+  {
+   "event": "2.6 Mile Run Race # 6",
+   "gender": "Girls",
+   "is_relay": false,
+   "results": [
+    {
+     "place": 1,
+     "athlete": "Wilson, Zoe",
+     "school": "Brunswick",
+     "grade": "9",
+     "result": "18:58.48",
+     "type": "Finals"
+    },
+    {
+     "place": 2,
+     "athlete": "Grimes, Charlotte",
+     "school": "York",
+     "grade": "10",
+     "result": "19:06.46",
+     "type": "Finals"
+    },
+    {
+     "place": 3,
+     "athlete": "Vaughan, Helen",
+     "school": "Cape Elizabeth",
+     "grade": "12",
+     "result": "19:24.53",
+     "type": "Finals"
+    },
+    {
+     "place": 4,
+     "athlete": "Boutin, Libby",
+     "school": "Mt. Ararat",
+     "grade": "12",
+     "result": "19:26.90",
+     "type": "Finals"
+    },
+    {
+     "place": 5,
+     "athlete": "Collins, Paige",
+     "school": "Lewiston",
+     "grade": "10",
+     "result": "19:57.32",
+     "type": "Finals"
+    },
+    {
+     "place": 6,
+     "athlete": "Banfi, Ella",
+     "school": "Lawrence",
+     "grade": "11",
+     "result": "20:54.21",
+     "type": "Finals"
+    },
+    {
+     "place": 7,
+     "athlete": "Cramer, Abbie",
+     "school": "Mt. Blue",
+     "grade": "10",
+     "result": "20:55.15",
+     "type": "Finals"
+    },
+    {
+     "place": 8,
+     "athlete": "Trask, Haley",
+     "school": "Cony",
+     "grade": "",
+     "result": "21:58.13",
+     "type": "Finals"
+    },
+    {
+     "place": 9,
+     "athlete": "Martinez Estivez, Sara",
+     "school": "Morse",
+     "grade": "12",
+     "result": "22:51.75",
+     "type": "Finals"
+    },
+    {
+     "place": 10,
+     "athlete": "Hyndman, Lindy",
+     "school": "Edward Little",
+     "grade": "",
+     "result": "23:37.41",
+     "type": "Finals"
+    }
+   ]
+  },
+  {
+   "event": "2.6 Mile Run Race # 6",
+   "gender": "Boys",
+   "is_relay": false,
+   "results": [
+    {
+     "place": 1,
+     "athlete": "Libby, Parker",
+     "school": "Mt. Ararat",
+     "grade": "9",
+     "result": "15:28.36",
+     "type": "Finals"
+    },
+    {
+     "place": 2,
+     "athlete": "O'Grady, Keegan",
+     "school": "Cape Elizabeth",
+     "grade": "11",
+     "result": "16:33.85",
+     "type": "Finals"
+    },
+    {
+     "place": 3,
+     "athlete": "Nussbaum, Adam",
+     "school": "Brunswick",
+     "grade": "11",
+     "result": "16:40.58",
+     "type": "Finals"
+    },
+    {
+     "place": 4,
+     "athlete": "Smith, Jacob",
+     "school": "Mt. Blue",
+     "grade": "11",
+     "result": "16:44.84",
+     "type": "Finals"
+    },
+    {
+     "place": 5,
+     "athlete": "Hennin, Oscar",
+     "school": "Morse",
+     "grade": "11",
+     "result": "16:53.62",
+     "type": "Finals"
+    },
+    {
+     "place": 6,
+     "athlete": "Bilodeau, Adam",
+     "school": "Lewiston",
+     "grade": "9",
+     "result": "17:18.91",
+     "type": "Finals"
+    },
+    {
+     "place": 7,
+     "athlete": "Galego, Evan",
+     "school": "Cony",
+     "grade": "",
+     "result": "17:21.82",
+     "type": "Finals"
+    },
+    {
+     "place": 8,
+     "athlete": "Cougle, Landon",
+     "school": "Edward Little",
+     "grade": "",
+     "result": "18:56.96",
+     "type": "Finals"
+    },
+    {
+     "place": 9,
+     "athlete": "Bowley, Ryan",
+     "school": "Lawrence",
+     "grade": "10",
+     "result": "20:42.95",
+     "type": "Finals"
+    }
+   ]
+  }
+ ],
+ "team_rankings": [],
+ "notes": "All 19 rows of the parse unchanged (place, name, time checked against the Hy-Tek sheet by script; Women and Men sections split into Girls and Boys). Changes: the source Year column holds gender+class (WFR/WSO/WJR/WSR, MFR/MSO/MJR/MSR = Freshman/Sophomore/Junior/Senior; blank class 'W'/'M' only for Cony and Edward Little rows) and the parse dropped it; it is now the grade 9/10/11/12 (15 rows; blank where only W/M is printed), and the schools are the bare team names (same override as q-relay-8-jv). Team strings: BRUN=Brunswick, Cape=Cape Elizabeth, MTA=Mt. Ararat, Mt.B XC=Mt. Blue, York Girls XC=York, Cony High School=Cony, Edward Little HS=Edward Little, Lewiston XC=Lewiston, Lawrence=Lawrence High School (Fairfield), Morse (host school Mt. Ararat Track/Morse). Event name kept as the parser's ('2.6 Mile Run Race # N'). No team scores on this sheet (Quabacookteamscores.html holds them). PARSER PATTERN: Hy-Tek 'Year School' where Year is 'WJR'/'MSO' etc.: the class is dropped."
+}
