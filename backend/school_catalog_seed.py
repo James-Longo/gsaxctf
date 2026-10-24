@@ -1468,6 +1468,10 @@ FILE_RULES = [
     (['Narraquaqus'], 'XC', (2003, 2026), r'.', 'me-hs-narraguagus'),   # alias: 2019 bucksport-boys-jv misspelling; unambiguous (HS meet, Narrag in lee Sept19 resolves to
     (['Gray-N Glouceste'], 'XC', (2003, 2026), r'.', 'me-hs-gray-ng'),   # alias: 2012 New England HS XC boys: truncated 'Gray-N Glouceste' (Will Shafer, 11) - only Gray-Ne
     (['Wisc'], 'XC', (2023, 2023), r'^(Boys|Girls)-Cross-Country-Meet-9-14-23$', 'me-ms-wiscasset'),   # middle-school league; Kai Morse is Wiscasset MS in busline/gsb/troy-howard 2023
+    (['Portsmouth'], 'XC', (2023, 2023), r'^foc2023(boys|girls)overall\.txt$|^Results(boys|girls)byheat$', 'oos-auto-ri-portsmouth'),   # Sean Gray, Allie Kaull are 'Portsmouth RI' at New England 2023
+    (['Deer Isle Stonni'], 'XC', (2023, 2023), r'^ellsworth-varsity-boys\.txt$', 'me-hs-deer-isle'),   # truncated column
+    (['T'], 'XC', (2023, 2023), r'^thorntongirls8sept2023$', 'me-hs-thornton'),   # 'TA-Falmouth-Noble-Portland'
+    (['MCW'], 'XC', (2023, 2023), r'^2023-CAPE-ELIZABETH-BOYS-XC\.txt$', 'me-hs-maine-coast-waldorf'),   # Quinn Chessa: Maine Coast Waldorf in 2023 files
     # 2026-10-24 unresolved-school review, batch 2
     (['F'], 'XC', (2004, 2004), r'^cape7oct04[bg]\.txt$', 'me-hs-falmouth'),   # Title lists Falmouth; only F team
     (['Y'], 'XC', (2004, 2004), r'^cape7oct04[bg]\.txt$', 'me-hs-yarmouth'),   # Title lists Yarmouth; only Y team
