@@ -123,7 +123,7 @@ class XCRunParser(BaseParser):
         # the second (headed "OA") the overall place, which orders the race
         place_group = 'pts' if cls_layout else 'place'
         # (a stray PDF glyph sits on some names: 'KingstonÊ Lavallee', 'AbbyÊ\ Hopkins')
-        lines = [re.sub(r'[\u00ca\u00c6]\\?', '', ln) for ln in text.splitlines()]
+        lines = [re.sub(r'[\u00ca\u00c6\u0178]\\?', '', ln) for ln in text.splitlines()]
         races = []
 
         def new_race():
@@ -352,7 +352,7 @@ class XCRunTeamPagesParser(BaseParser):
         if not self.matches(text):
             return empty
         # (a stray PDF glyph sits on some names: 'KingstonÊ Lavallee', 'AbbyÊ\ Hopkins')
-        lines = [re.sub(r'[\u00ca\u00c6]\\?', '', ln) for ln in text.splitlines()]
+        lines = [re.sub(r'[\u00ca\u00c6\u0178]\\?', '', ln) for ln in text.splitlines()]
         races = []
         mode = None
         for i, line in enumerate(lines):
