@@ -1,41 +1,41 @@
 {
 "_meta": {
 "methods_by_rows": {
-"exact/alias": 1694794,
+"exact/alias": 1694880,
 "code": 261915,
-"truncation": 120474,
-"athlete-continuity": 58470,
+"truncation": 120497,
+"athlete-continuity": 58489,
 "mascot": 28481,
 "bare name + level context": 23936,
-"unresolved": 18453,
-"manual (file rule)": 15878,
+"unresolved": 18115,
+"manual (file rule)": 16187,
 "co-op label": 12527,
 "state-tagged (auto entry)": 10725,
 "spelling (fuzzy)": 3508,
 "file-expansion": 2857,
 "debris-salvage": 1767,
-"ambiguous": 1169,
 "debris": 1122,
+"ambiguous": 1070,
 "company": 725,
 "later-hs": 636,
 "blank": 277,
 "co-op label -> host (co-op not active)": 183
 },
 "methods_by_strings": {
-"exact/alias": 4096,
-"unresolved": 2316,
+"exact/alias": 4103,
+"unresolved": 2287,
 "state-tagged (auto entry)": 1571,
 "debris-salvage": 913,
 "code": 804,
 "debris": 801,
-"truncation": 547,
-"athlete-continuity": 521,
+"truncation": 549,
+"athlete-continuity": 517,
 "spelling (fuzzy)": 301,
+"manual (file rule)": 92,
 "co-op label": 77,
 "bare name + level context": 65,
-"manual (file rule)": 65,
 "mascot": 44,
-"ambiguous": 39,
+"ambiguous": 36,
 "file-expansion": 14,
 "later-hs": 3
 },
@@ -9244,13 +9244,13 @@
 "id": "me-hs-portland",
 "method": "athlete-continuity",
 "by_id": {
-"me-hs-portland": 442,
-"me-hs-poland": 224,
-"None": 90,
+"me-hs-portland": 452,
+"me-hs-poland": 235,
+"None": 69,
 "me-hs-piscataquis": 2
 },
 "context_dependent": true,
-"unresolved_rows": 90,
+"unresolved_rows": 69,
 "how": "athlete-continuity"
 },
 "Bath Middle": {
@@ -9674,13 +9674,13 @@
 "id": "me-hs-winthrop",
 "method": "athlete-continuity",
 "by_id": {
-"me-hs-winthrop": 400,
-"me-hs-winslow": 253,
+"me-hs-winthrop": 402,
+"me-hs-winslow": 259,
 "me-hs-windham": 33,
-"None": 11
+"None": 3
 },
 "context_dependent": true,
-"unresolved_rows": 11,
+"unresolved_rows": 3,
 "by_season": {
 "XC": "me-hs-winslow",
 "Indoor": "me-hs-winslow",
@@ -13074,13 +13074,13 @@
 "id": "me-hs-noble",
 "method": "manual (file rule)",
 "by_id": {
-"me-hs-noble": 151,
+"me-hs-noble": 168,
 "me-ms-noble": 133,
-"None": 91,
+"None": 74,
 "me-hs-nya": 3
 },
 "context_dependent": true,
-"unresolved_rows": 91,
+"unresolved_rows": 74,
 "how": "manual (file rule)"
 },
 "Yarmouth Mid": {
@@ -16353,11 +16353,9 @@
 "method": "athlete-continuity",
 "by_id": {
 "col-usm": 186,
-"me-ms-southern-maine-catholic": 51,
-"None": 13
+"me-ms-southern-maine-catholic": 64
 },
 "context_dependent": true,
-"unresolved_rows": 13,
 "by_season": {
 "XC": "me-ms-southern-maine-catholic",
 "Indoor": "col-usm"
@@ -24680,11 +24678,9 @@
 "id": "me-ms-center-drive",
 "method": "athlete-continuity",
 "by_id": {
-"me-ms-center-drive": 52,
-"None": 46
+"me-ms-center-drive": 98
 },
 "context_dependent": true,
-"unresolved_rows": 46,
 "how": "athlete-continuity"
 },
 "Yo": {
@@ -25178,12 +25174,12 @@
 "id": "coop-limestone-mssm",
 "method": "manual (file rule)",
 "by_id": {
-"coop-limestone-mssm": 44,
+"coop-limestone-mssm": 52,
 "me-hs-limestone": 37,
-"None": 13
+"None": 5
 },
 "context_dependent": true,
-"unresolved_rows": 13,
+"unresolved_rows": 5,
 "by_season": {
 "XC": "coop-limestone-mssm",
 "Outdoor": "me-hs-limestone"
@@ -28477,13 +28473,15 @@
 2016,
 2017
 ],
-"id": null,
-"method": "ambiguous-stem",
-"candidates": [
-"oos-auto-ct-canton",
-"oos-auto-ma-canton"
-],
-"how": "ambiguous"
+"id": "oos-auto-ct-canton",
+"method": "manual (file rule)",
+"by_id": {
+"oos-auto-ct-canton": 65,
+"None": 8
+},
+"context_dependent": true,
+"unresolved_rows": 8,
+"how": "manual (file rule)"
 },
 "BATES": {
 "rows": 73,
@@ -36306,13 +36304,15 @@
 2012,
 2026
 ],
-"id": null,
-"method": "ambiguous-name",
-"candidates": [
-"oos-auto-ct-canton",
-"oos-auto-ma-canton"
-],
-"how": "ambiguous"
+"id": "oos-auto-ct-canton",
+"method": "ambiguous-name+athletes",
+"by_id": {
+"None": 21,
+"oos-auto-ct-canton": 19
+},
+"context_dependent": true,
+"unresolved_rows": 21,
+"how": "athlete-continuity"
 },
 "Windham Middle School": {
 "rows": 40,
@@ -38175,11 +38175,9 @@
 "id": "me-ms-wagner",
 "method": "athlete-continuity",
 "by_id": {
-"me-ms-wagner": 18,
-"None": 17
+"me-ms-wagner": 35
 },
 "context_dependent": true,
-"unresolved_rows": 17,
 "how": "athlete-continuity"
 },
 "Sacopee Valley Middle School": {
@@ -41740,9 +41738,9 @@
 2005,
 2005
 ],
-"id": null,
-"method": "unresolved",
-"how": "unresolved"
+"id": "me-ms-madison-athens",
+"method": "exact",
+"how": "exact/alias"
 },
 "No Yarmouth Aca": {
 "rows": 28,
@@ -46323,11 +46321,9 @@
 "id": "me-hs-erskine",
 "method": "athlete-continuity",
 "by_id": {
-"me-hs-erskine": 15,
-"None": 7
+"me-hs-erskine": 22
 },
 "context_dependent": true,
-"unresolved_rows": 7,
 "how": "athlete-continuity"
 },
 "Lewiston High School 'A'": {
@@ -48206,12 +48202,12 @@
 "id": "me-hs-massabesic",
 "method": "manual (file rule)",
 "by_id": {
-"me-hs-massabesic": 14,
-"None": 3,
-"me-ms-massabesic": 3
+"me-hs-massabesic": 15,
+"me-ms-massabesic": 4,
+"None": 1
 },
 "context_dependent": true,
-"unresolved_rows": 3,
+"unresolved_rows": 1,
 "how": "manual (file rule)"
 },
 "Lee Acad": {
@@ -49239,9 +49235,9 @@
 2011,
 2013
 ],
-"id": null,
-"method": "unresolved",
-"how": "unresolved"
+"id": "me-hs-lfca",
+"method": "exact",
+"how": "exact/alias"
 },
 "Winslow Junior High": {
 "rows": 19,
@@ -51356,9 +51352,9 @@
 2010,
 2010
 ],
-"id": null,
-"method": "unresolved",
-"how": "unresolved"
+"id": "me-hs-vineyard-christian",
+"method": "truncation",
+"how": "truncation"
 },
 "Green M": {
 "rows": 17,
@@ -53475,9 +53471,9 @@
 2007,
 2008
 ],
-"id": null,
-"method": "unresolved",
-"how": "unresolved"
+"id": "me-ms-islesford",
+"method": "exact",
+"how": "exact/alias"
 },
 "Bishop Guertin-NH": {
 "rows": 15,
@@ -53503,14 +53499,13 @@
 2007,
 2007
 ],
-"id": null,
-"method": "ambiguous-truncation+state-tail",
-"candidates": [
-"oos-auto-vt-champlain-val-uhs-hinesburg",
-"oos-auto-vt-champlain-valley-uhs-hines",
-"oos-vt-champlain-valley-union-high-school"
-],
-"how": "ambiguous"
+"id": "oos-vt-champlain-valley-union-high-school",
+"method": "manual (file rule)",
+"by_id": {
+"oos-vt-champlain-valley-union-high-school": 15
+},
+"context_dependent": true,
+"how": "manual (file rule)"
 },
 "Ellsworth-ME": {
 "rows": 15,
@@ -53643,11 +53638,9 @@
 "id": "me-hs-mattanawcook",
 "method": "athlete-continuity",
 "by_id": {
-"me-hs-mattanawcook": 12,
-"None": 3
+"me-hs-mattanawcook": 15
 },
 "context_dependent": true,
-"unresolved_rows": 3,
 "how": "athlete-continuity"
 },
 "C-George Stevens": {
@@ -53765,9 +53758,15 @@
 2010,
 2011
 ],
-"id": null,
-"method": "unresolved",
-"how": "unresolved"
+"id": "me-hs-oak-hill",
+"method": "manual (file rule)",
+"by_id": {
+"None": 13,
+"me-hs-oak-hill": 2
+},
+"context_dependent": true,
+"unresolved_rows": 13,
+"how": "manual (file rule)"
 },
 "Greater": {
 "rows": 15,
@@ -53809,9 +53808,13 @@
 2010,
 2010
 ],
-"id": null,
-"method": "unresolved",
-"how": "unresolved"
+"id": "me-hs-maine-coast-waldorf",
+"method": "manual (file rule)",
+"by_id": {
+"me-hs-maine-coast-waldorf": 15
+},
+"context_dependent": true,
+"how": "manual (file rule)"
 },
 "Lincilnville": {
 "rows": 15,
@@ -54943,11 +54946,9 @@
 "id": "me-ms-southern-maine-catholic",
 "method": "manual (file rule)",
 "by_id": {
-"me-ms-southern-maine-catholic": 11,
-"None": 3
+"me-ms-southern-maine-catholic": 14
 },
 "context_dependent": true,
-"unresolved_rows": 3,
 "how": "manual (file rule)"
 },
 "North Yarmouth Academy 'A'": {
@@ -56986,9 +56987,9 @@
 2008,
 2012
 ],
-"id": null,
-"method": "unresolved",
-"how": "unresolved"
+"id": "me-hs-acadia-christian",
+"method": "exact",
+"how": "exact/alias"
 },
 "Infant Jesus": {
 "rows": 13,
@@ -58094,9 +58095,9 @@
 "method": "athlete-continuity",
 "by_id": {
 "me-hs-machias": 10,
-"None": 2
+"me-hs-mcauley": 2
 },
-"unresolved_rows": 2,
+"context_dependent": true,
 "how": "athlete-continuity"
 },
 "Averill ParkRR": {
@@ -58470,13 +58471,12 @@
 2006
 ],
 "id": "me-hs-old-town",
-"method": "athlete-continuity",
+"method": "manual (file rule)",
 "by_id": {
-"me-hs-old-town": 10,
-"None": 2
+"me-hs-old-town": 12
 },
-"unresolved_rows": 2,
-"how": "athlete-continuity"
+"context_dependent": true,
+"how": "manual (file rule)"
 },
 "Old Town H.S. XC": {
 "rows": 12,
@@ -60624,9 +60624,13 @@
 2008,
 2008
 ],
-"id": null,
-"method": "unresolved",
-"how": "unresolved"
+"id": "me-hs-maine-coast-waldorf",
+"method": "manual (file rule)",
+"by_id": {
+"me-hs-maine-coast-waldorf": 11
+},
+"context_dependent": true,
+"how": "manual (file rule)"
 },
 "Rockland District Middle School": {
 "rows": 11,
@@ -62815,15 +62819,13 @@
 2009,
 2009
 ],
-"id": "me-hs-limestone",
-"method": "athlete-continuity",
+"id": "coop-limestone-mssm",
+"method": "manual (file rule)",
 "by_id": {
-"None": 7,
-"me-hs-limestone": 3
+"coop-limestone-mssm": 10
 },
 "context_dependent": true,
-"unresolved_rows": 7,
-"how": "athlete-continuity"
+"how": "manual (file rule)"
 },
 "Hall-Dale XC 2009": {
 "rows": 10,
@@ -70175,15 +70177,13 @@
 2009
 ],
 "id": "me-hs-valley",
-"method": "athlete-continuity",
+"method": "manual (file rule)",
 "by_id": {
-"None": 3,
-"me-hs-valley": 3,
+"me-hs-valley": 6,
 "me-ms-upper-kennebec": 1
 },
 "context_dependent": true,
-"unresolved_rows": 3,
-"how": "athlete-continuity"
+"how": "manual (file rule)"
 },
 "Mssm": {
 "rows": 7,
@@ -70516,14 +70516,12 @@
 2009
 ],
 "id": "me-hs-foxcroft",
-"method": "athlete-continuity",
+"method": "manual (file rule)",
 "by_id": {
-"me-hs-foxcroft": 5,
-"None": 2
+"me-hs-foxcroft": 7
 },
 "context_dependent": true,
-"unresolved_rows": 2,
-"how": "athlete-continuity"
+"how": "manual (file rule)"
 },
 "C-Schenck": {
 "rows": 7,
@@ -70755,9 +70753,9 @@
 2010,
 2010
 ],
-"id": null,
-"method": "unresolved",
-"how": "unresolved"
+"id": "me-hs-vineyard-christian",
+"method": "exact",
+"how": "exact/alias"
 },
 "Infant": {
 "rows": 7,
@@ -71576,13 +71574,15 @@
 2013
 ],
 "id": "me-hs-lisbon",
-"method": "athlete-continuity",
+"method": "athlete-continuity (overrode truncation)",
 "by_id": {
 "me-hs-lisbon": 4,
-"None": 3
+"me-hs-lfca": 3
 },
 "context_dependent": true,
-"unresolved_rows": 3,
+"flags": [
+"athletes contradict name match (me-hs-lfca -> me-hs-lisbon, 4/4)"
+],
 "how": "athlete-continuity"
 },
 "Mt Ararat High School": {
@@ -72460,14 +72460,12 @@
 2019
 ],
 "id": "me-hs-narraguagus",
-"method": "athlete-continuity",
+"method": "manual (file rule)",
 "by_id": {
-"me-hs-narraguagus": 5,
-"None": 2
+"me-hs-narraguagus": 7
 },
 "context_dependent": true,
-"unresolved_rows": 2,
-"how": "athlete-continuity"
+"how": "manual (file rule)"
 },
 "Narrag": {
 "rows": 7,
@@ -78236,11 +78234,9 @@
 "id": "me-hs-islesboro",
 "method": "athlete-continuity",
 "by_id": {
-"me-hs-islesboro": 4,
-"None": 1
+"me-hs-islesboro": 5
 },
 "context_dependent": true,
-"unresolved_rows": 1,
 "how": "athlete-continuity"
 },
 "Hall Dale NS": {
@@ -78332,9 +78328,13 @@
 2007,
 2007
 ],
-"id": null,
-"method": "unresolved",
-"how": "unresolved"
+"id": "me-ms-massabesic",
+"method": "manual (file rule)",
+"by_id": {
+"me-ms-massabesic": 5
+},
+"context_dependent": true,
+"how": "manual (file rule)"
 },
 "Portland Girls Track": {
 "rows": 5,
@@ -81735,9 +81735,13 @@
 2021,
 2021
 ],
-"id": null,
-"method": "unresolved",
-"how": "unresolved"
+"id": "me-hs-blue-hill-harbor",
+"method": "manual (file rule)",
+"by_id": {
+"me-hs-blue-hill-harbor": 5
+},
+"context_dependent": true,
+"how": "manual (file rule)"
 },
 "Cony H.S.": {
 "rows": 5,
@@ -89663,9 +89667,13 @@
 2004,
 2004
 ],
-"id": null,
-"method": "unresolved",
-"how": "unresolved"
+"id": "me-hs-wiscasset",
+"method": "manual (file rule)",
+"by_id": {
+"me-hs-wiscasset": 3
+},
+"context_dependent": true,
+"how": "manual (file rule)"
 },
 "Mount View Indoor Track": {
 "rows": 3,
@@ -90707,9 +90715,13 @@
 2006,
 2006
 ],
-"id": null,
-"method": "unresolved",
-"how": "unresolved"
+"id": "me-ms-massabesic",
+"method": "manual (file rule)",
+"by_id": {
+"me-ms-massabesic": 3
+},
+"context_dependent": true,
+"how": "manual (file rule)"
 },
 "Edward Little High- Boys": {
 "rows": 3,
@@ -92253,9 +92265,9 @@
 2011,
 2011
 ],
-"id": null,
-"method": "unresolved",
-"how": "unresolved"
+"id": "me-hs-vineyard-christian",
+"method": "truncation",
+"how": "truncation"
 },
 "Camden-": {
 "rows": 3,
@@ -92305,9 +92317,9 @@
 2011,
 2011
 ],
-"id": null,
-"method": "unresolved",
-"how": "unresolved"
+"id": "me-hs-vineyard-christian",
+"method": "exact",
+"how": "exact/alias"
 },
 "Staples HS - CT": {
 "rows": 3,
@@ -92399,9 +92411,13 @@
 2011,
 2011
 ],
-"id": null,
-"method": "unresolved",
-"how": "unresolved"
+"id": "me-ms-shapleigh",
+"method": "manual (file rule)",
+"by_id": {
+"me-ms-shapleigh": 3
+},
+"context_dependent": true,
+"how": "manual (file rule)"
 },
 "Ellsworth X-Country": {
 "rows": 3,
@@ -92929,9 +92945,15 @@
 2012,
 2023
 ],
-"id": null,
-"method": "unresolved",
-"how": "unresolved"
+"id": "oos-ri-east-greenwich-high-school",
+"method": "manual (file rule)",
+"by_id": {
+"oos-ri-east-greenwich-high-school": 2,
+"None": 1
+},
+"context_dependent": true,
+"unresolved_rows": 1,
+"how": "manual (file rule)"
 },
 "59-Bellmoren": {
 "rows": 3,
@@ -94106,9 +94128,13 @@
 2016,
 2016
 ],
-"id": null,
-"method": "unresolved",
-"how": "unresolved"
+"id": "me-hs-mcauley",
+"method": "manual (file rule)",
+"by_id": {
+"me-hs-mcauley": 3
+},
+"context_dependent": true,
+"how": "manual (file rule)"
 },
 "Bellmore/N.": {
 "rows": 3,
@@ -100896,9 +100922,13 @@
 2007,
 2007
 ],
-"id": null,
-"method": "unresolved",
-"how": "unresolved"
+"id": "oos-auto-vt-burlington",
+"method": "manual (file rule)",
+"by_id": {
+"oos-auto-vt-burlington": 2
+},
+"context_dependent": true,
+"how": "manual (file rule)"
 },
 "Maranacook-ME": {
 "rows": 2,
@@ -108557,9 +108587,13 @@
 2017,
 2017
 ],
-"id": null,
-"method": "unresolved",
-"how": "unresolved"
+"id": "me-ms-adams-castine",
+"method": "manual (file rule)",
+"by_id": {
+"me-ms-adams-castine": 2
+},
+"context_dependent": true,
+"how": "manual (file rule)"
 },
 "McNamara YORK": {
 "rows": 2,
@@ -108570,9 +108604,13 @@
 2017,
 2017
 ],
-"id": null,
-"method": "unresolved",
-"how": "unresolved"
+"id": "me-hs-york",
+"method": "manual (file rule)",
+"by_id": {
+"me-hs-york": 2
+},
+"context_dependent": true,
+"how": "manual (file rule)"
 },
 "SR Gorham High School": {
 "rows": 2,
@@ -117349,9 +117387,13 @@
 2006,
 2006
 ],
-"id": null,
-"method": "unresolved",
-"how": "unresolved"
+"id": "me-hs-massabesic",
+"method": "manual (file rule)",
+"by_id": {
+"me-hs-massabesic": 1
+},
+"context_dependent": true,
+"how": "manual (file rule)"
 },
 "Hd": {
 "rows": 1,
@@ -120326,9 +120368,13 @@
 2007,
 2007
 ],
-"id": null,
-"method": "unresolved",
-"how": "unresolved"
+"id": "me-ms-massabesic",
+"method": "manual (file rule)",
+"by_id": {
+"me-ms-massabesic": 1
+},
+"context_dependent": true,
+"how": "manual (file rule)"
 },
 "MSb": {
 "rows": 1,
@@ -120339,9 +120385,13 @@
 2007,
 2007
 ],
-"id": null,
-"method": "unresolved",
-"how": "unresolved"
+"id": "me-ms-massabesic",
+"method": "manual (file rule)",
+"by_id": {
+"me-ms-massabesic": 1
+},
+"context_dependent": true,
+"how": "manual (file rule)"
 },
 "Marh": {
 "rows": 1,
@@ -128334,9 +128384,9 @@
 2009,
 2009
 ],
-"id": null,
-"method": "unresolved",
-"how": "unresolved"
+"id": "me-ms-islesford",
+"method": "exact",
+"how": "exact/alias"
 },
 "allobaugh/Jesse": {
 "rows": 1,
@@ -137828,9 +137878,13 @@
 2012,
 2012
 ],
-"id": null,
-"method": "unresolved",
-"how": "unresolved"
+"id": "me-hs-gray-ng",
+"method": "manual (file rule)",
+"by_id": {
+"me-hs-gray-ng": 1
+},
+"context_dependent": true,
+"how": "manual (file rule)"
 },
 "Edward Little - Me": {
 "rows": 1,
@@ -157438,9 +157492,13 @@
 2019,
 2019
 ],
-"id": null,
-"method": "unresolved",
-"how": "unresolved"
+"id": "me-hs-jonesport-beals",
+"method": "manual (file rule)",
+"by_id": {
+"me-hs-jonesport-beals": 1
+},
+"context_dependent": true,
+"how": "manual (file rule)"
 },
 "J- Beals": {
 "rows": 1,
@@ -157477,9 +157535,13 @@
 2019,
 2019
 ],
-"id": null,
-"method": "unresolved",
-"how": "unresolved"
+"id": "me-hs-mt-ararat",
+"method": "manual (file rule)",
+"by_id": {
+"me-hs-mt-ararat": 1
+},
+"context_dependent": true,
+"how": "manual (file rule)"
 },
 "MJR MTA": {
 "rows": 1,
@@ -162824,9 +162886,13 @@
 2023,
 2023
 ],
-"id": null,
-"method": "unresolved",
-"how": "unresolved"
+"id": "me-hs-massabesic",
+"method": "manual (file rule)",
+"by_id": {
+"me-hs-massabesic": 1
+},
+"context_dependent": true,
+"how": "manual (file rule)"
 },
 "Marswood": {
 "rows": 1,
@@ -167125,6 +167191,7 @@
 "Bucks": "me-hs-bucksport",
 "CEN": "me-hs-central",
 "MA": "me-hs-mattanawcook",
+"MAC": "me-hs-machias",
 "MDI": "me-hs-mdi",
 "PCHS": "me-hs-piscataquis",
 "SUN": "me-hs-sumner",
@@ -167461,7 +167528,7 @@
 "C": "me-hs-cheverus",
 "D": null,
 "K": null,
-"P": null,
+"P": "me-hs-portland",
 "S": null,
 "Sc": null
 },
@@ -167716,7 +167783,7 @@
 "Mon": "me-hs-monmouth",
 "OH": "me-hs-oxford-hills",
 "San": "me-hs-sanford",
-"Win": null
+"Win": "me-hs-winslow"
 },
 "2004/Indoor/1A04": {
 "Brewer": "me-hs-brewer",
@@ -168852,7 +168919,7 @@
 },
 "2004/XC/caribou1sept04": {
 "Car": "me-hs-caribou",
-"Lim": null,
+"Lim": "coop-limestone-mssm",
 "Mad": "me-hs-madawaska"
 },
 "2004/XC/cariboub1sept04": {
@@ -168915,7 +168982,7 @@
 "2004/XC/cheverus15oct04g": {
 "C": null,
 "D": "me-hs-deering",
-"P": null
+"P": "me-hs-portland"
 },
 "2004/XC/cheverus1oct04b": {
 "C": "me-hs-cheverus",
@@ -169279,6 +169346,7 @@
 "Monmouth": "me-hs-monmouth",
 "Telstar": "me-hs-telstar",
 "Winthrop": "me-hs-winthrop",
+"Wisc-Jv": "me-hs-wiscasset",
 "Wiscasset": "me-hs-wiscasset"
 },
 "2004/XC/girls2": {
@@ -169666,7 +169734,7 @@
 "D": "me-hs-deering",
 "K": "me-hs-kennebunk",
 "Mc": "me-hs-mcauley",
-"N": null,
+"N": "me-hs-noble",
 "T": "me-hs-thornton"
 },
 "2004/XC/ta22sept04b": {
@@ -171209,7 +171277,7 @@
 "Mams": "me-ms-mt-ararat",
 "Monmouth": "me-ms-monmouth",
 "Scarborough": "me-ms-scarborough",
-"Smc": null,
+"Smc": "me-ms-southern-maine-catholic",
 "Wiscasset": "me-ms-wiscasset"
 },
 "2005/XC/eagleclassicgirls": {
@@ -171450,7 +171518,7 @@
 },
 "2005/XC/kvacgv": {
 "Camden Hills": "me-hs-camden-hills",
-"Egxc": null,
+"Egxc": "me-hs-erskine",
 "Lawrence": "me-hs-lawrence",
 "Lincoln Academy": "me-hs-lincoln-academy",
 "MB": "me-hs-mt-blue",
@@ -171588,14 +171656,14 @@
 "2005/XC/orringtonboys.txt": {
 "Bangor Christian": "me-ms-bangor-christian",
 "Hermon": "me-ms-hermon",
-"Orrington": null,
-"Winterport": null
+"Orrington": "me-ms-center-drive",
+"Winterport": "me-ms-wagner"
 },
 "2005/XC/orringtongirls.txt": {
 "Bangor Christian": "me-ms-bangor-christian",
 "Hermon": "me-ms-hermon",
-"Orrington": null,
-"Winterport": null
+"Orrington": "me-ms-center-drive",
+"Winterport": "me-ms-wagner"
 },
 "2005/XC/presqueisleboy05": {
 "Brewer": "me-hs-brewer",
@@ -171673,7 +171741,7 @@
 },
 "2005/XC/sanford9_8G": {
 "BE": "me-hs-bonny-eagle",
-"P": null,
+"P": "me-hs-portland",
 "S": "me-hs-sanford",
 "TA": "me-hs-thornton"
 },
@@ -171756,7 +171824,7 @@
 "Ch": null,
 "D": "me-hs-deering",
 "K": "me-hs-kennebunk",
-"N": null,
+"N": "me-hs-noble",
 "Sc": "me-hs-scarborough",
 "TA": "me-hs-thornton"
 },
@@ -171980,7 +172048,7 @@
 "2005/XC/yorkMSsg": {
 "Bid": "me-ms-biddeford",
 "Mar": "me-hs-maranacook",
-"Mas": null,
+"Mas": "me-ms-massabesic",
 "Mass": "me-hs-massabesic",
 "Noble": "me-ms-noble",
 "Saco": "me-ms-saco",
@@ -174132,13 +174200,13 @@
 },
 "2006/XC/freeport9_15boys": {
 "F": "me-hs-freeport",
-"P": null,
+"P": "me-hs-poland",
 "W": null,
 "Y": "me-hs-york"
 },
 "2006/XC/freeport9_15girls": {
 "F": "me-hs-freeport",
-"P": null,
+"P": "me-hs-poland",
 "W": "me-hs-waynflete",
 "Y": "me-hs-york"
 },
@@ -174191,7 +174259,7 @@
 "2006/XC/gorhamboys9_27": {
 "G": "me-hs-gorham",
 "K": "me-hs-kennebunk",
-"N": null,
+"N": "me-hs-noble",
 "P": "me-hs-portland"
 },
 "2006/XC/gorhamgirls9_27": {
@@ -174415,10 +174483,11 @@
 "2006/XC/marshwoodboys10_13": {
 "Mar": "me-hs-marshwood",
 "Mass": "me-hs-massabesic",
-"N": null,
+"N": "me-hs-noble",
 "S": "me-hs-sanford"
 },
 "2006/XC/marshwoodgirls10_13": {
+"MAs": "me-hs-massabesic",
 "Mar": "me-hs-marshwood",
 "Mass": "me-hs-massabesic",
 "N": "me-hs-noble",
@@ -174435,7 +174504,7 @@
 "Thornton Academy": "me-hs-thornton"
 },
 "2006/XC/mcauley9_15boys": {
-"N": null,
+"N": "me-hs-noble",
 "W": "me-hs-westbrook"
 },
 "2006/XC/mcauley9_15girls": {
@@ -174464,14 +174533,14 @@
 "Mad": "me-hs-madison",
 "Mon": "me-hs-monmouth",
 "Tel": "me-hs-telstar",
-"Val": null,
+"Val": "me-hs-valley",
 "Win": "me-hs-winthrop"
 },
 "2006/XC/monmouth9_20girls": {
 "Mad": "me-hs-madison",
 "Mon": "me-hs-monmouth",
 "Tel": "me-hs-telstar",
-"Win": null
+"Win": "me-hs-winthrop"
 },
 "2006/XC/ms-2006-maine-xc-championships-2006": {
 "Lincoln Academy": "me-hs-lincoln-academy",
@@ -174544,11 +174613,17 @@
 "Lewiston": "me-hs-lewiston",
 "Oxford Hills": "me-hs-oxford-hills"
 },
+"2006/XC/pendaleboysjv.txt": {
+"OTXC": "me-hs-old-town"
+},
 "2006/XC/pendaleboysvaristy.txt": {
-"OTXC": null
+"OTXC": "me-hs-old-town"
 },
 "2006/XC/pendalegirlsjv.txt": {
-"OTXC": null
+"OTXC": "me-hs-old-town"
+},
+"2006/XC/pendalegirlsvarsity.txt": {
+"OTXC": "me-hs-old-town"
 },
 "2006/XC/poland9_8": {
 "": null,
@@ -174764,6 +174839,7 @@
 "Kennebunk": "me-ms-kennebunk",
 "Marshwood": "me-ms-marshwood",
 "Massabesic": "me-ms-massabesic",
+"Messabesec": "me-ms-massabesic",
 "Noble": "me-ms-noble",
 "Saco": "me-ms-saco",
 "Wells": "me-ms-wells",
@@ -174789,10 +174865,10 @@
 "C": "me-hs-cheverus",
 "D": "me-hs-deering",
 "M": "me-hs-mcauley",
-"P": null
+"P": "me-hs-portland"
 },
 "2006/XC/spboys9_7": {
-"N": null,
+"N": "me-hs-noble",
 "W": "me-hs-windham"
 },
 "2006/XC/spgirls9_7": {
@@ -177639,7 +177715,7 @@
 },
 "2007/XC/medomakboys9_21": {
 "CH": "me-hs-camden-hills",
-"ISL": null,
+"ISL": "me-hs-islesboro",
 "LA": "me-hs-lincoln-academy"
 },
 "2007/XC/medomakgirls9_21": {
@@ -177697,6 +177773,14 @@
 "Old Town": "me-hs-old-town",
 "Waterville": "me-hs-waterville",
 "Winslow": "me-hs-winslow"
+},
+"2007/XC/newenglandboys.txt": {
+"Burlintgon HS": "oos-auto-vt-burlington",
+"Champlain-VT": "oos-vt-champlain-valley-union-high-school"
+},
+"2007/XC/newenglandgirls.txt": {
+"Burlintgon HS": "oos-auto-vt-burlington",
+"Champlain-VT": "oos-vt-champlain-valley-union-high-school"
 },
 "2007/XC/nobleboys10_5": {
 "D": "me-hs-deering",
@@ -177935,6 +178019,7 @@
 },
 "2007/XC/smaamiddlerelaysboys": {
 "Marsh": "me-hs-marshwood",
+"Msb": "me-ms-massabesic",
 "Noble": "me-ms-noble",
 "Saco": "me-ms-saco",
 "TA": "me-hs-thornton",
@@ -177943,7 +178028,10 @@
 },
 "2007/XC/smaamiddlerelaysgirls": {
 "Bid": "me-ms-biddeford",
+"MSB": "me-ms-massabesic",
+"MSb": "me-ms-massabesic",
 "Marsh": "me-hs-marshwood",
+"Msb": "me-ms-massabesic",
 "Noble": "me-ms-noble",
 "Saco": "me-ms-saco",
 "San": "me-hs-sanford",
@@ -180704,7 +180792,7 @@
 "B": "me-hs-biddeford",
 "BE": "me-hs-bonny-eagle",
 "C": "me-hs-cheverus",
-"N": null
+"N": "me-hs-noble"
 },
 "2008/XC/combined%20boys%20west.txt": {
 "Biddeford": "me-hs-biddeford",
@@ -181337,7 +181425,8 @@
 "G": null,
 "GNG": "me-hs-gray-ng",
 "LR": "me-hs-lake-region",
-"SD": "me-hs-st-dominic"
+"SD": "me-hs-st-dominic",
+"Wal": "me-hs-maine-coast-waldorf"
 },
 "2008/XC/lalibeteresultsbyteam": {
 "Messalonskee High School": "me-hs-messalonskee",
@@ -184259,7 +184348,7 @@
 "Greater Houlton": "me-hs-greater-houlton-christian",
 "Islesboro": "me-hs-islesboro",
 "Mattanawcook": "me-hs-mattanawcook",
-"Mssm/Limestone": "me-hs-limestone",
+"Mssm/Limestone": "coop-limestone-mssm",
 "Sumner": "me-hs-sumner"
 },
 "2009/XC/emclasscgirls.txt": {
@@ -184268,7 +184357,7 @@
 "Fort Kent": "me-hs-fort-kent",
 "Islesboro": "me-hs-islesboro",
 "Mattanawcook": "me-hs-mattanawcook",
-"Mssm/Limestone": null,
+"Mssm/Limestone": "coop-limestone-mssm",
 "PVHS": "me-hs-penobscot-valley",
 "Searsport": "me-hs-searsport"
 },
@@ -184753,7 +184842,7 @@
 "Mattanawcook Academy": "me-hs-mattanawcook",
 "Messalonskee High School": "me-hs-messalonskee",
 "Monmouth Academy": "me-hs-monmouth",
-"Mssm/Limestone": null,
+"Mssm/Limestone": "coop-limestone-mssm",
 "North Yarmouth Academy": "me-hs-nya",
 "Searsport District High School": "me-hs-searsport",
 "St. Dominic Academy": "me-hs-st-dominic",
@@ -184858,7 +184947,7 @@
 "Presque Isle": "me-hs-presque-isle"
 },
 "2009/XC/pvcboysvarsity.txt": {
-"C-Foxcroft Academy": null,
+"C-Foxcroft Academy": "me-hs-foxcroft",
 "C-Mattanawcook": "me-hs-mattanawcook"
 },
 "2009/XC/pvcgirlsjv.txt": {
@@ -184868,8 +184957,8 @@
 "Sumner": "me-hs-sumner"
 },
 "2009/XC/pvcgirlsvarsity.txt": {
-"C-Foxcroft Academy": null,
-"C-Mattanawcook": null,
+"C-Foxcroft Academy": "me-hs-foxcroft",
+"C-Mattanawcook": "me-hs-mattanawcook",
 "C-Searsport": null
 },
 "2009/XC/pvmscclcoastalboys.txt": {
@@ -185040,7 +185129,7 @@
 "Wi": "me-hs-windham"
 },
 "2009/XC/spgirls_sept11": {
-"N": null,
+"N": "me-hs-noble",
 "W": "me-hs-windham"
 },
 "2009/XC/stateaboys.txt": {
@@ -185117,7 +185206,7 @@
 "Mdi": "me-hs-mdi",
 "Merriconeag": "me-hs-maine-coast-waldorf",
 "Monmouth Academy": "me-hs-monmouth",
-"Mssm/Limestone": null,
+"Mssm/Limestone": "coop-limestone-mssm",
 "Mt. Ararat": "me-hs-mt-ararat",
 "Mt. Blue": "me-hs-mt-blue",
 "North Yarmouth": "me-hs-nya",
@@ -185141,7 +185230,7 @@
 "Mattanawcook": "me-hs-mattanawcook",
 "Merriconeag": "me-hs-maine-coast-waldorf",
 "Monmouth Academy": "me-hs-monmouth",
-"Mssm/Limestone": null,
+"Mssm/Limestone": "coop-limestone-mssm",
 "North Yarmouth": "me-hs-nya",
 "Sumner": "me-hs-sumner",
 "Telstar": "me-hs-telstar",
@@ -185159,7 +185248,7 @@
 "Mattanawcook": "me-hs-mattanawcook",
 "Merriconeag": "me-hs-maine-coast-waldorf",
 "Monmouth Academy": "me-hs-monmouth",
-"Mssm/Limestone": null,
+"Mssm/Limestone": "coop-limestone-mssm",
 "North Yarmouth": "me-hs-nya",
 "Searsport": "me-hs-searsport",
 "Telstar": "me-hs-telstar",
@@ -185189,7 +185278,7 @@
 "Merriconeag": "me-hs-maine-coast-waldorf",
 "Messalonskee": "me-hs-messalonskee",
 "Monmouth Academy": "me-hs-monmouth",
-"Mssm/Limestone": null,
+"Mssm/Limestone": "coop-limestone-mssm",
 "Mt. Ararat": "me-hs-mt-ararat",
 "Mt. Blue": "me-hs-mt-blue",
 "North Yarmouth": "me-hs-nya",
@@ -186870,6 +186959,7 @@
 "Lawrence": "me-hs-lawrence",
 "Lincoln Academy": "me-hs-lincoln-academy",
 "Messalonskee High School": "me-hs-messalonskee",
+"OAK": null,
 "Oxford Hills": "me-hs-oxford-hills"
 },
 "2010/Outdoor/girls_BAN_4_30_10_revised": {
@@ -187464,6 +187554,7 @@
 "MCS": "me-hs-maranacook",
 "Maranacook": "me-hs-maranacook",
 "Monmouth": "me-hs-monmouth",
+"OAK": null,
 "Richmond": "me-hs-richmond",
 "Unknown": "x-unknown",
 "Winthrop": "me-hs-winthrop"
@@ -188311,6 +188402,7 @@
 "MCS": "me-hs-maranacook",
 "Monmouth": "me-hs-monmouth",
 "Mt Ararat": "me-hs-mt-ararat",
+"OAK": "me-hs-oak-hill",
 "Oxford Hills": "me-hs-oxford-hills",
 "Winthrop": "me-hs-winthrop"
 },
@@ -188319,6 +188411,7 @@
 "MCS": "me-hs-maranacook",
 "Monmouth": "me-hs-monmouth",
 "Mt Ararat": "me-hs-mt-ararat",
+"OAK": "me-hs-oak-hill",
 "Oxford Hills": "me-hs-oxford-hills",
 "Winthrop": "me-hs-winthrop"
 },
@@ -188464,11 +188557,13 @@
 },
 "2010/XC/nyaboys_oct15": {
 "G": "me-hs-greely",
+"M-W": "me-hs-maine-coast-waldorf",
 "NYA": "me-hs-nya",
 "W": "me-hs-waynflete"
 },
 "2010/XC/nyagirls_oct15": {
 "G": "me-hs-greely",
+"M-W": "me-hs-maine-coast-waldorf",
 "NYA": "me-hs-nya",
 "W": "me-hs-waynflete"
 },
@@ -190507,6 +190602,7 @@
 "Maranacook": "me-hs-maranacook",
 "Mvhs": "me-hs-medomak",
 "Nokomis": "me-hs-nokomis",
+"OAK": null,
 "WTVL": "me-hs-waterville",
 "Winslow": "me-hs-winslow"
 },
@@ -192766,6 +192862,7 @@
 "2011/XC/yorkjrboys": {
 "B": null,
 "SAC": "me-hs-sacopee",
+"SHA": "me-ms-shapleigh",
 "W": null,
 "Y": "me-ms-york"
 },
@@ -192788,6 +192885,7 @@
 "K": null,
 "N": null,
 "SAC": "me-hs-sacopee",
+"SHA": "me-ms-shapleigh",
 "TA": "me-hs-thornton",
 "Y": null
 },
@@ -194542,6 +194640,7 @@
 "Wisc": "me-hs-wiscasset"
 },
 "2012/Outdoor/newenglandboys": {
+"Canton": null,
 "Chariho - RI": "oos-ri-chariho-regional-high-school",
 "Cony": "me-hs-cony",
 "Greely": "me-hs-greely",
@@ -195308,7 +195407,9 @@
 "Winthrop": "me-hs-winthrop"
 },
 "2012/XC/New%20England%20HS%20XC%20boys%20results.txt": {
+"EWG": "oos-ri-east-greenwich-high-school",
 "Fryeburg": "me-hs-fryeburg",
+"Gray-N Glouceste": "me-hs-gray-ng",
 "Merriconeag": "me-hs-maine-coast-waldorf",
 "Merrimack Va": "oos-auto-nh-merrimack-va"
 },
@@ -196059,7 +196160,7 @@
 "T": "me-hs-thornton"
 },
 "2012/XC/massabesicboys_sept25": {
-"Mas": null,
+"Mas": "me-hs-massabesic",
 "Mass": "me-hs-massabesic"
 },
 "2012/XC/mcauleyboys_sept7": {
@@ -199362,7 +199463,7 @@
 "Lawrence": "me-hs-lawrence",
 "Lewiston": "me-hs-lewiston",
 "Lincoln Academy": "me-hs-lincoln-academy",
-"Lisbon Falls": null,
+"Lisbon Falls": "me-hs-lfca",
 "MDI": "me-hs-mdi",
 "Maranacook": "me-hs-maranacook",
 "Marshwood": "me-hs-marshwood",
@@ -201958,6 +202059,7 @@
 "Belmont": null,
 "Biddeford": "me-hs-biddeford",
 "Burlington": "oos-auto-vt-burlington",
+"Canton": null,
 "Caribou": "me-hs-caribou",
 "Central": "me-hs-central",
 "Chariho - RI": "oos-auto-ri-chariho-richmond",
@@ -202610,7 +202712,7 @@
 "Bonny Eagle": "me-ms-bonny-eagle",
 "Gorham": "me-ms-gorham",
 "Lincoln": "me-ms-lincoln-portland",
-"SMC": null,
+"SMC": "me-ms-southern-maine-catholic",
 "Westbrook": "me-ms-westbrook",
 "Windham": "me-ms-windham"
 },
@@ -206785,7 +206887,8 @@
 },
 "2016/XC/Girls-Cross-Country-Sanford-TA-BE-MGA-Sept9": {
 "BE": "me-hs-bonny-eagle",
-"MAC": null,
+"MAC": "me-hs-mcauley",
+"MAc": "me-hs-mcauley",
 "San": "me-hs-sanford",
 "TA": "me-hs-thornton"
 },
@@ -207197,6 +207300,7 @@
 "Boothbay": "me-hs-boothbay",
 "Bucksport": "me-hs-bucksport",
 "Camden Hills": "me-hs-camden-hills",
+"Canton High School": "oos-auto-ct-canton",
 "Cape Elizabeth": "me-hs-cape-elizabeth",
 "Cumberland": "oos-auto-ri-cumberland",
 "Deer Isle": "me-hs-deer-isle",
@@ -207548,6 +207652,7 @@
 "Boothbay": "me-hs-boothbay",
 "Bucksport": "me-hs-bucksport",
 "Camden Hills": "me-hs-camden-hills",
+"Canton High School": "oos-auto-ct-canton",
 "Cape Elizabeth": "me-hs-cape-elizabeth",
 "Cumberland": "oos-auto-ri-cumberland",
 "Deer Isle": "me-hs-deer-isle",
@@ -207591,6 +207696,7 @@
 "Boothbay": "me-hs-boothbay",
 "Bucksport": "me-hs-bucksport",
 "Camden Hills": "me-hs-camden-hills",
+"Canton High School": "oos-auto-ct-canton",
 "Cape Elizabeth": "me-hs-cape-elizabeth",
 "Cumberland": "oos-auto-ri-cumberland",
 "Deer Isle": "me-hs-deer-isle",
@@ -207668,6 +207774,7 @@
 "Boothbay": "me-hs-boothbay",
 "Bucksport": "me-hs-bucksport",
 "Camden Hills": "me-hs-camden-hills",
+"Canton High School": "oos-auto-ct-canton",
 "Cape Elizabeth": "me-hs-cape-elizabeth",
 "Cumberland": "oos-auto-ri-cumberland",
 "Deer Isle": "me-hs-deer-isle",
@@ -211122,6 +211229,7 @@
 "Brunswick": "me-hs-brunswick",
 "Bucksport": "me-hs-bucksport",
 "Camden Hills": "me-hs-camden-hills",
+"Canton High School": "oos-auto-ct-canton",
 "Cape Elizabeth": "me-hs-cape-elizabeth",
 "Cumberland": "oos-auto-ri-cumberland",
 "Ellsworth": "me-hs-ellsworth",
@@ -211163,6 +211271,7 @@
 "Brunswick": "me-hs-brunswick",
 "Bucksport": "me-hs-bucksport",
 "Camden Hills": "me-hs-camden-hills",
+"Canton": "oos-auto-ct-canton",
 "Cape Elizabeth": "me-hs-cape-elizabeth",
 "Caribou": "me-hs-caribou",
 "Cony": "me-hs-cony",
@@ -211216,6 +211325,7 @@
 "Brunswick": "me-hs-brunswick",
 "Bucksport": "me-hs-bucksport",
 "Camden Hills": "me-hs-camden-hills",
+"Canton High School": null,
 "Cape Elizabeth": "me-hs-cape-elizabeth",
 "Cumberland": "oos-auto-ri-cumberland",
 "Ellsworth": "me-hs-ellsworth",
@@ -211257,6 +211367,7 @@
 "Brunswick": "me-hs-brunswick",
 "Bucksport": "me-hs-bucksport",
 "Camden Hills": "me-hs-camden-hills",
+"Canton": null,
 "Cape Elizabeth": "me-hs-cape-elizabeth",
 "Caribou": "me-hs-caribou",
 "Cony": "me-hs-cony",
@@ -211575,6 +211686,9 @@
 "Mt. Ararat": "me-hs-mt-ararat",
 "Mt. Blue": "me-hs-mt-blue"
 },
+"2017/XC/nexcgirls2017.txt": {
+"EWG": "oos-ri-east-greenwich-high-school"
+},
 "2017/XC/nmclassaboys.txt": {
 "Brunswick": "me-hs-brunswick",
 "Camden Hills": "me-hs-camden-hills",
@@ -211699,6 +211813,7 @@
 "Mattanawcook": "me-ms-mattanawcook"
 },
 "2017/XC/pvmsxc-small-school-boys.txt": {
+"Castine": "me-ms-adams-castine",
 "Deer Isle St": "me-ms-dis-elementary",
 "Penobscot Ch": "me-ms-penobscot-christian"
 },
@@ -211707,6 +211822,7 @@
 "Penobscot Ch": "me-ms-penobscot-christian"
 },
 "2017/XC/sep-22-at-York": {
+"McNamara YORK": "me-hs-york",
 "TRP": "me-hs-traip",
 "YORK": "me-hs-york"
 },
@@ -217493,6 +217609,7 @@
 "Brunswick": "me-hs-brunswick",
 "Bucksport": "me-hs-bucksport",
 "Burlington": "oos-auto-vt-burlington",
+"Canton": null,
 "Cape Elizabeth": "me-hs-cape-elizabeth",
 "Central": "me-hs-central",
 "Cumberland": "oos-auto-ri-cumberland",
@@ -217535,6 +217652,7 @@
 "Bonny Eagle": "me-hs-bonny-eagle",
 "Brewer": "me-hs-brewer",
 "Burlington": "oos-auto-vt-burlington",
+"Canton": null,
 "Cape Elizabeth": "me-hs-cape-elizabeth",
 "Caribou": "me-hs-caribou",
 "Central": "me-hs-central",
@@ -219440,7 +219558,7 @@
 "Bangor Christian": "me-hs-bangor-christian",
 "Bucksport": "me-hs-bucksport",
 "Central": "me-hs-central",
-"Narraquaqus": null,
+"Narraquaqus": "me-hs-narraguagus",
 "Searsport": "me-hs-searsport",
 "Sumner": "me-hs-sumner"
 },
@@ -219950,6 +220068,7 @@
 "Mattanawcook": "me-ms-mattanawcook"
 },
 "2019/XC/leeboys_sept19.txt": {
+"Beals": "me-hs-jonesport-beals",
 "Central": "me-hs-central",
 "Woodland": "me-hs-woodland"
 },
@@ -220169,6 +220288,7 @@
 "2019/XC/q-relay-8-jv": {
 "Cape": "me-hs-cape-elizabeth",
 "MSO Mt.B XC": "me-hs-mt-blue",
+"MSR MTA": "me-hs-mt-ararat",
 "MTA": "me-hs-mt-ararat"
 },
 "2019/XC/q-relays-1": {
@@ -223628,6 +223748,7 @@
 "Skowhegan": "me-hs-skowhegan"
 },
 "2021/XC/cboysnorth.txt": {
+"BHHS": "me-hs-blue-hill-harbor",
 "Bangor Christian": "me-hs-bangor-christian",
 "Bucksport": "me-hs-bucksport",
 "CEN": "me-hs-central",
@@ -223758,6 +223879,7 @@
 "Waterville": "me-hs-waterville"
 },
 "2021/XC/classcboys.txt": {
+"BHHS": "me-hs-blue-hill-harbor",
 "Bucksport": "me-hs-bucksport",
 "Maine Coast": "me-hs-maine-coast-waldorf",
 "Maranacook": "me-hs-maranacook",
@@ -224144,6 +224266,7 @@
 "YORK": "me-hs-york"
 },
 "2021/XC/gsa-boys.txt": {
+"BHHS": "me-hs-blue-hill-harbor",
 "Bucksport": "me-hs-bucksport",
 "Ellsworth": "me-hs-ellsworth",
 "Mount Desert": "me-hs-mdi",
@@ -224453,6 +224576,7 @@
 "Presque Isle": "me-hs-presque-isle"
 },
 "2021/XC/pendales-boys-varsity.txt": {
+"BHHS": "me-hs-blue-hill-harbor",
 "Ellsworth": "me-hs-ellsworth",
 "Mount Desert": "me-hs-mdi",
 "Old Town": "me-hs-old-town",
@@ -224480,6 +224604,7 @@
 "Woodland": "me-hs-woodland"
 },
 "2021/XC/pvc-varsity-boys.txt": {
+"BHHS": "me-hs-blue-hill-harbor",
 "Bangor Christian": "me-hs-bangor-christian",
 "Bucksport": "me-hs-bucksport",
 "Central": "me-hs-central",
@@ -225667,6 +225792,7 @@
 "Bonny Eagle": "me-hs-bonny-eagle",
 "Brewer": "me-hs-brewer",
 "Burlington": null,
+"Canton": null,
 "Cape Elizabeth": "me-hs-cape-elizabeth",
 "Central": "me-hs-central",
 "Cumberland": "oos-auto-ri-cumberland",
@@ -226956,6 +227082,7 @@
 },
 "2023/Indoor/2023-New-England-Indoor-Track-Results": {
 "Central": "me-hs-central",
+"EWG": null,
 "Fryeburg": "me-hs-fryeburg",
 "Lincoln": "oos-auto-ri-lincoln",
 "Mt. Desert": "me-hs-mdi",
@@ -228876,7 +229003,7 @@
 },
 "2023/XC/ms-falmouth-ms-xc-2023": {
 "Falmouth": "me-ms-falmouth",
-"SMC": null,
+"SMC": "me-ms-southern-maine-catholic",
 "Westbrook": "me-ms-westbrook"
 },
 "2023/XC/ms-freeport-high-school-2023": {
@@ -228916,7 +229043,8 @@
 "Windham": "me-hs-windham"
 },
 "2023/XC/ms-smaa-relays-2023": {
-"Thornton Academy": "me-hs-thornton"
+"Thornton Academy": "me-hs-thornton",
+"mas": "me-hs-massabesic"
 },
 "2023/XC/ms-spms-xc-race-2023": {
 "Lewiston": "me-ms-lewiston",
@@ -231793,6 +231921,7 @@
 "Brunswick": "me-hs-brunswick",
 "Bucksport": "me-hs-bucksport",
 "Burlington": "oos-auto-vt-burlington",
+"Canton": null,
 "Cape Elizabe": "me-hs-cape-elizabeth",
 "Central": "me-hs-central",
 "Cumberland": "oos-auto-ri-cumberland",
@@ -233667,6 +233796,7 @@
 "Brewer": "me-hs-brewer",
 "Brunswick": "me-hs-brunswick",
 "Burlington": "oos-auto-vt-burlington",
+"Canton": null,
 "Cape Elizabeth": "me-hs-cape-elizabeth",
 "Cumberland": "oos-auto-ri-cumberland",
 "Ellsworth": "me-hs-ellsworth",
@@ -234349,7 +234479,7 @@
 "ASEA": null,
 "Abington": "oos-auto-ma-abington",
 "Academy at P": null,
-"Acadia Christian": null,
+"Acadia Christian": "me-hs-acadia-christian",
 "ActonBoxbor": "oos-auto-ma-acton-boxbor",
 "ActonBoxboro HS": {
 "id": "oos-auto-ma-acton-boxboro",
@@ -234414,7 +234544,7 @@
 },
 "BER": null,
 "BH Harbor": null,
-"BHHS": null,
+"BHHS": "me-hs-blue-hill-harbor",
 "BIZIER L": null,
 "BMC Durfe": "oos-auto-ma-b-m-c-durfe",
 "BON": {
@@ -234430,10 +234560,6 @@
 "Bangor Christian Schools middle grades": "me-ms-bangor-christian",
 "Bangor ChristianPenobscot Christian": "me-hs-bangor-christian",
 "Bangor High School": "me-hs-bangor",
-"BarankevichWind": {
-"id": null,
-"basis": "name only (no joined rows)"
-},
 "Barnstable": "oos-auto-ma-barnstable",
 "Barrington": "oos-auto-ri-barrington",
 "Barrington HS": null,
@@ -234441,7 +234567,7 @@
 "Bath Middle School": "me-ms-bath",
 "Bay School": "me-ms-bay-school",
 "Bay View": "oos-auto-ri-bay-view",
-"Beals": null,
+"Beals": "me-hs-jonesport-beals",
 "Bedford MA": "oos-auto-ma-bedford",
 "Bedford NH": "oos-auto-nh-bedford",
 "BedfordMA A": null,
@@ -234464,10 +234590,6 @@
 "Belmont": null,
 "Belmont MA": "oos-auto-ma-belmont",
 "Belmont NH": "oos-auto-nh-belmont",
-"Benfatta SP": {
-"id": null,
-"basis": "name only (no joined rows)"
-},
 "Berlin CT": "oos-auto-ct-berlin",
 "Berlin NH": "oos-auto-nh-berlin",
 "BerlinNH": null,
@@ -234580,10 +234702,6 @@
 "Brunswick High School": "me-hs-brunswick",
 "Brunswick Junior High School": "me-ms-brunswick",
 "BrunswickHyde B": "me-hs-brunswick",
-"Bryce": {
-"id": null,
-"basis": "name only (no joined rows)"
-},
 "Bshp Hndrckn": "oos-auto-ri-bshp-hndrckn",
 "Buckfield JuniorSenior High School": "me-hs-buckfield",
 "Buckfield JuniorSenior High middle grades": "me-ms-buckfield",
@@ -234595,7 +234713,7 @@
 "Burlington HS": null,
 "Burlington MA": "oos-auto-ma-burlington",
 "Burlington VT": "oos-auto-vt-burlington",
-"Burlintgon HS": null,
+"Burlintgon HS": "oos-auto-vt-burlington",
 "Burncoat": null,
 "Burr and Burton Academy": "oos-vt-burr-and-burton-academy",
 "Burrillville High School": "oos-ri-burrillville-high-school",
@@ -234606,15 +234724,11 @@
 "C Point": null,
 "CADL": null,
 "CElizabeth": null,
-"CFoxcroft Academy": null,
+"CFoxcroft Academy": "me-hs-foxcroft",
 "CH": null,
 "CHRS": null,
-"CIU": {
-"id": null,
-"basis": "name only (no joined rows)"
-},
 "CJH": null,
-"CMattanawcook": null,
+"CMattanawcook": "me-hs-mattanawcook",
 "CORNE": null,
 "CPVHS": null,
 "CRHS": null,
@@ -234647,8 +234761,13 @@
 "Canterbury School": null,
 "Canton CT": "oos-auto-ct-canton",
 "Canton MA": "oos-auto-ma-canton",
-"CantonCT": null,
-"Cao": null,
+"CantonCT": {
+"id": "oos-auto-ct-canton",
+"held": {
+"oos-auto-ct-canton": 42,
+"None": 19
+}
+},
 "Cape Elizabeth High School": "me-hs-cape-elizabeth",
 "Cape Elizabeth Middle School": "me-ms-cape-elizabeth",
 "Capital Prep": "oos-auto-ct-capital-prep",
@@ -234676,7 +234795,7 @@
 "id": null,
 "basis": "name only (no joined rows)"
 },
-"Castine": null,
+"Castine": "me-ms-adams-castine",
 "Cath Mem": "oos-auto-ma-cath-mem",
 "Catherine McAuley High School": "me-hs-mcauley",
 "Catherine Oak Hill Middle Scho": null,
@@ -234712,7 +234831,7 @@
 "basis": "name only (no joined rows)"
 },
 "Champlain Valley Union High School": "oos-vt-champlain-valley-union-high-school",
-"ChamplainVT": null,
+"ChamplainVT": "oos-vt-champlain-valley-union-high-school",
 "Chapel": {
 "id": null,
 "basis": "name only (no joined rows)"
@@ -234810,10 +234929,6 @@
 "Csu": null,
 "CtTrackClub": null,
 "Cumberland": "oos-auto-ri-cumberland",
-"CunninghamGor": {
-"id": null,
-"basis": "name only (no joined rows)"
-},
 "Cupps": null,
 "Curran": null,
 "Cushing Academy": null,
@@ -234846,14 +234961,12 @@
 "Deer IsleStonington High School": "me-hs-deer-isle",
 "Deerfield": null,
 "Deering High School": "me-hs-deering",
-"Delaware Valley": null,
 "DenYarmouth": "oos-auto-ma-den-yarmouth",
 "Dennis Yart": "oos-auto-ma-dennis-yart",
 "DennisYarm": "oos-auto-ma-dennis-yarm",
 "DennisYarmo": null,
 "Derby": "oos-auto-ct-derby",
 "DerbyCT": null,
-"Derick": null,
 "Dexter Regional High School": "me-hs-dexter",
 "DighRehob": "oos-auto-ma-digh-rehob",
 "DighRehoth": null,
@@ -234884,7 +234997,6 @@
 "Durham Community School": "me-ms-durham",
 "DurhamFreeport combined RSU 5 MS team": "me-ms-durham-freeport",
 "Duxbury": "oos-auto-ma-duxbury",
-"E": null,
 "E Bridgewtr": "oos-auto-ma-e-bridgewtr",
 "E Cath": {
 "id": "oos-auto-ct-e-cath",
@@ -234900,7 +235012,13 @@
 "EO Smith High School": "oos-ct-e-o-smith-high-school",
 "EProvidence": "oos-auto-ri-e-providence",
 "EVESON LIS": null,
-"EWG": null,
+"EWG": {
+"id": "oos-ri-east-greenwich-high-school",
+"held": {
+"oos-ri-east-greenwich-high-school": 2,
+"None": 1
+}
+},
 "EX fort kent WISDOM": null,
 "EX katahdin HODGDON": null,
 "EX wisdom FORT KENT": null,
@@ -234928,11 +235046,7 @@
 "Easton Middle School": "me-ms-easton",
 "Edna Drinkwater School": "me-ms-drinkwater",
 "Edward Little High School": "me-hs-edward-little",
-"Eggleston McA": {
-"id": null,
-"basis": "name only (no joined rows)"
-},
-"Egxc": null,
+"Egxc": "me-hs-erskine",
 "Elan School": "me-hs-elan",
 "Ellington": "oos-auto-ct-ellington",
 "Ellsworth ElementaryMiddle School": "me-ms-ellsworth",
@@ -234943,10 +235057,6 @@
 "ErBelLeav NS": null,
 "Erksine": null,
 "Erskine Academy": "me-hs-erskine",
-"Erwin": {
-"id": null,
-"basis": "name only (no joined rows)"
-},
 "Essex HS": null,
 "Essex High School": "oos-vt-essex-high-school",
 "Exeter HS": null,
@@ -234991,7 +235101,6 @@
 "Fleet Feet R": null,
 "Fleur de Lys": null,
 "Foran": "oos-auto-ct-foran",
-"Fordham": null,
 "Forest Hills Consolidated School": "me-hs-forest-hills",
 "Fort Fairfield Middle School": "me-ms-fort-fairfield",
 "Fort Fairfield MiddleHigh School": "me-hs-fort-fairfield",
@@ -235002,10 +235111,6 @@
 },
 "Fort Kent Track Field B": {
 "id": "me-hs-fort-kent",
-"basis": "name only (no joined rows)"
-},
-"Fournier GNG": {
-"id": null,
 "basis": "name only (no joined rows)"
 },
 "Fox Islands North HavenVinalhaven": {
@@ -235087,7 +235192,7 @@
 "Granby Mem": "oos-auto-ct-granby-mem",
 "Grasso": null,
 "Gray NGlouceste": null,
-"GrayN Glouceste": null,
+"GrayN Glouceste": "me-hs-gray-ng",
 "GrayNGlouc": null,
 "GrayNew Gloucester High School": "me-hs-gray-ng",
 "GrayNew Gloucester Middle School": "me-ms-gray-ng",
@@ -235140,10 +235245,6 @@
 "HallCT A": null,
 "HallDale High School": "me-hs-hall-dale",
 "HallDale Middle School": "me-ms-hall-dale",
-"Hallstrom TA": {
-"id": null,
-"basis": "name only (no joined rows)"
-},
 "Ham Wenh": "oos-auto-ma-ham-wenh",
 "HamWen": "oos-auto-ma-ham-wen",
 "Hamden": "oos-auto-ct-hamden",
@@ -235179,10 +235280,6 @@
 "Hartland Consolidated School": "me-ms-hartland",
 "Harvard": null,
 "Harwood Union High School": "oos-vt-harwood-union-high-school",
-"Haugh": {
-"id": null,
-"basis": "name only (no joined rows)"
-},
 "Haverhill High School": "oos-ma-haverhill-high-school",
 "Hawks Hermon track Club": {
 "id": null,
@@ -235196,10 +235293,6 @@
 "HdgdnKtdn": null,
 "Hebron Academy": "me-hs-hebron",
 "Hebron Academy Middle School": "me-ms-hebron",
-"Heins": {
-"id": null,
-"basis": "name only (no joined rows)"
-},
 "Heitmann": null,
 "Helen Dunn School": "me-ms-helen-dunn",
 "Hermon High School": "me-hs-hermon",
@@ -235231,7 +235324,6 @@
 "Holy Cross School": "me-ms-holy-cross",
 "Holy Cross Waterbury": "oos-auto-ct-holy-cross-waterbury",
 "Holyoke": null,
-"Hooper": null,
 "Hope": "oos-auto-ri-hope",
 "Hope HS Prov": {
 "id": "oos-auto-ri-hope-prov",
@@ -235261,25 +235353,17 @@
 "Hrtfd Public": "oos-auto-ct-hrtfd-public",
 "Htfd Public": "oos-auto-ct-htfd-public",
 "Hudson": null,
-"Hurd": {
-"id": null,
-"basis": "name only (no joined rows)"
-},
 "HyTeks": null,
 "Hyde": "oos-auto-ct-hyde",
 "Hyde School": "me-hs-hyde",
 "Hyde School Bath": "me-hs-hyde",
 "Hyde School Woodstock": null,
-"Hynes": {
-"id": null,
-"basis": "name only (no joined rows)"
-},
 "IGO": {
 "id": null,
 "basis": "name only (no joined rows)"
 },
 "IIS": null,
-"ISL": null,
+"ISL": "me-hs-islesboro",
 "Ilseboro": null,
 "Immaculate": "oos-auto-ct-immaculate",
 "ImmaculateDanbury": {
@@ -235301,10 +235385,10 @@
 "Internationa": null,
 "Ipswich": "oos-auto-ma-ipswich",
 "Iselsboro School": null,
-"Isleford": null,
+"Isleford": "me-ms-islesford",
 "Islesboro Central School": "me-hs-islesboro",
 "Islesboro Central School middle grades": "me-ms-islesboro",
-"Islesford": null,
+"Islesford": "me-ms-islesford",
 "Isobel W": null,
 "JACQ": null,
 "JH Gillis Regional High School": "oos-ns-j-h-gillis-regional-high-school",
@@ -235393,7 +235477,7 @@
 "id": null,
 "basis": "name only (no joined rows)"
 },
-"LFCA": null,
+"LFCA": "me-hs-lfca",
 "LHRS": null,
 "LRl": null,
 "LUT": null,
@@ -235425,7 +235509,6 @@
 "Lamoille Union HS": "oos-auto-vt-lamoille-union",
 "Lamoine Consolidated School": "me-ms-lamoine",
 "Landmark School": null,
-"Larkin": null,
 "Latin Academ": null,
 "Lauralton Hall": "oos-auto-ct-lauralton-hall",
 "Lawrence": "oos-auto-ma-lawrence",
@@ -235442,14 +235525,6 @@
 "Leominster": null,
 "Leonard Middle School": "me-ms-leonard",
 "Leopold MARH": null,
-"Lesser": {
-"id": null,
-"basis": "name only (no joined rows)"
-},
-"LetourneauTA": {
-"id": null,
-"basis": "name only (no joined rows)"
-},
 "Lewis Mills": "oos-auto-ct-lewis-mills",
 "Lewis S Libby School": "me-ms-lewis-libby",
 "LewisLibbySchMilford": {
@@ -235462,8 +235537,13 @@
 "Lexington": "oos-auto-ma-lexington",
 "Libby": null,
 "Life Christian": null,
-"Lillis": null,
-"Lim": null,
+"Lim": {
+"id": "coop-limestone-mssm",
+"held": {
+"coop-limestone-mssm": 8,
+"None": 5
+}
+},
 "LimesMSSM": null,
 "Limestone Community School": {
 "id": "me-hs-limestone",
@@ -235477,8 +235557,8 @@
 "LimestoneMSSM": {
 "id": "coop-limestone-mssm",
 "held": {
-"coop-limestone-mssm": 2458,
-"me-hs-limestone": 306,
+"coop-limestone-mssm": 2461,
+"me-hs-limestone": 303,
 "me-ms-limestone": 32,
 "me-hs-mssm": 21
 }
@@ -235528,7 +235608,7 @@
 "Lyons": null,
 "M Central": "oos-auto-nh-m-central",
 "M HAYES SV": null,
-"MAC": null,
+"MAC": "me-hs-mcauley",
 "MCDONA": null,
 "MCELW": null,
 "MCS": null,
@@ -235553,16 +235633,16 @@
 "MLangley Afb": null,
 "MSO Lewiston XC": null,
 "MSR BRUN": null,
-"MSR MTA": null,
+"MSR MTA": "me-hs-mt-ararat",
 "MTA Road Runners": "me-hs-mt-abram",
 "MTVA": null,
-"MW": null,
+"MW": "me-hs-maine-coast-waldorf",
 "Machias Memorial High School": "me-hs-machias",
 "Madawaska MiddleHigh School": "me-hs-madawaska",
 "Madison Area Memorial High School": "me-hs-madison",
 "Madison JH": null,
 "Madison Junior High School": "me-ms-madison",
-"MadisonAthens": null,
+"MadisonAthens": "me-ms-madison-athens",
 "MadisonCarrabec": null,
 "Madsion": null,
 "Mahar Reg": "oos-auto-ma-mahar",
@@ -235589,8 +235669,6 @@
 "Manchester M": null,
 "Manchester Memorial High School": "oos-nh-manchester-memorial-high-school",
 "Manchester West": "oos-auto-nh-manchester-west",
-"Manhattan": null,
-"Manhattanville": null,
 "Maniscalco G": {
 "id": null,
 "basis": "name only (no joined rows)"
@@ -235619,7 +235697,13 @@
 "Marshwood Middle School": "me-ms-marshwood",
 "Marthas Vine": "oos-auto-ma-marthas-vine",
 "Marthas Vineyard": "oos-auto-ma-marthas-vineyard",
-"Mas": null,
+"Mas": {
+"id": "me-hs-massabesic",
+"held": {
+"me-hs-massabesic": 3,
+"me-ms-massabesic": 1
+}
+},
 "Mascenic Regional": "oos-auto-nh-mascenic",
 "Mascoma Valley Regional High School": "oos-nh-mascoma-valley-regional-high-school",
 "Masconomet": "oos-auto-ma-masconomet",
@@ -235645,17 +235729,8 @@
 "basis": "name only (no joined rows)"
 },
 "McGill": null,
-"McKenzie Kenn": {
-"id": null,
-"basis": "name only (no joined rows)"
-},
 "McLaughlin": null,
-"McMahon Deer": null,
-"McMorinf TA": {
-"id": null,
-"basis": "name only (no joined rows)"
-},
-"McNamara YORK": null,
+"McNamara YORK": "me-hs-york",
 "Meader": {
 "id": null,
 "basis": "name only (no joined rows)"
@@ -235686,7 +235761,7 @@
 "Merrimack Val": "oos-auto-nh-merrimack-val",
 "Merrimack Valley": "oos-auto-nh-merrimack-valley",
 "Merrimck Val": "oos-auto-nh-merrimck-val",
-"Messabesec": null,
+"Messabesec": "me-ms-massabesic",
 "Messalonskee High School": "me-hs-messalonskee",
 "Messalonskee Middle School": "me-ms-messalonskee",
 "Methuen HS": null,
@@ -235721,7 +235796,6 @@
 "basis": "name only (no joined rows)"
 },
 "MohammedD": null,
-"Molloy": null,
 "Molly Ockett Middle School": "me-ms-molly-ockett",
 "Monadnock Regional High School": "oos-nh-monadnock-regional-high-school",
 "Monmouth Academy": "me-hs-monmouth",
@@ -235759,9 +235833,9 @@
 "Mowhawk": "oos-auto-ma-mowhawk",
 "Mowry": null,
 "Mrrimck Vlley": "oos-auto-nh-mrrimck-vlley",
-"Msb": null,
+"Msb": "me-ms-massabesic",
 "Msoh": null,
-"MssmLimestone": null,
+"MssmLimestone": "coop-limestone-mssm",
 "Mt Abraham": "oos-auto-vt-mt-abraham",
 "Mt Abram High School": "me-hs-mt-abram",
 "Mt Ararat Middle School": "me-ms-mt-ararat",
@@ -235797,7 +235871,13 @@
 "MtPleasant": "oos-auto-ri-mt-pleasant",
 "Murdock": null,
 "N Attleboro": "oos-auto-ma-n-attleboro",
-"N Middle": null,
+"N Middle": {
+"id": "me-hs-noble",
+"held": {
+"None": 112,
+"me-hs-noble": 17
+}
+},
 "N Quincy": "oos-auto-ma-n-quincy",
 "N Smithfield": null,
 "N WATSON": null,
@@ -235814,7 +235894,7 @@
 "Narragansett HS": null,
 "Narraganstt": "oos-auto-ma-narraganstt",
 "Narraguagus High School": "me-hs-narraguagus",
-"Narraquaqus": null,
+"Narraquaqus": "me-hs-narraguagus",
 "Nashoba Reg": "oos-auto-ma-nashoba",
 "Nashua High School North": "oos-nh-nashua-high-school-north",
 "Nashua High School South": "oos-nh-nashua-high-school-south",
@@ -235830,7 +235910,6 @@
 "New Canaan": "oos-auto-ct-new-canaan",
 "New Fairfiel": "oos-auto-ct-new-fairfiel",
 "New Fairfield": "oos-auto-ct-new-fairfield",
-"New Jersey I": null,
 "New London": "oos-auto-ct-new-london",
 "New Milford": "oos-auto-ct-new-milford",
 "Newburyport": "oos-auto-ma-newburyport",
@@ -235906,13 +235985,14 @@
 "Norwood": "oos-auto-ma-norwood",
 "Notre Dame A": null,
 "Notre Dame H": null,
-"Nyit": null,
-"OAK": null,
-"OBryant": null,
-"OConnor Scar": {
-"id": null,
-"basis": "name only (no joined rows)"
+"OAK": {
+"id": "me-hs-oak-hill",
+"held": {
+"None": 13,
+"me-hs-oak-hill": 2
+}
 },
+"OBryant": null,
 "OHIT": null,
 "OHTRA": null,
 "OLeary": null,
@@ -235920,7 +236000,7 @@
 "OSHS": null,
 "OSullivanFrost S": null,
 "OTTC": null,
-"OTXC": null,
+"OTXC": "me-hs-old-town",
 "OUELETTE": null,
 "OX Leavitt HS": null,
 "Oak Hill High School": "me-hs-oak-hill",
@@ -235952,7 +236032,7 @@
 "Orland Consolidated School": "me-ms-orland",
 "Orono High School": "me-hs-orono",
 "Orono Middle School": "me-ms-orono",
-"Orrington": null,
+"Orrington": "me-ms-center-drive",
 "Oxbow": "oos-auto-vt-oxbow",
 "Oxbow HS": null,
 "Oxford CT": "oos-auto-ct-oxford",
@@ -235971,7 +236051,14 @@
 "id": null,
 "basis": "name only (no joined rows)"
 },
-"P I": null,
+"P I": {
+"id": "me-hs-poland",
+"held": {
+"None": 58,
+"me-hs-poland": 11,
+"me-hs-portland": 10
+}
+},
 "PAT": null,
 "PEE": {
 "id": null,
@@ -235984,7 +236071,6 @@
 "basis": "name only (no joined rows)"
 },
 "PID": null,
-"Pace": null,
 "Packard": {
 "id": null,
 "basis": "name only (no joined rows)"
@@ -236066,7 +236152,6 @@
 "Presque Isle Middle School": "me-ms-presque-isle",
 "Preston": null,
 "Prince Tech": "oos-auto-ct-prince-tech",
-"Princeton": null,
 "Proctor": "oos-auto-vt-proctor",
 "Profile": null,
 "Prop Mount": "oos-auto-nh-prop-mt",
@@ -236101,14 +236186,6 @@
 "Raymond": "oos-auto-nh-raymond",
 "Reading Memorial High School": "oos-ma-reading-memorial-high-school",
 "Reeds Brook Middle School": "me-ms-reeds-brook",
-"Rees": {
-"id": null,
-"basis": "name only (no joined rows)"
-},
-"Regan": {
-"id": null,
-"basis": "name only (no joined rows)"
-},
 "Region": null,
 "Reinhardt": null,
 "Relay": null,
@@ -236152,17 +236229,13 @@
 "Royals TC": null,
 "Russell": null,
 "Rutland Senior": "oos-auto-vt-rutland",
-"Ryan": {
-"id": null,
-"basis": "name only (no joined rows)"
-},
 "S Hadleygh": "oos-auto-ma-s-hadleygh",
 "S Royalton": "oos-auto-vt-s-royalton",
 "S Windsor": "oos-auto-ct-s-windsor",
 "SAWTELL": null,
 "SCC": null,
 "SCHK": null,
-"SHA": null,
+"SHA": "me-ms-shapleigh",
 "SHD": null,
 "SHadley": "oos-auto-ma-s-hadley",
 "SISU Project": null,
@@ -236242,7 +236315,6 @@
 "Sharks Track": null,
 "Sharon": "oos-auto-ma-sharon",
 "Sharon Acade": "oos-auto-vt-sharon-acade",
-"Shchuler": null,
 "Shea": "oos-auto-ri-shea",
 "Shea HS Pawtucket": {
 "id": "oos-auto-ri-shea-pawtucket",
@@ -236280,10 +236352,6 @@
 "SmithfieldHS": "oos-auto-ri-smithfieldhs",
 "Smsa": null,
 "Snowden": "oos-auto-ma-snowden",
-"Snyder G": {
-"id": null,
-"basis": "name only (no joined rows)"
-},
 "SoHadley": "oos-auto-ma-south-hadley",
 "Somers": "oos-auto-ct-somers",
 "Somerset": "oos-auto-ma-somerset",
@@ -236369,10 +236437,6 @@
 "Sunapee": null,
 "Surry Elementary School": "me-ms-surry",
 "Susl": null,
-"Susla": {
-"id": null,
-"basis": "name only (no joined rows)"
-},
 "Sutton": "oos-auto-ma-sutton",
 "Swampscott": null,
 "Swans Island School": "me-ms-swans-island",
@@ -236472,15 +236536,11 @@
 "Uthirtytwo": "oos-auto-vt-uthirtytwo",
 "Uxbridge": "oos-auto-ma-uxbridge",
 "VILLA MARIA": null,
-"Val": null,
+"Val": "me-hs-valley",
 "Valley High School": "me-hs-valley",
 "Valley Reg": "oos-auto-ct-valley",
 "Valley River Mid": null,
 "Valley Rivers Middle School": "me-ms-valley-rivers",
-"VanBars Wind": {
-"id": null,
-"basis": "name only (no joined rows)"
-},
 "VanDongen": null,
 "Vassalboro Community School": "me-ms-vassalboro",
 "Veazie Community School": "me-ms-veazie",
@@ -236492,8 +236552,8 @@
 "basis": "name only (no joined rows)"
 },
 "Vinalhaven School": "me-hs-vinalhaven",
-"Vineyard Christian": null,
-"Vinyard": null,
+"Vineyard Christian": "me-hs-vineyard-christian",
+"Vinyard": "me-hs-vineyard-christian",
 "WALLAC": null,
 "WAY": null,
 "WBrewer": null,
@@ -236511,16 +236571,12 @@
 },
 "Wahconah": null,
 "Wakefield": "oos-auto-ma-wakefield",
-"Wal": null,
+"Wal": "me-hs-maine-coast-waldorf",
 "Walker": {
 "id": null,
 "basis": "name only (no joined rows)"
 },
 "Walpole": "oos-auto-ma-walpole",
-"Walsh": {
-"id": null,
-"basis": "name only (no joined rows)"
-},
 "Waltham": "oos-auto-ma-waltham",
 "War": null,
 "Wareham": "oos-auto-ma-wareham",
@@ -236590,7 +236646,14 @@
 "Wilton": "oos-auto-ct-wilton",
 "WiltonLyndeboro": null,
 "Wimdham": null,
-"Win": null,
+"Win": {
+"id": "me-hs-winslow",
+"held": {
+"me-hs-winslow": 6,
+"None": 4,
+"me-hs-winthrop": 2
+}
+},
 "Winchester": "oos-auto-ma-winchester",
 "Windham CT": "oos-auto-ct-windham",
 "Windham High School": "me-hs-windham",
@@ -236608,7 +236671,7 @@
 "Winship": null,
 "Winslow High School": "me-hs-winslow",
 "Winslow Junior High School": "me-ms-winslow",
-"Winterport": null,
+"Winterport": "me-ms-wagner",
 "Winthorp": null,
 "Winthrop High School": "me-hs-winthrop",
 "Winthrop Middle School": "me-ms-winthrop",
@@ -236616,11 +236679,7 @@
 "Wintle": null,
 "Wintrhop": null,
 "Wintrop Middle School": null,
-"Wirth": {
-"id": null,
-"basis": "name only (no joined rows)"
-},
-"WiscJv": null,
+"WiscJv": "me-hs-wiscasset",
 "Wiscasset High School": "me-hs-wiscasset",
 "Wiscasset Middle School": "me-ms-wiscasset",
 "Wisdom MiddleHigh School": "me-hs-wisdom",
@@ -236667,7 +236726,6 @@
 "YoYo": null,
 "York High School": "me-hs-york",
 "York Middle School": "me-ms-york",
-"Zimmerman": null,
 "a CurranCaitie Smith": {
 "id": null,
 "basis": "name only (no joined rows)"
@@ -236868,7 +236926,13 @@
 "id": null,
 "basis": "name only (no joined rows)"
 },
-"smc": null,
+"smc": {
+"id": "me-ms-southern-maine-catholic",
+"held": {
+"me-ms-southern-maine-catholic": 11,
+"None": 4
+}
+},
 "sque Isle High School": {
 "id": null,
 "basis": "name only (no joined rows)"
@@ -237365,24 +237429,6 @@
 "id": null,
 "method": "unresolved",
 "how": "unresolved"
-},
-{
-"raw": "Canton High School",
-"rows": 73,
-"seasons": {
-"XC": 73
-},
-"years": [
-2016,
-2017
-],
-"id": null,
-"method": "ambiguous-stem",
-"candidates": [
-"oos-auto-ct-canton",
-"oos-auto-ma-canton"
-],
-"how": "ambiguous"
 },
 {
 "raw": "Spa City Run",
@@ -238096,25 +238142,6 @@
 "how": "unresolved"
 },
 {
-"raw": "Canton",
-"rows": 40,
-"seasons": {
-"Outdoor": 13,
-"XC": 27
-},
-"years": [
-2012,
-2026
-],
-"id": null,
-"method": "ambiguous-name",
-"candidates": [
-"oos-auto-ct-canton",
-"oos-auto-ma-canton"
-],
-"how": "ambiguous"
-},
-{
 "raw": "Town Track C",
 "rows": 40,
 "seasons": {
@@ -238687,20 +238714,6 @@
 "years": [
 2003,
 2003
-],
-"id": null,
-"method": "unresolved",
-"how": "unresolved"
-},
-{
-"raw": "Madison/Athens",
-"rows": 28,
-"seasons": {
-"XC": 28
-},
-"years": [
-2005,
-2005
 ],
 "id": null,
 "method": "unresolved",
@@ -239586,20 +239599,6 @@
 "how": "unresolved"
 },
 {
-"raw": "LFCA",
-"rows": 19,
-"seasons": {
-"XC": 19
-},
-"years": [
-2011,
-2013
-],
-"id": null,
-"method": "unresolved",
-"how": "unresolved"
-},
-{
 "raw": "05-Tomlinson",
 "rows": 19,
 "seasons": {
@@ -239806,20 +239805,6 @@
 "years": [
 2009,
 2009
-],
-"id": null,
-"method": "unresolved",
-"how": "unresolved"
-},
-{
-"raw": "Vineyard Christ",
-"rows": 17,
-"seasons": {
-"XC": 17
-},
-"years": [
-2010,
-2010
 ],
 "id": null,
 "method": "unresolved",
@@ -240142,39 +240127,6 @@
 "how": "unresolved"
 },
 {
-"raw": "Isleford",
-"rows": 15,
-"seasons": {
-"XC": 15
-},
-"years": [
-2007,
-2008
-],
-"id": null,
-"method": "unresolved",
-"how": "unresolved"
-},
-{
-"raw": "Champlain-VT",
-"rows": 15,
-"seasons": {
-"XC": 15
-},
-"years": [
-2007,
-2007
-],
-"id": null,
-"method": "ambiguous-truncation+state-tail",
-"candidates": [
-"oos-auto-vt-champlain-val-uhs-hinesburg",
-"oos-auto-vt-champlain-valley-uhs-hines",
-"oos-vt-champlain-valley-union-high-school"
-],
-"how": "ambiguous"
-},
-{
 "raw": "Richmone Middle",
 "rows": 15,
 "seasons": {
@@ -240203,21 +240155,6 @@
 "how": "unresolved"
 },
 {
-"raw": "OAK",
-"rows": 15,
-"seasons": {
-"Outdoor": 13,
-"XC": 2
-},
-"years": [
-2010,
-2011
-],
-"id": null,
-"method": "unresolved",
-"how": "unresolved"
-},
-{
 "raw": "Greater",
 "rows": 15,
 "seasons": {
@@ -240238,20 +240175,6 @@
 },
 {
 "raw": "Rolling",
-"rows": 15,
-"seasons": {
-"XC": 15
-},
-"years": [
-2010,
-2010
-],
-"id": null,
-"method": "unresolved",
-"how": "unresolved"
-},
-{
-"raw": "M-W",
 "rows": 15,
 "seasons": {
 "XC": 15
@@ -240651,21 +240574,6 @@
 "years": [
 2008,
 2009
-],
-"id": null,
-"method": "unresolved",
-"how": "unresolved"
-},
-{
-"raw": "Acadia Christian",
-"rows": 13,
-"seasons": {
-"Outdoor": 6,
-"XC": 7
-},
-"years": [
-2008,
-2012
 ],
 "id": null,
 "method": "unresolved",
@@ -241103,20 +241011,6 @@
 "rows": 11,
 "seasons": {
 "Outdoor": 11
-},
-"years": [
-2008,
-2008
-],
-"id": null,
-"method": "unresolved",
-"how": "unresolved"
-},
-{
-"raw": "Wal",
-"rows": 11,
-"seasons": {
-"XC": 11
 },
 "years": [
 2008,
@@ -242976,20 +242870,6 @@
 "how": "unresolved"
 },
 {
-"raw": "Vineyard Christian",
-"rows": 7,
-"seasons": {
-"XC": 7
-},
-"years": [
-2010,
-2010
-],
-"id": null,
-"method": "unresolved",
-"how": "unresolved"
-},
-{
 "raw": "Infant",
 "rows": 7,
 "seasons": {
@@ -244356,20 +244236,6 @@
 "how": "unresolved"
 },
 {
-"raw": "Msb",
-"rows": 5,
-"seasons": {
-"XC": 5
-},
-"years": [
-2007,
-2007
-],
-"id": null,
-"method": "unresolved",
-"how": "unresolved"
-},
-{
 "raw": "06-Metropolis TC",
 "rows": 5,
 "seasons": {
@@ -245264,20 +245130,6 @@
 "years": [
 2021,
 2023
-],
-"id": null,
-"method": "unresolved",
-"how": "unresolved"
-},
-{
-"raw": "BHHS",
-"rows": 5,
-"seasons": {
-"XC": 5
-},
-"years": [
-2021,
-2021
 ],
 "id": null,
 "method": "unresolved",
@@ -247338,20 +247190,6 @@
 "how": "unresolved"
 },
 {
-"raw": "Wisc-Jv",
-"rows": 3,
-"seasons": {
-"XC": 3
-},
-"years": [
-2004,
-2004
-],
-"id": null,
-"method": "unresolved",
-"how": "unresolved"
-},
-{
 "raw": "iddeford High School",
 "rows": 3,
 "seasons": {
@@ -247491,20 +247329,6 @@
 "years": [
 2006,
 2008
-],
-"id": null,
-"method": "unresolved",
-"how": "unresolved"
-},
-{
-"raw": "Messabesec",
-"rows": 3,
-"seasons": {
-"XC": 3
-},
-"years": [
-2006,
-2006
 ],
 "id": null,
 "method": "unresolved",
@@ -248032,48 +247856,6 @@
 "how": "unresolved"
 },
 {
-"raw": "Vineyard",
-"rows": 3,
-"seasons": {
-"XC": 3
-},
-"years": [
-2011,
-2011
-],
-"id": null,
-"method": "unresolved",
-"how": "unresolved"
-},
-{
-"raw": "Vinyard",
-"rows": 3,
-"seasons": {
-"XC": 3
-},
-"years": [
-2011,
-2011
-],
-"id": null,
-"method": "unresolved",
-"how": "unresolved"
-},
-{
-"raw": "SHA",
-"rows": 3,
-"seasons": {
-"XC": 3
-},
-"years": [
-2011,
-2011
-],
-"id": null,
-"method": "unresolved",
-"how": "unresolved"
-},
-{
 "raw": "Porltand High School",
 "rows": 3,
 "seasons": {
@@ -248142,21 +247924,6 @@
 "years": [
 2012,
 2019
-],
-"id": null,
-"method": "unresolved",
-"how": "unresolved"
-},
-{
-"raw": "EWG",
-"rows": 3,
-"seasons": {
-"XC": 2,
-"Indoor": 1
-},
-"years": [
-2012,
-2023
 ],
 "id": null,
 "method": "unresolved",
@@ -248724,20 +248491,6 @@
 },
 {
 "raw": "Roach",
-"rows": 3,
-"seasons": {
-"XC": 3
-},
-"years": [
-2016,
-2016
-],
-"id": null,
-"method": "unresolved",
-"how": "unresolved"
-},
-{
-"raw": "MAc",
 "rows": 3,
 "seasons": {
 "XC": 3
@@ -250675,20 +250428,6 @@
 },
 {
 "raw": "St",
-"rows": 2,
-"seasons": {
-"XC": 2
-},
-"years": [
-2007,
-2007
-],
-"id": null,
-"method": "unresolved",
-"how": "unresolved"
-},
-{
-"raw": "Burlintgon HS",
 "rows": 2,
 "seasons": {
 "XC": 2
@@ -253718,34 +253457,6 @@
 },
 {
 "raw": "Umd - Alumni",
-"rows": 2,
-"seasons": {
-"XC": 2
-},
-"years": [
-2017,
-2017
-],
-"id": null,
-"method": "unresolved",
-"how": "unresolved"
-},
-{
-"raw": "Castine",
-"rows": 2,
-"seasons": {
-"XC": 2
-},
-"years": [
-2017,
-2017
-],
-"id": null,
-"method": "unresolved",
-"how": "unresolved"
-},
-{
-"raw": "McNamara YORK",
 "rows": 2,
 "seasons": {
 "XC": 2
@@ -257171,20 +256882,6 @@
 "how": "unresolved"
 },
 {
-"raw": "MAs",
-"rows": 1,
-"seasons": {
-"XC": 1
-},
-"years": [
-2006,
-2006
-],
-"id": null,
-"method": "unresolved",
-"how": "unresolved"
-},
-{
 "raw": "Academy",
 "rows": 1,
 "seasons": {
@@ -259440,34 +259137,6 @@
 },
 {
 "raw": "Damariscotta",
-"rows": 1,
-"seasons": {
-"XC": 1
-},
-"years": [
-2007,
-2007
-],
-"id": null,
-"method": "unresolved",
-"how": "unresolved"
-},
-{
-"raw": "MSB",
-"rows": 1,
-"seasons": {
-"XC": 1
-},
-"years": [
-2007,
-2007
-],
-"id": null,
-"method": "unresolved",
-"how": "unresolved"
-},
-{
-"raw": "MSb",
 "rows": 1,
 "seasons": {
 "XC": 1
@@ -262366,20 +262035,6 @@
 },
 {
 "raw": "C-Stearns",
-"rows": 1,
-"seasons": {
-"XC": 1
-},
-"years": [
-2009,
-2009
-],
-"id": null,
-"method": "unresolved",
-"how": "unresolved"
-},
-{
-"raw": "Islesford",
 "rows": 1,
 "seasons": {
 "XC": 1
@@ -267972,20 +267627,6 @@
 "id": null,
 "method": "debris",
 "how": "debris"
-},
-{
-"raw": "Gray-N Glouceste",
-"rows": 1,
-"seasons": {
-"XC": 1
-},
-"years": [
-2012,
-2012
-],
-"id": null,
-"method": "unresolved",
-"how": "unresolved"
 },
 {
 "raw": "Stratton Mou",
@@ -277142,35 +276783,7 @@
 "how": "unresolved"
 },
 {
-"raw": "Beals",
-"rows": 1,
-"seasons": {
-"XC": 1
-},
-"years": [
-2019,
-2019
-],
-"id": null,
-"method": "unresolved",
-"how": "unresolved"
-},
-{
 "raw": "Mt Blue Parent",
-"rows": 1,
-"seasons": {
-"XC": 1
-},
-"years": [
-2019,
-2019
-],
-"id": null,
-"method": "unresolved",
-"how": "unresolved"
-},
-{
-"raw": "MSR MTA",
 "rows": 1,
 "seasons": {
 "XC": 1
@@ -280269,20 +279882,6 @@
 },
 {
 "raw": "bid",
-"rows": 1,
-"seasons": {
-"XC": 1
-},
-"years": [
-2023,
-2023
-],
-"id": null,
-"method": "unresolved",
-"how": "unresolved"
-},
-{
-"raw": "mas",
 "rows": 1,
 "seasons": {
 "XC": 1
