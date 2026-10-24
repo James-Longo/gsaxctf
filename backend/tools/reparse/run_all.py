@@ -1,4 +1,4 @@
-"""Parse every Indoor/Outdoor archive file with the repo's current code into
+"""Parse every Indoor/Outdoor archive file (SEASONS=XC for cross country) with the repo's current code into
 <outdir>/<year>/<season>/<stem>.json (nothing in the repo is written)."""
 import multiprocessing as mp, os, sys, glob, time
 REPO = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
@@ -16,7 +16,7 @@ def job(f):
 
 OUT = sys.argv[1]
 if __name__ == '__main__':
-    files = sorted(f for s in ('Indoor', 'Outdoor') for f in glob.glob(f'backend/data/sub5_archive/*/{s}/*')
+    files = sorted(f for s in os.environ.get('SEASONS', 'Indoor,Outdoor').split(',') for f in glob.glob(f'backend/data/sub5_archive/*/{s}/*')
                    if os.path.isfile(f))
     t = time.time()
     with mp.Pool(max(2, os.cpu_count() - 2)) as p:
