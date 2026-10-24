@@ -2682,6 +2682,8 @@ def test_short_name_store_id_per_season_and_sex():
     assert store_athlete_id('J Smith', 'York', 2010, 'Outdoor', 'Girls 100 Meter Dash') == 'j-smith-york--2010-outdoor-g'
     assert store_athlete_id('Kourtney Bonsey', 'Falmouth High School', 2006, 'XC', 'Girls 5K') == 'kourtney-bonsey-falmouth-high-school'
     assert store_athlete_id('Bonsey', 'Falmouth', 2006, 'XC', 'Boys 4x800 Meter Relay', True) == 'bonsey-falmouth'
+    assert store_athlete_id('Blackwell-Orr', 'South Portland', 2009, 'XC', 'Boys 5K').endswith('--2009-xc-b')
+    assert store_athlete_id('Janey Blackwell-Orr', 'South Portland', 2009, 'XC', 'Girls 5K') == 'janey-blackwell-orr-south-portland'
 
 
 if __name__ == '__main__':

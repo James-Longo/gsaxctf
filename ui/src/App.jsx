@@ -172,7 +172,7 @@ function App() {
   // ("Bonsey", "J Smith") gets one id per season and sex
   const storeAthleteId = (name, team, year, season, event) => {
     const id = slugifyAthlete(name, team);
-    const toks = (name || '').replace(/'/g, '').match(/[A-Za-z']+/g) || [];
+    const toks = (name || '').replace(/'/g, '').match(/[A-Za-z]+(?:-[A-Za-z]+)*/g) || [];
     const short = toks.length === 1 ? toks[0].length >= 2
       : toks.length === 2 && ((toks[0].length === 1) !== (toks[1].length === 1));
     if (!short || /relay/i.test(event || '')) return id;

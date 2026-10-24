@@ -46,7 +46,8 @@ def slugify_athlete(name: str, team: str) -> str:
 def is_short_name(name: str) -> bool:
     """A printed name of one surname ("Inhorn") or an initial and a surname
     ("J Smith", "Smith, J.")."""
-    toks = re.findall(r"[A-Za-z']+", (name or '').replace("'", ''))
+    # (a hyphenated surname is one word: "Blackwell-Orr" alone is a surname-only name)
+    toks = re.findall(r"[A-Za-z]+(?:-[A-Za-z]+)*", (name or '').replace("'", ''))
     if len(toks) == 1:
         return len(toks[0]) >= 2
     return len(toks) == 2 and (len(toks[0]) == 1) != (len(toks[1]) == 1)
