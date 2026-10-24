@@ -1,0 +1,201 @@
+{
+ "events": [
+  {
+   "event": "2.6 Mile Run CC # 7 Runner",
+   "gender": "Girls",
+   "is_relay": false,
+   "results": [
+    {
+     "athlete": "Morris, Eva",
+     "school": "Cape",
+     "result": "18:55.00",
+     "grade": "9",
+     "type": "Finals",
+     "place": 1
+    },
+    {
+     "athlete": "Hultstrom, Leah",
+     "school": "York High School",
+     "result": "19:19.00",
+     "grade": "12",
+     "type": "Finals",
+     "place": 2
+    },
+    {
+     "athlete": "Brown, Jillian",
+     "school": "Cony XC",
+     "result": "20:19.00",
+     "grade": "",
+     "type": "Finals",
+     "sex": "Girls",
+     "place": 3
+    },
+    {
+     "athlete": "Dauleiro, Madeline",
+     "school": "Mt. Ararat High",
+     "result": "20:45.00",
+     "grade": "10",
+     "type": "Finals",
+     "place": 4
+    },
+    {
+     "athlete": "Jackson, Annaset",
+     "school": "Mt.B XC",
+     "result": "22:35.00",
+     "grade": "12",
+     "type": "Finals",
+     "place": 5
+    },
+    {
+     "athlete": "Masselli, Melina",
+     "school": "Lewiston XC",
+     "result": "24:03.00",
+     "grade": "11",
+     "type": "Finals",
+     "place": 6
+    },
+    {
+     "athlete": "LaVerdiere, Abigayle",
+     "school": "Lawrence",
+     "result": "25:30.00",
+     "grade": "12",
+     "type": "Finals",
+     "place": 7
+    },
+    {
+     "athlete": "Lavoie, Abigayle",
+     "school": "Leavitt High School",
+     "result": "26:22.00",
+     "grade": "10",
+     "type": "Finals",
+     "place": 8
+    },
+    {
+     "athlete": "Brown, Fiona",
+     "school": "Bhs CC 2018",
+     "result": "28:13.00",
+     "grade": "9",
+     "type": "Finals",
+     "place": 9,
+     "warnings": [
+      "School name contains numbers: Bhs CC 2018"
+     ]
+    },
+    {
+     "athlete": "Olcott, Hannah",
+     "school": "Edward Little HS",
+     "result": "28:42.00",
+     "grade": "",
+     "type": "Finals",
+     "sex": "Girls",
+     "place": 10
+    },
+    {
+     "athlete": "Jone-Cressey, Madelyn",
+     "school": "Morse High School",
+     "result": "29:39.00",
+     "grade": "",
+     "type": "Finals",
+     "sex": "Girls",
+     "place": 11
+    }
+   ],
+   "date": "2018-08-17",
+   "meet_name": "Mt. Ararat Track                                 HY-TEK's Meet Manager"
+  },
+  {
+   "event": "2.6 Mile Run CC # 7 Runner",
+   "gender": "Boys",
+   "is_relay": false,
+   "results": [
+    {
+     "athlete": "Lyons, Daniel",
+     "school": "Bhs CC 2018",
+     "result": "15:29.00",
+     "grade": "11",
+     "type": "Finals",
+     "place": 1,
+     "warnings": [
+      "School name contains numbers: Bhs CC 2018"
+     ]
+    },
+    {
+     "athlete": "O'Grady, Keegan",
+     "school": "Cape",
+     "result": "16:34.00",
+     "grade": "10",
+     "type": "Finals",
+     "place": 2
+    },
+    {
+     "athlete": "Page, Luke",
+     "school": "Mt. Ararat High",
+     "result": "16:40.00",
+     "grade": "9",
+     "type": "Finals",
+     "place": 3
+    },
+    {
+     "athlete": "Davis, Samuel",
+     "school": "Lewiston XC",
+     "result": "17:06.00",
+     "grade": "10",
+     "type": "Finals",
+     "place": 4
+    },
+    {
+     "athlete": "Lucarelli, Ben",
+     "school": "Cony XC",
+     "result": "17:13.00",
+     "grade": "",
+     "type": "Finals",
+     "sex": "Boys",
+     "place": 5
+    },
+    {
+     "athlete": "Avery, Caleb",
+     "school": "Morse High School",
+     "result": "17:14.00",
+     "grade": "10",
+     "type": "Finals",
+     "place": 6
+    },
+    {
+     "athlete": "Brown, Austin",
+     "school": "Edward Little HS",
+     "result": "18:06.00",
+     "grade": "",
+     "type": "Finals",
+     "sex": "Boys",
+     "place": 7
+    },
+    {
+     "athlete": "Mealey, Jacob",
+     "school": "Mt.B XC",
+     "result": "18:19.00",
+     "grade": "12",
+     "type": "Finals",
+     "place": 8
+    },
+    {
+     "athlete": "Bowley, Ryan",
+     "school": "Lawrence",
+     "result": "23:21.00",
+     "grade": "9",
+     "type": "Finals",
+     "place": 9
+    }
+   ],
+   "date": "2018-08-17",
+   "meet_name": "Mt. Ararat Track                                 HY-TEK's Meet Manager"
+  }
+ ],
+ "date": "2018-08-17",
+ "meet_name": "Mt. Ararat Track                                 HY-TEK's Meet Manager",
+ "venue": null,
+ "team_rankings": [],
+ "parser": "ColumnStrategyParser",
+ "source": "backend/data/sub5_archive/2018/XC/Results-Race-1.htm",
+ "school_codes": {},
+ "notes": "All 20 rows of the parse unchanged (place, name, school, mark checked against the Hy-Tek sheet by script; Women and Men sections kept as Girls and Boys, mark 'mm:ss.00'). Change: the Year column holds gender+class (WFR/WSO/WJR/WSR, MFR/MSO/MJR/MSR = Freshman/Sophomore/Junior/Senior; bare 'W'/'M' = no class printed, Cony and Edward Little rows) and the parse dropped it; it is now the grade 9/10/11/12 (15 rows with a class; blank otherwise). Schools as the parse had them (Cape, Mt.B XC, Cony XC, Lewiston XC, Bhs CC 2018 = Brunswick, Morse High School, Lawrence, Leavitt High School, York High School, Mt. Ararat High, Edward Little HS). Parser pattern: ColumnStrategyParser ignores a Year column of W/M + class codes."
+}

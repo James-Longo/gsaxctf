@@ -1504,6 +1504,13 @@ FILE_RULES = [
     (['WSR Leavitt High School'], 'XC', (2018, 2018), r'^Results-R-6$', 'me-hs-leavitt'),
     (['WSO Mt. Ararat High'], 'XC', (2018, 2018), r'^Results-R-6$', 'me-hs-mt-ararat'),
     (['Woodland Woodchucks'], 'XC', (2018, 2018), r'^(cariboums(boys|girls)_oct3|alms.*)$', 'me-ms-woodland'),
+    # 2026-10-24 second read, batch 7 (2018)
+    (['Deer Isle'], 'XC', (2018, 2018), r'^(20180924_ParkerPruett_(Boys|Girls)_(results|teams)\.txt|2018ParkerPruett-combined-team-scores)$', 'me-ms-dis-elementary'),
+    (['Cranberry Isles'], 'XC', (2018, 2018), r'^(20180924_ParkerPruett_(Boys|Girls)_(results|teams)\.txt|2018ParkerPruett-combined-team-scores)$', 'me-ms-islesford'),
+    (['TA'], 'XC', (2018, 2018), r'^tams(boys|girls)_sept27$', 'me-ms-thornton'),
+    (['EGHS'], 'XC', (2018, 2018), r'^2018-washburn-xc-boys-results$', 'me-hs-east-grand'),
+    (['WIS'], 'XC', (2018, 2018), r'^Boys-9-18-Mad-Results$', 'me-hs-wisdom'),
+    (['EastGrand'], 'XC', (2018, 2018), r'^Boys-9-18-Mad-Results$', 'me-hs-east-grand'),
     # 2026-10-24 unresolved-school review, batch 2
     (['F'], 'XC', (2004, 2004), r'^cape7oct04[bg]\.txt$', 'me-hs-falmouth'),   # Title lists Falmouth; only F team
     (['Y'], 'XC', (2004, 2004), r'^cape7oct04[bg]\.txt$', 'me-hs-yarmouth'),   # Title lists Yarmouth; only Y team

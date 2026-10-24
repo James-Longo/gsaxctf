@@ -26529,6 +26529,13 @@
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
  },
+ "backend/data/parsed_results/2018/XC/2018-washburn-xc-boys-results.json": {
+  "parse_sha": "2dc68fc3f273cbc6",
+  "source_sha": "4f5e363dccbbec44",
+  "date": "2026-10-24",
+  "by": "auto: team scores verified exactly, all schools identified, no flags",
+  "evidence": ""
+ },
  "backend/data/parsed_results/2018/XC/2018-washburn-xc-girls-results.json": {
   "parse_sha": "65058aa6c24b911c",
   "source_sha": "95a5ba2f84c74ccf",
@@ -26549,6 +26556,13 @@
   "date": "2026-10-24",
   "by": "sonnet audit (second read, 2026-10-24) (audit: confirmed)",
   "evidence": "Scores-only file. Parse = printed George Stevens 15 (1+2+3+4+5) and Machias 40 (6+7+8+9+10); both reproduce from the girls results sheet's TmPl column. Date 2018-09-21 right."
+ },
+ "backend/data/parsed_results/2018/XC/20180924_ParkerPruett_Boys_teams.txt.json": {
+  "parse_sha": "00a24c931ef2bdb8",
+  "source_sha": "887a75a0f8065f58",
+  "date": "2026-10-24",
+  "by": "sonnet audit (second read, 2026-10-24) (audit: confirmed)",
+  "evidence": "Boys team score list: 11 teams, scores and ranks match the sheet (Emerson 62, Ellsworth 73, Mt. Desert 86, Dedham 108, Mountain View 137, Peninsula 186, Beech Hill 194, Trenton 202, Mirus 224, Tremont 231, Lamoine 242); parse has no runner rows by design (xc_no_results), team lines only. No Deer Isle in the boys list."
  },
  "backend/data/parsed_results/2018/XC/Andy-Valley-Boys-Results.json": {
   "parse_sha": "c6526e0a0f7dfe28",
@@ -26589,6 +26603,13 @@
   "parse_sha": "08011295c99ce501",
   "source_sha": "ce9069947e44cdcd",
   "date": "2026-10-16",
+  "by": "auto: team scores verified exactly, all schools identified, no flags",
+  "evidence": ""
+ },
+ "backend/data/parsed_results/2018/XC/Boys-9-18-Mad-Results.json": {
+  "parse_sha": "09c277e6f6e16c83",
+  "source_sha": "2f4afda3072d117f",
+  "date": "2026-10-24",
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
  },
@@ -26704,6 +26725,13 @@
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
  },
+ "backend/data/parsed_results/2018/XC/Girls-10-Results.txt.json": {
+  "parse_sha": "dbf06a1d7a5ca152",
+  "source_sha": "fbb45c0fc8ff7c03",
+  "date": "2026-10-24",
+  "by": "sonnet audit (second read, 2026-10-24) (audit: confirmed)",
+  "evidence": "SMAA Girls 10th Grade Relays 1.5 Miles, Gorham 08/21/18: all 20 rows (place, name, Yr, school, time) match the sheet; 'Tess Libby 11 Gorham 17:05' is printed as grade 11 and parsed as such; schools resolve correctly."
+ },
  "backend/data/parsed_results/2018/XC/Girls-11-Results.txt.json": {
   "parse_sha": "a8d9a1b876bf9228",
   "source_sha": "d3c1c7cb045138bd",
@@ -26759,6 +26787,13 @@
   "date": "2026-10-16",
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
+ },
+ "backend/data/parsed_results/2018/XC/Girls-Results-9-19-18.json": {
+  "parse_sha": "b16eeb442d4f870c",
+  "source_sha": "19aaa27494caaab2",
+  "date": "2026-10-24",
+  "by": "sonnet audit (second read, 2026-10-24) (audit: confirmed)",
+  "evidence": "Mountain Valley Conference midseason girls, Boothbay Harbor 09/19/2018: all 40 rows match the two-column sheet (place, name, team, time, PTS as team_place). 'MADISON' (place 38, OAK HILL, :35:34.1) is the only name printed, kept as printed; Oak Hill girls rows 3,17,34,35,37,38,39 all carry PTS 3,12,22,23,24,25,26 and the team is OAK HILL. Boothbay-Wiscass -> Boothbay-Wiscasset co-op."
  },
  "backend/data/parsed_results/2018/XC/Girls-Results-F1.json": {
   "parse_sha": "9a5d6f7f7680b4ab",
@@ -26914,6 +26949,13 @@
   "by": "sonnet audit (second read, 2026-10-24) (audit: confirmed)",
   "evidence": "25 girls rows match line by line (place, name, team, time; Brunswick PTS 1-7, Lewiston 8-12 as team_place). Schools Brunswick/Oxford Hills/Lewiston -> middle-school ids (OXFORD HILLS MIDDLE SCHOOL XC). Printed scores BRUNSWICK 15 (1+2+3+4+5), LEWISTON 50 (8+9+10+11+12) reproduce; Oxford Hills has 4 finishers, no score. Oxford Hills names are printed surname-first ('GROVER HANNAH', 'WOODCOCK SCARLETT', 'STROUT LINDSAY', 'SHEETS CAROLINE') and kept as printed (same as the Maranacook 2021 precedent). Stray 'E-circumflex' on 'ANNYE ZHAO' is dropped by the parser."
  },
+ "backend/data/parsed_results/2018/XC/Results-Boys-9.14.18.json": {
+  "parse_sha": "70dc76b8b750bd72",
+  "source_sha": "9fea052c066fe1b5",
+  "date": "2026-10-24",
+  "by": "sonnet audit (second read, 2026-10-24) (audit: confirmed)",
+  "evidence": "PVC Regular Season Meet, Dover-Foxcroft 09/14/2018, boys 5k: all 54 rows (53 finishers + 'Nicolas Daneman SR Foxcroft DNF') match the Hy-Tek sheet by script (name, mark) and by eye (class codes, Points as team_place). HER = Hermon (Ben Zapsky is Hermon at the Ellsworth meet), DRHS = Dexter. Calais rows without a class print a blank year."
+ },
  "backend/data/parsed_results/2018/XC/Results-F1-1.json": {
   "parse_sha": "9bad3b196635f343",
   "source_sha": "fb455facf32e7eca",
@@ -26956,12 +26998,33 @@
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
  },
+ "backend/data/parsed_results/2018/XC/Results-Girls-9.14.18.json": {
+  "parse_sha": "4a0cff018e1ac5bc",
+  "source_sha": "bbd61b066ec22c2f",
+  "date": "2026-10-24",
+  "by": "sonnet audit (second read, 2026-10-24) (audit: confirmed)",
+  "evidence": "PVC Regular Season Meet girls 5k: all 35 rows match the Hy-Tek sheet (name, class, school, time, Points as team_place) by script and by eye."
+ },
  "backend/data/parsed_results/2018/XC/Results-R-8.json": {
   "parse_sha": "070229f42eb51087",
   "source_sha": "5bd67817517180ac",
   "date": "2026-10-16",
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
+ },
+ "backend/data/parsed_results/2018/XC/Results-Race-9.json": {
+  "parse_sha": "22c47ec25e2dcc25",
+  "source_sha": "c97f5f2dd3c88194",
+  "date": "2026-10-24",
+  "by": "sonnet audit (second read, 2026-10-24) (audit: confirmed)",
+  "evidence": "Single row: '1 Schomaker, Jonathan FR Leavitt High School 22:30.00' in 'Event 9 Boys 2.5 Mile Run CC Wheelchair'; parse sits in an event named 'Boys 2.5 Mile Run CC Wheelchair', school Leavitt -> me-hs-leavitt, grade FR, mark identical."
+ },
+ "backend/data/parsed_results/2018/XC/Resultsfocgirlssections.json": {
+  "parse_sha": "906907e20415608d",
+  "source_sha": "05ff4359688cc3d1",
+  "date": "2026-10-24",
+  "by": "sonnet audit (second read, 2026-10-24) (audit: confirmed)",
+  "evidence": "All 611 rows (Unseeded, Freshman and Seeded sections of the Girls 5k, places restart per section) checked by script against the source: place, name, grade, school, mark identical; no source row missing or extra. Schools resolve sensibly (Burrillville-RI, Cumberland-RI, Harwood-VT, Charlottetown, Colonel Gray-PEI, Gillis, King's Edgehill to their out-of-state catalog ids; Boothbay-Wisc to the coop). No team scores printed."
  },
  "backend/data/parsed_results/2018/XC/SMAA-Meet-2-BE-Gorham-Noble-Windham-at-SP.json": {
   "parse_sha": "c45b7860485143e8",
@@ -27103,6 +27166,13 @@
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
  },
+ "backend/data/parsed_results/2018/XC/alms-championship-boys-results.json": {
+  "parse_sha": "5b15875f0156e7bd",
+  "source_sha": "1b9797e1d0c71ad5",
+  "date": "2026-10-24",
+  "by": "sonnet audit (second read, 2026-10-24) (audit: confirmed)",
+  "evidence": "48 rows match. 48 finishers (tie 42 Bemis/Kafferlin); Washburn 29, PIMS 40, CMS 81, Woodland 87 match. Woodland = me-ms-woodland, PIMS/CMS/Caribou/Ghca Middle School middle ids, Washburn me-hs-washburn (only id). 'KMS' (Luke Streinz) stays unresolved, as in the other 2018 ALMS files (Katahdin MS and others possible, no evidence)."
+ },
  "backend/data/parsed_results/2018/XC/alms-championship-xc-girls-results.json": {
   "parse_sha": "2900439f2416610e",
   "source_sha": "d4e6fb0e8b606760",
@@ -27110,12 +27180,26 @@
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
  },
+ "backend/data/parsed_results/2018/XC/alms-xc-meet-2-boys-results.json": {
+  "parse_sha": "dc10a7edfc42df49",
+  "source_sha": "652b5723d4761816",
+  "date": "2026-10-24",
+  "by": "sonnet audit (second read, 2026-10-24) (audit: confirmed)",
+  "evidence": "50 rows match. 49 finishers + LeClair DNF; Washburn 28, PIMS 53, Woodland School 62, CMS 80 match. Woodland = me-ms-woodland, PIMS/CMS/Caribou/Ghca Middle School middle ids, Washburn me-hs-washburn (only id). 'KMS' (Luke Streinz) stays unresolved, as in the other 2018 ALMS files (Katahdin MS and others possible, no evidence)."
+ },
  "backend/data/parsed_results/2018/XC/alms-xc-meet-2-girls-results.json": {
   "parse_sha": "c600d8c590520c38",
   "source_sha": "82f0fbaff48509bc",
   "date": "2026-10-19",
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
+ },
+ "backend/data/parsed_results/2018/XC/alms3-results-boys.json": {
+  "parse_sha": "9ba4fe561f507b4f",
+  "source_sha": "9706b7585c4b08d3",
+  "date": "2026-10-24",
+  "by": "sonnet audit (second read, 2026-10-24) (audit: confirmed)",
+  "evidence": "48 rows match. 48 finishers; Washburn 28, PIMS 46, Woodland Woodchucks 77, CMS 79 match. Woodland = me-ms-woodland, PIMS/CMS/Caribou/Ghca Middle School middle ids, Washburn me-hs-washburn (only id). 'KMS' (Luke Streinz) stays unresolved, as in the other 2018 ALMS files (Katahdin MS and others possible, no evidence)."
  },
  "backend/data/parsed_results/2018/XC/bangorboys_august31.txt.json": {
   "parse_sha": "2698d924c8b3398b",
@@ -27165,6 +27249,13 @@
   "date": "2026-10-16",
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
+ },
+ "backend/data/parsed_results/2018/XC/boys-tripp-10-16-181.json": {
+  "parse_sha": "6a3a09133bde192d",
+  "source_sha": "0c94afe2f74284d4",
+  "date": "2026-10-24",
+  "by": "sonnet audit (second read, 2026-10-24) (audit: confirmed)",
+  "evidence": "All 40 rows match: place, name, school, finals time (the 'Avg Mile' column ignored), points as team_place (BJHS 1,3,4,6,7,8,9; Mt. Ararat 2,5,10-14). Schools: BJHS = Brunswick Junior High (me-ms-brunswick), 'Tms xc' = Tripp Middle School (title 'Tripp Middle School XC Meet - 10/17/2018'), 'mt. ararat ms xc' = Mt. Ararat Middle. Team Scores table is empty in the source. Date 2018-10-17 matches the title."
  },
  "backend/data/parsed_results/2018/XC/boys.json": {
   "parse_sha": "0882b07fd6189a48",
@@ -27446,6 +27537,13 @@
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
  },
+ "backend/data/parsed_results/2018/XC/focboyssections.json": {
+  "parse_sha": "6122d64618e69fd8",
+  "source_sha": "cbd24b81034e2c7d",
+  "date": "2026-10-24",
+  "by": "sonnet audit (second read, 2026-10-24) (audit: confirmed)",
+  "evidence": "All 848 rows (Unseeded A/B, Freshman, Seeded sections of the Boys 5k, places restart per section) checked by script against the source: place, name, grade, school, mark identical; no row missing or extra. Out-of-state schools with a state suffix resolve (-RI, -VT, PEI); 'North Augusta-SC' (1 runner, Jonathan Steelman SR 17:34.24) is not in the catalog and stays '?' (correct). No team scores printed."
+ },
  "backend/data/parsed_results/2018/XC/girls-1.json": {
   "parse_sha": "bd57ac18d55a889c",
   "source_sha": "39085261e0230505",
@@ -27628,6 +27726,13 @@
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
  },
+ "backend/data/parsed_results/2018/XC/lynx-inv.-girls-jv.txt.json": {
+  "parse_sha": "639af00349bcd5f4",
+  "source_sha": "138365a6129ce84f",
+  "date": "2026-10-24",
+  "by": "sonnet audit (second read, 2026-10-24) (audit: confirmed)",
+  "evidence": "4 rows match: Bornet, Aldrich, McReavey (Lee Academy) and Swimm (Houlton HS) with grades and marks; event 'Girls 3 Mile Run CC JV'; date 2018-09-18 from the title; stray 'WWW.SUB5.COM' line not read as a row."
+ },
  "backend/data/parsed_results/2018/XC/lynx-inv.-girls-varsity.txt.json": {
   "parse_sha": "6617b02ee03f867b",
   "source_sha": "a2d5774a57f31f17",
@@ -27803,6 +27908,20 @@
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
  },
+ "backend/data/parsed_results/2018/XC/panther-2-miler-boys.txt.json": {
+  "parse_sha": "7c2e353ba9f1ed59",
+  "source_sha": "e74de585f1e17c96",
+  "date": "2026-10-24",
+  "by": "sonnet audit (second read, 2026-10-24) (audit: confirmed)",
+  "evidence": "All 41 rows match (place, name, grade, school, mark); 2018 Panther 2 miler 8/25/2018 at Medomak Valley. CHCC = Camden Hills (me-hs-camden-hills; Camden Hills Cross Country). Name 'Leon Wang`' has a stray backtick in the source. Event 'Boys 2 Mile Run' (source: Boys 2 Mile Run CC)."
+ },
+ "backend/data/parsed_results/2018/XC/panther-2-miler-girls.txt.json": {
+  "parse_sha": "adc8b5bc2d2bb160",
+  "source_sha": "95e8f824eff4c49c",
+  "date": "2026-10-24",
+  "by": "sonnet audit (second read, 2026-10-24) (audit: confirmed)",
+  "evidence": "All 37 rows match, including two DNF rows ('-- Grace Carlson FR Foxcroft Academy DNF', '-- Maddy Archer SR Lincoln Academy DNF') kept with place null. Schools and grades correct."
+ },
  "backend/data/parsed_results/2018/XC/poland-boys.json": {
   "parse_sha": "d73e13556c7327bf",
   "source_sha": "2cd065801c054e2a",
@@ -27880,6 +27999,13 @@
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
  },
+ "backend/data/parsed_results/2018/XC/red-riot-boys-jv.txt.json": {
+  "parse_sha": "60b784bd2566487b",
+  "source_sha": "aff882760c32acad",
+  "date": "2026-10-24",
+  "by": "sonnet audit (second read, 2026-10-24) (audit: confirmed)",
+  "evidence": "14 rows match the source (Event 2 Boys 2.5 Mile Run CC JV, 7th Annual Riot Challenge, Orono 10/6/2018): places, names, grades, schools (Orono, Calais, Dexter Regional, Lee Academy), marks."
+ },
  "backend/data/parsed_results/2018/XC/red-riot-boys-varsity.txt.json": {
   "parse_sha": "b823f7f705d68f64",
   "source_sha": "6180e24ca2adec67",
@@ -27914,6 +28040,20 @@
   "date": "2026-10-16",
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
+ },
+ "backend/data/parsed_results/2018/XC/sacoboys_oct17.json": {
+  "parse_sha": "8932f18bc1cc9b4a",
+  "source_sha": "2683fa2416db0d59",
+  "date": "2026-10-24",
+  "by": "sonnet audit (second read, 2026-10-24) (audit: source-error)",
+  "evidence": "24 rows match the source (SAN/Saco middle schools, Sanford 26, Saco 31 printed). Source lists 'Mitchell, Brandon San' twice: place 11 12:23 and place 18 13:09."
+ },
+ "backend/data/parsed_results/2018/XC/sacogirls_oct17.json": {
+  "parse_sha": "fe2ab65c328076e7",
+  "source_sha": "232bec0902b23c65",
+  "date": "2026-10-24",
+  "by": "sonnet audit (second read, 2026-10-24) (audit: confirmed)",
+  "evidence": "20 rows match (Saco/Sanford middle schools; 'Kimball San' is a surname only as printed). Scores printed Saco 27, Sanford 28."
  },
  "backend/data/parsed_results/2018/XC/sectionaljvboys.txt.json": {
   "parse_sha": "e54b6f51050791ed",
@@ -28013,6 +28153,34 @@
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
  },
+ "backend/data/parsed_results/2018/XC/tamsboys_sept27.json": {
+  "parse_sha": "6fb690134fd213fe",
+  "source_sha": "f256034410e73807",
+  "date": "2026-10-24",
+  "by": "auto: team scores verified exactly, all schools identified, no flags",
+  "evidence": ""
+ },
+ "backend/data/parsed_results/2018/XC/tamsgirls_oct4.json": {
+  "parse_sha": "9071c617cba9268e",
+  "source_sha": "fe5c882ce66ca269",
+  "date": "2026-10-24",
+  "by": "sonnet audit (second read, 2026-10-24) (audit: confirmed)",
+  "evidence": "42 rows match (N/S/T/B letters = Noble/Shapleigh/TAMS(Thornton)/Biddeford; scores Noble 27, Shapleigh 51, TA 52, Biddeford 97); T resolves to me-ms-thornton, correct."
+ },
+ "backend/data/parsed_results/2018/XC/thorntonboys_oct5.json": {
+  "parse_sha": "95b8329cc3d32377",
+  "source_sha": "7da676d40ff763cb",
+  "date": "2026-10-24",
+  "by": "sonnet audit (second read, 2026-10-24) (audit: source-error)",
+  "evidence": "74 rows match (BE/K/TA/B high schools; scores Bonny Eagle 28, Kennebunk 43, TA 53, Biddeford 120). Source lists 'Martin, Ian K' twice: place 45 20:47 and place 46 20:48."
+ },
+ "backend/data/parsed_results/2018/XC/thorntongirls_oct5.json": {
+  "parse_sha": "ecd9750f3425f42e",
+  "source_sha": "3f5859fa1f8b3a2f",
+  "date": "2026-10-24",
+  "by": "sonnet audit (second read, 2026-10-24) (audit: source-error)",
+  "evidence": "53 rows match. Place 26 'Carpenter, Andrea B 25:50' is out of time order (between 23:15 and 23:57; likely 23:50); parse reproduces the source."
+ },
  "backend/data/parsed_results/2018/XC/tripp-10-3-18-girls1.json": {
   "parse_sha": "79cfd2e688b5746a",
   "source_sha": "2fee04088821f006",
@@ -28040,6 +28208,13 @@
   "date": "2026-10-16",
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
+ },
+ "backend/data/parsed_results/2018/XC/wells-prelim-girls.txt.json": {
+  "parse_sha": "b35fda4fe99c9eac",
+  "source_sha": "adb1b5557087055f",
+  "date": "2026-10-24",
+  "by": "sonnet audit (second read, 2026-10-24) (audit: confirmed)",
+  "evidence": "41 rows match (40 girls + 'MEL FOX GROVER M MASSABESIC' printed M, in boys event, bib 857 in the Massabesic boys block); marks, schools and team places verified."
  },
  "backend/data/parsed_results/2018/XC/windham-boys.json": {
   "parse_sha": "4aaa2dd8cb635788",
