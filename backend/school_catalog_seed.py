@@ -34,6 +34,11 @@ import re as _re
 # (id, display name, town, mpa name, names/aliases, codes, nicknames, extra)
 # ---------------------------------------------------------------------------
 ME_HS = [
+    # 2026-10-24 store-team review: small schools printed in XC meets and missing from the catalog
+    ('me-hs-vineyard-christian', 'Vineyard Christian', None, None, ['Vineyard Christian', 'Vinyard'], [], [], {}),   # scored team, 2010-11 MVC meets
+    ('me-hs-lfca', 'Lisbon Falls Christian Academy', 'Lisbon Falls', None,
+     ['Lisbon Falls Christian Academy', 'Lisbon Falls Christian', 'LFCA'], [], [], {}),
+    ('me-hs-acadia-christian', 'Acadia Christian', None, None, ['Acadia Christian'], [], [], {}),
     # --- Class A (XC 2026-27) ---
     ('me-hs-edward-little', 'Edward Little High School', 'Auburn', 'Edward Little',
      ['Edward Little', 'Edward Little HS', 'Edward Little High', 'Edward Littl'],
@@ -610,6 +615,10 @@ COOPS = [
 # Maine middle / junior high / K-8 schools
 # ---------------------------------------------------------------------------
 ME_MS = [
+    # 2026-10-24 store-team review: schools printed in XC meets and missing from the catalog
+    ('me-ms-madison-athens', 'Madison/Athens (combined MS team)', 'Madison', None,
+     ['Madison/Athens', 'MadisonAthens', 'Madison-Athens', 'Madison Athens'], [], [], {}),   # scored as one team, 2005 Central Maine MS league
+    ('me-ms-islesford', 'Islesford School', 'Cranberry Isles', None, ['Islesford School', 'Islesford', 'Isleford'], [], [], {}),
     # Penobscot / Hancock / Waldo / Knox / Washington
     ('me-ms-doughty', 'James F. Doughty School', 'Bangor', None,
      ['James F. Doughty School', 'James Doughty School', 'James Doughty', 'Doughty', 'James Doughty MS', 'JamesDoughty',
@@ -1408,6 +1417,56 @@ FILE_RULES = [
     (['K'], 'XC', (2010, 2010), r'^yorkmsxc%20results%202010%20MS%20(boys|girls)%20(junior|senior)$', 'me-ms-kennebunk'),   # York County MS festival Fort Foster 2010; same runners in 2011-2012 files and the 2006 York County MS meets.
     (['TA'], 'XC', (2010, 2010), r'^yorkmsxc%20results%202010%20MS%20(boys|girls)%20(junior|senior)$', 'me-ms-thornton'),   # York County MS festival Fort Foster 2010; same runners in 2011-2012 files and the 2006 York County MS meets.
     (['Ma'], 'XC', (2006, 2006), r'^massabesic9_22boys$', 'me-hs-massabesic'),   # Massabesic, Gorham, McAuley, Thornton at Massabesic
+    # 2026-10-24 store-team review (per-meet codes; printed misspellings within the years they occur)
+    (['Canton High School'], 'XC', (2016, 2017), r'^(focboysresults16-1\.txt|girlsfocsections16\.txt|focboys2017-1\.txt|focgirlssections2017)$', 'oos-auto-ct-canton'),   # Canton-CT in neboysxc2017 lists the same runners (Sparks) -> oos-auto-ct-canton; FOC files print the
+    (['Winterport'], 'XC', (2005, 2005), r'^orrington(boys|girls)\.txt$', 'me-ms-wagner'),   # Middle-school meet at Orrington; Winterport's only middle school is Wagner MS.
+    (['Champlain-VT'], 'XC', (2007, 2007), r'^newengland(boys|girls)\.txt$', 'oos-vt-champlain-valley-union-high-school'),   # New England meet 2007; 'Champlain-VT' is the state-tagged short form; CVU is the only Vermont 'Champ
+    (['Wal'], 'XC', (2008, 2008), r'^lakeregioninvite$', 'me-hs-maine-coast-waldorf'),   # lakeregioninvite 2008: 'Samuelson - Wal', score table lists 'Waldorf'.
+    (['Egxc'], 'XC', (2005, 2005), r'^kvacgv$', 'me-hs-erskine'),   # Same runners are 'Erskine Academy' in emclassbgirls.txt 2005.
+    (['BHHS'], 'XC', (2021, 2021), r'^(cboysnorth|classcboys|gsa-boys|pendales-boys-varsity|pvc-varsity-boys|ne-boys-1)\.txt$', 'me-hs-blue-hill-harbor'),   # Troy Morrison appears in the same season as 'Blue Hill Harbor' (Bucksport, Ellsworth meets) -> me-hs
+    (['Val'], 'XC', (2006, 2006), r'^monmouth9_20(boys|girls)$', 'me-hs-valley'),   # Header 'Val=N/S'; Wing, T is Valley High School in classcboyswest 2007.
+    (['Wisc-Jv', 'WiscJv'], 'XC', (2004, 2004), r'^girls-mvc$', 'me-hs-wiscasset'),   # girls-mvc 2004 team table has Wiscasset and the JV runners listed as Wisc-Jv.
+    (['EWG'], 'XC', (2012, 2017), r'^(New%20England%20HS%20XC%20boys%20results\.txt|nexcgirls2017\.txt)$', 'oos-ri-east-greenwich-high-school'),   # nexcgirls2017 prints 'East Greenwich' beside 'EWG'.
+    (['MSR MTA'], 'XC', (2019, 2019), r'^q-relay-8-jv$', 'me-hs-mt-ararat'),   # Jeffrey Remis (SR) = Mt Ararat in mtblueboys, LaLiberte-JV 2019; meet also prints Mt.B XC, BRUN.
+    (['Mssm/Limestone'], 'XC', (2003, 2026), r'.', 'coop-limestone-mssm'),   # alias: 2009 emclasscgirls: 'Mssm/Limestone'; reversed order of existing alias Limestone/MSSM.
+    (['C-Foxcroft Academy'], 'XC', (2003, 2026), r'.', 'me-hs-foxcroft'),   # alias: pvcboysvarsity/pvcgirlsvarsity 2009 print C-Foxcroft Academy beside C-Bangor Christian, C-
+    (['CFoxcroft Academy'], 'XC', (2003, 2026), r'.', 'me-hs-foxcroft'),   # alias: store form of the above
+    (['Burlintgon HS'], 'XC', (2003, 2026), r'.', 'oos-auto-vt-burlington'),   # alias: newengland boys/girls 2007; Vermont teams (Essex-VT, Harwood-VT, South Burlington).
+    (['Hale Dale'], 'XC', (2003, 2026), r'.', 'me-hs-hall-dale'),   # alias: Boothbay-17-21-BOYS 2021 (HS 3-mile) print 'HALE DALE'.
+    (['Orrington'], 'XC', (2005, 2005), r'^orrington(boys|girls)\.txt$', 'me-ms-center-drive'),   # 2005 Middle School Championship at Orrington (Holbrook, Glenburn, Bangor Christian...); score line '
+    (['N'], 'XC', (2004, 2004), r'^smaajvg04$', 'me-hs-noble'),   # SMAA JV Champ at Cheverus girls: teams K,D,Mc,T scored; N = Ashley Chase, Cindy Beal who are Noble i
+    (['N'], 'XC', (2005, 2005), r'^smaasecondsevengirls$', 'me-hs-noble'),   # SMAA 2nd-7 girls: team list Kennebunk, McAuley, TA, Deering, Scarborough, Noble(ns), Cheverus
+    (['N'], 'XC', (2006, 2006), r'^(gorhamboys9_27|marshwoodboys10_13|mcauley9_15boys|spboys9_7)$', 'me-hs-noble'),   # headers: 'Gorham..Noble 109', 'Marshwood..Noble n.s.', 'Westbrook 22, Noble 34', 'South Portland 22,
+    (['N'], 'XC', (2008, 2008), r'^cheverusgirls_oct3$', 'me-hs-noble'),   # header 'Noble : NS'
+    (['N'], 'XC', (2009, 2009), r'^spgirls_sept11$', 'me-hs-noble'),   # sheet title 'SP Wind Noble Girls XC Results 9-11-09'; N = Samantha Pomroy, Amarinda Keys
+    (['P'], 'XC', (2003, 2006), r'^(smaarelayteam|cheverus15oct04g|sanford9_8G|southportlandgirls10_13)$', 'me-hs-portland'),   # SMAA meets; header names Portland (ns in 3); 2003 relay P runners Taye/Mulageta are Portland
+    (['P'], 'XC', (2006, 2006), r'^freeport9_15(boys|girls)$', 'me-hs-poland'),   # header 'York 25, Freeport 52, Poland 52, Waynflete 101'; P is the only code for Poland
+    (['M-W'], 'XC', (2010, 2010), r'^nya(boys|girls)_oct15$', 'me-hs-maine-coast-waldorf'),   # header: Greely, NYA, Waynflete, Merriconeag - Waldorf; score line 'Merriconeag'
+    (['Smc'], 'XC', (2005, 2005), r'^eagleclassicboys$', 'me-ms-southern-maine-catholic'),   # same meet's girls file prints Southern Maine Catholic and is mapped
+    (['SMC'], 'XC', (2015, 2015), r'^6th-grade-girls-smaa-15\.txt$', 'me-ms-southern-maine-catholic'),   # SMAA 6th grade meet; boys file lists Southern Maine Catholic; F 6 SMC
+    (['SMC'], 'XC', (2023, 2023), r'^ms-falmouth-ms-xc-2023$', 'me-ms-southern-maine-catholic'),   # MS meet at Falmouth; SMC is the Southern Maine Catholic team in 2022-24 MS meets
+    (['Lim'], 'XC', (2004, 2004), r'^caribou1sept04$', 'coop-limestone-mssm'),   # title lists Limestone/MSSM; score list Caribou, Limestone/MSSM, Fort Kent, Madawaska; Lim is the onl
+    (['Win'], 'XC', (2003, 2003), r'^wtvl03g$', 'me-hs-winslow'),   # team list 'Winslow 74'; no Winthrop in the meet
+    (['Win'], 'XC', (2006, 2006), r'^monmouth9_20girls$', 'me-hs-winthrop'),   # runners Ouellette/Chu are Winthrop in MVC06girls, maranacookgirls9_1, festival
+    (['Msb', 'MSB', 'MSb'], 'XC', (2007, 2007), r'^smaamiddlerelays(boys|girls)$', 'me-ms-massabesic'),   # Z. Sweatt Massabesic Middle School elsewhere; only SMAA MS school missing from the list
+    (['MAC', 'MAc', 'Mac'], 'XC', (2016, 2016), r'^Girls-Cross-Country-Sanford-TA-BE-MGA-Sept9$', 'me-hs-mcauley'),   # Sanni Hackett/Chloe Cott/Grace Downey = Maine Girls Academy in ms-be-mca-ta-sanford-2016, city_meet_
+    (['Mas'], 'XC', (2005, 2005), r'^yorkMSsg$', 'me-ms-massabesic'),   # York MS meet, grade MS, same file 'Mass'
+    (['MAs'], 'XC', (2006, 2006), r'^marshwoodgirls10_13$', 'me-hs-massabesic'),   # header: Massabesic 33, Noble 46, Marshwood 69, Sanford 80 (HS 5K times)
+    (['Mas'], 'XC', (2012, 2012), r'^massabesicboys_sept25$', 'me-hs-massabesic'),   # Troy Cloutier is Massabesic HS in 20+ meets
+    (['mas'], 'XC', (2023, 2023), r'^ms-smaa-relays-2023$', 'me-hs-massabesic'),   # Aiden Grant is Massabesic HS in south-a-boys, FOC, MS-Noble etc.
+    (['Messabesec'], 'XC', (2006, 2006), r'^smacrelaysboys$', 'me-ms-massabesic'),   # MS relays (Shapleigh, Kennebunk, York, Wells, Marshwood, Saco, Massabesic); 'Massabesic' in same fil
+    (['SHA'], 'XC', (2011, 2011), r'^york(jrboys|srgirls)$', 'me-ms-shapleigh'),   # same festival 2010 maps Shp/Shap to Shapleigh MS; only York County school unaccounted for
+    (['C-Mattanawcook'], 'XC', (2009, 2009), r'^pvcgirlsvarsity\.txt$', 'me-hs-mattanawcook'),   # PVC Championship Class C varsity; Mattanawcook Academy (Lincoln) is the PVC Class C member
+    (['OTXC'], 'XC', (2006, 2006), r'^pendale', 'me-hs-old-town'),   # Pendale Invitational field = Bangor, Orono, John Bapst, Hampden, Hermon + OTXC
+    (['Castine'], 'XC', (2017, 2017), r'^pvmsxc-small-school-boys\.txt$', 'me-ms-adams-castine'),   # small-school MS championship; the only school in Castine is Adams School at that level
+    (['McNamara YORK'], 'XC', (2017, 2017), r'^sep-22-at-York$', 'me-hs-york'),   # source line '5 Griffin McNamara YORK 18:08' and '25 Cavin McNamara YORK'; team-score list YORK/GREEL
+    (['OAK'], 'XC', (2010, 2010), r'^maranacook(boys|girls)_sept3$', 'me-hs-oak-hill'),   # Calen/J'Rae Mendall Oak Hill in kvacboys/kvacgirls/focboys/leavittboys_sept18
+    (['Libby'], 'XC', (2015, 2015), r'^GorhamXCgirlsMeet10_16_15$', 'me-hs-gorham'),   # source table 'Gor Libby Hannah', 'Gor Libby Grace'
+    (['Walker'], 'XC', (2015, 2015), r'^GorhamXCgirlsMeet10_16_15$', 'me-hs-windham'),   # source table 'Wind Walker Natalie'
+    (['Beals', 'J - Beals'], 'XC', (2019, 2019), r'^leeboys_sept19\.txt$', 'me-hs-jonesport-beals'),   # printed 'J - Beals'
+    (['ISL'], 'XC', (2007, 2007), r'^medomakboys9_21$', 'me-hs-islesboro'),   # score line 'Islesboro NS'
+    (['Narraquaqus'], 'XC', (2003, 2026), r'.', 'me-hs-narraguagus'),   # alias: 2019 bucksport-boys-jv misspelling; unambiguous (HS meet, Narrag in lee Sept19 resolves to
+    (['Gray-N Glouceste'], 'XC', (2003, 2026), r'.', 'me-hs-gray-ng'),   # alias: 2012 New England HS XC boys: truncated 'Gray-N Glouceste' (Will Shafer, 11) - only Gray-Ne
     # 2026-10-24 unresolved-school review, batch 2
     (['F'], 'XC', (2004, 2004), r'^cape7oct04[bg]\.txt$', 'me-hs-falmouth'),   # Title lists Falmouth; only F team
     (['Y'], 'XC', (2004, 2004), r'^cape7oct04[bg]\.txt$', 'me-hs-yarmouth'),   # Title lists Yarmouth; only Y team
