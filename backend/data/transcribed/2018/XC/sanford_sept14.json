@@ -1,7 +1,7 @@
 {
  "source": "backend/data/sub5_archive/2018/XC/sanford_sept14.pdf",
  "meet_name": "Boys Results                                      Girls Results",
- "date": null,
+ "date": "2018-09-14",
  "school_codes": {},
  "events": [
   {
@@ -1043,7 +1043,58 @@
    ]
   }
  ],
- "team_rankings": [],
+ "team_rankings": [
+  {
+   "gender": "Boys",
+   "teams": [
+    {
+     "rank": 1,
+     "team": "Falmouth",
+     "score": 27
+    },
+    {
+     "rank": 2,
+     "team": "Portland",
+     "score": 45
+    },
+    {
+     "rank": 3,
+     "team": "Sanford",
+     "score": 62
+    },
+    {
+     "rank": 4,
+     "team": "Thornton Academy",
+     "score": 82
+    }
+   ]
+  },
+  {
+   "gender": "Girls",
+   "teams": [
+    {
+     "rank": 1,
+     "team": "Falmouth",
+     "score": 18
+    },
+    {
+     "rank": 2,
+     "team": "Thornton Academy",
+     "score": 54
+    },
+    {
+     "rank": 3,
+     "team": "Portland",
+     "score": 88
+    },
+    {
+     "rank": 4,
+     "team": "Sanford",
+     "score": 143
+    }
+   ]
+  }
+ ],
  "parser": "HeaderTableParser",
- "notes": "Boys rows 64-78 print the time BEFORE the name with the place column empty, so the parser cut the names ('Steven', 'McDonal', ...) and left school blank; re-read as place, time, name, team. Row 50 Ethan Repucci prints no team: Thornton Academy (TA) from his other 2018 rows (Ethan Repucci = Thornton Academy in every other 2018 file). Row 67 Jacob Repucci prints 'F' in the source but is Thornton Academy (TA) in every other 2018 file, and Falmouth's scorers (1,2,4,5,15) do not include him; set to TA - source letter looks like a typo, revert if the page is to be followed literally. Codes F/P/S/TA keep their per-file mapping (Falmouth, Portland, Sanford, Thornton). Girls event unchanged."
+ "notes": "Boys rows 64-78 print the time BEFORE the name with the place column empty, so the parser cut the names ('Steven', 'McDonal', ...) and left school blank; re-read as place, time, name, team. Row 50 Ethan Repucci prints no team: Thornton Academy (TA) from his other 2018 rows (Ethan Repucci = Thornton Academy in every other 2018 file). Row 67 Jacob Repucci prints 'F' in the source but is Thornton Academy (TA) in every other 2018 file, and Falmouth's scorers (1,2,4,5,15) do not include him; set to TA - source letter looks like a typo, revert if the page is to be followed literally. Codes F/P/S/TA keep their per-file mapping (Falmouth, Portland, Sanford, Thornton). Girls event unchanged. Second read: added the printed 'Overall' team scores (boys Falmouth 27, Portland 45, Sanford 62, Thorton[sic] 82; girls Falmouth 18, Thornton 54, Portland 88, Sanford 143, the girls block is the one printed beside the girls table) and date 2018-09-14 from the file name (sanford_sept14). Girls row with no name (place 23, 26:25, F) is omitted; girls place 51 is not printed."
 }

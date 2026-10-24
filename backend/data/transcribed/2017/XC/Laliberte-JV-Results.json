@@ -1085,12 +1085,12 @@
    "combined_race": 0
   }
  ],
- "date": "2016-08-26",
- "meet_name": "Cony High School                                                   HY-TEK's Meet Manager",
+ "date": null,
+ "meet_name": "LaLiberte Invitation",
  "venue": "CHS XC Course",
  "team_rankings": [],
  "parser": "ColumnStrategyParser",
  "source": "backend/data/sub5_archive/2017/XC/Laliberte-JV-Results.htm",
  "school_codes": {},
- "notes": "Source (HY-TEK) is one combined 'Boys 3800 Yard Run CC JV' list in which each team name ends in Boys/Girls (e.g. 'Lewiston Girls'), but Maranacook's school column is truncated ('Maranacook Community Scho') with no suffix, so the parse guessed sex from first names: Nutting, Cambelle (place 94, 22:12.20) and Tinkham, Parker (place 97, 22:20.25) were filed Boys. Moved to Girls: Cambelle Nutting has 33 other girls rows and Parker Tinkham 6 other girls rows, none boys; the source itself prints no sex for them."
+ "notes": "Source (HY-TEK) is one combined 'Boys 3800 Yard Run CC JV' list in which each team name ends in Boys/Girls (e.g. 'Lewiston Girls'), but Maranacook's school column is truncated ('Maranacook Community Scho') with no suffix, so the parse guessed sex from first names: Nutting, Cambelle (place 94, 22:12.20) and Tinkham, Parker (place 97, 22:20.25) were filed Boys. Moved to Girls: Cambelle Nutting has 33 other girls rows and Parker Tinkham 6 other girls rows, none boys; the source itself prints no sex for them. Second read: DATE/NAME: the HY-TEK title reads 'LaLiberte Invitation 2016 - 8/26/2016' (stale template title) but this is the 2017 meet: the 2017 archive folder, team labels 'Oxford Hills XC 17', and runners who were not in high school in Aug 2016 (Kara Moxcey, grade 9 in 2017; 2016 has its own LaLiberte file). Date set to 2017-08-26 (printed month/day, year corrected; the exact day is not otherwise stated), meet_name 'LaLiberte Invitation' (the parse had the header line 'Cony High School  HY-TEK's Meet Manager'). Rows unchanged (checked place, name, school, time, Points against the source, 119 rows). DATE set to null (2026-10-24): the only printed date is the stale 2016 template's 8/26; a borrowed day is worse than none (same as the 2018 LaLiberte files)."
 }

@@ -1511,6 +1511,11 @@ FILE_RULES = [
     (['EGHS'], 'XC', (2018, 2018), r'^2018-washburn-xc-boys-results$', 'me-hs-east-grand'),
     (['WIS'], 'XC', (2018, 2018), r'^Boys-9-18-Mad-Results$', 'me-hs-wisdom'),
     (['EastGrand'], 'XC', (2018, 2018), r'^Boys-9-18-Mad-Results$', 'me-hs-east-grand'),
+    # 2026-10-24 second read, batch 8 (2017-2018)
+    (['Lincoln High School'], 'XC', (2017, 2018), r'^(foc18boysoverall\.txt|focboys2017-1\.txt)$', 'oos-auto-ri-lincoln'),   # Festival of Champions: Lincoln RI (same runners print 'Lincoln - RI' in 2019)
+    (['Lincoln'], 'XC', (2017, 2017), r'^focboyssections2017$', 'oos-auto-ri-lincoln'),
+    (['Canton'], 'XC', (2017, 2017), r'^(focboyssections2017|focgirlssections2017)$', 'oos-auto-ct-canton'),
+    (['Sc'], 'XC', (2017, 2017), r'^xc-meet-results-(boys-varsity|girls)-9-23-17$', 'me-hs-scarborough'),
     # 2026-10-24 unresolved-school review, batch 2
     (['F'], 'XC', (2004, 2004), r'^cape7oct04[bg]\.txt$', 'me-hs-falmouth'),   # Title lists Falmouth; only F team
     (['Y'], 'XC', (2004, 2004), r'^cape7oct04[bg]\.txt$', 'me-hs-yarmouth'),   # Title lists Yarmouth; only Y team
