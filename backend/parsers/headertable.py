@@ -476,8 +476,20 @@ class HeaderTableParser(BaseParser):
                 event = _distance_label(sorted(miles)[len(miles) // 2])
             else:
                 event = 'Run CC'
+            # the race's own title line names its division ("Boys      JV")
+            dv = next((m.group(1) for t in r["titles"] if len(t) < 60 for m in [re.search(
+                r'(?i)^\s*(?:boys|girls|men|women)?\W*(JV|Junior Varsity|Varsity)\W*(?:(?:boys|girls)\W*)?$', t)] if m), None)
             events.append({'event': event, 'gender': r['gender'] or 'Boys',
-                           'is_relay': False, 'results': rows})
+                           'is_relay': False, 'results': rows, '_division': dv})
+        # (a division is kept in the name only where nothing else tells one
+        # gender's races apart: two "Boys Run CC")
+        divs = [e.pop('_division') for e in events]
+        # (every race of the name must carry one, and not all the same)
+        same = [[divs[j] for j, x in enumerate(events) if x['gender'] == e['gender'] and x['event'] == e['event']]
+                for e in events]
+        for k, e in enumerate(events):
+            if len(same[k]) > 1 and all(same[k]) and len({d.lower() for d in same[k]}) > 1:
+                e['event'] += ' ' + ('JV' if divs[k].lower() in ('jv', 'junior varsity') else 'Varsity')
         if not events:
             return empty
         # (a single-spaced page cut at the header's columns slices names
@@ -753,6 +765,12 @@ class HeaderTableParser(BaseParser):
         # after the time: typed cells (pace, grade, score) may share a cell
         # with the next or be blank ("5:19 12     Falmouth", "5:34   Wells")
         toks = []
+        # a team-score table beside the list ("2 – Massabesic   43", its rank
+        # joined to the team by a dash) is no cell of this row
+        for ci, c in enumerate(after):
+            if re.match(r'^\d{1,2}(?:st|nd|rd|th)?\s*[–—-]\s*[A-Za-z]', c):
+                after = after[:ci]
+                break
         for c in after:
             if 'team_place' in f_after:
                 c = re.sub(r'(?<=[A-Za-z])(\d{1,3})$', r' \1', c)     # ("MOUNTAIN VALLEY0": points run into the team)
@@ -798,6 +816,12 @@ class HeaderTableParser(BaseParser):
             return None
         if 'school' in fields and not school and len(re.findall(r'[A-Za-z]+', name)) >= 4:
             return None     # (the school run into the name cell: left to the fixed-width reading)
+        if vals.get('team_place') and vals['team_place'] > place and 'team_place' in f_after and \
+                not {'school', 'name', 'last', 'first'} & set(f_after[:f_after.index('team_place')]) and \
+                not f_before.count('team_place'):
+            # (a runner scores no more than their own place: the next
+            # place number printed for a blank second column, "30 ... 60")
+            vals.pop('team_place')
         if vals.get('team_place'):      # (0: a runner who does not score)
             row['team_place'] = vals['team_place']
         if '_pace' in vals:

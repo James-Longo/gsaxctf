@@ -50,9 +50,21 @@ def _html_to_text(text):
             # lands on its own line and "Lisbon | 32" is lost)
             flat = 0
             for tr in soup.find_all('tr'):
-                cells = [re.sub(r'\s+', ' ', td.get_text(' ')).strip() for td in tr.find_all(['td', 'th'])]
+                tds = tr.find_all(['td', 'th'])
+                cells = [re.sub(r'\s+', ' ', td.get_text(' ')).strip() for td in tds]
                 if len([c for c in cells if c]) >= 2:
-                    tr.replace_with('\n' + '   '.join(c for c in cells if c) + '\n')
+                    # cells that each stack the same number of entries on
+                    # lines of their own (<p>/<br>: scores "79" / "87" beside
+                    # teams "Central" / "MA") hold that many rows
+                    stacks = [[re.sub(r'\s+', ' ', re.sub(r'<[^>]+>', ' ', x)).strip()
+                               for x in re.split(r'(?i)<br\s*/?>|</?p\b[^>]*>', str(td))] for td in tds]
+                    stacks = [[x for x in st if x] for st in stacks]
+                    stacks = [st for st in stacks if st]
+                    if len(stacks) >= 2 and len({len(st) for st in stacks}) == 1 and len(stacks[0]) >= 2:
+                        tr.replace_with('\n' + '\n'.join('   '.join(st[j] for st in stacks)
+                                                         for j in range(len(stacks[0]))) + '\n')
+                    else:
+                        tr.replace_with('\n' + '   '.join(c for c in cells if c) + '\n')
                     flat += 1
             if flat >= 3 and not soup.find('pre'):
                 return soup.get_text('\n')
@@ -645,12 +657,19 @@ _TOT_LINE = re.compile(r'^\s*(?:\(?(\d{1,2})(?:st|nd|rd|th)?(?:\.\)\s*|[.),:]\s*
 _NAME1 = r"[A-Za-z][A-Za-z.'&/()-]*(?: [A-Za-z.'&/()-]+){0,5}"   # single-spaced words
 _TOT_TAIL = re.compile(r'(?<!\S)(?:' + _TIME_TOK.pattern + r'|[1-5]\d[0-5]\d(?=\s{2,}))(?:.*\s{2,}|\s+(?:\S{1,3}\s+){0,2}?)(' + _NAME1 +
                        r')\s+(\d{1,3}|NS|ns|Ns)\*?\s*$')
+# "1. Medomak - 28         Belfast - no score": two teams of one list on a line
+# (the second column often continues the ranking, "8. Islesboro - NS")
+_TWO_COL = re.compile(r'^\s*(?:(\d{1,2})[.)]?\s+)?([A-Z]' + _NAME[len('[A-Za-z]'):] + r')\s*[-:]?\s+(\d{1,3}|NS)\*?\s{3,}(?:(\d{1,2})[.)]?\s+)?([A-Z]'
+                      + _NAME[len('[A-Za-z]'):] + r')\s*[-:]?\s+(\d{1,3}|NS)\*?\s*$')
 _RANK_SCORE_TEAM = re.compile(r'^\s*(\d{1,2})\s+(\d{1,3})\s+(' + _NAME + r')\s*$')
 _DASH_LIST = re.compile(r'(' + _NAME + r')\s+(\d{1,3})\s*[-–—:]?\s*((?:\d{1,3},\s*){4,}\d{1,3}),?(?:\s*/\s*((?:\d{1,3},\s*)*\d{1,3}))?\s*$')
 _PLUS = re.compile(r'(' + _NAME + r')\s*-\s*(\d{1,3})\s+((?:\d{1,3}\+){4,}\d{1,3})\s*$')
 # "Holbrook   5  6  7  8  9  13  20   35": a team's places, then its total
 _PLACE_SPACE = re.compile(r'^\s*(' + _NAME + r')\s+((?:\d{1,3}\s+){4,8})(\d{1,3})\s*$')
-_PLACE_DASH = re.compile(r'(' + _NAME + r')\s+((?:\d{1,3}-){4}\d{1,3}(?:-\[\d{1,3}(?:-\d{1,3})*\])?)\s+(\d{1,3})\s*$')
+_PLACE_DASH = re.compile(r'(' + _NAME + r')\s+((?:\d{1,3}-){4}\d{1,3}(?:-\[\d{1,3}(?:-\d{1,3})*\]|-?\s*\(\d{1,3}(?:-\d{1,3})*\))?)\s+(\d{1,3})\s*$')
+# "1st – Bonny Eagle      32" / "2 – Massabesic   43" (the rank joined to the team by a dash, the
+# ordinal's suffix often on a line of its own), maybe printed beside a runner row
+_RANK_DASH = re.compile(r'(?:^|\s{2,})(\d{1,2})(?:st|nd|rd|th)?\s*[–—-]\s*(' + _NAME + r')\s{2,}(\d{1,3})\*?\s*$')
 
 
 def _team_entry(rank, team, score):
@@ -882,7 +901,7 @@ def parse_team_totals(text):
     as "1-3-4-5-7-[8-10]" make a regular block."""
     plain = _html_to_text(text).replace('\xa0', ' ').replace('\ufffd', ' ')
     plain = re.sub('[\u2010-\u2012]', '-', plain.replace('\xad', '-'))   # (typeset hyphens: "Massabesic\u2010 19")
-    plain = re.sub(r'(?<=[A-Za-z])-{2,}(?=\s*\d)', '-', plain)               # ("Scarborough-\xad\u2010 15")
+    plain = re.sub(r'(?<=[A-Za-z])[ \t]*-{2,}(?=\s*\d)', '-', plain)         # ("Scarborough-\xad\u2010 15", "GSA -- 26")
     plain = re.sub(r'(?im)(?<=[A-Za-z.)])\s*(?:[-–—]\s*)?(\d{1,3})\s+points?[ \t]*$', r' - \1', plain)   # "Orono – 25 points"
     # "1.) JB: First Place, 26" / "7.) GSA: NO SCORE"
     plain = re.sub(r'(?i):\s*(?:first|second|third|fourth|fifth|sixth|seventh|eighth|ninth|tenth|'
@@ -952,9 +971,10 @@ def parse_team_totals(text):
             g = g or _GENDER[mgt.group(1).lower()]
             tail = ':' + tail[mgt.end():]
         for part in re.split(r'[,;]', tail):
-            m = re.match(r'^\s*[-:–—]?\s*(' + _NAME + r')\s*[-:]?\s+(\d{1,3}|NS|ns)\*?\s*$', part)
+            # (a title line that holds the first team: "GIRLS TEAM SCORE: 1. YORK 23")
+            m = re.match(r'^\s*[-:–—]?\s*(?:(\d{1,2})[.)]\s+)?(' + _NAME + r')\s*[-:]?\s+(\d{1,3}|NS|ns)\*?\s*$', part)
             if m:
-                e = _team_entry(None, m.group(1), m.group(2))
+                e = _team_entry(m.group(1), m.group(2), m.group(3))
                 if e:
                     teams.append(e)
         if not teams and re.match(r'\s*:\s*\d', tail):
@@ -980,6 +1000,7 @@ def parse_team_totals(text):
                 if e:
                     teams.append(e)
         groups = []          # (gender, teams) when the table names its races
+        second_col = []      # (the right-hand column of a two-column list: it ranks after the left)
         for line in [lines[i]] + lines[i + 1:min(end, i + 160)]:
             s = line.strip()
             if not s:
@@ -1008,6 +1029,15 @@ def parse_team_totals(text):
                     miss = 0
                     continue
             e = None
+            m2c = _TWO_COL.match(line)
+            if m2c and not _TIME_TOK.search(line) and (m2c.group(1) or m2c.group(4)):
+                e1 = _team_entry(m2c.group(1), m2c.group(2), m2c.group(3))
+                e2 = _team_entry(m2c.group(4), m2c.group(5), m2c.group(6))
+                if e1 and e2:
+                    teams.append(e1)
+                    second_col.append(e2)
+                    miss = 0
+                    continue
             mpl = _PLUS.search(line)
             mp = _PLACE_DASH.search(line)
             mdl = _DASH_LIST.search(line)
@@ -1025,7 +1055,15 @@ def parse_team_totals(text):
             mlp = re.match(r"^\s{0,3}([A-Z][A-Za-z .'&/-]{1,30}?):?\s+(\d{1,3}|NS)(?![\d:])\s{5,}\d{1,3}\.?\s+[A-Za-z]", line)
             # the total first: "26    York    1st", "15   Orono"
             msf = re.match(r"^\s*(\d{1,3})\s{2,}([A-Za-z][A-Za-z.'&/-]*(?: [A-Za-z.'&/-]+){0,4})(?:\s{2,}\d{1,2}(?:st|nd|rd|th))?\s*$", line)
-            if mlp and not _TOT_LINE.match(line) and re.search(r'\d[:;]\d\d', line):
+            # "MAT - 17   27   Gabriel Susen   MAT   26:29:00": a dashed total left of the runner rows
+            mld = re.match(r"^\s{0,3}([A-Z][A-Za-z.'&/]*(?: [A-Za-z.'&/]+){0,3})\s*[-:–]\s*(\d{1,3})(?![\d:])\s{3,}\d{1,3}\.?\s+[A-Za-z]", line)
+            mrd = _RANK_DASH.search(line)
+            if mrd and not _TOT_LINE.match(line) and int(mrd.group(3)) >= 10 and \
+                    (int(mrd.group(1)) <= len(teams) + 1 or not teams):
+                e = _team_entry(mrd.group(1), mrd.group(2), mrd.group(3))
+            elif mld and int(mld.group(2)) >= 10 and re.search(r'\d[:;]\d\d', line):
+                e = _team_entry(None, mld.group(1), mld.group(2))
+            elif mlp and not _TOT_LINE.match(line) and re.search(r'\d[:;]\d\d', line):
                 e = _team_entry(None, mlp.group(1), mlp.group(2))
             elif msf and not _TIME_TOK.search(line) and int(msf.group(1)) >= 10 and (
                     re.search(r'\d(?:st|nd|rd|th)\s*$', line) or
@@ -1078,6 +1116,7 @@ def parse_team_totals(text):
                 miss += 1
                 if miss > 12:
                     break
+        teams += second_col
         if not teams and re.search(r'(?i)\bname\b', lines[i]):
             # the header is the runner list's column row ("Name  Team  ...
             # Place  Team Score"): the totals sit above it ("   GHCA   35")
@@ -1114,6 +1153,13 @@ def _totals_block(g, teams, head):
     if True:
         teams = [t for t in teams if not re.fullmatch(r'(?i)st|nd|rd|th|place|places|page|sheet', t['team'])
                  and not re.search(r'(?i)\b(?:race|results?)\b', t['team'])]   # ("YORK GIRLS RACE 41": a title)
+        # (a team listed twice with one total, once with its places - "1st
+        # – Deering  93" over "Deering 11-19-20-21-22  93": the one with
+        # its places stays)
+        def _key(t):
+            return re.sub(r'\W', '', t['team']).lower(), t['score']
+        with_places = {_key(t) for t in teams if t['places'] and t['score'] is not None}
+        teams = [t for t in teams if t['places'] or _key(t) not in with_places]
         scored = [t for t in teams if t['score'] is not None]
         if len(scored) < 2 and not (len(scored) == 1 and len(teams) >= 2):
             return None

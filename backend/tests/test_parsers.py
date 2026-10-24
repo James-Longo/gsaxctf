@@ -2508,6 +2508,168 @@ def test_xc_record_marks_ties_tabs_question_teams_and_dnf_rows():
     assert got[94] == ('?', '24:08') and got[99] == ('?', '25:12') and got[93] == ('Y', '24:07'), got
 
 
+def _score_sets(blocks):
+    return [[(t['team'], t['score']) for t in b['teams']] for b in blocks]
+
+
+def test_team_scores_ranked_with_dash_and_ordinal_suffix_on_its_own_line():
+    """SMAA meet: the score column printed beside the runner rows as "1st -
+    Bonny Eagle 32" with the "nd" / "rd" / "th" of the later ranks on a line
+    of its own; each row's score cell must not take the stray rank, and the
+    "Team Scoring" lines under it (displacers in parentheses) add no team."""
+    from backend.parsers.headertable import HeaderTableParser
+    names = ['Ash', 'Birch', 'Cedar', 'Dale', 'Elm', 'Fir', 'Gale', 'Holt']
+    sch = ['SP', 'BE', 'M', 'D']
+    lines = ['   SPXC - SMAA Meet 2', 'Place Name           School Time Score']
+    suffix = {2: 'nd', 3: 'rd', 4: 'th'}
+    teams = [('Bonny Eagle', 32), ('Massabesic', 43), ('South Portland', 61), ('Deering', 93)]
+    for k in range(1, 9):
+        if k == 3:      # (the next page: the score table beside the header and the first rows)
+            lines += ['        Girls Individual Results                     Girls Team Scores',
+                      'Place Name           School Time Score   1st \u2013 Bonny Eagle                     32']
+        rank = k - 1    # (rows 3-5 sit beside the 2nd-4th teams)
+        if 2 <= rank <= 4:
+            lines.append('                                          ' + suffix[rank])
+        row = ' %2d   %-13s  %-4s %d:%02d    %d' % (k, names[k - 1], sch[k % 4], 16 + k, 10 + k, k)
+        if 2 <= rank <= 4:
+            row = row.ljust(58) + '%d \u2013 %-18s %d' % (rank, teams[rank - 1][0], teams[rank - 1][1])
+        lines.append(row)
+    lines += ['', '                                     Girls Team Scoring',
+              '                                     Bonny Eagle 2-3-8-9-10-(17-26)        32',
+              '                                     Massabesic      5-6-7-12-13 (14-16)   43',
+              '                                     South Portland 1-4-15-18-23-(24-25)   61',
+              '                                     Deering        11-19-20-21-22         93']
+    text = '\n'.join(lines) + '\n'
+    blocks = parse_xc_team_scores(text)
+    assert _score_sets(blocks) == [[('Bonny Eagle', 32.0), ('Massabesic', 43.0),
+                                    ('South Portland', 61.0), ('Deering', 93.0)]]
+    rows = HeaderTableParser(None).parse(text, 'smaa.pdf', 'XC')['events'][0]['results']
+    assert [r.get('team_place') for r in rows] == [1, 2, 3, 4, 5, 6, 7, 8]
+
+
+def test_team_scores_with_double_dash_and_division_in_event_names():
+    """Bucksport: "GSA -- 26 / ORO--40" (a space before a double dash) keeps
+    its first team, a two-team block is kept, and JV and Varsity races of one
+    gender are told apart in the event name."""
+    from backend.parsers.headertable import HeaderTableParser
+
+    def race(gender, div, n, t0):
+        out = ['                 Bucksport Invitational X-Country Meet',
+               '%-20s %s' % (gender, div), 'Place                  Name                        School     Time']
+        out += ['  %2d Runner %-12s           %-8s  %d:%02d' % (k, chr(64 + k) * 3, ['Orono', 'GSA'][k % 2], t0 + k // 6, 10 + k)
+                for k in range(1, n + 1)]
+        return out
+    text = '\n'.join(race('Boys', 'JV', 8, 20) + ['', '        Team Scores', '        GSA -- 26', '        ORO--40',
+                                                  '        LEE-- 66', ''] +
+                     race('Boys', 'Varsity', 8, 17) + ['', '  Team Scores', '  Orono       29', '  GSA     40',
+                                                       '  Lee    83', ''] +
+                     race('Girls', 'JV', 8, 23) + ['', '        Team Scores', '        GSA -- 23', '        OR -- 36', ''] +
+                     race('Girls', 'Varsity', 8, 19)) + '\n'
+    sets = _score_sets(parse_xc_team_scores(text))
+    assert [('GSA', 26.0), ('ORO', 40.0), ('LEE', 66.0)] in sets
+    assert [('GSA', 23.0), ('OR', 36.0)] in sets
+    res = HeaderTableParser(None).parse(text, 'bucksport.pdf', 'XC')
+    assert [(e['gender'], e['event']) for e in res['events']] == [
+        ('Boys', 'Run CC JV'), ('Boys', 'Run CC Varsity'), ('Girls', 'Run CC JV'), ('Girls', 'Run CC Varsity')]
+    # (a lone race of its gender keeps its plain name)
+    one = HeaderTableParser(None).parse('\n'.join(race('Boys', 'Varsity', 8, 17)) + '\n', 'x.pdf', 'XC')
+    assert one['events'][0]['event'] == 'Run CC'
+
+
+def test_team_scores_list_in_two_columns_with_no_score_entries():
+    """Belfast: "1. Medomak - 28         Belfast - no score" - a second column
+    of the list on each line; the scoring teams of both columns count."""
+    text = """\
+XC Meet @ Belfast - September 12, 2008
+
+Boys - Team Scores
+1. Morse - 55                   8. Islesboro - no score
+2. Medomak - 57                 9. Fox Island - no score
+3. Winslow - 99
+4. Erskine - 103
+5. Rockland - 106
+6. Lincoln - 112
+7. Belfast - 131
+
+Girls - Team Scores:
+1. Medomak - 28         Belfast - no score
+2. Winslow - 65         Isleboro - no score
+3. Erskine - 78
+4. Lincoln - 83
+5. Morse - 107
+"""
+    sets = _score_sets(parse_xc_team_scores(text))
+    assert [t[0] for t in sets[0]] == ['Morse', 'Medomak', 'Winslow', 'Erskine', 'Rockland', 'Lincoln', 'Belfast']
+    assert sets[1] == [('Medomak', 28.0), ('Winslow', 65.0), ('Erskine', 78.0), ('Lincoln', 83.0), ('Morse', 107.0)]
+    text2 = text.replace('Belfast - no score', 'Camden - 140').replace('Isleboro - no score', 'Wells - 150')
+    assert _score_sets(parse_xc_team_scores(text2))[1][-2:] == [('Camden', 140.0), ('Wells', 150.0)]
+
+
+def test_team_score_title_holding_the_first_team():
+    """York: "GIRLS TEAM SCORE: 1. YORK 23" with the other teams on the lines
+    below - the first team sits on the title line."""
+    text = """\
+3 miles @ YORK vs. Falmouth, Lake Region, Traip, and Wells
+
+GIRLS TEAM SCORE: 1. YORK 23
+                  2. FALMOUTH 33
+                  3. LAKE REGION 85
+                  Traip, Wells NS
+
+   1. Michaela Swiatek 18:42 Y
+BOYS TEAM SCORE: 1. FALMOUTH 20
+                 2. YORK       37
+                 3. LAKE REGION 84
+                 4. WELLS     104
+                 Traip NS
+
+1. Alex Moser 15:18 Y
+"""
+    sets = _score_sets(parse_xc_team_scores(text))
+    assert sets[0] == [('YORK', 23.0), ('FALMOUTH', 33.0), ('LAKE REGION', 85.0)]
+    assert sets[1] == [('FALMOUTH', 20.0), ('YORK', 37.0), ('LAKE REGION', 84.0), ('WELLS', 104.0)]
+
+
+def test_team_scores_dashed_totals_left_of_runner_rows():
+    """Mattanawcook: the girls' "MAT - 17 / ORO - 42" totals sit in the first
+    cells of runner rows, below "girls team scores" printed beside a runner."""
+    text = """\
+1   Runner AAA   MAT   15:11
+2   Runner BBB   ORO   15:12
+3   Runner CCC   MAT   15:13
+girls team scores   26   Nick Alessi   MAT   25:44:00
+
+MAT - 17   27   Gabriel Susen   MAT   26:29:00
+
+ORO - 42   28   Dan Jandreau   SNK   32:04:00
+
+boys team scores
+
+MAT - 27
+
+ORO - 35
+
+SCHENCK - 80
+"""
+    sets = _score_sets(parse_xc_team_scores(text))
+    assert [('MAT', 17.0), ('ORO', 42.0)] in sets
+    assert [('MAT', 27.0), ('ORO', 35.0), ('SCHENCK', 80.0)] in sets
+
+
+def test_html_team_scores_cells_stacking_two_entries():
+    """Lee: a Team Scores table row whose cells each hold two <p> entries
+    ("79" / "87" beside "Central" / "MA") is two teams."""
+    def tr(a, b):
+        return '<tr><td>%s</td><td>%s</td><td><p><br/></p></td></tr>\n' % (a, b)
+    html = ('<html><body><table>\n<tr><td><p>Team Scores</p></td><td><p>Team</p></td><td><p><br/></p></td></tr>\n' +
+            tr('<p>15</p>', '<p>Orono</p>') + tr('<p>65</p>', '<p>Lee</p>') +
+            tr('<p>79</p>\n<p>87</p>', '<p>Central</p>\n<p>MA</p>') + '</table></body></html>')
+    want = [[('Orono', 15.0), ('Lee', 65.0), ('Central', 79.0), ('MA', 87.0)]]
+    assert _score_sets(parse_xc_team_scores(html)) == want
+    html_br = html.replace('<p>79</p>\n<p>87</p>', '79<br/>87').replace('<p>Central</p>\n<p>MA</p>', 'Central<br/>MA')
+    assert _score_sets(parse_xc_team_scores(html_br)) == want
+
+
 if __name__ == '__main__':
     qaqc._ensure_team_mapping()
     failed = 0
