@@ -1,0 +1,26 @@
+{
+ "events": [
+  {
+   "event": "Run CC",
+   "gender": "Boys",
+   "is_relay": false,
+   "results": [
+    {
+     "place": 1,
+     "type": "Finals",
+     "grade": "",
+     "result": "17:10",
+     "athlete": "Layton",
+     "school": "Orono"
+    }
+   ]
+  }
+ ],
+ "date": "Unknown Date",
+ "meet_name": "Lee Invitational Boys JV Results",
+ "venue": null,
+ "team_rankings": [],
+ "parser": "ColumnStrategyParser",
+ "source": "backend/data/sub5_archive/2016/XC/Lee-Invitational-2016-Boys-JV.pdf",
+ "notes": "Lee Invitational Boys JV. Parse had no rows. The PDF has 10 lines (place, name, school) but only place 1 prints a time (17:10 Layton, Orono); places 2-10 (Adrian Dyer LA, Cody Sprague LA, Brandon Maker Machias, Chase Brutun Orono, Kay In Orono, Joey Kim LA, Devin Keene Machias, Devin McQuarrie LA, Lance Rush Sumner) have no mark and are left out. pdftotext -layout and -raw agree. Layton is a single name as printed. No date printed, left null."
+}
