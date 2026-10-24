@@ -665,6 +665,8 @@ def load_transcription(input_path):
                 row['place'] = r['place']
             if r.get('points') is not None:
                 row['points'] = r['points']
+            if r.get('team_place') is not None:   # (the team-points column the score check reads)
+                row['team_place'] = r['team_place']
             if e.get('is_relay'):
                 row['athletes'] = r.get('athletes') or []
             else:
