@@ -2322,6 +2322,130 @@ def test_windows_1252_nbsp_padding_in_a_hytek_txt(tmp=None):
     assert rows[11]['athlete'] == 'Calvin Nelson' and rows[11]['school'] == 'Ashford'
 
 
+# PVC Hy-Tek: one event, two class/size sections ("Large School Results" with
+# AB- schools, "Small school Results" with CD-; the 2008 sheets say
+# "Class C School Results" / "Class B  School Results"), each with its own
+# places and its own Team Scores table. Each section is its own race, its
+# team table is tied to it, and the class prefix is not part of the school.
+def _pvc_sections(head1, head2, p1, p2, s1, s2):
+    def rows(prefix, teams):
+        out = []
+        for k in range(10):
+            t = teams[k % 2]
+            out.append(f"{k + 1:>3} {'Runner' + chr(65 + k) + ' Test':<24}SR {prefix}-{t:<18} "
+                       f"{5 + k // 4}:{10 + k:02d}.0   {17 + k}:{10 + k:02d}.00 {k + 1:>4}")
+        return out
+
+    def scores(prefix, teams):
+        return [f"   1 {prefix}-{teams[0]:<24}25    1    3    5    7    9",
+                "      Total Time:  1:29:03.64",
+                f"   2 {prefix}-{teams[1]:<24}30    2    4    6    8   10",
+                "      Total Time:  1:30:03.64"]
+    return "\n".join([
+        "                     PVC Championship - 10/16/2004", "                          Results",
+        "  Event 4  Boys 3.06 Mile Run CC Varsity",
+        "=" * 82, "    Name                    Year School                Avg Mile     Finals  Points",
+        "=" * 82, head1] + rows(p1, s1[0]) + ["", head2] + rows(p2, s2[0]) + [
+        "", "                                   Team Scores", "=" * 81,
+        "Rank Team                      Total    1    2    3    4    5   *6   *7   *8   *9", "=" * 81,
+        head1] + scores(p1, s1[0]) + [head2] + scores(p2, s2[0])) + "\n"
+
+
+def test_pvc_size_and_class_sections_are_races():
+    from backend.scraper_v2 import _pair_xc_blocks
+    for h1, h2, p1, p2, lab1, lab2 in (
+            ("Large School Results", "Small school Results", "AB", "CD", "Large School", "Small School"),
+            ("Class C School Results", "Class B  School Results", "C", "B", "Class C", "Class B")):
+        text = _pvc_sections(h1, h2, p1, p2, (("Alpha High", "Beta High"),), (("Gamma Academy", "Delta High"),))
+        res = Sub5ColumnParser('pvc04bvsl.txt.htm', text=text).parse()
+        evs = res['events']
+        assert [(e['event'], e['gender'], e.get('section'), len(e['results'])) for e in evs] == \
+            [('3.06 Mile Run CC Varsity', 'Boys', lab1, 10), ('3.06 Mile Run CC Varsity', 'Boys', lab2, 10)], evs
+        assert [r['place'] for r in evs[1]['results']] == list(range(1, 11))
+        assert {r['school'] for r in evs[0]['results']} == {'Alpha High', 'Beta High'}
+        assert {r['school'] for r in evs[1]['results']} == {'Gamma Academy', 'Delta High'}
+        blocks = parse_xc_team_scores(text)
+        assert [b.get('section') for b in blocks] == [lab1, lab2], blocks
+        assert [t['team'] for t in blocks[1]['teams']] == ['Gamma Academy', 'Delta High']
+        _pair_xc_blocks(evs, blocks)
+        assert [b['event_idx'] for b in blocks] == [0, 1]
+        assert _verify(res, blocks)['status'] == 'verified'
+
+
+# Cape Elizabeth (2009): the Team column is cut at 25 characters and runs
+# into the time with one space; a Poland scorer line ends in a "-" (no 7th).
+CAPE_CUT = """\
+         WMC - A, B @ Cape - 2009-09-11
+         Cape Elizabeth XC Course, Cape Elizabeth, ME
+
+                       Varsity Boys Three Mile Run
+
+=========================================================================
+    Name                      Yr Team                          Time   Pts
+=========================================================================
+  1 Alan Test                    York High School          15:27.10     1
+  2 Reid Sample               11 Cape Elizabeth High Schoo 16:39.00     2
+  3 Peter Example             12 Cape Elizabeth High Schoo 16:50.00     3
+  4 Thom Fake                 10 Poland Regional High Scho 16:56.00     4
+  5 Dan Madeup                   York High School          16:59.00     5
+  6 Tris Nobody                  York High School          17:03.00     6
+  7 Bobby Pretend             12 Cape Elizabeth High Schoo 17:25.00     7
+  8 Cam Imaginary                North Yarmouth Academy    17:32.00     8
+  9 Eli Notreal                  York High School          17:40.00     9
+ 10 Sam Fictional                York High School          17:45.00    10
+ 11 Max Invented                 North Yarmouth Academy    17:50.00    11
+
+                 Varsity Boys Three Mile Run Team Scores
+=========================================================================
+    Team                        Pts     1    2    3    4    5   (6)  (7)
+=========================================================================
+  1 Cape Elizabeth High Schoo   26      2    3    4    7   10   15   18
+      Total Time: 1:25:41      Average: 17:08.20      1-5 Split: 1:12
+  2 Poland Regional High Scho   67      3   13   14   18   19   24    -
+      Total Time: 1:47:14      Average: 21:26.80      1-5 Split: 3:54
+"""
+
+
+def test_truncated_team_column_runs_into_time():
+    res = Sub5ColumnParser('cape_sept11.txt.htm', text=CAPE_CUT).parse()
+    rows = res['events'][0]['results']
+    assert [(r['school'], r['grade'], r['result']) for r in rows[:4]] == [
+        ('York High School', '', '15:27.10'),
+        ('Cape Elizabeth High Schoo', '11', '16:39.00'),
+        ('Cape Elizabeth High Schoo', '12', '16:50.00'),
+        ('Poland Regional High Scho', '10', '16:56.00')], rows[:4]
+    assert rows[6]['school'] == 'Cape Elizabeth High Schoo' and rows[7]['school'] == 'North Yarmouth Academy'
+    blocks = parse_xc_team_scores(CAPE_CUT)
+    assert [(t['team'], t['score']) for t in blocks[0]['teams']] == [
+        ('Cape Elizabeth High Schoo', 26.0), ('Poland Regional High Scho', 67.0)]
+
+
+# 2013 PVC (Word export, &nbsp; padding): a long name fills its column and
+# runs into the year; a double space inside a school name ("John  Bapst").
+def _pvc13_row(place, name, grade, school, time, pts):
+    return f"{place:>3} {name:<24}{grade:<3}{school:<20}{time}{pts:>5}"
+
+
+PVC13 = "\n".join([
+    "                       PVC Championship - 10/19/2013", "                                Results",
+    "Event 2  Boys 3.1 Mile Run CC JV", "=" * 71,
+    "    Name                    Yr School                   Finals  Points", "=" * 71, "Results - Men",
+    _pvc13_row(1, "Mitchell Test", "JR", "Caribou", "19:22.92", 1),
+    _pvc13_row(2, "Alex Sample", "JR", "John  Bapst", "20:13.22", 2),
+    "  3 Nicholas Dieffenbacher-KrallSO Old Town           21:45.80   21",
+    _pvc13_row(4, "George Example", "JR", "Lee  Academy", "23:54.64", 3),
+    _pvc13_row(5, "Ben Pretend", "SO", "Caribou", "24:00.00", 4)]) + "\n"
+
+
+def test_name_runs_into_year_and_double_space_school():
+    res = Sub5ColumnParser('boys_jv_pvc_xc_results_10.19.2013.htm', text=PVC13).parse()
+    rows = res['events'][0]['results']
+    assert [(r['athlete'], r['grade'], r['school']) for r in rows] == [
+        ('Mitchell Test', 'JR', 'Caribou'), ('Alex Sample', 'JR', 'John Bapst'),
+        ('Nicholas Dieffenbacher-Krall', 'SO', 'Old Town'), ('George Example', 'JR', 'Lee Academy'),
+        ('Ben Pretend', 'SO', 'Caribou')], rows
+
+
 if __name__ == '__main__':
     qaqc._ensure_team_mapping()
     failed = 0

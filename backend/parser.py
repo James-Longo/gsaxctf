@@ -36,8 +36,13 @@ def normalize_grade(g):
 # "CLASS A Results" / "Division II Results": per-class sections of one race
 # ("Class A Results - Women" also splits a Mixed race by gender)
 # ("Division 2,3, JC Results 5000 Run": a label of several words, then the race)
-_SECTION_RE = re.compile(r'^(Class|Division|Section)\s+(\w{1,4}(?:\s*,\s*\w{1,4})*)\s+Results'
+# (PVC Hy-Tek: "Class C School Results" / "Class B  School Results", and the
+# size split "Large School Results" / "Small school Results")
+_SECTION_RE = re.compile(r'^(Class|Division|Section)\s+(\w{1,4}(?:\s*,\s*\w{1,4})*)(?:\s+School)?\s+Results'
                          r'(?:\s*-\s*(Women|Men|Girls|Boys))?(?:\s+\d+\s*\w*\s*Run)?$', re.I)
+_SIZE_SECTION_RE = re.compile(r'^(Large|Small)\s+School\s+Results$', re.I)
+# the class prefix a PVC sheet puts on its schools: "AB-Ellsworth", "C-Foxcroft Academy"
+_CLASS_PREFIX = re.compile(r'^(?:AB|CD|[A-D])-(?=\S)')
 _SECTION_GENDER = {'women': 'Girls', 'girls': 'Girls', 'men': 'Boys', 'boys': 'Boys'}
 # heats and grade groups of one event, places restarting: "Results - Unseeded A" / "Results - Freshman Race"
 # (Festival by-section sheets), "Grade 9/10 - Men" (Southern Maine Classic)
@@ -741,6 +746,9 @@ class Sub5ColumnParser:
                 if _XC_SCORES_LINE.match(line_clean):
                     current_event['in_scores'] = True
                 m_sec = _SECTION_RE.match(line_clean)
+                m_sz = None if m_sec else _SIZE_SECTION_RE.match(line_clean)
+                if m_sz:
+                    m_sec = re.match(r'(Large|Small)\s+(School)()$', f"{m_sz.group(1)} School")
                 m_s2 = None if m_sec else _SECTION2_RE.match(line_clean)
                 if m_s2:   # same handling as a class section: (kind, label, gender)
                     m_sec = re.match(r'(Section)\s+(.+?)\s*(?:-\s*(\w+))?$', 'Section ' + (m_s2.group(1) or m_s2.group(2)).strip()
@@ -950,6 +958,12 @@ class Sub5ColumnParser:
 
         parsed_events = []
         for ev, results in parsed_blocks:
+            # a sectioned XC race whose schools all carry the section's class
+            # prefix ("AB-Ellsworth"): the prefix is not part of the name
+            if results and ev.get('section') and not ev['is_relay'] and \
+                    sum(1 for r in results if _CLASS_PREFIX.match(r.get('school') or '')) >= 0.8 * len(results):
+                for r in results:
+                    r['school'] = _CLASS_PREFIX.sub('', r.get('school') or '')
             if results and self._FIELD_LABEL.search(ev.get('original_event_name') or ev['event_name']):
                 results = self.field_team_entries(ev, results)
             if results:
@@ -1448,6 +1462,70 @@ class Sub5ColumnParser:
         ev['is_relay'] = True
         return out
 
+    @staticmethod
+    def _unglue_times(lines):
+        """A fixed-width Team column cut at its width ("Cape Elizabeth High
+        Schoo") runs into the time with one space. A time that ends where
+        the other rows' times end, with one space before it and a word
+        before that, gets a second space (taken from the gap after it, so
+        every column keeps its place)."""
+        from collections import Counter
+        tm = re.compile(r'(\S)( ?)(\d{1,2}:\d\d(?:\.\d+)?)(?=\s|$)')
+        ends = Counter()
+        for l in lines:
+            if re.match(r'^\s*\d{1,4}\s+\S', l):
+                m = re.search(r'\S\s{2,}(\d{1,2}:\d\d(?:\.\d+)?)(?=\s|$)', l)
+                if m:
+                    ends[m.end(1)] += 1
+        if not ends:
+            return lines
+        col, n = ends.most_common(1)[0]
+        if n < 5:
+            return lines
+        out = []
+        for l in lines:
+            m = re.match(r'^\s*\d{1,4}\s+\S', l) and re.search(
+                r'[A-Za-z.)] (\d{1,2}:\d\d(?:\.\d+)?)(?=\s|$)', l)
+            if m and m.end(1) == col:
+                tail = l[m.end(1):]
+                # (the gap after the time gives up one space)
+                tail = re.sub(r'^(\s*?) (?=\s)', r'\1', tail, count=1) if re.match(r'^\s{2}', tail) else tail
+                l = l[:m.start(1)] + ' ' + l[m.start(1):m.end(1)] + tail
+            out.append(l)
+        return out
+
+    @staticmethod
+    def _mend_row_columns(lines, yr_idx, school_idx):
+        """Two fixed-width slips in Name / Year / School rows (each edit keeps
+        the later columns where they were): a name that fills its column
+        runs into the year ("Nicholas Dieffenbacher-KrallSO Old Town"), and
+        a double space inside a school name ("John  Bapst") that is not the
+        gap before the time."""
+        if yr_idx < 0 or school_idx < 0:
+            return lines
+
+        def _shift(l, pos, delta):
+            # (the first wide gap after pos gives up / takes one space)
+            m = re.compile(r'\s{3,}').search(l, pos)
+            if not m:
+                return l
+            return l[:m.start()] + (m.group()[1:] if delta < 0 else ' ' + m.group()) + l[m.end():]
+
+        glued = re.compile(r"(?<=[a-z.'])(FR|SO|JR|SR)(?=\s+[A-Z])")
+        gap = re.compile(r"^(\S+(?: \S+)*)(\s{2})(?=[A-Za-z][\w.']*(?: [\w.']+)*\s{2,}\d{1,2}:\d\d)")
+        out = []
+        for l in lines:
+            if re.match(r'^\s*\d{1,4}\s+\S', l):
+                g = glued.search(l)
+                if g and yr_idx - 2 <= g.start(1) <= yr_idx + 8:
+                    l = _shift(l[:g.start(1)] + ' ' + l[g.start(1):], g.end(1) + 1, -1)
+                m = gap.match(l[school_idx:]) if len(l) > school_idx else None
+                if m:
+                    cut = school_idx + m.end(1)
+                    l = _shift(l[:cut] + ' ' + l[cut + 2:], cut + 1, 1)
+            out.append(l)
+        return out
+
     def parse_event_block(self, ev):
         lines = ev["lines"]
         # a field-event "relay" scored by adding up each team's jumpers
@@ -1475,6 +1553,8 @@ class Sub5ColumnParser:
                     return ind
                 return rel
         is_relay = ev["is_relay"]
+        if not is_relay:
+            lines = self._unglue_times(lines)
         
         name_idx = -1
         school_idx = -1
@@ -1539,6 +1619,9 @@ class Sub5ColumnParser:
                     for l in lines):
                 return self.parse_headerless_block(ev)
             return []
+
+        if not is_relay:
+            lines = self._mend_row_columns(lines, yr_idx, school_idx)
 
         # XC exports with a per-mile pace column ("Avg Mile  Finals"): in
         # PDF text the cells drift off the header positions and the anchor

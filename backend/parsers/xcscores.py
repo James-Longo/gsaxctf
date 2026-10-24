@@ -33,8 +33,10 @@ _EVENT_HDR = re.compile(
 _RESULTS_GENDER = re.compile(r'^\s*Results\s*-\s*(Women|Men|Girls|Boys)\b\s*(.*)$', re.I)
 # per-class sections inside one race's block: "CLASS A Results"
 # ("Division 2,3, JC Results 5000 Run": a label of several words, then the race)
-_SECTION = re.compile(r'^(Class|Division|Section)\s+(\w{1,4}(?:\s*,\s*\w{1,4})*)\s+Results'
+_SECTION = re.compile(r'^(Class|Division|Section)\s+(\w{1,4}(?:\s*,\s*\w{1,4})*)(?:\s+School)?\s+Results'
                       r'(?:\s*-\s*(Women|Men|Girls|Boys))?(?:\s+\d+\s*\w*\s*Run)?$', re.I)
+_CLASS_PREFIX = re.compile(r'^(?:AB|CD|[A-D])-(?=\S)')
+_SIZE_SECTION = re.compile(r'^(Large|Small)\s+School\s+Results$', re.I)
 # rank, team, total, then the team places (up to 9 scorers)
 _ROW = re.compile(r'^\s*\*?\s*(\d{1,3})\s+(\S.*?)\s+(\d{1,4})((?:\s+\d{1,4}){0,12})\s*$')
 
@@ -493,6 +495,10 @@ def parse_xc_team_scores(text):
             pending_split = True
             continue
         msec = _SECTION.match(s)
+        if not msec:
+            msz = _SIZE_SECTION.match(s)
+            if msz:
+                msec = re.match(r'(Large|Small)\s+(School)()$', f"{msz.group(1)} School")
         if msec:
             label = f"{msec.group(1).capitalize()} {msec.group(2)}"
             if cur is not None:
@@ -539,6 +545,8 @@ def parse_xc_team_scores(text):
         if re.search(r'\d,\s*\(?\d', line):
             line = re.sub(r'\(((?:\d{1,4},\s*)*\d{1,4})\)', r'\1', line).replace(',', ' ')
             line = re.sub(r'(?<=[A-Za-z])\.(?=\s+\d)', '', line)
+        # (a missing 7th scorer printed as a dash: "3 Poland   67   3 13 14 18 19 24    -")
+        line = re.sub(r'(?<=\d)(?:\s+-)+\s*$', '', line)
         m = _ROW.match(line)
         if not m:
             continue
@@ -602,6 +610,10 @@ def parse_xc_team_scores(text):
                    and sum(t['places'][:5]) == t['score'])
         # (two teams, one hand-totalled wrong: "Caribou 45  2 3 6 11 12 13")
         if good >= max(1, len(teams) * 0.6) or len(teams) == 2 and good == 1:
+            # (a sectioned list's class prefix: "AB-Ellsworth High School")
+            if b.get('section') and sum(1 for t in teams if _CLASS_PREFIX.match(t['team'])) >= 0.8 * len(teams):
+                for t in teams:
+                    t['team'] = _CLASS_PREFIX.sub('', t['team'])
             out.append(b)
     if not out:
         out = _html_scores_grid(text)
