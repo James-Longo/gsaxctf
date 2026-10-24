@@ -1,13 +1,13 @@
 {
 "_meta": {
 "methods_by_rows": {
-"exact/alias": 1691267,
-"code": 262041,
+"exact/alias": 1691265,
+"code": 262059,
 "truncation": 120496,
 "athlete-continuity": 58627,
 "mascot": 28481,
-"bare name + level context": 23920,
-"unresolved": 19716,
+"bare name + level context": 23927,
+"unresolved": 19717,
 "manual (file rule)": 15254,
 "co-op label": 12513,
 "state-tagged (auto entry)": 10726,
@@ -23,7 +23,7 @@
 },
 "methods_by_strings": {
 "exact/alias": 4094,
-"unresolved": 2552,
+"unresolved": 2553,
 "state-tagged (auto entry)": 1572,
 "debris-salvage": 913,
 "code": 806,
@@ -39,7 +39,7 @@
 "file-expansion": 14,
 "later-hs": 3
 },
-"distinct_strings": 12407,
+"distinct_strings": 12408,
 "note": "'raw' keys are whitespace-collapsed school strings exactly as printed. 'overrides' are per-file answers (year/season/file-stem) that differ from the string's global id."
 },
 "raw": {
@@ -68,11 +68,11 @@
 "how": "exact/alias"
 },
 "Bangor": {
-"rows": 32516,
+"rows": 32515,
 "seasons": {
 "Indoor": 15911,
 "Outdoor": 14948,
-"XC": 1657
+"XC": 1656
 },
 "years": [
 2003,
@@ -4137,29 +4137,6 @@
 "method": "exact",
 "how": "exact/alias"
 },
-"Messalonskee High School": {
-"rows": 2683,
-"seasons": {
-"Outdoor": 2041,
-"XC": 403,
-"Indoor": 239
-},
-"years": [
-2003,
-2026
-],
-"id": "me-hs-messalonskee",
-"method": "exact",
-"by_id": {
-"me-hs-messalonskee": 2679,
-"me-ms-messalonskee": 4
-},
-"context_dependent": true,
-"flags": [
-"athletes contradict name match (me-hs-messalonskee -> me-ms-messalonskee, 4/4)"
-],
-"how": "exact/alias"
-},
 "Piscataquis": {
 "rows": 2683,
 "seasons": {
@@ -4182,6 +4159,29 @@
 "hs": "me-hs-piscataquis",
 "ms": "me-ms-piscataquis"
 },
+"how": "exact/alias"
+},
+"Messalonskee High School": {
+"rows": 2682,
+"seasons": {
+"Outdoor": 2041,
+"XC": 402,
+"Indoor": 239
+},
+"years": [
+2003,
+2026
+],
+"id": "me-hs-messalonskee",
+"method": "exact",
+"by_id": {
+"me-hs-messalonskee": 2678,
+"me-ms-messalonskee": 4
+},
+"context_dependent": true,
+"flags": [
+"athletes contradict name match (me-hs-messalonskee -> me-ms-messalonskee, 4/4)"
+],
 "how": "exact/alias"
 },
 "Westbrook High School": {
@@ -9025,10 +9025,10 @@
 "how": "exact/alias"
 },
 "GHCA": {
-"rows": 803,
+"rows": 810,
 "seasons": {
 "Outdoor": 179,
-"XC": 624
+"XC": 631
 },
 "years": [
 2004,
@@ -9038,7 +9038,7 @@
 "method": "code",
 "by_id": {
 "me-hs-greater-houlton-christian": 685,
-"me-ms-ghca": 118
+"me-ms-ghca": 125
 },
 "context_dependent": true,
 "by_level": {
@@ -10486,6 +10486,20 @@
 "method": "code",
 "how": "code"
 },
+"PIMS": {
+"rows": 589,
+"seasons": {
+"XC": 404,
+"Outdoor": 185
+},
+"years": [
+2008,
+2021
+],
+"id": "me-ms-presque-isle",
+"method": "code",
+"how": "code"
+},
 "FFD": {
 "rows": 589,
 "seasons": {
@@ -10552,20 +10566,6 @@
 2025
 ],
 "id": "me-hs-cape-elizabeth",
-"method": "code",
-"how": "code"
-},
-"PIMS": {
-"rows": 579,
-"seasons": {
-"XC": 394,
-"Outdoor": 185
-},
-"years": [
-2008,
-2021
-],
-"id": "me-ms-presque-isle",
 "method": "code",
 "how": "code"
 },
@@ -13776,6 +13776,33 @@
 "method": "exact",
 "how": "exact/alias"
 },
+"WMS": {
+"rows": 339,
+"seasons": {
+"Outdoor": 295,
+"XC": 44
+},
+"years": [
+2016,
+2021
+],
+"id": "me-ms-whittier",
+"method": "athlete-continuity (overrode code)",
+"by_id": {
+"me-ms-whittier": 187,
+"me-ms-warsaw": 145,
+"me-ms-winthrop": 7
+},
+"context_dependent": true,
+"flags": [
+"athletes contradict name match (me-ms-winthrop -> me-ms-warsaw, 23/25)",
+"athletes contradict name match (me-ms-winthrop -> me-ms-whittier, 14/14)",
+"athletes contradict name match (me-ms-winthrop -> me-ms-whittier, 2/17)",
+"athletes contradict name match (me-ms-winthrop -> me-ms-whittier, 2/2)",
+"athletes contradict name match (me-ms-winthrop -> me-ms-whittier, 4/19)"
+],
+"how": "athlete-continuity"
+},
 "STG": {
 "rows": 339,
 "seasons": {
@@ -13954,32 +13981,6 @@
 "id": "me-ms-dirigo",
 "method": "exact",
 "how": "exact/alias"
-},
-"WMS": {
-"rows": 332,
-"seasons": {
-"Outdoor": 295,
-"XC": 37
-},
-"years": [
-2016,
-2018
-],
-"id": "me-ms-whittier",
-"method": "athlete-continuity (overrode code)",
-"by_id": {
-"me-ms-whittier": 187,
-"me-ms-warsaw": 145
-},
-"context_dependent": true,
-"flags": [
-"athletes contradict name match (me-ms-winthrop -> me-ms-warsaw, 23/25)",
-"athletes contradict name match (me-ms-winthrop -> me-ms-whittier, 14/14)",
-"athletes contradict name match (me-ms-winthrop -> me-ms-whittier, 2/17)",
-"athletes contradict name match (me-ms-winthrop -> me-ms-whittier, 2/2)",
-"athletes contradict name match (me-ms-winthrop -> me-ms-whittier, 4/19)"
-],
-"how": "athlete-continuity"
 },
 "TRP": {
 "rows": 331,
@@ -17617,9 +17618,9 @@
 "how": "exact/alias"
 },
 "VRMS": {
-"rows": 211,
+"rows": 212,
 "seasons": {
-"XC": 16,
+"XC": 17,
 "Outdoor": 195
 },
 "years": [
@@ -163607,6 +163608,19 @@
 "method": "unresolved",
 "how": "unresolved"
 },
+"EMS": {
+"rows": 1,
+"seasons": {
+"XC": 1
+},
+"years": [
+2021,
+2021
+],
+"id": null,
+"method": "unresolved",
+"how": "unresolved"
+},
 "Leavitt Wheelchair": {
 "rows": 1,
 "seasons": {
@@ -225867,7 +225881,8 @@
 "Woodland": "me-ms-woodland"
 },
 "2021/XC/2021ALMS-GHCA": {
-"GHCA": "me-ms-ghca"
+"GHCA": "me-ms-ghca",
+"WMS": "me-ms-winthrop"
 },
 "2021/XC/2CORRECTEDXCWtvlWinsHS21.09": {
 "Camden Hills": "me-hs-camden-hills",
@@ -237631,10 +237646,6 @@
 "id": null,
 "basis": "name only (no joined rows)"
 },
-"DOM": {
-"id": null,
-"basis": "name only (no joined rows)"
-},
 "DOUSTOU L": null,
 "Damariscotta": null,
 "Danbury HS": null,
@@ -237764,7 +237775,6 @@
 "id": null,
 "basis": "name only (no joined rows)"
 },
-"FRE": "me-hs-freeport",
 "Fair Haven": "oos-auto-vt-fair-haven",
 "Fair Haven Uhs": {
 "id": "oos-auto-vt-fair-haven-uhs",
@@ -237813,7 +237823,7 @@
 "Fox Islands North HavenVinalhaven": {
 "id": "coop-fox-islands",
 "held": {
-"coop-fox-islands": 35,
+"coop-fox-islands": 36,
 "me-hs-north-haven": 15,
 "me-hs-vinalhaven": 1
 }
@@ -238090,10 +238100,6 @@
 "Internationa": null,
 "Ipswich": "oos-auto-ma-ipswich",
 "Iselsboro School": null,
-"Island": {
-"id": null,
-"basis": "name only (no joined rows)"
-},
 "Isleford": null,
 "Islesboro Central School": "me-hs-islesboro",
 "Islesboro Central School middle grades": "me-ms-islesboro",
@@ -238250,7 +238256,6 @@
 "id": null,
 "basis": "name only (no joined rows)"
 },
-"Lewisotn": "me-ms-lewiston",
 "Lewiston High School": "me-hs-lewiston",
 "Lewiston Middle School": "me-ms-lewiston",
 "Lewiston Recreation youth": "club-lewiston-rec",
@@ -238515,7 +238520,6 @@
 "Molloy": null,
 "Molly Ockett Middle School": "me-ms-molly-ockett",
 "Monadnock Regional High School": "oos-nh-monadnock-regional-high-school",
-"Monmouht": "me-ms-monmouth",
 "Monmouth Academy": "me-hs-monmouth",
 "Monmouth Middle School": "me-ms-monmouth",
 "Monomoy Regional": "oos-auto-ma-monomoy",
@@ -239553,10 +239557,6 @@
 "id": null,
 "basis": "name only (no joined rows)"
 },
-"insky Lee Academy": {
-"id": null,
-"basis": "name only (no joined rows)"
-},
 "irline School": {
 "id": null,
 "basis": "name only (no joined rows)"
@@ -239644,10 +239644,6 @@
 "basis": "name only (no joined rows)"
 },
 "resque Isle Middle Schoo C": {
-"id": null,
-"basis": "name only (no joined rows)"
-},
-"s Lee Academy": {
 "id": null,
 "basis": "name only (no joined rows)"
 },
@@ -285955,6 +285951,20 @@
 "rows": 1,
 "seasons": {
 "Outdoor": 1
+},
+"years": [
+2021,
+2021
+],
+"id": null,
+"method": "unresolved",
+"how": "unresolved"
+},
+{
+"raw": "EMS",
+"rows": 1,
+"seasons": {
+"XC": 1
 },
 "years": [
 2021,
