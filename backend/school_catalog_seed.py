@@ -1381,6 +1381,33 @@ FILE_RULES = [
     (['OH'], 'XC', (2003, 2003), r'^wtvl03[bg]$', 'me-hs-oxford-hills'),              # team list prints Oxford Hills, no Oak Hill
     (['SUN'], 'XC', (2003, 2003), r'^bucksinvite03$', 'me-hs-sumner'),
     (['UM'], 'XC', (2003, 2003), r'^bucksinvite03$', 'me-hs-sumner'),                 # Andrew Brunton: '9 Sumner 19:06.9' elsewhere that fall; a high-school meet            # 2-mile middle-school meet at GNG (Gray-NG, Whittier, Molly Ockett, St. Dom's MS)
+    # 2026-10-24 unresolved-school review: codes read from each meet's own team list / its runners' other races
+    (['GR'], 'XC', (2007, 2007), r'^lakeregion(boys|girls)9_14$', 'me-hs-greely'),   # Lake Region, Greely, NYA, Traip meet (sub5 index); codes GR/TR/NYA/LR. Boys twin has 11 GR rows unresolved (no
+    (['TR'], 'XC', (2007, 2007), r'^lakeregion(boys|girls)9_14$', 'me-hs-traip'),   # Same four-team meet; TR=Traip Academy (3 boys rows).
+    (['K'], 'XC', (2005, 2007), r'^cheverus(10_7B|boy10_5)(\.txt)?$', 'me-hs-kennebunk'),   # Kennebunk is the only K team in the meet (score list)
+    (['C'], 'XC', (2005, 2007), r'^cheverus(10_7B|boy10_5)(\.txt)?$', 'me-hs-cheverus'),   # meet at Cheverus; only C team
+    (['S'], 'XC', (2005, 2007), r'^cheverus(10_7B|boy10_5)(\.txt)?$', 'me-hs-sanford'),   # Sanford is the only S team in the meet
+    (['W'], 'XC', (2005, 2007), r'^cheverus(10_7B|boy10_5)(\.txt)?$', 'me-hs-westbrook'),   # Westbrook is the only W team in the meet
+    (['Y'], 'XC', (2009, 2009), r'^yorkcountymsboys7th8th$', 'me-ms-york'),   # Finitz, Cannata, Sweeney, Sobotka, Scontras, Bald are York HS 2010-13; York County MS festival
+    (['Sf'], 'XC', (2009, 2009), r'^yorkcountymsboys7th8th$', 'me-ms-sanford'),   # Tranchemontagne, Isaac Sweeney are Sanford HS 2010-12
+    (['Ki', 'K'], 'XC', (2009, 2009), r'^yorkcountymsboys7th8th$', 'me-ms-shapleigh'),   # Kittery MS; Jacob Wirth (K) is Traip Academy (Kittery) 2010+
+    (['Ma'], 'XC', (2009, 2009), r'^yorkcountymsboys7th8th$', 'me-ms-massabesic'),   # York County MS festival (Kennebunk MS); Mattanawcook (Lincoln) is not a York County school. Currently resolves
+    (['B'], 'XC', (2005, 2005), r'^bonnyeagle9_16$', 'me-hs-bonny-eagle'),   # Title: Kennebunk, South Portland, Bonny Eagle, Massabesic; boys score Bonny Eagle-19
+    (['K'], 'XC', (2005, 2005), r'^bonnyeagle9_16$', 'me-hs-kennebunk'),   # meet teams
+    (['S'], 'XC', (2005, 2005), r'^bonnyeagle9_16$', 'me-hs-south-portland'),   # S is South Portland (meet lists South Portland, not Sanford)
+    (['M'], 'XC', (2005, 2005), r'^bonnyeagle9_16$', 'me-hs-massabesic'),   # meet teams
+    (['M', 'Mar'], 'XC', (2010, 2010), r'^yorkmsxc%20results%202010%20MS%20(boys|girls)%20(junior|senior)$', 'me-ms-marshwood'),   # York County MS festival Fort Foster 2010; same runners in 2011-2012 files and the 2006 York County MS meets.
+    (['Y'], 'XC', (2010, 2010), r'^yorkmsxc%20results%202010%20MS%20(boys|girls)%20(junior|senior)$', 'me-ms-york'),   # York County MS festival Fort Foster 2010; same runners in 2011-2012 files and the 2006 York County MS meets.
+    (['W'], 'XC', (2010, 2010), r'^yorkmsxc%20results%202010%20MS%20(boys|girls)%20(junior|senior)$', 'me-ms-wells'),   # York County MS festival Fort Foster 2010; same runners in 2011-2012 files and the 2006 York County MS meets.
+    (['B'], 'XC', (2010, 2010), r'^yorkmsxc%20results%202010%20MS%20(boys|girls)%20(junior|senior)$', 'me-ms-biddeford'),   # York County MS festival Fort Foster 2010; same runners in 2011-2012 files and the 2006 York County MS meets.
+    (['N'], 'XC', (2010, 2010), r'^yorkmsxc%20results%202010%20MS%20(boys|girls)%20(junior|senior)$', 'me-ms-noble'),   # York County MS festival Fort Foster 2010; same runners in 2011-2012 files and the 2006 York County MS meets.
+    (['Mas', 'Mass'], 'XC', (2010, 2010), r'^yorkmsxc%20results%202010%20MS%20(boys|girls)%20(junior|senior)$', 'me-ms-massabesic'),   # York County MS festival Fort Foster 2010; same runners in 2011-2012 files and the 2006 York County MS meets.
+    (['Shp', 'Shap', 'shp'], 'XC', (2010, 2010), r'^yorkmsxc%20results%202010%20MS%20(boys|girls)%20(junior|senior)$', 'me-ms-shapleigh'),   # York County MS festival Fort Foster 2010; same runners in 2011-2012 files and the 2006 York County MS meets.
+    (['San'], 'XC', (2010, 2010), r'^yorkmsxc%20results%202010%20MS%20(boys|girls)%20(junior|senior)$', 'me-ms-sanford'),   # York County MS festival Fort Foster 2010; same runners in 2011-2012 files and the 2006 York County MS meets.
+    (['Sac'], 'XC', (2010, 2010), r'^yorkmsxc%20results%202010%20MS%20(boys|girls)%20(junior|senior)$', 'me-ms-saco'),   # York County MS festival Fort Foster 2010; same runners in 2011-2012 files and the 2006 York County MS meets.
+    (['K'], 'XC', (2010, 2010), r'^yorkmsxc%20results%202010%20MS%20(boys|girls)%20(junior|senior)$', 'me-ms-kennebunk'),   # York County MS festival Fort Foster 2010; same runners in 2011-2012 files and the 2006 York County MS meets.
+    (['TA'], 'XC', (2010, 2010), r'^yorkmsxc%20results%202010%20MS%20(boys|girls)%20(junior|senior)$', 'me-ms-thornton'),   # York County MS festival Fort Foster 2010; same runners in 2011-2012 files and the 2006 York County MS meets.
+    (['Ma'], 'XC', (2006, 2006), r'^massabesic9_22boys$', 'me-hs-massabesic'),   # Massabesic, Gorham, McAuley, Thornton at Massabesic
     (['LR'], 'XC', (2018, 2018), r'^MS_MEET_9_20_2018$', 'me-ms-lake-region'),         # same meet
     (['MO'], 'XC', (2015, 2017), r'^MS_MEET_9_10_2015$|^MS_MEET_9_19_2017$', 'me-ms-molly-ockett'),   # GNG middle-school meets; MO is Molly Ockett in the 2018 one
     (['JS'], 'XC', (2017, 2017), r'^MS_MEET_10_12_2017$', 'me-ms-jordan-small'),        # GNG middle-school meet; its runners 'Raymond' (Jordan-Small MS) elsewhere
