@@ -2690,6 +2690,25 @@ def test_short_name_store_id_per_season_and_sex():
     assert store_athlete_id('Janey Blackwell-Orr', 'South Portland', 2009, 'XC', 'Girls 5K') == 'janey-blackwell-orr-south-portland'
 
 
+
+def test_transcription_xc_team_scores_marked_xc():
+    """A reader's XC team scores without 'kind' still reach the XC score check."""
+    import json
+    import tempfile
+    import backend.scraper_v2 as sv
+    old = sv.TRANSCRIBED
+    with tempfile.TemporaryDirectory() as d:
+        os.makedirs(os.path.join(d, '2017', 'XC'))
+        with open(os.path.join(d, '2017', 'XC', 'meet.json'), 'w') as f:
+            json.dump({'events': [], 'team_rankings': [
+                {'gender': 'Boys', 'teams': [{'rank': 1, 'team': 'York', 'score': 20}]}]}, f)
+        sv.TRANSCRIBED = d
+        try:
+            b = sv.load_transcription('archive/2017/XC/meet.pdf')['team_rankings'][0]
+        finally:
+            sv.TRANSCRIBED = old
+    assert b['kind'] == 'xc' and b['totals_only'] is True
+
 if __name__ == '__main__':
     qaqc._ensure_team_mapping()
     failed = 0

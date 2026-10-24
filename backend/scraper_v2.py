@@ -675,8 +675,15 @@ def load_transcription(input_path):
             rows.append(row)
         events.append({'event': e['event'], 'gender': e.get('gender') or '',
                        'is_relay': bool(e.get('is_relay')), 'results': rows})
+    blocks = d.get('team_rankings') or []
+    if parts[-2] == 'XC':
+        # (a reader's XC team scores often omit 'kind': the XC score check reads only 'xc' blocks)
+        blocks = [b if not isinstance(b, dict) or b.get('kind') else
+                  dict(b, kind='xc', **({} if any(t.get('places') for t in b.get('teams') or [])
+                                        else {'totals_only': True}))
+                  for b in blocks]
     return {'events': events, 'date': d.get('date'), 'meet_name': d.get('meet_name'),
-            'venue': d.get('venue'), 'team_rankings': d.get('team_rankings') or [],
+            'venue': d.get('venue'), 'team_rankings': blocks,
             'parser': 'Transcribed'}
 
 
