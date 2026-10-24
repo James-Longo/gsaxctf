@@ -2446,6 +2446,68 @@ def test_name_runs_into_year_and_double_space_school():
         ('Ben Pretend', 'SO', 'Caribou')], rows
 
 
+def test_xc_record_marks_ties_tabs_question_teams_and_dnf_rows():
+    """2007-2023 hand-typed XC sheets: a course-record mark after a time
+    ("17:07 CR" in its own cell, "19:23.59R" glued), a tied place printed
+    twice with a blank grade, tab-separated name and school, a team typed as
+    "?" over 4-digit times, and DNF lines that are rows, not titles."""
+    from backend.parsers.looselist import LooseListParser
+    from backend.parsers.headertable import HeaderTableParser
+    from backend.parsers.xclist import XCListParser
+    # LooseList: "R" glued to the time, places kept, "--" DNF rows
+    names = ['Ada Quill', 'Bea Marsh', 'Cy Dunn', 'Di Frost', 'Ed Lowe', 'Flo Pike']
+    body = ''.join(f"  {k + 1} {n:<22}Old Town \t{20 + k}:1{k}.4{k}{'R' if k == 0 else ' '} \t {k + 1}\n"
+                   for k, n in enumerate(names))
+    text = ("58th Test Invitational - 9/22/2007\n Girls VARSITY 3.1 Mile Race\n"
+            "  ==========\n      Name   \t School   \t Finals \t\tPoints\n  ==========\n" + body +
+            "   -- Gia Holt                 Schenck         \tDNF\n"
+            "   -- Hal Penn                 Caribou   DNF\n\n Team Scores\n")
+    rows = LooseListParser().parse(text, 'ot girls var.txt', 'XC')['events'][0]['results']
+    assert [(r['place'], r['result']) for r in rows[:2]] == [(1, '20:10.40'), (2, '21:11.41')], rows[:2]
+    assert rows[0]['athlete'] == 'Ada Quill' and len(rows) == 8
+    assert [(r['athlete'], r['school'], r['result'], r['place']) for r in rows[6:]] == [
+        ('Gia Holt', 'Schenck', 'DNF', None), ('Hal Penn', 'Caribou', 'DNF', None)]
+    # HeaderTable with tabs: columns at tab stops
+    text = ("TEST INVITATIONAL RESULTS    9-28-04\t\t\nJV BOYS\t\t\t\nPLACE\tNAME\t\tSCHOOL\t\tTIME\tPACE\t\t\n"
+            "1\tMatt Scott\tLee Academy\t20:33\t7:01\t\n2\tBJ Head\t\tM.A.\t\t21:25\t7:19\t\n"
+            "3\tNikki Slevinsky\tLee Academy\t22:23\t7:38\t\n4\tAndrew Russell\tM.A.\t\t22:36\t7:43\t\n"
+            "5\tAl Roy\t\tGSA\t\t23:01\t7:50\t\n6\tZed Ko\t\tOrono\t\t23:40\t8:03\t\n")
+    rows = HeaderTableParser(None).parse(text, 'jv.htm', 'XC')['events'][0]['results']
+    assert [(r['athlete'], r['school']) for r in rows[:3]] == [
+        ('Matt Scott', 'Lee Academy'), ('BJ Head', 'M.A.'), ('Nikki Slevinsky', 'Lee Academy')], rows[:3]
+    # HeaderTable: DNF lines under the list are rows, not the meet title
+    text = ("PLACE        TIME         NAME                   SCHOOL\n" + ''.join(
+        f"{k:>10}          {20 + k}.{k:02d} {n:<20}  Mt. Blue\n"
+        for k, n in enumerate(['Nora Mc', 'Maddy Ka', 'Dylan Bu', 'Addi Pe', 'Anne Pe'], 1)) +
+        "DNF              Isa Cote            Skowhegan\nDNF              Bay Erl             Gardiner\n")
+    r = HeaderTableParser(None).parse(text, 'XC23FINALRESULTS.pdf', 'XC')
+    rows = r['events'][0]['results']
+    assert len(rows) == 7 and not (r['meet_name'] or '').startswith('DNF')
+    assert [(x['athlete'], x['school'], x['result'], x['place']) for x in rows[5:]] == [
+        ('Isa Cote', 'Skowhegan', 'DNF', None), ('Bay Erl', 'Gardiner', 'DNF', None)]
+    # XCList: tab-separated fields, a tied place with a blank grade, "?" teams
+    text = "Girls\n" + ''.join(f"{k}. {n}\t{sc}\t{17 + k}:1{k}\n" for k, (n, sc) in enumerate(
+        [('Moody-Roberts', 'Cape'), ('Egan', 'Falmouth'), ('Floster', 'LR'), ('Shaw', 'Cape'),
+         ('Hatton', 'Falmouth'), ('Wilson', 'Cape')], 1))
+    rows = XCListParser(None).parse(text, 'fry.txt', 'XC')['events'][0]['results']
+    assert [(r['athlete'], r['school']) for r in rows[:2]] == [('Moody-Roberts', 'Cape'), ('Egan', 'Falmouth')]
+    pdf = ("   23   Rion     Nicole    12   YORK   23:21\n   24   Lambert   Antonia   12   FAL    23:28\n"
+           "   25   Turkin    Mia        9   POL    23:34\n   26   Meyer     Heidi     11   FAL    24:09\n"
+           "   26   Neuhaus   Jonna          YORK   24:09\n   27   Schimel   Ally      12   FAL    24:10\n"
+           "   28   LeBlanc   Jynes     10   YORK   24:15\n   29   Auger     Alex      11   YAR    24:15\n")
+    rows = XCListParser(None).parse(pdf, 'SEP.-9-GIRLS.pdf', 'XC')['events'][0]['results']
+    assert [r['place'] for r in rows] == [23, 24, 25, 26, 26, 27, 28, 29], rows
+    assert rows[4]['athlete'].startswith('Neuhaus') and rows[4]['school'] == 'YORK'
+    unk = ("10/02/09 BOYS RACE\nTEAM SCORES\nGREELY 26, YORK 52\n"
+           "92 M. RITCHIE        W           2352\n93 D. GALLANTE      Y           2407\n"
+           "94 UNKNOWN           ?           2408\n95 P. STEIN         W           2410\n"
+           "96 D. DEPERRIO       Y           2456\n97 Z. HALLOWELL      Y           2507\n"
+           "99 A. GAMBLE         ?           2512\n100 D. FULTON       F           2519\n")
+    rows = XCListParser(None).parse(unk, 'greelyboys_oct2.htm', 'XC')['events'][0]['results']
+    got = {r['place']: (r['school'], r['result']) for r in rows}
+    assert got[94] == ('?', '24:08') and got[99] == ('?', '25:12') and got[93] == ('Y', '24:07'), got
+
+
 if __name__ == '__main__':
     qaqc._ensure_team_mapping()
     failed = 0

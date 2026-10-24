@@ -176,7 +176,12 @@ class LooseListParser(BaseParser):
             row = self._parse_row(s, current['is_relay'])
             if row is None:
                 row = self._parse_unranked_row(s, current['is_relay'])
+            if row is None and season_type == 'XC':
+                row = self._parse_xc_dnf(s)
             if row:
+                if season_type == 'XC' and 'place' not in row:
+                    pm = re.match(r'^(\d{1,3})[.)]?\s+\S', s)
+                    row['place'] = int(pm.group(1)) if pm else None
                 current['results'].append(row)
 
         if current and current['results']:
@@ -317,6 +322,18 @@ class LooseListParser(BaseParser):
                     'result': mark, 'grade': '', 'type': 'Finals'}
         return None
 
+    def _parse_xc_dnf(self, s):
+        """An XC non-finisher: "--  Stesha Rudnicki   John Bapst   DNF" (no
+        place, the status last, name and school split by 2+ spaces)."""
+        m = re.match(r'^(?:--+|-|DNF|\*)\s+(\S.*?)\s+(DNF|DNS|DQ)$', s)
+        if not m:
+            return None
+        parts = [p.strip() for p in re.split(r'\s{2,}|\t', m.group(1)) if p.strip()]
+        if len(parts) != 2:
+            return None
+        return {'athlete': parts[0], 'school': self._resolve_school(parts[1]),
+                'result': m.group(2), 'grade': '', 'type': 'Finals', 'place': None}
+
     def _parse_row(self, s, is_relay):
         # 3-digit places: big XC fields run past 99, and Hy-Tek then drops
         # the leading space ("100 Gideon Walters ...")
@@ -326,6 +343,8 @@ class LooseListParser(BaseParser):
         rest = m.group(2).strip()
         rest = re.sub(r'^#\s*\d+\s+', '', rest)  # bib numbers: "1 # 278 Jane Doe ..."
         rest = _normalize_feet_inch_marks(rest)   # 16' 1/2" (or mangled quotes)
+        # a record mark glued to a timed run: "19:23.59R", "17:07CR"
+        rest = re.sub(r'(\d:\d\d(?:\.\d+)?)C?R(?=\s|$)', r'\1', rest)
         rest = re.sub(r'(\d)-{1,2}tie\b', r'\1', rest, flags=re.I)   # "11.6--tie"
         # a typed half inch: "32-2 ½", "17- ½"
         rest = re.sub(r'(?<![\d.])(\d{1,3})-\s*½', r'\1-0.5', rest)

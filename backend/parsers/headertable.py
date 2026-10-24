@@ -199,6 +199,11 @@ class HeaderTableParser(BaseParser):
                 table_mode = True
             else:
                 text = re.sub(r'<[^>]+>', ' ', text).replace('&nbsp;', ' ').replace('&amp;', '&')
+        # (a hand-typed sheet's tabs: columns sit at the tab stops - "Kari
+        # Harris<tab>Lee Academy" under "NAME<tab><tab>SCHOOL" - so the
+        # header's offsets only hold with the tabs expanded)
+        if not table_mode and '\t' in text:
+            text = '\n'.join(l.expandtabs(8) if '<' not in l else l for l in text.split('\n'))
         lines = self._unwrap([l.rstrip() for l in text.replace('\xa0', ' ').splitlines()])
         url_low = (meet_url or '').lower()
         file_g = ('Girls' if re.search(r'girl|women|_g\b|g\.(pdf|htm)', url_low)
@@ -317,6 +322,16 @@ class HeaderTableParser(BaseParser):
                 if ur:
                     cur['rows'][ur['place']] = ur
                     continue
+            # a non-finisher printed under the list, the status in the place
+            # column ("DNF      Isabella Cote     Skowhegan"): a row, no title
+            md = re.match(r'^(DNF|DNS|DQ)\s{2,}(\S.*?)\s{2,}(\S.*)$', s) if cur is not None else None
+            if md and not re.search(r'\d', md.group(2)):
+                nm = md.group(2)
+                cur.setdefault('dnf', []).append(
+                    {'athlete': proper_case_name(nm) if nm.isupper() else nm,
+                     'school': proper_case_team(md.group(3)) if md.group(3).isupper() else md.group(3),
+                     'result': md.group(1), 'grade': '', 'type': 'Finals', 'place': None})
+                continue
             if len(s) < 160:
                 titles.append(s)
                 # a gender title between lists starts a new race
@@ -370,7 +385,7 @@ class HeaderTableParser(BaseParser):
         for r in races:
             if len(r['rows']) < 3:
                 continue
-            rows = [r['rows'][p] for p in sorted(r['rows'])]
+            rows = [r['rows'][p] for p in sorted(r['rows'])] + list(r.get('dnf', []))
             for x in rows:
                 x.pop('sex', None)
             # a name's last word pushed into the school ("Amanda St." |
@@ -479,7 +494,7 @@ class HeaderTableParser(BaseParser):
             if sum(len(e["results"]) for e in events) < timed - 1:
                 return empty
         title = next((l.strip() for l in lines if l.strip() and not self._headers(l)
-                      and not re.match(r'^\s*\d', l)), None)
+                      and not re.match(r'^\s*(?:\d|(?:DNF|DNS|DQ)\s{2,})', l)), None)
         return {'events': events, 'date': None, 'meet_name': title, 'team_rankings': []}
 
     @staticmethod

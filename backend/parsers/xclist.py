@@ -259,6 +259,11 @@ class XCListParser(BaseParser):
                                         f"{m.group(7)}" + (f"   {m.group(3)}" if m.group(3) else ''), text)
         # a PDF word ending in a tab breaks its line ("7 Serena\t" /
         # "   Blasios   17:18   Medomak"): the row goes on
+        # a tab sets name and school (or school and time) apart: "Matt Scott<tab>Lee
+        # Academy", "3. Moody-Roberts<tab>Cape<tab>17:23" (a column gap, not a space)
+        if '\t' in text:
+            text = '\n'.join(re.sub(r'(?<=\S)[ \t]*\t[ \t]*(?=\S)', '   ', l) if '<' not in l else l
+                             for l in text.split('\n'))
         text = re.sub(r'\r(?!\n)', ' ', text)          # (a lone CR inside a row: "Serena\t\r Blasios")
         text = re.sub(r'(?<=\S)( *)\t[ \t]*\n[ \t\xa0]*(?=\S)', lambda m: m.group(1) or ' ', text)
         # a first name alone on the place's line, the rest of the row on
@@ -389,6 +394,7 @@ class XCListParser(BaseParser):
         def new_race(g):
             races.append({'gender': g, 'cols': {}, 'titles': list(titles), 'tg': list(title_genders)})
 
+        relay_meet = bool(re.search(r'relay|team\s+results', (meet_url or '') + ' ' + '\n'.join(lines[:60]), re.I))
         for line in lines:
             s = line.strip()
             if not s:
@@ -428,6 +434,16 @@ class XCListParser(BaseParser):
                     # printed beside this one (the boys' 37-44 next to the
                     # girls' list) - placed once every race is read
                     pending.append((colmap, row))
+                    continue
+                if place in colmap and row['result'] and colmap[place]['result'] == row['result'] \
+                        and not relay_meet \
+                        and colmap[place]['athlete'] != row['athlete']:
+                    # a tie (two runners given place 26, same time): the
+                    # second keeps the place, after the first in the order
+                    k = 1
+                    while place + k / 100 in colmap:
+                        k += 1
+                    colmap[place + k / 100] = row
                     continue
                 colmap.setdefault(place, row)
             titles = []
@@ -754,9 +770,9 @@ class XCListParser(BaseParser):
                     # "17.18.6" / "19.18" among "17:18.2" rows: a typed dot for the colon
                     t, cut, dotted = dot, False, True
                 bare = None if t else re.search(r'(?<=[A-Za-z]-\s)(\d{1,2})([0-5]\d)\s*$|(?<=[A-Za-z]-)(\d{1,2})([0-5]\d)\s*$'
-                                                r'|(?<=[A-Za-z)]\s)\s*(\d{2})([0-5]\d)\s*$', seg)
+                                                r'|(?<=[A-Za-z)?]\s)\s*(\d{2})([0-5]\d)\s*$', seg)
                 if bare and bare.group(5):
-                    bare = re.search(r'(?<=[A-Za-z)]\s)\s*()()(\d{2})([0-5]\d)\s*$', seg) \
+                    bare = re.search(r'(?<=[A-Za-z)?]\s)\s*()()(\d{2})([0-5]\d)\s*$', seg) \
                         if 8 <= int(bare.group(5)) <= 40 and len(seg.split()) >= 3 else None
                 if bare and 8 <= int(bare.group(1) or bare.group(3)) <= 59:
                     # "Clarke-S- 1838" among "Name-S-18:49" rows: the colon left out
@@ -847,7 +863,8 @@ class XCListParser(BaseParser):
                 # printed alongside: "Butler, Braden  M  17:47  Marshwood 34")
                 name, school = cells[0], ' '.join(cells[1:])
                 if len(cells) == 2 and re.fullmatch(r'[A-Z][A-Z-]{0,4}', cells[0]) and \
-                        re.search(r'[a-z]', cells[1]) and ' ' in cells[1]:
+                        re.search(r'[a-z]', cells[1]) and (' ' in cells[1] or (
+                            len(cells[0]) == 1 and re.fullmatch(r"[A-Z][a-z'-]+", cells[1]))):
                     name, school = cells[1], cells[0]    # team first: "M-W   J. Pierce"
 
             elif rt and rt.group(1).strip() and rt.group(1).strip().lower() != 'x' and \
