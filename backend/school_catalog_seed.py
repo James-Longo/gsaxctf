@@ -1477,6 +1477,13 @@ FILE_RULES = [
     (['Conners Emer'], 'XC', (2022, 2022), r'^airline-invitation-mixed-race\.txt$', 'me-ms-conners-emerson'),   # the meet's girls file: Conners Emerson School
     (['SCC'], 'XC', (2022, 2022), r'^marshwoodboys8sept2022$', 'me-hs-seacoast-christian'),   # Aaron Geaslen; index lists Seacoast Christian
     (['SC'], 'XC', (2022, 2022), r'^SEP-15-RESULTS$', 'me-hs-seacoast-christian'),   # 'SEACOAST ns' in the team block
+    # 2026-10-24 second read, batch 4 (2020-2021)
+    (['Blue Hill'], 'XC', (2021, 2021), r'^(foc2021boyssections|focboys2021\.txt)$', 'me-hs-blue-hill-harbor'),
+    (['MA'], 'XC', (2021, 2021), r'^xc-meet-results-TAMS-10-6-21$', 'me-ms-massabesic'),
+    (['MD'], 'XC', (2021, 2021), r'^xc-meet-results-TAMS-10-6-21$', 'me-ms-marshwood'),   # the meet's score boxes: Md = Marshwood MS
+    (['Leavitt Wheelchair'], 'XC', (2021, 2021), r'^Maranacook-Boys-9-3-21$', 'me-hs-leavitt'),
+    (['Dover'], 'XC', (2020, 2020), r'^Boys-Results-Lee-Academy-Cross-Country-Meet-10_8_20-Sheet1-1$', 'me-hs-foxcroft'),
+    (['Dover'], 'XC', (2020, 2020), r'^Girls-Results-Lee-Academy-Cross-Country-Meet-10_8_20-Sheet1-1$', 'me-hs-foxcroft'),
     # 2026-10-24 unresolved-school review, batch 2
     (['F'], 'XC', (2004, 2004), r'^cape7oct04[bg]\.txt$', 'me-hs-falmouth'),   # Title lists Falmouth; only F team
     (['Y'], 'XC', (2004, 2004), r'^cape7oct04[bg]\.txt$', 'me-hs-yarmouth'),   # Title lists Yarmouth; only Y team
