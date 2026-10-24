@@ -97,7 +97,7 @@
      "type": "Finals"
     },
     {
-     "athlete": "o’cslair",
+     "athlete": "o\u2019cslair",
      "school": "Bonny Eagle",
      "result": "21:13",
      "grade": "",
@@ -311,12 +311,34 @@
  ],
  "date": null,
  "meet_name": null,
- "team_rankings": [],
+ "team_rankings": [
+  {
+   "kind": "xc",
+   "gender": "Boys",
+   "teams": [
+    {
+     "rank": 1,
+     "team": "Thornton Academy",
+     "score": 23
+    },
+    {
+     "rank": 2,
+     "team": "Bonny Eagle",
+     "score": 32
+    },
+    {
+     "rank": 3,
+     "team": "Sanford",
+     "score": 80
+    }
+   ]
+  }
+ ],
  "source": "backend/data/sub5_archive/2016/XC/TA-BE-Sanford-Boys.html",
  "school_codes": {
   "TA": "Thornton Academy",
   "BE": "Bonny Eagle",
   "bonney eagle": "Bonny Eagle"
  },
- "notes": "Parser read name and time but not the school (4th cell; printed as TA/ta, BE/bonney/bonney eagle, Sanford). Filled for all 43 rows: Thornton Academy, Bonny Eagle, Sanford (meet \"Sanford, Thornton, Bonny Eagle, Maine Girls Academy\"; MGA is the girls-only team). Skipped one row whose name cell reads \"Team\" (20:38, place 10, school BE): not a readable name. Printed oddities left: Glavin 20:01 sits between 21:00 and 21:09, probably 22:01. Names as printed (lowercase, \"o’cslair\", \"McDonald Brendan\")."
+ "notes": "Parser read name and time but not the school (4th cell; printed as TA/ta, BE/bonney/bonney eagle, Sanford). Filled for all 43 rows: Thornton Academy, Bonny Eagle, Sanford (meet \"Sanford, Thornton, Bonny Eagle, Maine Girls Academy\"; MGA is the girls-only team). Skipped one row whose name cell reads \"Team\" (20:38, place 10, school BE): not a readable name. Printed oddities left: Glavin 20:01 sits between 21:00 and 21:09, probably 22:01. Names as printed (lowercase, \"o\u2019cslair\", \"McDonald Brendan\"). | Second read: all 43 rows match the source's 44 table rows (the unreadable 'Team' row, 20:38, is BE's 5th scorer, so left out per the no-name rule). Added the team scores printed beside the rows (Thornton Academy 23 = 2+3+5+6+7, Bonny Eagle 32 = 1+4+8+9+10, Sanford 80 = 13+14+16+18+19; the numbers in the third source column are team places, not overall places, so place stays null). Glavin 20:01 sits between 21:00 and 21:09 as printed (source error, probably 22:01)."
 }

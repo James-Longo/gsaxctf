@@ -1520,6 +1520,11 @@ FILE_RULES = [
     (['Castine Midd'], 'XC', (2017, 2017), r'^coastal-(boys|girls)\.txt$', 'me-ms-adams-castine'),
     (['F'], 'XC', (2016, 2016), r'^TAMS-10-12-16-(boys|girls)$', 'me-ms-friends-portland'),
     (['TA'], 'XC', (2016, 2016), r'^TAMS-10-12-16-girls$', 'me-ms-thornton'),
+    # 2026-10-24 second read, batch 10 (2015-2016)
+    (['Boothaby'], 'XC', (2016, 2016), r'^BoysResults$', 'me-hs-boothbay'),
+    (['Iselsboro School'], 'XC', (2016, 2016), r'^camden-hills-girls\.txt$', 'me-hs-islesboro'),
+    (['CH)'], 'XC', (2015, 2015), r'^2015-Pre-Season-results-$', 'me-hs-camden-hills'),
+    (['MV)'], 'XC', (2015, 2015), r'^2015-Pre-Season-results-$', 'me-hs-medomak'),
     # 2026-10-24 unresolved-school review, batch 2
     (['F'], 'XC', (2004, 2004), r'^cape7oct04[bg]\.txt$', 'me-hs-falmouth'),   # Title lists Falmouth; only F team
     (['Y'], 'XC', (2004, 2004), r'^cape7oct04[bg]\.txt$', 'me-hs-yarmouth'),   # Title lists Yarmouth; only Y team

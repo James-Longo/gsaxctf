@@ -361,7 +361,45 @@
  ],
  "date": null,
  "meet_name": "Telstar, Carrabec, Madison, Winthrop, Dirigo, Mt. Valley",
- "team_rankings": [],
+ "team_rankings": [
+  {
+   "kind": "xc",
+   "gender": "Boys",
+   "teams": [
+    {
+     "rank": 1,
+     "team": "Carrabec",
+     "score": 24
+    },
+    {
+     "rank": 2,
+     "team": "Winthrop",
+     "score": 50
+    },
+    {
+     "rank": 3,
+     "team": "Madison",
+     "score": 54
+    }
+   ]
+  },
+  {
+   "kind": "xc",
+   "gender": "Girls",
+   "teams": [
+    {
+     "rank": 1,
+     "team": "Madison",
+     "score": 25
+    },
+    {
+     "rank": 2,
+     "team": "Winthrop",
+     "score": 31
+    }
+   ]
+  }
+ ],
  "parser": "XCListParser",
  "source": "backend/data/sub5_archive/2016/XC/telstar_sept7.html",
  "school_codes": {
@@ -372,5 +410,5 @@
   "Dir": "Dirigo",
   "MV": "Mt. Valley"
  },
- "notes": "Copy of the parse with the team code split off the name for the 11 rows where the parse read the Team cell (T, Dir, MV) as part of the name and the Points cell 'na' as the school. Codes expanded per the sub5 index meet name 'Telstar, Carrabec, Madison, Winthrop, Dirigo, Mt. Valley'; W/C/M scored teams, T/Dir/MV have 'na' points (incomplete teams). Column for gender (B/G) ignored; times min+sec cells as parsed."
+ "notes": "Copy of the parse with the team code split off the name for the 11 rows where the parse read the Team cell (T, Dir, MV) as part of the name and the Points cell 'na' as the school. Codes expanded per the sub5 index meet name 'Telstar, Carrabec, Madison, Winthrop, Dirigo, Mt. Valley'; W/C/M scored teams, T/Dir/MV have 'na' points (incomplete teams). Column for gender (B/G) ignored; times min+sec cells as parsed. | Second read: all 22 boys and 21 girls rows match the source table (name, time, team). Added the team scores the side table prints and the Points column reproduces: boys Carrabec 24 (2,3,5,6,8), Winthrop 50 (1,7,11,13,18), Madison 54 (4,9,10,15,16); girls Madison 25 (1,2,5,6,11), Winthrop 31 (3,4,7,8,9). Telstar, Dirigo and Mt. Valley print 'na'. No date printed (file name sept7 only), so date stays null."
 }

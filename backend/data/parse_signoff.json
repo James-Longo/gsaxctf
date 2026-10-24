@@ -18843,6 +18843,13 @@
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
  },
+ "backend/data/parsed_results/2015/XC/2015-Oceanside-Meet.json": {
+  "parse_sha": "f4679d812c4f233e",
+  "source_sha": "ffff5f2606201d43",
+  "date": "2026-10-24",
+  "by": "sonnet audit (second read, 2026-10-24) (audit: source-error)",
+  "evidence": "Oceanside Meet at Medomak Valley 9/04/15: 22 boys and 16 girls rows match (name, school code BR/MV/O, time, place). The printed team scores do not reproduce for boys: 'Boothbay Region 26, Medomak Valley 39, Oceanside 67' vs the sheet's places MV 1+5+6+14+15 = 41 and Oceanside 7+13+17+18+19 = 74 (BR 2+3+4+8+9 = 26 ok); girls 22/49/49 reproduce. PARSER PATTERN (note): the 'Boys results: Team N, Team N' summary line is not read as team scores (score=no_rankings); date 9/04/15 is in the title."
+ },
  "backend/data/parsed_results/2015/XC/2015-alc-boys-combined.json": {
   "parse_sha": "e68b002f0a81f05f",
   "source_sha": "378ff24a88c26456",
@@ -18913,6 +18920,27 @@
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
  },
+ "backend/data/parsed_results/2015/XC/2015-smaa-xc-relays-indiv-timess.json": {
+  "parse_sha": "a683096011db3975",
+  "source_sha": "fa3e1c15e5e1ecbe",
+  "date": "2026-10-24",
+  "by": "sonnet audit (second read, 2026-10-24) (audit: confirmed)",
+  "evidence": "SMAA Relays 2015 'individual times': grid of schools in columns with each relay leg's runner names and leg times (':00' times), no place and no distance printed, relay-leg sheet by design. 0 rows is correct (legs cannot be entered as individual marks). Nothing else on the sheet."
+ },
+ "backend/data/parsed_results/2015/XC/20150925_Seacoast-Boys_overall.txt.json": {
+  "parse_sha": "0d15acfa259d0779",
+  "source_sha": "2baaf1c1a6d00329",
+  "date": "2026-10-24",
+  "by": "sonnet audit (second read, 2026-10-24) (audit: confirmed)",
+  "evidence": "Seacoast Invitational boys 2.55 miles at Sumner HS (9/25/2015): 60 rows match place, grade (blank where unprinted), school (WA = Washington Academy, Lee = Lee Academy), time and team places (TmPl). Date is in the sheet but not in the parse (set elsewhere); team scores are in the sibling _team file."
+ },
+ "backend/data/parsed_results/2015/XC/20150925_Seacoast-Boys_team.txt.json": {
+  "parse_sha": "bcf82956ddd131da",
+  "source_sha": "59049458d2fabe2a",
+  "date": "2026-10-24",
+  "by": "sonnet audit (second read, 2026-10-24) (audit: confirmed)",
+  "evidence": "Seacoast Invitational boys TEAM SCORE sheet: no individual rows by design (0 rows correct). Parse team scores George Stevens 18, Lee 62, Machias 82, WA 82, Bucksport 119 match the printed scores and reproduce from the place lists (1+2+3+4+8, 6+7+12+17+20, 5+11+19+21+26, 10+14+16+18+24, 9+22+27+29+32)."
+ },
  "backend/data/parsed_results/2015/XC/Andy-Valley-MS-Champs-Boys.json": {
   "parse_sha": "2d91f9bd50e04034",
   "source_sha": "ee846083179438b3",
@@ -18977,18 +19005,18 @@
   "evidence": ""
  },
  "backend/data/parsed_results/2015/XC/BrunswickBoysResults.json": {
-  "parse_sha": "69ff2a359a63ebd0",
+  "parse_sha": "5af6c8db8649331c",
   "source_sha": "9bdfc890aafc4e19",
-  "date": "2026-10-16",
-  "by": "auto: team scores verified exactly, all schools identified, no flags",
-  "evidence": ""
+  "date": "2026-10-24",
+  "by": "sonnet audit (second read, 2026-10-24) (audit: confirmed)",
+  "evidence": "Brunswick Junior High, 09/22/2015: all 72 timed rows match (place, name, grade, team, time); Nathan Demerchant (no time) correctly omitted; 5 team scores match. Middle-school teams resolved me-ms-*."
  },
  "backend/data/parsed_results/2015/XC/BrunswickGirlsResults.json": {
-  "parse_sha": "613f36704449dd98",
+  "parse_sha": "a8fc2023c540137d",
   "source_sha": "aea02f2e89b89cd1",
-  "date": "2026-10-16",
-  "by": "auto: team scores verified exactly, all schools identified, no flags",
-  "evidence": ""
+  "date": "2026-10-24",
+  "by": "sonnet audit (second read, 2026-10-24) (audit: confirmed)",
+  "evidence": "Brunswick Junior High girls 09/22/2015: all 54 competitors match (place, name, team, time), 4 team scores match (Mt. Ararat 29, Brunswick 43, Oxford Hills 74, Bath 91)."
  },
  "backend/data/parsed_results/2015/XC/GSA-Girls-Meet.json": {
   "parse_sha": "a3aa4c548ebde02d",
@@ -19019,11 +19047,11 @@
   "evidence": "Parse matches the source (57 rows). Greely 38, Kennebunk 39, Maine Coast Waldorf 44 come out. Poland printed 112 with place list '20 20 21 25 26 27 28' = 20+20+21+25+26. Rows: Grenier 23rd overall = team place 20 (NYA's 3 finishers removed: 19,22 ahead), Lloyd 24 = 21, Gaul printed place 24 (duplicate of Lloyd's 24; 26:34.0 tied with Goldberg-Courtney 26) Pts printed 20 (duplicate of Grenier's). The Pts column goes 20,21,20,23: 22 is never used and MCW's Goldberg-Courtney is 23, so Gaul is team place 22. Poland = 20+21+22+25+26 = 114, not 112; the printed 112 is built from the duplicated 20."
  },
  "backend/data/parsed_results/2015/XC/GirlsMVC15Results.json": {
-  "parse_sha": "4dc11c31cc667058",
+  "parse_sha": "a675c5f74c85b9bd",
   "source_sha": "55548cc3f933ea69",
-  "date": "2026-10-16",
-  "by": "auto: team scores verified exactly, all schools identified, no flags",
-  "evidence": ""
+  "date": "2026-10-24",
+  "by": "sonnet audit (second read, 2026-10-24) (audit: confirmed)",
+  "evidence": "MVC Championship girls 10/16/2015: all 56 rows match place, name, grade, team, time; 6 team scores match."
  },
  "backend/data/parsed_results/2015/XC/GirlsOverallResults.txt.json": {
   "parse_sha": "4e6456aae821d394",
@@ -19061,11 +19089,11 @@
   "evidence": ""
  },
  "backend/data/parsed_results/2015/XC/JHXCWtvl10-GIRLS.json": {
-  "parse_sha": "ca08fb9f1e1792ca",
+  "parse_sha": "fe61bfba0d3c2eb9",
   "source_sha": "c4e51d2e1babc6ee",
-  "date": "2026-10-16",
-  "by": "auto: team scores verified exactly, all schools identified, no flags",
-  "evidence": ""
+  "date": "2026-10-24",
+  "by": "sonnet audit (second read, 2026-10-24) (audit: confirmed)",
+  "evidence": "All 34 finishers + DNF (Ariana Merrill, Madison) match name, school, time (dot times 9.24 = 9:24); team scores Mt. Blue 20, Winslow 37, Skowhegan 73. Middle-school teams. Sheet prints no meet name or date (null correct)."
  },
  "backend/data/parsed_results/2015/XC/KVAC-at-Leavitt-18-September-Boys-results.json": {
   "parse_sha": "045d1085e21a1845",
@@ -19103,11 +19131,11 @@
   "evidence": ""
  },
  "backend/data/parsed_results/2015/XC/LisbonBoys.json": {
-  "parse_sha": "f63296f5c3986c62",
+  "parse_sha": "c6e890642adfad2c",
   "source_sha": "423eb30d1ffa8605",
-  "date": "2026-10-16",
-  "by": "auto: team scores verified exactly, all schools identified, no flags",
-  "evidence": ""
+  "date": "2026-10-24",
+  "by": "sonnet audit (second read, 2026-10-24) (audit: confirmed)",
+  "evidence": "Lisbon boys 10/9/2015: all 32 rows match place, name, team, time; 4 team scores match."
  },
  "backend/data/parsed_results/2015/XC/LisbonGirls.json": {
   "parse_sha": "ed73a0bcf820cd9d",
@@ -19159,18 +19187,18 @@
   "evidence": ""
  },
  "backend/data/parsed_results/2015/XC/MidSeasonBoysResults.json": {
-  "parse_sha": "0dbdeca72c1fcd60",
+  "parse_sha": "4fb1f3f54d3b873c",
   "source_sha": "3e9a65b8d0b535ff",
-  "date": "2026-10-16",
-  "by": "auto: team scores verified exactly, all schools identified, no flags",
-  "evidence": ""
+  "date": "2026-10-24",
+  "by": "sonnet audit (second read, 2026-10-24) (audit: confirmed)",
+  "evidence": "MVC Mid-Season boys 9/23/2015: all 73 rows match; source spells the team BOTHBAY throughout (typo), correctly resolved to Boothbay; 7 team scores match."
  },
  "backend/data/parsed_results/2015/XC/MidSeasonGirlsResults.json": {
-  "parse_sha": "74fd0bc4ebad9ac1",
+  "parse_sha": "ec4c8f330cef48ec",
   "source_sha": "a8126cdd989b8e1c",
-  "date": "2026-10-16",
-  "by": "auto: team scores verified exactly, all schools identified, no flags",
-  "evidence": ""
+  "date": "2026-10-24",
+  "by": "sonnet audit (second read, 2026-10-24) (audit: confirmed)",
+  "evidence": "MVC Mid-Season girls 9/23/2015: all 55 rows match; 3 team scores match."
  },
  "backend/data/parsed_results/2015/XC/Middle-School-Boys-23-Sept-at-Maranacook.json": {
   "parse_sha": "1cf84a5d92b71166",
@@ -19194,11 +19222,11 @@
   "evidence": ""
  },
  "backend/data/parsed_results/2015/XC/OHGirlsResults.json": {
-  "parse_sha": "09365dce242877e6",
+  "parse_sha": "e35ec13b303c517e",
   "source_sha": "f156a238c8ad4133",
-  "date": "2026-10-16",
-  "by": "auto: team scores verified exactly, all schools identified, no flags",
-  "evidence": ""
+  "date": "2026-10-24",
+  "by": "sonnet audit (second read, 2026-10-24) (audit: confirmed)",
+  "evidence": "Oxford Hills girls 9/25/2015: all 25 rows match; Lewiston 15, Oxford Hills 49 (7+9+10+11+12) as printed."
  },
  "backend/data/parsed_results/2015/XC/Results-Noble-meet-girls.json": {
   "parse_sha": "e5d40934769bcb36",
@@ -19243,11 +19271,11 @@
   "evidence": ""
  },
  "backend/data/parsed_results/2015/XC/Western-Maine-Conference-Meet-4.json": {
-  "parse_sha": "113b86f0de5541e8",
+  "parse_sha": "508a4b1edc876070",
   "source_sha": "de4e4bf29798e568",
-  "date": "2026-10-19",
-  "by": "auto: team scores verified exactly, all schools identified, no flags",
-  "evidence": ""
+  "date": "2026-10-24",
+  "by": "sonnet audit (second read, 2026-10-24) (audit: source-error)",
+  "evidence": "Parse matches the source row for row (70 boys, 58 girls; places, Yr, school, times; team scores Greely 24/Freeport 60/Fryeburg 62/NYA 104/Lake Region 130 and girls 21/43/92/98/139 match the printed Team Scores). Source lists the same runner twice: boys 'Connor Rog 12 Greely' at place 7 (18:10.28) and 46 (22:05.03); girls 'Emily McDermith 12 Fryeburg' at 25 (24:11.32) and 34 (24:40.95). Boys 26 'Charles Wilson (Merri' is cut off in the source. Date 10/9/2015 from the title."
  },
  "backend/data/parsed_results/2015/XC/WinslowJHXC10-BOYS.json": {
   "parse_sha": "8baeb335087c9d4d",
@@ -19257,11 +19285,11 @@
   "evidence": ""
  },
  "backend/data/parsed_results/2015/XC/WinslowJHXC10-GIRLS.json": {
-  "parse_sha": "417d018ccfd73700",
+  "parse_sha": "bec113b329e7e788",
   "source_sha": "c5c02ec7567cb720",
-  "date": "2026-10-16",
-  "by": "auto: team scores verified exactly, all schools identified, no flags",
-  "evidence": ""
+  "date": "2026-10-24",
+  "by": "sonnet audit (second read, 2026-10-24) (audit: confirmed)",
+  "evidence": "Winslow JH girls (middle-school entries me-ms-*). 25 finishers + 2 DNF (Emily Lyman, Jasmyn Pray) match the PLACE/NAME/SCHOOL/TIME table; '10.16' read as 10:16. Carrabec NS and Waterville NS in the TEAM SCORE column are non-scoring and correctly absent; scores Mt. Blue 28, Winslow 28, Skowhegan 73 match. Minor: team-score block gender is None (should be Girls) and meet/date are null (none printed); harmless, score check is verified."
  },
  "backend/data/parsed_results/2015/XC/XCWinslowHS9.4.15.json": {
   "parse_sha": "1b7b937521947ba7",
@@ -19278,11 +19306,11 @@
   "evidence": ""
  },
  "backend/data/parsed_results/2015/XC/XCWtvlHS15-BOYS.json": {
-  "parse_sha": "81b07057e125604c",
+  "parse_sha": "8d2134c22e9be1fe",
   "source_sha": "6d8e8b9220f8f39c",
-  "date": "2026-10-16",
-  "by": "auto: team scores verified exactly, all schools identified, no flags",
-  "evidence": ""
+  "date": "2026-10-24",
+  "by": "sonnet audit (second read, 2026-10-24) (audit: confirmed)",
+  "evidence": "Waterville HS meet, boys (me-hs-*). 59 finishers + DNF Nick Morris match the table row for row; '17.38' read as 17:38. Scores Bangor 35, Waterville 42, Messalonskee 61, Winslow 87 match. Minor: team block gender None, meet/date null (none printed)."
  },
  "backend/data/parsed_results/2015/XC/XCWtvlHS15-GIRLS.json": {
   "parse_sha": "9eaae7e1f597221c",
@@ -19607,11 +19635,11 @@
   "evidence": ""
  },
  "backend/data/parsed_results/2015/XC/jv_girls_pvc_results_10.17.15.json": {
-  "parse_sha": "f5bcf6861c0ab512",
+  "parse_sha": "10de8edb7c1a53c7",
   "source_sha": "0d9af593eecb70db",
-  "date": "2026-10-16",
-  "by": "auto: team scores verified exactly, all schools identified, no flags",
-  "evidence": ""
+  "date": "2026-10-24",
+  "by": "sonnet audit (second read, 2026-10-24) (audit: confirmed)",
+  "evidence": "JV girls 3 Mile at PVC Championship (Mattanawcook, 10/17/2015). 42 finishers + 'Exh28:38.44' Erin Bobo (Ellsworth, exhibition, place null) match: names, Yr, schools (George Stevens, MDI, Orono, Caribou, Hermon, Deer Isle-Ston, Sumner Memorial HS etc.), times and team points. Team scores GSA 33, Caribou 44, Orono 44 match."
  },
  "backend/data/parsed_results/2015/XC/kvacjvboys.txt.json": {
   "parse_sha": "fc9fa992de892424",
@@ -19684,11 +19712,11 @@
   "evidence": ""
  },
  "backend/data/parsed_results/2015/XC/lincoln-boys.txt.json": {
-  "parse_sha": "ca33934a50cfa04c",
+  "parse_sha": "bb89bf1a2394fec8",
   "source_sha": "8967c34e3911b084",
-  "date": "2026-10-16",
-  "by": "auto: team scores verified exactly, all schools identified, no flags",
-  "evidence": ""
+  "date": "2026-10-24",
+  "by": "sonnet audit (second read, 2026-10-24) (audit: confirmed)",
+  "evidence": "Existing transcription of the Lincoln Middle School XC Meet boys sheet (9/23/2015). 67 rows = 66 Boys + Annelyse Warner (place 30, G column F) in a Girls event; Cameron Ginter (place 36, G=F) moved to Boys per the transcriber's evidence (documented in its notes). Names, schools (me-ms-*), times, team points and Boys scores Bonny Eagle 34, Mahoney 44, Memorial 59, Lincoln 89 match the source."
  },
  "backend/data/parsed_results/2015/XC/lincoln-girls.txt.json": {
   "parse_sha": "68c80ac144b5db0f",
@@ -20216,11 +20244,11 @@
   "evidence": ""
  },
  "backend/data/parsed_results/2015/XC/small_girls_pvc_results_10.17.15.json": {
-  "parse_sha": "99499e9c12381a31",
+  "parse_sha": "9154f661f3fc86fd",
   "source_sha": "4094114c4dcac63c",
-  "date": "2026-10-16",
-  "by": "auto: team scores verified exactly, all schools identified, no flags",
-  "evidence": ""
+  "date": "2026-10-24",
+  "by": "sonnet audit (second read, 2026-10-24) (audit: confirmed)",
+  "evidence": "Small-schools girls 3 Mile at the PVC Championship. 42 finishers + 2 DNF (Makayla Gibson, Felicia Moholland) match name/Yr/school/time/points; scores Orono 21, GSA 35, Mattanawcook 78, Lee 122, Washington Academy 124 match. Date not in the parse; it is on the sibling PVC files (10/17/2015)."
  },
  "backend/data/parsed_results/2015/XC/smbboys.txt.json": {
   "parse_sha": "c3524c78f78f07d9",
@@ -22049,6 +22077,13 @@
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
  },
+ "backend/data/parsed_results/2016/XC/airline-invitational-boys.txt.json": {
+  "parse_sha": "abda94fa2d1653bd",
+  "source_sha": "c72743bcf0d6f3b1",
+  "date": "2026-10-24",
+  "by": "sonnet audit (second read, 2026-10-24) (audit: confirmed)",
+  "evidence": "All 168 finishers + 1 DNF (Matthew Boyle) match, 18 middle/elementary-school teams all resolved me-ms-*; team scores (Cohen 73, Greater Houlton 103, ...) match. Date 10/27/2016 and 1.9 mile as printed."
+ },
  "backend/data/parsed_results/2016/XC/airline-invitational-girls.txt.json": {
   "parse_sha": "7b090213920e116c",
   "source_sha": "88821c6b62f605ca",
@@ -22147,6 +22182,27 @@
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
  },
+ "backend/data/parsed_results/2016/XC/boyssections16.txt.json": {
+  "parse_sha": "cdd9e0c761d9842d",
+  "source_sha": "dbeb31ea57ff001e",
+  "date": "2026-10-24",
+  "by": "sonnet audit (second read, 2026-10-24) (audit: confirmed)",
+  "evidence": "2016 Maine XC Festival of Champions - 10/1/2016 (.txt.htm). Checked every row against the source by place, name, grade, school, time: 873 rows all agree, no extra or missing rows (DNF/DQ rows kept with place null). Sections Unseeded, Unseeded (2nd), Seeded are filed as two events (552 + 321), as in the 2017 festival override. Out-of-state strings resolve consistently with the 2017 festival (Cumberland = RI, Canton High School = CT, Burrillville/Classical = RI, Harwood = VT, Colonel Gray = PEI, JH Gillis and King's Edgehill = NS); no unresolved. No team scores printed."
+ },
+ "backend/data/parsed_results/2016/XC/bucksport_boys_jv_results_9.10.16.json": {
+  "parse_sha": "d88d8a7aedfb6f31",
+  "source_sha": "5a0a0ef2c7280048",
+  "date": "2026-10-24",
+  "by": "sonnet audit (second read, 2026-10-24) (audit: confirmed)",
+  "evidence": "Bucksport Invitational 9/10/2016, Event 2 Boys 2.92 Mile Run CC JV: 18 rows (Aldrich Lee 21:22.31 ... McQuarrie Lee 37:43.64) agree on place, name, grade, school, time; Lee = Lee Academy, Deer Isle-Ston = Deer Isle-Stonington, Bangor Christian, George Stevens, Searsport, Bucksport resolve correctly. No team scores ('No full teams for team scoring'). The html's leading Word metadata is not read as rows."
+ },
+ "backend/data/parsed_results/2016/XC/bucksport_girls_jv_results_9.10.16.json": {
+  "parse_sha": "3f120bf31f8bfa79",
+  "source_sha": "6c1ff020e74c94c6",
+  "date": "2026-10-24",
+  "by": "sonnet audit (second read, 2026-10-24) (audit: confirmed)",
+  "evidence": "Bucksport Invitational 9/10/2016, Event 1 Girls 2.92 Mile Run CC JV: 5 rows (Benjamin Bangor Christian 25:10.46, Jakub GSA 25:57.48, LaMarre GSA 28:52.15, Saunders Bucksport 28:58.38, Keach Searsport 33:26.97) agree; schools resolve correctly; no team scores printed."
+ },
  "backend/data/parsed_results/2016/XC/busline-boys.txt.json": {
   "parse_sha": "9c257dc32efcf1c8",
   "source_sha": "66f691549c50ecf3",
@@ -22182,12 +22238,26 @@
   "by": "sonnet audit (score mismatch, 2026-10-23) (audit: source-error)",
   "evidence": "Parse matches the source (54 rows, places/teams/times as printed; '23;16' read 23:16). Printed Girls Team Scores: Yarmouth 25, Cape Elizabeth 38, Maine Coast 80, GNG 94, Lake Region 108. With top 5 of 5+-finisher teams scoring and 6th/7th displacing, Y 1+2+6+7+9=25, CE 3+4+8+11+12=38, MC 5+15+19+20+21=80, GNG 10+17+18+24+25=94 all come out. Lake Region has exactly 5 finishers (Blais 17, Braker 26, Chadwick 36, Toole 37, Colson 46), so all five score and their team places are fixed: 16+22+28+29+33=128, not the printed 108 (a 20-point slip; no cap/min-team rule changes it, every other team would move)."
  },
+ "backend/data/parsed_results/2016/XC/caribou-invite-boys-compiled.json": {
+  "parse_sha": "95b64df7b6de9939",
+  "source_sha": "61ffb12fe75c1dfa",
+  "date": "2026-10-24",
+  "by": "sonnet audit (second read, 2026-10-24) (audit: confirmed)",
+  "evidence": "2016 Caribou Invitational 9/10/2016, Event 1 Boys 2.8 Mile Run Number 1: 112 rows, place, name, grade, school, time checked against the pdf pages 1-3, all agree; the H# and Points columns are not needed (tp 1-20 kept). Grades blank for Beidelman, Trung, Li Yao, Vu as printed. Schools: Bapst Crusaders = John Bapst, Ghca Eagles = GHCA, Fort Kent XC, Foxcroft, Hodgdon, Houlton resolve correctly."
+ },
  "backend/data/parsed_results/2016/XC/caribou-invite-boys-jv.json": {
   "parse_sha": "38e7f6364ed96646",
   "source_sha": "1b50bf67000d1f5c",
   "date": "2026-10-16",
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
+ },
+ "backend/data/parsed_results/2016/XC/caribou-invite-girls-compiled.json": {
+  "parse_sha": "bc20c20db2dcce12",
+  "source_sha": "369c542aeb0bf2b0",
+  "date": "2026-10-24",
+  "by": "sonnet audit (second read, 2026-10-24) (audit: confirmed)",
+  "evidence": "2016 Caribou Invitational 9/10/2016, Event 8 Girls 2.8 Mile Run Number 1: 92 rows checked against the pdf, place, name, grade, school, time all agree. Schools resolve correctly (Bapst Crusaders = John Bapst, Ghca Eagles = GHCA, Katahdin, Fort Kent XC, Foxcroft)."
  },
  "backend/data/parsed_results/2016/XC/caribou-invite-girls-jv.json": {
   "parse_sha": "3ba4ca7697dff06c",
@@ -22475,6 +22545,20 @@
   "date": "2026-10-16",
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
+ },
+ "backend/data/parsed_results/2016/XC/girls_pdf.json": {
+  "parse_sha": "dec4ebb1050dfbe9",
+  "source_sha": "ff6af18566218c53",
+  "date": "2026-10-24",
+  "by": "sonnet audit (second read, 2026-10-24) (audit: confirmed)",
+  "evidence": "girls.pdf, TRAIP-GREELY-KENNEBUNK - 09/09/2016, Fort Foster, Event 1 Girls 5k Run CC. All 65 rows (place, name, school, time, points) agree; team scores Greely 19, Kennebunk Cross Country 39, TraipXC 78, Lake Region 103 agree with the parse and reproduce from the places (1+2+4+5+7=19 ...). Schools: Khs = Kennebunk, TraipXC = Traip Academy, NYA, Lake Region, Greely resolve correctly. Note boys.pdf duplicates this file (boys_pdf is the duplicate)."
+ },
+ "backend/data/parsed_results/2016/XC/girlsfocsections16.txt.json": {
+  "parse_sha": "6c787485f5f08a83",
+  "source_sha": "2544a102b30dc28f",
+  "date": "2026-10-24",
+  "by": "sonnet audit (second read, 2026-10-24) (audit: confirmed)",
+  "evidence": "2016 Maine XC Festival of Champions - 10/1/2016 (.txt.htm). Checked every row against the source by place, name, grade, school, time: 665 rows all agree, no extra or missing rows (DNF/DQ rows kept with place null). Sections Unseeded, Freshman, Seeded are filed as one Girls 5k Run CC event with restarting places, as in the 2017 festival override. Out-of-state strings resolve consistently with the 2017 festival (Cumberland = RI, Canton High School = CT, Burrillville/Classical = RI, Harwood = VT, Colonel Gray = PEI, JH Gillis and King's Edgehill = NS); no unresolved. No team scores printed."
  },
  "backend/data/parsed_results/2016/XC/girlsresultsbrunswicktake2.json": {
   "parse_sha": "4e136b6fad67cf17",
@@ -23098,6 +23182,13 @@
   "date": "2026-10-19",
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
+ },
+ "backend/data/parsed_results/2016/XC/tamsgirls_sept22.json": {
+  "parse_sha": "e0da13f5cc2e1ffa",
+  "source_sha": "112efb58d836811d",
+  "date": "2026-10-24",
+  "by": "sonnet audit (second read, 2026-10-24) (audit: confirmed)",
+  "evidence": "All 44 rows (place, name, team letter K/T/W/B, time) match the source; letter codes are the middle schools Kennebunk, Thornton Academy MS, Wells, Biddeford (resolved me-ms-*). Side table prints team scores MSK 15, TAMS 48, WJS 81, BMS 108 (K runners at places 1-5 = 15); parse holds no team block, rows unaffected. No date printed (null correct)."
  },
  "backend/data/parsed_results/2016/XC/washburn_oct12.json": {
   "parse_sha": "57b2446c50b72da3",
