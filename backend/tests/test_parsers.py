@@ -2701,13 +2701,14 @@ def test_transcription_xc_team_scores_marked_xc():
         os.makedirs(os.path.join(d, '2017', 'XC'))
         with open(os.path.join(d, '2017', 'XC', 'meet.json'), 'w') as f:
             json.dump({'events': [], 'team_rankings': [
-                {'gender': 'Boys', 'teams': [{'rank': 1, 'team': 'York', 'score': 20}]}]}, f)
+                {'gender': 'Boys', 'teams': [{'rank': 1, 'team': 'York', 'score': 20}]},
+                {'kind': 'xc', 'gender': 'Girls', 'teams': [{'rank': 1, 'team': 'York', 'score': 25}]}]}, f)
         sv.TRANSCRIBED = d
         try:
-            b = sv.load_transcription('archive/2017/XC/meet.pdf')['team_rankings'][0]
+            bs = sv.load_transcription('archive/2017/XC/meet.pdf')['team_rankings']
         finally:
             sv.TRANSCRIBED = old
-    assert b['kind'] == 'xc' and b['totals_only'] is True
+    assert all(b['kind'] == 'xc' and b['totals_only'] is True for b in bs)
 
 if __name__ == '__main__':
     qaqc._ensure_team_mapping()

@@ -677,9 +677,10 @@ def load_transcription(input_path):
                        'is_relay': bool(e.get('is_relay')), 'results': rows})
     blocks = d.get('team_rankings') or []
     if parts[-2] == 'XC':
-        # (a reader's XC team scores often omit 'kind': the XC score check reads only 'xc' blocks)
-        blocks = [b if not isinstance(b, dict) or b.get('kind') else
-                  dict(b, kind='xc', **({} if any(t.get('places') for t in b.get('teams') or [])
+        # (a reader's XC team scores often omit 'kind' and 'totals_only': the XC score
+        # check reads only 'xc' blocks, and pairs a block without places by its totals)
+        blocks = [b if not isinstance(b, dict) or b.get('kind', 'xc') != 'xc' else
+                  dict(b, kind='xc', **({} if 'totals_only' in b or any(t.get('places') for t in b.get('teams') or [])
                                         else {'totals_only': True}))
                   for b in blocks]
     return {'events': events, 'date': d.get('date'), 'meet_name': d.get('meet_name'),
