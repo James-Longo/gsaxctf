@@ -1408,6 +1408,36 @@ FILE_RULES = [
     (['K'], 'XC', (2010, 2010), r'^yorkmsxc%20results%202010%20MS%20(boys|girls)%20(junior|senior)$', 'me-ms-kennebunk'),   # York County MS festival Fort Foster 2010; same runners in 2011-2012 files and the 2006 York County MS meets.
     (['TA'], 'XC', (2010, 2010), r'^yorkmsxc%20results%202010%20MS%20(boys|girls)%20(junior|senior)$', 'me-ms-thornton'),   # York County MS festival Fort Foster 2010; same runners in 2011-2012 files and the 2006 York County MS meets.
     (['Ma'], 'XC', (2006, 2006), r'^massabesic9_22boys$', 'me-hs-massabesic'),   # Massabesic, Gorham, McAuley, Thornton at Massabesic
+    # 2026-10-24 unresolved-school review, batch 2
+    (['F'], 'XC', (2004, 2004), r'^cape7oct04[bg]\.txt$', 'me-hs-falmouth'),   # Title lists Falmouth; only F team
+    (['Y'], 'XC', (2004, 2004), r'^cape7oct04[bg]\.txt$', 'me-hs-yarmouth'),   # Title lists Yarmouth; only Y team
+    (['W'], 'XC', (2004, 2004), r'^cape7oct04[bg]\.txt$', 'me-hs-waynflete'),   # Title lists 'Waynefleet NS'; only W team
+    (['Co', 'co'], 'XC', (2006, 2006), r'^el(girls|boys)9_1$', 'me-hs-cony'),   # Team list Cony; Cony 'Co' used throughout
+    (['Mo'], 'XC', (2006, 2006), r'^el(girls|boys)9_1$', 'me-hs-morse'),   # Team list Morse
+    (['G'], 'XC', (2006, 2006), r'^el(girls|boys)9_1$', 'me-hs-gardiner'),   # Team list Gardiner (n.s.); only G team
+    (['R'], 'XC', (2008, 2008), r'^lincoln9_26$', 'me-hs-rockland'),   # Teams Medomak Valley, Lincoln Academy, Rockland, Camden Hills; Rockland only R
+    (['Y'], 'XC', (2009, 2009), r'^yorkcountymsboys6th$', 'me-ms-york'),   # File legend: York Middle School = Y
+    (['Ki'], 'XC', (2009, 2009), r'^yorkcountymsboys6th$', 'me-ms-shapleigh'),   # File legend: Shapleigh School of Kittery = Ki
+    (['Ke'], 'XC', (2009, 2009), r'^yorkcountymsboys6th$', 'me-ms-kennebunk'),   # File legend: Middle School of the Kennebunks = Ke
+    (['Md'], 'XC', (2009, 2009), r'^yorkcountymsboys6th$', 'me-ms-marshwood'),   # File legend: Marshwood Middle School = Md
+    (['Bi'], 'XC', (2009, 2009), r'^yorkcountymsboys6th$', 'me-ms-biddeford'),   # Legend B = Biddeford Middle School; Bi is the only Bi- school in the legend
+    (['TA'], 'XC', (2009, 2009), r'^yorkcountymsboys6th$', 'me-ms-thornton'),   # File legend: Thornton Academy Middle School = TA (currently resolves to the high school)
+    (['Md'], 'XC', (2007, 2007), r'^sacomiddle(boys|girls)10_3$', 'me-ms-marshwood'),   # Middle-school meet at Saco; Marshwood scored 31; Md = Marshwood in all York County MS files
+    (['KI', 'Ki'], 'XC', (2007, 2007), r'^sacomiddle(boys|girls)10_3$', 'me-ms-shapleigh'),   # Sub5 index lists Shapleigh; team score 'Kittery 65'
+    (['Ma'], 'XC', (2007, 2007), r'^sacomiddle(boys|girls)10_3$', 'me-ms-massabesic'),   # Massabesic scored 36; Mattanawcook (Lincoln) is not at a Saco MS meet
+    (['TA'], 'XC', (2007, 2007), r'^sacomiddle(boys|girls)10_3$', 'me-ms-thornton'),   # Index: 'Thornton Middle School Meet'
+    (['L'], 'XC', (2007, 2007), r'^elboys8_31$', 'me-hs-lewiston'),   # Meet score line: Lewiston 36 first; Noor (L) wins; only L team.
+    (['B'], 'XC', (2007, 2007), r'^elboys8_31$', 'me-hs-brunswick'),   # Score line Brunswick 69; only B team (girls twin elgirls8_31 already maps B to Brunswick).
+    (['Mo'], 'XC', (2007, 2007), r'^elboys8_31$', 'me-hs-morse'),   # Score line Morse 106; only Mo team (Kake, Kibler, Watson).
+    (['G'], 'XC', (2007, 2007), r'^elboys8_31$', 'me-hs-gardiner'),   # Score line Gardiner ns (3 runners: Evanku, Hopkins); only G team.
+    (['Y'], 'XC', (2009, 2009), r'^yorkcountymsgirls7th8th$', 'me-ms-york'),   # York County MS festival; same ruling as the boys file; Evans, Shaw, Cryan are York.
+    (['Sf'], 'XC', (2009, 2009), r'^yorkcountymsgirls7th8th$', 'me-ms-sanford'),   # York County MS festival; same ruling as the boys file (Sf = Sanford MS).
+    (['F'], 'XC', (2004, 2004), r'^cape7oct04[bg](\.txt)?$', 'me-hs-falmouth'),   # Title: Falmouth 28, Cape Elizabeth 31, Yarmouth 76, Waynefleet 113; only F team (Forcella, Wilson).
+    (['Y'], 'XC', (2004, 2004), r'^cape7oct04[bg](\.txt)?$', 'me-hs-yarmouth'),   # Same four-team meet; only Y team.
+    (['W'], 'XC', (2004, 2004), r'^cape7oct04[bg](\.txt)?$', 'me-hs-waynflete'),   # Same meet; "Waynefleet" is the fourth team and the only W.
+    (['H-B'], 'XC', (2008, 2008), r'^hydegirls_oct18$', 'me-hs-hyde'),   # Teams: Hyde-Bath, Richmond High School, Hyde-Woodstock; H-B = Hyde-Bath (Maine).
+    (['R'], 'XC', (2008, 2008), r'^hydegirls_oct18$', 'me-hs-richmond'),   # Same header: Richmond High School is the only R team.
+    (['Maine Cathlol'], 'XC', (2011, 2011), r'^smaainvite(girls|boys)_oct25$', 'me-ms-southern-maine-catholic'),   # "SO Maine Cathlol" = Southern Maine Catholic (name truncated, SO read as grade); SMAA middle-school 
     (['LR'], 'XC', (2018, 2018), r'^MS_MEET_9_20_2018$', 'me-ms-lake-region'),         # same meet
     (['MO'], 'XC', (2015, 2017), r'^MS_MEET_9_10_2015$|^MS_MEET_9_19_2017$', 'me-ms-molly-ockett'),   # GNG middle-school meets; MO is Molly Ockett in the 2018 one
     (['JS'], 'XC', (2017, 2017), r'^MS_MEET_10_12_2017$', 'me-ms-jordan-small'),        # GNG middle-school meet; its runners 'Raymond' (Jordan-Small MS) elsewhere
