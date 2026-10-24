@@ -2670,6 +2670,20 @@ def test_html_team_scores_cells_stacking_two_entries():
     assert _score_sets(parse_xc_team_scores(html_br)) == want
 
 
+
+def test_short_name_store_id_per_season_and_sex():
+    """'Bonsey' in a boys' race and 'Bonsey' in a girls' race of one season are two
+    runners (Sam and Kourtney): a surname-only or initial name's store id carries the
+    season and the race's sex; a full name and a relay keep the plain id."""
+    from backend.json_store import store_athlete_id
+    b = store_athlete_id('Bonsey', 'Falmouth High School', 2006, 'XC', 'Boys 3 Mile Cross Country')
+    g = store_athlete_id('Bonsey', 'Falmouth High School', 2006, 'XC', 'Girls 3 Mile Cross Country')
+    assert b == 'bonsey-falmouth-high-school--2006-xc-b' and g.endswith('--2006-xc-g'), (b, g)
+    assert store_athlete_id('J Smith', 'York', 2010, 'Outdoor', 'Girls 100 Meter Dash') == 'j-smith-york--2010-outdoor-g'
+    assert store_athlete_id('Kourtney Bonsey', 'Falmouth High School', 2006, 'XC', 'Girls 5K') == 'kourtney-bonsey-falmouth-high-school'
+    assert store_athlete_id('Bonsey', 'Falmouth', 2006, 'XC', 'Boys 4x800 Meter Relay', True) == 'bonsey-falmouth'
+
+
 if __name__ == '__main__':
     qaqc._ensure_team_mapping()
     failed = 0

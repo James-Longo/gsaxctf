@@ -168,6 +168,17 @@ function App() {
     const raw = `${name.toLowerCase()}--${team.toLowerCase()}`;
     return raw.replace(/[^a-zA-Z0-9_]/g, '-').replace(/-+/g, '-').replace(/^-|-$/g, '');
   };
+  // backend/json_store.py store_athlete_id: a surname-only or initial name
+  // ("Bonsey", "J Smith") gets one id per season and sex
+  const storeAthleteId = (name, team, year, season, event) => {
+    const id = slugifyAthlete(name, team);
+    const toks = (name || '').replace(/'/g, '').match(/[A-Za-z']+/g) || [];
+    const short = toks.length === 1 ? toks[0].length >= 2
+      : toks.length === 2 && ((toks[0].length === 1) !== (toks[1].length === 1));
+    if (!short || /relay/i.test(event || '')) return id;
+    const g = (event || '').split(' ')[0];
+    return `${id}--${year}-${String(season).toLowerCase()}` + (g === 'Boys' || g === 'Girls' ? `-${g[0].toLowerCase()}` : '');
+  };
   // Chunks are stored gzipped (.json.gz) to fit hosting limits; decompress
   // client-side. Falls back to parsing as plain JSON if the server (or a
   // proxy) already decoded it.
@@ -205,7 +216,7 @@ function App() {
           if (!p.season) p.season = season;
           if (!p.splits) p.splits = [];
           if (p.date && p.date !== 'Unknown' && !p.date.includes('T')) p.date = p.date + 'T12:00:00';
-          if (!p.athlete_id) p.athlete_id = slugifyAthlete(p.athlete_name || '', teamName);
+          if (!p.athlete_id) p.athlete_id = storeAthleteId(p.athlete_name || '', teamName, year, season, p.event);
           if (!p.id) p.id = `${slug}|${key}|${i}`;
         });
         setLoadedSeasons(prev => ({ ...prev, [cacheKey]: data }));

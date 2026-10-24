@@ -43,6 +43,30 @@ def slugify_athlete(name: str, team: str) -> str:
     return re.sub(r'-+', '-', raw).strip('-')
 
 
+def is_short_name(name: str) -> bool:
+    """A printed name of one surname ("Inhorn") or an initial and a surname
+    ("J Smith", "Smith, J.")."""
+    toks = re.findall(r"[A-Za-z']+", (name or '').replace("'", ''))
+    if len(toks) == 1:
+        return len(toks[0]) >= 2
+    return len(toks) == 2 and (len(toks[0]) == 1) != (len(toks[1]) == 1)
+
+
+def store_athlete_id(name: str, team: str, year, season: str, event: str = '', is_relay: bool = False) -> str:
+    """The store id of a row. A surname-only or initial name can be several
+    runners (siblings, a boy and a girl of one family): one id per season and
+    sex, so the athlete catalog attaches each to the runner it belongs to
+    ('Bonsey' in the boys' race is Sam, in the girls' Kourtney). The site
+    (ui/src/App.jsx storeAthleteId) computes the same id."""
+    aid = slugify_athlete(name, team)
+    if not is_relay and is_short_name(name):
+        aid = f'{aid}--{year}-{str(season).lower()}'
+        g = (event or '').split(' ', 1)[0]
+        if g in ('Boys', 'Girls'):
+            aid += '-' + g[0].lower()
+    return aid
+
+
 def make_perf_id(athlete_id: str, event: str, mark: str, date: str, meet: str) -> str:
     key = f"{athlete_id}|{event}|{mark}|{date}|{meet}"
     return hashlib.md5(key.encode()).hexdigest()[:16]
@@ -305,7 +329,8 @@ def enrich_rows(team_name: str, chunk_key: str, rows: list) -> list:
         if d and d != 'Unknown' and 'T' not in d:
             p['date'] = d + 'T12:00:00'
         if 'athlete_id' not in p:
-            p['athlete_id'] = slugify_athlete(p.get('athlete_name', ''), team_name)
+            p['athlete_id'] = store_athlete_id(p.get('athlete_name', ''), team_name, year, season,
+                                               p.get('event', ''), 'relay' in (p.get('event') or '').lower())
         if 'id' not in p:
             p['id'] = make_perf_id(p['athlete_id'], p.get('event', ''),
                                    p.get('mark', ''), p.get('date', ''),

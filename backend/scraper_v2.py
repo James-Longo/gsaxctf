@@ -9,7 +9,7 @@ from backend.parser import Sub5ColumnParser
 from backend.parsers.detector import FormatDetector
 from backend.json_store import (
     load_scrape_state, save_scrape_state, load_athletes, save_athletes,
-    add_performances_for_team, rebuild_manifest, slugify_athlete, list_teams,
+    add_performances_for_team, rebuild_manifest, slugify_athlete, store_athlete_id, list_teams,
     TEAMS_DIR, SCRAPE_STATE_PATH, _chunk_files, _load_json, enrich_rows,
     canonical_team_name
 )
@@ -2778,13 +2778,8 @@ class Sub5ScraperV2:
                         if is_relay and athlete_name == f"{school} Relay":
                             athlete_name = f"{team_norm} Relay"
                         
-                        athlete_id = slugify_athlete(athlete_name, team_norm)
-                        # a surname-only ("Inhorn") or initial ("J Smith") name
-                        # can be several runners over the years (siblings): one
-                        # id per season, so the athlete catalog can attach each
-                        # season to the runner it belongs to
-                        if not is_relay and is_short_name(athlete_name):
-                            athlete_id = f'{athlete_id}--{year}-{season.lower()}'
+                        # (a surname-only or initial name: one id per season and sex)
+                        athlete_id = store_athlete_id(athlete_name, team_norm, year, season, full_event, is_relay)
                         performance_date = f"{date}T12:00:00" if date != "Unknown" else "Unknown"
                         
                         p = {
