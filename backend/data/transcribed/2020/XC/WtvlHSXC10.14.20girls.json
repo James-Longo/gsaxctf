@@ -1,0 +1,115 @@
+{
+ "source": "backend/data/sub5_archive/2020/XC/WtvlHSXC10.14.20girls.pdf",
+ "meet_name": "Waterville HS XC",
+ "date": "2020-10-14",
+ "school_codes": {
+  "Waterville": "Waterville Senior High School",
+  "Lawrence": "Lawrence High School"
+ },
+ "events": [
+  {
+   "event": "Run CC",
+   "gender": "Girls",
+   "is_relay": false,
+   "results": [
+    {
+     "place": 1,
+     "athlete": "Abby Williams",
+     "school": "Waterville",
+     "result": "22:14",
+     "grade": "",
+     "type": "Finals"
+    },
+    {
+     "place": 2,
+     "athlete": "Victoria Richards",
+     "school": "Lawrence",
+     "result": "23:31",
+     "grade": "",
+     "type": "Finals"
+    },
+    {
+     "place": 3,
+     "athlete": "Surya Amundsen",
+     "school": "Waterville",
+     "result": "24:03",
+     "grade": "",
+     "type": "Finals"
+    },
+    {
+     "place": 4,
+     "athlete": "AnnMarie Limberger",
+     "school": "Waterville",
+     "result": "25:04",
+     "grade": "",
+     "type": "Finals"
+    },
+    {
+     "place": 5,
+     "athlete": "Hazel Dow",
+     "school": "Waterville",
+     "result": "25:54",
+     "grade": "",
+     "type": "Finals"
+    },
+    {
+     "place": 6,
+     "athlete": "Keya Amundsen",
+     "school": "Waterville",
+     "result": "26:52",
+     "grade": "",
+     "type": "Finals"
+    },
+    {
+     "place": 7,
+     "athlete": "Cassandra Richards",
+     "school": "Lawrence",
+     "result": "27:03",
+     "grade": "",
+     "type": "Finals"
+    },
+    {
+     "place": 8,
+     "athlete": "Kali Thompson",
+     "school": "Waterville",
+     "result": "27:04",
+     "grade": "",
+     "type": "Finals"
+    },
+    {
+     "place": 9,
+     "athlete": "Julia Scott",
+     "school": "Waterville",
+     "result": "50:22",
+     "grade": "",
+     "type": "Finals"
+    },
+    {
+     "place": null,
+     "athlete": "Alyssa Bourque",
+     "school": "Lawrence",
+     "result": "DNF",
+     "grade": "",
+     "type": "Finals"
+    }
+   ]
+  }
+ ],
+ "team_rankings": [
+  {
+   "kind": "xc",
+   "gender": "Girls",
+   "event_header": "TEAM SCORE",
+   "teams": [
+    {
+     "rank": 1,
+     "team": "Waterville",
+     "score": 15.0,
+     "places": []
+    }
+   ],
+   "totals_only": true
+  }
+ ],
+ "notes": "Parse was wrong: 7 of 10 rows, with the BIB read as the place (321, 324...), Abby Williams, Victoria Richards (whose lines end in the team-score cell 'Waterville 15' / 'Lawrence NS') and the DNF Alyssa Bourque missing, and 'Cassandra Richards Lawrence' with no school (PARSER PATTERN: XCListParser drops rows whose last cell is a TEAM SCORE entry, takes BIB for place, and splits a long name/school wrongly). Now 10 rows: places are the PLACE column; times '22.14' etc. are mm.ss (22:14); DNF has place null. Date from file name 10.14.20; meet name from file name (Wtvl HS XC). Waterville 15 = 1+2+3+4+5 (Lawrence 'NS', fewer than 5 runners). Waterville/Lawrence read as the high schools (meet is a HS meet); no per-row team_place printed."
+}

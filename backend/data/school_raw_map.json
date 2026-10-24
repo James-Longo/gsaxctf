@@ -1,37 +1,37 @@
 {
 "_meta": {
 "methods_by_rows": {
-"exact/alias": 1695455,
-"code": 261723,
+"exact/alias": 1695537,
+"code": 261698,
 "truncation": 120479,
-"athlete-continuity": 58215,
+"athlete-continuity": 58175,
 "mascot": 28481,
 "bare name + level context": 23936,
-"unresolved": 18098,
-"manual (file rule)": 16226,
+"unresolved": 18091,
+"manual (file rule)": 16233,
 "co-op label": 12530,
 "state-tagged (auto entry)": 10687,
-"spelling (fuzzy)": 3507,
+"spelling (fuzzy)": 3496,
 "file-expansion": 2857,
 "debris-salvage": 1767,
-"debris": 1121,
-"ambiguous": 1060,
+"debris": 1120,
+"ambiguous": 1059,
 "company": 725,
 "later-hs": 636,
-"blank": 271,
+"blank": 270,
 "co-op label -> host (co-op not active)": 183
 },
 "methods_by_strings": {
-"exact/alias": 4106,
-"unresolved": 2282,
+"exact/alias": 4105,
+"unresolved": 2277,
 "state-tagged (auto entry)": 1570,
 "debris-salvage": 913,
 "code": 801,
-"debris": 800,
+"debris": 799,
 "truncation": 547,
-"athlete-continuity": 510,
-"spelling (fuzzy)": 300,
-"manual (file rule)": 97,
+"athlete-continuity": 499,
+"spelling (fuzzy)": 298,
+"manual (file rule)": 98,
 "co-op label": 77,
 "bare name + level context": 65,
 "mascot": 44,
@@ -39,7 +39,7 @@
 "file-expansion": 14,
 "later-hs": 3
 },
-"distinct_strings": 12165,
+"distinct_strings": 12146,
 "note": "'raw' keys are whitespace-collapsed school strings exactly as printed. 'overrides' are per-file answers (year/season/file-stem) that differ from the string's global id."
 },
 "raw": {
@@ -156,11 +156,11 @@
 "how": "exact/alias"
 },
 "York": {
-"rows": 20382,
+"rows": 20388,
 "seasons": {
 "Indoor": 11304,
 "Outdoor": 7211,
-"XC": 1867
+"XC": 1873
 },
 "years": [
 2003,
@@ -169,7 +169,7 @@
 "id": "me-hs-york",
 "method": "exact",
 "by_id": {
-"me-hs-york": 20078,
+"me-hs-york": 20084,
 "me-ms-york": 304
 },
 "context_dependent": true,
@@ -337,11 +337,11 @@
 "how": "exact/alias"
 },
 "Lewiston": {
-"rows": 17182,
+"rows": 17185,
 "seasons": {
 "Indoor": 5309,
 "Outdoor": 8951,
-"XC": 2922
+"XC": 2925
 },
 "years": [
 2003,
@@ -350,7 +350,7 @@
 "id": "me-hs-lewiston",
 "method": "exact",
 "by_id": {
-"me-hs-lewiston": 16607,
+"me-hs-lewiston": 16610,
 "me-ms-lewiston": 575
 },
 "context_dependent": true,
@@ -414,11 +414,11 @@
 "how": "exact/alias"
 },
 "MTA": {
-"rows": 15990,
+"rows": 15979,
 "seasons": {
 "Indoor": 6894,
 "Outdoor": 7594,
-"XC": 1502
+"XC": 1491
 },
 "years": [
 2005,
@@ -427,7 +427,7 @@
 "id": "me-hs-mt-ararat",
 "method": "code",
 "by_id": {
-"me-hs-mt-ararat": 14231,
+"me-hs-mt-ararat": 14220,
 "me-ms-mt-ararat": 1159,
 "me-hs-mt-abram": 600
 },
@@ -548,11 +548,11 @@
 "how": "exact/alias"
 },
 "Lawrence": {
-"rows": 15356,
+"rows": 15359,
 "seasons": {
 "Indoor": 3879,
 "Outdoor": 9741,
-"XC": 1736
+"XC": 1739
 },
 "years": [
 2003,
@@ -561,7 +561,7 @@
 "id": "me-hs-lawrence",
 "method": "exact",
 "by_id": {
-"me-hs-lawrence": 13720,
+"me-hs-lawrence": 13723,
 "me-ms-lawrence": 1636
 },
 "context_dependent": true,
@@ -784,11 +784,11 @@
 "how": "exact/alias"
 },
 "Waterville": {
-"rows": 11575,
+"rows": 11576,
 "seasons": {
 "Indoor": 2657,
 "Outdoor": 6127,
-"XC": 2791
+"XC": 2792
 },
 "years": [
 2003,
@@ -797,7 +797,7 @@
 "id": "me-hs-waterville",
 "method": "exact",
 "by_id": {
-"me-hs-waterville": 9044,
+"me-hs-waterville": 9045,
 "me-ms-waterville": 2531
 },
 "context_dependent": true,
@@ -1023,11 +1023,11 @@
 "how": "exact/alias"
 },
 "Edward Little": {
-"rows": 9764,
+"rows": 9766,
 "seasons": {
 "Indoor": 2470,
 "Outdoor": 5316,
-"XC": 1978
+"XC": 1980
 },
 "years": [
 2003,
@@ -1197,6 +1197,35 @@
 "method": "exact",
 "how": "exact/alias"
 },
+"Brunswick": {
+"rows": 8724,
+"seasons": {
+"Indoor": 1329,
+"Outdoor": 2776,
+"XC": 4619
+},
+"years": [
+2003,
+2026
+],
+"id": "me-hs-brunswick",
+"method": "exact",
+"by_id": {
+"me-hs-brunswick": 7582,
+"me-ms-brunswick": 1142
+},
+"context_dependent": true,
+"by_level": {
+"hs": "me-hs-brunswick",
+"ms": "me-ms-brunswick"
+},
+"flags": [
+"athletes contradict name match (me-hs-brunswick -> me-ms-brunswick, 12/12)",
+"athletes contradict name match (me-hs-brunswick -> me-ms-brunswick, 22/23)",
+"athletes contradict name match (me-hs-brunswick -> me-ms-brunswick, 3/3)"
+],
+"how": "exact/alias"
+},
 "Nokomis": {
 "rows": 8724,
 "seasons": {
@@ -1219,35 +1248,6 @@
 "hs": "me-hs-nokomis",
 "ms": "me-ms-nokomis"
 },
-"how": "exact/alias"
-},
-"Brunswick": {
-"rows": 8711,
-"seasons": {
-"Indoor": 1329,
-"Outdoor": 2776,
-"XC": 4606
-},
-"years": [
-2003,
-2026
-],
-"id": "me-hs-brunswick",
-"method": "exact",
-"by_id": {
-"me-hs-brunswick": 7569,
-"me-ms-brunswick": 1142
-},
-"context_dependent": true,
-"by_level": {
-"hs": "me-hs-brunswick",
-"ms": "me-ms-brunswick"
-},
-"flags": [
-"athletes contradict name match (me-hs-brunswick -> me-ms-brunswick, 12/12)",
-"athletes contradict name match (me-hs-brunswick -> me-ms-brunswick, 22/23)",
-"athletes contradict name match (me-hs-brunswick -> me-ms-brunswick, 3/3)"
-],
 "how": "exact/alias"
 },
 "GNG": {
@@ -1278,10 +1278,10 @@
 "how": "code"
 },
 "Massabesic": {
-"rows": 8553,
+"rows": 8560,
 "seasons": {
 "Outdoor": 3162,
-"XC": 2292,
+"XC": 2299,
 "Indoor": 3099
 },
 "years": [
@@ -1291,7 +1291,7 @@
 "id": "me-hs-massabesic",
 "method": "exact",
 "by_id": {
-"me-hs-massabesic": 8184,
+"me-hs-massabesic": 8191,
 "me-ms-massabesic": 369
 },
 "context_dependent": true,
@@ -1575,10 +1575,10 @@
 "how": "exact/alias"
 },
 "Kennebunk": {
-"rows": 7011,
+"rows": 7012,
 "seasons": {
 "Outdoor": 3596,
-"XC": 2362,
+"XC": 2363,
 "Indoor": 1053
 },
 "years": [
@@ -1588,7 +1588,7 @@
 "id": "me-hs-kennebunk",
 "method": "exact",
 "by_id": {
-"me-hs-kennebunk": 6519,
+"me-hs-kennebunk": 6520,
 "me-ms-kennebunk": 492
 },
 "context_dependent": true,
@@ -1702,11 +1702,11 @@
 "how": "mascot"
 },
 "Cony": {
-"rows": 6323,
+"rows": 6327,
 "seasons": {
 "Indoor": 1253,
 "Outdoor": 3930,
-"XC": 1140
+"XC": 1144
 },
 "years": [
 2003,
@@ -1715,7 +1715,7 @@
 "id": "me-hs-cony",
 "method": "exact",
 "by_id": {
-"me-hs-cony": 5971,
+"me-hs-cony": 5975,
 "me-ms-cony": 352
 },
 "context_dependent": true,
@@ -1730,10 +1730,10 @@
 "how": "exact/alias"
 },
 "Mt. Blue": {
-"rows": 6306,
+"rows": 6326,
 "seasons": {
 "Outdoor": 2341,
-"XC": 3775,
+"XC": 3795,
 "Indoor": 190
 },
 "years": [
@@ -1743,7 +1743,7 @@
 "id": "me-hs-mt-blue",
 "method": "exact",
 "by_id": {
-"me-hs-mt-blue": 5502,
+"me-hs-mt-blue": 5522,
 "me-ms-mt-blue": 804
 },
 "context_dependent": true,
@@ -1852,6 +1852,30 @@
 ],
 "how": "exact/alias"
 },
+"Sanford": {
+"rows": 5761,
+"seasons": {
+"Outdoor": 4411,
+"XC": 1115,
+"Indoor": 235
+},
+"years": [
+2003,
+2026
+],
+"id": "me-hs-sanford",
+"method": "exact",
+"by_id": {
+"me-hs-sanford": 5575,
+"me-ms-sanford": 186
+},
+"context_dependent": true,
+"by_level": {
+"hs": "me-hs-sanford",
+"ms": "me-ms-sanford"
+},
+"how": "exact/alias"
+},
 "Greely High School": {
 "rows": 5759,
 "seasons": {
@@ -1865,30 +1889,6 @@
 ],
 "id": "me-hs-greely",
 "method": "exact",
-"how": "exact/alias"
-},
-"Sanford": {
-"rows": 5758,
-"seasons": {
-"Outdoor": 4411,
-"XC": 1112,
-"Indoor": 235
-},
-"years": [
-2003,
-2026
-],
-"id": "me-hs-sanford",
-"method": "exact",
-"by_id": {
-"me-hs-sanford": 5572,
-"me-ms-sanford": 186
-},
-"context_dependent": true,
-"by_level": {
-"hs": "me-hs-sanford",
-"ms": "me-ms-sanford"
-},
 "how": "exact/alias"
 },
 "Lisbon": {
@@ -2106,6 +2106,34 @@
 "method": "exact",
 "how": "exact/alias"
 },
+"Mt. Ararat": {
+"rows": 5322,
+"seasons": {
+"Indoor": 1090,
+"Outdoor": 1771,
+"XC": 2461
+},
+"years": [
+2003,
+2026
+],
+"id": "me-hs-mt-ararat",
+"method": "exact",
+"by_id": {
+"me-hs-mt-ararat": 4955,
+"me-ms-mt-ararat": 367
+},
+"context_dependent": true,
+"by_level": {
+"hs": "me-hs-mt-ararat",
+"ms": "me-ms-mt-ararat"
+},
+"flags": [
+"athletes contradict name match (me-hs-mt-ararat -> me-ms-mt-ararat, 16/16)",
+"athletes contradict name match (me-hs-mt-ararat -> me-ms-mt-ararat, 18/18)"
+],
+"how": "exact/alias"
+},
 "Troy Howard": {
 "rows": 5320,
 "seasons": {
@@ -2118,34 +2146,6 @@
 ],
 "id": "me-ms-troy-howard",
 "method": "exact",
-"how": "exact/alias"
-},
-"Mt. Ararat": {
-"rows": 5305,
-"seasons": {
-"Indoor": 1090,
-"Outdoor": 1771,
-"XC": 2444
-},
-"years": [
-2003,
-2026
-],
-"id": "me-hs-mt-ararat",
-"method": "exact",
-"by_id": {
-"me-hs-mt-ararat": 4938,
-"me-ms-mt-ararat": 367
-},
-"context_dependent": true,
-"by_level": {
-"hs": "me-hs-mt-ararat",
-"ms": "me-ms-mt-ararat"
-},
-"flags": [
-"athletes contradict name match (me-hs-mt-ararat -> me-ms-mt-ararat, 16/16)",
-"athletes contradict name match (me-hs-mt-ararat -> me-ms-mt-ararat, 18/18)"
-],
 "how": "exact/alias"
 },
 "Boothbay": {
@@ -2310,11 +2310,11 @@
 "how": "exact/alias"
 },
 "Cony High School": {
-"rows": 4944,
+"rows": 4943,
 "seasons": {
 "Indoor": 294,
 "Outdoor": 2000,
-"XC": 2650
+"XC": 2649
 },
 "years": [
 2003,
@@ -2354,11 +2354,11 @@
 "how": "exact/alias"
 },
 "Cape Elizabeth": {
-"rows": 4635,
+"rows": 4659,
 "seasons": {
 "Indoor": 227,
 "Outdoor": 1599,
-"XC": 2809
+"XC": 2833
 },
 "years": [
 2003,
@@ -2367,7 +2367,7 @@
 "id": "me-hs-cape-elizabeth",
 "method": "exact",
 "by_id": {
-"me-hs-cape-elizabeth": 3940,
+"me-hs-cape-elizabeth": 3964,
 "me-ms-cape-elizabeth": 695
 },
 "context_dependent": true,
@@ -2383,10 +2383,10 @@
 "how": "exact/alias"
 },
 "Morse": {
-"rows": 4602,
+"rows": 4606,
 "seasons": {
 "Outdoor": 3144,
-"XC": 1078,
+"XC": 1082,
 "Indoor": 380
 },
 "years": [
@@ -2890,11 +2890,11 @@
 "how": "exact/alias"
 },
 "Gardiner": {
-"rows": 3801,
+"rows": 3802,
 "seasons": {
 "Indoor": 146,
 "Outdoor": 2279,
-"XC": 1376
+"XC": 1377
 },
 "years": [
 2003,
@@ -2903,7 +2903,7 @@
 "id": "me-hs-gardiner",
 "method": "exact",
 "by_id": {
-"me-hs-gardiner": 3129,
+"me-hs-gardiner": 3130,
 "me-ms-gardiner": 672
 },
 "context_dependent": true,
@@ -3432,31 +3432,6 @@
 "method": "exact",
 "how": "exact/alias"
 },
-"Cape": {
-"rows": 3194,
-"seasons": {
-"Indoor": 1980,
-"Outdoor": 544,
-"XC": 670
-},
-"years": [
-2003,
-2022
-],
-"id": "me-hs-cape-elizabeth",
-"method": "exact",
-"by_id": {
-"me-hs-cape-elizabeth": 3028,
-"me-ms-cape-elizabeth": 166
-},
-"context_dependent": true,
-"flags": [
-"athletes contradict name match (me-hs-cape-elizabeth -> me-ms-cape-elizabeth, 11/11)",
-"athletes contradict name match (me-hs-cape-elizabeth -> me-ms-cape-elizabeth, 5/5)",
-"athletes contradict name match (me-hs-cape-elizabeth -> me-ms-cape-elizabeth, 7/8)"
-],
-"how": "exact/alias"
-},
 "Waterville High School": {
 "rows": 3188,
 "seasons": {
@@ -3470,6 +3445,31 @@
 ],
 "id": "me-hs-waterville",
 "method": "exact",
+"how": "exact/alias"
+},
+"Cape": {
+"rows": 3180,
+"seasons": {
+"Indoor": 1980,
+"Outdoor": 544,
+"XC": 656
+},
+"years": [
+2003,
+2022
+],
+"id": "me-hs-cape-elizabeth",
+"method": "exact",
+"by_id": {
+"me-hs-cape-elizabeth": 3014,
+"me-ms-cape-elizabeth": 166
+},
+"context_dependent": true,
+"flags": [
+"athletes contradict name match (me-hs-cape-elizabeth -> me-ms-cape-elizabeth, 11/11)",
+"athletes contradict name match (me-hs-cape-elizabeth -> me-ms-cape-elizabeth, 5/5)",
+"athletes contradict name match (me-hs-cape-elizabeth -> me-ms-cape-elizabeth, 7/8)"
+],
 "how": "exact/alias"
 },
 "Thornton Aca": {
@@ -6413,6 +6413,21 @@
 "method": "exact",
 "how": "exact/alias"
 },
+"CHEV": {
+"rows": 1430,
+"seasons": {
+"Indoor": 1005,
+"Outdoor": 305,
+"XC": 120
+},
+"years": [
+2006,
+2025
+],
+"id": "me-hs-cheverus",
+"method": "code",
+"how": "code"
+},
 "Penobscot Ch": {
 "rows": 1430,
 "seasons": {
@@ -6442,21 +6457,6 @@
 "file expansion: me-ms-penobscot -> me-ms-penobscot-christian"
 ],
 "how": "truncation"
-},
-"CHEV": {
-"rows": 1429,
-"seasons": {
-"Indoor": 1005,
-"Outdoor": 305,
-"XC": 119
-},
-"years": [
-2006,
-2025
-],
-"id": "me-hs-cheverus",
-"method": "code",
-"how": "code"
 },
 "Sedomocha MS": {
 "rows": 1425,
@@ -12093,21 +12093,6 @@
 "method": "exact",
 "how": "exact/alias"
 },
-"BRUN": {
-"rows": 427,
-"seasons": {
-"Outdoor": 65,
-"XC": 42,
-"Indoor": 320
-},
-"years": [
-2008,
-2022
-],
-"id": "me-hs-brunswick",
-"method": "code",
-"how": "code"
-},
 "Windsor MS": {
 "rows": 426,
 "seasons": {
@@ -12181,6 +12166,21 @@
 "id": "col-brandeis",
 "method": "exact",
 "how": "exact/alias"
+},
+"BRUN": {
+"rows": 421,
+"seasons": {
+"Outdoor": 65,
+"XC": 36,
+"Indoor": 320
+},
+"years": [
+2008,
+2022
+],
+"id": "me-hs-brunswick",
+"method": "code",
+"how": "code"
 },
 "Hawks Track Club": {
 "rows": 421,
@@ -14129,32 +14129,6 @@
 },
 "how": "code"
 },
-"": {
-"rows": 327,
-"seasons": {
-"XC": 287,
-"Indoor": 1,
-"Outdoor": 39
-},
-"years": [
-2003,
-2024
-],
-"id": "me-hs-ellsworth",
-"method": "athlete-continuity",
-"by_id": {
-"None": 271,
-"me-hs-ellsworth": 29,
-"me-hs-scarborough": 10,
-"me-hs-gray-ng": 7,
-"me-hs-telstar": 5,
-"me-hs-washington-academy": 3,
-"me-hs-hall-dale": 2
-},
-"context_dependent": true,
-"unresolved_rows": 271,
-"how": "athlete-continuity"
-},
 "KHSTF": {
 "rows": 327,
 "seasons": {
@@ -14167,6 +14141,32 @@
 "id": "me-hs-kennebunk",
 "method": "code",
 "how": "code"
+},
+"": {
+"rows": 326,
+"seasons": {
+"XC": 286,
+"Indoor": 1,
+"Outdoor": 39
+},
+"years": [
+2003,
+2024
+],
+"id": "me-hs-ellsworth",
+"method": "athlete-continuity",
+"by_id": {
+"None": 270,
+"me-hs-ellsworth": 29,
+"me-hs-scarborough": 10,
+"me-hs-gray-ng": 7,
+"me-hs-telstar": 5,
+"me-hs-washington-academy": 3,
+"me-hs-hall-dale": 2
+},
+"context_dependent": true,
+"unresolved_rows": 270,
+"how": "athlete-continuity"
 },
 "L": {
 "rows": 325,
@@ -15975,19 +15975,6 @@
 "method": "code",
 "how": "code"
 },
-"Mt.B XC": {
-"rows": 260,
-"seasons": {
-"XC": 260
-},
-"years": [
-2015,
-2021
-],
-"id": "me-hs-mt-blue",
-"method": "code+season-words",
-"how": "code"
-},
 "Elhs Indoor": {
 "rows": 260,
 "seasons": {
@@ -16324,6 +16311,19 @@
 "id": "me-hs-maranacook",
 "method": "exact",
 "how": "exact/alias"
+},
+"Mt.B XC": {
+"rows": 251,
+"seasons": {
+"XC": 251
+},
+"years": [
+2015,
+2021
+],
+"id": "me-hs-mt-blue",
+"method": "code+season-words",
+"how": "code"
 },
 "SMC": {
 "rows": 250,
@@ -19086,19 +19086,6 @@
 },
 "how": "exact/alias"
 },
-"Lewiston XC": {
-"rows": 173,
-"seasons": {
-"XC": 173
-},
-"years": [
-2015,
-2022
-],
-"id": "me-hs-lewiston",
-"method": "exact+season-words",
-"how": "exact/alias"
-},
 "Maine-Farmingt": {
 "rows": 173,
 "seasons": {
@@ -19161,6 +19148,19 @@
 ],
 "id": "me-ms-cape-elizabeth",
 "method": "exact",
+"how": "exact/alias"
+},
+"Lewiston XC": {
+"rows": 172,
+"seasons": {
+"XC": 172
+},
+"years": [
+2015,
+2022
+],
+"id": "me-hs-lewiston",
+"method": "exact+season-words",
 "how": "exact/alias"
 },
 "The Governor": {
@@ -56984,20 +56984,6 @@
 "method": "athlete-continuity",
 "how": "athlete-continuity"
 },
-"Sandford": {
-"rows": 13,
-"seasons": {
-"Indoor": 10,
-"XC": 3
-},
-"years": [
-2010,
-2019
-],
-"id": "me-hs-sanford",
-"method": "fuzzy+athletes",
-"how": "spelling (fuzzy)"
-},
 "Clark (Mass.": {
 "rows": 13,
 "seasons": {
@@ -59777,19 +59763,6 @@
 "id": "me-ms-lawrence",
 "method": "athlete-continuity",
 "how": "athlete-continuity"
-},
-"York Girls XC": {
-"rows": 12,
-"seasons": {
-"XC": 12
-},
-"years": [
-2019,
-2019
-],
-"id": "me-hs-york",
-"method": "exact+season-words",
-"how": "exact/alias"
 },
 "Lake Region-ME": {
 "rows": 12,
@@ -62824,6 +62797,19 @@
 "id": "me-hs-ellsworth",
 "method": "exact+season-words",
 "how": "exact/alias"
+},
+"Sandford": {
+"rows": 10,
+"seasons": {
+"Indoor": 10
+},
+"years": [
+2010,
+2012
+],
+"id": "me-hs-sanford",
+"method": "fuzzy+athletes",
+"how": "spelling (fuzzy)"
 },
 "Durh": {
 "rows": 10,
@@ -67351,10 +67337,9 @@
 "id": "me-hs-greenville",
 "method": "ambiguous-truncation+athletes",
 "by_id": {
-"me-hs-greenville": 7,
-"None": 1
+"me-hs-greenville": 8
 },
-"unresolved_rows": 1,
+"context_dependent": true,
 "how": "athlete-continuity"
 },
 "Cape Elizabeth HS": {
@@ -72403,19 +72388,6 @@
 "method": "exact",
 "how": "exact/alias"
 },
-"Massbesic": {
-"rows": 7,
-"seasons": {
-"XC": 7
-},
-"years": [
-2019,
-2019
-],
-"id": "me-hs-massabesic",
-"method": "fuzzy+athletes",
-"how": "spelling (fuzzy)"
-},
 "Narraquaqus": {
 "rows": 7,
 "seasons": {
@@ -76071,19 +76043,6 @@
 "method": "athlete-continuity",
 "how": "athlete-continuity"
 },
-"M Edward Little HS": {
-"rows": 6,
-"seasons": {
-"XC": 6
-},
-"years": [
-2018,
-2021
-],
-"id": "me-hs-edward-little",
-"method": "exact+lead-gender",
-"how": "exact/alias"
-},
 "DI-Ston": {
 "rows": 6,
 "seasons": {
@@ -76382,10 +76341,14 @@
 2019
 ],
 "id": "me-hs-mt-ararat",
-"method": "athlete-continuity",
-"how": "athlete-continuity"
+"method": "manual (file rule)",
+"by_id": {
+"me-hs-mt-ararat": 6
 },
-"MFR BRUN": {
+"context_dependent": true,
+"how": "manual (file rule)"
+},
+"York Girls XC": {
 "rows": 6,
 "seasons": {
 "XC": 6
@@ -76394,9 +76357,9 @@
 2019,
 2019
 ],
-"id": "me-hs-brunswick",
-"method": "athlete-continuity",
-"how": "athlete-continuity"
+"id": "me-hs-york",
+"method": "exact+season-words",
+"how": "exact/alias"
 },
 "Cony 2019": {
 "rows": 6,
@@ -81522,19 +81485,6 @@
 "id": null,
 "method": "unresolved",
 "how": "unresolved"
-},
-"MSO Cape": {
-"rows": 5,
-"seasons": {
-"XC": 5
-},
-"years": [
-2019,
-2019
-],
-"id": "me-hs-cape-elizabeth",
-"method": "athlete-continuity",
-"how": "athlete-continuity"
 },
 "Shead HS": {
 "rows": 5,
@@ -87083,24 +87033,18 @@
 "method": "exact",
 "how": "exact/alias"
 },
-"MSO Mt.B XC": {
+"M Edward Little HS": {
 "rows": 4,
 "seasons": {
 "XC": 4
 },
 "years": [
 2018,
-2019
+2021
 ],
-"id": "me-hs-mt-blue",
-"method": "athlete-continuity",
-"by_id": {
-"me-hs-mt-blue": 3,
-"None": 1
-},
-"context_dependent": true,
-"unresolved_rows": 1,
-"how": "athlete-continuity"
+"id": "me-hs-edward-little",
+"method": "exact+lead-gender",
+"how": "exact/alias"
 },
 "FOUL": {
 "rows": 4,
@@ -87596,32 +87540,6 @@
 "id": "oos-auto-ri-central-falls",
 "method": "exact",
 "how": "state-tagged (auto entry)"
-},
-"MFR Cape": {
-"rows": 4,
-"seasons": {
-"XC": 4
-},
-"years": [
-2019,
-2019
-],
-"id": "me-hs-cape-elizabeth",
-"method": "athlete-continuity",
-"how": "athlete-continuity"
-},
-"MSO MTA": {
-"rows": 4,
-"seasons": {
-"XC": 4
-},
-"years": [
-2019,
-2019
-],
-"id": "me-hs-mt-ararat",
-"method": "athlete-continuity",
-"how": "athlete-continuity"
 },
 "Unat-Maine M": {
 "rows": 4,
@@ -96080,45 +95998,6 @@
 "id": "me-ms-madison",
 "method": "exact",
 "how": "exact/alias"
-},
-"M Cony High School": {
-"rows": 3,
-"seasons": {
-"XC": 3
-},
-"years": [
-2019,
-2019
-],
-"id": "me-hs-cony",
-"method": "exact+lead-gender",
-"how": "exact/alias"
-},
-"MJR Mt.B XC": {
-"rows": 3,
-"seasons": {
-"XC": 3
-},
-"years": [
-2019,
-2019
-],
-"id": "me-hs-mt-blue",
-"method": "athlete-continuity",
-"how": "athlete-continuity"
-},
-"MFR Mt.B XC": {
-"rows": 3,
-"seasons": {
-"XC": 3
-},
-"years": [
-2019,
-2019
-],
-"id": "me-hs-mt-blue",
-"method": "athlete-continuity",
-"how": "athlete-continuity"
 },
 "Saint Domininc High School": {
 "rows": 3,
@@ -109787,19 +109666,6 @@
 "method": "unresolved",
 "how": "unresolved"
 },
-"MJR Lewiston XC": {
-"rows": 2,
-"seasons": {
-"XC": 2
-},
-"years": [
-2018,
-2019
-],
-"id": null,
-"method": "unresolved",
-"how": "unresolved"
-},
 "North Augusta-SC": {
 "rows": 2,
 "seasons": {
@@ -110358,45 +110224,6 @@
 "id": "me-hs-bangor",
 "method": "exact+season-words",
 "how": "exact/alias"
-},
-"MSR Mt.B XC": {
-"rows": 2,
-"seasons": {
-"XC": 2
-},
-"years": [
-2019,
-2019
-],
-"id": "me-hs-mt-blue",
-"method": "athlete-continuity",
-"how": "athlete-continuity"
-},
-"MSO Morse": {
-"rows": 2,
-"seasons": {
-"XC": 2
-},
-"years": [
-2019,
-2019
-],
-"id": "me-hs-morse",
-"method": "athlete-continuity",
-"how": "athlete-continuity"
-},
-"MFR Morse": {
-"rows": 2,
-"seasons": {
-"XC": 2
-},
-"years": [
-2019,
-2019
-],
-"id": "me-hs-morse",
-"method": "athlete-continuity",
-"how": "athlete-continuity"
 },
 "Blue Collar": {
 "rows": 2,
@@ -151587,6 +151414,32 @@
 "method": "exact+lead-gender",
 "how": "exact/alias"
 },
+"MJR Lewiston XC": {
+"rows": 1,
+"seasons": {
+"XC": 1
+},
+"years": [
+2018,
+2018
+],
+"id": null,
+"method": "unresolved",
+"how": "unresolved"
+},
+"MSO Mt.B XC": {
+"rows": 1,
+"seasons": {
+"XC": 1
+},
+"years": [
+2018,
+2018
+],
+"id": null,
+"method": "unresolved",
+"how": "unresolved"
+},
 "SR Ellsworth": {
 "rows": 1,
 "seasons": {
@@ -157350,19 +157203,6 @@
 "method": "exact+season-words",
 "how": "exact/alias"
 },
-"Keenebunk": {
-"rows": 1,
-"seasons": {
-"XC": 1
-},
-"years": [
-2019,
-2019
-],
-"id": "me-hs-kennebunk",
-"method": "fuzzy+athletes",
-"how": "spelling (fuzzy)"
-},
 "Elm Street Schhol": {
 "rows": 1,
 "seasons": {
@@ -157432,75 +157272,6 @@
 "method": "unresolved",
 "how": "unresolved"
 },
-"MSR MTA": {
-"rows": 1,
-"seasons": {
-"XC": 1
-},
-"years": [
-2019,
-2019
-],
-"id": "me-hs-mt-ararat",
-"method": "manual (file rule)",
-"by_id": {
-"me-hs-mt-ararat": 1
-},
-"context_dependent": true,
-"how": "manual (file rule)"
-},
-"MJR MTA": {
-"rows": 1,
-"seasons": {
-"XC": 1
-},
-"years": [
-2019,
-2019
-],
-"id": null,
-"method": "unresolved",
-"how": "unresolved"
-},
-"MSO Lewiston XC": {
-"rows": 1,
-"seasons": {
-"XC": 1
-},
-"years": [
-2019,
-2019
-],
-"id": null,
-"method": "unresolved",
-"how": "unresolved"
-},
-"MJR Cape": {
-"rows": 1,
-"seasons": {
-"XC": 1
-},
-"years": [
-2019,
-2019
-],
-"id": null,
-"method": "unresolved",
-"how": "unresolved"
-},
-"MSR BRUN": {
-"rows": 1,
-"seasons": {
-"XC": 1
-},
-"years": [
-2019,
-2019
-],
-"id": null,
-"method": "unresolved",
-"how": "unresolved"
-},
 "Dedham, ME": {
 "rows": 1,
 "seasons": {
@@ -157536,35 +157307,13 @@
 2020,
 2020
 ],
-"id": null,
-"method": "unresolved",
-"how": "unresolved"
+"id": "me-hs-hodgdon",
+"method": "manual (file rule)",
+"by_id": {
+"me-hs-hodgdon": 1
 },
-"5": {
-"rows": 1,
-"seasons": {
-"XC": 1
-},
-"years": [
-2020,
-2020
-],
-"id": null,
-"method": "debris",
-"how": "debris"
-},
-"V2": {
-"rows": 1,
-"seasons": {
-"XC": 1
-},
-"years": [
-2020,
-2020
-],
-"id": null,
-"method": "unresolved",
-"how": "unresolved"
+"context_dependent": true,
+"how": "manual (file rule)"
 },
 "NVU- Lyndon": {
 "rows": 1,
@@ -174282,6 +174031,7 @@
 "PCHS": "me-hs-piscataquis"
 },
 "2006/XC/lynxinvitevarsity": {
+"Green": "me-hs-greenville",
 "PCHS": "me-hs-piscataquis",
 "STN": "me-hs-stearns"
 },
@@ -181279,7 +181029,7 @@
 },
 "2008/XC/leeinviteboys": {
 "Central": "me-hs-central",
-"Green": null,
+"Green": "me-hs-greenville",
 "MA": "me-hs-mattanawcook",
 "PVHS": "me-hs-penobscot-valley",
 "WA": "me-hs-washington-academy"
@@ -215004,9 +214754,6 @@
 "2018/XC/Results-Girls-9.14.18": {
 "Bangor Christian": "me-hs-bangor-christian"
 },
-"2018/XC/Results-R-6": {
-"MSO Mt.B XC": null
-},
 "2018/XC/Results-R-7": {
 "Cape": "me-hs-cape-elizabeth",
 "Cony XC": "me-hs-cony"
@@ -220036,6 +219783,7 @@
 "Lincoln Academy": "me-hs-lincoln-academy",
 "Maranacook": "me-hs-maranacook",
 "Messalonskee": "me-hs-messalonskee",
+"Mt, Ararat": "me-hs-mt-ararat",
 "Mt. Ararat": "me-hs-mt-ararat",
 "Mt. Blue": "me-hs-mt-blue",
 "Oxford Hills": "me-hs-oxford-hills",
@@ -220134,10 +219882,13 @@
 "MTA": "me-hs-mt-ararat"
 },
 "2019/XC/q-relay-8-jv": {
-"Cape": "me-hs-cape-elizabeth",
-"MSO Mt.B XC": "me-hs-mt-blue",
-"MSR MTA": "me-hs-mt-ararat",
-"MTA": "me-hs-mt-ararat"
+"Brunswick": "me-hs-brunswick",
+"Cape Elizabeth": "me-hs-cape-elizabeth",
+"Cony": "me-hs-cony",
+"Lewiston": "me-hs-lewiston",
+"Mt. Ararat": "me-hs-mt-ararat",
+"Mt. Blue": "me-hs-mt-blue",
+"York": "me-hs-york"
 },
 "2019/XC/q-relays-1": {
 "Cape": "me-hs-cape-elizabeth",
@@ -221026,6 +220777,9 @@
 "Falmouth": "me-hs-falmouth",
 "South Portland": "me-hs-south-portland"
 },
+"2020/XC/2020-houlton-xc-boys-results": {
+"Hogdon": "me-hs-hodgdon"
+},
 "2020/XC/2020-jv-falmouth.txt": {
 "Falmouth": "me-hs-falmouth",
 "South Portland": "me-hs-south-portland"
@@ -221381,7 +221135,7 @@
 "Waterville": "me-hs-waterville"
 },
 "2020/XC/WtvlHSXC10.14.20girls": {
-"": null,
+"Lawrence": "me-hs-lawrence",
 "Waterville": "me-hs-waterville"
 },
 "2020/XC/WtvlJHXC10.22.20boys": {
@@ -234792,13 +234546,7 @@
 "DirigoMountain Valley G": "me-hs-dirigo",
 "Doherty": null,
 "Douglas": null,
-"Dover": {
-"id": "oos-auto-nh-dover",
-"held": {
-"oos-auto-nh-dover": 29,
-"me-hs-foxcroft": 19
-}
-},
+"Dover": "oos-auto-nh-dover",
 "DoverNH": null,
 "DoverSh": "oos-auto-ma-dover-sh",
 "DoverSherborn": "oos-auto-ma-dover-sherborn",
@@ -235027,7 +234775,13 @@
 "Greenville Consolidated School": "me-hs-greenville",
 "Greenville HS": null,
 "Greenwich High School": "oos-ct-greenwich-high-school",
-"GreenwichCT A": null,
+"GreenwichCT A": {
+"id": "me-hs-greenville",
+"held": {
+"None": 5,
+"me-hs-greenville": 1
+}
+},
 "Griswold": "oos-auto-ct-griswold",
 "Groth": {
 "id": null,
@@ -235124,7 +234878,7 @@
 "HlsBrookline": "oos-auto-nh-hls-brookline",
 "Hodgdon High School": "me-hs-hodgdon",
 "Hodgkins Middle School": "me-ms-hodgkins",
-"Hogdon": null,
+"Hogdon": "me-hs-hodgdon",
 "Holbrook School": "me-ms-holbrook",
 "HolbrookDedham combined MS team": "me-ms-holbrook-dedham",
 "Hollis Brookline High School": "oos-nh-hollis-brookline-high-school",
@@ -235419,11 +235173,11 @@
 "ME GirlsAcad": null,
 "MECoast Waldorf": null,
 "MER": null,
-"MJR Cape": null,
-"MJR Lewiston XC": null,
-"MJR MTA": null,
-"MSO Lewiston XC": null,
-"MSR BRUN": null,
+"MJR Cape": "me-hs-cape-elizabeth",
+"MJR Lewiston XC": "me-hs-lewiston",
+"MJR MTA": "me-hs-mt-ararat",
+"MSO Lewiston XC": "me-hs-lewiston",
+"MSR BRUN": "me-hs-brunswick",
 "MTA Road Runners": "me-hs-mt-abram",
 "MTVA": null,
 "Machias Memorial High School": "me-hs-machias",
@@ -253831,20 +253585,6 @@
 "years": [
 2018,
 2018
-],
-"id": null,
-"method": "unresolved",
-"how": "unresolved"
-},
-{
-"raw": "MJR Lewiston XC",
-"rows": 2,
-"seasons": {
-"XC": 2
-},
-"years": [
-2018,
-2019
 ],
 "id": null,
 "method": "unresolved",
@@ -273744,6 +273484,34 @@
 "how": "unresolved"
 },
 {
+"raw": "MJR Lewiston XC",
+"rows": 1,
+"seasons": {
+"XC": 1
+},
+"years": [
+2018,
+2018
+],
+"id": null,
+"method": "unresolved",
+"how": "unresolved"
+},
+{
+"raw": "MSO Mt.B XC",
+"rows": 1,
+"seasons": {
+"XC": 1
+},
+"years": [
+2018,
+2018
+],
+"id": null,
+"method": "unresolved",
+"how": "unresolved"
+},
+{
 "raw": "OX Leavitt HS",
 "rows": 1,
 "seasons": {
@@ -276520,62 +276288,6 @@
 "how": "unresolved"
 },
 {
-"raw": "MJR MTA",
-"rows": 1,
-"seasons": {
-"XC": 1
-},
-"years": [
-2019,
-2019
-],
-"id": null,
-"method": "unresolved",
-"how": "unresolved"
-},
-{
-"raw": "MSO Lewiston XC",
-"rows": 1,
-"seasons": {
-"XC": 1
-},
-"years": [
-2019,
-2019
-],
-"id": null,
-"method": "unresolved",
-"how": "unresolved"
-},
-{
-"raw": "MJR Cape",
-"rows": 1,
-"seasons": {
-"XC": 1
-},
-"years": [
-2019,
-2019
-],
-"id": null,
-"method": "unresolved",
-"how": "unresolved"
-},
-{
-"raw": "MSR BRUN",
-"rows": 1,
-"seasons": {
-"XC": 1
-},
-"years": [
-2019,
-2019
-],
-"id": null,
-"method": "unresolved",
-"how": "unresolved"
-},
-{
 "raw": "Dedham, ME",
 "rows": 1,
 "seasons": {
@@ -276588,48 +276300,6 @@
 "id": null,
 "method": "debris",
 "how": "debris"
-},
-{
-"raw": "Hogdon",
-"rows": 1,
-"seasons": {
-"XC": 1
-},
-"years": [
-2020,
-2020
-],
-"id": null,
-"method": "unresolved",
-"how": "unresolved"
-},
-{
-"raw": "5",
-"rows": 1,
-"seasons": {
-"XC": 1
-},
-"years": [
-2020,
-2020
-],
-"id": null,
-"method": "debris",
-"how": "debris"
-},
-{
-"raw": "V2",
-"rows": 1,
-"seasons": {
-"XC": 1
-},
-"years": [
-2020,
-2020
-],
-"id": null,
-"method": "unresolved",
-"how": "unresolved"
 },
 {
 "raw": "89m(NWI)",
