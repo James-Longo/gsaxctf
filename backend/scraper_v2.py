@@ -2024,6 +2024,9 @@ class Sub5ScraperV2:
         local rule is that a multi-day meet is dated to its first day."""
         if not date_str:
             return None
+        # (an ISO date written by hand: the range collapse below would eat its "-09")
+        if re.fullmatch(r'\d{4}-\d\d-\d\d', date_str.strip()):
+            return date_str.strip()
         # "June 3-4, 2005" / "June 3 & 10, 2006" / "January 9/10, 2015" -> first
         # day. The slash form must be collapsed before parsing or it reads as
         # month/day and silently takes the year from the wrong token.
@@ -2253,7 +2256,7 @@ class Sub5ScraperV2:
     def date_from_filename(self, stem, season, year):
         """Extract a meet date embedded in the filename, validated in-season.
         Handles 'boys_orono_meet_5.21.14', 'results-5-26-05-MVC', 'ham29april03',
-        'emitl2a20dec2025'."""
+        'emitl2a20dec2025', 'traip_sept27'."""
         s = stem.lower()
         # numeric m.d.y / m-d-y / m_d_y
         for m in re.finditer(r'(\d{1,2})[._-](\d{1,2})[._-](\d{2,4})', s):
@@ -2269,6 +2272,13 @@ class Sub5ScraperV2:
             if len(yy) == 2:
                 yy = '20' + yy
             cand = f"{yy}-{self._MONTHS[mon]:02d}-{dd.zfill(2)}"
+            if self.is_date_in_season(cand, season, year):
+                return cand
+        # monthDD with the season's year (e.g. traip_sept27, biddefordmsboys_oct12)
+        for m in re.finditer(r'(?<![a-z])(jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec)'
+                             r'(?:uary|ruary|ch|il|e|y|ust|t|tember|ober|ember)?\.?[_-]?(\d{1,2})(?!\d)', s):
+            mon, dd = m.groups()
+            cand = f"{year}-{self._MONTHS[mon]:02d}-{dd.zfill(2)}"
             if self.is_date_in_season(cand, season, year):
                 return cand
         return None

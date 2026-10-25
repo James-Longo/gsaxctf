@@ -2711,6 +2711,18 @@ def test_transcription_xc_team_scores_marked_xc():
     assert all(b['kind'] == 'xc' and b['totals_only'] is True for b in bs)
 
 
+def test_web_date_iso_and_filename_month_day():
+    """An index date written as ISO is read as itself (the day-range collapse
+    used to eat "-09"); a file name's "sept27" dates an XC meet in its season."""
+    import backend.scraper_v2 as sv
+    s = sv.Sub5ScraperV2.__new__(sv.Sub5ScraperV2)
+    assert s.parse_web_date('2013-09-18') == '2013-09-18'
+    assert s.parse_web_date('June 3-4, 2005') == '2005-06-03'
+    assert s.date_from_filename('traip_sept27', 'XC', '2013') == '2013-09-27'
+    assert s.date_from_filename('marshwoodboys_oct18', 'XC', '2013') == '2013-10-18'
+    assert s.date_from_filename('marshwood18', 'Outdoor', '2013') is None
+
+
 def test_transcription_no_team_scores_flag():
     """A race cut out of a combined ranking says so: the page's scores stay off it."""
     import json
