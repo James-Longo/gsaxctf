@@ -1,0 +1,89 @@
+{
+ "events": [],
+ "date": "2013-09-18",
+ "meet_name": "Carrabec XC Meet",
+ "venue": null,
+ "team_rankings": [
+  {
+   "kind": "xc",
+   "gender": "Boys",
+   "event_header": null,
+   "teams": [
+    {
+     "rank": 1,
+     "team": "Winthrop",
+     "score": 27,
+     "places": [
+      1,
+      3,
+      4,
+      6,
+      13,
+      15,
+      21
+     ]
+    },
+    {
+     "rank": 2,
+     "team": "Madison",
+     "score": 56,
+     "places": [
+      2,
+      5,
+      11,
+      14,
+      24
+     ]
+    },
+    {
+     "rank": 3,
+     "team": "Dirigo",
+     "score": 56,
+     "places": [
+      7,
+      9,
+      10,
+      12,
+      18
+     ]
+    },
+    {
+     "rank": 4,
+     "team": "Carrabec",
+     "score": 80,
+     "places": [
+      8,
+      16,
+      17,
+      19,
+      20,
+      22,
+      23
+     ]
+    }
+   ]
+  },
+  {
+   "kind": "xc",
+   "gender": "Girls",
+   "event_header": null,
+   "teams": [
+    {
+     "rank": 1,
+     "team": "Telstar",
+     "score": 15,
+     "places": [
+      1,
+      2,
+      3,
+      4,
+      5
+     ]
+    }
+   ]
+  }
+ ],
+ "parser": "ColumnStrategyParser",
+ "source": "backend/data/sub5_archive/2013/XC/Carrabec%20HS%20XC%20race%20TEAM.pdf",
+ "notes": "Scores-only sheet for the Carrabec XC meet (the file prints neither title nor date). The parse read the layout as a table and produced nonsense (team 'Runner' 20, Madison 41, Mt. Valley 94). The sheet reads: Boys, columns 1st Winthrop, 2nd Madison, 3rd Dirigo, 4th Carrabec, then Mt. Valley and Telstar 'NO TEAM'; runner rows are team places: Winthrop 1,3,4,6,13 (+15,21) = 27; Madison 2,5,11,14,24 = 56; Dirigo 7,9,10,12,18 = 56; Carrabec 8,16,17,19,20 (+22,23) = 80; tie breaker row Madison 32, Dirigo 38 (blank for the others). Girls: Telstar 1,2,3,4,5 = 15; Dirigo, Winthrop, Carrabec, Mt. Valley, Madison 'NO TEAM'. Sums check, and the places match the 'Team Place' column of the sheets Carrabec XC BOYS (9/18/13: Winthrop 1,3,4,6,13; Madison 2,5,11,14,24; Dirigo 7,9,10,12,18; Carrabec 8,16,17,19,20) and Carrabec XC GIRLS (Telstar 5,7,14,15,23 overall = team places 1-5). Date 2013-09-18 and meet name taken from those two sheets (this file has none; it is their score sheet). The sheet lists no individual rows, so events is empty (nothing invented). Note the Madison/Dirigo 56-56 tie as printed."
+}

@@ -10,7 +10,7 @@
  },
  "events": [
   {
-   "event": "Run CC",
+   "event": "1.5 Mile Run CC",
    "gender": "Boys",
    "is_relay": false,
    "results": [
@@ -177,7 +177,7 @@
     {
      "place": 21,
      "athlete": "Grady Black",
-     "school": "Lyman Moore Middle School",
+     "school": "Scarborough Middle School",
      "result": "11:16.2",
      "grade": "",
      "type": "Finals"
@@ -641,7 +641,63 @@
    ]
   }
  ],
- "team_rankings": [],
+ "team_rankings": [
+  {
+   "kind": "xc",
+   "gender": "Boys",
+   "event_header": null,
+   "teams": [
+    {
+     "rank": 1,
+     "team": "Lyman Moore Middle School",
+     "score": 38,
+     "places": [
+      5,
+      6,
+      7,
+      8,
+      12
+     ]
+    },
+    {
+     "rank": 2,
+     "team": "Gorham Middle School",
+     "score": 47,
+     "places": [
+      1,
+      3,
+      9,
+      14,
+      20
+     ]
+    },
+    {
+     "rank": 3,
+     "team": "Lincoln Middle School",
+     "score": 56,
+     "places": [
+      2,
+      10,
+      11,
+      15,
+      18
+     ]
+    },
+    {
+     "rank": 4,
+     "team": "Scarborough Middle School",
+     "score": 76,
+     "places": [
+      4,
+      13,
+      16,
+      21,
+      22
+     ]
+    }
+   ]
+  }
+ ],
  "parser": "XCListParser",
- "notes": "The pdf is a bad OCR scan (digits as letters, 'L0 z 41- .7' for 10:41.7); the parse kept only 20 of 78 rows, several with the team letter fused into the name or time. All 78 re-read, OCR damage repaired from context (times ascend; place/name/time fixed, e.g. 'Henj-nger' = Heninger, 'ChieJ-ang' = Chielang). Team letters per the title and score list (Scarborough, Gorham, Lincoln (Portland), Moore (Portland)): G = Gorham MS, L = Lincoln MS (Portland), M = Lyman Moore MS, S = Scarborough MS; score list confirmed: Moore 5,6,7,8,12; Gorham 1,3,9,14,20; Lincoln 2,10,11,15,18. Place 55 is printed twice (Sawyer 13:35.4, L'Heureux 13:35.9); second set to 56. Row 21 Grady Black prints M though the Scarborough score list has a 21 (kept as printed). Garbled letters: 'g' read as G (Tinkham, Demers, Goschke; Demers and McCullough are Gorham in 2015 files); Aiden Bradley (letter 'e') = Scarborough from his 2014 Scarborough rows; 8 rows whose letter is OCR noise ('u', '\\J', 'lf', 'LJ', 'tr': Wornack 59, Cousins 60, Cushman 65, Bishop 67, Mohr 68, Mercier 73, Landry 76, Babineau 78) left with school blank."
+ "notes": "The pdf is a bad OCR scan (digits as letters, 'L0 z 41- .7' for 10:41.7); the parse kept only 20 of 78 rows, several with the team letter fused into the name or time. All 78 re-read, OCR damage repaired from context (times ascend; place/name/time fixed, e.g. 'Henj-nger' = Heninger, 'ChieJ-ang' = Chielang). Team letters per the title and score list (Scarborough, Gorham, Lincoln (Portland), Moore (Portland)): G = Gorham MS, L = Lincoln MS (Portland), M = Lyman Moore MS, S = Scarborough MS; score list confirmed: Moore 5,6,7,8,12; Gorham 1,3,9,14,20; Lincoln 2,10,11,15,18. Place 55 is printed twice (Sawyer 13:35.4, L'Heureux 13:35.9); second set to 56. Row 21 Grady Black prints M though the Scarborough score list has a 21 (kept as printed). Garbled letters: 'g' read as G (Tinkham, Demers, Goschke; Demers and McCullough are Gorham in 2015 files); Aiden Bradley (letter 'e') = Scarborough from his 2014 Scarborough rows; 8 rows whose letter is OCR noise ('u', '\\J', 'lf', 'LJ', 'tr': Wornack 59, Cousins 60, Cushman 65, Bishop 67, Mohr 68, Mercier 73, Landry 76, Babineau 78) left with school blank. || Second read: all 78 rows re-checked against the OCR text (places, names, times, ties 42/42 and 60/60). Changes: (1) place 21 Grady Black school set to Scarborough: the printed team letter is M, but the score list gives Scarborough 4,13,16,21,22 = 76 (only place 21 can be Black; Moore's six/seven are 17,19 per the tie-break figures), so the M is an OCR error; (2) team scores added: Moore 5,6,7,8,12 = 38; Gorham 1,3,9,14,20 = 47; Lincoln 2,10,11,15,18 = 56; Scarborough 4,13,16,21,22 = 76 (each sum reproduces); (3) event named 1.5 Mile Run CC (the header prints 1.5 miles; it had no distance). The 8 blank-school rows (Wornack, Cousins, Cushman, Bishop, Mohr, Mercier, Landry, Babineau) have no usable letter and no other 2013 race to tie them to a team: left blank."
 }

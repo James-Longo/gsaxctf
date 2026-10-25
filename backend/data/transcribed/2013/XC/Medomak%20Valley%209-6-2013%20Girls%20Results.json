@@ -1,0 +1,194 @@
+{
+ "source": "backend/data/sub5_archive/2013/XC/Medomak%20Valley%209-6-2013%20Girls%20Results.pdf",
+ "meet_name": "Medomak Valley Meet",
+ "date": "2013-09-06",
+ "school_codes": {
+  "MV": "Medomak Valley",
+  "B": "Boothbay Region",
+  "LA": "Lincoln Academy",
+  "O": "Oceanside"
+ },
+ "events": [
+  {
+   "event": "Run CC",
+   "gender": "Girls",
+   "is_relay": false,
+   "results": [
+    {
+     "athlete": "Abby Hersom",
+     "school": "Oceanside High School",
+     "result": "20:46",
+     "grade": "",
+     "type": "Finals",
+     "place": 1
+    },
+    {
+     "athlete": "Sophia Thayer",
+     "school": "Boothbay Region High School",
+     "result": "21:54",
+     "grade": "",
+     "type": "Finals",
+     "place": 2
+    },
+    {
+     "athlete": "Morgan Crocker",
+     "school": "Boothbay Region High School",
+     "result": "22:30",
+     "grade": "",
+     "type": "Finals",
+     "place": 3
+    },
+    {
+     "athlete": "Riley Simmons",
+     "school": "Oceanside High School",
+     "result": "22:59",
+     "grade": "",
+     "type": "Finals",
+     "place": 4
+    },
+    {
+     "athlete": "Essie Martin",
+     "school": "Lincoln Academy",
+     "result": "24:04",
+     "grade": "",
+     "type": "Finals",
+     "place": 5
+    },
+    {
+     "athlete": "Kate Friant",
+     "school": "Boothbay Region High School",
+     "result": "24:38",
+     "grade": "",
+     "type": "Finals",
+     "place": 6
+    },
+    {
+     "athlete": "Jill van der Schaaf",
+     "school": "Medomak Valley High School",
+     "result": "25:43",
+     "grade": "",
+     "type": "Finals",
+     "place": 7
+    },
+    {
+     "athlete": "Rayanne Leach",
+     "school": "Medomak Valley High School",
+     "result": "25:53",
+     "grade": "",
+     "type": "Finals",
+     "place": 8
+    },
+    {
+     "athlete": "Tess Fields",
+     "school": "Lincoln Academy",
+     "result": "26:19",
+     "grade": "",
+     "type": "Finals",
+     "place": 9
+    },
+    {
+     "athlete": "Emily Davis",
+     "school": "Oceanside High School",
+     "result": "26:20",
+     "grade": "",
+     "type": "Finals",
+     "place": 10
+    },
+    {
+     "athlete": "Shannon Staples",
+     "school": "Medomak Valley High School",
+     "result": "26:23",
+     "grade": "",
+     "type": "Finals",
+     "place": 11
+    },
+    {
+     "athlete": "Krista Hooper",
+     "school": "Medomak Valley High School",
+     "result": "26:25",
+     "grade": "",
+     "type": "Finals",
+     "place": 12
+    },
+    {
+     "athlete": "Bree Ortic",
+     "school": "Oceanside High School",
+     "result": "27:28",
+     "grade": "",
+     "type": "Finals",
+     "place": 13
+    },
+    {
+     "athlete": "Juia Ribeiro",
+     "school": "Lincoln Academy",
+     "result": "27:29",
+     "grade": "",
+     "type": "Finals",
+     "place": 14
+    },
+    {
+     "athlete": "Beth Corson",
+     "school": "Medomak Valley High School",
+     "result": "29:32",
+     "grade": "",
+     "type": "Finals",
+     "place": 15
+    },
+    {
+     "athlete": "Jasmin Ramos",
+     "school": "Medomak Valley High School",
+     "result": "30:23",
+     "grade": "",
+     "type": "Finals",
+     "place": 16
+    },
+    {
+     "athlete": "Thalia Eddyblouin",
+     "school": "Lincoln Academy",
+     "result": "31:24",
+     "grade": "",
+     "type": "Finals",
+     "place": 17
+    },
+    {
+     "athlete": "Sam Calamari",
+     "school": "Oceanside High School",
+     "result": "33:25",
+     "grade": "",
+     "type": "Finals",
+     "place": 18
+    },
+    {
+     "athlete": "Tori Ratcliff",
+     "school": "Boothbay Region High School",
+     "result": "33:53",
+     "grade": "",
+     "type": "Finals",
+     "place": 19
+    }
+   ]
+  }
+ ],
+ "team_rankings": [
+  {
+   "kind": "xc",
+   "gender": "Girls",
+   "event_header": "Run CC",
+   "event_idx": 0,
+   "teams": [
+    {
+     "rank": 1,
+     "team": "Oceanside High School",
+     "score": 27
+    },
+    {
+     "rank": 2,
+     "team": "Medomak Valley High School",
+     "score": 29
+    }
+   ],
+   "totals_only": true
+  }
+ ],
+ "notes": "Fixed meet name and date. Parse took the meet name from the first team-score line and had no date; the sheet prints none, so meet_name is the host \"Medomak Valley Meet\" (file name \"Medomak Valley 9-6-2013\") and the date 2013-09-06 comes from the file name. Rows copied unchanged from the parse (checked against the source line by line). School codes from the team-score list: MV=Medomak Valley, B=Boothbay Region, LA=Lincoln Academy, O=Oceanside. Names as printed (incl. \"Sam betts\", \"Juia Ribeiro\"). Team scores as printed: Oceanside 27, Medomak Valley 29, Boothbay Region and Lincoln Academy N/S (not scored)."
+}

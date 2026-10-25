@@ -1547,6 +1547,20 @@ FILE_RULES = [
     (['Lisbon Christian'], 'XC', (2014, 2014), r'^(boys|girls)(overall|sections)14$', 'me-hs-lfca'),
     (['FR Westbrook'], 'XC', (2014, 2014), r'^class-a-girls-w$', 'me-hs-westbrook'),
     (['JR GNG'], 'XC', (2014, 2014), r'^class-b-boys-w$', 'me-hs-gray-ng'),
+    # 2026-10-25 2014 XC first publish
+    (['Madsion'], 'XC', (2014, 2014), r'^ms-mvc-madison-winthrop-telstar-dirigo-mt-valley-carrabec-2014$', 'me-hs-madison'),  # typo beside 'Madison High School' in a high-school meet
+    # 2026-10-25 second read, batch 12 (2013-2014)
+    (['Valley'], 'XC', (2013, 2013), r'^Carrabec%20XC%20GIRLS$', 'me-hs-mountain-valley'),
+    (['FK', 'Fk'], 'XC', (2013, 2013), r'^FK%20XC%20Meet%208-28-13%20Results$', 'me-hs-fort-kent'),
+    (['GHCA'], 'XC', (2013, 2013), r'^FK%20XC%20Meet%208-28-13%20Results$', 'me-hs-greater-houlton-christian'),
+    (['Ell'], 'XC', (2013, 2013), r'^GSAHomeMeet$', 'me-hs-ellsworth'),
+    (['WA'], 'XC', (2013, 2013), r'^GSAHomeMeet$', 'me-hs-washington-academy'),
+    (['Buck'], 'XC', (2013, 2013), r'^GSAHomeMeet$', 'me-hs-bucksport'),
+    (['Sum'], 'XC', (2013, 2013), r'^GSAHomeMeet$', 'me-hs-sumner'),
+    (['MV'], 'XC', (2013, 2013), r'^Medomak%20Valley%209-6-2013%20(Boys|Girls)%20Results$', 'me-hs-medomak'),
+    (['B'], 'XC', (2013, 2013), r'^Medomak%20Valley%209-6-2013%20(Boys|Girls)%20Results$', 'me-hs-boothbay'),
+    (['LA'], 'XC', (2013, 2013), r'^Medomak%20Valley%209-6-2013%20(Boys|Girls)%20Results$', 'me-hs-lincoln-academy'),
+    (['O'], 'XC', (2013, 2013), r'^Medomak%20Valley%209-6-2013%20(Boys|Girls)%20Results$', 'me-hs-oceanside'),
     # 2026-10-24 unresolved-school review, batch 2
     (['F'], 'XC', (2004, 2004), r'^cape7oct04[bg]\.txt$', 'me-hs-falmouth'),   # Title lists Falmouth; only F team
     (['Y'], 'XC', (2004, 2004), r'^cape7oct04[bg]\.txt$', 'me-hs-yarmouth'),   # Title lists Yarmouth; only Y team
