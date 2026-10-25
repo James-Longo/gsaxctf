@@ -2721,6 +2721,7 @@ def test_web_date_iso_and_filename_month_day():
     assert s.date_from_filename('traip_sept27', 'XC', '2013') == '2013-09-27'
     assert s.date_from_filename('marshwoodboys_oct18', 'XC', '2013') == '2013-10-18'
     assert s.date_from_filename('marshwood18', 'Outdoor', '2013') is None
+    assert s.date_from_filename('pims%20track%20meet%2050113-01-may-13results2', 'Outdoor', '2013') == '2013-05-01'
 
 
 def test_transcription_no_team_scores_flag():

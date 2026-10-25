@@ -2267,7 +2267,7 @@ class Sub5ScraperV2:
             if self.is_date_in_season(cand, season, year):
                 return cand
         # DDmonthYY / DDmonYYYY (e.g. 29april03, 20dec2025)
-        for m in re.finditer(r'(\d{1,2})(jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec)[a-z]*(\d{2,4})', s):
+        for m in re.finditer(r'(\d{1,2})[-_]?(jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec)[a-z]*[-_]?(\d{2,4})(?!\d)', s):
             dd, mon, yy = m.groups()
             if len(yy) == 2:
                 yy = '20' + yy
@@ -2589,7 +2589,7 @@ class Sub5ScraperV2:
                 #   2. date parsed from the file content
                 #   3. date embedded in the filename
                 stem = os.path.splitext(filename)[0]
-                candidates = [filename] + [stem + ext for ext in (".htm", ".html", ".pdf")]
+                candidates = [filename] + [stem + ext for ext in (".htm", ".html", ".pdf", ".txt")]
                 web_date_raw = None
                 for cand in candidates:
                     web_date_raw = self.web_date_mapping.get(f"{year}/{season}/{cand}")
