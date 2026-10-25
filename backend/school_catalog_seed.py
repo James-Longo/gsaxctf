@@ -1564,6 +1564,8 @@ FILE_RULES = [
     (['TA'], 'XC', (2013, 2013), r'^wells%20(78%20girls|boys%2078th|ms%206th%20boys|ms%206th%20girls)$', 'me-ms-thornton'),
     (['G'], 'XC', (2013, 2013), r'^yorkgirls_sept6$', 'me-hs-gray-ng'),
     (['A'], 'XC', (2012, 2012), r'^thorntongirls_sept14$', 'me-hs-thornton'),
+    # 2026-10-25 second read, batch 16 (2012)
+    (['HDG'], 'XC', (2012, 2012), r'^washburninvite(boys|girls)$', 'me-hs-hodgdon'),
     # 2026-10-24 unresolved-school review, batch 2
     (['F'], 'XC', (2004, 2004), r'^cape7oct04[bg]\.txt$', 'me-hs-falmouth'),   # Title lists Falmouth; only F team
     (['Y'], 'XC', (2004, 2004), r'^cape7oct04[bg]\.txt$', 'me-hs-yarmouth'),   # Title lists Yarmouth; only Y team

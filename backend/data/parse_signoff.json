@@ -16288,6 +16288,13 @@
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
  },
+ "backend/data/parsed_results/2012/XC/mtbluegirls_august31.json": {
+  "parse_sha": "f2eb410b378d5156",
+  "source_sha": "755b28f03632e44c",
+  "date": "2026-10-25",
+  "by": "auto: team scores verified exactly, all schools identified, no flags",
+  "evidence": ""
+ },
  "backend/data/parsed_results/2012/XC/nobleboys_oct4.json": {
   "parse_sha": "b80cf72acf934049",
   "source_sha": "085149ed7a570437",
@@ -16400,6 +16407,13 @@
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
  },
+ "backend/data/parsed_results/2012/XC/pvc_boys_overall_varsity_ind_2012.json": {
+  "parse_sha": "b02c8c296cbfe76d",
+  "source_sha": "87ffc9b85e0bc102",
+  "date": "2026-10-25",
+  "by": "sonnet audit (second read, 2026-10-25) (audit: confirmed)",
+  "evidence": "All 98 placed rows plus 4 DNF (Brizee, Weaver, Losieniecki, N. Nunez) agree row by row (place, name, class, school, mark, points column). Team scores are in pvc_boys_varsityh_team_scores_2012.htm, not this sheet."
+ },
  "backend/data/parsed_results/2012/XC/pvc_boys_varsityh_team_scores_2012.json": {
   "parse_sha": "ee723c36283309c2",
   "source_sha": "e31e81caff846547",
@@ -16420,6 +16434,13 @@
   "date": "2026-10-16",
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
+ },
+ "backend/data/parsed_results/2012/XC/results%20girsl%20MCMS%20meet%2010%2011%20121.json": {
+  "parse_sha": "27f6375edffcc290",
+  "source_sha": "d3135518aa297d2d",
+  "date": "2026-10-25",
+  "by": "sonnet audit (second read, 2026-10-25) (audit: confirmed)",
+  "evidence": "All 39 rows agree (place, name, school, mark, points). Source team-scores table is empty ('Rank Team Total 1 2 ...' with no lines), so no team scores to carry. Middle-school ids (Cony, Maranacook, Lisbon, Gardiner, Windsor) correct."
  },
  "backend/data/parsed_results/2012/XC/riot_challenge_boys_10.4.12.json": {
   "parse_sha": "c77912e17d53bb33",
@@ -16512,6 +16533,13 @@
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
  },
+ "backend/data/parsed_results/2012/XC/southportlandboys_sept14.json": {
+  "parse_sha": "cd7f0e7969344942",
+  "source_sha": "7ab0f2f9bef37847",
+  "date": "2026-10-25",
+  "by": "auto: team scores verified exactly, all schools identified, no flags",
+  "evidence": ""
+ },
  "backend/data/parsed_results/2012/XC/spgirls_sept14.json": {
   "parse_sha": "fa751ef35a08d6b7",
   "source_sha": "9b883d9853a96ba5",
@@ -16561,6 +16589,27 @@
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
  },
+ "backend/data/parsed_results/2012/XC/thorntonboys_oct12.json": {
+  "parse_sha": "17bf49b9fbc946c9",
+  "source_sha": "16308dc26fc24bdd",
+  "date": "2026-10-25",
+  "by": "auto: team scores verified exactly, all schools identified, no flags",
+  "evidence": ""
+ },
+ "backend/data/parsed_results/2012/XC/thorntonboys_sept14.json": {
+  "parse_sha": "b7bba89f517a8334",
+  "source_sha": "ccecb97c896cf1d4",
+  "date": "2026-10-25",
+  "by": "auto: team scores verified exactly, all schools identified, no flags",
+  "evidence": ""
+ },
+ "backend/data/parsed_results/2012/XC/thorntongirls_oct12.json": {
+  "parse_sha": "6a9ea1665447c5d6",
+  "source_sha": "c4d2308a3c563e8e",
+  "date": "2026-10-25",
+  "by": "auto: team scores verified exactly, all schools identified, no flags",
+  "evidence": ""
+ },
  "backend/data/parsed_results/2012/XC/trippmsboys_oct17.json": {
   "parse_sha": "35d2473f91d26858",
   "source_sha": "5520a82f496a70c0",
@@ -16575,12 +16624,40 @@
   "by": "sonnet audit (second read, 2026-10-25) (audit: confirmed)",
   "evidence": "Tripp MS XC 10/17/2012, girls 3200: 34/34 rows match; team scores Brunswick 27, Tripp 59, Oak Hill 65, Spruce Mountain 84 match the printed block."
  },
+ "backend/data/parsed_results/2012/XC/washburninviteboys.json": {
+  "parse_sha": "b85ab69d7c546d30",
+  "source_sha": "22664f43cef7ea50",
+  "date": "2026-10-25",
+  "by": "auto: team scores verified exactly, all schools identified, no flags",
+  "evidence": ""
+ },
  "backend/data/parsed_results/2012/XC/washburninvitegirls.json": {
   "parse_sha": "269e0c57b80c6449",
   "source_sha": "e12e05f4a70017c1",
   "date": "2026-10-23",
   "by": "sonnet audit (score mismatch, 2026-10-23) (audit: source-error)",
   "evidence": "Parse matches the source (23 rows). Printed: Washburn 16, Greater Houlton Christian 59 (Fort Kent has 4 finishers, no score). Rows: Washburn 1,2,3,4,6 = 16 (matches). Fort Kent (7,9,15,19) is incomplete, so removed from the places: GHCA Destinee 5, Lauren (overall 10) -> 8, Sara (12) -> 10, Olivia (20) -> 16, Caitlin Miles (23) -> 19: 5+8+10+16+19 = 58, not 59. If Fort Kent is not removed GHCA = 5+10+12+20+23 = 70. No removal set of teams or 3-7 scorers gives 16 and 59 together; the printed 59 is one more than the sheet's rows give. The source's date (8/23/12) is also missing from the parse (date None)."
+ },
+ "backend/data/parsed_results/2012/XC/watervilleBoysJHChamp2012.json": {
+  "parse_sha": "c49b1848a60e7cda",
+  "source_sha": "277461a5f8231e64",
+  "date": "2026-10-25",
+  "by": "auto: team scores verified exactly, all schools identified, no flags",
+  "evidence": ""
+ },
+ "backend/data/parsed_results/2012/XC/watervilleboys_sept6.json": {
+  "parse_sha": "65f648bb1141d420",
+  "source_sha": "77e2add3c32661b3",
+  "date": "2026-10-25",
+  "by": "auto: team scores verified exactly, all schools identified, no flags",
+  "evidence": ""
+ },
+ "backend/data/parsed_results/2012/XC/watervillegirls_sept6.json": {
+  "parse_sha": "45de4050a4ec682c",
+  "source_sha": "4af4033e05bf540d",
+  "date": "2026-10-25",
+  "by": "auto: team scores verified exactly, all schools identified, no flags",
+  "evidence": ""
  },
  "backend/data/parsed_results/2012/XC/watervillemsboys_sept12.json": {
   "parse_sha": "c05df431781aa1e3",
@@ -16607,6 +16684,27 @@
   "parse_sha": "32755f070af37969",
   "source_sha": "b59dca6501aabba5",
   "date": "2026-10-21",
+  "by": "auto: team scores verified exactly, all schools identified, no flags",
+  "evidence": ""
+ },
+ "backend/data/parsed_results/2012/XC/windhamboys_sept21.json": {
+  "parse_sha": "93360dcbc040b737",
+  "source_sha": "0aed43c2604ff9e8",
+  "date": "2026-10-25",
+  "by": "auto: team scores verified exactly, all schools identified, no flags",
+  "evidence": ""
+ },
+ "backend/data/parsed_results/2012/XC/winslowboys_august31.json": {
+  "parse_sha": "fc0159e199501246",
+  "source_sha": "e6d26b5f92264f7c",
+  "date": "2026-10-25",
+  "by": "auto: team scores verified exactly, all schools identified, no flags",
+  "evidence": ""
+ },
+ "backend/data/parsed_results/2012/XC/winslowgirls_august31.json": {
+  "parse_sha": "4bd550f0784dba2b",
+  "source_sha": "ca001d0dd84b6178",
+  "date": "2026-10-25",
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
  },
@@ -16679,6 +16777,20 @@
   "date": "2026-10-23",
   "by": "sonnet audit (score mismatch, 2026-10-23) (audit: source-error)",
   "evidence": "Rows match the source (girls 38, boys 44; the continuation rows after place 27 and the per-school re-listings at the end are the same runners). Cap of 7 scorers per team (and incomplete teams removed) reproduces girls Yarmouth 19 and NYA 44 (GNG 4 and LR 2 finishers = NS, as printed), and boys NYA 2+4+6+14+18=44, Grey NG 5+10+15+16+19=65, Lake Reg. 7+17+20+21+22=87. Boys Yarmouth is printed 33 but its five scorers (sheet places 1,3,8,9,11) are 1+3+8+9+11=32, with no displacement before place 11 (places 2,4,5,6,7,10 are all other scorers' top runners). Off-by-one in the printed total."
+ },
+ "backend/data/parsed_results/2012/XC/yorkboys_oct4.json": {
+  "parse_sha": "652d47b2896f008a",
+  "source_sha": "8123c6efe5fb7ec3",
+  "date": "2026-10-25",
+  "by": "auto: team scores verified exactly, all schools identified, no flags",
+  "evidence": ""
+ },
+ "backend/data/parsed_results/2012/XC/yorkgirls_oct4.json": {
+  "parse_sha": "dbd1a98e56b1325a",
+  "source_sha": "c9c4a1b650aaa05e",
+  "date": "2026-10-25",
+  "by": "auto: team scores verified exactly, all schools identified, no flags",
+  "evidence": ""
  },
  "backend/data/parsed_results/2013/Indoor/ColbyMeet2Scores_jan12.json": {
   "parse_sha": "9c3a805abda56c7b",
