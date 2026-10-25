@@ -688,7 +688,9 @@ def load_transcription(input_path):
                   for b in blocks]
     return {'events': events, 'date': d.get('date'), 'meet_name': d.get('meet_name'),
             'venue': d.get('venue'), 'team_rankings': blocks,
-            'parser': 'Transcribed'}
+            'parser': 'Transcribed',
+            # (a race cut out of a combined ranking: the page's scores are not its own)
+            **({'no_team_scores': True} if d.get('no_team_scores') else {})}
 
 
 def add_team_scores(data, input_path):
@@ -1526,6 +1528,8 @@ def _parse_one_file(args):
         # official scores are read below)
         if isinstance(data_to_save, list) and not data_to_save:
             data_to_save = {'events': [], 'date': None, 'meet_name': None, 'team_rankings': []}
+        # (a transcription that says the page's team scores are not its race's)
+        no_scores = isinstance(data_to_save, dict) and data_to_save.pop('no_team_scores', False)
         # The file's own Hy-Tek header is a second source of truth for the
         # venue; only fill what the parser could not supply itself.
         if isinstance(data_to_save, dict):
@@ -1570,7 +1574,7 @@ def _parse_one_file(args):
                 # the official team scores, in every format a file prints
                 # them (backend/parsers/teamscores.py), when the parser
                 # read none: the score check needs them
-                if not data_to_save.get('team_rankings'):
+                if not data_to_save.get('team_rankings') and not no_scores:
                     add_team_scores(data_to_save, input_path)
             meta = hytek_header_meta(text)
             if meta['venue'] and not data_to_save.get('venue'):
@@ -1618,7 +1622,7 @@ def _parse_one_file(args):
                         data_to_save['aggregate_events'] = [dict(e, aggregate=True) for e in aev]
                 except Exception:
                     pass
-            if season_label == 'XC':
+            if season_label == 'XC' and not no_scores:
                 # (a file holding only the team scores keeps them too: they
                 # are checked against the race posted beside it)
                 from backend.parsers.xcscores import parse_xc_team_scores

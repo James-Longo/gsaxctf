@@ -2711,6 +2711,26 @@ def test_transcription_xc_team_scores_marked_xc():
     assert all(b['kind'] == 'xc' and b['totals_only'] is True for b in bs)
 
 
+def test_transcription_no_team_scores_flag():
+    """A race cut out of a combined ranking says so: the page's scores stay off it."""
+    import json
+    import tempfile
+    import backend.scraper_v2 as sv
+    old = sv.TRANSCRIBED
+    with tempfile.TemporaryDirectory() as d:
+        os.makedirs(os.path.join(d, '2014', 'XC'))
+        for name, extra in (('cut.json', {'no_team_scores': True}), ('plain.json', {})):
+            with open(os.path.join(d, '2014', 'XC', name), 'w') as f:
+                json.dump(dict({'events': [], 'team_rankings': []}, **extra), f)
+        sv.TRANSCRIBED = d
+        try:
+            cut = sv.load_transcription('archive/2014/XC/cut.txt')
+            plain = sv.load_transcription('archive/2014/XC/plain.txt')
+        finally:
+            sv.TRANSCRIBED = old
+    assert cut.get('no_team_scores') is True and 'no_team_scores' not in plain
+
+
 def test_every_parsed_season_is_synced():
     """The resync reads only the seasons in SEASONS: a parsed season left out
     (2014 XC, recovered with no sub5 index page) never reaches the store."""
