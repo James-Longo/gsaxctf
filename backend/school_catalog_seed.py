@@ -1525,6 +1525,28 @@ FILE_RULES = [
     (['Iselsboro School'], 'XC', (2016, 2016), r'^camden-hills-girls\.txt$', 'me-hs-islesboro'),
     (['CH)'], 'XC', (2015, 2015), r'^2015-Pre-Season-results-$', 'me-hs-camden-hills'),
     (['MV)'], 'XC', (2015, 2015), r'^2015-Pre-Season-results-$', 'me-hs-medomak'),
+    # 2026-10-25 second read, batch 11 (2014-2015)
+    (['Lisbon Falls'], 'XC', (2013, 2013), r'^(focboysoverall13|foc13girlsoverall)$', 'me-hs-lfca'),  # listed apart from Lisbon High School; Haskell/Altieri/MacDonald = LFCA 2011-2014
+    (['C'], 'XC', (2015, 2015), r'^XC-Results-Sept-16-2015$', 'me-hs-cheverus'),
+    (['Sa'], 'XC', (2015, 2015), r'^XC-Results-Sept-16-2015$', 'me-hs-sanford'),
+    (['Sc'], 'XC', (2015, 2015), r'^XC-Results-Sept-16-2015$', 'me-hs-scarborough'),
+    (['W'], 'XC', (2015, 2015), r'^XC-Results-Sept-16-2015$', 'me-hs-westbrook'),
+    (['SP'], 'XC', (2015, 2015), r'^broganboysvarsity$', 'me-hs-south-portland'),
+    (['NHS'], 'XC', (2015, 2015), r'^bucksportinvitevarsity$', 'me-hs-narraguagus'),
+    (['OSHS'], 'XC', (2015, 2015), r'^camden-girls\.txt$', 'me-hs-oceanside'),
+    (['WASH'], 'XC', (2015, 2015), r'^fortkent_sept9$', 'me-hs-washburn'),
+    (['FK'], 'XC', (2015, 2015), r'^fortkent_sept9$', 'me-hs-fort-kent'),
+    (['GHCA'], 'XC', (2015, 2015), r'^fortkent_sept9$', 'me-hs-greater-houlton-christian'),
+    (['Tigers'], 'XC', (2015, 2015), r'^scarboroughboys$', 'me-hs-biddeford'),
+    (['Bulldogs'], 'XC', (2015, 2015), r'^scarboroughboys$', 'me-hs-portland'),
+    (['Scarboro'], 'XC', (2015, 2015), r'^scarboroughboys$', 'me-hs-scarborough'),
+    (['S'], 'XC', (2015, 2015), r'^taboys_oct16$', 'me-hs-south-portland'),
+    (['SC'], 'XC', (2015, 2015), r'^taboys_sept26$', 'me-hs-scarborough'),
+    (['M', 'MD'], 'XC', (2015, 2015), r'^tagirls_sept25$', 'me-hs-marshwood'),
+    (['BG'], 'XC', (2015, 2015), r'^bucksportinvitejv$', 'me-hs-bucksport'),
+    (['Lisbon Christian'], 'XC', (2014, 2014), r'^(boys|girls)(overall|sections)14$', 'me-hs-lfca'),
+    (['FR Westbrook'], 'XC', (2014, 2014), r'^class-a-girls-w$', 'me-hs-westbrook'),
+    (['JR GNG'], 'XC', (2014, 2014), r'^class-b-boys-w$', 'me-hs-gray-ng'),
     # 2026-10-24 unresolved-school review, batch 2
     (['F'], 'XC', (2004, 2004), r'^cape7oct04[bg]\.txt$', 'me-hs-falmouth'),   # Title lists Falmouth; only F team
     (['Y'], 'XC', (2004, 2004), r'^cape7oct04[bg]\.txt$', 'me-hs-yarmouth'),   # Title lists Yarmouth; only Y team

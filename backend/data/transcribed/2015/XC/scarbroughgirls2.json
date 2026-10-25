@@ -1,0 +1,73 @@
+{
+ "source": "backend/data/sub5_archive/2015/XC/scarbroughgirls2.html",
+ "meet_name": "Scarborough, Portland, Massabesic, Biddeford at Smiling Hill Farm",
+ "date": "2015-09-11",
+ "school_codes": {},
+ "events": [],
+ "team_rankings": [
+  {
+   "kind": "xc",
+   "gender": "Girls",
+   "event_header": "Event 1 Girls 5k Dash CC",
+   "teams": [
+    {
+     "rank": 1,
+     "team": "Scarborough High School",
+     "score": 24,
+     "places": [
+      1,
+      2,
+      3,
+      7,
+      11,
+      15,
+      16
+     ]
+    },
+    {
+     "rank": 2,
+     "team": "Massabesic High School",
+     "score": 34,
+     "places": [
+      4,
+      5,
+      6,
+      9,
+      10,
+      12,
+      13
+     ]
+    },
+    {
+     "rank": 3,
+     "team": "Biddeford High School",
+     "score": 76,
+     "places": [
+      8,
+      14,
+      17,
+      18,
+      19,
+      24,
+      25
+     ]
+    },
+    {
+     "rank": 4,
+     "team": "Portland High X Country",
+     "score": 112,
+     "places": [
+      20,
+      21,
+      22,
+      23,
+      26,
+      27,
+      28
+     ]
+    }
+   ]
+  }
+ ],
+ "notes": "Page 2 of a Hy-Tek report: the source holds only the Team Scores table, no individual rows (so events is empty). The parse took the Hy-Tek license line 'Down East Sports Timing - Contractor License' as the meet name and left the gender null; fixed: meet name from the page header 'SCARBORO-PORTLAND-MASSABESIC-BIDDEFORD - 9/11/2015' and 'SMILING HILL FARM', gender Girls from 'Event 1 Girls 5k Dash CC' and the file name, date 9/11/2015 as printed. Team scores and scoring places copied as printed (each total is the sum of the first five places: 24, 34, 76, 112). PARSER PATTERN: a Hy-Tek page whose header is the license line ('<company> - Contractor License') then the meet title on the next line: the title is the second line."
+}
