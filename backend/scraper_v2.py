@@ -55,12 +55,15 @@ SEASONS = (
     [{"year": str(y), "season": s,
       "url": f"https://sub5.com/youth-pages/{s.lower()}-track/{y}-{s.lower()}-results/"}
      for y in range(2022, 2027) for s in ("Indoor", "Outdoor")] +
-    # Cross country: legacy FrontPage tree 2003-2013, WP pages 2015-2026
+    # Cross country: legacy FrontPage tree 2003-2013, WP pages 2015-2026.
+    # sub5 has no 2014 XC page: its files were recovered from the Internet
+    # Archive and MileSplit (archive_recovered.txt), so it has no index URL.
     [{"year": f"20{n:02d}", "season": "XC",
       "url": (f"https://sub5.com/wp-content/xcresults/results{n:02d}/results{n:02d}.htm"
               if n >= 11 else
               f"https://sub5.com/wp-content/xcresults/results{n:02d}/results.htm")}
      for n in range(3, 14)] +
+    [{"year": "2014", "season": "XC", "url": None}] +
     [{"year": str(y), "season": "XC",
       "url": f"https://sub5.com/youth-pages/cross-country/{y}-xc-results/"}
      for y in range(2015, 2027)]
@@ -2003,7 +2006,7 @@ class Sub5ScraperV2:
         a full scrape reads."""
         n = 0
         for config in (seasons if seasons is not None else SEASONS):
-            for link in self.get_meet_links(config['url']):
+            for link in (self.get_meet_links(config['url']) if config['url'] else []):
                 key = f"{config['year']}/{config['season']}/{self._archive_filename(link)}"
                 if self.web_url_mapping.get(key) != link:
                     self.web_url_mapping[key] = link
@@ -2837,7 +2840,7 @@ class Sub5ScraperV2:
         for cfg in seasons or SEASONS:
             year, season, index_url = cfg['year'], cfg['season'], cfg['url']
             archive_dir = os.path.join(base_dir, f'backend/data/sub5_archive/{year}/{season}')
-            if not os.path.isdir(archive_dir):
+            if not index_url or not os.path.isdir(archive_dir):
                 continue
             stubs = []
             for fn in os.listdir(archive_dir):
@@ -2972,7 +2975,7 @@ class Sub5ScraperV2:
             self.report_progress(f"Processing {season} {year}...")
             archive_dir = os.path.join(base_dir, f'backend/data/sub5_archive/{year}/{season}')
             json_dir = os.path.join(base_dir, f'backend/data/parsed_results/{year}/{season}')
-            if download:
+            if download and index_url:
                 self.download_missing_files(index_url, archive_dir, synced_meets=scrape_state['synced_meets'], curr_year=year, curr_season=season)
             if parse:
                 self.parse_all_files(archive_dir, json_dir, force=wipe)

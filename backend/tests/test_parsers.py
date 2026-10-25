@@ -2710,6 +2710,18 @@ def test_transcription_xc_team_scores_marked_xc():
             sv.TRANSCRIBED = old
     assert all(b['kind'] == 'xc' and b['totals_only'] is True for b in bs)
 
+
+def test_every_parsed_season_is_synced():
+    """The resync reads only the seasons in SEASONS: a parsed season left out
+    (2014 XC, recovered with no sub5 index page) never reaches the store."""
+    from backend.scraper_v2 import SEASONS
+    listed = {(s['year'], s['season']) for s in SEASONS}
+    parsed = os.path.join(ROOT, 'backend', 'data', 'parsed_results')
+    missing = [(y, s) for y in os.listdir(parsed) if os.path.isdir(os.path.join(parsed, y))
+               for s in os.listdir(os.path.join(parsed, y))
+               if s in ('Indoor', 'Outdoor', 'XC') and (y, s) not in listed]
+    assert not missing, missing
+
 if __name__ == '__main__':
     qaqc._ensure_team_mapping()
     failed = 0
