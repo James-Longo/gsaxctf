@@ -1566,6 +1566,14 @@ FILE_RULES = [
     (['A'], 'XC', (2012, 2012), r'^thorntongirls_sept14$', 'me-hs-thornton'),
     # 2026-10-25 second read, batch 16 (2012)
     (['HDG'], 'XC', (2012, 2012), r'^washburninvite(boys|girls)$', 'me-hs-hodgdon'),
+    # 2026-10-25 unresolved names inside Maine XC meets (typos and codes, evidence per meet)
+    (['Thornton Acadmey'], 'XC', (2025, 2025), r'^smaarelaysfroshjv$', 'me-hs-thornton'),
+    (['Yarmough'], 'XC', (2018, 2018), r'^ms-wmc-yarm-fa-sd-sacopee-valley-2018$', 'me-hs-yarmouth'),
+    (['Wintrhop'], 'XC', (2011, 2011), r'^ms-mvc-carrabec-h-d-telstar-winthrop-madison-2011$', 'me-hs-winthrop'),
+    (['Ilseboro'], 'XC', (2005, 2005), r'^festival(combinedb\.txt|sectionsB)$', 'me-hs-islesboro'),
+    (['Islesboro Middle S'], 'XC', (2012, 2012), r'^Busline%20JV\.txt$', 'me-ms-islesboro'),
+    (['KMS'], 'XC', (2018, 2018), r'^(alms.*|cariboumsboys_oct3)$', 'me-hs-katahdin'),  # Luke Streinz: the Streinz family runs for Katahdin
+    (['HOD'], 'XC', (2011, 2011), r'^aroostookinviteboys_sept16$', 'me-hs-hodgdon'),  # Nick Lunn = Nicholas Lunn, Hodgdon
     # 2026-10-24 unresolved-school review, batch 2
     (['F'], 'XC', (2004, 2004), r'^cape7oct04[bg]\.txt$', 'me-hs-falmouth'),   # Title lists Falmouth; only F team
     (['Y'], 'XC', (2004, 2004), r'^cape7oct04[bg]\.txt$', 'me-hs-yarmouth'),   # Title lists Yarmouth; only Y team
