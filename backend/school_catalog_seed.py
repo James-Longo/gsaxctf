@@ -1560,6 +1560,10 @@ FILE_RULES = [
     (['B'], 'XC', (2013, 2013), r'^Medomak%20Valley%209-6-2013%20(Boys|Girls)%20Results$', 'me-hs-boothbay'),
     (['LA'], 'XC', (2013, 2013), r'^Medomak%20Valley%209-6-2013%20(Boys|Girls)%20Results$', 'me-hs-lincoln-academy'),
     (['O'], 'XC', (2013, 2013), r'^Medomak%20Valley%209-6-2013%20(Boys|Girls)%20Results$', 'me-hs-oceanside'),
+    # 2026-10-25 second read, batch 14 (2012-2013)
+    (['TA'], 'XC', (2013, 2013), r'^wells%20(78%20girls|boys%2078th|ms%206th%20boys|ms%206th%20girls)$', 'me-ms-thornton'),
+    (['G'], 'XC', (2013, 2013), r'^yorkgirls_sept6$', 'me-hs-gray-ng'),
+    (['A'], 'XC', (2012, 2012), r'^thorntongirls_sept14$', 'me-hs-thornton'),
     # 2026-10-24 unresolved-school review, batch 2
     (['F'], 'XC', (2004, 2004), r'^cape7oct04[bg]\.txt$', 'me-hs-falmouth'),   # Title lists Falmouth; only F team
     (['Y'], 'XC', (2004, 2004), r'^cape7oct04[bg]\.txt$', 'me-hs-yarmouth'),   # Title lists Yarmouth; only Y team
