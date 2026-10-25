@@ -1550,7 +1550,6 @@ FILE_RULES = [
     # 2026-10-25 2014 XC first publish
     (['Madsion'], 'XC', (2014, 2014), r'^ms-mvc-madison-winthrop-telstar-dirigo-mt-valley-carrabec-2014$', 'me-hs-madison'),  # typo beside 'Madison High School' in a high-school meet
     # 2026-10-25 second read, batch 12 (2013-2014)
-    (['Valley'], 'XC', (2013, 2013), r'^Carrabec%20XC%20GIRLS$', 'me-hs-mountain-valley'),
     (['FK', 'Fk'], 'XC', (2013, 2013), r'^FK%20XC%20Meet%208-28-13%20Results$', 'me-hs-fort-kent'),
     (['GHCA'], 'XC', (2013, 2013), r'^FK%20XC%20Meet%208-28-13%20Results$', 'me-hs-greater-houlton-christian'),
     (['Ell'], 'XC', (2013, 2013), r'^GSAHomeMeet$', 'me-hs-ellsworth'),
