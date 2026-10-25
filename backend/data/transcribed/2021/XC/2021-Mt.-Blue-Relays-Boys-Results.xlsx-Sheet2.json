@@ -1,7 +1,7 @@
 {
  "events": [
   {
-   "event": "Run CC",
+   "event": "2.03 Mile Run CC",
    "gender": "Boys",
    "is_relay": false,
    "results": [
@@ -1148,5 +1148,5 @@
  "meet_name": "2021 Mt. Blue Relays Results - Boy's - October 8th",
  "team_rankings": [],
  "parser": "XCListParser",
- "notes": "Source PDF text runs the name into the school when the name is long (no space: 'Lucas Hutchinson Oxford Hills', 'John-Antonio FatoneLewiston', 'Matthew Dos SantosCony'); the parser split 4 rows at the wrong word (places 33, 83, 103, 122: school 'Hills'/'Blue' read as the school, matched to a New Hampshire/Blue Hill catalog entry) and left 6 with no school (39, 59, 64, 71, 81, 123). Fixed all 10: names/schools as printed (33 Lucas Hutchinson, Oxford Hills; 39 John-Antonio Fatone, Lewiston; 59 Matthew Dos Santos, Cony; 64 Quinn St. Peter Scott, Edward Little; 71 Jonas Stepanauskas, Lincoln Academy; 81 Thaddeus Eddyblouin, Lincoln Academy; 83 Milo Thompson Vought, Mt. Blue; 103 Ayden St. Laurent, Oxford Hills; 122 Donovan Sanborn, Oxford Hills; 123 Jonathan Schomaker, Leavitt). Other 132 rows checked against source: place, name, school, time agree. 142 runners; slow times (to 22:13) are real. PARSER PATTERN: XCListParser on a PDF where a long name abuts the school column."
+ "notes": "Source PDF text runs the name into the school when the name is long (no space: 'Lucas Hutchinson Oxford Hills', 'John-Antonio FatoneLewiston', 'Matthew Dos SantosCony'); the parser split 4 rows at the wrong word (places 33, 83, 103, 122: school 'Hills'/'Blue' read as the school, matched to a New Hampshire/Blue Hill catalog entry) and left 6 with no school (39, 59, 64, 71, 81, 123). Fixed all 10: names/schools as printed (33 Lucas Hutchinson, Oxford Hills; 39 John-Antonio Fatone, Lewiston; 59 Matthew Dos Santos, Cony; 64 Quinn St. Peter Scott, Edward Little; 71 Jonas Stepanauskas, Lincoln Academy; 81 Thaddeus Eddyblouin, Lincoln Academy; 83 Milo Thompson Vought, Mt. Blue; 103 Ayden St. Laurent, Oxford Hills; 122 Donovan Sanborn, Oxford Hills; 123 Jonathan Schomaker, Leavitt). Other 132 rows checked against source: place, name, school, time agree. 142 runners; slow times (to 22:13) are real. PARSER PATTERN: XCListParser on a PDF where a long name abuts the school column. SECOND READ: all 142 rows re-checked against the source (place, name, school, time agree). Event renamed from 'Run CC' to '2.03 Mile Run CC': this sheet prints no distance, but the same meet's team sheet (2021-mt-blue-relays.pdf, 'Mt. Blue Relays - at Mt. Blue - October 8th') prints 'Fastest Time of the Day (2.03 mile course)', i.e. each individual time is one 2.03-mile leg."
 }

@@ -5,7 +5,7 @@
  "school_codes": {},
  "events": [
   {
-   "event": "Run CC",
+   "event": "2.03 Mile Run CC",
    "gender": "Boys",
    "is_relay": false,
    "results": [
@@ -1341,6 +1341,6 @@
   }
  ],
  "team_rankings": [],
- "notes": "Copy of the parse (166 rows). 26 rows where the parser put the school first in the name ('Lewiston, Maurice Beaulieu', source line '6 11:50:00 Maurice Beaulieu Lewiston') and left school blank: athlete rewritten 'Last, First' and school set to the printed school. Places fixed: [6, 10, 12, 35, 67, 77, 91, 93, 94, 96, 97, 100, 108, 115, 118, 121, 131, 135, 139, 142, 144, 153, 157, 159, 161, 163]. Marks untouched (the PDF prints 10:21:00 = 10:21). | Second read: all 166 rows re-verified line by line against the PDF (place, time, first/last, school; times 10:21:00 = 10:21). Date was null: the title 'BOYS - Mt. Blue Relays - Oct. 5.2018' gives 2018-10-05, added.",
+ "notes": "Copy of the parse (166 rows). 26 rows where the parser put the school first in the name ('Lewiston, Maurice Beaulieu', source line '6 11:50:00 Maurice Beaulieu Lewiston') and left school blank: athlete rewritten 'Last, First' and school set to the printed school. Places fixed: [6, 10, 12, 35, 67, 77, 91, 93, 94, 96, 97, 100, 108, 115, 118, 121, 131, 135, 139, 142, 144, 153, 157, 159, 161, 163]. Marks untouched (the PDF prints 10:21:00 = 10:21). | Second read: all 166 rows re-verified line by line against the PDF (place, time, first/last, school; times 10:21:00 = 10:21). Date was null: the title 'BOYS - Mt. Blue Relays - Oct. 5.2018' gives 2018-10-05, added. | 2026-10-25 orchestrator: event named '2.03 Mile Run CC' (it was 'Run CC', read as 5K). The Mt. Blue Relays leg is 2.03 miles: printed on the 2010, 2011 and 2012 team sheets ('5x2.03mile'), the 2019 team sheet (10.15 miles for 5 legs) and the 2021 sheet ('2.03 mile course'), and MileSplit's 2013-2014 copies; this year's leg times match every other year's (boys median 13:35-14:20, girls 16:29-17:18).",
  "parser": "HeaderTableParser"
 }
