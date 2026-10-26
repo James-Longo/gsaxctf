@@ -151,6 +151,30 @@
   "parse_sha": "fbf38dfdd1e59a6b",
   "source_sha": "5c1b72cd0f034f04"
  },
+ "backend/data/parsed_results/2006/XC/bonnyeagle9_8girls.json": {
+  "verdict": "source-error",
+  "by": "sonnet audit (second read, 2026-10-25)",
+  "notes": "convention: the page scores three finishers it prints with no name (places 12, 15, 26, all BE, rows with only a school and time); the stored rows leave them out (unnamed rows stay out), which shifts every later team place. With those three BE rows and the usual 7-scorer cap, BE 25, TA 40, Sanford 67 reproduce exactly as printed. Portland (one runner, place 9) is 'no score'.",
+  "date": "2026-10-25",
+  "parse_sha": "0c02c7210897993e",
+  "source_sha": "16512ba425bf829e"
+ },
+ "backend/data/parsed_results/2006/XC/ellsworthvarsityboys.json": {
+  "verdict": "source-error",
+  "by": "sonnet audit (second read, 2026-10-25)",
+  "notes": "convention: teams with 5+ finishers (Caribou 63, Bangor 82, Falmouth 111, York 138, Foxcroft 140, Sanford 167, Orono 171) reproduce once the unlisted Portland (27) and Lee (58,70) runners are left out of the places. The other seven (Ellsworth 4 finishers 165, Hampden 4 213, Washington 4 303, Sumner 3 233, Presque Isle 2 324, MDI 2 334, John Bapst 2 347) are short teams scored with filler places for missing runners; the filler values differ per team (e.g. Sumner +171 for 2 missing), not a single rule the checker models. Rows match the page (70 rows, places 1-70).",
+  "date": "2026-10-25",
+  "parse_sha": "e1f8f07081876f83",
+  "source_sha": "03c5e13c355739dd"
+ },
+ "backend/data/parsed_results/2006/XC/ellsworthvarsitygirls.json": {
+  "verdict": "source-error",
+  "by": "sonnet audit (second read, 2026-10-25)",
+  "notes": "convention: teams with 5+ finishers (York 59, Falmouth 62, John Bapst 93, Hampden 112, Old Town 113, MDI 131, Bangor 183) reproduce once the unlisted teams' runners (Caribou 3, Lee 2, Bucksport 1, Ellsworth 1) are left out of the places. Presque Isle (4 finishers, 207), Foxcroft (3, 224) and Sanford (2, 243) are short teams scored with filler places for missing runners, not a rule the checker models. Rows match the page (60 rows).",
+  "date": "2026-10-25",
+  "parse_sha": "44f83834731898e8",
+  "source_sha": "5ee27a08dddb9930"
+ },
  "backend/data/parsed_results/2006/XC/fortfosterboys10_11.json": {
   "verdict": "source-error",
   "by": "sonnet audit (score mismatch, 2026-10-23)",
@@ -167,6 +191,14 @@
   "parse_sha": "187bdabd171e62b4",
   "source_sha": "3b43c175aae5eb52"
  },
+ "backend/data/parsed_results/2006/XC/massabesic9_22girls.json": {
+  "verdict": "source-error",
+  "by": "sonnet audit (second read, 2026-10-25)",
+  "notes": "printed Thornton Academy 47, its places 1,7,8,14,16 sum 46; printed Gorham 73, its places 2,3,23,24,31 sum 83 (62-83 under any displacer cap 5-all). McAuley 38 and Massabesic 69 reproduce. 49 rows match the page.",
+  "date": "2026-10-25",
+  "parse_sha": "16227d0a9f8291b2",
+  "source_sha": "b117181d1bb95d10"
+ },
  "backend/data/parsed_results/2006/XC/medomak9_22boys.json": {
   "verdict": "source-error",
   "by": "sonnet audit (score mismatch, 2026-10-23)",
@@ -182,6 +214,14 @@
   "date": "2026-10-23",
   "parse_sha": "5cd9cd581a662698",
   "source_sha": "50240a786e179008"
+ },
+ "backend/data/parsed_results/2007/XC/BJHS_X-C_Oct3-07-Girls.json": {
+  "verdict": "source-error",
+  "by": "sonnet audit (second read, 2026-10-25)",
+  "notes": "printed Durham 99, its team places sum 89 (9,12,20,23,25; raw places 9,12,23,26,30 = 100). Brunswick 31, Mt. Ararat 35, Bath 94 and Tripp 111 reproduce with the usual 7-scorer cap, Oxford Hills (n/s) left out. Places 61-67 print only '22:++' (no times, no effect on scores) and stay out.",
+  "date": "2026-10-25",
+  "parse_sha": "a3453705fea3fa40",
+  "source_sha": "6875252eb2e3b85e"
  },
  "backend/data/parsed_results/2007/XC/WiscGirls9-18-07.json": {
   "verdict": "source-error",
@@ -239,6 +279,14 @@
   "parse_sha": "2458bbb0f1ec7090",
   "source_sha": "83958ec5c29bf4cf"
  },
+ "backend/data/parsed_results/2007/XC/noblegirls10_5.json": {
+  "verdict": "source-error",
+  "by": "sonnet audit (second read, 2026-10-25)",
+  "notes": "printed Scarborough 19, but its best five places (1,4,5,6,8) sum 24; TA 39, but its best five (2,3,7,9,10) sum 31; Deering 81 vs 140 (16,26,29,31,38); Noble 117 vs 218 (33,34,41,54,56). No scoring convention gives them (a 5-runner total can't be below the sum of the team's five best places). Four rows with no name (places 16 D, 18 Sc, 50 Sc, 66 Sc) stay out and do not change this. Atherton 'T' = TA kept.",
+  "date": "2026-10-25",
+  "parse_sha": "870f250089381621",
+  "source_sha": "8c95274b90b3bc73"
+ },
  "backend/data/parsed_results/2007/XC/ot%20xc%20meet%20girls%20var%20results%209.22.07.txt.json": {
   "verdict": "fixed",
   "by": "sonnet audit (score mismatch, 2026-10-23)",
@@ -248,10 +296,10 @@
   "source_sha": "892feba66be1f7d6"
  },
  "backend/data/parsed_results/2007/XC/richmondgirls9_15.json": {
-  "verdict": "confirmed",
-  "by": "sonnet audit (score mismatch, 2026-10-23)",
-  "notes": "Parse matches the 19 rows. Printed 'Team Scores: HY: 104; KH, Rich., BO, GR: NS'. Hyde is the only scoring team (8 finishers: places 6, 8, 9, 11, 16, 17, 18, 19). 104 = 6+8+9+11+16+17+18+19: the sheet sums every Hyde finisher's overall place, not the top five (top five would be 6+8+9+11+16=50). Rule the checker lacks: lone scoring team scored as the sum of all its finishers' places.",
-  "date": "2026-10-23",
+  "verdict": "source-error",
+  "by": "sonnet audit (second read, 2026-10-25)",
+  "notes": "convention: Hyde is the only team with a full team (8 finishers: 6,8,9,11,16,17,18,19); printed 'HY: 104' is the sum of all eight places, not the top five (50). Other teams NS. Rows match the page (19 rows, place 17 'No Name Given' HY is printed with a name).",
+  "date": "2026-10-25",
   "parse_sha": "8aa99cdeb7984222",
   "source_sha": "4fa7b3e86d0b778a"
  },
@@ -345,10 +393,10 @@
  },
  "backend/data/parsed_results/2008/XC/pvcgirls.txt.json": {
   "verdict": "fixed",
-  "by": "sonnet audit (score mismatch, 2026-10-23)",
-  "notes": "ColumnStrategyParser: the sheet is one 'Event 2 Girls 5k Run CC Varsity' with two sections, 'Class C School Results' (lines '1 Chelsie Oldfield FR C-Foxcroft Academy 20:22.8 1' .. '42 Shelby Stanhope ... 29', then '-- Mandy Fergusan C-Mattanawcook DNF') and 'Class B  School Results' (1 Brianne Dunn B-Ellsworth ... 49 Katie Bridges), each with its own places, team-place column and Team Scores table. The parse merged them into one 92-row race, so the per-class team places collide. Should be two races (Class C 43 rows, Class B 49 rows). Per class every printed total equals the sum of the team-place column (B: MDI 2+10+14+16+19=61, John Bapst 5+7+13+15+23=63, Caribou 3+6+11+18+25=63; C: Mattanawcook 2+4+6+9+10=31, Washington 23+24+27+28+29=131). School: 'C-Penquis' (Kelsey Ottmann) is unresolved but is Penquis Valley (me-hs-penquis; same runner is 'Penquis' in emclasscgirls/focgirlscompiled); 'C-PVHS' (Kristi Byer) shows ? but is Penobscot Valley (same runner 'Kristi Breyer, Penobscot Valley' 2007-09-22) while Penquis is spelled separately in this sheet. Override written (split into two events, event_idx on the score blocks, the two school strings); it verifies 0 teams off.",
-  "date": "2026-10-23",
-  "parse_sha": "06227ba024ca7925",
+  "by": "sonnet audit (second read, 2026-10-25)",
+  "notes": "the stored parse is stale: two races (Class C 43 rows, Class B 49) with the Class B score block first, paired by gender order so each block met the wrong race. The existing override already carries event_idx on both blocks (Class B -> 1, Class C -> 0) and then all 12 teams verify (xc_verify_parsed on load_transcription = verified, 0 teams off). No edit needed; the store needs a rebuild.",
+  "date": "2026-10-25",
+  "parse_sha": "647feb462462c5e1",
   "source_sha": "f07bd3f2d0907bdb"
  },
  "backend/data/parsed_results/2008/XC/skowhegan9_26.json": {
@@ -1344,11 +1392,11 @@
   "source_sha": "dba0a10526466941"
  },
  "backend/data/parsed_results/2012/XC/windham_oct5.json": {
-  "verdict": "fixed",
+  "verdict": "source-error",
   "by": "sonnet audit (second read, 2026-10-25)",
-  "notes": "Second read. 53 girls (Division Female) and 65 boys (Division Male) rows agree with the PDF: place, name, school, time (the Pace column is dropped). Added what the parse lacked: team scores printed in the right-hand column after 'Overall Team Results', girls Windham 29, Sanford 45, Kennebunk 76, Portland 79; boys Windham 27, Sanford 58, Portland 68, Kennebunk 73 (checked against the teams' top-5 sums is not possible since the sheet prints no points per runner). Meet title in the parse was the header word 'Race Windham'; replaced by the team list. Date 10/5/2012 printed. Distance 2.93 mi printed; the event keeps the parse's name.",
+  "notes": "girls Kennebunk printed 76, its places 1,12,18,21,34 reduce to 1,12,17,19,26 = 75 under the 7-scorer cap that reproduces Windham 29, Sanford 45 and Portland 79 (raw sum 86); printed is one more than any consistent count. Boys all 4 reproduce. 53 girls / 65 boys rows match the page.",
   "date": "2026-10-25",
-  "parse_sha": "ccd0b567a8bf5c87",
+  "parse_sha": "cb5594fd26b0c93f",
   "source_sha": "a8bcff08addd8c97"
  },
  "backend/data/parsed_results/2012/XC/windhamboys_sept21.json": {
@@ -5512,11 +5560,11 @@
   "source_sha": "170013e8702cae4b"
  },
  "backend/data/parsed_results/2019/XC/falmouthms_oct10.json": {
-  "verdict": "fixed",
-  "by": "sonnet audit (second read, 2026-10-24)",
-  "notes": "Falmouth MS 1.5 mile (Lincoln, Lyman Moore, King, Falmouth): the 98 parse rows (boys 52, girls 46) match the sheet; unnamed rows (boys places 24 and 31, girls place 31) correctly left out. Defect: the printed team Score blocks (boys Lincoln 30, Falmouth 53, King 61, Moore 84; girls King 22, Falmouth 49, Moore 87, Lincoln 104) were not read (team_rankings empty); override adds them. Source oddities: girls Lincoln 104 is a six-runner sum (top five = 77); girls place 26 Wahlig 12:04 is out of time order. Date null (file name oct10; falmouthms_oct9 is the same meet and rows, without scores). PARSER PATTERN: SpreadsheetTableParser does not read the side 'Score' block of team columns (Falmouth | King | Lincoln | Lyman Moore). Override: backend/data/transcribed/2019/XC/falmouthms_oct10.json (notes inside).",
-  "date": "2026-10-24",
-  "parse_sha": "0949c1e55152b9fb",
+  "verdict": "source-error",
+  "by": "sonnet audit (second read, 2026-10-25)",
+  "notes": "girls Lincoln printed 104; Lincoln has 6 scoring places 1,16,18,19,23,27: the top five sum 77, 104 is the sum of all six (convention: all six counted; the sheet prints 104 which would drop Lincoln to 4th, 77 would make it 3rd). Other girls teams and all boys reproduce.",
+  "date": "2026-10-25",
+  "parse_sha": "783e3d9b05ba40ce",
   "source_sha": "1d386debee9ba5d8"
  },
  "backend/data/parsed_results/2019/XC/falmouthms_oct9.json": {
