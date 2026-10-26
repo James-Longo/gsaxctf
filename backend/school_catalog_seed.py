@@ -1654,6 +1654,16 @@ FILE_RULES = [
     # 2026-10-26 second read batch 20 (2009)
     (['TA'], 'XC', (2009, 2009), r'^thornton(middle)(boys|girls)_sept23$', 'me-ms-thornton'),
     (['MER'], 'XC', (2009, 2009), r'^yarmouth(boys|girls)_sept11$', 'me-hs-maine-coast-waldorf'),
+    # 2026-10-26 second read batch 21 (2008-2009)
+    (['York'], 'XC', (2008, 2008), r'^smmsaa(junior|senior)(boys|girls)$', 'me-ms-york'),
+    (['Kenn'], 'XC', (2008, 2008), r'^smmsaa(junior|senior)(boys|girls)$', 'me-ms-kennebunk'),
+    (['Bidd'], 'XC', (2008, 2008), r'^smmsaa(junior|senior)(boys|girls)$', 'me-ms-biddeford'),
+    (['Mass'], 'XC', (2008, 2008), r'^smmsaa(junior|senior)(boys|girls)$', 'me-ms-massabesic'),
+    (['Sanf'], 'XC', (2008, 2008), r'^smmsaa(junior|senior)(boys|girls)$', 'me-ms-sanford'),
+    (['Noble'], 'XC', (2008, 2008), r'^smmsaa(junior|senior)(boys|girls)$', 'me-ms-noble'),
+    (['TA'], 'XC', (2008, 2008), r'^smmsaa(junior|senior)(boys|girls)$', 'me-ms-thornton'),
+    (['Wells'], 'XC', (2008, 2008), r'^smmsaa(junior|senior)(boys|girls)$', 'me-ms-wells'),
+    (['Freyburg'], 'XC', (2008, 2008), r'^Yarmouth_XC_Boys$', 'me-hs-fryeburg'),
     # 2026-10-24 unresolved-school review, batch 2
     (['F'], 'XC', (2004, 2004), r'^cape7oct04[bg]\.txt$', 'me-hs-falmouth'),   # Title lists Falmouth; only F team
     (['Y'], 'XC', (2004, 2004), r'^cape7oct04[bg]\.txt$', 'me-hs-yarmouth'),   # Title lists Yarmouth; only Y team
