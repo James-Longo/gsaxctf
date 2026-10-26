@@ -307,7 +307,7 @@ def xc_header(ln, loose=False):
     cls = re.match(r'\s*(?:Event\s+\d+\s+)?(?:Division|Class)\s+([1-4A-D])\s+(?=\S)', ln, re.I)
     if cls: ln = ln[cls.end():]
     m = re.match(r'\s*(?:\.+)?(?:Event\s+\d+\s+)?(?:(\d\w*(?: (?:and|&) \d\w*)? Grade)\s+)?'
-                 r'(?:(Varsity|Junior Varsity|JV|Middle School|Junior High|Freshman|Open|Reserve|Novice)\s+)?(Boys|Girls|Men|Women)(?:s\b)?(?:\s+(\S.*?))?\s*$', ln, re.I)   # "Mens 3,000 Meters Middle School Results"
+                 r'(?:(Varsity|Junior Varsity|JV|Middle School|Junior High|Freshman|Open|Reserve|Novice|Senior|Junior)\s+)?(Boys|Girls|Men|Women)(?:s\b)?(?:\s+(\S.*?))?\s*$', ln, re.I)   # "Mens 3,000 Meters Middle School Results"
     if not m or (not m.group(4) and not loose): return None
     if re.search(r'Team|Score', m.group(4) or '') or re.search(r'Results(?!\s*$)', m.group(4) or ''): return None
     if re.search(r'(?i)combin|qualif', m.group(4) or ''): return None   # an all-classes re-ranking, not a race
@@ -328,8 +328,8 @@ def xc_header(ln, loose=False):
     lv = (lvl or '') + ' ' + rest
     div = gdiv or ('JV' if re.search(r'junior[ -]varsity|\bJV\b|reserve', lv, re.I) else 'Freshman' if re.search(r'freshm[ae]n', lv, re.I)
                    else 'Middle School' if re.search(r'middle school|junior high', lv, re.I)
-                   else 'Junior' if re.search(r'\bjr\.?\s*div\b|\bjunior\s+div|\bJR\b.*\bJUNIOR\b', lv, re.I)   # "3k Run jr div", "JR GIRLS JUNIOR"
-                   else 'Senior' if re.search(r'\bsr\.?\s*div\b|\bsenior\s+div|\bSR\b.*\bSENIOR\b', lv, re.I) else 'Varsity')
+                   else 'Junior' if re.search(r'\bjr\.?\s*div\b|\bjunior\s+div|\bJR\b.*\bJUNIOR\b|^Junior\s', lv, re.I)   # "3k Run jr div", "JR GIRLS JUNIOR"
+                   else 'Senior' if re.search(r'\bsr\.?\s*div\b|\bsenior\s+div|\bSR\b.*\bSENIOR\b|^Senior\s', lv, re.I) else 'Varsity')   # SMMSAC 2026 "Senior Boys 1.5 Mile Run"
     if cls and div == 'Varsity': div = ('Division ' if cls.group(1).isdigit() else 'Class ') + cls.group(1).upper()
     return {'men': 'Boys', 'women': 'Girls'}.get(m.group(3).lower(), m.group(3).capitalize()), dist, div   # Meet Manager prints "Men 5k Run"
 def xc_name(n):
@@ -596,6 +596,8 @@ def parse_xc_tab(text, loose=False):
         tm_ = row.get('time') or row.get('mark') or row.get('finals', '')
         mm = re.fullmatch(r'(\d+:\d{2}(?:\.\d+)?):00', tm_)   # "28:05:00" printed for 28:05
         if mm: tm_ = mm.group(1)
+        mh = re.fullmatch(r'(\d{1,2}):(\d{2}):(\d{2})\.?', tm_)
+        if mh and int(mh.group(1)) >= 2: tm_ = '%s:%s.%s' % mh.groups()   # "12:48:18": minutes, seconds, hundredths (Spruce Mountain MS 2026)
         md = re.fullmatch(r'(\d{1,2})\.(\d{2})', tm_) if loose else None
         if md and int(md.group(1)) >= 5 and int(md.group(2)) < 60: tm_ = md.group(1) + ':' + md.group(2)   # "9.26" typed for 9:26
         if not (re.fullmatch(XC_TIME, tm_) or tm_ in XC_STATUS): note('XCTAB?', ln); continue

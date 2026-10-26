@@ -2777,6 +2777,16 @@ def test_paragraph_news_separators():
     assert rows[2] == [('Kelsey Kremer', 'MTA', '5-00'), ('Johanna Moody', 'POL', 'FAIL'),
                        ('Robin Pelkey', 'GNG', 'FAIL'), ('Deirdre Ball', 'LEW', '4-10')], rows[2]
 
+
+def test_milesplit_senior_junior_headers():
+    """SMMSAC 2026 prints 'Senior Boys 1.5 Mile Run' / 'Junior Girls 1.5 Mile Run' (the converter read no
+    events); 'Junior Varsity' and 'Junior High' keep their own divisions."""
+    from backend.milesplit import xc_header
+    assert xc_header('Event 1  Senior Boys 1.5 Mile Run ') == ('Boys', '1.5 Mile', 'Senior')
+    assert xc_header('Junior Girls 1.5 Mile Run') == ('Girls', '1.5 Mile', 'Junior')
+    assert xc_header('Junior Varsity Boys 5k') == ('Boys', '5k', 'JV')
+    assert xc_header('Junior High Boys 1.5 Mile Run') == ('Boys', '1.5 Mile', 'Middle School')
+
 if __name__ == '__main__':
     qaqc._ensure_team_mapping()
     failed = 0
