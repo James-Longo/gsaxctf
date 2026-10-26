@@ -586,6 +586,8 @@ def _resolve(raw_school, *, year, season, gender=None, meet_name=None, grade=Non
         if s in ov:
             return ov[s]
         hit = file_rule(s, year, season, meet_name, cat.get('file_rules', []))
+        if hit == '?':
+            return None   # a file rule leaving the string unidentified (no catalog school is it)
         if hit:
             return hit
     if looks_like_debris(s) and not salvage(s):

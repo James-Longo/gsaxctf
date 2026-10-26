@@ -8607,6 +8607,30 @@
   "parse_sha": "c02e762f737c5041",
   "source_sha": "daf368b008e6f1fb"
  },
+ "backend/data/parsed_results/2026/Indoor/Marathon-Elite-boys-results-1.json": {
+  "verdict": "fixed",
+  "by": "2026-10-26 sonnet audit (routine)",
+  "notes": "Machine-compared every parse row with the source text (name, mark, place, grade, event heading/order, relay members, per-event row counts): all 245 rows, places, grades, marks and relays match EXCEPT school assignment of the Cony co-op: the source prints 'Cony High Sc' (individuals: Lucas Rice, Keenan Libby, Travis Donovan, Alfie Cognata) and 'Cony High School' (4x200 relay 1:42.02 of the same four). The parse files the individuals under me-hs-winthrop and the relay under me-hs-cony. Both strings are the Hy-Tek team 'Cony High School', which in Jan 2026 is the Cony/Hall-Dale/Winthrop indoor co-op (NYI-results.txt of the same weeks has Winthrop athletes - Donovan, Cognata, Rice, Hachey - and Hall-Dale's 'Nolan Circo (H' all under 'Cony High Sc'). All should be coop-it-cony-halldale-winthrop. Parse lines 589,627,644,652,691 (individuals) and 721 (relay). [applied 2026-10-26: school rules in school_catalog_seed (2026-10-26 routine block), continuation-page parser fix, or transcription override, as listed; parser patterns not yet fixed are in the routine report]",
+  "date": "2026-10-26",
+  "parse_sha": "5a768e1d4029f547",
+  "source_sha": "30e0b2dcd56e16e9"
+ },
+ "backend/data/parsed_results/2026/Indoor/Marathon-Elite-girls-results.json": {
+  "verdict": "confirmed",
+  "by": "2026-10-26 sonnet audit (routine)",
+  "notes": "Machine-compared every parse row with the source text (name, mark, place, grade, event heading/order, relay members, per-event row counts): 190 rows, 15 events (prelims and finals), all match; relay 'Scarborough 1:51.15R' members match; 'Unattached'->x-unattached; 'Maine Centra'->me-hs-mci; no Cony rows in this file.",
+  "date": "2026-10-26",
+  "parse_sha": "878552d64d73d1f6",
+  "source_sha": "da415000a16b0d7e"
+ },
+ "backend/data/parsed_results/2026/Indoor/NYI-results.json": {
+  "verdict": "fixed",
+  "by": "2026-10-26 sonnet audit (routine)",
+  "notes": "Machine-compared every parse row with the source text (name, mark, place, grade, event heading/order, relay members, per-event row counts): 1339 parse rows: every row/mark/place/grade and all 29 relays (members + marks) match the source, but: (1) SCHOOL: 'Portsmouth' (27 rows, all -> '?') is Portsmouth NH: the same athletes (Baryiames, Boynton) are in Portsmouth_NH 2026 Outdoor (New England), Deondre McAllister was Portsmouth NH at the 2025 USM meet, and the meet's other out-of-state teams are NH (Merrimack, Hollis Brookline, Phillips Exeter, Mascoma). (2) SCHOOL: 'Cony High Sc' individuals -> coop-it-cony-halldale-winthrop (21 rows) but 'Cony High School' relays -> me-hs-cony (parse lines 3654,3659,3680,3689 and 2789); same string, one team: all should be coop-it-cony-halldale-winthrop (Winthrop and Hall-Dale athletes on it). (3) PARSER: the five Indoor Pentathlon sub-events (source 'Event 31 Indoor Pentathlon: #1 Girls 55 Meter Hurdles', #2 High Jump, #3 Shot Put, #4 Long Jump, #5 800 Meter Dash; boys #1 55H, #2 HJ, #3 SP, #4 LJ, #5 1000 Meter Dash) are all named 'Girls/Boys Indoor Pentathlon' in the parse (parse events [34]-[38], [39]-[43]) so hurdles times, jumps and run times share one event name; and the pentathlon total-points rows (source lines 2205-2213 girls 2941...1124, 2340-2356 boys 3116...961, 26 rows) are not in the parse. (4) PARSER: 'Event 33 Girls 1 Mile Run Race Walk' (3 rows) and 'Event 34 Boys 1 Mile Run Race Walk' (6 rows) are named 'Girls/Boys 1 Mile Run' - they are race walks (should be 1 Mile Race Walk), parse events [47],[48]. (5) PARSER: source line 145 '-- Caleb Ramsell 12 South Portla DQ R.5-14-1f Hurdle Violation' stored with mark '.5-14-1'; should be DQ (Boys 55 Meter Hurdles prelim). (6) DATE: title prints '1/2/2025 to 1/3/2025' (typo; the 2026 meet in the 2026 folder, Jan 2-3 2026); parse date 2025-01-02 - should be 2026-01-02. [applied 2026-10-26: school rules in school_catalog_seed (2026-10-26 routine block), continuation-page parser fix, or transcription override, as listed; parser patterns not yet fixed are in the routine report]",
+  "date": "2026-10-26",
+  "parse_sha": "fecfcb46560cbb0a",
+  "source_sha": "3d2efbd398618c2f"
+ },
  "backend/data/parsed_results/2026/Indoor/Results-meet-3.json": {
   "verdict": "confirmed",
   "by": "sonnet audit pilot 2026-10-20",
@@ -8631,6 +8655,14 @@
   "parse_sha": "18b8ea8ad6cf4cb7",
   "source_sha": "49fc7408dbccc6be"
  },
+ "backend/data/parsed_results/2026/Indoor/ResultsSMAA.json": {
+  "verdict": "fixed",
+  "by": "2026-10-26 sonnet audit (routine)",
+  "notes": "Machine-compared every parse row with the source text (name, mark, place, grade, event heading/order, relay members, per-event row counts): 888 rows, 59 events (junior/senior/open divisions as separate events): all rows, places, marks, prelims/finals and relays (89 entries) match. Only defect: the two sprint medley events keep the division text in the event name: 'Girls 1600 Sprint Medley Open Division' and 'Boys 1600 Sprint Medley Open Division' while every other event is 'Girls 55 Meter Dash' style and NYI calls it '1600 Sprint Medley' - should be 'Girls/Boys 1600 Sprint Medley'. Also hurdles qualifier block 'Boys 55 Meter Hurdles qualifier Open Division' is stored as 'Boys 55 Meter Hurdles' (5 rows) which is fine. [applied 2026-10-26: school rules in school_catalog_seed (2026-10-26 routine block), continuation-page parser fix, or transcription override, as listed; parser patterns not yet fixed are in the routine report]",
+  "date": "2026-10-26",
+  "parse_sha": "4a4b7f8162fa7c3d",
+  "source_sha": "d6fadad385506017"
+ },
  "backend/data/parsed_results/2026/Indoor/ResultsSMAA4.json": {
   "verdict": "confirmed",
   "by": "audit fixes 2026-10-21",
@@ -8639,6 +8671,70 @@
   "parse_sha": "14f374fc5bbf5dfb",
   "source_sha": "5a5a017ecdde3973"
  },
+ "backend/data/parsed_results/2026/Indoor/smaa-1-1.json": {
+  "verdict": "fixed",
+  "by": "2026-10-26 sonnet audit (routine)",
+  "notes": "PDF LooseListParser patterns found in all SMAA PDF files: (A) every '---' status row (NH, FOUL, DNF, DQ, FS) of individuals and relays is dropped (parse has no NH/FOUL/DQ/DNF rows at all, except two garbled relay DNF rows in smaa-4-1), contrary to the status-row rule; (B) the meet date is the Hy-Tek print date, not the meet date printed in the title (off by one day or None). File = SMAA WK 5 MEET 1, '1/24/2026' (Cheverus-Deering-Portland-So. Portland); not a duplicate of smaa-1. 471 individual + 27 relay rows match otherwise; school codes CHVW/DEER/POHS/SPHS resolve correctly. Missing status rows (11): Neff, Sasha SPHS NH [34]; Gabriel, Kim CHVW NH [36]; Balo, Patricia SPHS DNF [44]; Davis, Olivia SPHS FOUL [69]; Kebokere, Laurelei SPHS FOUL [161]; Vangu, Viviane SPHS DQ [185]; Riley, Colin DEER DQ [228]; Banwell, Liam SPHS FOUL [243]; Shinners, Gabe CHVW NH [291]; Deloacth, Sonny SPHS DNF [366]; Haguruka, Moses DEER DQ [400]. Date parse 2026-01-25 should be 2026-01-24. [applied 2026-10-26: school rules in school_catalog_seed (2026-10-26 routine block), continuation-page parser fix, or transcription override, as listed; parser patterns not yet fixed are in the routine report]",
+  "date": "2026-10-26",
+  "parse_sha": "3795f465096348e2",
+  "source_sha": "03dbda10ae395d18"
+ },
+ "backend/data/parsed_results/2026/Indoor/smaa-1.json": {
+  "verdict": "fixed",
+  "by": "2026-10-26 sonnet audit (routine)",
+  "notes": "PDF LooseListParser patterns found in all SMAA PDF files: (A) every '---' status row (NH, FOUL, DNF, DQ, FS) of individuals and relays is dropped (parse has no NH/FOUL/DQ/DNF rows at all, except two garbled relay DNF rows in smaa-4-1), contrary to the status-row rule; (B) the meet date is the Hy-Tek print date, not the meet date printed in the title (off by one day or None). File = SMAA WK 4 MEET 1, title 'SMAA WK 4 MEET 1 - 1/17/2026' (Deering/Falmouth/Noble/Thornton), a different meet from smaa-1-1 (WK 5 MEET 1, 1/24). 335 individual + 21 relay rows all match the source otherwise (event/place sequences consistent). Missing status rows (9 individuals): Cyr, Jena NOHS FOUL [src line 43]; Grover, Dakotah NOHS NH [85]; Devoll, Tess NOHS NH [87]; Romano, Isabella DEER FS [101]; Torrieri, John DEER DNF [143] and FOUL [233]; Banerjee, Ryan FALH NH [212]; Yusuf, Ahmed DEER DQ [273]; Sampson, Takoda NOHS FS [346]; relay DQ: Noble High School and Falmouth High School (Girls 4x200 / Boys). Date parse 2026-01-18 should be 2026-01-17. [applied 2026-10-26: school rules in school_catalog_seed (2026-10-26 routine block), continuation-page parser fix, or transcription override, as listed; parser patterns not yet fixed are in the routine report]",
+  "date": "2026-10-26",
+  "parse_sha": "95e512095fd08b4a",
+  "source_sha": "709ce6e62b07a483"
+ },
+ "backend/data/parsed_results/2026/Indoor/smaa-2.json": {
+  "verdict": "fixed",
+  "by": "2026-10-26 sonnet audit (routine)",
+  "notes": "PDF LooseListParser patterns found in all SMAA PDF files: (A) every '---' status row (NH, FOUL, DNF, DQ, FS) of individuals and relays is dropped (parse has no NH/FOUL/DQ/DNF rows at all, except two garbled relay DNF rows in smaa-4-1), contrary to the status-row rule; (B) the meet date is the Hy-Tek print date, not the meet date printed in the title (off by one day or None). File = SMAA WK 4 MEET 2, 1/17/2026 (Biddeford/Kennebunk/Sanford/Scarborough/South Portland); parse date None, should be 2026-01-17. Additional PARSER error: source line 390 heading 'Mixed 1 Mile Race Walk 1 mile Open Division' is not recognised (only Girls/Boys headings are), so its 5 rows (Moore, Nolan M NOB 8:02.15; Smith, Charlotte W MARSH 10:01.13; Curry, Juday W MARSH 10:09.07; McManus, Drew W GORH 10:29.39; English, Kenzie W SCAR 11:43.65; parse lines 1070-1074) are appended to 'Boys Pole Vault Open Division'; they should be a separate Mixed 1 Mile Race Walk event (school codes with M/W prefix: M NOB=Noble, W MARSH=Marshwood, W GORH=Gorham, W SCAR=Scarborough resolve correctly). Heading 'Boys 4x200 Meter Relay JR BOYS Junior Division' event is absent only because its sole row (South Portland High School A DQ, line ~279) is a dropped status row. Dropped status rows (12): Barker, Lilliana SPHS DNF [22]; Ducey, Amelia SCAR DQ [86]; Nzunda, Alicia SPHS FOUL [88]; Harmon, Isabella SCAR DQ [110]; Bikunga Kabuana, Eliana SANH DQ [184]; Ndala, Henrique SPHS DQ [194]; Nsumbu, Crsitiano SANH DQ [302]; Deloacth, Sonny SPHS DNF [354]; Davis, Dominick SPHS NH [361]; Hatch, Graham SPHS NH [384]; Lao, Dylan BIDH FOUL [385]; Hunt, Ronin KENH DNF [438]; plus relay DQs for Scarborough and South Portland. [applied 2026-10-26: school rules in school_catalog_seed (2026-10-26 routine block), continuation-page parser fix, or transcription override, as listed; parser patterns not yet fixed are in the routine report]",
+  "date": "2026-10-26",
+  "parse_sha": "18fa817d30d8fea4",
+  "source_sha": "679c229f9f51ccc4"
+ },
+ "backend/data/parsed_results/2026/Indoor/smaa-3-1.json": {
+  "verdict": "fixed",
+  "by": "2026-10-26 sonnet audit (routine)",
+  "notes": "PDF LooseListParser patterns found in all SMAA PDF files: (A) every '---' status row (NH, FOUL, DNF, DQ, FS) of individuals and relays is dropped (parse has no NH/FOUL/DQ/DNF rows at all, except two garbled relay DNF rows in smaa-4-1), contrary to the status-row rule; (B) the meet date is the Hy-Tek print date, not the meet date printed in the title (off by one day or None). File = SMAA WK 5 MEET 3, 1/23/2026 (Biddeford-Bonny Eagle-Thornton-Westbrook); parse date None, should be 2026-01-23. PARSER: '4 #169 Canete Aragones, CandelaWEHS 2:54.24' (source line 79) -> name 'Canete Aragones,' school 'CandelaWEHS' -> '?' (parse line 357); should be 'Canete Aragones, Candela' WEHS=Westbrook. Dropped status rows (6): Martin, Alina BIDH FOUL [22]; Ntwali, Noah BIDH FOUL [109]; Gouari, Chance THOA FOUL [224]; Mahdi, Yaser WEHS DNF [227]; McNaughton, William THOA FS [257]; Metayer, Dominic BEHS NH [283]. [applied 2026-10-26: school rules in school_catalog_seed (2026-10-26 routine block), continuation-page parser fix, or transcription override, as listed; parser patterns not yet fixed are in the routine report]",
+  "date": "2026-10-26",
+  "parse_sha": "86e18033971ca623",
+  "source_sha": "7c0f8eff3d412d64"
+ },
+ "backend/data/parsed_results/2026/Indoor/smaa-3.json": {
+  "verdict": "fixed",
+  "by": "2026-10-26 sonnet audit (routine)",
+  "notes": "PDF LooseListParser patterns found in all SMAA PDF files: (A) every '---' status row (NH, FOUL, DNF, DQ, FS) of individuals and relays is dropped (parse has no NH/FOUL/DQ/DNF rows at all, except two garbled relay DNF rows in smaa-4-1), contrary to the status-row rule; (B) the meet date is the Hy-Tek print date, not the meet date printed in the title (off by one day or None). File = SMAA WK 4 MEET 3, 1/17/2026 (Portland/Windham/Marshwood/Westbrook). Date parse 2026-01-18 should be 2026-01-17. PARSER: surnames with a space split name and team wrongly: source '2 #114 Canete Aragones, CandelaWEHS 2:53.68' (line 57; printed glued) -> parse name 'Canete Aragones,' school 'CandelaWEHS' -> '?' (parse line 457); '8 #30 von Spiegelfeld, Leopold MARH 2:36.62' (line 249) and '9 #30 von Spiegelfeld, Leopold MARH 1:52.75' (line 283) -> name 'von Spiegelfeld,' school 'Leopold MARH' -> '?' (parse lines 645, 701). Should be 'Canete Aragones, Candela' WEHS=Westbrook, 'von Spiegelfeld, Leopold' MARH=Marshwood (his brother Max von Spiegelfeld MARH resolves). Dropped status rows (9): Vercoe, Myla WIND DQ [68]; Langston, Aveiah WIND FOUL [103]; Shanholtz, Addison WIND NH [121]; Gagnon, Kyland MARH FOUL [194] and NH [345]; Verrill, Nick WIND NH [278]; Horvath, Baylor MARH NH [280] and [344]; Saucier, Noah WIND NH [282]; relay DQ: Windham, Marshwood, Portland x2. [applied 2026-10-26: school rules in school_catalog_seed (2026-10-26 routine block), continuation-page parser fix, or transcription override, as listed; parser patterns not yet fixed are in the routine report]",
+  "date": "2026-10-26",
+  "parse_sha": "14a47ea537d2f786",
+  "source_sha": "20c1c258f97d4d57"
+ },
+ "backend/data/parsed_results/2026/Indoor/smaa-4-1.json": {
+  "verdict": "fixed",
+  "by": "2026-10-26 sonnet audit (routine)",
+  "notes": "PDF LooseListParser patterns found in all SMAA PDF files: (A) every '---' status row (NH, FOUL, DNF, DQ, FS) of individuals and relays is dropped (parse has no NH/FOUL/DQ/DNF rows at all, except two garbled relay DNF rows in smaa-4-1), contrary to the status-row rule; (B) the meet date is the Hy-Tek print date, not the meet date printed in the title (off by one day or None). File = SMAA WK 5 MEET 4, 1/24/2026 (Kennebunk-Marshwood-Massabesic-Noble-Sanford); parse date 2026-01-25 should be 2026-01-24. PARSER: (1) surnames with a space: '10 #118 Bond Memnon, Frederick NOHS 27.18' (src 237) and '3 ... 1:02.38' (254) -> school 'Frederick NOHS' -> '?' (parse 686, 697); '6 #61 von Spiegelfeld, Leopold MARH 2:32.44' (265) and '10 ... 1:47.26' (353) -> school 'Leopold MARH' -> '?' (parse 704, 749); should be NOHS=Noble, MARH=Marshwood. (2) Page-break line 286 '15 #53 Sheehan-Kopp, Calvin MARH 2:07.90   6 #47 Horvath, Baylor MARH 7-06.00' holds two cells (left = Boys 600 Meter Run Open place 15, right = Boys Pole Vault Open place 6); the parse (line 754) makes one row 'Sheehan-Kopp, Calvin | MARH 2:07.90 6 #47 Horvath, Baylor MARH -> ?' with mark 7-06.00 in Boys 600 Meter Run Open; should be Sheehan-Kopp, Calvin MARH 2:07.90 (600 m, place 15) and Horvath, Baylor MARH 7-06.00 (Boys Pole Vault Open Division, place 6; the event has only 5 rows). (3) relay DNF rows (Noble High School A, Kennebunk High School A, 'X2:09.86' exhibition B) are parsed with school text '--- Noble High School A' / '--- Kennebunk High School A'. Dropped status rows (6): Viglino-Jegu, Nine MARH DQ [95]; Walker, London SANH DNF [119]; Smith, Charlotte MARH NH [142]; Devoll, Tess NOHS NH [144]; Gilliam, James KENH DQ [251]; Melville, Gavin MASH DQ [252]; relay DQ Massabesic. SCHOOL: 'BER' (El-Badry, Mikhail, Boys 600 Meter Run Open 2:13.29, src 262 and X4:47.77 line 304; parse 701) is Berwick Academy: Mikhail El-Badry is in Berwick_Academy (2025 XC, 2026 Outdoor/XC) in the store. [applied 2026-10-26: school rules in school_catalog_seed (2026-10-26 routine block), continuation-page parser fix, or transcription override, as listed; parser patterns not yet fixed are in the routine report]",
+  "date": "2026-10-26",
+  "parse_sha": "cdb525a5238bc77b",
+  "source_sha": "db22c6824d29f572"
+ },
+ "backend/data/parsed_results/2026/Indoor/smaa-4.json": {
+  "verdict": "fixed",
+  "by": "2026-10-26 sonnet audit (routine)",
+  "notes": "PDF LooseListParser patterns found in all SMAA PDF files: (A) every '---' status row (NH, FOUL, DNF, DQ, FS) of individuals and relays is dropped (parse has no NH/FOUL/DQ/DNF rows at all, except two garbled relay DNF rows in smaa-4-1), contrary to the status-row rule; (B) the meet date is the Hy-Tek print date, not the meet date printed in the title (off by one day or None). File = SMAA WK 4 MEET 4, 1/17/2026 (Bonny Eagle/Cheverus-Waynflete/Gorham/Massabesic); parse date 2026-01-18 should be 2026-01-17. 308 individual + 20 relay rows match otherwise (Cheverus/Waynflete relay rows resolve to coop-cheverus-waynflete). Dropped status rows (7): Dorsey, Lily CHVW FS [37]; Roy, Avery BEHS NH [55]; Vigue, Miriam MASH DNF [64]; Ng, Lucas BEHS DQ [147]; Clark, Dylan MASH DQ [149]; Lessard, Jack MASH DQ [238]; Burns, Logan GHS NH [312]; relay DQ Massabesic. [applied 2026-10-26: school rules in school_catalog_seed (2026-10-26 routine block), continuation-page parser fix, or transcription override, as listed; parser patterns not yet fixed are in the routine report]",
+  "date": "2026-10-26",
+  "parse_sha": "b90cb9bc9cdc231b",
+  "source_sha": "b0618b764893bb53"
+ },
+ "backend/data/parsed_results/2026/Indoor/smaa2.json": {
+  "verdict": "fixed",
+  "by": "2026-10-26 sonnet audit (routine)",
+  "notes": "PDF LooseListParser patterns found in all SMAA PDF files: (A) every '---' status row (NH, FOUL, DNF, DQ, FS) of individuals and relays is dropped (parse has no NH/FOUL/DQ/DNF rows at all, except two garbled relay DNF rows in smaa-4-1), contrary to the status-row rule; (B) the meet date is the Hy-Tek print date, not the meet date printed in the title (off by one day or None). File = SMAA WK 5 MEET 2, 1/24/2026 (Falmouth-Gorham-Scarborough-Windham); parse date 2026-01-25 should be 2026-01-24. 360 individual + 22 relay rows match otherwise. Missing status rows (7): Kri, Mirabelle WIND FOUL [76]; Langston, Aveiah WIND FOUL [148]; Poungui, David WIND DQ [186]; Assia, Ethan SCAR DQ [211]; Slomczynski, Adam WIND FOUL [250]; Banerjee, Ryan FALH NH [265]; Burns, Logan GHS NH [276]; plus two Windham relay DQ rows. [applied 2026-10-26: school rules in school_catalog_seed (2026-10-26 routine block), continuation-page parser fix, or transcription override, as listed; parser patterns not yet fixed are in the routine report]",
+  "date": "2026-10-26",
+  "parse_sha": "c034c23a51575877",
+  "source_sha": "fb6928ad90249825"
+ },
  "backend/data/parsed_results/2026/Outdoor/2026-alms-tf-championship-results.json": {
   "verdict": "confirmed",
   "by": "audit fixes 2026-10-21",
@@ -8646,6 +8742,350 @@
   "date": "2026-10-21",
   "parse_sha": "6a3bd06b1b23ffa3",
   "source_sha": "545acdae45110d67"
+ },
+ "backend/data/parsed_results/2026/Outdoor/2026-alms-tf-championships-girls-results.json": {
+  "verdict": "fixed",
+  "by": "2026-10-26 sonnet audit (routine)",
+  "notes": "Rows: all 12 events (girls) match source place/name/mark/school (e.g. Shot Put '1 Aliyah Saucier Presque Isle MS 25-08.00', '2:32.79R'). Errors: (1) meet date stored 2026-05-28 = print timestamp 'MEET MANAGER 5:01 AM 5/28/2026'; the title line says '2026 ALMS T&F Championships - 5/27/2026' (sibling file 2026-alms-tf-championship-results is 2026-05-27); date should be 2026-05-27. (2) Boys team ranking has only 2 of 6 teams: source 'Men - Team Rankings' continues after the page break ('....Event 23 Girls 4x200 Meter Relay' page): '3) Fort Fairfield MS 64  4) Caribou MS 53  5) Union 122 7  6) Central Aroostook 2' lost. Girls ranking correct (205, 56, 44, 32, 27, 4). Pattern (ColumnStrategyParser, Hy-Tek PDF): rows/lines on a continuation page (after a repeated '....Event N' header, columns shifted right) lose trailing characters of the mark or are dropped. [applied 2026-10-26: school rules in school_catalog_seed (2026-10-26 routine block), continuation-page parser fix, or transcription override, as listed; parser patterns not yet fixed are in the routine report]",
+  "date": "2026-10-26",
+  "parse_sha": "0616d8278a6a5569",
+  "source_sha": "49f364b5016879dc"
+ },
+ "backend/data/parsed_results/2026/Outdoor/2026-alms-tf-meet-1.json": {
+  "verdict": "fixed",
+  "by": "2026-10-26 sonnet audit (routine)",
+  "notes": "Girls 100 Meter Dash, places 32-51 (20 rows) have marks truncated: source ' 32 Harper Pearson Union 122 18.28 5' (continuation page '....Event 11 Girls 100 Meter Dash') stored '18.'; same for 33 Ava Johnson 18.39, 34 Rachel Pelletier 18.51 ... 51 Aliyah Sponberg 24.41 (stored '24.'). All other events/rows, schools (Greater Houl->ghca, Union 122, Central Aroostook), relays and team rankings (Girls 181.5/69/48/30/27.5/12, Boys 144/94/63/53/7/3) match. Pattern (ColumnStrategyParser, Hy-Tek PDF): rows/lines on a continuation page (after a repeated '....Event N' header, columns shifted right) lose trailing characters of the mark or are dropped. [applied 2026-10-26: school rules in school_catalog_seed (2026-10-26 routine block), continuation-page parser fix, or transcription override, as listed; parser patterns not yet fixed are in the routine report]",
+  "date": "2026-10-26",
+  "parse_sha": "f0c4061f75b00e48",
+  "source_sha": "f04286cb37162948"
+ },
+ "backend/data/parsed_results/2026/Outdoor/2026-alms-tf-meet-3-results-updated.json": {
+  "verdict": "fixed",
+  "by": "2026-10-26 sonnet audit (routine)",
+  "notes": "Truncated marks on continuation-page rows: Girls Shot Put 26 Emelia Cote '12-01.00' stored '12-01.'; Girls 800 places 10-18 (9 rows, e.g. '10 Haiizenn Ataluk 3:25.06' stored '3:25.'); Boys 800 places 12-15 (4 rows, e.g. '12 Micah Chartier 3:16.68' stored '3:16.'); Boys 200 places 7-25 (19 rows, e.g. '7 Robert McClure 31.12' stored '31.', under '....Event 22 Boys 200 Meter Dash'). All other rows, schools, relays and team rankings (Girls 175/70/64/30/25; Boys 169/90/61/39/5/2/2) match. Pattern (ColumnStrategyParser, Hy-Tek PDF): rows/lines on a continuation page (after a repeated '....Event N' header, columns shifted right) lose trailing characters of the mark or are dropped. [applied 2026-10-26: school rules in school_catalog_seed (2026-10-26 routine block), continuation-page parser fix, or transcription override, as listed; parser patterns not yet fixed are in the routine report]",
+  "date": "2026-10-26",
+  "parse_sha": "757b1651a59d1114",
+  "source_sha": "af1e5ec115ecb611"
+ },
+ "backend/data/parsed_results/2026/Outdoor/2026-alms-tf-meet2-pims-results.json": {
+  "verdict": "fixed",
+  "by": "2026-10-26 sonnet audit (routine)",
+  "notes": "Girls 100 Meter Hurdles: 2 rows lost after the page break ('....Event 9 Girls 100 Meter Hurdles': '20 Saphira Hanning Caribou MS 27.97', '21 Harper Pearson Union 122 32.44'); parse has 19 of 21. Boys team ranking lost teams 5-6 on the next page ('5) Valley Rivers MS 9  6) Union 122 ...'); parse has 4 teams. Everything else (23 other events, relay athletes, girls ranking 183/64/45/30/29/13) matches. Pattern (ColumnStrategyParser, Hy-Tek PDF): rows/lines on a continuation page (after a repeated '....Event N' header, columns shifted right) lose trailing characters of the mark or are dropped. [applied 2026-10-26: school rules in school_catalog_seed (2026-10-26 routine block), continuation-page parser fix, or transcription override, as listed; parser patterns not yet fixed are in the routine report]",
+  "date": "2026-10-26",
+  "parse_sha": "1354693ed7130364",
+  "source_sha": "b861695e365d8e84"
+ },
+ "backend/data/parsed_results/2026/Outdoor/2026-aroostook-league-tf-championships-results.json": {
+  "verdict": "fixed",
+  "by": "2026-10-26 sonnet audit (routine)",
+  "notes": "(a) Truncated marks on continuation-page rows: Girls 400 places 9-12 (e.g. '9 Julia Daggett 1:19.56' stored '1:1'), Boys 800 places 13-15 (e.g. 2:47.88 stored '2:'), Boys High Jump 13 Ishmael/James Salter 4-08.00 stored '4-', Boys Triple Jump 12-13 (27-09.25 stored '27-'), Girls Shot Put places 4-28 (25 rows, one trailing digit lost: '26-01.00' stored '26-01.0'). (b) Dropped status row: Boys Long Jump '-- Derren Etchu Tanyi Fort Kent Co FOUL' (under '....Event 28 Boys Long Jump') missing. (c) Boys team ranking has 4 of 7 teams: '5) Fort Kent Community High S 35  6) Maine School of Science a 17  7) Washburn 14' lost after page break. (d) School: 43 rows print 'Maine School' (MSSM) and are mapped to col-umaine; see rule. Girls ranking (337/87/52/45/16/5/4) and all else match. Pattern (ColumnStrategyParser, Hy-Tek PDF): rows/lines on a continuation page (after a repeated '....Event N' header, columns shifted right) lose trailing characters of the mark or are dropped. [applied 2026-10-26: school rules in school_catalog_seed (2026-10-26 routine block), continuation-page parser fix, or transcription override, as listed; parser patterns not yet fixed are in the routine report]",
+  "date": "2026-10-26",
+  "parse_sha": "f2359d8c42754a53",
+  "source_sha": "65458d3696c4d3a0"
+ },
+ "backend/data/parsed_results/2026/Outdoor/2026-pvc-tf-week-2-@-pihs-results.json": {
+  "verdict": "fixed",
+  "by": "2026-10-26 sonnet audit (routine)",
+  "notes": "(a) Boys 1600 Meter Run places 9-18 (10 rows) marks truncated, e.g. '9 Hunter Craig 5:24.14' stored '5:24.'; (b) Boys 4x100 Meter Relay DQ row: source '-- Fort Kent Community High Schoo  DQ' (after the page break) stored school 'ort Kent Community High Schoo' -> '?' (leading 'F' lost; should be Fort Kent Community High School -> me-hs-fort-kent; the meet's other rows say 'Fort Kent Co' -> me-hs-fort-kent). (c) 44 individual rows print 'Maine School' (MSSM) mapped to col-umaine; see rule. Everything else (37 events, relays incl. Presque Isle 'B','C','D', Washburn 'B', grades, team rankings Girls 306/115.5/50/30/8/8/7.5 and Boys 231/133/62/56/34/29/18) matches. Pattern (ColumnStrategyParser, Hy-Tek PDF): rows/lines on a continuation page (after a repeated '....Event N' header, columns shifted right) lose trailing characters of the mark or are dropped. [applied 2026-10-26: school rules in school_catalog_seed (2026-10-26 routine block), continuation-page parser fix, or transcription override, as listed; parser patterns not yet fixed are in the routine report]",
+  "date": "2026-10-26",
+  "parse_sha": "086ccd325b5d5909",
+  "source_sha": "f3ed6ebab40790ba"
+ },
+ "backend/data/parsed_results/2026/Outdoor/2026-pvc-week-3-caribou-girls-results.json": {
+  "verdict": "fixed",
+  "by": "2026-10-26 sonnet audit (routine)",
+  "notes": "All 19 girls events, 44/22/etc rows, relays, marks and team ranking (249/149/83/68/12/8/6/1) match the source row for row. Only error: 3 rows print the school as 'Maine School' (Annalise Roderick: DQ, 71-09, 22-02.50) and are mapped to col-umaine; the team ranking in the same file lists 'Maine School of Science a 1', so it is Maine School of Science and Math (me-hs-mssm). See rule. 'team scores do not add up' warning: the stored ranking equals the printed one. [applied 2026-10-26: school rules in school_catalog_seed (2026-10-26 routine block), continuation-page parser fix, or transcription override, as listed; parser patterns not yet fixed are in the routine report]",
+  "date": "2026-10-26",
+  "parse_sha": "b9740c6ed262ee07",
+  "source_sha": "8b5cdec7e0cb5a52"
+ },
+ "backend/data/parsed_results/2026/Outdoor/Almquist-results.json": {
+  "verdict": "confirmed",
+  "by": "2026-10-26 sonnet audit (routine)",
+  "notes": "Compared all 26 events (892 rows, incl. relays 'A'/'B' and 800 race walk): place, name, mark identical to source; middle-school teams (truncated 'All Saints C','Center Drive','Old Town MS'->me-ms-leonard,'Piscataquis','Sumner Middl' etc.) map to the right me-ms ids; grades 'MS'. No team scores printed. 12 implausible-mark flags are marks the source prints (middle-school fields).",
+  "date": "2026-10-26",
+  "parse_sha": "937b11bd79689fea",
+  "source_sha": "8e4e6dac3fb7ec62"
+ },
+ "backend/data/parsed_results/2026/Outdoor/Bath-MS-results-1.json": {
+  "verdict": "confirmed",
+  "by": "2026-10-26 sonnet audit (routine)",
+  "notes": "All 24 events (713 rows) match the source on place/name/mark/team: Bath, Brunswick, Gray New Gloucester, Greely, Mt. Ararat, Loranger (Old Orchard), St. John's Catholic (Brunswick), Yarmouth (Harrison MS) middle schools map to the right me-ms ids; relays 'A'-'E' present with athletes. Team rankings match printed (Girls Bath 104, Greely 95, GNG 60, Brunswick 55.5, Mt Ararat 25.5, Yarmouth 17, St John's 8, Loranger 6; Boys 87.5/84.5/74/51/39/23/13). Flagged implausible marks are printed in the source.",
+  "date": "2026-10-26",
+  "parse_sha": "78834f54bd2aa60c",
+  "source_sha": "8d35e9deb3279ad4"
+ },
+ "backend/data/parsed_results/2026/Outdoor/Brewer-CS-results.json": {
+  "verdict": "confirmed",
+  "by": "2026-10-26 sonnet audit (routine)",
+  "notes": "Machine-compared every parse row with the source text (name, mark, place, grade, event heading/order, relay members, per-event row counts): 386 rows, 26 events all match: FOUL/NH status rows kept, 'J4-04.00' judged-tie field marks read as 4-04.00, relays (A-E teams) match. Middle-school strings ('Indian Islan', 'Reeds Brooks MS') -> me-ms ids. 'Boys 55 Meter Hurdles JV' (1 row, source line 52) keeps the name of the varsity block - label only. Meet date 2026-05-12 matches title.",
+  "date": "2026-10-26",
+  "parse_sha": "8fdc906500a1b629",
+  "source_sha": "a926bf70a494c4e0"
+ },
+ "backend/data/parsed_results/2026/Outdoor/Bucksport-MS-results.json": {
+  "verdict": "fixed",
+  "by": "2026-10-26 sonnet audit (routine)",
+  "notes": "All rows (547) and relays match source on place/name/mark/school. Error: the source has separate 'Boys 55 Meter Hurdles JV' (3 rows) and 'Boys 55 Meter Hurdles Varsity' (4 rows) races; the parse names both 'Boys 55 Meter Hurdles', so JV and varsity are merged into one event in the store (the 'JV' label is dropped for hurdles while 'Varsity' kept for 50 m Dash). Pattern: division JV dropped from track event names for middle-school 'Varsity/JV' headings. No team scores printed. [applied 2026-10-26: school rules in school_catalog_seed (2026-10-26 routine block), continuation-page parser fix, or transcription override, as listed; parser patterns not yet fixed are in the routine report]",
+  "date": "2026-10-26",
+  "parse_sha": "861aee7627a846d2",
+  "source_sha": "16c10b47148b2b34"
+ },
+ "backend/data/parsed_results/2026/Outdoor/Bucksport-results.json": {
+  "verdict": "confirmed",
+  "by": "2026-10-26 sonnet audit (routine)",
+  "notes": "All 38 events (378 rows) match source on place/name/grade/mark; schools correct (Bucksport, Ellsworth, GSA incl. 'George Stevens Academy / Blue' -> me-hs-gsa, MDI, Searsport, Sumner, Deer Isle-Stonington). Team rankings match (Girls MDI 120, GSA 106, Ellsworth 97, Bucksport 45, Searsport 18; Boys 163/123/105/91/12/9/5). Nit: Sumner Memorial Boys 4x100 prints only 3 relay names ('4)' blank) and the parse keeps an empty 4th athlete string.",
+  "date": "2026-10-26",
+  "parse_sha": "1d0da275477fbcad",
+  "source_sha": "6622cd08629c3a8b"
+ },
+ "backend/data/parsed_results/2026/Outdoor/Class-B-boys-results.json": {
+  "verdict": "confirmed",
+  "by": "2026-10-26 sonnet audit (routine)",
+  "notes": "All 21 events (376 rows) match place/name/grade/mark/school (heats and finals rows consistent); 28-team ranking matches the printed Team Rankings (York 93, Greely 73, Yarmouth 61, ... Lincoln 1) including halves (32.5, 3.5). Implausible flags are printed marks.",
+  "date": "2026-10-26",
+  "parse_sha": "3e14f168e3bc1c86",
+  "source_sha": "d446305f4c213ead"
+ },
+ "backend/data/parsed_results/2026/Outdoor/Class-B-girls-results.json": {
+  "verdict": "confirmed",
+  "by": "2026-10-26 sonnet audit (routine)",
+  "notes": "All 21 events (422 rows) match place/name/grade/mark/school; 'Soni Pan Fryeburg Aca FS' (false start, stored FS, place None) is as printed; 26-team ranking matches printed (Yarmouth 101, Freeport 82, Greely 77 ... Cony 2) including halves.",
+  "date": "2026-10-26",
+  "parse_sha": "35efa664481cb792",
+  "source_sha": "57383e9b6c85050d"
+ },
+ "backend/data/parsed_results/2026/Outdoor/Cohen-results.json": {
+  "verdict": "fixed",
+  "by": "2026-10-26 sonnet audit (routine)",
+  "notes": "All rows (689) and relays match source on place/name/mark/school, including exhibition relays ('XDQ' zone violation -> DQ, 'X57.42'). Error: source has 'Event 4 Boys 55 Meter Hurdles JV' (6 rows, 11.83-14.03) and 'Event 5 Boys 55 Meter Hurdles' (6 rows, 9.28-13.81); the parse names both 'Boys 55 Meter Hurdles' (no division), so JV marks are stored as varsity marks in one event (e.g. Brody Doyon's 11.83 is a JV mark). No team scores printed. [applied 2026-10-26: school rules in school_catalog_seed (2026-10-26 routine block), continuation-page parser fix, or transcription override, as listed; parser patterns not yet fixed are in the routine report]",
+  "date": "2026-10-26",
+  "parse_sha": "d4744ccc9c8a0b13",
+  "source_sha": "344a0ff040da47d7"
+ },
+ "backend/data/parsed_results/2026/Outdoor/Ellsworth-MS-results.json": {
+  "verdict": "fixed",
+  "by": "2026-10-26 sonnet audit (routine)",
+  "notes": "All rows (473) and relays match source on place/name/mark/school. Error: 'Boys 55 Meter Hurdles JV' (6 rows) and 'Boys 55 Meter Hurdles Varsity' (7 rows) are both stored as 'Boys 55 Meter Hurdles' (JV label dropped), merging JV and varsity. No team scores printed. [applied 2026-10-26: school rules in school_catalog_seed (2026-10-26 routine block), continuation-page parser fix, or transcription override, as listed; parser patterns not yet fixed are in the routine report]",
+  "date": "2026-10-26",
+  "parse_sha": "a993d78e65f02dd1",
+  "source_sha": "5e6de0facccc8185"
+ },
+ "backend/data/parsed_results/2026/Outdoor/Hermon-MS-results.json": {
+  "verdict": "confirmed",
+  "by": "2026-10-26 sonnet audit (routine)",
+  "notes": "Row-by-row comparison of all source result rows to the parse (name, mark, place, grade, school, event order and per-event row counts) found no missing/extra/misread rows; 738 rows = 738 rows. Eastern Maine MS league, all schools map to me-ms-* correctly (Old Town MS->Leonard MS, William S Co->Cohen MS). 5 implausible flags are marks the source prints. No team scores printed. The source event 'Boys 55 Meter Hurdles JV' is parsed as a separate event entry that is named plain 'Boys 55 Meter Hurdles' (JV suffix dropped; parser pattern, rows themselves are right).",
+  "date": "2026-10-26",
+  "parse_sha": "0ff57641ca1c326b",
+  "source_sha": "32601633da604ebb"
+ },
+ "backend/data/parsed_results/2026/Outdoor/MDI-MS-results.json": {
+  "verdict": "confirmed",
+  "by": "2026-10-26 sonnet audit (routine)",
+  "notes": "Row-by-row comparison of all source result rows to the parse (name, mark, place, grade, school, event order and per-event row counts) found no missing/extra/misread rows; 495 rows. All teams map to me-ms-* (MDI Elementa->MDI Elementary Schools, Sedgwick Ele, Sumner Middl, Blue Hill MS, Bucksport MS, Center Drive). No team scores printed. The source event 'Boys 55 Meter Hurdles JV' is parsed as a separate event entry that is named plain 'Boys 55 Meter Hurdles' (JV suffix dropped; parser pattern, rows themselves are right).",
+  "date": "2026-10-26",
+  "parse_sha": "aca6cb6ec9aaf5fd",
+  "source_sha": "9435d2c7b57d612c"
+ },
+ "backend/data/parsed_results/2026/Outdoor/Marathon-results-boys.json": {
+  "verdict": "confirmed",
+  "by": "2026-10-26 sonnet audit (routine)",
+  "notes": "Row-by-row comparison of all source result rows to the parse (name, mark, place, grade, school, event order and per-event row counts) found no missing/extra/misread rows; 534 rows incl. prelims and finals as separate events, Points column dropped (fine). Team scores (29 teams) match the 'Men - Team Rankings' block. Schools map correctly (Maranacook C->me-hs-maranacook, Boothbay/Wis->coop, Unattached->x-unattached). NOTE source title reads 'Fleet Feet Maine Elite Invitational - 5/10/2024' (stale template date; records quoted are dated 2025, grades match 2026); parse date field is 2024-05-10 but web_date_mapping.json gives 'May 16, 2026' and the store carries 2026-05-16, so no data effect.",
+  "date": "2026-10-26",
+  "parse_sha": "aa51e639a1f16df1",
+  "source_sha": "85411eb663d2a16b"
+ },
+ "backend/data/parsed_results/2026/Outdoor/Marathon-results-girls.json": {
+  "verdict": "fixed",
+  "by": "2026-10-26 sonnet audit (routine)",
+  "notes": "Rows, marks, places, events and 29 team scores all match the source (408 rows). SCHOOL ERROR: the 9 rows printed 'Maranacook C' (Evelyn Stevenson, Ella Giles, Hannah Toye, Olivia Toye; lines 'Evelyn Stevenson 11 Maranacook C 16.67q', 'Hannah Toye 12 Maranacook C 74-06') are filed under me-hs-gardiner by a per-meet override. The meet's own score table prints '23) Maranacook Community High    3' and no Gardiner; the same athletes appear on Maranacook_Community_High_School 2023-2026 in the store (Gardiner only appears as the 2026 indoor coop GLM). The boys file of the same meet maps 'Maranacook C' to me-hs-maranacook. Fix: override 'Maranacook C' -> me-hs-maranacook in school_raw_map overrides 2026/Outdoor/Marathon-results-girls. Source title date '5/10/2024' is a stale template date (web_date_mapping gives May 16, 2026), no data effect. [applied 2026-10-26: school rules in school_catalog_seed (2026-10-26 routine block), continuation-page parser fix, or transcription override, as listed; parser patterns not yet fixed are in the routine report]",
+  "date": "2026-10-26",
+  "parse_sha": "4eb9420c608f6ffe",
+  "source_sha": "b8a4a9ce902b7f0e"
+ },
+ "backend/data/parsed_results/2026/Outdoor/Messalonskee-MS-results.json": {
+  "verdict": "confirmed",
+  "by": "2026-10-26 sonnet audit (routine)",
+  "notes": "Row-by-row comparison of all source result rows to the parse (name, mark, place, grade, school, event order and per-event row counts) found no missing/extra/misread rows; 370 rows; team scores (10 lines) match 'Women/Men - Team Rankings'. Schools map to MS ids (Messalonskee MS, Waterville JH, Winslow JH, Madison JH, Upper Kennebec). 3 implausible flags are printed marks.",
+  "date": "2026-10-26",
+  "parse_sha": "e711fb46279c24d2",
+  "source_sha": "a94d5a965a130fe9"
+ },
+ "backend/data/parsed_results/2026/Outdoor/Morse-results-1.json": {
+  "verdict": "confirmed",
+  "by": "2026-10-26 sonnet audit (routine)",
+  "notes": "Row-by-row comparison of all source result rows to the parse (name, mark, place, grade, school, event order and per-event row counts) found no missing/extra/misread rows; 644 rows; 12 team scores match. Lisbon/Oak Hill->coop-ot-lisbon-oak-hill, Lincoln Acad->me-hs-lincoln-academy, Brunswick/Erskine/Morse/Mt. Ararat correct.",
+  "date": "2026-10-26",
+  "parse_sha": "eda6c028ab679c0b",
+  "source_sha": "fa49664360e29fe7"
+ },
+ "backend/data/parsed_results/2026/Outdoor/NE-boys-results.json": {
+  "verdict": "fixed",
+  "by": "2026-10-26 sonnet audit (routine)",
+  "notes": "Structure verified: 552/579 source rows (boys/girls) match parse rows one-to-one in order (name, mark, place, grade), 20/22 events, per-event counts; relay legs agree. Date 2026-06-13 (Noble HS) fine. Individual rows print a short team name with NO state, relays print 'Name-ST' with CT teams untagged (e.g. 'Amity', 'Danbury', 'Xavier (Ct)', 'Mercy (Ct)'). SCHOOL ERRORS (aliases/overrides filing out-of-state athletes under Maine schools, colleges or the wrong state); (1) 'Windsor' (2 rows 110H Spaulding, Haydn; relay 4x400 'Windsor' (Simpson II, Shelldon...) untagged) is me-ms-windsor (a Maine middle school): untagged relay = CT, and Spaulding, Haydn is on Windsor_CT in neresults2025 -> oos-auto-ct-windsor. (2) 'Farmington' (3 rows, relays 4x800/4x100/4x400 'Farmington' untagged = CT) is col-umf (University of Maine at Farmington) -> oos-auto-ct-farmington. (3) 'Cranston East' (Perez, Daniel 16.07; Brinker, Cohen 2:00.56; relay 'Cranston East-RI' contains Brinker) is filed as Cranston High School West -> oos-auto-ri-cranston-e (East and West are different schools). (4) 'Greater Lawrance' (Varela, Gustavo; Morales, Adrian) is '?' but Varela is also in relay 'Greater Lawrence Tech-MA' -> oos-auto-ma-greater-lawrence-tech. Wrong ids with no catalog school to give; should become '?' (remove alias/override): 'Milford' (Pettingell, Joshua; me-ms-lewis-libby, a Maine middle school; could be Milford MA or NH), 'Blue Hills' (Gonzalez, Jiai; me-ms-blue-hill; Blue Hills Regional Tech MA, not in catalog), 'Green Mountain' (Koch, Wyatt; col-green-mountain, a college), 'Framingham' (Tenthani, Blessed; col-framingham-state, Framingham HS MA), \"Saint John's\" (Kuleszka, Caulfield, Seaha; filed as St. Johnsbury Academy VT, but 'St Johnsbury' is printed separately in the same meet; St. John's Prep/Shrewsbury MA), 'Oxford' (McGuire, Liam; me-hs-oxford-hills but Oxford Hills would print as 'Oxford Hills'; he has no Maine meet history; Oxford CT/MA). Low confidence, check: 'Arlington' -> Arlington Catholic (Collins, Daichi; printed just 'Arlington'). Left '?' correctly (state ambiguous, no tagged relay): Bedford (MA/NH), Belmont, Hopkinton (MA/NH), Milton (MA/VT), Pembroke (MA/NH), Weston (CT/MA), Woodstock, Middletown; out-of-state with no catalog entry: Ansonia, Cannon, Charlestown, Cohasset, Hartford Mag, Housatonic, Innovation, Nipmuc, Paine Mountain, Pembroke Acad, Shawnsheen Teck, Wahconah, West Haven. Maine/NH/etc. rows otherwise checked (Lawrence->Lawrence HS ME: Goodwin, Romeo has Lawrence HS Maine history). (First of 4 entries for this path.) | Additional rule for the same file (see first entry): Farmington -> oos-auto-ct-farmington. | Additional rule for the same file (see first entry): Cranston East -> oos-auto-ri-cranston-e. | Additional rule for the same file (see first entry): Greater Lawrance -> oos-auto-ma-greater-lawrence-tech. [applied 2026-10-26: school rules in school_catalog_seed (2026-10-26 routine block), continuation-page parser fix, or transcription override, as listed; parser patterns not yet fixed are in the routine report]",
+  "date": "2026-10-26",
+  "parse_sha": "69820e629df8077d",
+  "source_sha": "a2a81f980649c0db"
+ },
+ "backend/data/parsed_results/2026/Outdoor/NE-girls-results.json": {
+  "verdict": "fixed",
+  "by": "2026-10-26 sonnet audit (routine)",
+  "notes": "Structure verified: 552/579 source rows (boys/girls) match parse rows one-to-one in order (name, mark, place, grade), 20/22 events, per-event counts; relay legs agree. Date 2026-06-13 (Noble HS) fine. Individual rows print a short team name with NO state, relays print 'Name-ST' with CT teams untagged (e.g. 'Amity', 'Danbury', 'Xavier (Ct)', 'Mercy (Ct)'). SCHOOL ERRORS (aliases/overrides filing out-of-state athletes under Maine schools, colleges or the wrong state); (1) 'Windsor' (Harris, Layla 100H 15.02; Donzella, Maya 800 2:15.57; Elder, Kayla HJ; relay 4x100 'Windsor' untagged = CT) is me-ms-windsor (a Maine middle school): Layla Harris and Maya Donzella are on Windsor_CT in earlier NE results -> oos-auto-ct-windsor. (2) 'Farmington' (Mooney, Cameron 3200 DQ; relay 4x400 'Farmington' untagged = CT) is col-umf -> oos-auto-ct-farmington. (3) 'North Haven' (Shaw, Stella LJ 17-01.25, TJ 36-08.50) is me-hs-north-haven (a tiny island school); she has no Maine meet history, is not in the Maine-only NE indoor 2026 file, and CT teams are untagged -> oos-auto-ct-north-haven. (4) 'Exeter-West' (Hebert, Kate 400 57.44) is '?': Exeter-West Greenwich Regional (RI) -> oos-auto-ri-exeter-w-gr. (5) 'Scituate' (Mancini, Valentina) is '?': she is on Scituate_RI in NE indoor 2025 -> oos-auto-ri-scituate. (6) 'Woodstock' (Plouffe, Avery; Morgis, Lillian) is '?': the same two athletes were 'Woodstock Ac' (Woodstock Academy CT) at NE 2025 -> oos-auto-ct-woodstock-ac. Wrong ids with no catalog school to give; should become '?': 'Milford' (Coates, Rylee; me-ms-lewis-libby, a Maine middle school), 'Blue Hills' (Ridore, Nailani; me-ms-blue-hill), 'Green Mountain' (Gibson, Isidora; col-green-mountain), 'Fitchburg' (Florival, Jayzelle; col-fitchburg-state, a college; Fitchburg HS MA), 'Sacred Heart' (Murphy, Camilla; Ciarleglio, Sophia; col-sacred-heart, a college). Left '?' correctly: Bedford is BOTH Bedford-NH (Beck, Alaina; Barry, Mikita; Kemp, Carolyn) and Bedford-MA (Buckley, Zadie; McInnis, Madeline) in this meet, so a per-raw rule cannot fix it (needs per-athlete); also Milton (Turner, Ella was Milton MA in 2025, others unknown), Salem, Weston, Canton, Blackstone, Bristol-Plym, North Provid, Cardinal Spell, Chelsea, East Granby, Grasso, Hartford Mag, Holyoke, Internationa, Malden Catholic (no catalog entries/state ambiguous). 'Lake Region U' (Urie, Maeda) -> me-hs-lake-region is right (Urie is 'Lake Region-ME' in the Maine-only NE indoor 2026 file). Hopkinton -> NH is supported by relay 'Hopkinton-NH'. (First of 6 entries for this path.) | Additional rule for the same file (see first entry): Farmington -> oos-auto-ct-farmington. | Additional rule for the same file (see first entry): North Haven -> oos-auto-ct-north-haven. | Additional rule for the same file (see first entry): Exeter-West -> oos-auto-ri-exeter-w-gr. | Additional rule for the same file (see first entry): Scituate -> oos-auto-ri-scituate. | Additional rule for the same file (see first entry): Woodstock -> oos-auto-ct-woodstock-ac. [applied 2026-10-26: school rules in school_catalog_seed (2026-10-26 routine block), continuation-page parser fix, or transcription override, as listed; parser patterns not yet fixed are in the routine report]",
+  "date": "2026-10-26",
+  "parse_sha": "f05fbfe00540a384",
+  "source_sha": "56867128bb457072"
+ },
+ "backend/data/parsed_results/2026/Outdoor/Old-Town-MS-results.json": {
+  "verdict": "confirmed",
+  "by": "2026-10-26 sonnet audit (routine)",
+  "notes": "Row-by-row comparison of all source result rows to the parse (name, mark, place, grade, school, event order and per-event row counts) found no missing/extra/misread rows; 502 rows. Events titled '... Varsity' are parsed without the word Varsity (fine). Mattanawcook->me-ms-mattanawcook (override right for an MS league), Lewis Libby, Ridge View, Indian Island, Ellsworth MS, Veazie MS, Old Town MS->Leonard all correct. The source event 'Boys 55 Meter Hurdles JV' is parsed as a separate event entry that is named plain 'Boys 55 Meter Hurdles' (JV suffix dropped; parser pattern, rows themselves are right).",
+  "date": "2026-10-26",
+  "parse_sha": "02e7c697368c0a60",
+  "source_sha": "fb050f48b1983ec9"
+ },
+ "backend/data/parsed_results/2026/Outdoor/Orono-results-1.json": {
+  "verdict": "confirmed",
+  "by": "2026-10-26 sonnet audit (routine)",
+  "notes": "Row-by-row comparison of all source result rows to the parse (name, mark, place, grade, school, event order and per-event row counts) found no missing/extra/misread rows; 653 rows; 14 team scores match. Bangor Chris->me-hs-bangor-christian, Jonesport Be->me-hs-jonesport-beals, Foxcroft, Hampden, John Bapst, Narraguagus, Orono HS correct.",
+  "date": "2026-10-26",
+  "parse_sha": "cb4d71c6b3102023",
+  "source_sha": "fa5fd3bc77db90dc"
+ },
+ "backend/data/parsed_results/2026/Outdoor/Reeds-Brook-results.json": {
+  "verdict": "confirmed",
+  "by": "2026-10-26 sonnet audit (routine)",
+  "notes": "Row-by-row comparison of all source result rows to the parse (name, mark, place, grade, school, event order and per-event row counts) found no missing/extra/misread rows; 440 rows. MS league meet: Bangor Chris->me-ms-bangor-christian, Piscataquis->me-ms-piscataquis (MS overrides correct here), Reeds Brooks, Sedomocha, Wagner, Central MS, Orono MS correct. Row 'Shorey, Elyse DQ 1 OUTSIDE LANE' kept as DQ status. The source event 'Boys 55 Meter Hurdles JV' is parsed as a separate event entry that is named plain 'Boys 55 Meter Hurdles' (JV suffix dropped; parser pattern, rows themselves are right).",
+  "date": "2026-10-26",
+  "parse_sha": "117083c2cae3e840",
+  "source_sha": "9586eba27ffd1930"
+ },
+ "backend/data/parsed_results/2026/Outdoor/ResultsCCC.json": {
+  "verdict": "confirmed",
+  "by": "2026-10-26 sonnet audit (routine)",
+  "notes": "Row-by-row comparison of all source result rows to the parse (name, mark, place, grade, school, event order and per-event row counts) found no missing/extra/misread rows; 706 rows. File has a Seed and a Finals column: checked every row, the parse takes the Finals mark (x-prefixed exhibition and J-prefixed judged-tie marks e.g. 'J5-00.00' stored as 5-00.00/ 1:00.50 correctly). Team scores match (girls: Winslow 146.5, Messalonskee 140, MCI 90.5, Skowhegan 84, Waterville 69, Lawrence 53; boys: Lawrence 177.5, Skowhegan 129.5, Waterville 107, Winslow 88, Messalonskee 74, MCI 8). Schools correct.",
+  "date": "2026-10-26",
+  "parse_sha": "95a1eb398e00b2c2",
+  "source_sha": "38fa32c344ca32fc"
+ },
+ "backend/data/parsed_results/2026/Outdoor/ResultsMVHomeMeet2026.json": {
+  "verdict": "fixed",
+  "by": "2026-10-26 sonnet audit (routine)",
+  "notes": "Rows/marks/places/events/team scores all match the source (349 rows, Seed and Finals columns: the parse takes Finals; 'J'/'x' prefixed marks read correctly). SCHOOL ERROR: a per-meet override files Belfast Area (107 rows), Oxford Hills (101+6 rows) and Islesboro Ce (8 rows) under middle-school ids (me-ms-troy-howard, me-ms-oxford-hills, me-ms-islesboro). This is 'Mt. View High School Home Track Meet 2026'; its score tables print 'Belfast Area High School 124', 'Oxford Hills Comprehensive 134 / Oxford Hills Comprehensiv 105', 'Islesboro Central School 15', and the athletes are HS runners in the store in 2026 (Kiana Kranendonk, Jocelyn Valleau, Paisley Hayslip on Belfast_Area_High_School KVAC indoor 2026; Nellie Gilbert on Oxford Hills HS indoor 2026; Louie Glotzel, Jaykob Zollman, Grace Burns on Islesboro_Central_School HS in Medomak/Nokomis/MDI 2026). Fix the four overrides in school_raw_map (2026/Outdoor/ResultsMVHomeMeet2026): Belfast Area -> me-hs-belfast; Oxford Hills and Oxford Hills Comprehensive Hig -> me-hs-oxford-hills; Islesboro Ce -> me-hs-islesboro. (First of 4 entries for this path; one rule each.) | Additional rule for the same file (see first entry): Oxford Hills -> me-hs-oxford-hills. | Additional rule for the same file (see first entry): Oxford Hills Comprehensive Hig -> me-hs-oxford-hills. | Additional rule for the same file (see first entry): Islesboro Ce -> me-hs-islesboro. [applied 2026-10-26: school rules in school_catalog_seed (2026-10-26 routine block), continuation-page parser fix, or transcription override, as listed; parser patterns not yet fixed are in the routine report]",
+  "date": "2026-10-26",
+  "parse_sha": "bc76c98ad22104fe",
+  "source_sha": "5c6836f86897d5c3"
+ },
+ "backend/data/parsed_results/2026/Outdoor/Small-school-boys-results.json": {
+  "verdict": "confirmed",
+  "by": "2026-10-26 sonnet audit (routine)",
+  "notes": "Row-by-row comparison of all source result rows to the parse (name, mark, place, grade, school, event order and per-event row counts) found no missing/extra/misread rows; 247 rows; 14 team scores match. Override-mapped Bangor Chris, Deer Isle St, Fort Kent, Mattanawcook, Piscataquis, Sumner Memor are the HS ids (correct for this HS meet); Houlton/GHCA->coop-houlton-ghca.",
+  "date": "2026-10-26",
+  "parse_sha": "8b7fc2f8a7c9e254",
+  "source_sha": "782f94abaa4bbc4e"
+ },
+ "backend/data/parsed_results/2026/Outdoor/WMC-results-boys.json": {
+  "verdict": "confirmed",
+  "by": "2026-10-26 sonnet audit (routine)",
+  "notes": "Row-by-row comparison of all source result rows to the parse (name, mark, place, grade, school, event order and per-event row counts) found no missing/extra/misread rows; 495 rows; Division 1 / Division 2 sections kept as separate events with the same names; both divisions' team scores (14 lines) match. Schools correct (North Yarmou->me-hs-nya, Sacopee Vall, Old Orchard, Gray New Glo->me-hs-gray-ng).",
+  "date": "2026-10-26",
+  "parse_sha": "246fc597e0a9a86b",
+  "source_sha": "6ac23c47988beced"
+ },
+ "backend/data/parsed_results/2026/Outdoor/Wagner-results.json": {
+  "verdict": "confirmed",
+  "by": "2026-10-26 sonnet audit (routine)",
+  "notes": "Row-by-row comparison of all source result rows to the parse (name, mark, place, grade, school, event order and per-event row counts) found no missing/extra/misread rows; 632 rows. MS league: Piscataquis->me-ms-piscataquis, James Dought->me-ms-doughty, Wagner MS, Sedomocha MS, Reeds Brooks, Ridge View, Central MS, Lewis Libby correct. The source event 'Boys 55 Meter Hurdles JV' is parsed as a separate event entry that is named plain 'Boys 55 Meter Hurdles' (JV suffix dropped; parser pattern, rows themselves are right).",
+  "date": "2026-10-26",
+  "parse_sha": "970aa498fd99fac9",
+  "source_sha": "05b12477c4409d0f"
+ },
+ "backend/data/parsed_results/2026/Outdoor/Waterville-results.json": {
+  "verdict": "confirmed",
+  "by": "2026-10-26 sonnet audit (routine)",
+  "notes": "Row-by-row comparison of all source result rows to the parse (name, mark, place, grade, school, event order and per-event row counts) found no missing/extra/misread rows; 727 rows; 12 team scores match (girls: Winslow 143, Leavitt 140, Messalonskee 125, Belfast Area 83, Camden Hills 44, Waterville 44; boys incl. Camden Hills 106, Winslow 82). Belfast Area->me-hs-belfast (HS, correct), Camden Hills, Messalonskee, Winslow, Waterville correct.",
+  "date": "2026-10-26",
+  "parse_sha": "10d6b1f032fb2e48",
+  "source_sha": "ef6837e04d666f39"
+ },
+ "backend/data/parsed_results/2026/Outdoor/bangor1may2026.json": {
+  "verdict": "confirmed",
+  "by": "2026-10-26 sonnet audit (routine)",
+  "notes": "Row-by-row comparison of all source result rows to the parse (name, mark, place, grade, school, event order and per-event row counts) found no missing/extra/misread rows; 571 rows; team scores match (girls Bangor 144, John Bapst 102...; boys Bangor 159, Foxcroft 78...). Bangor, Dexter, Ellsworth, Foxcroft, John Bapst map to the HS ids.",
+  "date": "2026-10-26",
+  "parse_sha": "b818ac96969aad44",
+  "source_sha": "e5a5a91a9e47ba5b"
+ },
+ "backend/data/parsed_results/2026/Outdoor/classaboys6june2026.json": {
+  "verdict": "confirmed",
+  "by": "2026-10-26 sonnet audit (routine)",
+  "notes": "Row-by-row comparison of all source result rows to the parse (name, mark, place, grade, school, event order and per-event row counts) found no missing/extra/misread rows; 472 rows incl. prelims and finals as separate events; 27 team scores match. Cheverus/Way->coop-cheverus-waynflete, Oxford Hills->me-hs-oxford-hills (HS override right), Messalonskee/Bonny Eagle/Skowhegan/Thornton/South Portland correct.",
+  "date": "2026-10-26",
+  "parse_sha": "c9082cc305986a8e",
+  "source_sha": "116c1d145430a50a"
+ },
+ "backend/data/parsed_results/2026/Outdoor/classagirls6june2026.json": {
+  "verdict": "confirmed",
+  "by": "2026-10-26 sonnet audit (routine)",
+  "notes": "Row-by-row comparison of all source result rows to the parse (name, mark, place, grade, school, event order and per-event row counts) found no missing/extra/misread rows; 445 rows; 26 team scores match. Same school mapping as the boys file; all correct.",
+  "date": "2026-10-26",
+  "parse_sha": "f31de73ab4735ca2",
+  "source_sha": "bf561a89a74e7eb0"
+ },
+ "backend/data/parsed_results/2026/Outdoor/classcboys6june2026-1.json": {
+  "verdict": "confirmed",
+  "by": "2026-10-26 sonnet audit (routine)",
+  "notes": "Machine-compared every parse row with the source text (name, mark, place, grade, event heading/order, relay members, per-event row counts): 401 rows, 19 events, all match; relays 56 entries with members match; team scores 'verified' vs printed 'Men - Team Rankings'. 5 implausible flags are marks the source prints. School strings map consistently (e.g. 'Maine Centra'->me-hs-mci, 'Cony' absent, 'Lisbon/Oak H'->coop-ot-lisbon-oak-hill).",
+  "date": "2026-10-26",
+  "parse_sha": "ca139d748a38a482",
+  "source_sha": "2f098536e25ca33b"
+ },
+ "backend/data/parsed_results/2026/Outdoor/hampden15may2026.json": {
+  "verdict": "confirmed",
+  "by": "2026-10-26 sonnet audit (routine)",
+  "notes": "Machine-compared every parse row with the source text (name, mark, place, grade, event heading/order, relay members, per-event row counts): 567 rows, 38 events; all places/grades/marks match; relay B/C teams ('x' exhibition marks like x56.70) stored with the mark; team scores verified vs 'Women/Men - Team Rankings'. Implausible flags are printed marks. 'Loire O\u2019roak' apostrophe is correct here.",
+  "date": "2026-10-26",
+  "parse_sha": "08c1b1398d9532a4",
+  "source_sha": "b122986e0e2615f4"
+ },
+ "backend/data/parsed_results/2026/Outdoor/messalonskee16april2026.json": {
+  "verdict": "confirmed",
+  "by": "2026-10-26 sonnet audit (routine)",
+  "notes": "Machine-compared every parse row with the source text (name, mark, place, grade, event heading/order, relay members, per-event row counts): 575 rows, 38 events all match; 'x' exhibition relay rows kept; relay rows (member names and marks) compared and matched; team scores verified.",
+  "date": "2026-10-26",
+  "parse_sha": "cec4eac0d2c6b3fe",
+  "source_sha": "67c754d2f08f292a"
+ },
+ "backend/data/parsed_results/2026/Outdoor/nokomisms17may2026.json": {
+  "verdict": "confirmed",
+  "by": "2026-10-26 sonnet audit (routine)",
+  "notes": "Machine-compared every parse row with the source text (name, mark, place, grade, event heading/order, relay members, per-event row counts): 870 rows, 27 events; middle-school Team column strings ('Penobscot Ch', 'Ridge View C', 'Sedomocha MS', 'Reeds Brooks') map to the right me-ms ids; DQ 'lifting' rows keep status DQ; 'Boys 55 Meter Hurdles JV' (5 rows, source line 1167) is a separate event block but its name drops 'JV' (same name as the varsity block) - label only, rows right.",
+  "date": "2026-10-26",
+  "parse_sha": "dad5c049de4d1215",
+  "source_sha": "3660ce24552e09d8"
+ },
+ "backend/data/parsed_results/2026/Outdoor/oronoms7may2026.json": {
+  "verdict": "confirmed",
+  "by": "2026-10-26 sonnet audit (routine)",
+  "notes": "Machine-compared every parse row with the source text (name, mark, place, grade, event heading/order, relay members, per-event row counts): 667 rows, 27 events all match (names like 'Lulu,Yowan, Oliver' are printed so; relay lists match). 'Old Town MS'->me-ms-leonard (only Old Town middle school), 'William S Co'->me-ms-cohen, 'Mattanawcook JH'->me-ms-mattanawcook. Event names: 'Varsity' kept only on the two 50 Meter Dash events (e.g. 'Girls 50 Meter Dash Varsity') and dropped elsewhere; 'Boys 55 Meter Hurdles JV' (2 rows) shares the name of the varsity block - label-only observations, no row wrong.",
+  "date": "2026-10-26",
+  "parse_sha": "fb0f66b524b87f70",
+  "source_sha": "d6a020f949b2975e"
+ },
+ "backend/data/parsed_results/2026/Outdoor/pvcjv27may2026.json": {
+  "verdict": "fixed",
+  "by": "2026-10-26 sonnet audit (routine)",
+  "notes": "Machine-compared every parse row with the source text (name, mark, place, grade, event heading/order, relay members, per-event row counts): all 661 rows, 38 events, relays, places match the source. Three defects fixed in the override backend/data/transcribed/2026/Outdoor/pvcjv27may2026.json (a copy of the parse with only these changes): (1) the file prints no date ('2026  PVC JV Championship Meet at Hampden Academy'), parse date 'Unknown Date'; set to 2026-05-27 from the file name pvcjv27may2026; (2) the source file has a garbled apostrophe in 'Loire O\ufffd\u20ac\u2122roak' (src lines 40, 108, 226 '2) Loire O?roak 9'); written 'Loire O\u2019roak' as in hampden15may2026 (individual rows 100 m 15.46 and 200 m 32.94, relay member in the Girls 4x100 59.26); (3) the garbled name shifted the columns so the two individual rows had grade '-' ; grade 9 restored (source prints 9). No other row changed. School strings map to the right ids (Houlton/GHCA->coop-houlton-ghca, Foxcroft Aca, Sumner Memor, etc.). 10 implausible flags are printed marks; JV meet so slow marks expected. [applied 2026-10-26: school rules in school_catalog_seed (2026-10-26 routine block), continuation-page parser fix, or transcription override, as listed; parser patterns not yet fixed are in the routine report]",
+  "date": "2026-10-26",
+  "parse_sha": "e96d4e44c1ad08e0",
+  "source_sha": "95629a203267de37"
+ },
+ "backend/data/parsed_results/2026/Outdoor/rcr23may2026.json": {
+  "verdict": "confirmed",
+  "by": "2026-10-26 sonnet audit (routine)",
+  "notes": "Machine-compared every parse row with the source text (name, mark, place, grade, event heading/order, relay members, per-event row counts): 613 rows, 37 events, all match; relays incl. x-exhibition rows match; team scores verified vs 'Women/Men - Team Rankings' (Bangor 144/Lewiston 102 ...).",
+  "date": "2026-10-26",
+  "parse_sha": "05dbbc9277f7f5ac",
+  "source_sha": "447cbe7aad079e3e"
  },
  "backend/data/parsed_results/2026/XC/fiveks-maine-coast-high-school-cross-country-meet-2026-09-18-boys-results.txt.json": {
   "verdict": "source-error",
@@ -8831,6 +9271,22 @@
   "parse_sha": "68d4ab69ce1fa82b",
   "source_sha": "f1e9fb2eaec93104"
  },
+ "backend/data/parsed_results/2026/XC/ms-elhs-home-meet-2026.json": {
+  "verdict": "confirmed",
+  "by": "2026-10-26 sonnet audit (routine)",
+  "notes": "Compared against live MileSplit raw pages (boys results/1316690/raw, girls results/1316691/raw): all 61 boys and 36 girls rows match on place, name, school, grade (SR/JR/SO/FR->12/11/10/9; Riley Bennett and Arthur Brackett print no grade) and mark. Schools: Mt. Ararat->me-hs-mt-ararat, Oxford Hills Comprehensive->me-hs-oxford-hills, Nokomis->me-hs-nokomis, Edward Little, Lewiston, Winslow all correct. Team scores match the printed tables (Boys OH 39, MA 47, Lew 72, EL 86, Nok 102; Girls MA 22, OH 41, EL 87, Lew 93). Source was not cached; fetched once per page.",
+  "date": "2026-10-26",
+  "parse_sha": "b449f56752705b98",
+  "source_sha": "2615379b0c347fc6"
+ },
+ "backend/data/parsed_results/2026/XC/ms-gardiner-hs-xc-meet-2026.json": {
+  "verdict": "confirmed",
+  "by": "2026-10-26 sonnet audit (routine)",
+  "notes": "Parse follows MileSplit results/1324138 (tab table): boys 136 and girls 67 finishers match place/name/grade/mark exactly (only change: 'June- Anne Curtis' -> 'June-Anne Curtis'); DNS rows ('--' mark) correctly omitted. Boys team scores 43,72,117,122,128,130,148,171,216,289,311 match the printed 'Boys Team Scores' on results/1323702. Note: the other raw page (1323702) lists only 62 girls (truncated), 1324138 has all 67 including Bixby 37:30.86, Obptande 38:24.74, Lobdell 40:47.25, Griffin 40:47.27, Bichrest 44:21.31. Schools map correctly (Madison Area Memorial->Madison HS, Mt. Abram, Maranacook Community, Lisbon, Oak Hill etc.). No girls team scores printed.",
+  "date": "2026-10-26",
+  "parse_sha": "9872b57696c755be",
+  "source_sha": "9fc739be98817879"
+ },
  "backend/data/parsed_results/2026/XC/ms-gardiner-oak-hill-maranacook-dirigo-spruce-mtn-telstar-2026.json": {
   "verdict": "confirmed",
   "by": "sonnet audit 2026-10-21",
@@ -8929,11 +9385,11 @@
  },
  "backend/data/parsed_results/2026/XC/ms-mvc-champ-carr-booth-dir-h-d-lis-mad-mar-mon-ma-oh-rich-sm-tel-2026.json": {
   "verdict": "confirmed",
-  "by": "sonnet audit 2026-10-21",
-  "notes": "Girls 5k 51 rows + 1 DNF (\" -- McDermott, Cadence Monmouth Academy DNF\" -> place None, kept) and Boys 5k 93 rows all match source; Hy-Tek truncated schools (\"Maranacook C\", \"Winthrop Hig\", \"Hall-Dale Hi\", \"Madison Area Memorial High Sch\", \"Telstar Regional High School\") map to the right schools. Team scores in parse equal the source: girls Maranacook 51, Boothbay/Wiscasset 59, Winthrop 67, Dirigo 96, Spruce Mountain 102, Carrabec 123, Lisbon 165; boys Winthrop 30, Maranacook 72, Boothbay/Wiscasset 93, Madison 102, Dirigo 107, Carrabec 114, Lisbon 162. Girls sheet has no Year column, so gr - is right. Oddity printed by source and kept: \" 40 Anne Curtis, June-  Lisbon 31:30.89\" parsed as \"June- Anne Curtis\" (hyphenated first name split by the sheet; likely June-Anne Curtis) - cosmetic only.",
-  "date": "2026-10-21",
-  "parse_sha": "ac768c232a258c69",
-  "source_sha": "b12987a84ab2f5ec"
+  "by": "2026-10-26 sonnet audit (routine)",
+  "notes": "Compared with MileSplit raw (Hy-Tek, results/1333442): girls 50 finishers + 'McDermott, Cadence Monmouth Academy DNF' (stored place None) and boys 93 rows match place, name, mark; schools expand correctly (truncated 'Maranacook C','Winthrop Hig','Hall-Dale Hi','Madison Area' etc.; boys 'Telstar Regional High School'->Telstar HS, 'Mt. Abram'). Team scores match printed: Girls Maranacook 51, Boothbay/Wiscasset 59, Winthrop 67, Dirigo 96, Spruce Mtn 102, Carrabec 123, Lisbon 165; Boys Winthrop 30, Maranacook 72, Boothbay 93, Madison 102, Dirigo 107, Carrabec 114, Lisbon 162. Nit: athlete 'June- Anne Curtis' keeps the stray space as printed.",
+  "date": "2026-10-26",
+  "parse_sha": "cc62672b160eb66e",
+  "source_sha": "10936eb831403787"
  },
  "backend/data/parsed_results/2026/XC/ms-noble-shapleigh-thornton-marshwood-sacosanford-2026.json": {
   "verdict": "confirmed",
@@ -8975,6 +9431,14 @@
   "parse_sha": "e74dfb13b9814c49",
   "source_sha": "76fde58d4adadd79"
  },
+ "backend/data/parsed_results/2026/XC/ms-panther-2-miler-2026.json": {
+  "verdict": "confirmed",
+  "by": "2026-10-26 sonnet audit (routine)",
+  "notes": "Compared with MileSplit raw (results/1314284): girls 66 and boys 104 rows match place/name/grade/mark; schools correct (Camden Hills Regional, Brunswick, Lincoln Academy, Leavitt Area, Boothbay/Wiscasset, Lewiston, Medomak Valley, Oceanside, Foxcroft). Team scores match: Girls Brunswick 36, Camden Hills 42, Lincoln 50, Leavitt 120; Boys Camden Hills 38, Brunswick 56, Lincoln 93, Boothbay 122, Lewiston 125, Medomak 127, Oceanside 179. 2-mile events.",
+  "date": "2026-10-26",
+  "parse_sha": "3a27ab802703aff4",
+  "source_sha": "f76105af631ac41a"
+ },
  "backend/data/parsed_results/2026/XC/ms-poland-waynflete-wellsgray-ng-2026.json": {
   "verdict": "confirmed",
   "by": "audit fixes 2026-10-21",
@@ -8993,11 +9457,11 @@
  },
  "backend/data/parsed_results/2026/XC/ms-presque-isle-xc-invitational-2026.json": {
   "verdict": "confirmed",
-  "by": "sonnet audit 2026-10-21",
-  "notes": "Event 1 Girls JV (8), Event 2 Boys JV (17), Event 3 Girls Varsity (35), Event 4 Boys Varsity (43): rows, places and races match, JV and varsity not merged. Truncated schools (Brewer High, Ellsworth Hi, Old Town Hig, Central Aroostoo, MSSM, Foxcroft Aca) map correctly. \"Houlton/GHCA\" (14 rows) resolved to me-hs-houlton, consistent with the 2026 convention in the other milesplit-manual files (Cony, Caribou, Red Riot, Border Bash, PVC). Hy-Tek points column dropped (fine).",
-  "date": "2026-10-21",
-  "parse_sha": "4a0de45779e27562",
-  "source_sha": "c5605551c9fa1a48"
+  "by": "2026-10-26 sonnet audit (routine)",
+  "notes": "Compared with MileSplit raw Hy-Tek (results/1318230): JV girls 8, JV boys 17, varsity girls 35, varsity boys 43 rows; place/name/mark all match, JV and varsity kept as separate events. Schools correct (Houlton/GHCA coop, MSSM, Central Aroostook Jr-Sr HS, Old Town, Foxcroft, Hermon, Ellsworth, Brewer, Caribou, Presque Isle). No team scores printed, none stored; no grades printed.",
+  "date": "2026-10-26",
+  "parse_sha": "cd6c75d1743b9c9b",
+  "source_sha": "35b9fb2c6d20bc50"
  },
  "backend/data/parsed_results/2026/XC/ms-pvc-xc-championship-2026.json": {
   "verdict": "confirmed",

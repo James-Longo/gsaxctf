@@ -62,8 +62,12 @@ def canon_event(name):
 
 
 def is_mark(tok):
-    t = tok.strip().rstrip('*qQjJhH')
+    t = re.sub(r'^[Jj](?=\d)', '', tok.strip().rstrip('*qQjJhH'))   # "J4-08.00": a judged tie (Hy-Tek)
     return bool(MARK_RE.match(t)) or t.upper() in STATUS
+
+
+def clean_mark(tok):
+    return re.sub(r'^[Jj](?=\d)', '', tok.rstrip('*qQjJ'))
 
 
 def _normalize_feet_inch_marks(s):
@@ -293,7 +297,7 @@ class LooseListParser(BaseParser):
         toks = s.split()
         if not (2 <= len(toks) <= 6):
             return None
-        mark = toks[-1].rstrip('*qQjJ')
+        mark = clean_mark(toks[-1])
         if not is_mark(mark):
             return None
         head = toks[:-1]
@@ -355,14 +359,14 @@ class LooseListParser(BaseParser):
         if is_relay and len(parts) == 2 and is_mark(parts[1]):
             school = re.sub(r"\s+['\"]?[A-D]['\"]?$", '', parts[0]).strip()
             if school and not school.replace('.', '').isdigit():
-                return {'school': school, 'result': parts[1].rstrip('*qQjJ'),
+                return {'school': school, 'result': clean_mark(parts[1]),
                         'athletes': [], 'grade': '', 'type': 'Finals'}
         # "LASSARD    TH 11:36.0": the code typed one space from the mark
         if not is_relay and len(parts) == 2 and re.fullmatch(r'[A-Z]{1,3} \S+', parts[1]) \
                 and is_mark(parts[1].split()[1]) and re.search(r'[A-Za-z]{2}', parts[0]):
             code, mark = parts[1].split()
             return {'athlete': parts[0], 'school': self._resolve_school(code),
-                    'result': mark.rstrip('*qQjJ'), 'grade': '', 'type': 'Finals'}
+                    'result': clean_mark(mark), 'grade': '', 'type': 'Finals'}
         if len(parts) >= 3:
             mark_idx = None
             for i in range(len(parts) - 1, 0, -1):
@@ -370,7 +374,7 @@ class LooseListParser(BaseParser):
                     mark_idx = i
                     break
             if mark_idx and mark_idx >= 1:
-                mark = parts[mark_idx].split()[0].rstrip('*qQjJ')
+                mark = clean_mark(parts[mark_idx].split()[0])
                 if is_relay:
                     school = re.sub(r"\s+['\"]?[A-D]['\"]?$", '', parts[0]).strip()
                     return {'school': self._resolve_school(school), 'result': mark, 'athletes': [],
@@ -403,7 +407,11 @@ class LooseListParser(BaseParser):
                 break
         if mark_idx is None or mark_idx < 1:
             return None
-        mark = toks[mark_idx].rstrip('*qQjJ')
+        # "14-02.75 8 13-04.75": the Finals mark, its points, then a second (prelim) mark
+        if mark_idx >= 3 and re.fullmatch(r'\d{1,2}', toks[mark_idx - 1]) and is_mark(toks[mark_idx - 2]) \
+                and '-' in toks[mark_idx] and '-' in toks[mark_idx - 2]:
+            mark_idx -= 2
+        mark = clean_mark(toks[mark_idx])
         # earlier mark tokens (seed) get excluded from the school text
         first_mark = mark_idx
         while first_mark - 1 > 0 and is_mark(toks[first_mark - 1]):

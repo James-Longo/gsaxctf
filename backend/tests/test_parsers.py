@@ -2755,6 +2755,87 @@ def test_every_parsed_season_is_synced():
                if s in ('Indoor', 'Outdoor', 'XC') and (y, s) not in listed]
     assert not missing, missing
 
+
+def test_paragraph_news_separators():
+    """Paragraph results split on '; N.' (Ellsworth 5/4/07), after a qualifier
+    mark '5.00q.' (SMAA 2009) and after a no-height 'FAIL.' (2010 freshmen)."""
+    from backend.parsers.newsprint import ParagraphNewsParser
+    text = ("2007 PVC Regular Season Meet 2 - 5/4/2007\nEllsworth High School\n"
+            "Girls 100 Meter Dash:\n"
+            " 1. Hutchins, Danielle, MDI, 13.17; 2. Hutchins, Marcelle, MDI, 14.12; 3. \n"
+            " Bartlett, Kristin, MDI, 14.26.\n"
+            "Boys 55 Meter Dash Preliminaries\n"
+            "1, Atkins, N, Bonny Eagle, 5.00q. 2, Russell, D, Biddeford, 5.10q. 3, Scenna, A, Thornton, 5.12.\n"
+            "Girls High Jump Finals\n"
+            "1, Kremer, Kelsey, MTA, 5-00. --, Moody, Johanna, POL, FAIL. --, Pelkey, Robin, GNG, FAIL. "
+            "2, Ball, Deirdre, LEW, 4-10.\n")
+    ev = ParagraphNewsParser().parse(text, '', 'Outdoor')['events']
+    rows = [[(r['athlete'], r['school'], r['result']) for r in e['results']] for e in ev]
+    assert rows[0] == [('Danielle Hutchins', 'MDI', '13.17'), ('Marcelle Hutchins', 'MDI', '14.12'),
+                       ('Kristin Bartlett', 'MDI', '14.26')], rows[0]
+    assert [r[1] for r in rows[1]] == ['Bonny Eagle', 'Biddeford', 'Thornton'], rows[1]
+    assert rows[2] == [('Kelsey Kremer', 'MTA', '5-00'), ('Johanna Moody', 'POL', 'FAIL'),
+                       ('Robin Pelkey', 'GNG', 'FAIL'), ('Deirdre Ball', 'LEW', '4-10')], rows[2]
+
+
+def test_milesplit_senior_junior_headers():
+    """SMMSAC 2026 prints 'Senior Boys 1.5 Mile Run' / 'Junior Girls 1.5 Mile Run' (the converter read no
+    events); 'Junior Varsity' and 'Junior High' keep their own divisions."""
+    from backend.milesplit import xc_header
+    assert xc_header('Event 1  Senior Boys 1.5 Mile Run ') == ('Boys', '1.5 Mile', 'Senior')
+    assert xc_header('Junior Girls 1.5 Mile Run') == ('Girls', '1.5 Mile', 'Junior')
+    assert xc_header('Junior Varsity Boys 5k') == ('Boys', '5k', 'JV')
+    assert xc_header('Junior High Boys 1.5 Mile Run') == ('Boys', '1.5 Mile', 'Middle School')
+
+
+def test_looselist_judged_ties_and_second_mark():
+    """Hy-Tek field rows: a judged-tie mark 'J4-08.00' is the mark (was dropped, or the seed taken
+    instead); 'Finals Points Prelim' rows keep the Finals mark (KVAC 2024 indoor, KVAC 5/28/21)."""
+    from backend.parsers.looselist import is_mark, clean_mark
+    assert is_mark('J4-08.00') and clean_mark('J4-08.00') == '4-08.00'
+    p = LooseListParser()
+    assert p._parse_row('2 Phoebe FitzPatrick 12 Mt. Ararat H J14-02.75 6 13-04.00', False)['result'] == '14-02.75'
+    assert p._parse_row('1 Islah Godo 11 Mt. Ararat H 14-02.75 8 13-04.75', False)['result'] == '14-02.75'
+    assert p._parse_row('2 # 15 Flagg, Hunter NOKO 5-02.00 J5-00.00 7', False)['result'] == '5-00.00'
+
+
+def test_team_scores_without_decimal_point():
+    """WMC indoor 2008-09 score sheets print 65.67 as '6567' (and 251.50 as '25150'); the printed
+    Total confirms the reading. Without a matching total such rows are dropped, not believed."""
+    from backend.parsers.teamscores import extract_team_scores
+    sheet = """                                       Female Team Scores
+  Place        School                                                                 Points
+      1        Falmouth High School                         FAL                         25150
+      2        York                                         YORK                        16733
+      3        Cape Elizabeth High School                   CAPE                         82
+      4        Poland                                       POL                          6567
+      5        North Yarmouth Academy                       NYA                          4750
+      6        Freeport High School                         FREE                         23
+                                                                              Total   637.00
+"""
+    b = extract_team_scores('Team Rankings - Through Event 85\n' + sheet)[0]
+    assert [t['score'] for t in b['teams']] == [251.5, 167.33, 82.0, 65.67, 47.5, 23.0], b
+    b = extract_team_scores('Team Rankings - Through Event 85\n' + sheet.replace('637.00', '640.00'))[0]
+    assert [t['score'] for t in b['teams']] == [82.0, 23.0], b
+
+
+def test_continuation_page_marks_not_cut():
+    """A Hy-Tek continuation page ('....Event 11 Girls 100 Meter Dash') sets its marks further right than page 1's
+    columns: read under page 1's header they lost their digits ('18.28' -> '18.'). ALMS meet 1, 5/7/2026."""
+    src = os.path.join(ROOT, 'backend', 'data', 'sub5_archive', '2026', 'Outdoor', '2026-alms-tf-meet-1.pdf')
+    if not os.path.exists(src):
+        return
+    import json
+    import tempfile
+    from backend import scraper_v2 as sv
+    with tempfile.TemporaryDirectory() as td:
+        out = os.path.join(td, 'p.json')
+        sv._parse_one_file((src, out, 'Outdoor'))
+        d = json.load(open(out))
+    ev = next(e for e in d['events'] if e['event'].startswith('100 Meter Dash') and e['gender'] == 'Girls')
+    assert not [r for r in ev['results'] if str(r['result']).endswith('.')]
+    assert ('Harper Pearson', '18.28') in [(r.get('athlete'), r['result']) for r in ev['results']]
+
 if __name__ == '__main__':
     qaqc._ensure_team_mapping()
     failed = 0

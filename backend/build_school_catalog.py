@@ -241,6 +241,13 @@ def explicit_level(raw):
 
 _INDEX_MEETS = None
 
+# sub5's index titles these high-school meets 'Middle School Meet at ...': every runner the title would move to a
+# middle school runs for the high school in that season's other meets (2026-10-26 routine), and the files' own titles
+# are 'Mt View Meet #2 ... at Mt View High School', 'Belfast Meet #1/#2 ... at Belfast High School' (Lincoln Academy,
+# Belfast, Islesboro high-school runners) and 'Mt. View High School Home Track Meet 2026'
+INDEX_TITLE_NOT_MS = {'2022/Outdoor/Mt-View-results', '2023/Outdoor/Belfast-Boys-results',
+                      '2023/Outdoor/Belfast-girls-results', '2026/Outdoor/ResultsMVHomeMeet2026'}
+
 
 def index_meet(rel):
     """The meet name sub5's season index gives a file ('<year>/<season>/<stem>.json'), or ''."""
@@ -306,6 +313,8 @@ def row_levels(rows):
             # middle school and nothing else ('Junior High Meet at Waterville: Girls - Boys'; never
             # 'XC Meet at Troy Howard Middle School' or 'Scarborough Invitational - Girls Middle School - ... Varsity')
             title = re.split(r'\s+at\s+|:', index_meet(rel), 1)[0]
+            if os.path.splitext(rel)[0].replace(os.sep, '/') in INDEX_TITLE_NOT_MS:
+                title = ''
             if re.search(r'(?i)\b(junior high|jr\.? high|middle school)\b', title) and \
                     not re.search(r'(?i)high school|varsity|\bjv\b|\bhs\b|class [a-d]\b', title):
                 lv = 'ms'
@@ -372,7 +381,11 @@ def build_groups(rows, idx, levels):
         gender = g.gender.most_common(1)[0][0] if g.gender else None
         g.gender = gender
         rule = file_rule_for(g)
-        if rule:
+        if rule == '?':
+            # a string this file prints for a school the catalog doesn't hold (an out-of-state 'Milford' at the
+            # New Englands, NH or MA): left unidentified rather than matched to a Maine school or a college
+            g.name = (None, 'manual (file rule: unidentified)', [], True)
+        elif rule:
             g.name = (rule, 'manual (file rule)', [rule], False)
         elif not g.raw or sc.looks_like_debris(g.raw):
             g.name = (None, 'debris' if g.raw else 'blank', [], True)
@@ -888,7 +901,7 @@ def main(argv=None):
         schools.update(auto)
         idx = sc.Index(schools)
         groups, keys = build_groups(rows, idx, levels)
-    bad = sorted({r[4] for r in seed.FILE_RULES if r[4] not in schools})
+    bad = sorted({r[4] for r in seed.FILE_RULES if r[4] not in schools and r[4] != '?'})
     if bad:
         sys.exit(f'FILE_RULES name schools not in the catalog: {bad}')
     relevel(groups, idx)
