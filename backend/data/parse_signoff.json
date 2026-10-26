@@ -8756,6 +8756,13 @@
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
  },
+ "backend/data/parsed_results/2009/XC/biddeford_oct2.json": {
+  "parse_sha": "a76d6c2e35a64300",
+  "source_sha": "58e05056b63cc9a9",
+  "date": "2026-10-26",
+  "by": "auto: team scores verified exactly, all schools identified, no flags",
+  "evidence": ""
+ },
  "backend/data/parsed_results/2009/XC/biddefordboys_oct9.json": {
   "parse_sha": "d95a250654b5b0db",
   "source_sha": "4caf1065131042e7",
@@ -8798,6 +8805,20 @@
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
  },
+ "backend/data/parsed_results/2009/XC/bucksinvite.json": {
+  "parse_sha": "4bf49dd9b6cdec53",
+  "source_sha": "d6401a5ad93fee20",
+  "date": "2026-10-26",
+  "by": "auto: team scores verified exactly, all schools identified, no flags",
+  "evidence": ""
+ },
+ "backend/data/parsed_results/2009/XC/camdenhillsinvite.json": {
+  "parse_sha": "23be653e356a610d",
+  "source_sha": "cf0eaccc645651d6",
+  "date": "2026-10-26",
+  "by": "auto: team scores verified exactly, all schools identified, no flags",
+  "evidence": ""
+ },
  "backend/data/parsed_results/2009/XC/cape_oct16.txt.json": {
   "parse_sha": "3a1dec11901b4988",
   "source_sha": "c3255b40bbc673b7",
@@ -8809,6 +8830,20 @@
   "parse_sha": "020993b1e3939f14",
   "source_sha": "faf2b4804517cdf1",
   "date": "2026-10-23",
+  "by": "auto: team scores verified exactly, all schools identified, no flags",
+  "evidence": ""
+ },
+ "backend/data/parsed_results/2009/XC/caribounightboys.json": {
+  "parse_sha": "e1fe6acf895df762",
+  "source_sha": "9ceb66ce514f00df",
+  "date": "2026-10-26",
+  "by": "auto: team scores verified exactly, all schools identified, no flags",
+  "evidence": ""
+ },
+ "backend/data/parsed_results/2009/XC/caribounightgirls.json": {
+  "parse_sha": "f5238424cf0afb4f",
+  "source_sha": "de8b2eb982cce94e",
+  "date": "2026-10-26",
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
  },
@@ -8966,6 +9001,13 @@
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
  },
+ "backend/data/parsed_results/2009/XC/freeportgirls_sept4.json": {
+  "parse_sha": "79a3071f93a9c5ef",
+  "source_sha": "18941daee65e66f3",
+  "date": "2026-10-26",
+  "by": "sonnet audit (second read, 2026-10-26) (audit: confirmed)",
+  "evidence": "All 43 rows agree with the source (place, name, school, time, per-runner team score). Override written anyway only to give date September 4, 2009 and the 3.1 mi distance (sheet header 'Course:3.1', template 'Team:Boys' leftover) which the parse lacked; row content unchanged."
+ },
  "backend/data/parsed_results/2009/XC/gorham_09-17-09_BOYS.json": {
   "parse_sha": "39362999195a65d9",
   "source_sha": "e9b9d6fabb39d5aa",
@@ -9000,6 +9042,20 @@
   "date": "2026-10-25",
   "by": "sonnet audit (second read, 2026-10-25) (audit: source-error)",
   "evidence": "All 114 places present (1-114). With Waynflete (W, 15 finishers, not in the score list) not placing, FA+F=Fryeburg, N=NYA: Greely 26, York 52 (7+8+9+11+17), Fryeburg 68 (1+4+13+18+32) reproduce. Printed NYA 108 vs rows 107 (15,20,21,22,29) and Cape 162 vs 169 (ranks 26,31,34,37,41): printed NYA 108, rows give 107; printed Cape 162, rows give 169. convention: non-scoring team (Waynflete) runners removed from the place count; the last two teams' printed totals do not follow from the listed places. Codes in this meet: FA and F = Fryeburg, N = NYA, CE = Cape Elizabeth, G = Greely, Y = York, W = Waynflete (stored correctly). (cause b/c)"
+ },
+ "backend/data/parsed_results/2009/XC/greelygirls_oct2.json": {
+  "parse_sha": "dff3f9af27443f90",
+  "source_sha": "5b04b805fed08161",
+  "date": "2026-10-26",
+  "by": "auto: team scores verified exactly, all schools identified, no flags",
+  "evidence": ""
+ },
+ "backend/data/parsed_results/2009/XC/greelygirls_sept11.json": {
+  "parse_sha": "fa51d528d948c53c",
+  "source_sha": "ca52d2e5d58e08aa",
+  "date": "2026-10-26",
+  "by": "sonnet audit (second read, 2026-10-26) (audit: confirmed)",
+  "evidence": "All 49 rows agree with the source table (place, first/last name as abbreviated, school, time as h:mm:ss -> mm:ss, points column vs team_place). Schools Falmouth, Greely, Lake Region all resolved. No title/date/team totals printed."
  },
  "backend/data/parsed_results/2009/XC/hampdenboys_sept18.txt.json": {
   "parse_sha": "123ca554fee81eaf",
@@ -9056,6 +9112,13 @@
   "date": "2026-10-26",
   "by": "sonnet audit (second read, 2026-10-26) (audit: confirmed)",
   "evidence": "Hy-Tek \"Laliberte 2009 - 9/28/2009\" mixed 5k (3 miles) at Cony: all 208 rows (86 W, 122 M) match the source in name, school, time and Points (team place), split into Girls/Boys with overall places. Sheet date 9/28/2009 contradicts the Hy-Tek print stamp 8/31/2009 (typo for 8/28); the sub5 index has August 28, 2009, so no override. The implausible-time flags are slow finishers the source prints."
+ },
+ "backend/data/parsed_results/2009/XC/lalibertevarsityresults.json": {
+  "parse_sha": "b4463b3220d4588f",
+  "source_sha": "3da6ac27a55ff994",
+  "date": "2026-10-26",
+  "by": "sonnet audit (second read, 2026-10-26) (audit: confirmed)",
+  "evidence": "All 253 rows (115 girls, 138 boys, mixed race with overall places and team-place points) agree with the Hy-Tek listing; schools resolved (Fox Island coop, Phillip Exeter NH). Title says 9/28/2009 but the Hy-Tek print stamp is 8/31/2009 and the sub5 index (web_date_mapping) gives August 28, 2009, which wins over the file's own date. No team scores printed."
  },
  "backend/data/parsed_results/2009/XC/lawrenceboys_sept11.json": {
   "parse_sha": "201037ea1033f888",
@@ -9120,10 +9183,45 @@
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
  },
+ "backend/data/parsed_results/2009/XC/marshwood_oct9.json": {
+  "parse_sha": "17c048387996e4cd",
+  "source_sha": "e8a5bab6b45e6265",
+  "date": "2026-10-26",
+  "by": "auto: team scores verified exactly, all schools identified, no flags",
+  "evidence": ""
+ },
+ "backend/data/parsed_results/2009/XC/massabesicboys_oct9.json": {
+  "parse_sha": "3027cf54cadf822a",
+  "source_sha": "db7b5a047f6fa8c5",
+  "date": "2026-10-26",
+  "by": "auto: team scores verified exactly, all schools identified, no flags",
+  "evidence": ""
+ },
+ "backend/data/parsed_results/2009/XC/massabesicgirls_oct9.json": {
+  "parse_sha": "cc383192a0f8ab09",
+  "source_sha": "bf19ebb9285fe570",
+  "date": "2026-10-26",
+  "by": "auto: team scores verified exactly, all schools identified, no flags",
+  "evidence": ""
+ },
  "backend/data/parsed_results/2009/XC/massabesicgirls_sept11.json": {
   "parse_sha": "1289145e3b22ecae",
   "source_sha": "03ebf49afb5621fa",
   "date": "2026-10-19",
+  "by": "auto: team scores verified exactly, all schools identified, no flags",
+  "evidence": ""
+ },
+ "backend/data/parsed_results/2009/XC/medomakboys_sept18.json": {
+  "parse_sha": "9780127fd4c34e2d",
+  "source_sha": "32881de888ac720d",
+  "date": "2026-10-26",
+  "by": "auto: team scores verified exactly, all schools identified, no flags",
+  "evidence": ""
+ },
+ "backend/data/parsed_results/2009/XC/medomakgirls_sept18.json": {
+  "parse_sha": "a2ddcc75286fa266",
+  "source_sha": "64e4198714c1c163",
+  "date": "2026-10-26",
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
  },
@@ -9568,6 +9666,27 @@
   "by": "sonnet audit (score mismatch, 2026-10-23) (audit: source-error)",
   "evidence": "Parse matches the rows (37 boys, 30 girls; Joshia White L DNF has no place). Girls all reproduce with a cap of 7 per team: MB 1,3,4,6,7=21; Mess 2,9,10,13,15=49; L 5,12,14,16,17=64. Boys: MB 1,3,5,7,8=24, L 2,12,13,15,17=59, Mess 4,16,18,19,20=77 reproduce, but Skowhegan's scorers (printed places 6,11,17,29,30) come out 6,11,14,23,24=78, printed 76 (Skowhegan would also be 3rd below Messalonskee 77, not above it). No cap value gives 76. The source's boys Skowhegan total does not follow from its own rows."
  },
+ "backend/data/parsed_results/2009/XC/noblegirls_oct16.json": {
+  "parse_sha": "f5984853982148d0",
+  "source_sha": "7869108dcd2da76f",
+  "date": "2026-10-26",
+  "by": "auto: team scores verified exactly, all schools identified, no flags",
+  "evidence": ""
+ },
+ "backend/data/parsed_results/2009/XC/nyaboys_oct16.json": {
+  "parse_sha": "497c024bbb8e4768",
+  "source_sha": "fd271586b3e98856",
+  "date": "2026-10-26",
+  "by": "auto: team scores verified exactly, all schools identified, no flags",
+  "evidence": ""
+ },
+ "backend/data/parsed_results/2009/XC/nyagirls_oct16.json": {
+  "parse_sha": "ac205af7d285df50",
+  "source_sha": "ccce3eed2344c47f",
+  "date": "2026-10-26",
+  "by": "auto: team scores verified exactly, all schools identified, no flags",
+  "evidence": ""
+ },
  "backend/data/parsed_results/2009/XC/orono_boys_results_9.18.09.json": {
   "parse_sha": "e586b604eaddb370",
   "source_sha": "900cfb1ad61bb1c1",
@@ -9581,6 +9700,13 @@
   "date": "2026-10-16",
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
+ },
+ "backend/data/parsed_results/2009/XC/piinvitejv.json": {
+  "parse_sha": "1dae477c5a22728d",
+  "source_sha": "5db3169b6182d9e2",
+  "date": "2026-10-26",
+  "by": "sonnet audit (second read, 2026-10-26) (audit: confirmed)",
+  "evidence": "Parse matches the source: JV Girls 33 rows and JV Boys 37 rows, places 1-33 / 1-37, schools MDI, CAR Caribou, JB John Bapst, ELL Ellsworth, HER Hermon, OT Old Town, PI Presque Isle (same codes as the varsity file of the meet); '9.12.09' printed. No team scores in this file (the JV team lines are printed in piinvitevarsity: JV Girls Old Town 38, John Bapst 40, Caribou 55, Ellsworth 81; JV Boys Ellsworth 20, Caribou 41), so none to compare."
  },
  "backend/data/parsed_results/2009/XC/poland_sept4.json": {
   "parse_sha": "b403ea633c08f0fd",
@@ -9652,10 +9778,31 @@
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
  },
+ "backend/data/parsed_results/2009/XC/sacomiddleboys_oct14.json": {
+  "parse_sha": "5c80c04c2d6737b8",
+  "source_sha": "cac99984ca435c5b",
+  "date": "2026-10-26",
+  "by": "auto: team scores verified exactly, all schools identified, no flags",
+  "evidence": ""
+ },
+ "backend/data/parsed_results/2009/XC/sanfordboys_oct2.json": {
+  "parse_sha": "2df3e3098ee9f36f",
+  "source_sha": "77fd68a75b960650",
+  "date": "2026-10-26",
+  "by": "auto: team scores verified exactly, all schools identified, no flags",
+  "evidence": ""
+ },
  "backend/data/parsed_results/2009/XC/sanfordboys_sept11.json": {
   "parse_sha": "c7b148b530b2aa93",
   "source_sha": "891f3b47ed93f261",
   "date": "2026-10-19",
+  "by": "auto: team scores verified exactly, all schools identified, no flags",
+  "evidence": ""
+ },
+ "backend/data/parsed_results/2009/XC/sanfordgirls_oct2.json": {
+  "parse_sha": "61a29b1f4ce14bb5",
+  "source_sha": "da85d1a58ae89a0c",
+  "date": "2026-10-26",
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
  },
@@ -9726,6 +9873,13 @@
   "parse_sha": "ce8a536be9e1e7f7",
   "source_sha": "e681aeca508bd3d4",
   "date": "2026-10-21",
+  "by": "auto: team scores verified exactly, all schools identified, no flags",
+  "evidence": ""
+ },
+ "backend/data/parsed_results/2009/XC/skowhegan_sept25.json": {
+  "parse_sha": "2f32ab84d001bc27",
+  "source_sha": "53321ab171e78c6b",
+  "date": "2026-10-26",
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
  },
@@ -9820,6 +9974,125 @@
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
  },
+ "backend/data/parsed_results/2009/XC/thorntonboys_oct16.json": {
+  "parse_sha": "b0733d2e31ce15e0",
+  "source_sha": "5baa3252d2789a00",
+  "date": "2026-10-26",
+  "by": "auto: team scores verified exactly, all schools identified, no flags",
+  "evidence": ""
+ },
+ "backend/data/parsed_results/2009/XC/thorntongirls_oct16.json": {
+  "parse_sha": "b9568725def2ab75",
+  "source_sha": "75295bcb7c5de729",
+  "date": "2026-10-26",
+  "by": "auto: team scores verified exactly, all schools identified, no flags",
+  "evidence": ""
+ },
+ "backend/data/parsed_results/2009/XC/thorntongirls_oct2.json": {
+  "parse_sha": "59c3436942932681",
+  "source_sha": "6a37039d6e1bd15f",
+  "date": "2026-10-26",
+  "by": "auto: team scores verified exactly, all schools identified, no flags",
+  "evidence": ""
+ },
+ "backend/data/parsed_results/2009/XC/thorntongirls_sept25.json": {
+  "parse_sha": "4847d69430fffa7c",
+  "source_sha": "06082d4d0de4547b",
+  "date": "2026-10-26",
+  "by": "sonnet audit (second read, 2026-10-26) (audit: confirmed)",
+  "evidence": "All 63 rows match the source (two-column table: place, name, school code, time; Thornton, Kennebunk, Marshwood, York per the index: TA Thornton Academy, K Kennebunk, M Marshwood, Y York all resolve correctly). The page prints no team scores. 'Martin, Danielle,' keeps its printed trailing comma; 'MacKenzie, Kristin' appears twice (place 32 K 25:55 and place 38 M 26:28), as printed. No title or date on the page."
+ },
+ "backend/data/parsed_results/2009/XC/thorntonjvboys_sept25.json": {
+  "parse_sha": "c04b59a531732874",
+  "source_sha": "34762aedfe0648d5",
+  "date": "2026-10-26",
+  "by": "auto: team scores verified exactly, all schools identified, no flags",
+  "evidence": ""
+ },
+ "backend/data/parsed_results/2009/XC/thorntonmiddlegirls_sept23.json": {
+  "parse_sha": "e4f1dcc2f95bf3c7",
+  "source_sha": "18c480e10efae600",
+  "date": "2026-10-26",
+  "by": "auto: team scores verified exactly, all schools identified, no flags",
+  "evidence": ""
+ },
+ "backend/data/parsed_results/2009/XC/watervilleboys_sept11.json": {
+  "parse_sha": "5029a65c3d5cc596",
+  "source_sha": "71730701dbd59ffb",
+  "date": "2026-10-26",
+  "by": "auto: team scores verified exactly, all schools identified, no flags",
+  "evidence": ""
+ },
+ "backend/data/parsed_results/2009/XC/watervillegirls_sept11.json": {
+  "parse_sha": "c43e91346b0422be",
+  "source_sha": "7ee5ad2282036666",
+  "date": "2026-10-26",
+  "by": "auto: team scores verified exactly, all schools identified, no flags",
+  "evidence": ""
+ },
+ "backend/data/parsed_results/2009/XC/wellsboys_sept18.json": {
+  "parse_sha": "d0af9c3728646fae",
+  "source_sha": "675ee91ede525ef6",
+  "date": "2026-10-26",
+  "by": "auto: team scores verified exactly, all schools identified, no flags",
+  "evidence": ""
+ },
+ "backend/data/parsed_results/2009/XC/wellsboys_sept25.json": {
+  "parse_sha": "7edec2bfd9419a6a",
+  "source_sha": "f007923a51e4bfff",
+  "date": "2026-10-26",
+  "by": "auto: team scores verified exactly, all schools identified, no flags",
+  "evidence": ""
+ },
+ "backend/data/parsed_results/2009/XC/wellsgirls_sept25.json": {
+  "parse_sha": "0ca19ec27da6362d",
+  "source_sha": "3dbd0f2300c57784",
+  "date": "2026-10-26",
+  "by": "auto: team scores verified exactly, all schools identified, no flags",
+  "evidence": ""
+ },
+ "backend/data/parsed_results/2009/XC/westbrookboys_sept18.json": {
+  "parse_sha": "0af066c265c1c0bd",
+  "source_sha": "1bbaf934986be999",
+  "date": "2026-10-26",
+  "by": "auto: team scores verified exactly, all schools identified, no flags",
+  "evidence": ""
+ },
+ "backend/data/parsed_results/2009/XC/westbrookgirls_sept18.json": {
+  "parse_sha": "6db232f08da79d35",
+  "source_sha": "46eeca464ffbd8a3",
+  "date": "2026-10-26",
+  "by": "auto: team scores verified exactly, all schools identified, no flags",
+  "evidence": ""
+ },
+ "backend/data/parsed_results/2009/XC/windhamboys_sept.json": {
+  "parse_sha": "cf70d380fac61a61",
+  "source_sha": "d770cfe3b414b17f",
+  "date": "2026-10-26",
+  "by": "auto: team scores verified exactly, all schools identified, no flags",
+  "evidence": ""
+ },
+ "backend/data/parsed_results/2009/XC/windhamgirls_sept18.json": {
+  "parse_sha": "aa53232cd8456f1d",
+  "source_sha": "1d95e72df93ea6d9",
+  "date": "2026-10-26",
+  "by": "auto: team scores verified exactly, all schools identified, no flags",
+  "evidence": ""
+ },
+ "backend/data/parsed_results/2009/XC/winslowgirls_sept4.json": {
+  "parse_sha": "006639208005e74a",
+  "source_sha": "b1e9f829d3617212",
+  "date": "2026-10-26",
+  "by": "auto: team scores verified exactly, all schools identified, no flags",
+  "evidence": ""
+ },
+ "backend/data/parsed_results/2009/XC/winthrop_sept16.json": {
+  "parse_sha": "614cf03b0bfe5e86",
+  "source_sha": "a5e3d8b369baf53a",
+  "date": "2026-10-26",
+  "by": "auto: team scores verified exactly, all schools identified, no flags",
+  "evidence": ""
+ },
  "backend/data/parsed_results/2009/XC/wmcjvboys.json": {
   "parse_sha": "8f8fa2b661e4ccbf",
   "source_sha": "32bef6892eecb8e7",
@@ -9889,6 +10162,20 @@
   "date": "2026-10-16",
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
+ },
+ "backend/data/parsed_results/2009/XC/yarmouthboys_sept11.json": {
+  "parse_sha": "f2d04dac055bb77e",
+  "source_sha": "1536766e863fdc46",
+  "date": "2026-10-26",
+  "by": "auto: team scores verified exactly, all schools identified, no flags",
+  "evidence": ""
+ },
+ "backend/data/parsed_results/2009/XC/yorkcountymsboys6th.json": {
+  "parse_sha": "4f5587bff252f3a3",
+  "source_sha": "b23491d17b1c4eb7",
+  "date": "2026-10-26",
+  "by": "sonnet audit (second read, 2026-10-26) (audit: confirmed)",
+  "evidence": "All 34 timed rows match the source (place 2-35, name, school code, time) and every code resolves to the legend printed beside the results: B/Bi Biddeford MS, Ke Middle School of the Kennebunks, Ki Shapleigh School of Kittery, Md Marshwood MS, Ma Massabesic MS, N Noble MS, Sa Saco MS, Sf Sanford MS, TA Thornton Academy MS, W Wells Junior High, Y York MS (parse ids me-ms-*). Place 1 'Goodenough, Bryan Md' has no time in the source: the time cell holds '27' with the note 'competing schools' (a stray count in the legend), so the row has no mark and is correctly absent. Place 24 (14:20) is listed before place 25 (14:19), source order. No team scores printed."
  },
  "backend/data/parsed_results/2010/Indoor/ScoresWMC1.json": {
   "parse_sha": "5f49233c4472197a",

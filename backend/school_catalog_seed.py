@@ -1651,6 +1651,9 @@ FILE_RULES = [
     (['Cape'], 'XC', (2009, 2009), r'^freeportms(boys|girls)_oct1$', 'me-ms-cape-elizabeth'),
     (['Lake'], 'XC', (2009, 2009), r'^freeportms(boys|girls)_oct1$', 'me-ms-lake-region'),
     (['Free'], 'XC', (2009, 2009), r'^freeportms(boys|girls)_oct1$', 'me-ms-freeport'),
+    # 2026-10-26 second read batch 20 (2009)
+    (['TA'], 'XC', (2009, 2009), r'^thornton(middle)(boys|girls)_sept23$', 'me-ms-thornton'),
+    (['MER'], 'XC', (2009, 2009), r'^yarmouth(boys|girls)_sept11$', 'me-hs-maine-coast-waldorf'),
     # 2026-10-24 unresolved-school review, batch 2
     (['F'], 'XC', (2004, 2004), r'^cape7oct04[bg]\.txt$', 'me-hs-falmouth'),   # Title lists Falmouth; only F team
     (['Y'], 'XC', (2004, 2004), r'^cape7oct04[bg]\.txt$', 'me-hs-yarmouth'),   # Title lists Yarmouth; only Y team
