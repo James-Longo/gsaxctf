@@ -73,7 +73,7 @@ ME_HS = [
      ['Mt. Blue', 'Mount Blue', 'Mt Blue', 'Mt. Blue HS', 'Mount Blue High School',
       'Mt. Blue Track and Field'], ['MTB', 'MTBL', 'MBHS', 'MB'], ['Cougars'], {}),
     ('me-hs-thornton', 'Thornton Academy', 'Saco', 'Thornton',
-     ['Thornton Academy', 'Thornton', 'Thornton Acad', 'Thorton Academy', 'Thronton', 'Thiornton'],
+     ['Thornton Academy', 'Thornton', 'Thornton Acad', 'Thorton Academy', 'Thronton', 'Thiornton', 'Thonton'],
      ['TA', 'THOR', 'THOA', 'THA'], ['Golden Trojans', 'Trojans'], {}),
     ('me-hs-portland', 'Portland High School', 'Portland', 'Portland',
      ['Portland', 'Portland HS', 'Portland High', 'Portlandd'], ['PHS', 'PORT', 'PTLD'], ['Bulldogs'], {}),
@@ -92,7 +92,7 @@ ME_HS = [
      ['Windham', 'Windham HS', 'Windham High', 'Windham Boys Indoor Track', 'Windham Girls Indoor Track'],
      ['WHS', 'WIND', 'WINDH'], ['Eagles'], {}),
     ('me-hs-scarborough', 'Scarborough High School', 'Scarborough', 'Scarborough',
-     ['Scarborough', 'Scarborough HS', 'Scarborough High', 'Scarboro', 'Scarboro HS'],
+     ['Scarborough', 'Scarborough HS', 'Scarborough High', 'Scarboro', 'Scarboro HS', 'Scarbrough'],
      ['SCAR', 'SHS', 'SCARB'], ['Red Storm'], {}),
     ('me-hs-massabesic', 'Massabesic High School', 'Waterboro', 'Massabesic',
      ['Massabesic', 'Massabesic HS', 'Massabesic High'], ['MASS', 'MHS', 'MASH'], ['Mustangs'], {}),
@@ -280,7 +280,7 @@ ME_HS = [
     ('me-hs-traip', 'Robert W. Traip Academy', 'Kittery', 'Traip',
      ['Traip Academy', 'Traip', 'Robert W. Traip Academy', 'Traip Acad'], ['TRA', 'TRP', 'TRAIPTrack'], ['Rangers'], {}),
     ('me-hs-sacopee', 'Sacopee Valley High School', 'Hiram', 'Sacopee Valley',
-     ['Sacopee Valley', 'Sacopee', 'Sacopee Valley HS', 'Sacope Valley', 'Soccopee Valley'], ['SVHS', 'SAC', 'SV'], ['Hawks'], {}),
+     ['Sacopee Valley', 'Sacopee', 'Sacopee Valley HS', 'Sacope Valley', 'Soccopee Valley', 'Scaopee Valley'], ['SVHS', 'SAC', 'SV'], ['Hawks'], {}),
     ('me-hs-waynflete', 'Waynflete School', 'Portland', 'Waynflete',
      ['Waynflete', 'Waynflete School', 'Waynflete HS', 'Waynflete High School'], ['WAYN'], ['Flyers'], {}),
     ('me-hs-hall-dale', 'Hall-Dale High School', 'Farmingdale', 'Hall-Dale',
@@ -372,7 +372,7 @@ ME_HS = [
      ['Georges Valley', 'Georges Valley HS'], ['GVHS'], ['Buccaneers'],
      {'years': [None, 2010], 'successor': 'me-hs-oceanside'}),
     ('me-hs-mcauley', 'Catherine McAuley High School', 'Portland', None,
-     ['Catherine McAuley', 'McAuley', 'Catherine McAuley High School', 'McAuley High School', 'McAuley HS',
+     ['Catherine McAuley', 'McAuley', 'Catherine McAuley High School', 'McAuley High School', 'McAuley HS', 'McAuely',
       'Maine Girls Academy', "Maine Girls' Academy", 'Maine Girls Academy HS'], ['MGA', 'CMHS'], ['Lions'],
      {'years': [None, 2019], 'notes': "Renamed Maine Girls' Academy 2016; closed 2020."}),
     ('me-hs-jay', 'Jay High School', 'Jay', None, ['Jay', 'Jay HS', 'Jay High School'], ['JAY'], ['Tigers'],
@@ -2226,6 +2226,22 @@ FILE_CODES = {
     ('XC', 2019, 'thorntonmsgirls_oct9'): {'B': 'me-ms-biddeford', 'M': 'me-ms-marshwood'},
     # 2021/XC/MS_MEET_10_5_2021 "BOYS NAME School Place Time Score TEAM TEAM SCORE": JS=Jordan-Small MS (surnames 7/13); DOMS=St. Dominic middle grades (WMC middle-school meet: GNG, JS, GREE are middle schools)
     ('XC', 2021, 'MS_MEET_10_5_2021'): {'JS': 'me-ms-jordan-small', 'DOMS': 'me-ms-st-dominic'},
+    # 2026-10-26 routine: sub5 .txt track files fetched for the first time
+    # 2007/Outdoor/ellsworth5_4.txt "2007 PVC Regular Season Meet 2 - 5/4/2007, Ellsworth High School": ELL=Ellsworth
+    # (Kalyn Jackson: Ellsworth 2007-08), HER=Hermon (Katrice Bryant, Devon Dekoschak, Lance Hollobaugh),
+    # CHS=Calais (Greg Jackson, Michael Osseyran, Zachary Carle: Calais at Orono/Bucksport 2007), MACH=Machias
+    ('Outdoor', 2007, 'ellsworth5_4.txt'): {'ELL': 'me-hs-ellsworth', 'HER': 'me-hs-hermon', 'CHS': 'me-hs-calais',
+                                            'MDI': 'me-hs-mdi', 'NARR': 'me-hs-narraguagus',
+                                            'WA': 'me-hs-washington-academy', 'MACH': 'me-hs-machias'},
+    # 2010/Outdoor/cmfrosh.txt "2010 Freshmen Championships" at Bowdoin: BBR=Boothbay Region (Caroline Knapp, Alex
+    # Owen, Kade Smith: Boothbay at the 2010 MVC meets), POL=Poland (Johanna Moody, Deirdre Ball: Poland 2010-11)
+    ('Outdoor', 2010, 'cmfrosh.txt'): {'BBR': 'me-hs-boothbay', 'POL': 'me-hs-poland'},
+    # 2006/Indoor/january11jumpmeet.txt: 'Katie Bol\x03\xeaa  Gorham' (garbled name byte runs into the school)
+    ('Indoor', 2006, 'january11jumpmeet.txt'): {'a Gorham': 'me-hs-gorham'},
+    # 2008/Outdoor Scarborough SMAA girls meets print mascots; each meet's score sheet names the team:
+    # 5/5 'Hawks' = Marshwood ("Masrshwood High School MSWD 53"), 5/13 'Rams' = Kennebunk ("Kennebunk High School KENN 33")
+    ('Outdoor', 2008, 'scarboroughgirls_may5'): {'Hawks': 'me-hs-marshwood'},
+    ('Outdoor', 2008, 'scarboroughgirls_may13'): {'Rams': 'me-hs-kennebunk'},
 }
 
 # Out-of-state schools printed 'Town, ST' at the Festival of Champions (2004-05 festival heats, 2022 FOC). The resolver reads
@@ -2238,6 +2254,45 @@ FILE_RULES += [
     (['Westerly, RI'], 'XC', (2004, 2004), r'^festival', 'oos-ri-westerly-high-school'),
     (['Burrillville, RI'], 'XC', (2022, 2022), r'^foc', 'oos-ri-burrillville-high-school'),
     (['Wheeler, RI'], 'XC', (2022, 2022), r'^foc', 'oos-ri-the-wheeler-school'),
+]
+
+# 2026-10-26 routine, database audit of 2026 track (three second readers; evidence in backend/data/audit_log.json)
+FILE_RULES += [
+    # 'Maine School' (Maine School of Science and Mathematics cut to its column) is not the University of Maine:
+    # the same meets print 'Maine School of Science and Ma' on relays and in the team scores
+    (['Maine School'], 'Outdoor', (2026, 2026),
+     r'^(2026-aroostook-league-tf-championships-results|2026-pvc-tf-week-2-@-pihs-results|2026-pvc-week-3-caribou-girls-results)$',
+     'me-hs-mssm'),
+    (['ort Kent Community High Schoo'], 'Outdoor', (2026, 2026), r'^2026-pvc-tf-week-2-@-pihs-results$', 'me-hs-fort-kent'),  # '-- Fort Kent ...' DQ relay
+    # score table 'Maranacook Community High 3'; Stevenson and the Toyes are Maranacook HS 2023-26
+    (['Maranacook C'], 'Outdoor', (2026, 2026), r'^Marathon-results-girls$', 'me-hs-maranacook'),
+    # Mt. View High School Home Track Meet 2026: the score table names the high schools
+    (['Belfast Area'], 'Outdoor', (2026, 2026), r'^ResultsMVHomeMeet2026$', 'me-hs-belfast'),
+    (['Oxford Hills', 'Oxford Hills Comprehensive Hig'], 'Outdoor', (2026, 2026), r'^ResultsMVHomeMeet2026$', 'me-hs-oxford-hills'),
+    (['Islesboro Ce'], 'Outdoor', (2026, 2026), r'^ResultsMVHomeMeet2026$', 'me-hs-islesboro'),
+    # 2026 New Englands: Connecticut teams print no state tag; relays and earlier NE results place these runners
+    (['Windsor'], 'Outdoor', (2026, 2026), r'^NE-(boys|girls)-results$', 'oos-auto-ct-windsor'),
+    (['Farmington'], 'Outdoor', (2026, 2026), r'^NE-(boys|girls)-results$', 'oos-auto-ct-farmington'),
+    (['Cranston East'], 'Outdoor', (2026, 2026), r'^NE-boys-results$', 'oos-auto-ri-cranston-e'),
+    (['Greater Lawrance'], 'Outdoor', (2026, 2026), r'^NE-boys-results$', 'oos-auto-ma-greater-lawrence-tech'),
+    (['North Haven'], 'Outdoor', (2026, 2026), r'^NE-girls-results$', 'oos-auto-ct-north-haven'),
+    (['Exeter-West'], 'Outdoor', (2026, 2026), r'^NE-girls-results$', 'oos-auto-ri-exeter-w-gr'),
+    (['Scituate'], 'Outdoor', (2026, 2026), r'^NE-girls-results$', 'oos-auto-ri-scituate'),
+    (['Woodstock'], 'Outdoor', (2026, 2026), r'^NE-girls-results$', 'oos-auto-ct-woodstock-ac'),
+    # ... and names no catalog school is (Milford NH or MA; Blue Hills Regional MA; Green Mountain VT; Framingham,
+    # Fitchburg, Sacred Heart, Saint John's high schools; Oxford CT or MA): unidentified, not Lewis Libby MS, Blue Hill MS,
+    # Oxford Hills or a college
+    (['Milford', 'Blue Hills', 'Green Mountain', 'Framingham', 'Fitchburg', 'Sacred Heart', "Saint John's", 'Oxford'],
+     'Outdoor', (2026, 2026), r'^NE-(boys|girls)-results$', '?'),
+    # Cony/Hall-Dale/Winthrop indoor co-op: Winthrop runners printed 'Cony High Sc', its relays 'Cony High School'
+    (['Cony High Sc', 'Cony High School'], 'Indoor', (2026, 2026), r'^(Marathon-Elite-boys-results-1|NYI-results)$',
+     'coop-it-cony-halldale-winthrop'),
+    # Baryiames, Boynton: Portsmouth NH 2026 outdoor; McAllister Portsmouth NH at the 2025 USM meet
+    (['Portsmouth'], 'Indoor', (2026, 2026), r'^NYI-results$', 'oos-auto-nh-portsmouth'),
+    (['BER'], 'Indoor', (2026, 2026), r'^smaa-4-1$', 'me-hs-berwick'),   # Mikhail El-Badry, Berwick Academy 2025-26
+    # 'Hawks' at the 2017 Troy Howard MS meet is North Haven (Beverage, Dunn, Bernard, Sandelin: North Haven at every
+    # other 2016-19 meet), not Marshwood (also the Hawks)
+    (['Hawks'], 'Outdoor', (2017, 2017), r'^Troy-Howard-boys$', 'me-hs-north-haven'),
 ]
 
 FILE_RULES += [([raw], season, (year, year), '^' + _re.escape(stem) + '$', sid)
