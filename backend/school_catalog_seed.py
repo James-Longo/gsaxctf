@@ -1641,6 +1641,16 @@ FILE_RULES = [
     (['M'], 'XC', (2010, 2010), r'^cheverusxc_10_15_10_(boys|girls)$', 'me-hs-mcauley'),
     (['P'], 'XC', (2010, 2010), r'^cheverusxc_10_15_10_(boys|girls)$', 'me-hs-portland'),
     (['Woodstock'], 'XC', (2023, 2023), r'^2023-presque-isle-xc-meet-boys-results$', 'oos-nb-woodstock-high-school'),  # an Aroostook meet: Woodstock NB (15 mi from Houlton), not the Connecticut academy the truncation picked
+    # 2026-10-26 second read batch 19 (2009-2010)
+    (['Cape'], 'XC', (2010, 2010), r'^freeportms(boys|girls)_sept29$', 'me-ms-cape-elizabeth'),
+    (['FREE'], 'XC', (2010, 2010), r'^freeportms(boys|girls)_sept29$', 'me-ms-freeport'),
+    (['K'], 'XC', (2010, 2010), r'^thorntonmiddlegirls_sept23$', 'me-ms-kennebunk'),
+    (['B'], 'XC', (2010, 2010), r'^thorntonmiddlegirls_sept23$', 'me-ms-biddeford'),
+    (['TA'], 'XC', (2010, 2010), r'^thorntonmiddlegirls_sept23$', 'me-ms-thornton'),
+    (['W'], 'XC', (2010, 2010), r'^york_sept3$', 'me-hs-wells'),
+    (['Cape'], 'XC', (2009, 2009), r'^freeportms(boys|girls)_oct1$', 'me-ms-cape-elizabeth'),
+    (['Lake'], 'XC', (2009, 2009), r'^freeportms(boys|girls)_oct1$', 'me-ms-lake-region'),
+    (['Free'], 'XC', (2009, 2009), r'^freeportms(boys|girls)_oct1$', 'me-ms-freeport'),
     # 2026-10-24 unresolved-school review, batch 2
     (['F'], 'XC', (2004, 2004), r'^cape7oct04[bg]\.txt$', 'me-hs-falmouth'),   # Title lists Falmouth; only F team
     (['Y'], 'XC', (2004, 2004), r'^cape7oct04[bg]\.txt$', 'me-hs-yarmouth'),   # Title lists Yarmouth; only Y team

@@ -290,7 +290,31 @@
  ],
  "date": null,
  "meet_name": "YARMOUTH HIGH SCHOOL XC RESULTS @ PRATTS BROOK 3.15 MILES",
- "team_rankings": [],
+ "team_rankings": [
+  {
+   "kind": "xc",
+   "gender": "Girls",
+   "event_header": "3.15 Mile Run CC",
+   "teams": [
+    {
+     "rank": 1,
+     "team": "Yarmouth",
+     "score": 25
+    },
+    {
+     "rank": 2,
+     "team": "North Yarmouth Academy",
+     "score": 51
+    },
+    {
+     "rank": 3,
+     "team": "Waynflete",
+     "score": 54
+    }
+   ],
+   "totals_only": true
+  }
+ ],
  "parser": "XCListParser",
  "source": "backend/data/sub5_archive/2010/XC/yarmouthgirls_sept10.pdf",
  "school_codes": {
@@ -300,5 +324,5 @@
   "TRAIP": "Traip Academy",
   "WELLS": "Wells"
  },
- "notes": "Copy of the parse with the school code split off the athlete field (the parse left it glued to the name and the school blank, and dropped rows whose code was 'W' alone or 'Wells'/'Traip'). Every printed row rebuilt from the PDF: school code expanded (W = Waynflete per the team-score list 'Wayneflete'/'WAYNEFLETE', NYA = North Yarmouth Academy, YAR = Yarmouth, Traip = Traip Academy, Wells = Wells); times 'mm:ss:00' read as mm:ss; typos 'J,'/'M>' read as initials with a period. Source is a Yarmouth-hosted meet; Traip and Wells are listed 'ns' (no team score)."
+ "notes": "Copy of the parse with the school code split off the athlete field (the parse left it glued to the name and the school blank, and dropped rows whose code was 'W' alone or 'Wells'/'Traip'). Every printed row rebuilt from the PDF: school code expanded (W = Waynflete per the team-score list 'Wayneflete'/'WAYNEFLETE', NYA = North Yarmouth Academy, YAR = Yarmouth, Traip = Traip Academy, Wells = Wells); times 'mm:ss:00' read as mm:ss; typos 'J,'/'M>' read as initials with a period. Source is a Yarmouth-hosted meet; Traip and Wells are listed 'ns' (no team score). 2026-10-26 second read: team scores printed at the top of the source added (Yarmouth 25; North Yarmouth Academy 51; Waynflete 54; Traip and Wells \"ns\"). All 40 rows checked against the source. The printed scores do not reproduce from the order of finish (Yarmouth 3,4,5,6,7 = 25 after dropping Traip place 5 does; NYA and Waynflete do not), so they are entered as printed."
 }
