@@ -1,8 +1,55 @@
 {
     "events": [],
-    "date": "Unknown Date",
-    "meet_name": "Boys Varsity",
+    "date": null,
+    "meet_name": null,
     "venue": null,
-    "team_rankings": [],
-    "parser": "ColumnStrategyParser"
+    "team_rankings": [
+        {
+            "kind": "xc",
+            "gender": "Boys",
+            "event_header": "Boys Varsity",
+            "totals_only": true,
+            "teams": [
+                {
+                    "rank": 1,
+                    "team": "Car",
+                    "score": 15
+                },
+                {
+                    "rank": 2,
+                    "team": "Pihs",
+                    "score": 53
+                },
+                {
+                    "rank": 3,
+                    "team": "Mad",
+                    "score": 75
+                }
+            ]
+        },
+        {
+            "kind": "xc",
+            "gender": "Girls",
+            "event_header": "Girls Varsity",
+            "totals_only": true,
+            "teams": [
+                {
+                    "rank": 1,
+                    "team": "Pihs",
+                    "score": 28
+                },
+                {
+                    "rank": 2,
+                    "team": "Car",
+                    "score": 42
+                },
+                {
+                    "rank": 3,
+                    "team": "Ghca",
+                    "score": 60
+                }
+            ]
+        }
+    ],
+    "parser": "Transcribed"
 }
