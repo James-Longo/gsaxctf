@@ -2104,7 +2104,9 @@ class Sub5ScraperV2:
             if getattr(self, '_tc_size', -1) != len(all_teams):
                 self._tc_size = len(all_teams)
                 self._tc_lower = {t.lower(): t for t in all_teams}
-                self._tc_sorted = sorted((t for t in all_teams if not re.search(r'\d', t)), key=len)
+                # (length, then name: a tie between "Oxford CT" and "Oxford MA" must not
+                # depend on set order, which changes from run to run)
+                self._tc_sorted = sorted((t for t in all_teams if not re.search(r'\d', t)), key=lambda t: (len(t), t))
                 self._tc_memo = {}
             hit = self._tc_memo.get((name, level))
             if hit is not None:
