@@ -185,9 +185,9 @@
  },
  "backend/data/parsed_results/2006/XC/Aroostook9_20boys.json": {
   "verdict": "source-error",
-  "by": "sonnet audit (score mismatch, 2026-10-23)",
-  "notes": "Parse matches the 20 rows and the sheet's own Points column. Printed Fort Kent 19, Limestone 45. Fort Kent points 1+2+3+5+8 = 19 OK. Limestone's points column reads 4,6,7,9,10 (6th = 13), sum 36; printed 45 = 6+7+9+10+13, i.e. it skips Demsie's point 4, but Demsie (place 5, 19:47, L) is on the sheet with Points 4 and Fort Kent's own points (1,2,3,5) leave 4 to him. Sheet contradicts itself: 36 from its rows vs 45 printed. Madawaska 4 finishers, Greater Houlton Christian 3: NS as printed.",
-  "date": "2026-10-23",
+  "by": "sonnet audit (second read, 2026-10-26)",
+  "notes": "Parse matches source and stores the printed \"Fort Kent 19, Limestone 45\". Fort Kent 1+2+3+5+8=19 ok; Limestone Points column 4,6,7,9,10 = 36 (6th runner 13), printed 45 = 6+7+9+10+13, i.e. the sheet dropped Limestone's first scorer (Demsie, 4). Printed total wrong.",
+  "date": "2026-10-26",
   "parse_sha": "2e108b7cc3fbc504",
   "source_sha": "45b2da8401c5235c"
  },
@@ -878,6 +878,38 @@
   "date": "2026-10-23",
   "parse_sha": "23dcd4380181c175",
   "source_sha": "692ee52b0ec625c9"
+ },
+ "backend/data/parsed_results/2011/XC/aroostookboys_oct12.json": {
+  "verdict": "fixed",
+  "by": "sonnet audit (second read, 2026-10-26)",
+  "notes": "Printed \"Totals GHCA 15; Washburn, Ft. Kent, Hodgdon No Score\" added; only GHCA has 5 runners so it scores 1-5=15. Verifies.",
+  "date": "2026-10-26",
+  "parse_sha": "d34a39a5abec26db",
+  "source_sha": "8177b45987e59ed9"
+ },
+ "backend/data/parsed_results/2011/XC/aroostookgirls_oct12.json": {
+  "verdict": "fixed",
+  "by": "sonnet audit (second read, 2026-10-26)",
+  "notes": "Printed \"Totals Washburn 15; GHCA, Limestone, Ft. Kent No Score\" added; Washburn alone scores 1-5=15. Verifies.",
+  "date": "2026-10-26",
+  "parse_sha": "c623f321157ede91",
+  "source_sha": "5c8a41e42782e3cb"
+ },
+ "backend/data/parsed_results/2011/XC/aroostookinviteboys_sept16.json": {
+  "verdict": "fixed",
+  "by": "sonnet audit (second read, 2026-10-26)",
+  "notes": "Parse dropped 2 of 49 rows (place 40 Kyle McLaughlin WASH \"25:26:27\", place 43 Jared Michaud FK \"25:43:26\"; colon typos written 25:26.27 / 25:43.26). Added printed Teams Scores block (Caribou 21, PI 50, Washburn 97, GHCA 103, Fort Kent 114, with places). Still does not reproduce: Caribou OK but the other four lists use place numbers that do not follow from the race order (Washburn runs 8,27,30,32,40 but printed 8,19,21,24,25); the sheet sums its own lists correctly. Source arithmetic/ordering issue.",
+  "date": "2026-10-26",
+  "parse_sha": "3915ae3dad701f39",
+  "source_sha": "22c43191d4fe8e7e"
+ },
+ "backend/data/parsed_results/2011/XC/aroostookinvitegirls.json": {
+  "verdict": "fixed",
+  "by": "sonnet audit (second read, 2026-10-26)",
+  "notes": "Added printed Teams Scores (Caribou 28, Washburn 37, Presque Isle 71 with places; others NS). Verifies.",
+  "date": "2026-10-26",
+  "parse_sha": "5251ea87b6e8caac",
+  "source_sha": "5fc8d9476d9b8c75"
  },
  "backend/data/parsed_results/2011/XC/erskine_sept29.json": {
   "verdict": "fixed",
@@ -5721,9 +5753,9 @@
  },
  "backend/data/parsed_results/2019/XC/AroostookLeagueatHoulton2019.json": {
   "verdict": "source-error",
-  "by": "sonnet audit (score mismatch, 2026-10-23)",
-  "notes": "All rows match the PDF (girls 23, boys 37). The sheet's printed 'Score' column is team place; teams printed 'No Team Score' (Washburn girls with 5 finishers, Fort Kent boys with 4) are removed from team places. Girls: MSSM 1+2+6+9+10=28, Houlton/GHCA 3+4+5+7+16=35 match; Fort Kent 8+13+14+15+17=67 but printed 'Fort Kent ... 70'. Boys: Washburn 3+4+5+6+10=28, MSSM 7+8+9+11+14=49, Houlton 1+2+13+25+26=67, Madawaska 19+20+21+23+24=107 match the printed place lists, but the boys' team-place column skips 15 and 16: row 'Logan Madden 22:01 14' is followed by 'Hudson Labbe (FK, no score)' and 'Derek Cruz 22:17 17'; Cruz should be 15 (overall 17 minus Sanclemente and Labbe, Fort Kent), so every later team place is 2 too high. Correct values from the rows: Washburn list ...12,15; Houlton 1+2+13+23+24=63 (printed 67); Madawaska 17+18+19+21+22=97 (printed 107). Source numbering error, not a checker gap.",
-  "date": "2026-10-23",
+  "by": "sonnet audit (second read, 2026-10-26)",
+  "notes": "Parse matches source and already holds both team blocks. Girls: Fort Kent 8+13+14+15+17=67 but printed 70 (source arithmetic). Boys: printed totals equal the sums of the printed place lists, but the sheet's team-place column is not consistent with the race (skips 15,16 after Labbe, Madawaska starts at 19 although only Fort Kent runners 3,16 precede) so the race does not reproduce them (Madawaska would be ~98 not 107). No fix possible.",
+  "date": "2026-10-26",
   "parse_sha": "b005b85c25a721c0",
   "source_sha": "c848b787b73304a5"
  },
@@ -6553,19 +6585,35 @@
  },
  "backend/data/parsed_results/2020/XC/aroostookboys.json": {
   "verdict": "confirmed",
-  "by": "sonnet audit (second read, 2026-10-24)",
-  "notes": "34 rows = 34 source rows. Teams Caribou, Houlton, Washburn, Presque Isle, Fort Kent, Hodgdon resolve to the Maine schools. Team_Points kept (1-21 consecutive for the five full teams; \"-\" = non-scoring Houlton/Fort Kent/Hodgdon and Caribou extras). Meet name and date None: file carries neither.",
-  "date": "2026-10-24",
+  "by": "sonnet audit (second read, 2026-10-26)",
+  "notes": "Race sheet prints a Team_Points column only; totals are in aroostookboysteam-1 (Caribou 17, Washburn 50, Presque Isle 61), which reproduce from this column (1,2,3,4,7 / 5,8,9,13,15 / 6,10,11,16,18). Houlton, Fort Kent, Hodgdon have under 5 runners, unranked.",
+  "date": "2026-10-26",
   "parse_sha": "9548ca61ab0d6a72",
   "source_sha": "eefd2008ed2122d3"
  },
+ "backend/data/parsed_results/2020/XC/aroostookboysteam-1.json": {
+  "verdict": "fixed",
+  "by": "sonnet audit (second read, 2026-10-26)",
+  "notes": "Team-score sheet, no runners: Caribou 17, Washburn 50, Presque Isle 61. Override with events empty; paired with aroostookboys it verifies (teams_off 0).",
+  "date": "2026-10-26",
+  "parse_sha": "a683096011db3975",
+  "source_sha": "4e3e0d8a00d2f370"
+ },
  "backend/data/parsed_results/2020/XC/aroostookgirls.json": {
   "verdict": "confirmed",
-  "by": "sonnet audit (second read, 2026-10-24)",
-  "notes": "Aroostook girls sheet: all 27 rows, places, times and Team_Points match; Ft. Fairfield resolves to Fort Fairfield; no printed team totals (no_rankings is expected).",
-  "date": "2026-10-24",
+  "by": "sonnet audit (second read, 2026-10-26)",
+  "notes": "Race sheet prints a Team_Points column only; totals are in aroostookgirlsteam-1 (Caribou 36, Houlton 43, Presque Isle 49), which reproduce from this column (1,6,8,10,11 / 3,4,7,14,15 / 2,5,9,16,17).",
+  "date": "2026-10-26",
   "parse_sha": "2ace813db677919c",
   "source_sha": "d2b4d0e8483e7dd7"
+ },
+ "backend/data/parsed_results/2020/XC/aroostookgirlsteam-1.json": {
+  "verdict": "fixed",
+  "by": "sonnet audit (second read, 2026-10-26)",
+  "notes": "Team-score sheet, no runners: Caribou 36, Houlton 43, Presque Isle 49. Override with events empty; paired with aroostookgirls it verifies (teams_off 0).",
+  "date": "2026-10-26",
+  "parse_sha": "a683096011db3975",
+  "source_sha": "95668b0c2bfeb762"
  },
  "backend/data/parsed_results/2020/XC/deering-jv-boys-2020-meet-1.txt.json": {
   "verdict": "source-error",
@@ -7152,11 +7200,11 @@
   "source_sha": "1162b365e50b77c2"
  },
  "backend/data/parsed_results/2022/XC/Print-Results-Aroostook-HS-XC-_-Zone4.ca_.json": {
-  "verdict": "fixed",
-  "by": "sonnet audit (second read, 2026-10-24)",
-  "notes": "Existing transcription override (from the parse, schools from the second line of each entry) re-read against the PDF: all 27 boys + 19 girls finishers agree (place, name, school, time). Fixed in the override: added the one DNF row (girls 'DNF Calli Sylvia, Houlton GHCA') which the earlier note had left out although a DNF keeps its status; date 2022-09-06 from the line under the title (was null). No team scores printed. Returns to the queue for a final confirmed.",
-  "date": "2026-10-24",
-  "parse_sha": "30f92e99236f9de0",
+  "verdict": "confirmed",
+  "by": "sonnet audit (second read, 2026-10-26)",
+  "notes": "Source (chip-timing print, boys 27 finishers, girls 19+1 DNF) prints no team scores; nothing to add.",
+  "date": "2026-10-26",
+  "parse_sha": "878248d78444c0cc",
   "source_sha": "d6671f10ef2f343a"
  },
  "backend/data/parsed_results/2022/XC/Results-F1.json": {
@@ -7833,9 +7881,9 @@
  },
  "backend/data/parsed_results/2024/XC/2024-aroostook-league-xc-championships-girls-results.json": {
   "verdict": "confirmed",
-  "by": "sonnet audit (second read, 2026-10-24)",
-  "notes": "Hy-Tek Event 2 Women 5k, Aroostook League Championships (Caribou, 10/15/2024): source lists only 7 finishers (Fort Kent Co x4, Washburn x3), parse has the same 7 with identical order, names and times (24:40.30 ... 37:26.80). 'Fort Kent Co' -> me-hs-fort-kent (Fort Kent Community HS), Washburn -> me-hs-washburn. The sheet itself prints no team scores or other schools (appears to be an incomplete export), so nothing more to parse.",
-  "date": "2026-10-24",
+  "by": "sonnet audit (second read, 2026-10-26)",
+  "notes": "Hy-Tek page prints no team scores; 7 finishers, Fort Kent 1,3,5,6 (4 runners) and Washburn 2,4,7 (3): no team has 5 scorers, so nothing to score. Parse matches the 7 rows.",
+  "date": "2026-10-26",
   "parse_sha": "49807ede0f88f4ab",
   "source_sha": "795de595a49e8459"
  },

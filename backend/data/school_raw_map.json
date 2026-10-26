@@ -2,9 +2,9 @@
 "_meta": {
 "methods_by_rows": {
 "exact/alias": 1709238,
-"code": 259370,
+"code": 259371,
 "truncation": 119357,
-"athlete-continuity": 54686,
+"athlete-continuity": 54687,
 "mascot": 28435,
 "bare name + level context": 25677,
 "unresolved": 17925,
@@ -16325,6 +16325,19 @@
 "method": "code+season-words",
 "how": "code"
 },
+"FK": {
+"rows": 244,
+"seasons": {
+"XC": 244
+},
+"years": [
+2003,
+2018
+],
+"id": "me-hs-fort-kent",
+"method": "code",
+"how": "code"
+},
 "Lea outdoor": {
 "rows": 244,
 "seasons": {
@@ -16350,19 +16363,6 @@
 "id": "col-une",
 "method": "exact",
 "how": "exact/alias"
-},
-"FK": {
-"rows": 243,
-"seasons": {
-"XC": 243
-},
-"years": [
-2003,
-2018
-],
-"id": "me-hs-fort-kent",
-"method": "code",
-"how": "code"
 },
 "Boothbay-Wiscasset": {
 "rows": 243,
@@ -41801,6 +41801,25 @@
 "method": "athlete-continuity",
 "how": "athlete-continuity"
 },
+"WASH": {
+"rows": 28,
+"seasons": {
+"XC": 28
+},
+"years": [
+2010,
+2016
+],
+"id": "me-hs-washburn",
+"method": "athlete-continuity (overrode bare-name)",
+"flags": [
+"athletes contradict name match (me-hs-washington-academy -> me-hs-washburn, 3/3)",
+"athletes contradict name match (me-hs-washington-academy -> me-hs-washburn, 5/5)",
+"athletes contradict name match (me-hs-washington-academy -> me-hs-washburn, 7/7)",
+"athletes contradict name match (me-hs-washington-academy -> me-hs-washburn, 9/9)"
+],
+"how": "athlete-continuity"
+},
 "Edward LIttle High School": {
 "rows": 28,
 "seasons": {
@@ -42527,25 +42546,6 @@
 },
 "context_dependent": true,
 "how": "spelling (fuzzy)"
-},
-"WASH": {
-"rows": 27,
-"seasons": {
-"XC": 27
-},
-"years": [
-2010,
-2016
-],
-"id": "me-hs-washburn",
-"method": "athlete-continuity (overrode bare-name)",
-"flags": [
-"athletes contradict name match (me-hs-washington-academy -> me-hs-washburn, 3/3)",
-"athletes contradict name match (me-hs-washington-academy -> me-hs-washburn, 5/5)",
-"athletes contradict name match (me-hs-washington-academy -> me-hs-washburn, 6/6)",
-"athletes contradict name match (me-hs-washington-academy -> me-hs-washburn, 9/9)"
-],
-"how": "athlete-continuity"
 },
 "Classical - RI": {
 "rows": 27,
