@@ -15,6 +15,14 @@
   "parse_sha": "a999a79e00685945",
   "source_sha": "a558c4f88054e795"
  },
+ "backend/data/parsed_results/2003/XC/pvcgv.txt.json": {
+  "verdict": "fixed",
+  "by": "sonnet audit (second read, 2026-10-26)",
+  "notes": "7 girls coded 'PVHS' (Morgan Cyr, Nancy Hallett, Amanda Hallett, Amy Houde, Kacy Plourde, Holly Drost, Kelsy Lavertue). The page's team score block prints 'Penobscot Valley H.S.' (14th, 359; places 48,63,79,82,87,91,96 = these seven rows) -> Penobscot Valley. Rule PVHS.",
+  "date": "2026-10-26",
+  "parse_sha": "4b4a191a40e40e71",
+  "source_sha": "aa4df2c24a0fa302"
+ },
  "backend/data/parsed_results/2003/XC/westgirlsb.json": {
   "verdict": "source-error",
   "by": "sonnet audit (score mismatch, 2026-10-23)",
@@ -63,6 +71,14 @@
   "parse_sha": "5267d4a1053c34fb",
   "source_sha": "300080d1d455cf4a"
  },
+ "backend/data/parsed_results/2004/XC/cheverus15oct04g.json": {
+  "verdict": "fixed",
+  "by": "sonnet audit (second read, 2026-10-26)",
+  "notes": "4 girls coded 'C' (Martin, Komich, Krier, Rich). Page title 'Deering, Portland, South Portland at Cheverus'; codes D, SP, P(ortland) are resolved and the team column lists Cheverus; C is the host Cheverus (the only C team). Rule C. (An override for the gender fix already exists; the rule adds no row edits.)",
+  "date": "2026-10-26",
+  "parse_sha": "2278ef2255b97dee",
+  "source_sha": "cb31d88ba457f5a6"
+ },
  "backend/data/parsed_results/2004/XC/lynxinvite04jv.txt.json": {
   "verdict": "fixed",
   "by": "sonnet audit (second read, 2026-10-25)",
@@ -94,6 +110,22 @@
   "date": "2026-10-23",
   "parse_sha": "70d5c4d29637e167",
   "source_sha": "6bf235e83c272345"
+ },
+ "backend/data/parsed_results/2005/XC/edwardlittle9_16B.json": {
+  "verdict": "fixed",
+  "by": "sonnet audit (second read, 2026-10-26)",
+  "notes": "Override written. Page title 'Lewiston 25, Edward Little 41, Camden 75, Medomak 85'. Six unresolved: lowercase glued codes read as the page's own letters (el=Edward Little for Esponette, m=Medomak for Poulin/Goldrup/Rhoda, c=Camden for Low) and 'J Smith' (38th, 25:32, no code) -> Lewiston (Josh Smith, Lewiston, 24:24-24:54 in 2005; no other Smith on the four teams). J Smith is the weakest of the six (single-candidate inference).",
+  "date": "2026-10-26",
+  "parse_sha": "5394313d0e08b0ec",
+  "source_sha": "07d77fbd2cb63f33"
+ },
+ "backend/data/parsed_results/2005/XC/el9_2b.json": {
+  "verdict": "fixed",
+  "by": "sonnet audit (second read, 2026-10-26)",
+  "notes": "4 boys coded 'Ga' (Carroll, Chris Rapatus, Matt Hopkins, Vogel). Team line 'Mt. Blue 53, Edward Little 87, ... Brunswick 157, Medomak Valley 202, Gardiner 215' -> Gardiner (the only Ga/G team). Rule Ga. (File rule has 'GA' only.)",
+  "date": "2026-10-26",
+  "parse_sha": "7aa550534f409e2f",
+  "source_sha": "8a8fc93a42f0e85d"
  },
  "backend/data/parsed_results/2005/XC/ellsworthinvite.txt.json": {
   "verdict": "fixed",
@@ -135,6 +167,14 @@
   "parse_sha": "1f345afaf046abcd",
   "source_sha": "41183823bf2a3f24"
  },
+ "backend/data/parsed_results/2005/XC/smaasecondsevenboys.json": {
+  "verdict": "fixed",
+  "by": "sonnet audit (second read, 2026-10-26)",
+  "notes": "3 rows coded W / We (James Shiquan; Lappin Joe; Bowser James). Teams on the page: Scarborough, Cheverus, TA, Kennebunk, Westbrook -> Westbrook. Rule W, We.",
+  "date": "2026-10-26",
+  "parse_sha": "9da554f24bf6d6ed",
+  "source_sha": "3f1ece750998de08"
+ },
  "backend/data/parsed_results/2006/XC/Aroostook9_20boys.json": {
   "verdict": "source-error",
   "by": "sonnet audit (score mismatch, 2026-10-23)",
@@ -167,6 +207,14 @@
   "parse_sha": "c33ba882d8dd387d",
   "source_sha": "6f0c33edcc420251"
  },
+ "backend/data/parsed_results/2006/XC/deeringgirls10_6.json": {
+  "verdict": "fixed",
+  "by": "sonnet audit (second read, 2026-10-26)",
+  "notes": "Override written. Six rows (places 51-56, right-hand column of the table) came out as name 'Anson, Sc' with a blank school; codes Sc/TA/De/No are the page's own (team block Scarborough 19, TA 50, Deering 73, Noble 90). Parser pattern: two-column table where the right-hand column's code is glued to the name.",
+  "date": "2026-10-26",
+  "parse_sha": "1fd60e824483a5ed",
+  "source_sha": "5fb3a76ae6428f65"
+ },
  "backend/data/parsed_results/2006/XC/ellsworthvarsityboys.json": {
   "verdict": "source-error",
   "by": "sonnet audit (second read, 2026-10-25)",
@@ -190,6 +238,14 @@
   "date": "2026-10-23",
   "parse_sha": "f623f709dee02ed3",
   "source_sha": "a790eaa44c6b0cc5"
+ },
+ "backend/data/parsed_results/2006/XC/kennebunk9_15boys.json": {
+  "verdict": "fixed",
+  "by": "sonnet audit (second read, 2026-10-26)",
+  "notes": "7 boys coded M. Page: 'Bonny Eagle 28, Kennebunk 50, South Portland 55, Massabesic 80' -> Massabesic (only M team). Rule M.",
+  "date": "2026-10-26",
+  "parse_sha": "8ba9603513ea9f59",
+  "source_sha": "8b281c840092dc01"
  },
  "backend/data/parsed_results/2006/XC/lakeregioninvite.json": {
   "verdict": "source-error",
@@ -215,6 +271,30 @@
   "parse_sha": "e5dceee51dafa395",
   "source_sha": "1fed6d85581fa3b3"
  },
+ "backend/data/parsed_results/2006/XC/smaasecond7boys.json": {
+  "verdict": "fixed",
+  "by": "sonnet audit (second read, 2026-10-26)",
+  "notes": "3 rows coded W (Algeo, Jamison, Butler). Team line 'Scarborough 27, Cheverus 52, Sanford 66, Thornton Academy 98, Kennebunk 157, South Portland 186, Windham 194, Noble no score' -> W is Windham (no Westbrook in this meet). Rule W.",
+  "date": "2026-10-26",
+  "parse_sha": "e8bb7365f5871527",
+  "source_sha": "f294e07168bfed70"
+ },
+ "backend/data/parsed_results/2006/XC/spgirls9_7.json": {
+  "verdict": "fixed",
+  "by": "sonnet audit (second read, 2026-10-26)",
+  "notes": "4 girls coded W (Phinney, Jacques, Bisesti, Ali Gordon). Page: 'South Portland 20, Noble 36, Windham ns' -> Windham. Rule W.",
+  "date": "2026-10-26",
+  "parse_sha": "352c02ab500fa5c8",
+  "source_sha": "06451367d683854e"
+ },
+ "backend/data/parsed_results/2006/XC/thorntonboys10_13.json": {
+  "verdict": "fixed",
+  "by": "sonnet audit (second read, 2026-10-26)",
+  "notes": "4 boys coded B (Laverriere, Sorenson, Dumoulin, Madore). Team block on page: Thornton, Kennebunk, Biddeford ns -> Biddeford. Rule B.",
+  "date": "2026-10-26",
+  "parse_sha": "957dd647b848b1b5",
+  "source_sha": "fb850d7d6c6d0c78"
+ },
  "backend/data/parsed_results/2006/XC/wolverineinvite.json": {
   "verdict": "fixed",
   "by": "sonnet audit (score mismatch, 2026-10-23)",
@@ -230,6 +310,14 @@
   "date": "2026-10-25",
   "parse_sha": "a3453705fea3fa40",
   "source_sha": "6875252eb2e3b85e"
+ },
+ "backend/data/parsed_results/2007/XC/MVC-Girls-10-13.json": {
+  "verdict": "fixed",
+  "by": "sonnet audit (second read, 2026-10-26)",
+  "notes": "3 rows with school 'Jv Lisbon' (Anna Turcotte) and 'Jv Madison 2' (Mykayla Stoutamyer, Nicole Secker): JV runners of Lisbon and Madison as printed in the team column. Rules Jv Lisbon -> Lisbon; Jv Madison 2 -> Madison (Jv Madison 1 etc. already resolve).",
+  "date": "2026-10-26",
+  "parse_sha": "09d68ed92a0a8ba2",
+  "source_sha": "f0b4bd7fdc40d718"
  },
  "backend/data/parsed_results/2007/XC/WiscGirls9-18-07.json": {
   "verdict": "source-error",
@@ -262,6 +350,46 @@
   "date": "2026-10-23",
   "parse_sha": "66909e0a97de591a",
   "source_sha": "fd339348361b95c4"
+ },
+ "backend/data/parsed_results/2007/XC/central9_4.json": {
+  "verdict": "fixed",
+  "by": "sonnet audit (second read, 2026-10-26)",
+  "notes": "Override written. Boys 36 Noah Entwhisle (no school; Ellsworth in 5 other 2007 races) -> Ellsworth; boys 40 Jeremy Mitchell (F) -> Foxcroft (only F team; Foxcroft runner in 7 other races); girls 11 Alix Veitch (BC) -> Bangor Christian (page lists 'Also Competing: Bangor Christian'; Bangor Christian in 5 other races). ALSO: the parse held only boys places 22-41 (two-column list: left column places 1-21 lost); added from the source in the override. Parser pattern: two-column 'Individual (School) ... Time' list drops the left column.",
+  "date": "2026-10-26",
+  "parse_sha": "4c273a9277ce3997",
+  "source_sha": "6e1afec30c4f71ba"
+ },
+ "backend/data/parsed_results/2007/XC/elgirls8_31.json": {
+  "verdict": "fixed",
+  "by": "sonnet audit (second read, 2026-10-26)",
+  "notes": "4 girls coded G (Mohney, Trahun, Macomber) and Mo (Baker). Page: 'Brunswick 24, Mt. Blue 42, Lewiston 79, Edward Little 111, Gardiner 127, Morse 154' -> G=Gardiner, Mo=Morse. Rules G, Mo.",
+  "date": "2026-10-26",
+  "parse_sha": "a7fd76a2bc3d58ba",
+  "source_sha": "7378e7c84bc1da5d"
+ },
+ "backend/data/parsed_results/2007/XC/ellsworthjvgirls.json": {
+  "verdict": "fixed",
+  "by": "sonnet audit (second read, 2026-10-26)",
+  "notes": "3 girls coded Or (H. Siobhan, N. Bird, E. Coyne). Page: 'Non scoring teams: Presque Isle, Orono, Mt. Dessert Island, Caribou' -> Orono (only Or). Rule Or.",
+  "date": "2026-10-26",
+  "parse_sha": "d64d40b55d6a3dff",
+  "source_sha": "457367b981cd1125"
+ },
+ "backend/data/parsed_results/2007/XC/ftkentboys9_12.json": {
+  "verdict": "fixed",
+  "by": "sonnet audit (second read, 2026-10-26)",
+  "notes": "6 boys coded L (Forsman, Toothaken, Thompson, Caldwell), J- (Michael Osseyran) and LC (Joseph Stunzl). Team list: Caribou, Fort Kent, Greater Houlton Christian, Limestone, Presque Isle; L = Limestone; Osseyran, Forsman, Thompson, Caldwell are Limestone in 2007 caribouboys9_5 / FOC / presqueisle9_8. J- (OCR of L) and LC (Limestone Community; Stunzl found nowhere else) -> Limestone because Limestone is the only listed team they fit. Rule L, J-, LC. NOT fixed (outside school scope): OCR-garbled rows 10 Matt Howe (blank code, 19:47), 11 Jason Johnson (19:51) are missing from the parse and 12 Ian Kaleta (FK 20:09) has a blank name; places are None; 3 J Chris Sleeper reads 10:39 for 18:39 (source misprint). Needs a separate review.",
+  "date": "2026-10-26",
+  "parse_sha": "3197a4faea1a06d7",
+  "source_sha": "f487579fc2292f8d"
+ },
+ "backend/data/parsed_results/2007/XC/madison10_3.json": {
+  "verdict": "fixed",
+  "by": "sonnet audit (second read, 2026-10-26)",
+  "notes": "Override written. Run-in paragraph layout; the last name token was split into the school field for 4 rows (Jen DeNormandie T, Mark Emerson T (also mis-resolved to Conners Emerson middle school), Will Chapman T, Scott Mercier M); Lindsay LaChance (girls 18) and Zach Vickers (boys 16) print no code, Hall-Dale in 6+ other races. Parser pattern: 'First Last CODE' where Last is taken as the school when the name has two words plus a 1-2 letter code (affects at least those four).",
+  "date": "2026-10-26",
+  "parse_sha": "9f5bb215718e6e42",
+  "source_sha": "ece641af47a76fcf"
  },
  "backend/data/parsed_results/2007/XC/marshwoodboys9_14.json": {
   "verdict": "fixed",
@@ -327,6 +455,22 @@
   "parse_sha": "b8ac91b9394faf70",
   "source_sha": "e9e341f529bf8035"
  },
+ "backend/data/parsed_results/2007/XC/smaajvboys.json": {
+  "verdict": "fixed",
+  "by": "sonnet audit (second read, 2026-10-26)",
+  "notes": "4 boys coded We (Stondak, Kelly) and Wi (Torry, Farrian). Team block lists Windham and Westbrook (both ns) -> We = Westbrook, Wi = Windham. Rules We, Wi.",
+  "date": "2026-10-26",
+  "parse_sha": "1245eec97b8b56d9",
+  "source_sha": "07922b3485aafba9"
+ },
+ "backend/data/parsed_results/2007/XC/smaajvgirls.json": {
+  "verdict": "fixed",
+  "by": "sonnet audit (second read, 2026-10-26)",
+  "notes": "4 girls: Ch (Muca, Sivik) = Cheverus (page team block lists Cheverus ns; both are Cheverus girls in many other 2007 races), We (Mailly) = Westbrook (page lists Westbrook ns; Mailly is Westbrook in cheverusgirls10_5), G (Damski) = Gorham (page uses Go for Gorham; Gorham is the only G team). Rules Ch, We, G.",
+  "date": "2026-10-26",
+  "parse_sha": "46b253153832f7a9",
+  "source_sha": "aede370cad7b0389"
+ },
  "backend/data/parsed_results/2007/XC/watervilleboys9_7.json": {
   "verdict": "fixed",
   "by": "sonnet audit (score mismatch, 2026-10-23)",
@@ -375,6 +519,22 @@
   "parse_sha": "a8e209b91791c08a",
   "source_sha": "4ae211d63772e54d"
  },
+ "backend/data/parsed_results/2008/XC/hydeboys_oct18.json": {
+  "verdict": "fixed",
+  "by": "sonnet audit (second read, 2026-10-26)",
+  "notes": "16 unresolved: 8 H-B and 8 H-W. Page: 'Teams: Hyde-Bath, Richmond High School, Hyde-Woodstock'. H-B = Hyde-Bath = Hyde School (Bath, ME) -> rule H-B -> me-hs-hyde (the sister file hydegirls_oct18 already has this rule). H-W = Hyde-Woodstock, the Hyde campus in Woodstock CT; page prints no state and the catalog has no Hyde-Woodstock entry -> left unresolved (out-of-state). Remaining 8 unresolved rows are correct.",
+  "date": "2026-10-26",
+  "parse_sha": "c69bb77c0fc7b5d6",
+  "source_sha": "cb014e18b4e06398"
+ },
+ "backend/data/parsed_results/2008/XC/hydegirls_oct18.json": {
+  "verdict": "confirmed",
+  "by": "sonnet audit (second read, 2026-10-26)",
+  "notes": "7 rows H-W (Haruka Koda, Hallie Budd, Lisa Bertschy, Alexis Holdampf, Carolyn Donat, Melissa Wallace, Brittany Polini): Hyde-Woodstock is the Connecticut campus of Hyde; no state printed, no catalog entry -> correctly unresolved. H-B and R already resolve by file rules. Parse matches source for these rows.",
+  "date": "2026-10-26",
+  "parse_sha": "3e1291ff5345b872",
+  "source_sha": "e376f04ef99008a4"
+ },
  "backend/data/parsed_results/2008/XC/leeinvitegirls.json": {
   "verdict": "source-error",
   "by": "sonnet audit (score mismatch, 2026-10-23)",
@@ -398,6 +558,14 @@
   "date": "2026-10-23",
   "parse_sha": "18dfc7b0907d026c",
   "source_sha": "2890b592d46f0a47"
+ },
+ "backend/data/parsed_results/2008/XC/ms-camden-hills-invitational-2008.json": {
+  "verdict": "fixed",
+  "by": "sonnet audit (second read, 2026-10-26)",
+  "notes": "Override written. MileSplit raw page is not cached. Seven girls (places 10,12,18,23,30,32,35) have a pace-like value in the school field; all seven are Camden Hills Regional High School runners in 2008 per other races (emclassbgirls, medomakgirls9_19, waterville9_12, focgirlsheats, kvacgirls) and Camden Hills hosts the meet. Parser pattern (milesplit-manual): a pace column read as the school for those girls.",
+  "date": "2026-10-26",
+  "parse_sha": "d899e3aff2f8f006",
+  "source_sha": "a9c49d284f55c5de"
  },
  "backend/data/parsed_results/2008/XC/pvcgirls.txt.json": {
   "verdict": "fixed",
@@ -423,6 +591,14 @@
   "parse_sha": "9e3c6afb6c64c82d",
   "source_sha": "48861e17d51c97fd"
  },
+ "backend/data/parsed_results/2008/XC/valleyboyssept20.json": {
+  "verdict": "fixed",
+  "by": "sonnet audit (second read, 2026-10-26)",
+  "notes": "6 rows M, G, R. Page: 'H.S. Boys Results: Madison N/S, Valley N/S, Richmond N/S, Greenville N/S' with codes M, G, V, R -> Madison, Greenville, Richmond. Rules M, G, R.",
+  "date": "2026-10-26",
+  "parse_sha": "dcb7aea9b6d79d24",
+  "source_sha": "f26f6debb5163dd3"
+ },
  "backend/data/parsed_results/2008/XC/waterville9_12.json": {
   "verdict": "fixed",
   "by": "sonnet audit (score mismatch, 2026-10-23)",
@@ -446,6 +622,14 @@
   "date": "2026-10-25",
   "parse_sha": "73da2c0204bdbd5b",
   "source_sha": "89ca231e5f1456b8"
+ },
+ "backend/data/parsed_results/2009/XC/cheverusboys_oct9.json": {
+  "verdict": "fixed",
+  "by": "sonnet audit (second read, 2026-10-26)",
+  "notes": "School codes K, C, S, W expanded from the title line 'Cheverus 32, Kennebunk 41, Sanford 66, Westbrook 90'. The parse had dropped the line-wrapped rows 5 Perkins (S), 9 Lenhardt (S), 13 Merriam (K), 17 Martin (C), 21 Dugas (W); added from the source. Team scores in the title not entered in team_rankings (parse had none). Unresolved W/S rows now Westbrook/Sanford.",
+  "date": "2026-10-26",
+  "parse_sha": "622fd08f7ec6fe4a",
+  "source_sha": "39171c025ab0d740"
  },
  "backend/data/parsed_results/2009/XC/erskine_oct2.json": {
   "verdict": "source-error",
