@@ -487,6 +487,38 @@
      "place": 60
     },
     {
+     "athlete": "Joe Durkin",
+     "school": "Brunswick Junior High School",
+     "result": "15:47",
+     "grade": "",
+     "type": "Finals",
+     "place": 61
+    },
+    {
+     "athlete": "Luke Spaulding",
+     "school": "Durham Community School",
+     "result": "15:48",
+     "grade": "",
+     "type": "Finals",
+     "place": 62
+    },
+    {
+     "athlete": "Tony Miller",
+     "school": "Durham Community School",
+     "result": "17:02",
+     "grade": "",
+     "type": "Finals",
+     "place": 63
+    },
+    {
+     "athlete": "Noah Butler",
+     "school": "Durham Community School",
+     "result": "17:04",
+     "grade": "",
+     "type": "Finals",
+     "place": 64
+    },
+    {
      "athlete": "Matt Boyle",
      "school": "Bath Middle School",
      "result": "17:56",
@@ -541,5 +573,5 @@
   "Ba": "Bath Middle School",
   "OH": "Oxford Hills Middle School"
  },
- "notes": "Copy of the parse with the team code split off the end of each name into the school (the parser left it glued to the name, e.g. 'Mitchell Black Br,'). Codes read from the team-score line 'Brunswick Jr. 24, Tripp M.S-Leavitt. 46, Mt.A M.S. 53, Durham M.S. 112, Bath M.S. n/s, Ox. Hills M.S. n/s': Br=Brunswick Jr High, T=Tripp, Mt.A (also 'Mt A')=Mt. Ararat MS, D=Durham, Ba=Bath, OH=Oxford Hills MS. Place 69 prints no comma. Middle-school meet (1.86 miles). Girls twin file BJHS_X-C_Oct3-07-Girls has the same layout."
+ "notes": "Copy of the parse with the team code split off the end of each name into the school (the parser left it glued to the name, e.g. 'Mitchell Black Br,'). Codes read from the team-score line 'Brunswick Jr. 24, Tripp M.S-Leavitt. 46, Mt.A M.S. 53, Durham M.S. 112, Bath M.S. n/s, Ox. Hills M.S. n/s': Br=Brunswick Jr High, T=Tripp, Mt.A (also 'Mt A')=Mt. Ararat MS, D=Durham, Ba=Bath, OH=Oxford Hills MS. Place 69 prints no comma. Middle-school meet (1.86 miles). Girls twin file BJHS_X-C_Oct3-07-Girls has the same layout. Restored places 61-64 (Durkin Br, Spaulding D, Miller D, Butler D): the source prints \"61,\" \"62,\" \"63,\" \"64,\" with a comma instead of the period, which the parser skipped."
 }

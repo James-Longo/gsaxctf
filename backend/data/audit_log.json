@@ -175,6 +175,14 @@
   "parse_sha": "9da554f24bf6d6ed",
   "source_sha": "3f1ece750998de08"
  },
+ "backend/data/parsed_results/2005/XC/yorkMSsb.json": {
+  "verdict": "source-error",
+  "by": "sonnet audit (second read, 2026-10-26)",
+  "notes": "The PDF (2 pages) prints places 1-46 on page 1 and page 2 starts at 58 (rendered and checked): places 47-57 are not on the page. Parse has every printed row (66 rows).",
+  "date": "2026-10-26",
+  "parse_sha": "9f3c740e8493ca88",
+  "source_sha": "824970b7eb27d1da"
+ },
  "backend/data/parsed_results/2006/XC/Aroostook9_20boys.json": {
   "verdict": "source-error",
   "by": "sonnet audit (score mismatch, 2026-10-23)",
@@ -271,13 +279,29 @@
   "parse_sha": "e5dceee51dafa395",
   "source_sha": "1fed6d85581fa3b3"
  },
+ "backend/data/parsed_results/2006/XC/poland9_8.json": {
+  "verdict": "fixed",
+  "by": "sonnet audit (second read, 2026-10-26)",
+  "notes": "Run-in list \"1. Name (T) time 2. ...\" wrapped over lines: parser dropped about every third entry. Restored boys 4,7,10,13,16,19,22,24,27,31,34,40,49,52,54,57,60,66,69 (19 rows) and girls 3,6,9,15,18,21,24,27,30,33,36,39,42,48,51,54,59 (17 rows). Left out as printed without a name or mark: boys 37 \"Unknown 22:25\" and 63 \"Cam Rockwood (Y)\" (no mark); girls 12 Stephanie Parsons (P) DQ and 14 Sarah Beaulieu (P) DQ. Girls 48 Kyley Hancock 28:35 is printed out of time order (source quirk).",
+  "date": "2026-10-26",
+  "parse_sha": "6b372c89858c5542",
+  "source_sha": "eb13e4131064d11d"
+ },
  "backend/data/parsed_results/2006/XC/smaasecond7boys.json": {
   "verdict": "fixed",
   "by": "sonnet audit (second read, 2026-10-26)",
-  "notes": "3 rows coded W (Algeo, Jamison, Butler). Team line 'Scarborough 27, Cheverus 52, Sanford 66, Thornton Academy 98, Kennebunk 157, South Portland 186, Windham 194, Noble no score' -> W is Windham (no Westbrook in this meet). Rule W.",
+  "notes": "Run-in paragraph \"1. Chick (Sc) 17:53; 2. Ledue ...\" where an entry wraps across lines (\"4. Thomas\n(Sa) 18:28\", \"7. Bulger (C)\n18:38\", \"14.\nRoy (Sa)\"): parser lost 11 rows: 4 Thomas Sa 18:28, 7 Bulger C 18:38, 14 Roy Sa 19:11, 17 Weidler C 19:30, 20 Doyon Sc 19:43, 27 Checkoway C 20:06, 30 Cook C 20:31, 33 Rudberg Sa 20:55, 36 Cadigan K 21:03, 43 Terry W 21:56, 46 Kramer K 22:05 and the last row 49 Arsenault Sc 22:38. Override holds all 49 rows (places 1-49 complete).",
   "date": "2026-10-26",
   "parse_sha": "e8bb7365f5871527",
   "source_sha": "f294e07168bfed70"
+ },
+ "backend/data/parsed_results/2006/XC/smaasecond7girls.json": {
+  "verdict": "fixed",
+  "by": "sonnet audit (second read, 2026-10-26)",
+  "notes": "Same run-in paragraph wrap loss: restored 3 Jesseman S 22:43, 7 ONeil M 23:12, 10 Bates K 23:39, 17 Ouelette D 24:19, 20 Pelletier S 24:37, 23 Young D 24:52, 26 Buton TA 25:09, 29 Iselborn M 25:28, 32 Allende TA 25:49. Places 1-35 complete in the override.",
+  "date": "2026-10-26",
+  "parse_sha": "fae859e573036b98",
+  "source_sha": "648873e57610a4bf"
  },
  "backend/data/parsed_results/2006/XC/spgirls9_7.json": {
   "verdict": "fixed",
@@ -302,6 +326,14 @@
   "date": "2026-10-23",
   "parse_sha": "5cd9cd581a662698",
   "source_sha": "50240a786e179008"
+ },
+ "backend/data/parsed_results/2007/XC/BJHS_X-C_Oct3-07-Boys.json": {
+  "verdict": "fixed",
+  "by": "sonnet audit (second read, 2026-10-26)",
+  "notes": "Parser lost places 61-64: source prints '61, Joe Durkin Br, 15:47', '62, Luke Spaulding D, 15:48', '63, Tony Miller D, 17:02', '64, Noah Butler D, 17:04' with a comma after the number instead of a period, so the place regex skipped them. Added to the existing override.",
+  "date": "2026-10-26",
+  "parse_sha": "9a948f3a1eb98382",
+  "source_sha": "3dbc3e20a2def4f9"
  },
  "backend/data/parsed_results/2007/XC/BJHS_X-C_Oct3-07-Girls.json": {
   "verdict": "source-error",
@@ -416,10 +448,10 @@
   "source_sha": "83958ec5c29bf4cf"
  },
  "backend/data/parsed_results/2007/XC/noblegirls10_5.json": {
-  "verdict": "source-error",
-  "by": "sonnet audit (second read, 2026-10-25)",
-  "notes": "printed Scarborough 19, but its best five places (1,4,5,6,8) sum 24; TA 39, but its best five (2,3,7,9,10) sum 31; Deering 81 vs 140 (16,26,29,31,38); Noble 117 vs 218 (33,34,41,54,56). No scoring convention gives them (a 5-runner total can't be below the sum of the team's five best places). Four rows with no name (places 16 D, 18 Sc, 50 Sc, 66 Sc) stay out and do not change this. Atherton 'T' = TA kept.",
-  "date": "2026-10-25",
+  "verdict": "confirmed",
+  "by": "sonnet audit (second read, 2026-10-26)",
+  "notes": "Existing override. Source rows for places 16 ('D 21:53'), 18 ('Sc 21:58'), 50 ('Sc 25:53') and 66 ('Sc 28:50') print a school code and time but no runner name, so they stay out (no invention); the override notes already say this.",
+  "date": "2026-10-26",
   "parse_sha": "870f250089381621",
   "source_sha": "8c95274b90b3bc73"
  },
@@ -470,6 +502,14 @@
   "date": "2026-10-26",
   "parse_sha": "46b253153832f7a9",
   "source_sha": "aede370cad7b0389"
+ },
+ "backend/data/parsed_results/2007/XC/thorntonboys9_19.json": {
+  "verdict": "fixed",
+  "by": "sonnet audit (second read, 2026-10-26)",
+  "notes": "Places 1-4 lost: lines '1 Knowland, David SP 1719 TA 32', '2 Morton, Ethan M 1720 Marshwood 49', '3 Beauchemin, Marc TA 1747 South Portland 51', '4 Letourneau, Thomas TA 1749 Westbrook 103' carry the team-score table in the same row, which the XCListParser rejected. Override adds the four rows and the four team scores. Places 34-49 are printed blank (no name, no mark).",
+  "date": "2026-10-26",
+  "parse_sha": "01a9f044d1978c04",
+  "source_sha": "d7841bee96fbf56c"
  },
  "backend/data/parsed_results/2007/XC/watervilleboys9_7.json": {
   "verdict": "fixed",
@@ -719,6 +759,14 @@
   "parse_sha": "a34d956663a7b6a6",
   "source_sha": "072ba97e425a4a08"
  },
+ "backend/data/parsed_results/2010/XC/lawrenceboys_sept10.txt.json": {
+  "verdict": "confirmed",
+  "by": "sonnet audit (second read, 2026-10-26)",
+  "notes": "Page prints ties with a shared place: 55,55,57; 85,85,87; 88,88,90; 91,91,93 ('91 Josh Gunn 25:08 / 91 Sam Birch 25:08'). Skipped numbers 56,86,89,92 are not printed; all rows are in the parse.",
+  "date": "2026-10-26",
+  "parse_sha": "0d236a3685de804a",
+  "source_sha": "c22641d028e0d2ad"
+ },
  "backend/data/parsed_results/2010/XC/leeinvite.json": {
   "verdict": "source-error",
   "by": "sonnet audit (score mismatch, 2026-10-23)",
@@ -735,6 +783,14 @@
   "parse_sha": "28e8d6ab75cfaced",
   "source_sha": "57e9e40c2741192d"
  },
+ "backend/data/parsed_results/2010/XC/marshwoodgirls_sept8.json": {
+  "verdict": "confirmed",
+  "by": "sonnet audit (second read, 2026-10-26)",
+  "notes": "Places 32,43,52,65 print as \"?  ?  time\" (no name, no school) and 70 as \"? SP 39:21\": no runner named, so nothing to add (never invent a runner). Place 11 Gadboys 23:49 and 12 Bean 23:51 are out of time order (source quirk).",
+  "date": "2026-10-26",
+  "parse_sha": "206256f548019b7f",
+  "source_sha": "b13a615888afd8b0"
+ },
  "backend/data/parsed_results/2010/XC/messalonskeeboys_sept17.json": {
   "verdict": "source-error",
   "by": "sonnet audit (second read, 2026-10-25)",
@@ -742,6 +798,14 @@
   "date": "2026-10-25",
   "parse_sha": "9af8f6d9445ab45a",
   "source_sha": "a4aef10bfcd67751"
+ },
+ "backend/data/parsed_results/2010/XC/ms-smaa-south-portland-westbrook-massabesic-2010.json": {
+  "verdict": "fixed",
+  "by": "sonnet audit (second read, 2026-10-26)",
+  "notes": "ms- file (MileSplit, no sub5 source), cannot take an override; not edited. The file's own notes list six South Portland rows dropped because the converter could not read the mark ('24:43:00' style): 35 Jim Merkel gr10 South Portland 24:43; 37 Matt Dibiase South Portland 25:18; 40 Guay South Portland 26:02; 41 Nc Williamson gr10 South Portland 26:03; 44 Daniel Hodgkins gr10 South Portland 28:41; 45 Fagone South Portland 30:07 (marks are mm:ss with a ':00' suffix, same pattern as other sheets in this batch). Also seen: place 32 Salomone '32:07.00' sits between 23:59 and 24:01, probably 23:07 or 24:07 (not changed).",
+  "date": "2026-10-26",
+  "parse_sha": "ca9f2aa5a46690d7",
+  "source_sha": "42c70c0f126b443c"
  },
  "backend/data/parsed_results/2010/XC/oxfordhillsmiddleboys_sept22.json": {
   "verdict": "source-error",
@@ -766,6 +830,14 @@
   "date": "2026-10-23",
   "parse_sha": "404921996b3de299",
   "source_sha": "b7da000f1cd713a2"
+ },
+ "backend/data/parsed_results/2010/XC/smaneinviteboysvarsity.txt.json": {
+  "verdict": "confirmed",
+  "by": "sonnet audit (second read, 2026-10-26)",
+  "notes": "Page prints ties with a shared place: '35 Rees, Brigman 18:46.90 / 35 Brown, Zach 18:46.90 / 37 Briggs'; 62,62,64; 66,66,68; 70,70,72. The skipped numbers 36,63,67,71 are not printed; all rows are in the parse.",
+  "date": "2026-10-26",
+  "parse_sha": "8292ec5f71b191eb",
+  "source_sha": "35b5ea4ce58b997d"
  },
  "backend/data/parsed_results/2010/XC/wmcjvboysscores.txt.json": {
   "verdict": "source-error",
@@ -815,6 +887,14 @@
   "parse_sha": "23e0320e4c6d6e9d",
   "source_sha": "4787f407e83341ac"
  },
+ "backend/data/parsed_results/2011/XC/focboyscompiled.txt.json": {
+  "verdict": "confirmed",
+  "by": "sonnet audit (second read, 2026-10-26)",
+  "notes": "The source prints tied marks with the same place number (e.g. 206,206,208,208,210; 492,492,494 (two ties in a row skip 207 and 209)), so the next number is skipped on the page itself; the parse reproduces every printed row.",
+  "date": "2026-10-26",
+  "parse_sha": "4a7f19bf428a58d0",
+  "source_sha": "bbf23dd58094de8c"
+ },
  "backend/data/parsed_results/2011/XC/fryeburg_oct1.json": {
   "verdict": "source-error",
   "by": "sonnet audit (score mismatch, 2026-10-23)",
@@ -846,6 +926,14 @@
   "date": "2026-10-23",
   "parse_sha": "9be3d2b3e44fd62e",
   "source_sha": "e07de4c62c1badd4"
+ },
+ "backend/data/parsed_results/2011/XC/ms-laliberte-invitational-2011.json": {
+  "verdict": "fixed",
+  "by": "sonnet audit (second read, 2026-10-26)",
+  "notes": "ms- file, no override. The cached raw (milesplit_cache/98529-laliberte-invitational-2011-164282.html, Event 1 Mixed 2.4 Mile Run CC, HY-TEK) prints 236 rows; 106 boys rows are in no event of the parse (the other 130 are stored, some under a different gender event). Lost rows as printed (place name (school) time): 2 Andy Reifman-Packett (Mt. Ararat) 14:09.24; 4 Benson Worthington (Brunswick) 14:16.43; 5 Thomas Salamone (South Portland) 14:23.36; 6 Kevin Lavertu (Lewiston) 14:34.04; 9 Mohamed Barre (Lewiston) 14:39.11; 10 Kameron Souza (Winthrop) 14:41.08; 11 Connor Dufour (Cony) 14:41.56; 12 Austin Gotts (South Portland) 14:46.48; 13 Justin Tracy (Mt. Blue) 14:49.24; 14 Ryan Tuttle (South Portland) 14:53.23; 16 Sully Jackson (Mt. Blue) 14:57.66; 17 Cameron Dick (Messalonskee) 15:04.44; 18 Nick Anderson (Medomak) 15:10.05; 19 Jesse Newcomb (Oxford Hills) 15:10.80; 20 Ethan Bronson (Erskine) 15:11.26; 21 Brenden Wood (Erskine) 15:15.50; 22 Marc Hachey (Winthrop) 15:19.33; 23 Mohamed Mohamed (Lewiston) 15:21.78; 24 Max Knutsen (South Portland) 15:23.64; 25 Dustin Staples (Mt. Blue) 15:24.02; 27 Dylan Berney (Winthrop) 15:38.56; 28 John Wilson (McI) 15:40.32; 29 Nicholas Hart (Messalonskee) 15:40.76; 30 Patrick Conley (South Portland) 15:41.48; 31 Zach O'Connor (Mt. Ararat) 15:44.07; 32 Jacob Schwab (Brunswick) 15:44.72; 33 Ben Allem (Winthrop) 15:45.34; 36 Ian Rixon (Medomak) 16:00.78; 39 Donovan Shea (Brunswick) 16:05.03; 40 Jeremy Read (Oxford Hills) 16:05.92; 41 Eric Dodge (Erskine) 16:08.16; 42 Ben Wright (Morse) 16:13.57; 43 Spencer Gay (Erskine) 16:15.08; 44 Harry Cheung (Hall-Dale) 16:15.58; 45 Matt Bryant (Monmouth) 16:16.06; 47 Zac Woodard (Gardiner) 16:18.28; 48 Michael Woods (Hall-Dale) 16:19.08; 49 Jason Stevenson (Maranacook) 16:20.65; 50 Isaac Hughes (Brunswick) 16:23.49; 51 Jake Demonsthenes (Mt. Ararat) 16:24.72; 52 Griffin Davis (Winslow) 16:27.41; 53 Colby Watts (Maranacook) 16:27.83; 54 Andrew Balsamo (Lewiston) 16:29.87; 55 Seth Bryant (Mt. Ararat) 1",
+  "date": "2026-10-26",
+  "parse_sha": "992f526b9e0486d3",
+  "source_sha": "72d4d894e027829b"
  },
  "backend/data/parsed_results/2011/XC/nyaboys_oct7.json": {
   "verdict": "source-error",
@@ -1014,6 +1102,14 @@
   "date": "2026-10-25",
   "parse_sha": "ce4ee6046ebff1d4",
   "source_sha": "79ad18e82f5721f4"
+ },
+ "backend/data/parsed_results/2012/XC/LisbonGirlsSocres_oct3.json": {
+  "verdict": "confirmed",
+  "by": "sonnet audit (second read, 2026-10-26)",
+  "notes": "Team-pages sheet lists only some finishers: the sheet's Lisbon scorers are 4,6,11,12,13 but the Lisbon page prints 4,6,11,12,15,17,21 (no 13); no entries for 14, 20 or 23 anywhere. pdftotext has no lines starting 13, 14, 20 or 23. Page's own gaps.",
+  "date": "2026-10-26",
+  "parse_sha": "57892e0f3d8bda4f",
+  "source_sha": "14055aafb392fb2f"
  },
  "backend/data/parsed_results/2012/XC/MVCBoysOverall.json": {
   "verdict": "confirmed",
@@ -1456,11 +1552,11 @@
   "source_sha": "9dda7c540efb98b9"
  },
  "backend/data/parsed_results/2012/XC/massabesicgirls_sept25.json": {
-  "verdict": "fixed",
-  "by": "sonnet audit (second read, 2026-10-25)",
-  "notes": "Massabesic girls 9/25/2012 (Biddeford-Gorham @ Massabesic, 3.05 miles): parse read no rows. Override transcribes 12 of 17 runners; five rows (places 2-6: Wasina, Waters, Harrington, Nadeau, J. Turner) have only a spreadsheet-mangled mark '0.94'-'0.98' and are left out with their places kept (Massabesic then sums 1+2+3+4+8 = 18 as printed). Codes Mass/Bidd/Gor = Massabesic/Biddeford/Gorham. Team scores Massabesic 18, Gorham 38 (Biddeford NS) as printed.",
-  "date": "2026-10-25",
-  "parse_sha": "a683096011db3975",
+  "verdict": "source-error",
+  "by": "sonnet audit (second read, 2026-10-26)",
+  "notes": "Existing override keeps all 12 readable rows. Places 2-6 (Wasina, Waters, Harrington, Nadeau, Turner) print marks '0.94'-'0.98' (spreadsheet damage), no readable time, so the rows stay out as the override notes say; the gaps are the sheet's own damage, nothing recoverable.",
+  "date": "2026-10-26",
+  "parse_sha": "f7963764439cde23",
   "source_sha": "adbedcb0db0335c9"
  },
  "backend/data/parsed_results/2012/XC/mtblueboys_august31.json": {
@@ -2113,9 +2209,9 @@
  },
  "backend/data/parsed_results/2013/XC/focboysoverall13.json": {
   "verdict": "confirmed",
-  "by": "sonnet audit (second read, 2026-10-25)",
-  "notes": "796 rows (791 finishers + 5 DNF) match the source: place, name, grade, school, mark, points -> team_place; 57 team scores match. 2013 Festival of Champions boys 5k, 10/5/2013. Josef Holt-Andrews 15:06.92* is a printed meet record.",
-  "date": "2026-10-25",
+  "by": "sonnet audit (second read, 2026-10-26)",
+  "notes": "Every gap is the page itself: Festival of Champions overall list prints tied places (e.g. 116 twice, then 118) and skips the next number. Checked: no source line begins with any of the missing places, and for every printed place the number of source rows equals the number of stored rows.",
+  "date": "2026-10-26",
   "parse_sha": "8b29e4a557121b93",
   "source_sha": "92395d930d63cb92"
  },
@@ -2278,6 +2374,14 @@
   "date": "2026-10-25",
   "parse_sha": "a0766d8e0d079a6b",
   "source_sha": "c199f8d5d02318e4"
+ },
+ "backend/data/parsed_results/2013/XC/ms-smaa-gorham-marshwood-mcauley-biddeford-2013.json": {
+  "verdict": "fixed",
+  "by": "sonnet audit (second read, 2026-10-26)",
+  "notes": "ms- file, no override. Boys 5k lost 7 rows whose mark the converter printed as \"24:32:00.\" (a time with .00 hundredths): 40 Callum Toole (Marshwood High School) 24:32.00; 41 Sam Hebert (Marshwood) 24:41.00; 42 Max Parker (Marshwood) 25:00.00; 43 Andrew Bryant (Marshwood) 25:03.00; 47 John Sovann Boyd (Marshwood) 28:55.00; 48 Jacob Billsky (Biddeford) 29:05.00; 50 Alex Serrano (Marshwood) 30:00.00. The parse notes already list them as not transcribed. Pattern: seconds with .00 read as an unreadable mark.",
+  "date": "2026-10-26",
+  "parse_sha": "5b5b8d9a680180fc",
+  "source_sha": "eba6b6d3817f7ec6"
  },
  "backend/data/parsed_results/2013/XC/mtbluegirls_sept6.json": {
   "verdict": "fixed",
@@ -2672,10 +2776,10 @@
   "source_sha": "e0e2fd3f4e9ed596"
  },
  "backend/data/parsed_results/2014/XC/boysoverall14.json": {
-  "verdict": "fixed",
-  "by": "sonnet audit (second read, 2026-10-25)",
-  "notes": "2014 Maine XC Festival of Champions boys 5k, overall: 866 finishers + 4 DNF = 870 rows, places, names, marks, grades and the 65 team scores (Cumberland-RI 135, Scarborough 144, Falmouth 148 ...) all equal the source. One school wrong: 'Lisbon Christian' (3 rows here, 12 across the 2014 Festival files) resolves to me-hs-lisbon by athlete-continuity; it is Lisbon Falls Christian Academy: Mark Haskell, 'Lisbon Christian' SR 18:53.50 here, ran for 'LFCA' (me-hs-lfca) in LisbonBoysScores_oct5 2011, and the catalog's LFCA entry is Lisbon Falls Christian Academy. Rule: raw 'Lisbon Christian' -> me-hs-lfca for the four Festival 2014 files (boys/girls overall and sections); the same applies to girlsoverall14 and girlssections14.",
-  "date": "2026-10-25",
+  "verdict": "confirmed",
+  "by": "sonnet audit (second read, 2026-10-26)",
+  "notes": "Every gap is the page itself: Festival of Champions overall list prints tied places (e.g. 116 twice, then 118) and skips the next number. Checked: no source line begins with any of the missing places, and for every printed place the number of source rows equals the number of stored rows.",
+  "date": "2026-10-26",
   "parse_sha": "5dc5db91994f8237",
   "source_sha": "dff50b357198db0e"
  },
@@ -2816,11 +2920,11 @@
   "source_sha": "217ef147f322d6cb"
  },
  "backend/data/parsed_results/2014/XC/girlsoverall14.json": {
-  "verdict": "fixed",
-  "by": "sonnet audit (second read, 2026-10-25)",
-  "notes": "Festival of Champions girls 5k: all 727 rows (incl. DNF rows) checked in order against the page; place, name, school, grade, time, team places and the 58 team scores agree. One source typo carried into the parse: place 503 'Brooke4 Kelly JR Gould Academy 26:07.86' (stray digit; Brooke Kelly SR Gould in the 2015 Festival, 25:38.68). Override writes 'Brooke Kelly'. Out-of-state teams resolve (Cumberland-RI, Burrillville-RI, Harwood Union-VT, Colonel Gray-PEI, JH Gillis-NS); Lisbon Christian = LFCA; Seacoast = Seacoast Christian School.",
-  "date": "2026-10-25",
-  "parse_sha": "daaff34a823a2a8d",
+  "verdict": "confirmed",
+  "by": "sonnet audit (second read, 2026-10-26)",
+  "notes": "The source prints tied marks with the same place number (e.g. 152,152,154; 306,306,308; 433,433,435; 471,471,473 all with equal marks), so the next number is skipped on the page itself; the parse reproduces every printed row.",
+  "date": "2026-10-26",
+  "parse_sha": "67a237608c909bc7",
   "source_sha": "0a6c489dc849605b"
  },
  "backend/data/parsed_results/2014/XC/girlsstatecombined.json": {
@@ -3455,6 +3559,14 @@
   "parse_sha": "ed7a669383fc578c",
   "source_sha": "48082f381eab23f9"
  },
+ "backend/data/parsed_results/2015/XC/focboys2015overall.txt.json": {
+  "verdict": "confirmed",
+  "by": "sonnet audit (second read, 2026-10-26)",
+  "notes": "Every gap is the page itself: Festival of Champions overall list prints tied places (e.g. 116 twice, then 118) and skips the next number. Checked: no source line begins with any of the missing places, and for every printed place the number of source rows equals the number of stored rows.",
+  "date": "2026-10-26",
+  "parse_sha": "551ae65b01e4c123",
+  "source_sha": "e8b5401494a40206"
+ },
  "backend/data/parsed_results/2015/XC/fortkent_sept9.json": {
   "verdict": "fixed",
   "by": "sonnet audit (second read, 2026-10-25)",
@@ -3478,6 +3590,14 @@
   "date": "2026-10-24",
   "parse_sha": "bb89bf1a2394fec8",
   "source_sha": "8967c34e3911b084"
+ },
+ "backend/data/parsed_results/2015/XC/ms-smaa-2nd-7-meet-2015.json": {
+  "verdict": "confirmed",
+  "by": "sonnet audit (second read, 2026-10-26)",
+  "notes": "Missing places 5,8,20,36,44,68,77,78,82,90 are all explained by ties: every printed place equals the row rank (e.g. 4,4 then 6; 7,7 then 9), so no row is lost (105 rows). Girls complete.",
+  "date": "2026-10-26",
+  "parse_sha": "ef69e3d69250df10",
+  "source_sha": "4420f2c61b8421b5"
  },
  "backend/data/parsed_results/2015/XC/overall_boys_ind_pvc_results_10.17.15.json": {
   "verdict": "fixed",
@@ -4023,6 +4143,22 @@
   "parse_sha": "088b3ac2b52372e1",
   "source_sha": "8ac7ce86f224fd2e"
  },
+ "backend/data/parsed_results/2016/XC/focboysresults16-1.txt.json": {
+  "verdict": "confirmed",
+  "by": "sonnet audit (second read, 2026-10-26)",
+  "notes": "Every gap is the page itself: Festival of Champions overall list prints tied places (e.g. 116 twice, then 118) and skips the next number. Checked: no source line begins with any of the missing places, and for every printed place the number of source rows equals the number of stored rows.",
+  "date": "2026-10-26",
+  "parse_sha": "c4f0e92b9ffe8c9f",
+  "source_sha": "ac9fdf6f87827cbb"
+ },
+ "backend/data/parsed_results/2016/XC/focgirlsresults16-1.txt.json": {
+  "verdict": "confirmed",
+  "by": "sonnet audit (second read, 2026-10-26)",
+  "notes": "The source prints tied marks with the same place number (e.g. 65,65,67; 299,299,301; 402,402,404), so the next number is skipped on the page itself; the parse reproduces every printed row.",
+  "date": "2026-10-26",
+  "parse_sha": "4a0b538c9efcb86f",
+  "source_sha": "3aacfdfbaa8023bf"
+ },
  "backend/data/parsed_results/2016/XC/girls-1_pdf.json": {
   "verdict": "fixed",
   "by": "sonnet audit (second read, 2026-10-24)",
@@ -4360,11 +4496,11 @@
   "source_sha": "628a1731fb5c3c67"
  },
  "backend/data/parsed_results/2017/XC/SEP-8-RESULTS.json": {
-  "verdict": "source-error",
-  "by": "sonnet audit (second read, 2026-10-24)",
-  "notes": "Existing override matches the PDF image: 48 boys (places 1-52; 31, 32, 45, 50 not printed) and 7 girls (F column), times printed without a colon (1657 = 16:57), places 10, 11, 40-52 have the surname on the next line. Source error: team scores 'YORK 20, TRAIP 39, OOB ns' do not reproduce from the places: York 2,3,4,5,6 (after dropping non-scoring OOB's place 6) = 20 but Traip's five (1,7,8,12,20) = 48, not 39. Override keeps the printed 20/39.",
-  "date": "2026-10-24",
-  "parse_sha": "a678da4ce28007c9",
+  "verdict": "confirmed",
+  "by": "sonnet audit (second read, 2026-10-26)",
+  "notes": "Existing override. pdftotext of the PDF has no runner for 31, 32, 45 or 50: the printed list goes '30 Cameron Brayne 2116' then '33 Ethan Bald 2213', '44 James Mattingly' then '46 Bennett', '49 Brad Newton' then '51 Tim Perkins'. Page's own skips.",
+  "date": "2026-10-26",
+  "parse_sha": "d666e0a0ed371c4f",
   "source_sha": "3433d35a33ff7e17"
  },
  "backend/data/parsed_results/2017/XC/TrippGirlsResults.json": {
@@ -4433,9 +4569,9 @@
  },
  "backend/data/parsed_results/2017/XC/focboys2017-1.txt.json": {
   "verdict": "confirmed",
-  "by": "sonnet audit (second read, 2026-10-24)",
-  "notes": "Hy-Tek '2017 Maine XC Festival of Champions - 9/30/2017', Event 2 Boys 5k, 'Results - Men': all 933 timed finishers plus 8 DNFs (Scarborough Schuler/Derrick/Hanson/Osborn, Greely Wilson, Gould Plummer, Ellsworth Frost, Belfast Blow) = 941 rows match place, name, class, school, time and Points. Schools resolve correctly: Lincoln High School -> oos-auto-ri-lincoln (RI; scored separately from Lincoln Academy 11th/7th), Canton -> CT, Concord/Hanover/Nashua North NH, Classical/Hope/Cumberland/East Greenwich/Burrillville RI, Harwood Union VT, Charlottetown/Colonel Gray PEI, JH Gillis/King's Edgehill NS. Team Scores list (62+ teams, e.g. Concord 58, East Greenwich 123, Nashua North 139, Falmouth 156) is the parse's.",
-  "date": "2026-10-24",
+  "by": "sonnet audit (second read, 2026-10-26)",
+  "notes": "The source prints tied marks with the same place number (e.g. '285 Ethan Thombs ... 18:57.23' and '285 Erik LoSacco ... 18:57.23' then '287 Matt Barton'; 626,626,628; 734,734,736; 752,752,754), so the next number is skipped on the page itself; the parse reproduces every printed row.",
+  "date": "2026-10-26",
   "parse_sha": "35fa62ba42a98478",
   "source_sha": "15beaede96d69f2e"
  },
@@ -4449,9 +4585,9 @@
  },
  "backend/data/parsed_results/2017/XC/focgirls2017.txt.json": {
   "verdict": "confirmed",
-  "by": "sonnet audit (second read, 2026-10-24)",
-  "notes": "Hy-Tek '2017 Maine XC Festival of Champions - 9/30/2017', Event 1 Girls 5k, 'Results - Women': all timed finishers plus 10 DNFs (Hampden Abruquah, Yarmouth Robichaud/Thorton, Westbrook Popovic, Bucksport Rankin, Maranacook Welch, Falmouth Pasch/Smithwick, Belfast Maddocks, Scarborough Diaz) = 759 rows match place, name, class, school, time and Points. Out-of-state schools (Glastonbury CT, Burrillville/East Greenwich/Cumberland RI, Concord/Hanover/Nashua North NH, Harwood Union VT, PEI and Nova Scotia schools) resolve to oos ids; Schenck, Katahdin, Maine Girls Academy correct. Team Scores (62 teams, Glastonbury 115, Camden Hills 228, Cumberland 240 ... Maine Girls Academy 1903) is the parse's.",
-  "date": "2026-10-24",
+  "by": "sonnet audit (second read, 2026-10-26)",
+  "notes": "The source prints tied marks with the same place number (e.g. 361,361,363; 409,409,411; 636,636,638), so the next number is skipped on the page itself; the parse reproduces every printed row.",
+  "date": "2026-10-26",
   "parse_sha": "1e9e79d4e5be7c91",
   "source_sha": "3e7821bfbef5dd62"
  },
@@ -4470,6 +4606,14 @@
   "date": "2026-10-24",
   "parse_sha": "5fd673fc88e64626",
   "source_sha": "d27483b6a47b71f2"
+ },
+ "backend/data/parsed_results/2017/XC/ms-wmc-york-oob-traip-2017.json": {
+  "verdict": "confirmed",
+  "by": "sonnet audit (second read, 2026-10-26)",
+  "notes": "MileSplit copy of the York/Traip/OOB meet; identical 48-row boys result to the sub5 SEP-8-RESULTS sheet, whose printed list jumps 30->33, 44->46, 49->51 (no rows for 31, 32, 45, 50 on the page). The raw MileSplit page is not cached, so confirmed by the sub5 twin; nothing to add.",
+  "date": "2026-10-26",
+  "parse_sha": "af9c46501dc9b6ca",
+  "source_sha": "82f133ee03a09485"
  },
  "backend/data/parsed_results/2017/XC/mtblueboys_aug31.json": {
   "verdict": "confirmed",
@@ -5184,12 +5328,20 @@
   "source_sha": "9a9680e870e6befc"
  },
  "backend/data/parsed_results/2018/XC/foc18boysoverall.txt.json": {
-  "verdict": "fixed",
-  "by": "sonnet audit (second read, 2026-10-24)",
-  "notes": "All 850 rows (848 finishers + 2 DNF: Michael Cyr FR Caribou High School, Nicholas Ritchie FR Belfast) match place, name, grade, school, mark, Points (as team_place); the printed team list matches. SCHOOL CODE: 'Lincoln High School' (21 rows; team list '15. Lincoln High School 542.0', separate from '10. Lincoln Academy 339.0') resolves to me-hs-lincoln-academy, which is wrong; it is Lincoln High School, Lincoln RI (athletes contradict the name match, oos-auto-ri-lincoln 21/21 in school_catalog_validation.json; Classical-RI and Burrillville-RI run in the same race; the same string and runners are in the 2017 Festival of Champions file). Rule: raw 'Lincoln High School' -> oos-auto-ri-lincoln for this file; the stale raw-map entry 'Lincoln High School' -> me-hs-lincoln-academy (2017-2018, stem rule) should be fixed. 'North Augusta-SC' (Jonathan Steelman, place 50) correctly unresolved. 'Joo Campos' (place 477) is 'Jo<U+FFFD>o Campos' in the source (glyph damage, accent dropped).",
-  "date": "2026-10-24",
+  "verdict": "confirmed",
+  "by": "sonnet audit (second read, 2026-10-26)",
+  "notes": "Every gap is the page itself: Festival of Champions overall list prints tied places (e.g. 116 twice, then 118) and skips the next number. Checked: no source line begins with any of the missing places, and for every printed place the number of source rows equals the number of stored rows.",
+  "date": "2026-10-26",
   "parse_sha": "d1d5574a4e5719ec",
   "source_sha": "a71f5f3257ec1d6c"
+ },
+ "backend/data/parsed_results/2018/XC/foc18girlsoverall.txt.json": {
+  "verdict": "confirmed",
+  "by": "sonnet audit (second read, 2026-10-26)",
+  "notes": "The source prints tied marks with the same place number (e.g. 272,272,274; 327,327,329; 344,344,346), so the next number is skipped on the page itself; the parse reproduces every printed row.",
+  "date": "2026-10-26",
+  "parse_sha": "6a9cc354adf94a7f",
+  "source_sha": "0341c0cf3960e170"
  },
  "backend/data/parsed_results/2018/XC/focboyssections.json": {
   "verdict": "confirmed",
@@ -5823,6 +5975,14 @@
   "parse_sha": "0949c1e55152b9fb",
   "source_sha": "e65df589c3a963fd"
  },
+ "backend/data/parsed_results/2019/XC/focboys_2019.txt.json": {
+  "verdict": "confirmed",
+  "by": "sonnet audit (second read, 2026-10-26)",
+  "notes": "Every gap is the page itself: Festival of Champions overall list prints tied places (e.g. 116 twice, then 118) and skips the next number. Checked: no source line begins with any of the missing places, and for every printed place the number of source rows equals the number of stored rows.",
+  "date": "2026-10-26",
+  "parse_sha": "0c7b6efae35a70a8",
+  "source_sha": "e560870404f4e672"
+ },
  "backend/data/parsed_results/2019/XC/girls.json": {
   "verdict": "confirmed",
   "by": "sonnet audit (second read, 2026-10-24)",
@@ -6246,6 +6406,14 @@
   "date": "2026-10-24",
   "parse_sha": "57810cb724824c2b",
   "source_sha": "58ec2e8cb9b15a74"
+ },
+ "backend/data/parsed_results/2020/XC/Lisbon-10-9-2020.json": {
+  "verdict": "confirmed",
+  "by": "sonnet audit (second read, 2026-10-26)",
+  "notes": "PDF prints 10 COMPETITORS (girls) and 25 COMPETITORS (boys) and exactly those rows are stored; the page numbers boys 1-10,12,14,15... skipping places (11,13,22,24-26,30-32 for the boys; girls rows 1-10 complete).",
+  "date": "2026-10-26",
+  "parse_sha": "30e0c24787e14efe",
+  "source_sha": "b14de60a02e0c3f2"
  },
  "backend/data/parsed_results/2020/XC/Lisbon-Results-10-2-10.json": {
   "verdict": "confirmed",
@@ -7145,9 +7313,9 @@
  },
  "backend/data/parsed_results/2022/XC/focboys2022.txt.json": {
   "verdict": "confirmed",
-  "by": "sonnet audit (second read, 2026-10-24)",
-  "notes": "678 finishers + 4 DNF (Gilman Taylor, Luka Topalovic, Trey Belyea, Gavin Peck) all match the source (place, name, year, school, mark, points compared programmatically). Team scores verified. Unresolved: 'Royals TC' (2 rows) is a club team, correctly unresolved. Out-of-state teams resolved: Burrillville RI, Wheeler RI, Mt. St. Charles (Woonsocket RI), King's Edgehill NS, Harwood (Harwood Union VT). Source oddity: place 398 Atticus Blue printed year '28' (parse leaves the grade blank).",
-  "date": "2026-10-24",
+  "by": "sonnet audit (second read, 2026-10-26)",
+  "notes": "The source prints tied marks with the same place number (e.g. 110,110,112; 127,127,129; 229,229,231; 290,290,292), so the next number is skipped on the page itself; the parse reproduces every printed row.",
+  "date": "2026-10-26",
   "parse_sha": "543271e9eedcca08",
   "source_sha": "1f82ccd56845e0aa"
  },
@@ -7262,6 +7430,14 @@
   "date": "2026-10-24",
   "parse_sha": "99f3adc11f063d24",
   "source_sha": "0bafaed89a639569"
+ },
+ "backend/data/parsed_results/2022/XC/wi10422.json": {
+  "verdict": "confirmed",
+  "by": "sonnet audit (second read, 2026-10-26)",
+  "notes": "Windsor MS boys race: the PDF prints 39 COMPETITORS and exactly the 39 rows stored; places 13,30,33-38,44,47 are not printed (page numbers non-finishers/other-team places out of sequence: 12,14,16,18...). Girls race 29 of 29.",
+  "date": "2026-10-26",
+  "parse_sha": "078266afe2ff2a01",
+  "source_sha": "f0ef5320eac2c073"
  },
  "backend/data/parsed_results/2023/XC/10-11-23-Oxford-Hills-MS.json": {
   "verdict": "confirmed",
@@ -7584,18 +7760,18 @@
   "source_sha": "b1bb6d9272da7090"
  },
  "backend/data/parsed_results/2023/XC/foc2023boysoverall.txt.json": {
-  "verdict": "fixed",
-  "by": "sonnet audit (second read, 2026-10-24)",
-  "notes": "School code: \"Portsmouth\" (5 boys: Sean Gray, Chris Vachon, Jack Marston, Drew Forch, Gavin Braman) prints no state. Evidence: the same Sean Gray is \"Portsmouth RI\" in 2023 nexcboys2023 (New England meet), and the girls file has Allie Kaull \"Portsmouth RI\" in nexcgirls2023; one Portsmouth team in this meet's team list -> catalog oos-auto-ri-portsmouth (a catalog NH Portsmouth also exists, so this is an inference from the runners, flag if you disagree). All else matches: 875 numbered rows (5 ties) + 7 DNF = 882, place/name/grade/school/time verified for every row; J prefix on some times (J17:48.08) is the source's marker, mark read as 17:48.08; team scores (75 teams, E.O. Smith 95, Portland 184, ...) identical to the printed list.",
-  "date": "2026-10-24",
+  "verdict": "confirmed",
+  "by": "sonnet audit (second read, 2026-10-26)",
+  "notes": "Every gap is the page itself: Festival of Champions overall list prints tied places (e.g. 116 twice, then 118) and skips the next number. Checked: no source line begins with any of the missing places, and for every printed place the number of source rows equals the number of stored rows.",
+  "date": "2026-10-26",
   "parse_sha": "64a28458e28dd7fc",
   "source_sha": "8df6964721eb8027"
  },
  "backend/data/parsed_results/2023/XC/foc2023girlsoverall.txt.json": {
-  "verdict": "fixed",
-  "by": "sonnet audit (second read, 2026-10-24)",
-  "notes": "Same Portsmouth rule as foc2023boysoverall (Allie Kaull, Portsmouth RI in nexcgirls2023; girls file has no other Portsmouth rows but the team-list name is the same school). Park View (Zoe Mosher, 10th) prints no state and no other source gives one: stays unresolved (correct). All else matches: 703 numbered rows (3 ties) + 18 DNF = 721, every place/name/grade/school/time verified; 61 team scores identical to the printed list (Cumberland 147, Bonny Eagle 170, Camden Hills 215, ...).",
-  "date": "2026-10-24",
+  "verdict": "confirmed",
+  "by": "sonnet audit (second read, 2026-10-26)",
+  "notes": "The source prints tied marks with the same place number (e.g. 134,134,136; 184,184,186; 477,477,479), so the next number is skipped on the page itself; the parse reproduces every printed row.",
+  "date": "2026-10-26",
   "parse_sha": "13fa05b4651a0306",
   "source_sha": "6106dc7b5b1b472d"
  },
@@ -8049,9 +8225,9 @@
  },
  "backend/data/parsed_results/2025/XC/focboysoverall4oct2025.txt.json": {
   "verdict": "confirmed",
-  "by": "sonnet audit 2026-10-21",
-  "notes": "All 866 rows (incl. DNF/DQ) and all 69 team scores match the source (script, 0 mismatches; e.g. '1 Yarmouth High School 157'). Six rows 'Saint Andrew's -> ?' (lines 1168, 1523, 1560, 1770, 1807, 1921: David Aulisio, Josh Maddaloni, Retief VanBiljon, Jackson Kelley, Jack Gravina, Matthew Howayeck). Source team table prints 'Saint Andrew's School' with no state. Evidence missing: no state/province anywhere in source; same string appears at 2024 and 2026 FOC and Resultsboysbysection4oct2025 with no resolved id. ASK JAMES which Saint Andrew's School (e.g. RI) it is and whether to add an out-of-state id. Also meet name parsed as 'Results' instead of '2025 Maine XC Festival of Champions'. [orchestrator: every row matches; the open school strings ('Saint Andrew's', 'Avon View', 'Lockview', 'North Shore') are out-of-state teams printed without a state; left unresolved, not guessed (no Maine product uses them)]",
-  "date": "2026-10-21",
+  "by": "sonnet audit (second read, 2026-10-26)",
+  "notes": "The source prints tied marks with the same place number (e.g. 290,290,292; 403,403,405; 472,472,474), so the next number is skipped on the page itself; the parse reproduces every printed row.",
+  "date": "2026-10-26",
   "parse_sha": "b3f079850f6226fb",
   "source_sha": "6db8010142d58ebf"
  },
@@ -8497,9 +8673,9 @@
  },
  "backend/data/parsed_results/2026/XC/focboy3oct2026.txt.json": {
   "verdict": "confirmed",
-  "by": "sonnet audit 2026-10-21",
-  "notes": "Source backend/data/sub5_archive/2026/XC/focboy3oct2026.txt.htm (2026 Maine XC Festival of Champions, Boys 5k). All 947 rows (940 finishers + 7 DNF) verified programmatically on place, name, grade, school string, mark and Points column (tp): zero differences; all 79 team scores match the source block ('1 Yarmouth High School 114' ... '79 ... 2337'). Only open items are 8 rows whose school stays '?': 'Saint Andrew's' x7 (e.g. '467 Chamberlain Smith 11 Saint Andrew's 20:44.69', team block '75 Saint Andrew's School 2092') and 'Avon View' x1 ('36 Thatcher Houston 9 Avon View 16:47.75'). Evidence missing: nothing in the source, the school catalog (school_raw_map: 'unresolved') or other FoC files (2024-2026, same bare 'Saint Andrew's') gives a state; the field is mostly Maine plus RI/CT/VT/MA/NS schools, so Saint Andrew's could be Saint Andrew's School (Barrington RI) but that is a guess. 'Avon View' is not a known school (the other 'Avon' rows are Avon CT). Ask James: which Saint Andrew's School (state) and what is 'Avon View'? Everything else confirmed; schools like East Greenwich/Burrillville/Mount St Charles/Wheeler map to oos-ri-*, Glastonbury to oos-ct, Harwood to oos-vt, Austin to oos-ma, King's-Edgehill to oos-ns, Oak Hill (me-hs-oak-hill) and Lisbon/Oak Hill (me-hs-lisbon) are separate entries in the source. [orchestrator: every row matches; 'Saint Andrew's' and 'Avon View' are out-of-state schools left unresolved (no state printed): likely Saint Andrew's School, Barrington RI (field of 4 RI schools) and Avon View HS, Windsor NS (King's-Edgehill of Windsor also ran), not guessed]",
-  "date": "2026-10-21",
+  "by": "sonnet audit (second read, 2026-10-26)",
+  "notes": "Every gap is the page itself: Festival of Champions overall list prints tied places (e.g. 116 twice, then 118) and skips the next number. Checked: no source line begins with any of the missing places, and for every printed place the number of source rows equals the number of stored rows.",
+  "date": "2026-10-26",
   "parse_sha": "2c15ac1a42155d66",
   "source_sha": "9caaf5c248bb3774"
  },
@@ -8513,9 +8689,9 @@
  },
  "backend/data/parsed_results/2026/XC/focgirls3oct2026.txt.json": {
   "verdict": "confirmed",
-  "by": "sonnet audit 2026-10-21",
-  "notes": "Source backend/data/sub5_archive/2026/XC/focgirls3oct2026.txt.htm (2026 Maine XC Festival of Champions, Girls 5k). All 632 rows (592 finishers + 40 DNF) verified programmatically on place, name, grade, school string, mark and Points column (tp): zero differences; all 63 team scores match the source block. Only open item: 6 rows with school 'Saint Andrew's' left '?' (e.g. '24 Maura Gravina 12 Saint Andrew's 19:47.09', '382 Mia Meinke', '406 Ginger Newman', '516 Dhanna Guerrero Sanchez', '544 Annabelle Mazurkie', DNF Tatiana Scott-Smith). Evidence missing: no state anywhere in the source, school catalog (school_raw_map 'unresolved') or other FoC files 2024-2026; most likely Saint Andrew's School (Barrington RI, since the field has RI schools) but that is a guess. Ask James: which Saint Andrew's School (state)? Note (not blocking): 'Mercy High School' -> oos-auto-ct-mercy is an auto-created CT entry ('not hand-checked'), plausible for Mercy HS Middletown CT; everything else confirmed. [orchestrator: every row matches; 'Saint Andrew's' and 'Avon View' are out-of-state schools left unresolved (no state printed): likely Saint Andrew's School, Barrington RI (field of 4 RI schools) and Avon View HS, Windsor NS (King's-Edgehill of Windsor also ran), not guessed]",
-  "date": "2026-10-21",
+  "by": "sonnet audit (second read, 2026-10-26)",
+  "notes": "The source prints tied marks with the same place number (e.g. 230,230,232; 244,244,246; 418,418,420), so the next number is skipped on the page itself; the parse reproduces every printed row.",
+  "date": "2026-10-26",
   "parse_sha": "528e60b9a6e2acd7",
   "source_sha": "db68896793614367"
  },

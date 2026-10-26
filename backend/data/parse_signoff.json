@@ -2946,6 +2946,13 @@
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
  },
+ "backend/data/parsed_results/2005/XC/yorkMSsb.json": {
+  "parse_sha": "9f3c740e8493ca88",
+  "source_sha": "824970b7eb27d1da",
+  "date": "2026-10-26",
+  "by": "sonnet audit (second read, 2026-10-26) (audit: source-error)",
+  "evidence": "The PDF (2 pages) prints places 1-46 on page 1 and page 2 starts at 58 (rendered and checked): places 47-57 are not on the page. Parse has every printed row (66 rows)."
+ },
  "backend/data/parsed_results/2006/Indoor/1Aboys.json": {
   "parse_sha": "0504fba672787e5b",
   "source_sha": "18e999b7acb65715",
@@ -5995,6 +6002,13 @@
   "parse_sha": "9d552d69a0676574",
   "source_sha": "92a07c3ad578c53d",
   "date": "2026-10-21",
+  "by": "auto: team scores verified exactly, all schools identified, no flags",
+  "evidence": ""
+ },
+ "backend/data/parsed_results/2007/XC/thorntonboys9_19.json": {
+  "parse_sha": "ffa460a3ff5b93f5",
+  "source_sha": "d7841bee96fbf56c",
+  "date": "2026-10-26",
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
  },
@@ -16106,6 +16120,13 @@
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
  },
+ "backend/data/parsed_results/2012/XC/massabesicgirls_sept25.json": {
+  "parse_sha": "f7963764439cde23",
+  "source_sha": "adbedcb0db0335c9",
+  "date": "2026-10-26",
+  "by": "sonnet audit (second read, 2026-10-26) (audit: source-error)",
+  "evidence": "Existing override keeps all 12 readable rows. Places 2-6 (Wasina, Waters, Harrington, Nadeau, Turner) print marks '0.94'-'0.98' (spreadsheet damage), no readable time, so the rows stay out as the override notes say; the gaps are the sheet's own damage, nothing recoverable."
+ },
  "backend/data/parsed_results/2012/XC/mcauleyboys_sept7.json": {
   "parse_sha": "417f4c16dc025d1b",
   "source_sha": "80f6871c6583dfbb",
@@ -22028,6 +22049,13 @@
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
  },
+ "backend/data/parsed_results/2015/XC/ms-smaa-2nd-7-meet-2015.json": {
+  "parse_sha": "ef69e3d69250df10",
+  "source_sha": "4420f2c61b8421b5",
+  "date": "2026-10-26",
+  "by": "sonnet audit (second read, 2026-10-26) (audit: confirmed)",
+  "evidence": "Missing places 5,8,20,36,44,68,77,78,82,90 are all explained by ties: every printed place equals the row rank (e.g. 4,4 then 6; 7,7 then 9), so no row is lost (105 rows). Girls complete."
+ },
  "backend/data/parsed_results/2015/XC/ms-smaa-bidgormcauleymarshwood-2015.json": {
   "parse_sha": "e94f09ebfb5f43f6",
   "source_sha": "17add679ed1c8930",
@@ -27726,6 +27754,13 @@
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
  },
+ "backend/data/parsed_results/2017/XC/ms-wmc-york-oob-traip-2017.json": {
+  "parse_sha": "af9c46501dc9b6ca",
+  "source_sha": "82f133ee03a09485",
+  "date": "2026-10-26",
+  "by": "sonnet audit (second read, 2026-10-26) (audit: confirmed)",
+  "evidence": "MileSplit copy of the York/Traip/OOB meet; identical 48-row boys result to the sub5 SEP-8-RESULTS sheet, whose printed list jumps 30->33, 44->46, 49->51 (no rows for 31, 32, 45, 50 on the page). The raw MileSplit page is not cached, so confirmed by the sub5 twin; nothing to add."
+ },
  "backend/data/parsed_results/2017/XC/mtblueboys_aug31.json": {
   "parse_sha": "e70019cd0731b526",
   "source_sha": "bab3aeb314564aff",
@@ -30413,6 +30448,13 @@
   "date": "2026-10-16",
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
+ },
+ "backend/data/parsed_results/2018/XC/foc18boysoverall.txt.json": {
+  "parse_sha": "d1d5574a4e5719ec",
+  "source_sha": "a71f5f3257ec1d6c",
+  "date": "2026-10-26",
+  "by": "sonnet audit (second read, 2026-10-26) (audit: confirmed)",
+  "evidence": "Every gap is the page itself: Festival of Champions overall list prints tied places (e.g. 116 twice, then 118) and skips the next number. Checked: no source line begins with any of the missing places, and for every printed place the number of source rows equals the number of stored rows."
  },
  "backend/data/parsed_results/2018/XC/foc18girlsoverall.txt.json": {
   "parse_sha": "6a9cc354adf94a7f",
@@ -42250,6 +42292,20 @@
   "date": "2026-10-16",
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
+ },
+ "backend/data/parsed_results/2023/XC/foc2023boysoverall.txt.json": {
+  "parse_sha": "64a28458e28dd7fc",
+  "source_sha": "8df6964721eb8027",
+  "date": "2026-10-26",
+  "by": "sonnet audit (second read, 2026-10-26) (audit: confirmed)",
+  "evidence": "Every gap is the page itself: Festival of Champions overall list prints tied places (e.g. 116 twice, then 118) and skips the next number. Checked: no source line begins with any of the missing places, and for every printed place the number of source rows equals the number of stored rows."
+ },
+ "backend/data/parsed_results/2023/XC/foc2023girlsoverall.txt.json": {
+  "parse_sha": "13fa05b4651a0306",
+  "source_sha": "6106dc7b5b1b472d",
+  "date": "2026-10-26",
+  "by": "sonnet audit (second read, 2026-10-26) (audit: confirmed)",
+  "evidence": "The source prints tied marks with the same place number (e.g. 134,134,136; 184,184,186; 477,477,479), so the next number is skipped on the page itself; the parse reproduces every printed row."
  },
  "backend/data/parsed_results/2023/XC/ghca-middle-school-boys-results.json": {
   "parse_sha": "c6d5c556b94a26bc",
