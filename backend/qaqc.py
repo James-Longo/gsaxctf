@@ -246,7 +246,7 @@ def check_parser_failures():
                 continue
             parsed_dir = os.path.join(PARSED_BASE, year, season)
             for fn in sorted(os.listdir(season_path)):
-                if not fn.lower().endswith(('.htm', '.html', '.pdf')):
+                if not fn.lower().endswith(('.htm', '.html', '.pdf', '.txt')):
                     continue
                 total += 1
                 stem = os.path.splitext(fn)[0]
@@ -312,7 +312,7 @@ def check_season_pipeline_coverage(all_perfs):
             spath = os.path.join(ypath, season)
             if not os.path.isdir(spath):
                 continue
-            files = [f for f in os.listdir(spath) if f.lower().endswith(('.htm', '.html', '.pdf'))]
+            files = [f for f in os.listdir(spath) if f.lower().endswith(('.htm', '.html', '.pdf', '.txt'))]
             parsed_dir = os.path.join(PARSED_BASE, year, season)
             nonempty = 0
             for fn in files:
@@ -1544,7 +1544,7 @@ def check_meet_scoring():
                 if not os.path.isdir(season_path):
                     continue
                 for fn in sorted(os.listdir(season_path)):
-                    if fn.lower().endswith(('.htm', '.html', '.pdf')):
+                    if fn.lower().endswith(('.htm', '.html', '.pdf', '.txt')):
                         yield year, season, fn
         for jp_ in sorted(glob.glob(os.path.join(PARSED_BASE, '*', '*', '*.json'))):
             year, season, fn = jp_.split(os.sep)[-3:]
@@ -1577,12 +1577,14 @@ def check_meet_scoring():
 
                 # Cross country: official Team Scores re-derived from the
                 # finish order (name-free, see xc_verify_parsed)
+                _XC_CTX.clear()   # (xc_verify_file leaves its file's context behind)
                 xc_v = xc_verify_parsed(parsed)
                 if season == 'XC' and (not xc_v or xc_v.get('status') != 'verified'):
                     # (the file-level check also pairs a score sheet with the race
                     # posted beside it, joins a report's first page and resolves
                     # schools through the catalog: the better reading stands)
                     w = xc_verify_file(jp)
+                    _XC_CTX.clear()
                     rank = {'verified': 0, 'verified_close': 1, 'mismatch': 2, 'xc_unpaired': 3, 'xc_no_results': 4}
                     if w and (xc_v is None or rank.get(w.get('status'), 9) < rank.get(xc_v.get('status'), 9)):
                         xc_v = w
