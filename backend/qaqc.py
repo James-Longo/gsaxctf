@@ -1578,6 +1578,14 @@ def check_meet_scoring():
                 # Cross country: official Team Scores re-derived from the
                 # finish order (name-free, see xc_verify_parsed)
                 xc_v = xc_verify_parsed(parsed)
+                if season == 'XC' and (not xc_v or xc_v.get('status') != 'verified'):
+                    # (the file-level check also pairs a score sheet with the race
+                    # posted beside it, joins a report's first page and resolves
+                    # schools through the catalog: the better reading stands)
+                    w = xc_verify_file(jp)
+                    rank = {'verified': 0, 'verified_close': 1, 'mismatch': 2, 'xc_unpaired': 3, 'xc_no_results': 4}
+                    if w and (xc_v is None or rank.get(w.get('status'), 9) < rank.get(xc_v.get('status'), 9)):
+                        xc_v = w
                 if xc_v is not None:
                     verification[meet_key] = xc_v
                     xc_counts[xc_v['status']] = xc_counts.get(xc_v['status'], 0) + 1
