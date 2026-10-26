@@ -1609,6 +1609,12 @@ FILE_RULES = [
     (['N'], 'XC', (2011, 2011), r'^yorkmsgirls_oct5$', 'me-ms-noble'),
     (['Ma'], 'XC', (2009, 2009), r'^yorkcountymsgirls7th8th$', 'me-ms-massabesic'),
     (['MED'], 'XC', (2022, 2022), r'^ms-gsb-school-cross-country-meet-2022$', 'me-ms-medomak'),  # a middle-school meet (Great Salt Bay host, Oceanside MS, Boothbay middle grades)
+    # 2026-10-26 second read, batch 17 (2011-2012)
+    (['Woodstock Un'], 'XC', (2012, 2012), r'^New%20England%20HS%20XC%20girls%20results(\.txt)?$', 'oos-auto-vt-woodstock-union'),
+    (['Randolph Unio- Vt'], 'XC', (2012, 2012), r'^New%20England%20HS%20XC%20girls%20results(\.txt)?$', 'oos-auto-vt-randolph-union'),
+    (['RW Traip Academy'], 'XC', (2012, 2012), r'^stateclasscgirls(\.txt)?$', 'me-hs-traip'),
+    (['RW Traip Academy'], 'XC', (2012, 2012), r'^statecombinedgirls(\.txt)?$', 'me-hs-traip'),
+    (['Maine Cathlol'], 'XC', (2011, 2011), r'^smaainvitational_oct24$', 'me-ms-southern-maine-catholic'),
     # 2026-10-24 unresolved-school review, batch 2
     (['F'], 'XC', (2004, 2004), r'^cape7oct04[bg]\.txt$', 'me-hs-falmouth'),   # Title lists Falmouth; only F team
     (['Y'], 'XC', (2004, 2004), r'^cape7oct04[bg]\.txt$', 'me-hs-yarmouth'),   # Title lists Yarmouth; only Y team
