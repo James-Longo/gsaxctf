@@ -390,7 +390,9 @@ def _fold_task(args):
         if len(entries) < 20:
             continue
         teams, _ = xp.simulate(ratings, entries, noise, sims=sims, seed=year,
-                               icc=m['params'].get('program_icc', xp.DEFAULTS['program_icc']))
+                               icc=m['params'].get('program_icc', xp.DEFAULTS['program_icc']),
+                               p_dnf=xp.dnf_chance(ratings, year, g, x['day'])
+                               if m['params'].get('dnf', xp.DEFAULTS['dnf']) else None)
         n = len([t for t in teams if teams[t]['scored'] > 0])
         pred = {t: dict(place_dist=v['place_dist'],
                         exp_place_all=sum(p * c for p, c in v['place_dist'].items())

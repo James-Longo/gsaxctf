@@ -584,6 +584,7 @@ DEFAULTS = dict(
     slow_clip=2.5,     # races this many race_sd slower than the estimate
                        # (a fall, a sick day) are down-weighted
     use_prior=True,
+    dnf=True,          # runners can drop out of a simulated race (DNF_BASE, DNF_REPEAT)
     program_icc=0.074, # program effect: share of a runner's race-day result shared with the rest
                        # of their school's runners that day (simulate_postseason); measured
                        # from teammates' misses at championships. Backtest 2026-10-18: podiums
@@ -1059,9 +1060,10 @@ def pick_entries(ratings, teams, max_entry=MAX_ENTRY):
     return out
 
 
-def simulate(ratings, entries, noise, sims=2000, seed=0, icc=0.0):
+def simulate(ratings, entries, noise, sims=2000, seed=0, icc=0.0, p_dnf=None):
     """Monte Carlo one race. Returns per-team and per-athlete summaries.
-    icc: the program effect, share of a runner's result shared with their school's runners (see simulate_postseason)."""
+    icc: the program effect, share of a runner's result shared with their school's runners (see simulate_postseason).
+    p_dnf: aid -> chance of not finishing (dnf_chance), or None."""
     rng = random.Random(seed)
     aids = list(entries)
     team_place = defaultdict(lambda: defaultdict(int))
@@ -1075,7 +1077,7 @@ def simulate(ratings, entries, noise, sims=2000, seed=0, icc=0.0):
                  + (w_team * tday[entries[a]] if icc else 0.0), a)
                 for a in aids]
         perf.sort()
-        order = [a for _, a in perf]
+        order = [a for _, a in perf if not p_dnf or rng.random() >= p_dnf[a]]
         ranked, _ = score_race(order, entries)
         for i, (t, s, _) in enumerate(ranked):
             team_place[t][i + 1] += 1
@@ -1312,6 +1314,71 @@ def team_qualifiers(n_scoring):
 
 INDIVIDUAL_QUALIFIERS = 30
 
+# Did not finish. Every entered runner starts every simulated race; some drop
+# out. Measured on the XC results files (2026-10-26): 1,840 DNF rows. Files
+# that print non-finishers average 1.6 DNFs per ~100-runner championship race
+# given at least one, a zero-truncated Poisson of about 1.0 per race: 1% a
+# start. DNF repeats: in those files a runner with no earlier DNF drops out
+# 1.6% of starts, after one 5.9% (3.7x), after two or more 13.7% (8.5x).
+DNF_BASE = 0.010
+DNF_REPEAT = (1.0, 3.7, 8.5)
+NOT_VARSITY = re.compile(r'\bjv\b|junior|middle|\bms\b|reserve', re.I)
+
+_dnfs = None
+
+
+def load_dnfs():
+    """[(year, gender, day, meet, name key, team)] for every varsity DNF row
+    in the XC results files, one per runner per race day."""
+    global _dnfs
+    if _dnfs is not None:
+        return _dnfs
+    out = {}
+    base = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'data', 'parsed_results')
+    for year in os.listdir(base):
+        d = os.path.join(base, year, 'XC')
+        if not year.isdigit() or not os.path.isdir(d):
+            continue
+        for fn in os.listdir(d):
+            if not fn.endswith('.json'):
+                continue
+            try:
+                j = cm._load_json(os.path.join(d, fn), {})
+            except Exception:
+                continue
+            if not isinstance(j, dict):
+                continue
+            meet, day = fn[:-5], season_day(year, j.get('date'))
+            for ev in j.get('events', []):
+                if not isinstance(ev, dict):
+                    continue
+                label = f"{ev.get('event', '')} {ev.get('gender', '')}"
+                g = 'Girls' if re.search(r'girl|women|female', label, re.I) else \
+                    'Boys' if re.search(r'boy|\bmen\b|male', label, re.I) else None
+                if g is None or NOT_VARSITY.search(label):
+                    continue
+                for r in ev['results'] if 'results' in ev else [ev]:
+                    name = r.get('athlete') or r.get('athlete_name')
+                    res = str(r.get('result') or r.get('mark') or '').strip().upper()
+                    if res != 'DNF' or not name or not r.get('school'):
+                        continue
+                    team = xc_unit(r['school'], r['school'], year, g, meet)
+                    k = (int(year), g, day if day is not None else meet, _name_key(name), team)
+                    out[k] = (int(year), g, day, meet, _name_key(name), team)
+    _dnfs = list(out.values())
+    return _dnfs
+
+
+def dnf_chance(ratings, year, gender, cutoff):
+    """aid -> chance of not finishing a race, from the runner's own DNFs before
+    `cutoff` (any season) on top of the base rate."""
+    count = defaultdict(int)
+    for y, g, day, _, nk, team in load_dnfs():
+        if g == gender and (y < year or (y == year and day is not None and day < cutoff)):
+            count[(nk, team)] += 1
+    return {a: DNF_BASE * DNF_REPEAT[min(2, count.get((_name_key(r['name']), r['team']), 0))]
+            for a, r in ratings.items()}
+
 
 def simulate_postseason(obs, year, gender, cutoff, groups, calib, noise,
                         sims=2000, seed=0, params=None, form_carry=FORM_CARRY,
@@ -1327,6 +1394,8 @@ def simulate_postseason(obs, year, gender, cutoff, groups, calib, noise,
     if ratings is None:
         ratings, _ = season_ratings(rate_obs if rate_obs is not None else obs,
                                     year, gender, cutoff, calib, params)
+    p_dnf = (dnf_chance(ratings, year, gender, cutoff)
+             if dict(DEFAULTS, **(params or {}))['dnf'] else defaultdict(float))
     by_school = defaultdict(list)
     for aid, r in ratings.items():
         if r['team'] in groups['schools']:
@@ -1350,7 +1419,8 @@ def simulate_postseason(obs, year, gender, cutoff, groups, calib, noise,
     # qualifying: its real results decide who goes on, by the same rule the
     # simulation uses (top half of scoring teams, at least four, plus the top
     # INDIVIDUAL_QUALIFIERS runners). The race is the one that day whose
-    # runners' schools are this regional's class and region.
+    # runners' schools are this regional's class and region. A qualifying team
+    # brings everyone who started its regional, a runner who dropped out too.
     actual_q, done = defaultdict(set), set()
     for mid, m in meets.items():
         if 'region' not in m:
@@ -1377,6 +1447,12 @@ def simulate_postseason(obs, year, gender, cutoff, groups, calib, noise,
         ranked_, _ = score_race(order_, sch)
         q_teams = {t for t, _, _ in ranked_[:team_qualifiers(len(ranked_))]}
         q = {a for a in order_ if sch[a] in q_teams} | set(order_[:INDIVIDUAL_QUALIFIERS])
+        aid_of = {(_name_key(r['name']), r['team']): a for a, r in ratings.items()}
+        for y, g, day, meet, nk, team in load_dnfs():
+            a = aid_of.get((nk, team))
+            if (y, g, meet) == (year, gender, rows_[0].meet) and team in q_teams and a:
+                sch[a] = team
+                q.add(a)
         for a in q:
             if a in ratings:
                 school_of.setdefault(a, sch[a])
@@ -1405,8 +1481,10 @@ def simulate_postseason(obs, year, gender, cutoff, groups, calib, noise,
                                   noise.draw(ratings[a]['n'], ratings[a]['prior'], rng, ratings[a]['sd']))
                        + (w_team * (a_carry * tform[school_of[a]] + a_race * tday[school_of[a]]) if icc else 0.0), a)
                       for a in aids)
-        order = [a for _, a in perf]
+        order = [a for _, a in perf if rng.random() >= p_dnf[a]]
         st = acc[mid]
+        for a in aids:
+            st['started'][a] += 1
         divs = meets[mid].get('divisions')
         # a meet scored by division places its runners within the division
         div_place = {}
@@ -1429,7 +1507,6 @@ def simulate_postseason(obs, year, gender, cutoff, groups, calib, noise,
                     st['team_scores'][(dname, t)].append(sc)
         for i, a in enumerate(order):
             st['ind_place'][a].append(div_place.get(a, i + 1))
-            st['started'][a] += 1
         if divs:
             return order, None
         ranked, _ = score_race(order, school_of)
@@ -1449,7 +1526,7 @@ def simulate_postseason(obs, year, gender, cutoff, groups, calib, noise,
             if 'region' not in m or ranked is None:
                 continue
             q_teams = {t for t, _, _ in ranked[:team_qualifiers(len(ranked))]}
-            q = {a for a in order if school_of[a] in q_teams}
+            q = {a for a in aids if school_of[a] in q_teams}
             q |= set(order[:INDIVIDUAL_QUALIFIERS])
             for t in q_teams:
                 acc[mid]['team_q'][t] += 1
@@ -1484,9 +1561,10 @@ def simulate_postseason(obs, year, gender, cutoff, groups, calib, noise,
                             qualify=st['team_q'].get(t, 0) / sims if 'region' in meets[mid] else None)
         inds = {}
         for a, ps in st['ind_place'].items():
+            # places over the races the runner finished; start counts every race entered
             ps.sort()
             k = len(ps)
-            inds[a] = dict(div=st['ind_div'].get(a), start=k / sims, med=ps[k // 2], p10=ps[k // 10], p90=ps[(9 * k) // 10],
+            inds[a] = dict(div=st['ind_div'].get(a), start=st['started'][a] / sims, med=ps[k // 2], p10=ps[k // 10], p90=ps[(9 * k) // 10],
                            top10=sum(p <= 10 for p in ps) / sims,
                            top25=sum(p <= 25 for p in ps) / sims,
                            qualify=st['ind_q'].get(a, 0) / sims if 'region' in meets[mid] else None)
