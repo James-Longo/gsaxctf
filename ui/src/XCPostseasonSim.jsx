@@ -79,7 +79,6 @@ export default function XCPostseasonSim({ followTeam }) {
   const meet = data.meets.find(m => m.id === meetId)
   const race = data.data[gender][meetId]
   const isReg = meetId.startsWith('reg')
-  const isState = meetId.startsWith('state')
   const followed = (t) => followTeam && t.store === followTeam
   const divs = [...new Set(race.teams.map(t => t.div).filter(Boolean))].sort().reverse()
   const div = divs.length ? (divs.includes(divPick) || divPick === 'All' ? divPick
@@ -102,7 +101,7 @@ export default function XCPostseasonSim({ followTeam }) {
   if (q) runners = runners.filter(a => `${a.name} ${a.school}`.toLowerCase().includes(q))
   const shown = showAll || team || q ? runners : runners.filter(a => rankOf.get(a) <= ROWS)
   let lastRunnerDiv = null
-  const runnerCols = isReg || isState ? 7 : 6
+  const runnerCols = isReg ? 7 : 6
   const actual = race.actual
   const pastSeason = data.kind === 'backtest'
 
@@ -207,7 +206,6 @@ export default function XCPostseasonSim({ followTeam }) {
                   <th className="num" title="Finishing place in 80% of simulations (10th to 90th percentile)">Range</th>
                   <th className="num">Top 10</th>
                   {isReg && <th className="num">States</th>}
-                  {isState && <th className="num" title="Share of simulations in which the runner qualifies">In field</th>}
                 </tr>
               </thead>
               <tbody>
@@ -229,7 +227,6 @@ export default function XCPostseasonSim({ followTeam }) {
                     <td className="num xs-range">{a.p10 === a.p90 ? a.p10 : `${a.p10}–${a.p90}`}</td>
                     <td className={`num ${pctCls(a.top10)}`}>{pct(a.top10)}</td>
                     {isReg && <td className={`num ${pctCls(a.qual)}`}>{pct(a.qual)}</td>}
-                    {isState && <td className={`num ${pctCls(a.start)}`}>{pct(a.start)}</td>}
                   </tr>
                   </React.Fragment>
                   )
