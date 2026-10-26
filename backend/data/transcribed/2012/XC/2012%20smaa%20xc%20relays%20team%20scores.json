@@ -1,7 +1,7 @@
 {
  "events": [
   {
-   "event": "Run CC",
+   "event": "1.6 Mile Run CC",
    "gender": "Boys",
    "is_relay": false,
    "results": [
@@ -752,7 +752,7 @@
    ]
   },
   {
-   "event": "Run CC",
+   "event": "1.6 Mile Run CC",
    "gender": "Girls",
    "is_relay": false,
    "results": [
@@ -1287,7 +1287,7 @@
    ]
   },
   {
-   "event": "Run CC JV",
+   "event": "1.6 Mile Run CC JV",
    "gender": "Boys",
    "is_relay": false,
    "results": [
@@ -1374,7 +1374,7 @@
    ]
   },
   {
-   "event": "Run CC Freshman",
+   "event": "1.6 Mile Run CC Freshman",
    "gender": "Boys",
    "is_relay": false,
    "results": [
@@ -1461,7 +1461,7 @@
    ]
   },
   {
-   "event": "Run CC JV",
+   "event": "1.6 Mile Run CC JV",
    "gender": "Girls",
    "is_relay": false,
    "results": [
@@ -1548,7 +1548,7 @@
    ]
   },
   {
-   "event": "Run CC Freshman",
+   "event": "1.6 Mile Run CC Freshman",
    "gender": "Girls",
    "is_relay": false,
    "results": [
@@ -1640,5 +1640,5 @@
  "team_rankings": [],
  "parser": "SpreadsheetTableParser",
  "source": "backend/data/sub5_archive/2012/XC/2012%20smaa%20xc%20relays%20team%20scores.html",
- "notes": "Spreadsheet is a grid, one column per team (Biddeford ... Windham; boys block then girls block), runner names on one row, their times on the next, plus four side lists (JV boys, Freshman boys, JV girls, Freshman girls) with the school printed under each time. The parser read name pairs across the team columns as athlete/school (8 boys rows) and left the lists without school. Rewritten: varsity boys and girls (every named runner under his/her team column; Thornton = Thornton Academy), JV and Freshman races with their printed school codes expanded (BE Bonny Eagle, Scar Scarborough, Mass Massabesic, TA Thornton Academy, SP South Portland). Times printed as M:SS:00 by the spreadsheet written M:SS. Varsity places are the rank by time (the sheet has none). Team total-time rows (relay format, sum of the runners) not copied. Calvin Butler (JV boys, 9:47) has no school printed and is left blank. Varsity boys/girls and JV boys duplicate the milesplit file ms-smaa-relays-2012; the Freshman and JV girls races are only here."
+ "notes": "Spreadsheet is a grid, one column per team (Biddeford ... Windham; boys block then girls block), runner names on one row, their times on the next, plus four side lists (JV boys, Freshman boys, JV girls, Freshman girls) with the school printed under each time. The parser read name pairs across the team columns as athlete/school (8 boys rows) and left the lists without school. Rewritten: varsity boys and girls (every named runner under his/her team column; Thornton = Thornton Academy), JV and Freshman races with their printed school codes expanded (BE Bonny Eagle, Scar Scarborough, Mass Massabesic, TA Thornton Academy, SP South Portland). Times printed as M:SS:00 by the spreadsheet written M:SS. Varsity places are the rank by time (the sheet has none). Team total-time rows (relay format, sum of the runners) not copied. Calvin Butler (JV boys, 9:47) has no school printed and is left blank. Varsity boys/girls and JV boys duplicate the milesplit file ms-smaa-relays-2012; the Freshman and JV girls races are only here. 2026-10-25 orchestrator: events named '1.6 Mile Run CC' (they were 'Run CC', read as 5K). The sheet prints no distance; the MileSplit copy of the same meet (ms-smaa-relays-2012) names the events '1.6 Mile Run CC' and its legs equal this sheet's: boys fastest 8:38 vs 8:39, median 9:48 both (93 legs); girls fastest 9:38, median 11:57 both (66 legs); JV boys fastest 9:19, median 9:45.5 both."
 }

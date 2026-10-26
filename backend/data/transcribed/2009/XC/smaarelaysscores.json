@@ -2,7 +2,7 @@
  "source": "backend/data/sub5_archive/2009/XC/smaarelaysscores.htm",
  "events": [
   {
-   "event": "Run CC",
+   "event": "1.55 Mile Run CC",
    "gender": "Girls",
    "is_relay": false,
    "results": [
@@ -129,7 +129,7 @@
    ]
   },
   {
-   "event": "Run CC",
+   "event": "1.55 Mile Run CC",
    "gender": "Boys",
    "is_relay": false,
    "results": [
@@ -256,7 +256,7 @@
    ]
   },
   {
-   "event": "Run CC JV",
+   "event": "1.55 Mile Run CC JV",
    "gender": "Girls",
    "is_relay": false,
    "results": [
@@ -347,5 +347,5 @@
  "meet_name": "SMAA Relays",
  "team_rankings": [],
  "parser": "SpreadsheetTableParser",
- "notes": "Rewritten from the parse, which had run the Girls JV race's 10 rows into the end of the boys list (Boys showed 25 rows) and left every school blank (Team column not read). Now: girls individual (15), boys individual (15) and Girls JV race (10, event 'Run CC JV'), each with the Team column as printed; 'TA' and 'Thornton' = Thornton Academy. Not transcribed: the Girls Freshman Race block (names and teams, no times; its last three rows repeat the JV rows 8-10 verbatim) and the team-time tables (girls: Cheverus 49:36 ... Biddeford 65:10; boys: Scarborough 59:30 ... Biddeford '&1:33' unreadable). Date 2009-09-03 and 'at Thornton Academy' from the page header. Meet is a relay-format meet (team time = sum of runners)."
+ "notes": "Rewritten from the parse, which had run the Girls JV race's 10 rows into the end of the boys list (Boys showed 25 rows) and left every school blank (Team column not read). Now: girls individual (15), boys individual (15) and Girls JV race (10, event 'Run CC JV'), each with the Team column as printed; 'TA' and 'Thornton' = Thornton Academy. Not transcribed: the Girls Freshman Race block (names and teams, no times; its last three rows repeat the JV rows 8-10 verbatim) and the team-time tables (girls: Cheverus 49:36 ... Biddeford 65:10; boys: Scarborough 59:30 ... Biddeford '&1:33' unreadable). Date 2009-09-03 and 'at Thornton Academy' from the page header. Meet is a relay-format meet (team time = sum of runners). 2026-10-25 orchestrator: events named '1.55 Mile Run CC' (they were 'Run CC', read as 5K). The SMAA relay sheets print no distance; the MileSplit copy of this same meet (ms-smaa-relays-2009-2009-09-03) names the event '1.55 Mile Run CC' and its fastest legs equal this sheet's exactly (girls 8:53, boys 7:43; MileSplit medians over all legs boys 9:19, girls 11:11). The SMAA relay course changed over the years (MileSplit: 2008 1.6, 2012 1.6, 2013 1.65, 2014-2016 1.54, 2017 1.5), so each year's own label is used. The JV girls event is the same meet."
 }

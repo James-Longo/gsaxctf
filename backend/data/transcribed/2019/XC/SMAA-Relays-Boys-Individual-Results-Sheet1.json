@@ -5,7 +5,7 @@
  "school_codes": {},
  "events": [
   {
-   "event": "Run CC",
+   "event": "1.77 Mile Run CC",
    "gender": "Boys",
    "is_relay": false,
    "results": [
@@ -804,7 +804,7 @@
    ]
   },
   {
-   "event": "Run CC Freshman",
+   "event": "1.77 Mile Run CC Freshman",
    "gender": "Boys",
    "is_relay": false,
    "results": [
@@ -891,7 +891,7 @@
    ]
   },
   {
-   "event": "Run CC Unseeded",
+   "event": "1.77 Mile Run CC Unseeded",
    "gender": "Boys",
    "is_relay": false,
    "results": [
@@ -979,5 +979,5 @@
   }
  ],
  "team_rankings": [],
- "notes": "Parse content otherwise unchanged. Changes: the three sheet sections (Varsity, Freshman, Unseeded) were all named 'Run CC' with nothing to tell them apart, so they are now 'Run CC' (varsity), 'Run CC Freshman', 'Run CC Unseeded', the SMAA Relays convention. Times are printed h:mm:ss by the spreadsheet ('8:56:00'); read as m:ss ('8:56'), as the parse did. No distance is printed. School typos corrected to the school meant: Massbesic -> Massabesic, Keenebunk -> Kennebunk, Sandford -> Sanford. Names as printed (partial names such as 'Mattise', 'Joe', 'Lexa', 'Lily', 'Nia F', 'Austerer' kept). No date and no team scores on the sheet. SOURCE ERROR kept as printed: in Boys Varsity the Place column is a running row number, not finishing order (places 1-13 run 8:56..10:36, then place 14 is 9:04, place 28 is 9:21, ...: the sheet is listed in blocks of one runner per school), so a place is not a finish position."
+ "notes": "Parse content otherwise unchanged. Changes: the three sheet sections (Varsity, Freshman, Unseeded) were all named 'Run CC' with nothing to tell them apart, so they are now 'Run CC' (varsity), 'Run CC Freshman', 'Run CC Unseeded', the SMAA Relays convention. Times are printed h:mm:ss by the spreadsheet ('8:56:00'); read as m:ss ('8:56'), as the parse did. No distance is printed. School typos corrected to the school meant: Massbesic -> Massabesic, Keenebunk -> Kennebunk, Sandford -> Sanford. Names as printed (partial names such as 'Mattise', 'Joe', 'Lexa', 'Lily', 'Nia F', 'Austerer' kept). No date and no team scores on the sheet. SOURCE ERROR kept as printed: in Boys Varsity the Place column is a running row number, not finishing order (places 1-13 run 8:56..10:36, then place 14 is 9:04, place 28 is 9:21, ...: the sheet is listed in blocks of one runner per school), so a place is not a finish position. 2026-10-25 orchestrator: events named '1.77 Mile Run CC' (they were 'Run CC', read as 5K). The sheet prints no distance; the MileSplit copy of the same meet (ms-smaa-relays-2019) names the girls event '1.77 Mile Run CC', and the boys ran the same course in the same meet (MileSplit 2021 also 1.77: boys median 10:56 there vs 10:30 here, fastest 8:57 vs 8:56)."
 }
