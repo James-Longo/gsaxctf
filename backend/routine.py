@@ -144,6 +144,16 @@ def qaqc():
     with contextlib.redirect_stdout(buf):
         q.check_meet_scoring()
         q.check_result_order()
+        # the incorrect-entry flags the meet ledger reads (backend/data/qaqc_flags.json)
+        all_perfs, _by_file = q.load_all_performances()
+        flags = []
+        q.check_athlete_outliers(all_perfs, flags)
+        q.check_duplicate_meets(all_perfs, flags)
+        q.check_gender_bleed(all_perfs, flags)
+        q.check_event_sections(all_perfs, flags)
+        del all_perfs, _by_file
+        with open(os.path.join(DATA, 'qaqc_flags.json'), 'w', encoding='utf-8') as f:
+            json.dump(flags, f, indent=1, ensure_ascii=False)
         # indoor/outdoor: printed points / fitted tables through the school
         # catalog (backend/track_verify.py) replace the legacy track check
         from backend import track_verify
