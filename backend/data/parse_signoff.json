@@ -10604,12 +10604,26 @@
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
  },
+ "backend/data/parsed_results/2010/XC/LisbonBoys_oct7.json": {
+  "parse_sha": "40241a30f383011f",
+  "source_sha": "6970266a00e375c2",
+  "date": "2026-10-26",
+  "by": "sonnet audit (second read, 2026-10-26) (audit: source-error)",
+  "evidence": "All 28 rows match. Source prints place 6 twice: \"6 54 0 KODY PRIDDLE LISBON :20:06\" and \"6 56 6 KODY PRIDDLE LISBON :20:06\" (bibs 54 and 56, same name and time; the next place is 8, \"28 COMPETITORS\" counts both): a duplicated entry in the timing sheet, kept as printed. No team scores printed."
+ },
  "backend/data/parsed_results/2010/XC/LisbonGirlsScores_oct7.json": {
   "parse_sha": "73a3fd6c4a9b4dd6",
   "source_sha": "99f6728c25180619",
   "date": "2026-10-19",
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
+ },
+ "backend/data/parsed_results/2010/XC/LisbonGirls_oct7.json": {
+  "parse_sha": "5217ed8831677b7b",
+  "source_sha": "bd000bff7ac8353b",
+  "date": "2026-10-26",
+  "by": "sonnet audit (second read, 2026-10-26) (audit: confirmed)",
+  "evidence": "All 29 rows match (place, name, team, time; PTS as team place, 0 = none). No team scores on the sheet."
  },
  "backend/data/parsed_results/2010/XC/MVCBoys10.json": {
   "parse_sha": "ab7c14a0de3d25c2",
@@ -10632,12 +10646,40 @@
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
  },
+ "backend/data/parsed_results/2010/XC/MonmouthBoys9.22.10.json": {
+  "parse_sha": "3a114a4a2eb438a7",
+  "source_sha": "b13d88e7c4873732",
+  "date": "2026-10-26",
+  "by": "sonnet audit (second read, 2026-10-26) (audit: confirmed)",
+  "evidence": "All 44 timed rows match (place, name, team, time, PTS); the 45th line \"0 998 ANDREW TREMBLAY VALLEY :: 0\" has no time (non-finisher) and stays out. Schools Telstar, Monmouth, Greenville, Winthrop, Hall-Dale, Vineyard Christ, St. Doms, Dirigo, Valley correct. No team scores printed."
+ },
  "backend/data/parsed_results/2010/XC/MonmouthBoysScores.json": {
   "parse_sha": "3ae8c5aea0ae3fa5",
   "source_sha": "b7f659a747b99ef0",
   "date": "2026-10-25",
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
+ },
+ "backend/data/parsed_results/2010/XC/MonmouthGirls9.22.10.json": {
+  "parse_sha": "a4a89a2f64ab7760",
+  "source_sha": "194f184bf2586164",
+  "date": "2026-10-26",
+  "by": "sonnet audit (second read, 2026-10-26) (audit: confirmed)",
+  "evidence": "All 33 timed rows match; the three \"0 ... :: 0\" rows (Cushman Monmouth, Jacques Jay, Ahearn Winthrop) have no time and stay out (\"36 COMPETITORS\"). All PTS are 0 (no team places), no team scores printed."
+ },
+ "backend/data/parsed_results/2010/XC/MonmouthMSBoys.json": {
+  "parse_sha": "2c4dcab2624e48f7",
+  "source_sha": "d27dd790d4c14fe3",
+  "date": "2026-10-26",
+  "by": "sonnet audit (second read, 2026-10-26) (audit: confirmed)",
+  "evidence": "45 rows vs the 'RESULTS' sheet (45 COMPETITORS): place, name, team, time agree row by row; Monmouth M.S. teams -> me-ms-*. Index dates it Sept 17 though the sheet prints 09/16/2010 (RACE ID 091610-2); index wins."
+ },
+ "backend/data/parsed_results/2010/XC/MonmouthMSGirls.json": {
+  "parse_sha": "bf9fa5e8a4b7fd6f",
+  "source_sha": "549b234fe2c69d38",
+  "date": "2026-10-26",
+  "by": "sonnet audit (second read, 2026-10-26) (audit: confirmed)",
+  "evidence": "46 rows vs the sheet (46 COMPETITORS) agree row by row; me-ms-* teams. Index dates it Sept 17, sheet prints 09/16/2010; index wins. 'Gabriel Stone' (Telstar, 11th) is printed so."
  },
  "backend/data/parsed_results/2010/XC/OxfordHillsBoys_sept24.json": {
   "parse_sha": "218816b06b98d82f",
@@ -10652,6 +10694,27 @@
   "date": "2026-10-16",
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
+ },
+ "backend/data/parsed_results/2010/XC/Wellsgirls_sept16.json": {
+  "parse_sha": "4a77b48560a8baff",
+  "source_sha": "417f9d6e320d5db2",
+  "date": "2026-10-26",
+  "by": "auto: team scores verified exactly, all schools identified, no flags",
+  "evidence": ""
+ },
+ "backend/data/parsed_results/2010/XC/Wiscassetboys_sept22.json": {
+  "parse_sha": "fd12c5d5fa639983",
+  "source_sha": "844b780631db8abc",
+  "date": "2026-10-26",
+  "by": "sonnet audit (second read, 2026-10-26) (audit: confirmed)",
+  "evidence": "29 rows vs the sheet agree row by row; codes Mad/BB/Lis/Wis/Car/Ric -> Madison/Boothbay/Lisbon/Wiscasset/Carrabec/Richmond per the meet's teams. No team scores printed; no date printed (index has Sept 22)."
+ },
+ "backend/data/parsed_results/2010/XC/Wiscassetgirls_sept22.json": {
+  "parse_sha": "023c33a2b9de934b",
+  "source_sha": "e6a320fb1f41980b",
+  "date": "2026-10-26",
+  "by": "sonnet audit (second read, 2026-10-26) (audit: confirmed)",
+  "evidence": "23 rows agree row by row; codes Lisbon/BB/Carr/Mad/Wis/Rich same as the boys. No team scores printed."
  },
  "backend/data/parsed_results/2010/XC/airlineboys.txt.json": {
   "parse_sha": "dbab6ba73a932838",
@@ -10723,6 +10786,13 @@
   "by": "auto re-check 2026-10-25: changed by a deliberate re-parse; team scores still verified exactly, every school identified, no flags",
   "evidence": "meet_ledger confidence fields after the 2026-10-25 rebuild"
  },
+ "backend/data/parsed_results/2010/XC/caribouboys_sept11.json": {
+  "parse_sha": "243715c2cf1b8c36",
+  "source_sha": "554d7e6a8517b8b0",
+  "date": "2026-10-26",
+  "by": "sonnet audit (second read, 2026-10-26) (audit: confirmed)",
+  "evidence": "7 heats (Number 1-7), 10+10+9+9+7+7+6 rows, each agrees with the source row by row; school abbreviations JB=John Bapst, PIHS=Presque Isle, HER=Hermon, GHCA=Greater Houlton Christian per the catalog. Heats are separate events with their own places."
+ },
  "backend/data/parsed_results/2010/XC/caribouboysjv_sept11.txt.json": {
   "parse_sha": "c52a9b4b72cbdb69",
   "source_sha": "8e732c1d5e532491",
@@ -10730,10 +10800,45 @@
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
  },
+ "backend/data/parsed_results/2010/XC/caribougirls_sept11.json": {
+  "parse_sha": "143962095efc5661",
+  "source_sha": "5825e564340412ef",
+  "date": "2026-10-26",
+  "by": "sonnet audit (second read, 2026-10-26) (audit: confirmed)",
+  "evidence": "7 heats (8+9+6+6+6+6+6 rows) agree row by row with the source; same school codes."
+ },
  "backend/data/parsed_results/2010/XC/caribougirlsjv_sept11.txt.json": {
   "parse_sha": "18b0facca64f4616",
   "source_sha": "d3988707f7a79f36",
   "date": "2026-10-21",
+  "by": "auto: team scores verified exactly, all schools identified, no flags",
+  "evidence": ""
+ },
+ "backend/data/parsed_results/2010/XC/cheverusboys_sept10.json": {
+  "parse_sha": "d6b87bdabd61dadd",
+  "source_sha": "4934c11422cdefad",
+  "date": "2026-10-26",
+  "by": "auto: team scores verified exactly, all schools identified, no flags",
+  "evidence": ""
+ },
+ "backend/data/parsed_results/2010/XC/cheverusgirls_sept10.json": {
+  "parse_sha": "b76a0ae6a8eb9104",
+  "source_sha": "843cc637e1192888",
+  "date": "2026-10-26",
+  "by": "auto: team scores verified exactly, all schools identified, no flags",
+  "evidence": ""
+ },
+ "backend/data/parsed_results/2010/XC/cheverusxc_10_15_10_boys.json": {
+  "parse_sha": "5c4a2c84aff64b00",
+  "source_sha": "234c06e71bb1be1e",
+  "date": "2026-10-26",
+  "by": "auto: team scores verified exactly, all schools identified, no flags",
+  "evidence": ""
+ },
+ "backend/data/parsed_results/2010/XC/cheverusxc_10_15_10_girls.json": {
+  "parse_sha": "e6211b7640d667e8",
+  "source_sha": "8e60205be9d9736a",
+  "date": "2026-10-26",
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
  },
@@ -10883,6 +10988,20 @@
   "date": "2026-10-25",
   "by": "auto re-check 2026-10-25: changed by a deliberate re-parse; team scores still verified exactly, every school identified, no flags",
   "evidence": "meet_ledger confidence fields after the 2026-10-25 rebuild"
+ },
+ "backend/data/parsed_results/2010/XC/freeportboys_sept11.json": {
+  "parse_sha": "22070f9bb1b889f1",
+  "source_sha": "491300f5fd21c4af",
+  "date": "2026-10-26",
+  "by": "sonnet audit (second read, 2026-10-26) (audit: confirmed)",
+  "evidence": "67 rows agree row by row (45 left-column + 22 right-column); FAL=Falmouth, GNG=Gray-New Gloucester, FREE=Freeport per the opponents line; Score column is kept as team_place. No team totals printed; date September 11, 2010 in the header."
+ },
+ "backend/data/parsed_results/2010/XC/freeportboys_sept30.json": {
+  "parse_sha": "7a89a52c107caede",
+  "source_sha": "bd0f976cc3a60401",
+  "date": "2026-10-26",
+  "by": "sonnet audit (second read, 2026-10-26) (audit: confirmed)",
+  "evidence": "41 rows agree row by row; Merri=Merriconeag Waldorf (catalog me-hs-maine-coast-waldorf), PRHS=Poland Regional (me-hs-poland), FREE=Freeport per 'Opponents: Merriconeag, Poland Regional'. Header prints 'October 1, 2011' (a typo); the sub5 index dates it Sept 30, 2010 and wins."
  },
  "backend/data/parsed_results/2010/XC/halldaleboys_sept15.json": {
   "parse_sha": "fe03909ecfa2e450",
@@ -12942,6 +13061,13 @@
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
  },
+ "backend/data/parsed_results/2011/XC/bangorboys_september2.txt.json": {
+  "parse_sha": "b53bd8a55d0ae81b",
+  "source_sha": "1b3c36cdad08eb5e",
+  "date": "2026-10-26",
+  "by": "sonnet audit (second read, 2026-10-26) (audit: confirmed)",
+  "evidence": "All 70 rows match place, name, class, school, time and Points column (non-scorers blank); team scores Bangor 38, Hampden 38 (tie, printed in that order), Brewer 62, Waterville 95 as printed. Hy-Tek style text, nothing missing."
+ },
  "backend/data/parsed_results/2011/XC/bangorgirls_september2.txt.json": {
   "parse_sha": "5b4dba0272eca633",
   "source_sha": "7bfd1468862b62cf",
@@ -13579,6 +13705,13 @@
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
  },
+ "backend/data/parsed_results/2011/XC/mcigirls_sept23.json": {
+  "parse_sha": "d232f641a15597e0",
+  "source_sha": "9e9056f29d76fe30",
+  "date": "2026-10-26",
+  "by": "auto: team scores verified exactly, all schools identified, no flags",
+  "evidence": ""
+ },
  "backend/data/parsed_results/2011/XC/medomakboys_sept16.txt.json": {
   "parse_sha": "4501963f309988b8",
   "source_sha": "50a3c93c5de368ba",
@@ -14090,6 +14223,34 @@
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
  },
+ "backend/data/parsed_results/2011/XC/mtblueboys_oct7.json": {
+  "parse_sha": "10f183028cf440fb",
+  "source_sha": "f41f04cf7f74f0c2",
+  "date": "2026-10-26",
+  "by": "sonnet audit (second read, 2026-10-26) (audit: confirmed)",
+  "evidence": "Existing override (185 rows) compared place by place with the source: names, schools and times all match. Places 186-190 (Belanger, Colby, Dickey, Flores-Chiu, Luke) print NT (no time) and stay out as rows without a mark. Event 2.03 Mile as settled earlier."
+ },
+ "backend/data/parsed_results/2011/XC/mtbluegirls_oct7.json": {
+  "parse_sha": "82c5e95f1d67ee16",
+  "source_sha": "5c3bbd16dd4e28d1",
+  "date": "2026-10-26",
+  "by": "sonnet audit (second read, 2026-10-26) (audit: confirmed)",
+  "evidence": "Existing override (152 rows) compared place by place with the source: names, schools and times all match. Places 153-159 (Chase, Heikkinen, Li, Smith, Stevens, LaPlante, Reynolds) print NT and stay out as rows without a mark."
+ },
+ "backend/data/parsed_results/2011/XC/ne%20hs%20xc%20boys%20tresults.json": {
+  "parse_sha": "377e61e08925a9f1",
+  "source_sha": "6e6aa542970677dc",
+  "date": "2026-10-26",
+  "by": "auto: team scores verified exactly, all schools identified, no flags",
+  "evidence": ""
+ },
+ "backend/data/parsed_results/2011/XC/ne%20hs%20xc%20girls%20results.json": {
+  "parse_sha": "4de2d1bb1c923d8e",
+  "source_sha": "abe51ad0666e37c2",
+  "date": "2026-10-26",
+  "by": "auto: team scores verified exactly, all schools identified, no flags",
+  "evidence": ""
+ },
  "backend/data/parsed_results/2011/XC/nyaboys_oct7.json": {
   "parse_sha": "45f4e3b6897a25af",
   "source_sha": "ad9cbdc01395c3b7",
@@ -14143,6 +14304,20 @@
   "parse_sha": "47afcbed0b085db6",
   "source_sha": "2f03c685b7998851",
   "date": "2026-10-21",
+  "by": "auto: team scores verified exactly, all schools identified, no flags",
+  "evidence": ""
+ },
+ "backend/data/parsed_results/2011/XC/oxfordhillsboys_sept29.json": {
+  "parse_sha": "05bac6329dcd55a4",
+  "source_sha": "338837beda33bd5c",
+  "date": "2026-10-26",
+  "by": "auto: team scores verified exactly, all schools identified, no flags",
+  "evidence": ""
+ },
+ "backend/data/parsed_results/2011/XC/oxfordhillsgirls_sept29.json": {
+  "parse_sha": "54e1255fe76760e5",
+  "source_sha": "9ff8286c1a7117a9",
+  "date": "2026-10-26",
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
  },
@@ -14447,6 +14622,55 @@
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
  },
+ "backend/data/parsed_results/2011/XC/watervilleboys_sept9.json": {
+  "parse_sha": "ceda7be0cbfea428",
+  "source_sha": "457f61e94392e4ca",
+  "date": "2026-10-26",
+  "by": "auto: team scores verified exactly, all schools identified, no flags",
+  "evidence": ""
+ },
+ "backend/data/parsed_results/2011/XC/watervillegirls_sept9.json": {
+  "parse_sha": "32d32daf0e601669",
+  "source_sha": "a9a752fafa7bfd90",
+  "date": "2026-10-26",
+  "by": "auto: team scores verified exactly, all schools identified, no flags",
+  "evidence": ""
+ },
+ "backend/data/parsed_results/2011/XC/watervillemsboys_oct19.json": {
+  "parse_sha": "dda7bd08439f2783",
+  "source_sha": "41b142765734c2f1",
+  "date": "2026-10-26",
+  "by": "auto: team scores verified exactly, all schools identified, no flags",
+  "evidence": ""
+ },
+ "backend/data/parsed_results/2011/XC/watervillemsboys_sept14.json": {
+  "parse_sha": "ebf6df231e0149b1",
+  "source_sha": "e7e741b2c3195768",
+  "date": "2026-10-26",
+  "by": "auto: team scores verified exactly, all schools identified, no flags",
+  "evidence": ""
+ },
+ "backend/data/parsed_results/2011/XC/watervillemsboys_sept21.json": {
+  "parse_sha": "b6cecd8b9b17df57",
+  "source_sha": "5a6164dad45c03b7",
+  "date": "2026-10-26",
+  "by": "auto: team scores verified exactly, all schools identified, no flags",
+  "evidence": ""
+ },
+ "backend/data/parsed_results/2011/XC/watervillemsgirls_sept14.json": {
+  "parse_sha": "ecd548a1405f2a0f",
+  "source_sha": "c66d05baca98a7d6",
+  "date": "2026-10-26",
+  "by": "auto: team scores verified exactly, all schools identified, no flags",
+  "evidence": ""
+ },
+ "backend/data/parsed_results/2011/XC/watervillemsgirls_sept21.json": {
+  "parse_sha": "ecb8f571c49d664f",
+  "source_sha": "b7d2d6be38a27049",
+  "date": "2026-10-26",
+  "by": "auto: team scores verified exactly, all schools identified, no flags",
+  "evidence": ""
+ },
  "backend/data/parsed_results/2011/XC/wells_boys_sept22.txt.json": {
   "parse_sha": "55780d634b79ce67",
   "source_sha": "054071b4ca7025a8",
@@ -14458,6 +14682,69 @@
   "parse_sha": "f51ad90f60186e75",
   "source_sha": "feec98d4cbd93f7d",
   "date": "2026-10-21",
+  "by": "auto: team scores verified exactly, all schools identified, no flags",
+  "evidence": ""
+ },
+ "backend/data/parsed_results/2011/XC/windham_sept9.json": {
+  "parse_sha": "5499a1c31b0ede12",
+  "source_sha": "2056f25536287bed",
+  "date": "2026-10-26",
+  "by": "auto: team scores verified exactly, all schools identified, no flags",
+  "evidence": ""
+ },
+ "backend/data/parsed_results/2011/XC/windhamboys_sept28.json": {
+  "parse_sha": "6a295c8fe55fe31c",
+  "source_sha": "94580d1d54a995ca",
+  "date": "2026-10-26",
+  "by": "auto: team scores verified exactly, all schools identified, no flags",
+  "evidence": ""
+ },
+ "backend/data/parsed_results/2011/XC/windhamgirls_sept28.json": {
+  "parse_sha": "4b5ff846b78944a4",
+  "source_sha": "089c32a7d740bba4",
+  "date": "2026-10-26",
+  "by": "auto: team scores verified exactly, all schools identified, no flags",
+  "evidence": ""
+ },
+ "backend/data/parsed_results/2011/XC/winslowboys_sept2.json": {
+  "parse_sha": "528444cf88cfbe54",
+  "source_sha": "845648b71d0be68c",
+  "date": "2026-10-26",
+  "by": "auto: team scores verified exactly, all schools identified, no flags",
+  "evidence": ""
+ },
+ "backend/data/parsed_results/2011/XC/winslowgirls_sept2.json": {
+  "parse_sha": "06dd10cf97ddc18b",
+  "source_sha": "a3c3df135f0171a4",
+  "date": "2026-10-26",
+  "by": "auto: team scores verified exactly, all schools identified, no flags",
+  "evidence": ""
+ },
+ "backend/data/parsed_results/2011/XC/winslowmsboys_oct12.json": {
+  "parse_sha": "4fee3280914a89f2",
+  "source_sha": "7cef413f8a42cbd2",
+  "date": "2026-10-26",
+  "by": "auto: team scores verified exactly, all schools identified, no flags",
+  "evidence": ""
+ },
+ "backend/data/parsed_results/2011/XC/winslowmsboys_sept28.json": {
+  "parse_sha": "af08345aa0656fb4",
+  "source_sha": "b984a859814a101b",
+  "date": "2026-10-26",
+  "by": "auto: team scores verified exactly, all schools identified, no flags",
+  "evidence": ""
+ },
+ "backend/data/parsed_results/2011/XC/winslowmsgirls_oct12.json": {
+  "parse_sha": "d46449025db88a15",
+  "source_sha": "9cf29c5a2f7b6a1f",
+  "date": "2026-10-26",
+  "by": "auto: team scores verified exactly, all schools identified, no flags",
+  "evidence": ""
+ },
+ "backend/data/parsed_results/2011/XC/winslowmsgirls_sept28.json": {
+  "parse_sha": "74f9e9a44dd7b4c7",
+  "source_sha": "ca98e9eb8a81630e",
+  "date": "2026-10-26",
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
  },
@@ -14524,6 +14811,13 @@
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
  },
+ "backend/data/parsed_results/2011/XC/yarmouthgirls_sept23.json": {
+  "parse_sha": "2a2776919f2f4886",
+  "source_sha": "f52c46cc0c4ecee9",
+  "date": "2026-10-26",
+  "by": "auto: team scores verified exactly, all schools identified, no flags",
+  "evidence": ""
+ },
  "backend/data/parsed_results/2011/XC/yorkboys_sept16.json": {
   "parse_sha": "bd757dce38d2e4d0",
   "source_sha": "2fcffb4b89db9ea6",
@@ -14537,6 +14831,41 @@
   "date": "2026-10-19",
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
+ },
+ "backend/data/parsed_results/2011/XC/yorkjrboys.json": {
+  "parse_sha": "9d703af09bc128e2",
+  "source_sha": "0a5a8645bcdd2912",
+  "date": "2026-10-26",
+  "by": "sonnet audit (second read, 2026-10-26) (audit: confirmed)",
+  "evidence": "Existing override (44 rows) checked row by row against the page: carried minutes correct (every time rises monotonically; page-break rows carry the previous minute), codes W/TA/Y/SAC/B/K/SHA/M per the earlier 2010/2011 festival rules, date 10/21/2011. No team scores printed."
+ },
+ "backend/data/parsed_results/2011/XC/yorkjrgirls.json": {
+  "parse_sha": "897d524d99107c5d",
+  "source_sha": "d95cecfda483f153",
+  "date": "2026-10-26",
+  "by": "sonnet audit (second read, 2026-10-26) (audit: confirmed)",
+  "evidence": "Existing override (35 rows) checked row by row: carried minutes correct and rise monotonically, codes as for the boys sheet, date 10/21/2011. No team scores printed."
+ },
+ "backend/data/parsed_results/2011/XC/yorkmsboys_oct5.json": {
+  "parse_sha": "fb1a6434c0bf00cb",
+  "source_sha": "fa6e05ccc5935688",
+  "date": "2026-10-26",
+  "by": "auto: team scores verified exactly, all schools identified, no flags",
+  "evidence": ""
+ },
+ "backend/data/parsed_results/2011/XC/yorkmsgirls_oct5.json": {
+  "parse_sha": "17cedd3871664511",
+  "source_sha": "01f5b522c757acee",
+  "date": "2026-10-26",
+  "by": "auto: team scores verified exactly, all schools identified, no flags",
+  "evidence": ""
+ },
+ "backend/data/parsed_results/2011/XC/yorksrgirls.json": {
+  "parse_sha": "4b7de9ede34b4ab3",
+  "source_sha": "899c66c29df58511",
+  "date": "2026-10-26",
+  "by": "sonnet audit (second read, 2026-10-26) (audit: confirmed)",
+  "evidence": "Existing override (51 rows) checked row by row: carried minutes correct (e.g. 49 Campbell 21:35, 50 Anderson 35 = 21:35 after the page break), codes W/TA/Y/SAC/B/K/SHA/M/SAN/N, 52 Dyer (SAN) has no time and is left out."
  },
  "backend/data/parsed_results/2012/Indoor/ResultsSMAABOYS_feb4.json": {
   "parse_sha": "432441b274164479",

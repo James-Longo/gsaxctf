@@ -1326,6 +1326,7 @@ _OOS_SIMPLE = [
     ('NS', 'J.H. Gillis Regional High School', ['JH Gillis', 'J.H. Gillis', 'Gillis']),
     ('NS', "King's-Edgehill School", ["King's Edgehill", "King's-Edgehill", 'Kings Edgehill']),
     ('NB', 'Fredericton High School', ['Fredericton High School', 'Fredericton']),
+    ('NB', 'Woodstock High School', ['Woodstock High School']),
 ]
 
 
@@ -1615,6 +1616,31 @@ FILE_RULES = [
     (['RW Traip Academy'], 'XC', (2012, 2012), r'^stateclasscgirls(\.txt)?$', 'me-hs-traip'),
     (['RW Traip Academy'], 'XC', (2012, 2012), r'^statecombinedgirls(\.txt)?$', 'me-hs-traip'),
     (['Maine Cathlol'], 'XC', (2011, 2011), r'^smaainvitational_oct24$', 'me-ms-southern-maine-catholic'),
+    # 2026-10-26 second read, batch 18 (2010-2011)
+    (['Woodstock U.- VT'], 'XC', (2011, 2011), r'^ne%20hs%20xc%20boys%20tresults$', 'oos-auto-vt-woodstock-union'),
+    (['C.Elizabeth - ME'], 'XC', (2011, 2011), r'^ne%20hs%20xc%20boys%20tresults$', 'me-hs-cape-elizabeth'),
+    (['N. Country - VT'], 'XC', (2011, 2011), r'^ne%20hs%20xc%20girls%20results$', 'oos-auto-vt-north-country-union'),
+    (['Randolph U. - VT'], 'XC', (2011, 2011), r'^ne%20hs%20xc%20girls%20results$', 'oos-auto-vt-randolph-union'),
+    (['W'], 'XC', (2010, 2010), r'^Wells(boys|girls)_sept16$', 'me-hs-wells'),
+    (['G'], 'XC', (2010, 2010), r'^Wells(boys|girls)_sept16$', 'me-hs-gray-ng'),
+    (['T'], 'XC', (2010, 2010), r'^Wells(boys|girls)_sept16$', 'me-hs-traip'),
+    (['B'], 'XC', (2010, 2010), r'^biddeford(boys|girls)_sept29$', 'me-hs-biddeford'),
+    (['S'], 'XC', (2010, 2010), r'^biddeford(boys|girls)_sept29$', 'me-hs-sanford'),
+    (['P'], 'XC', (2010, 2010), r'^biddeford(boys|girls)_sept29$', 'me-hs-portland'),
+    (['Sc'], 'XC', (2010, 2010), r'^biddeford(boys|girls)_sept29$', 'me-hs-scarborough'),
+    (['B'], 'XC', (2010, 2010), r'^cheverus(boys|girls)_sept10$', 'me-hs-biddeford'),
+    (['C'], 'XC', (2010, 2010), r'^cheverus(boys|girls)_sept10$', 'me-hs-cheverus'),
+    (['W'], 'XC', (2010, 2010), r'^cheverus(boys|girls)_sept10$', 'me-hs-windham'),
+    (['BE'], 'XC', (2010, 2010), r'^cheverus(boys|girls)_sept30$', 'me-hs-bonny-eagle'),
+    (['C'], 'XC', (2010, 2010), r'^cheverus(boys|girls)_sept30$', 'me-hs-cheverus'),
+    (['K'], 'XC', (2010, 2010), r'^cheverus(boys|girls)_sept30$', 'me-hs-kennebunk'),
+    (['N'], 'XC', (2010, 2010), r'^cheverus(boys|girls)_sept30$', 'me-hs-noble'),
+    (['C'], 'XC', (2010, 2010), r'^cheverusxc_10_15_10_(boys|girls)$', 'me-hs-cheverus'),
+    (['D'], 'XC', (2010, 2010), r'^cheverusxc_10_15_10_(boys|girls)$', 'me-hs-deering'),
+    (['S'], 'XC', (2010, 2010), r'^cheverusxc_10_15_10_(boys|girls)$', 'me-hs-south-portland'),
+    (['M'], 'XC', (2010, 2010), r'^cheverusxc_10_15_10_(boys|girls)$', 'me-hs-mcauley'),
+    (['P'], 'XC', (2010, 2010), r'^cheverusxc_10_15_10_(boys|girls)$', 'me-hs-portland'),
+    (['Woodstock'], 'XC', (2023, 2023), r'^2023-presque-isle-xc-meet-boys-results$', 'oos-nb-woodstock-high-school'),  # an Aroostook meet: Woodstock NB (15 mi from Houlton), not the Connecticut academy the truncation picked
     # 2026-10-24 unresolved-school review, batch 2
     (['F'], 'XC', (2004, 2004), r'^cape7oct04[bg]\.txt$', 'me-hs-falmouth'),   # Title lists Falmouth; only F team
     (['Y'], 'XC', (2004, 2004), r'^cape7oct04[bg]\.txt$', 'me-hs-yarmouth'),   # Title lists Yarmouth; only Y team

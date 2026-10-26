@@ -1,6 +1,6 @@
 {
  "source": "backend/data/sub5_archive/2011/XC/oxfordhillsgirls_sept29.pdf",
- "meet_name": "Team: Lewiston-17; OHCHS-41; Edward Little-No Score",
+ "meet_name": "Oxford Hills, Lewiston, Edward Little",
  "date": null,
  "school_codes": {
   "Lew": "Lewiston High School",
@@ -119,7 +119,7 @@
     },
     {
      "athlete": "Mary Bryce",
-     "school": "",
+     "school": "Oxford Hills Comprehensive High School",
      "result": "31:49",
      "grade": "",
      "type": "Finals",
@@ -152,7 +152,25 @@
    ]
   }
  ],
- "team_rankings": [],
+ "team_rankings": [
+  {
+   "kind": "xc",
+   "gender": "Girls",
+   "event_idx": 0,
+   "teams": [
+    {
+     "rank": 1,
+     "team": "Lewiston High School",
+     "score": 17
+    },
+    {
+     "rank": 2,
+     "team": "Oxford Hills Comprehensive High School",
+     "score": 41
+    }
+   ]
+  }
+ ],
  "parser": "XCListParser",
- "notes": "School code printed after the name ('Keven Lavertu,Lew 18:12') had been left inside the athlete field with the school blank; split into athlete and school. Codes per the file's team line: Lew = Lewiston High School, EL = Edward Little High School, OHCHS = Oxford Hills Comprehensive High School (three-team meet at Oxford Hills, sub5 index 'Oxford Hills, Lewiston, Edward Little'). Row 14 'MARY BRYCE 31:49' prints no school; parse had split it as athlete 'Mary' school 'Bryce' - now athlete 'Mary Bryce', school left blank (no code printed; one unresolved row stays)."
+ "notes": "School code printed after the name ('Keven Lavertu,Lew 18:12') had been left inside the athlete field with the school blank; split into athlete and school. Codes per the file's team line: Lew = Lewiston High School, EL = Edward Little High School, OHCHS = Oxford Hills Comprehensive High School (three-team meet at Oxford Hills, sub5 index 'Oxford Hills, Lewiston, Edward Little'). Row 14 'MARY BRYCE 31:49' prints no school; parse had split it as athlete 'Mary' school 'Bryce' - now athlete 'Mary Bryce', school left blank (no code printed; one unresolved row stays). Second read (2026-10-26): printed team scores added from the title line (Lewiston 17, Oxford 41; Edward Little printed No Score); they reproduce from the places (all teams score, place numbers as the sheet). Row 14 Mary Bryce: school set to Oxford Hills Comprehensive High School, from her other 2011 races (Oxford Hills in the FOC, KVAC, Class A East and Mt. Blue relays results) and the MileSplit copy of this same meet (ms-kvac-lewiston-edward-little-oxford-hills-2011: Mary Bryce, Oxford Hills, 31:49.00); the printed OHCHS 41 also reproduces with her counted as OHCHS (5+6+9+10+11)."
 }
