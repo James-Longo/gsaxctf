@@ -2787,6 +2787,17 @@ def test_milesplit_senior_junior_headers():
     assert xc_header('Junior Varsity Boys 5k') == ('Boys', '5k', 'JV')
     assert xc_header('Junior High Boys 1.5 Mile Run') == ('Boys', '1.5 Mile', 'Middle School')
 
+
+def test_looselist_judged_ties_and_second_mark():
+    """Hy-Tek field rows: a judged-tie mark 'J4-08.00' is the mark (was dropped, or the seed taken
+    instead); 'Finals Points Prelim' rows keep the Finals mark (KVAC 2024 indoor, KVAC 5/28/21)."""
+    from backend.parsers.looselist import is_mark, clean_mark
+    assert is_mark('J4-08.00') and clean_mark('J4-08.00') == '4-08.00'
+    p = LooseListParser()
+    assert p._parse_row('2 Phoebe FitzPatrick 12 Mt. Ararat H J14-02.75 6 13-04.00', False)['result'] == '14-02.75'
+    assert p._parse_row('1 Islah Godo 11 Mt. Ararat H 14-02.75 8 13-04.75', False)['result'] == '14-02.75'
+    assert p._parse_row('2 # 15 Flagg, Hunter NOKO 5-02.00 J5-00.00 7', False)['result'] == '5-00.00'
+
 if __name__ == '__main__':
     qaqc._ensure_team_mapping()
     failed = 0
