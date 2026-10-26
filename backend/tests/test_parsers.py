@@ -2818,6 +2818,24 @@ def test_team_scores_without_decimal_point():
     b = extract_team_scores('Team Rankings - Through Event 85\n' + sheet.replace('637.00', '640.00'))[0]
     assert [t['score'] for t in b['teams']] == [82.0, 23.0], b
 
+
+def test_continuation_page_marks_not_cut():
+    """A Hy-Tek continuation page ('....Event 11 Girls 100 Meter Dash') sets its marks further right than page 1's
+    columns: read under page 1's header they lost their digits ('18.28' -> '18.'). ALMS meet 1, 5/7/2026."""
+    src = os.path.join(ROOT, 'backend', 'data', 'sub5_archive', '2026', 'Outdoor', '2026-alms-tf-meet-1.pdf')
+    if not os.path.exists(src):
+        return
+    import json
+    import tempfile
+    from backend import scraper_v2 as sv
+    with tempfile.TemporaryDirectory() as td:
+        out = os.path.join(td, 'p.json')
+        sv._parse_one_file((src, out, 'Outdoor'))
+        d = json.load(open(out))
+    ev = next(e for e in d['events'] if e['event'].startswith('100 Meter Dash') and e['gender'] == 'Girls')
+    assert not [r for r in ev['results'] if str(r['result']).endswith('.')]
+    assert ('Harper Pearson', '18.28') in [(r.get('athlete'), r['result']) for r in ev['results']]
+
 if __name__ == '__main__':
     qaqc._ensure_team_mapping()
     failed = 0

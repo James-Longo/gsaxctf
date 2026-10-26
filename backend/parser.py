@@ -954,7 +954,11 @@ class Sub5ColumnParser:
                 bib = bool(numbered) and sum(1 for l in numbered if re.match(r'^\s*\d{1,4}\s+\d{1,5}\s+[A-Za-z]', l)) \
                     >= 0.6 * len(numbered)
                 parts += self.parse_headerless_block(dict(g, bib_first=bib)) or []
-            parsed_blocks.append((base, parts if len(parts) > len(whole or []) else whole))
+            # (same rows both ways: the reading that cuts fewer marks - under the first page's columns a
+            # continuation page's marks lose their last digits, '18.28' -> '18.', ALMS 2026)
+            cut = lambda rs: sum(1 for r in rs or [] if re.search(r'\.$|-\d{2}\.\d$', str(r.get('result') or '')))
+            better = len(parts) > len(whole or []) or (len(parts) == len(whole or []) and cut(parts) < cut(whole))
+            parsed_blocks.append((base, parts if better else whole))
 
         parsed_events = []
         for ev, results in parsed_blocks:
