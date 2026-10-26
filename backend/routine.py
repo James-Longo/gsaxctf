@@ -8,7 +8,7 @@ can't do: fetching Five K Sport files in the browser, reading results by hand
 when verification fails, and the athlete-identity review.
 
     python3 -m backend.routine plan       # what's in season and what to run (JSON)
-    python3 -m backend.routine scrape     # sub5: download, parse, sync (+ manifest, meet links, athlete catalog)
+    python3 -m backend.routine scrape     # sub5, season(s) in progress: download, parse, sync (+ manifest, meet links, athlete catalog)
     python3 -m backend.routine qaqc       # score verification + event-section check of the meets added since the last run (JSON)
     python3 -m backend.routine sims       # postseason predictions for sports in their championship window
     python3 -m backend.routine check      # production build + tests
@@ -94,22 +94,6 @@ def xc_sim_due(today=None):
     return True, f'championship meets through {last}'
 
 
-PAST_REFRESH = 28    # days: past seasons' predictions are rebuilt about monthly, so
-                     # the database audit's corrections reach them
-
-
-def xc_past_due(today=None):
-    today = today or date.today()
-    ix = _load_json(os.path.join(UI, 'public', 'data', 'xc_postseason', 'index.json'), {})
-    built = [s.get('built') for s in ix.get('seasons', []) if s.get('kind') == 'backtest']
-    if not built or not all(built):
-        return True, 'no past seasons published'
-    oldest = min(built)
-    if today - date.fromisoformat(oldest) >= timedelta(days=PAST_REFRESH):
-        return True, f'past seasons last built {oldest}'
-    return False, f'past seasons built {oldest}'
-
-
 def plan():
     today = date.today()
     seasons = in_season(today)
@@ -125,12 +109,37 @@ def plan():
     return out
 
 
+LATE_POSTINGS = 14   # days after a season's window closes that its index is still read (late results)
+
+
+def current_seasons(today=None):
+    """(year, season) of the seasons in progress, and of one whose window closed in the last
+    LATE_POSTINGS days. Cross country and outdoor are the calendar year's; an indoor season that
+    starts in December belongs to the next year (Indoor 2027 = winter 2026-27)."""
+    today = today or date.today()
+    out = []
+    for d in (today, today - timedelta(days=LATE_POSTINGS)):
+        for s in in_season(d):
+            y = today.year + 1 if s == 'Indoor' and today.month >= 7 else today.year
+            if (str(y), s) not in out:
+                out.append((str(y), s))
+    return out
+
+
 def scrape():
-    """sub5 for every season (index pages are re-read; files already synced
-    are skipped), then the store, manifest, meet links and athlete catalog."""
-    from backend.scraper_v2 import Sub5ScraperV2
-    n = Sub5ScraperV2(progress_callback=lambda *a, **k: None).run_full_scrape()
-    print(json.dumps(dict(new_performances=n)))
+    """sub5 for the season(s) in progress only (index pages re-read; files already synced are
+    skipped), then the store, manifest, meet links and athlete catalog. Older seasons are not
+    touched here: their files are another process's work (docs/agents/update-routine.md)."""
+    from backend.scraper_v2 import Sub5ScraperV2, SEASONS
+    want = current_seasons()
+    configs = [c for c in SEASONS if (str(c['year']), c['season']) in want]
+    missing = [w for w in want if w not in {(str(c['year']), c['season']) for c in configs}]
+    if missing:
+        print(json.dumps(dict(warning=f'no sub5 index configured for {missing} (backend/scraper_v2.py SEASONS)')))
+    n = 0
+    if configs:
+        n = Sub5ScraperV2(progress_callback=lambda *a, **k: None).run_full_scrape(seasons=configs)
+    print(json.dumps(dict(seasons=want, new_performances=n)))
     return n
 
 
@@ -202,15 +211,14 @@ def mark_reported():
 
 
 def sims():
-    """Publish the postseason predictions that are due: this season's XC
-    predictions in season, and past seasons' predictions against their results
-    about monthly. Track predictions are computed in the browser."""
+    """Publish this season's XC postseason predictions while they are due. Track
+    predictions are computed in the browser."""
     due, why = xc_sim_due()
-    past, why_past = xc_past_due()
-    print(json.dumps(dict(xc_postseason=dict(current=due, why=why, past=past, why_past=why_past))))
-    which = 'all' if due and past else 'current' if due else 'past' if past else None
-    if which is None:
+    # (past seasons' predictions follow corrections to older data: rebuilt by that work, not here)
+    print(json.dumps(dict(xc_postseason=dict(current=due, why=why))))
+    if not due:
         return False
+    which = 'current'
     env = dict(os.environ, PYTHONHASHSEED='0', OMP_NUM_THREADS='1')
     r = subprocess.run([sys.executable, '-m', 'backend.xc_postseason_publish',
                         '--asof', date.today().isoformat(), '--sims', '5000', '--seasons', which],

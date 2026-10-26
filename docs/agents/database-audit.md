@@ -3,16 +3,18 @@
 The parsers make the first read of every result file. This is the second
 read: a reader checks the parse against the source, row by row, for every
 file that is not yet `certain` (backend/meet_ledger.py). The most recent year
-goes first: 2026 is made perfect, then 2025, and so on back. The routine
-runs it after each week's new results are in (docs/agents/update-routine.md,
-step 6).
+goes first: 2026 is made perfect, then 2025, and so on back. It is the
+older-data process's work, not the Monday update routine's (that one only
+ingests the week's results: docs/agents/update-routine.md, "Scope"). Past
+seasons' XC predictions follow these corrections: rebuild them with
+`PYTHONHASHSEED=0 python3 -m backend.xc_postseason_publish --asof <today> --sims 5000 --seasons past`.
 
     python3 -m backend.db_audit progress          certain / left per year
     python3 -m backend.db_audit queue --n 20      the next files, newest first
     python3 -m backend.db_audit show <path>       the source text, then the parse
     python3 -m backend.db_audit record <path> --verdict <v> --by "<who>" --notes "<evidence>"
 
-## Orchestrator (the routine)
+## Orchestrator
 
 0. When the audit reaches a new year, first fetch whatever that year's sub5
    index links that we don't hold (`Sub5ScraperV2().download_missing_files`

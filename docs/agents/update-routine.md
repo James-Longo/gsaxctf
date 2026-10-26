@@ -10,6 +10,25 @@ Code steps are `python3 -m backend.routine <step>` (backend/routine.py).
 Work from the repository root. Never run destructive git commands. Do not
 deploy if any step below fails; report instead.
 
+**Scope: the week's results only.** The routine ingests the recent results of
+the season(s) in progress and reruns what is downstream of them, nothing else.
+Older seasons are another process's work (James, 2026-10-26: "for the monday
+updates, i just want to ingest recent results and rerun anything that's
+downstream of them. i'll have another process work on older data"). So:
+
+- the scrape reads only the current season's sub5 index (`routine scrape`
+  does this); an older file sub5 newly links is left for the other process;
+- a parser fix made for a new file re-parses only that week's files; older
+  files with the same layout are listed in the report as leads, not re-parsed;
+- a school string in a new file is settled with a per-meet rule
+  (`FILE_RULES` / `FILE_CODES` scoped to that file's stem and year), never a
+  global alias, and after the catalog rebuild `store_drift` must show no
+  change outside the current season's team-seasons; a change there means the
+  rule leaked: narrow it, or leave the string unidentified and report it;
+- no full re-sync (`scraper_v2 --resync-only`) unless a current-season fix
+  needs one, and then the same drift rule applies;
+- no database audit, and no rebuild of past seasons' predictions.
+
 ## 1. Plan
 
 `python3 -m backend.routine plan` prints what is in season (from the
@@ -22,8 +41,8 @@ previous unfinished run are acceptable) and `git pull --ff-only`.
 
 ## 2. Scrape and parse
 
-1. `python3 -m backend.routine scrape` -- sub5 index pages for every season;
-   new result files are downloaded, parsed and synced into the store; the
+1. `python3 -m backend.routine scrape` -- sub5 index pages for the season(s)
+   in progress; new result files are downloaded, parsed and synced into the store; the
    manifest, meet links and athlete catalog are rebuilt. A new youth/USATF
    or college meet is listed in `backend/data/meet_scope.json` (see
    `docs/agents/missing-meets.md`, "Not school track") and the sync rerun.
@@ -39,13 +58,18 @@ the official scores in the file and reports the meets added since the last
 run (verified / mismatch / no rankings). The first run only records a
 baseline.
 
+`routine qaqc` lists every meet added since its last recorded run. Read only
+this week's meets of the season in progress (the files the scrape, Five K
+Sport and MileSplit steps added); older meets in the list are not this
+routine's work.
+
 For each **mismatch** in the new meets (most are rare, so read each one):
 1. Open the source file (`backend/data/sub5_archive/<year>/<season>/...`)
    and the parse (`backend/data/parsed_results/...`).
 2. Decide: parser error (fix the parser if it is a pattern, with a test in
-   backend/tests/test_parsers.py, re-parse that season) or source error
-   (the official scores disagree with the file's own results; leave it and
-   note it in the report).
+   backend/tests/test_parsers.py, re-parse only this week's files that have
+   the pattern) or source error (the official scores disagree with the
+   file's own results; leave it and note it in the report).
 
 **Odd sections** (`odd_sections` in the same report; qaqc check 16): an event
 at one new meet whose *median* mark belongs to another event, such as a
@@ -111,10 +135,9 @@ person. Report the stats line.
 `python3 -m backend.routine sims` publishes the XC postseason predictions while
 the season's championship meets (backend/data/xc_groups.json) are still
 ahead, and once more the Monday after the last one: a meet that has been run
-shows its result beside its prediction. It also rebuilds past seasons'
-predictions (the backtest, one file per season) about monthly, so the audit's
-corrections reach them. Track predictions are computed in the browser and need
-nothing here.
+shows its result beside its prediction. Past seasons' predictions are not
+rebuilt here (they follow corrections to older data). Track predictions are
+computed in the browser and need nothing here.
 Owen's Predictor is rebuilt by the resync and by `athlete_catalog apply`;
 check it as listed in the "What new data feeds" table.
 
@@ -123,25 +146,16 @@ backend/data/xc_groups.json against the coaches' schedule (dates, venues,
 conference membership and divisions) and record the source in its
 `sources`.
 
-## 5. Improve the database (after the week's results)
-
-With the week's results in and checked, spend the rest of the run on the
-second read of files that are not yet certain, newest first
-(docs/agents/database-audit.md): `python3 -m backend.db_audit queue --n 60`,
-three Sonnet reviewers of 20 files each, then apply the parser patterns and
-school codes they report and rebuild what those feed. 2026 is finished
-first, then 2025, and so on back. `python3 -m backend.db_audit progress` goes
-in the report.
-
-## 6. Check, publish, report
+## 5. Check, publish, report
 
 1. `python3 -m backend.routine check` -- production build and tests.
    Before it, rebuild every product the run's new data feeds (table in
    `docs/agents/missing-meets.md`, "What new data feeds").
 2. `python3 -m backend.store_drift 25` lists team-seasons that lost results
-   since the last commit. Trace each big drop (where did the rows go?) and
-   publish only when every one is explained: rows moved to the right school,
-   a duplicate removed. A drop with no reason is a bug; fix it first.
+   since the last commit. Every one must be a current-season team-season
+   with its reason traced (rows moved to the right school, a duplicate
+   removed). A drop in an older season means a change leaked outside this
+   week's results (see Scope): undo it before publishing.
 3. Commit any code fixes made in step 3 with their own message first.
 4. `python3 -m backend.routine publish --yes -m "data: routine update <date>"`
    commits the data and pushes. The push is the deploy: GitHub Pages
@@ -149,7 +163,7 @@ in the report.
    `gh run watch $(gh run list --workflow deploy-pages.yml -L1 --json databaseId -q '.[0].databaseId')`.
 5. Report to James (the run's final message): new meets and performances,
    QAQC results (mismatches, odd sections and unreadable times, and what was
-   done), Five K Sport files added, the database audit (files per verdict,
-   progress for this year and the last two, `james` items),
-   the athlete catalog stats line, predictions published or skipped,
+   done), Five K Sport files added, the athlete catalog stats line,
+   predictions published or skipped, leads for the older-data process
+   (older files with a pattern fixed this week, old files sub5 newly links),
    Pages deploy result. Keep it short.
