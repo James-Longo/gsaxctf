@@ -2755,6 +2755,28 @@ def test_every_parsed_season_is_synced():
                if s in ('Indoor', 'Outdoor', 'XC') and (y, s) not in listed]
     assert not missing, missing
 
+
+def test_paragraph_news_separators():
+    """Paragraph results split on '; N.' (Ellsworth 5/4/07), after a qualifier
+    mark '5.00q.' (SMAA 2009) and after a no-height 'FAIL.' (2010 freshmen)."""
+    from backend.parsers.newsprint import ParagraphNewsParser
+    text = ("2007 PVC Regular Season Meet 2 - 5/4/2007\nEllsworth High School\n"
+            "Girls 100 Meter Dash:\n"
+            " 1. Hutchins, Danielle, MDI, 13.17; 2. Hutchins, Marcelle, MDI, 14.12; 3. \n"
+            " Bartlett, Kristin, MDI, 14.26.\n"
+            "Boys 55 Meter Dash Preliminaries\n"
+            "1, Atkins, N, Bonny Eagle, 5.00q. 2, Russell, D, Biddeford, 5.10q. 3, Scenna, A, Thornton, 5.12.\n"
+            "Girls High Jump Finals\n"
+            "1, Kremer, Kelsey, MTA, 5-00. --, Moody, Johanna, POL, FAIL. --, Pelkey, Robin, GNG, FAIL. "
+            "2, Ball, Deirdre, LEW, 4-10.\n")
+    ev = ParagraphNewsParser().parse(text, '', 'Outdoor')['events']
+    rows = [[(r['athlete'], r['school'], r['result']) for r in e['results']] for e in ev]
+    assert rows[0] == [('Danielle Hutchins', 'MDI', '13.17'), ('Marcelle Hutchins', 'MDI', '14.12'),
+                       ('Kristin Bartlett', 'MDI', '14.26')], rows[0]
+    assert [r[1] for r in rows[1]] == ['Bonny Eagle', 'Biddeford', 'Thornton'], rows[1]
+    assert rows[2] == [('Kelsey Kremer', 'MTA', '5-00'), ('Johanna Moody', 'POL', 'FAIL'),
+                       ('Robin Pelkey', 'GNG', 'FAIL'), ('Deirdre Ball', 'LEW', '4-10')], rows[2]
+
 if __name__ == '__main__':
     qaqc._ensure_team_mapping()
     failed = 0

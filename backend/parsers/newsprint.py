@@ -423,8 +423,10 @@ class ParagraphNewsParser(BaseParser):
         events = []
         for b in blocks:
             blob = ' '.join(b['text'])
-            # entries are separated by ". " followed by "N," or "--,"
-            entries = re.split(r'(?<=[.\d])\.\s+(?=(?:\d+|--),)', blob)
+            # entries are separated by ". " followed by "N," or "--," (after a mark, a
+            # qualifier "5.00q." or a no-mark "FAIL."), or by "; " followed by "N." or "N,"
+            entries = re.split(r'(?:(?<=[.\dqQ])|(?<=FAIL)|(?<=\bNH)|(?<=\bNM)|(?<=DNF)|(?<=DNS)|(?<=\bDQ))'
+                               r'\.\s+(?=(?:\d+|--),)|;\s+(?=(?:\d+|--)[,.]\s)', blob)
             label = re.sub(r'\s*(preliminaries|prelims|finals)\s*$', '', b['label'], flags=re.I)
             is_prelim = bool(re.search(r'prelim', b['label'], re.I))
             ev_name = canon_event(label)
