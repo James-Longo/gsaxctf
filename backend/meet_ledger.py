@@ -194,6 +194,9 @@ def _context():
         ua = os.path.join(DATA, 'unparsed_audit.json')
         _ctx['unparsed'] = {os.path.splitext(k)[0]: v.get('status') for k, v in
                             (json.load(open(ua)).items() if os.path.exists(ua) else [])}
+        sp = os.path.join(DATA, 'meet_scope.json')
+        scope = json.load(open(sp)) if os.path.exists(sp) else {}
+        _ctx['out_of_scope'] = set(scope.get('excluded') or {}) | set(scope.get('summer') or {})
     return _ctx
 
 
@@ -210,6 +213,8 @@ def confidence(path, year, season, stem, doc, rows, unresolved):
     if transcribed:
         out['transcribed'] = True
     so = c['signoff'].get(path)
+    if key in c['out_of_scope']:
+        return dict(out, confidence='out-of-scope')   # not an MPA school meet: never stored (meet_scope.json)
     warn = []
     unparsed = c['unparsed'].get(f'{year}/{season}/{stem}')
     if rows == 0 and unparsed in ('not-results', 'unrecoverable'):
