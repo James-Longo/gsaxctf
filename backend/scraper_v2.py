@@ -1622,7 +1622,13 @@ def _parse_one_file(args):
                         data_to_save['aggregate_events'] = [dict(e, aggregate=True) for e in aev]
                 except Exception:
                     pass
-            if season_label == 'XC' and not no_scores:
+            # (a transcription whose reader paired its XC team scores with their races
+            # by event_idx keeps them: the page's own tables are not re-read over them)
+            tr_scores = data_to_save.get('parser') == 'Transcribed' and any(
+                isinstance(b, dict) and b.get('kind') == 'xc' and isinstance(b.get('event_idx'), int)
+                for b in data_to_save.get('team_rankings') or []) and any(
+                isinstance(e, dict) and e.get('results') for e in data_to_save.get('events') or [])
+            if season_label == 'XC' and not no_scores and not tr_scores:
                 # (a file holding only the team scores keeps them too: they
                 # are checked against the race posted beside it)
                 from backend.parsers.xcscores import parse_xc_team_scores
