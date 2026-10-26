@@ -559,6 +559,38 @@
   "parse_sha": "404921996b3de299",
   "source_sha": "b7da000f1cd713a2"
  },
+ "backend/data/parsed_results/2010/XC/wmcjvboysscores.txt.json": {
+  "verdict": "source-error",
+  "by": "sonnet audit (second read, 2026-10-25)",
+  "notes": "convention: division-scored sheet against a combined race. The sheet prints 'Division I Results' and 'Division II Results' with places renumbered within each division (Division II winners score 1,2,3...), while the paired wmcjvboys.json holds one combined all-teams race with overall places, so places cannot reproduce the printed totals. The sheet's own rows add up to its printed totals (e.g. Falmouth 1+2+3+6+9=21; NYA 1+2+3+4+5=15).",
+  "date": "2026-10-25",
+  "parse_sha": "b0dea5227894539f",
+  "source_sha": "7c4fa599b6faa679"
+ },
+ "backend/data/parsed_results/2010/XC/wmcjvgirlsscores.txt.json": {
+  "verdict": "source-error",
+  "by": "sonnet audit (second read, 2026-10-25)",
+  "notes": "convention: division-scored sheet against a combined race. The sheet prints 'Division I Results' and 'Division II Results' with places renumbered within each division (Division II winners score 1,2,3...), while the paired wmcjvgirls.json holds one combined all-teams race with overall places, so places cannot reproduce the printed totals. The sheet's own rows add up to its printed totals (e.g. Falmouth 1+2+4+6+11=24; Yarmouth 1+2+3+4+5=15).",
+  "date": "2026-10-25",
+  "parse_sha": "807bbc0227141a63",
+  "source_sha": "454a1b5061b4aad3"
+ },
+ "backend/data/parsed_results/2010/XC/wmcvboysscores.txt.json": {
+  "verdict": "source-error",
+  "by": "sonnet audit (second read, 2026-10-25)",
+  "notes": "convention: division-scored sheet against a combined race. The sheet prints 'Division I Results' and 'Division II Results' with places renumbered within each division (Division II winners score 1,2,3...), while the paired wmcvboys.json holds one combined all-teams race with overall places, so places cannot reproduce the printed totals. The sheet's own rows add up to its printed totals (e.g. Falmouth 1+4+9+11+17=42; Fryeburg 1+11+15+18+31 listed in Div II).",
+  "date": "2026-10-25",
+  "parse_sha": "e9c4dd01f02a4054",
+  "source_sha": "ba217985944ff6ef"
+ },
+ "backend/data/parsed_results/2010/XC/wmcvgirlsscores.txt.json": {
+  "verdict": "source-error",
+  "by": "sonnet audit (second read, 2026-10-25)",
+  "notes": "convention: division-scored sheet against a combined race. The sheet prints 'Division I Results' and 'Division II Results' with places renumbered within each division (Division II winners score 1,2,3...), while the paired wmcvgirls.json holds one combined all-teams race with overall places, so places cannot reproduce the printed totals. The sheet's own rows add up to its printed totals (e.g. Cape Elizabeth 3+4+6+7+14=34; Yarmouth 2+3+6+9+10=30).",
+  "date": "2026-10-25",
+  "parse_sha": "a5bb8998f6b44d24",
+  "source_sha": "fae01507e862013c"
+ },
  "backend/data/parsed_results/2011/XC/MEET_GNG_9_16.json": {
   "verdict": "source-error",
   "by": "sonnet audit (score mismatch, 2026-10-23)",
@@ -728,9 +760,9 @@
   "source_sha": "b61a40b876774d79"
  },
  "backend/data/parsed_results/2012/XC/GreelyBoys%20TeamScore_oct5.txt.json": {
-  "verdict": "confirmed",
+  "verdict": "source-error",
   "by": "sonnet audit (second read, 2026-10-25)",
-  "notes": "Greely 10/5/2012 boys team score list: Falmouth 32, Yarmouth 56, Greely 63, Cape Elizabeth 83 match the sheet (sum of top five: 4+5+6+8+9=32, 2+7+10+18+19=56, 1+14+15+16+17=63, 3+12+21+23+24=83). No individual rows in this file.",
+  "notes": "PAIRING: paired windham_oct5.json (Windham/Kennebunk/Portland/Sanford, 10/5/12) is a different meet. The sheet (Falmouth 32, Yarmouth 56, Greely 63, Cape Elizabeth 83; runners Nate Madeira, Josh Simensky, Braden Becker, Will Britton) belongs to the Greely boys race of 2012-10-05, held as backend/data/parsed_results/2012/XC/ms-wmc-cape-falmouth-wells-yarmouth-greely-2012.json (MileSplit 'WMC: Cape, Falmouth, Wells, Yarmouth @ Greely 2012 - Boys Complete (Raw)', 78 rows; Madeira 1st, Becker 2nd, Britton 3rd; Falmouth 4,5,6,8,9=32 reproduces). That file lists everyone (JV/extra runners interleaved), so Yarmouth/Greely/Cape places do not reproduce from it. No sub5 boys race file is held for this meet (GreelyGirls_oct5.txt.json is the girls race).",
   "date": "2026-10-25",
   "parse_sha": "95029aefc5625eb8",
   "source_sha": "256eaa77fd939a71"
@@ -3544,10 +3576,10 @@
   "source_sha": "8620e3574f91d74f"
  },
  "backend/data/parsed_results/2016/XC/Lee-Invitational-Team-Results.json": {
-  "verdict": "confirmed",
-  "by": "sonnet audit (second read, 2026-10-24)",
-  "notes": "Team scores match the print. Boys: Orono 25, Lee Academy 43, Narraguagus 72, Washington Academy 101, Central 102. Girls: Orono 15, MA 65, WA 83, Narr. 94, LA 108, Machias 149 (some do not reproduce from the girls rows; source-printed).",
-  "date": "2026-10-24",
+  "verdict": "source-error",
+  "by": "sonnet audit (second read, 2026-10-25)",
+  "notes": "convention + sheet arithmetic: pairing is right (Lee Invitational 2016 girls and boys varsity). Boys: sheet scores only the five complete teams (Orono, Lee Academy, Narraguagus, Washington Academy, Central) and ignores finishers from Calais, John Bapst, Dexter, Schenck, Sumner, Mattanawcook, Machias; with those removed places give Orono 25 (matches), LA 44 (printed 43), Narr 73 (72), WA 104 (101), Central 104 (102): small residual differences are the sheet's. Girls: printed Orono 15 (needs places 1-5 after dropping NHS #1 and Calais #4), MA 65 vs minimum 81 from the race file: printed totals cannot be reproduced from the 59-row girls results (parse matches the PDF row for row); sheet's own arithmetic/scoring not modeled.",
+  "date": "2026-10-25",
   "parse_sha": "ee255237946d8587",
   "source_sha": "81db9404a050eeb5"
  },
@@ -5872,10 +5904,10 @@
   "source_sha": "f53457b514c489b0"
  },
  "backend/data/parsed_results/2020/XC/Cony_XC_Boys_Scoring_10_06_2020.json": {
-  "verdict": "confirmed",
-  "by": "sonnet audit (second read, 2026-10-24)",
-  "notes": "Team-scores-only sheet (no result rows, no marks): Cony 35 (2+5+8+9+11), MESS 21 (1+3+4+6+7); parse team scores MESS 21, Cony 35 identical and reproduced. Date unknown (file name 10_06_2020); 'MESS' = Messalonskee.",
-  "date": "2026-10-24",
+  "verdict": "source-error",
+  "by": "sonnet audit (second read, 2026-10-25)",
+  "notes": "convention: wave-adjusted points. Race is 2 waves; wave-2 runners get a 30 s time adjustment and the Points column follows adjusted time: Jacob Pelletier (Cony, raw finish 4th) scores 5 and Tieran Croft (MESS, raw 5th) scores 4. Sheet: Cony 2+5+8+9+11=35, MESS 1+3+4+6+7=21 (printed 35 and 21, matches race header 'Messalonskee 21, Cony 35'). The race file orders by raw finish (Pelletier 4, Croft 5), so place sums give Cony 34, MESS 22. Race parse matches the PDF.",
+  "date": "2026-10-25",
   "parse_sha": "ca317a8409bda873",
   "source_sha": "1ce825ce766a67c3"
  },
@@ -6264,10 +6296,10 @@
   "source_sha": "29215865d374ef4a"
  },
  "backend/data/parsed_results/2021/XC/County-XC-Championship-2021-team-scores.json": {
-  "verdict": "confirmed",
-  "by": "sonnet audit (second read, 2026-10-24)",
-  "notes": "Team-score-only sheet: girls Houlton/GHCA 13, Fort Kent 35, Presque Isle 42; boys Presque Isle 12, MSSM 31, as printed. They are not reproducible from the individual file's raw places (county scoring rule), copied as printed.",
-  "date": "2026-10-24",
+  "verdict": "source-error",
+  "by": "sonnet audit (second read, 2026-10-25)",
+  "notes": "convention (4 scorers) + sheet arithmetic: pairing right (County-XC-Championship-Girls.pdf holds both Female and Male races, both parsed, 20 and 16 finishers). Scoring is top four: Houlton 1+3+4+5=13 and Fort Kent 6+8+10+11=35 match; boys Presque Isle 1+2+4+5=12 and MSSM 3+7+9+12=31 match. Girls Presque Isle printed 42 but its top four places sum 2+13+14+18=47 (printed N=42, places sum M=47); no displacement convention reproduces it.",
+  "date": "2026-10-25",
   "parse_sha": "f49a6d271e19b8e4",
   "source_sha": "33cb9311381d7fbc"
  },

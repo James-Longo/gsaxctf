@@ -11535,6 +11535,34 @@
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
  },
+ "backend/data/parsed_results/2010/XC/wmcjvboysscores.txt.json": {
+  "parse_sha": "b0dea5227894539f",
+  "source_sha": "7c4fa599b6faa679",
+  "date": "2026-10-25",
+  "by": "sonnet audit (second read, 2026-10-25) (audit: source-error)",
+  "evidence": "convention: division-scored sheet against a combined race. The sheet prints 'Division I Results' and 'Division II Results' with places renumbered within each division (Division II winners score 1,2,3...), while the paired wmcjvboys.json holds one combined all-teams race with overall places, so places cannot reproduce the printed totals. The sheet's own rows add up to its printed totals (e.g. Falmouth 1+2+3+6+9=21; NYA 1+2+3+4+5=15)."
+ },
+ "backend/data/parsed_results/2010/XC/wmcjvgirlsscores.txt.json": {
+  "parse_sha": "807bbc0227141a63",
+  "source_sha": "454a1b5061b4aad3",
+  "date": "2026-10-25",
+  "by": "sonnet audit (second read, 2026-10-25) (audit: source-error)",
+  "evidence": "convention: division-scored sheet against a combined race. The sheet prints 'Division I Results' and 'Division II Results' with places renumbered within each division (Division II winners score 1,2,3...), while the paired wmcjvgirls.json holds one combined all-teams race with overall places, so places cannot reproduce the printed totals. The sheet's own rows add up to its printed totals (e.g. Falmouth 1+2+4+6+11=24; Yarmouth 1+2+3+4+5=15)."
+ },
+ "backend/data/parsed_results/2010/XC/wmcvboysscores.txt.json": {
+  "parse_sha": "e9c4dd01f02a4054",
+  "source_sha": "ba217985944ff6ef",
+  "date": "2026-10-25",
+  "by": "sonnet audit (second read, 2026-10-25) (audit: source-error)",
+  "evidence": "convention: division-scored sheet against a combined race. The sheet prints 'Division I Results' and 'Division II Results' with places renumbered within each division (Division II winners score 1,2,3...), while the paired wmcvboys.json holds one combined all-teams race with overall places, so places cannot reproduce the printed totals. The sheet's own rows add up to its printed totals (e.g. Falmouth 1+4+9+11+17=42; Fryeburg 1+11+15+18+31 listed in Div II)."
+ },
+ "backend/data/parsed_results/2010/XC/wmcvgirlsscores.txt.json": {
+  "parse_sha": "a5bb8998f6b44d24",
+  "source_sha": "fae01507e862013c",
+  "date": "2026-10-25",
+  "by": "sonnet audit (second read, 2026-10-25) (audit: source-error)",
+  "evidence": "convention: division-scored sheet against a combined race. The sheet prints 'Division I Results' and 'Division II Results' with places renumbered within each division (Division II winners score 1,2,3...), while the paired wmcvgirls.json holds one combined all-teams race with overall places, so places cannot reproduce the printed totals. The sheet's own rows add up to its printed totals (e.g. Cape Elizabeth 3+4+6+7+14=34; Yarmouth 2+3+6+9+10=30)."
+ },
  "backend/data/parsed_results/2011/Indoor/ResultsSMAABOYSMEET4_jan8.json": {
   "parse_sha": "637d998aca177946",
   "source_sha": "a88509fab627008a",
