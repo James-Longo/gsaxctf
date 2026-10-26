@@ -2798,6 +2798,26 @@ def test_looselist_judged_ties_and_second_mark():
     assert p._parse_row('1 Islah Godo 11 Mt. Ararat H 14-02.75 8 13-04.75', False)['result'] == '14-02.75'
     assert p._parse_row('2 # 15 Flagg, Hunter NOKO 5-02.00 J5-00.00 7', False)['result'] == '5-00.00'
 
+
+def test_team_scores_without_decimal_point():
+    """WMC indoor 2008-09 score sheets print 65.67 as '6567' (and 251.50 as '25150'); the printed
+    Total confirms the reading. Without a matching total such rows are dropped, not believed."""
+    from backend.parsers.teamscores import extract_team_scores
+    sheet = """                                       Female Team Scores
+  Place        School                                                                 Points
+      1        Falmouth High School                         FAL                         25150
+      2        York                                         YORK                        16733
+      3        Cape Elizabeth High School                   CAPE                         82
+      4        Poland                                       POL                          6567
+      5        North Yarmouth Academy                       NYA                          4750
+      6        Freeport High School                         FREE                         23
+                                                                              Total   637.00
+"""
+    b = extract_team_scores('Team Rankings - Through Event 85\n' + sheet)[0]
+    assert [t['score'] for t in b['teams']] == [251.5, 167.33, 82.0, 65.67, 47.5, 23.0], b
+    b = extract_team_scores('Team Rankings - Through Event 85\n' + sheet.replace('637.00', '640.00'))[0]
+    assert [t['score'] for t in b['teams']] == [82.0, 23.0], b
+
 if __name__ == '__main__':
     qaqc._ensure_team_mapping()
     failed = 0

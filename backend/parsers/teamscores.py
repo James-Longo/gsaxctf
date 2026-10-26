@@ -15,6 +15,8 @@ every way a file prints them has to be read. Formats seen on sub5:
       Place   School                       Points
         1     Brunswick High School   BRU      99
         2     CONY TRACK TEAM         CONY     64 .50      (pdftotext split)
+        4     Poland                  POL      6567        (65.67: no decimal point,
+                                         Total  637.00       the printed total confirms)
 
   Hand-made lists ("Team Scores" / "Final Scores" / "TEAM SCORES"):
       Girls                              1 Portland High School -
@@ -42,7 +44,7 @@ STOP = re.compile(r'^\s*(?:Event\s+\d+|EVENTS\b|Results\b|Name\s+Year\s+School)'
 RULE = re.compile(r'^[\s=_-]{5,}$')
 COLS = re.compile(r'^\s*(?:Place|Rank)\s+(?:School|Team)\b', re.I)
 PAIR_ROW = re.compile(r'(\d+)\)\s+(.*?)\s+(\d{1,4}(?:\.\d+)?)\s*(?=\d+\)\s|$)')
-NUM = r'\d{1,4}(?:\s?\.\d{1,2})?'
+NUM = r'\d{1,5}(?:\s?\.\d{1,2})?'
 PLACED_ROW = re.compile(rf'^\s*(\d{{1,2}})[.)]?\s+(.*?[A-Za-z].*?)\s*-?\s+({NUM})\s*$')
 BARE_ROW = re.compile(rf'^\s*([A-Za-z][^0-9]*?[A-Za-z.)])\s*-?\s+({NUM})\s*$')
 PLACED_NO_SCORE = re.compile(r'^\s*(\d{1,2})[.)]?\s+(.*?[A-Za-z].*?)\s*-?\s*$')
@@ -179,6 +181,16 @@ def extract_team_scores(text, file_gender=None):
             if not g or len(rows) < 2:
                 continue
             teams = [r for r in rows if r['team'] and not re.match(r'(?i)totals?$|points$|place$', r['team'])]
+            if any(r['score'] >= 1000 for r in teams):
+                # "Poland POL 6567 ... Total 637.00": points printed without their decimal point
+                # (WMC indoor 2008-09); read as hundredths only when the printed total agrees
+                tot = [r['score'] for r in rows if re.match(r'(?i)totals?$', r['team'] or '')]
+                fixed = [r['score'] / 100 if r['score'] >= 1000 else r['score'] for r in teams]
+                if tot and abs(sum(fixed) - tot[-1]) < 0.05:
+                    for r, v in zip(teams, fixed):
+                        r['score'] = round(v, 2)
+                else:
+                    teams = [r for r in teams if r['score'] < 1000]
             # unplaced lists rank by score
             if any(r['rank'] is None for r in teams):
                 teams.sort(key=lambda r: -r['score'])
