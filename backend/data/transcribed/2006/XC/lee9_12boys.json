@@ -1,0 +1,462 @@
+{
+ "source": "backend/data/sub5_archive/2006/XC/lee9_12boys.htm",
+ "meet_name": "Lee Invitational",
+ "date": "2006-09-12",
+ "team_rankings": [
+  {
+   "kind": "xc",
+   "gender": "Boys",
+   "event_idx": 0,
+   "event_header": "Team scores",
+   "teams": [
+    {
+     "rank": 1,
+     "team": "Foxcroft",
+     "score": 25,
+     "places": [
+      1,
+      2,
+      5,
+      7,
+      10
+     ]
+    },
+    {
+     "rank": 2,
+     "team": "Mattanawcook",
+     "score": 63,
+     "places": [
+      4,
+      6,
+      9,
+      19,
+      25
+     ]
+    },
+    {
+     "rank": 3,
+     "team": "Lee Academy",
+     "score": 88,
+     "places": [
+      12,
+      16,
+      18,
+      20,
+      22
+     ]
+    },
+    {
+     "rank": 4,
+     "team": "Central",
+     "score": 89,
+     "places": [
+      3,
+      8,
+      21,
+      28,
+      29
+     ]
+    },
+    {
+     "rank": 5,
+     "team": "Schenck",
+     "score": 134,
+     "places": [
+      13,
+      23,
+      27,
+      35,
+      36
+     ]
+    }
+   ]
+  }
+ ],
+ "parser": "HeaderTableParser",
+ "notes": "All 47 rows match the source. Fixes: (1) place 38 \"CHANGE, JAY  G  25:15\": school G is unresolved; it is Foxcroft Academy: Jay/Jea Chang runs for Foxcroft in 2006 (mtbluerelaysboys \"Jay Chang\" Foxcroft; foxcroft9_19 \"Chang, Jea\" Fox; pvcbjv \"Jea Chang\" Foxcroft Academy) and no team at this meet starts with G; name written Chang, Jay (CHANGE is a typo), school FOX. (2) Dropped the team_place values (1, 4, 3, 13) the parser attached to Hayes, Rhodes, Guadion and York: they are the first numbers of the printed \"TEAM\" scoring lines (FOXCROFT 1 2 5 7 10 = 25 etc.), not team places. (3) Added the team scores with the printed scoring places (the numbers are place-after-displacement, e.g. Mattanawcook 4 6 9 19 25 = 63). Marks \"20;37\" and \"20;54\" read as 20:37 and 20:54; \"16:18*\" is the new course record. Meet: Lee Invitational, Sept 12, 2006, 2.85 miles. Codes: FOX Foxcroft, CEN Central, MA Mattanawcook, LA Lee Academy, SCH Schenck, PCHS Piscataquis, Stearns.",
+ "events": [
+  {
+   "event": "2.85 Mile Run CC",
+   "gender": "Boys",
+   "is_relay": false,
+   "results": [
+    {
+     "place": 1,
+     "type": "Finals",
+     "grade": "",
+     "result": "16:18",
+     "athlete": "Hayes, Jerod",
+     "school": "FOX"
+    },
+    {
+     "place": 2,
+     "type": "Finals",
+     "grade": "",
+     "result": "16:30",
+     "athlete": "Pearsall, Graham",
+     "school": "FOX"
+    },
+    {
+     "place": 3,
+     "type": "Finals",
+     "grade": "",
+     "result": "17:06",
+     "athlete": "Wilson, Tony",
+     "school": "CEN"
+    },
+    {
+     "place": 4,
+     "type": "Finals",
+     "grade": "",
+     "result": "17:07",
+     "athlete": "Rhodes, Jake",
+     "school": "MA"
+    },
+    {
+     "place": 5,
+     "type": "Finals",
+     "grade": "",
+     "result": "17:17",
+     "athlete": "Flagg, Jr",
+     "school": "FOX"
+    },
+    {
+     "place": 6,
+     "type": "Finals",
+     "grade": "",
+     "result": "17:20",
+     "athlete": "Lichtenberg, Eric",
+     "school": "MA"
+    },
+    {
+     "place": 7,
+     "type": "Finals",
+     "grade": "",
+     "result": "17:22",
+     "athlete": "Almy, Isaac",
+     "school": "FOX"
+    },
+    {
+     "place": 8,
+     "type": "Finals",
+     "grade": "",
+     "result": "17:54",
+     "athlete": "Lamarche, Tom",
+     "school": "CEN"
+    },
+    {
+     "place": 9,
+     "type": "Finals",
+     "grade": "",
+     "result": "18:20",
+     "athlete": "Wotton, Drew",
+     "school": "MA"
+    },
+    {
+     "place": 10,
+     "type": "Finals",
+     "grade": "",
+     "result": "18:30",
+     "athlete": "Guadion, Henry",
+     "school": "FOX"
+    },
+    {
+     "place": 11,
+     "type": "Finals",
+     "grade": "",
+     "result": "18:33",
+     "athlete": "Almy, Amos",
+     "school": "FOX"
+    },
+    {
+     "place": 12,
+     "type": "Finals",
+     "grade": "",
+     "result": "18:34",
+     "athlete": "Parker, Devan",
+     "school": "LA"
+    },
+    {
+     "place": 13,
+     "type": "Finals",
+     "grade": "",
+     "result": "18:56",
+     "athlete": "York, Troy",
+     "school": "SCH"
+    },
+    {
+     "place": 14,
+     "type": "Finals",
+     "grade": "",
+     "result": "19:05",
+     "athlete": "McNaughton, Scott",
+     "school": "FOX"
+    },
+    {
+     "place": 15,
+     "type": "Finals",
+     "grade": "",
+     "result": "19:06",
+     "athlete": "Grindle, Philip",
+     "school": "PCHS"
+    },
+    {
+     "place": 16,
+     "type": "Finals",
+     "grade": "",
+     "result": "19:07",
+     "athlete": "Rioux, Mike",
+     "school": "Stearns"
+    },
+    {
+     "place": 17,
+     "type": "Finals",
+     "grade": "",
+     "result": "19:09",
+     "athlete": "Bridges, Chris",
+     "school": "FOX"
+    },
+    {
+     "place": 18,
+     "type": "Finals",
+     "grade": "",
+     "result": "19:10",
+     "athlete": "Kuester, Jacob",
+     "school": "LA"
+    },
+    {
+     "place": 19,
+     "type": "Finals",
+     "grade": "",
+     "result": "19:11",
+     "athlete": "Oldfield, Seth",
+     "school": "FOX"
+    },
+    {
+     "place": 20,
+     "type": "Finals",
+     "grade": "",
+     "result": "19:12",
+     "athlete": "Pomerleau, Trey",
+     "school": "PCHS"
+    },
+    {
+     "place": 21,
+     "type": "Finals",
+     "grade": "",
+     "result": "19:38",
+     "athlete": "Bird, Tom",
+     "school": "LA"
+    },
+    {
+     "place": 22,
+     "type": "Finals",
+     "grade": "",
+     "result": "19:41",
+     "athlete": "Fichera, Josh",
+     "school": "MA"
+    },
+    {
+     "place": 23,
+     "type": "Finals",
+     "grade": "",
+     "result": "20:24",
+     "athlete": "Coloumbe, Corey",
+     "school": "LA"
+    },
+    {
+     "place": 24,
+     "type": "Finals",
+     "grade": "",
+     "result": "20:24",
+     "athlete": "Boulier, Ray",
+     "school": "CEN"
+    },
+    {
+     "place": 25,
+     "type": "Finals",
+     "grade": "",
+     "result": "20:33",
+     "athlete": "Connick, Jon",
+     "school": "LA"
+    },
+    {
+     "place": 26,
+     "type": "Finals",
+     "grade": "",
+     "result": "20:37",
+     "athlete": "Fritch, Josh",
+     "school": "SCH"
+    },
+    {
+     "place": 27,
+     "type": "Finals",
+     "grade": "",
+     "result": "20:51",
+     "athlete": "Alrdrich, Patrick",
+     "school": "LA"
+    },
+    {
+     "place": 28,
+     "type": "Finals",
+     "grade": "",
+     "result": "20:54",
+     "athlete": "Madden, Jake",
+     "school": "MA"
+    },
+    {
+     "place": 29,
+     "type": "Finals",
+     "grade": "",
+     "result": "22:00",
+     "athlete": "Morin, Logan",
+     "school": "PCHS"
+    },
+    {
+     "place": 30,
+     "type": "Finals",
+     "grade": "",
+     "result": "22:10",
+     "athlete": "Marshall, John",
+     "school": "FOX"
+    },
+    {
+     "place": 31,
+     "type": "Finals",
+     "grade": "",
+     "result": "22:21",
+     "athlete": "York, Jerome",
+     "school": "SCH"
+    },
+    {
+     "place": 32,
+     "type": "Finals",
+     "grade": "",
+     "result": "22:40",
+     "athlete": "Smith, Mike",
+     "school": "CEN"
+    },
+    {
+     "place": 33,
+     "type": "Finals",
+     "grade": "",
+     "result": "22:41",
+     "athlete": "Hafford, Jordan",
+     "school": "CEN"
+    },
+    {
+     "place": 34,
+     "type": "Finals",
+     "grade": "",
+     "result": "22:55",
+     "athlete": "Cappuccio, Anthony",
+     "school": "CEN"
+    },
+    {
+     "place": 35,
+     "type": "Finals",
+     "grade": "",
+     "result": "23:03",
+     "athlete": "McNeil, Aaron",
+     "school": "FOX"
+    },
+    {
+     "place": 36,
+     "type": "Finals",
+     "grade": "",
+     "result": "23:18",
+     "athlete": "Guido, Ben",
+     "school": "LA"
+    },
+    {
+     "place": 37,
+     "type": "Finals",
+     "grade": "",
+     "result": "23:36",
+     "athlete": "Bunker, Issac",
+     "school": "LA"
+    },
+    {
+     "place": 38,
+     "type": "Finals",
+     "grade": "",
+     "result": "25:15",
+     "athlete": "Chang, Jay",
+     "school": "FOX"
+    },
+    {
+     "place": 39,
+     "type": "Finals",
+     "grade": "",
+     "result": "25:23",
+     "athlete": "McCafferty, Travis",
+     "school": "SCH"
+    },
+    {
+     "place": 40,
+     "type": "Finals",
+     "grade": "",
+     "result": "25:33",
+     "athlete": "Cote, Tom",
+     "school": "SCH"
+    },
+    {
+     "place": 41,
+     "type": "Finals",
+     "grade": "",
+     "result": "25:46",
+     "athlete": "Wakefield, Tyler",
+     "school": "MA"
+    },
+    {
+     "place": 42,
+     "type": "Finals",
+     "grade": "",
+     "result": "25:51",
+     "athlete": "Alessi, Nick",
+     "school": "MA"
+    },
+    {
+     "place": 43,
+     "type": "Finals",
+     "grade": "",
+     "result": "26:41",
+     "athlete": "Jacobs, Chris",
+     "school": "SCH"
+    },
+    {
+     "place": 44,
+     "type": "Finals",
+     "grade": "",
+     "result": "26:43",
+     "athlete": "Proudlove, Matt",
+     "school": "MA"
+    },
+    {
+     "place": 45,
+     "type": "Finals",
+     "grade": "",
+     "result": "29:54",
+     "athlete": "Mitchell, Jeremy",
+     "school": "FOX"
+    },
+    {
+     "place": 46,
+     "type": "Finals",
+     "grade": "",
+     "result": "31:50",
+     "athlete": "Weeks, Mike",
+     "school": "CEN"
+    },
+    {
+     "place": 47,
+     "type": "Finals",
+     "grade": "",
+     "result": "32:42",
+     "athlete": "Smith, Dave",
+     "school": "CEN"
+    }
+   ]
+  }
+ ]
+}

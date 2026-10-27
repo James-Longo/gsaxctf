@@ -1,0 +1,801 @@
+{
+ "source": "backend/data/sub5_archive/2006/XC/lakeregion10_6.pdf",
+ "meet_name": "Poland, Fryeburg Academy, Gray-New Gloucester @ Lake Region",
+ "date": null,
+ "team_rankings": [
+  {
+   "kind": "xc",
+   "gender": "Girls",
+   "event_idx": 0,
+   "event_header": "Team scores",
+   "teams": [
+    {
+     "rank": 1,
+     "team": "Fryeburg Academy",
+     "score": 34
+    },
+    {
+     "rank": 2,
+     "team": "Lake Region",
+     "score": 42
+    },
+    {
+     "rank": 3,
+     "team": "Poland",
+     "score": 74
+    },
+    {
+     "rank": 4,
+     "team": "Gray-New Gloucester",
+     "score": 81
+    }
+   ]
+  },
+  {
+   "kind": "xc",
+   "gender": "Boys",
+   "event_idx": 1,
+   "event_header": "Team scores",
+   "teams": [
+    {
+     "rank": 1,
+     "team": "Poland",
+     "score": 34
+    },
+    {
+     "rank": 2,
+     "team": "Lake Region",
+     "score": 48
+    },
+    {
+     "rank": 3,
+     "team": "Fryeburg Academy",
+     "score": 61
+    },
+    {
+     "rank": 4,
+     "team": "Gray-New Gloucester",
+     "score": 78
+    }
+   ]
+  }
+ ],
+ "parser": "XCListParser",
+ "notes": "Two-column PDF: results on the left (places 1-30), places 31-46/44 on the right, with the team-score list (e.g. \"FA 34 / LR 42 / Pol 74 / GNG 81\") printed in the right column beside places 18-21 (girls) and 16-19 (boys). The parse glued the team-score token into the name and took the school from the score column: girls 18 \"Allen FA\" (school FA correct), 19 \"Hancock Pol\" (parsed LR, source Pol), 20 \"Norton Pol\", 21 \"Dehetre Pol\" (parsed GNG, source Pol); boys 16 \"Kelley GNG\" (parsed Pol, source GNG), 17 \"Kiyanitsa GNG\" (parsed LR, source GNG), 18 \"Beaulieu Pol\" (parsed FA, source Pol), 19 \"Rivard Pol\" (parsed GNG, source Pol). Names and schools corrected to the printed row. Team scores as printed: girls FA 34, LR 42, Pol 74, GNG 81; boys Pol 34, LR 48, FA 61, GNG 78. Meet name is wrapped in the source (\"Poland, Fryeburg Academy, Gray- / New Gloucester @ Lake Region\"). Distance 3.1 miles. Codes: FA Fryeburg Academy, LR Lake Region, Pol Poland, GNG Gray-New Gloucester (title). No date printed.",
+ "events": [
+  {
+   "event": "3.1 Mile Run CC",
+   "gender": "Girls",
+   "is_relay": false,
+   "results": [
+    {
+     "athlete": "T Titzer",
+     "school": "LR",
+     "result": "20:29",
+     "grade": "",
+     "type": "Finals",
+     "place": 1
+    },
+    {
+     "athlete": "Staires",
+     "school": "FA",
+     "result": "21:06",
+     "grade": "",
+     "type": "Finals",
+     "place": 2
+    },
+    {
+     "athlete": "Cormier",
+     "school": "GNG",
+     "result": "21:09",
+     "grade": "",
+     "type": "Finals",
+     "place": 3
+    },
+    {
+     "athlete": "Atwood",
+     "school": "FA",
+     "result": "21:11",
+     "grade": "",
+     "type": "Finals",
+     "place": 4
+    },
+    {
+     "athlete": "J Titzer",
+     "school": "LR",
+     "result": "22:20",
+     "grade": "",
+     "type": "Finals",
+     "place": 5
+    },
+    {
+     "athlete": "Rae-Ford",
+     "school": "Pol",
+     "result": "22:26",
+     "grade": "",
+     "type": "Finals",
+     "place": 6
+    },
+    {
+     "athlete": "Miller",
+     "school": "FA",
+     "result": "22:29",
+     "grade": "",
+     "type": "Finals",
+     "place": 7
+    },
+    {
+     "athlete": "Pairainen",
+     "school": "Pol",
+     "result": "22:31",
+     "grade": "",
+     "type": "Finals",
+     "place": 8
+    },
+    {
+     "athlete": "Estes",
+     "school": "LR",
+     "result": "22:31",
+     "grade": "",
+     "type": "Finals",
+     "place": 9
+    },
+    {
+     "athlete": "Classen",
+     "school": "FA",
+     "result": "22:33",
+     "grade": "",
+     "type": "Finals",
+     "place": 10
+    },
+    {
+     "athlete": "Hannes",
+     "school": "FA",
+     "result": "23:02",
+     "grade": "",
+     "type": "Finals",
+     "place": 11
+    },
+    {
+     "athlete": "Perry",
+     "school": "FA",
+     "result": "23:52",
+     "grade": "",
+     "type": "Finals",
+     "place": 12
+    },
+    {
+     "athlete": "Fillmore-Patrick",
+     "school": "LR",
+     "result": "24:05",
+     "grade": "",
+     "type": "Finals",
+     "place": 13
+    },
+    {
+     "athlete": "Antonio",
+     "school": "LR",
+     "result": "24:16",
+     "grade": "",
+     "type": "Finals",
+     "place": 14
+    },
+    {
+     "athlete": "Bell",
+     "school": "LR",
+     "result": "24:18",
+     "grade": "",
+     "type": "Finals",
+     "place": 15
+    },
+    {
+     "athlete": "Olmstead",
+     "school": "GNG",
+     "result": "24:32",
+     "grade": "",
+     "type": "Finals",
+     "place": 16
+    },
+    {
+     "athlete": "Danielli",
+     "school": "GNG",
+     "result": "24:32",
+     "grade": "",
+     "type": "Finals",
+     "place": 17
+    },
+    {
+     "athlete": "Allen",
+     "school": "FA",
+     "result": "24:54",
+     "grade": "",
+     "type": "Finals",
+     "place": 18
+    },
+    {
+     "athlete": "Hancock",
+     "school": "Pol",
+     "result": "25:12",
+     "grade": "",
+     "type": "Finals",
+     "place": 19
+    },
+    {
+     "athlete": "Norton",
+     "school": "Pol",
+     "result": "25:18",
+     "grade": "",
+     "type": "Finals",
+     "place": 20
+    },
+    {
+     "athlete": "Dehetre",
+     "school": "Pol",
+     "result": "25:20",
+     "grade": "",
+     "type": "Finals",
+     "place": 21
+    },
+    {
+     "athlete": "Stebbins",
+     "school": "GNG",
+     "result": "25:39",
+     "grade": "",
+     "type": "Finals",
+     "place": 22
+    },
+    {
+     "athlete": "Drew",
+     "school": "GNG",
+     "result": "25:41",
+     "grade": "",
+     "type": "Finals",
+     "place": 23
+    },
+    {
+     "athlete": "Caffrey",
+     "school": "FA",
+     "result": "25:42",
+     "grade": "",
+     "type": "Finals",
+     "place": 24
+    },
+    {
+     "athlete": "Dionne",
+     "school": "Pol",
+     "result": "26:02",
+     "grade": "",
+     "type": "Finals",
+     "place": 25
+    },
+    {
+     "athlete": "Holden",
+     "school": "FA",
+     "result": "26:17",
+     "grade": "",
+     "type": "Finals",
+     "place": 26
+    },
+    {
+     "athlete": "Borsetti",
+     "school": "LR",
+     "result": "26:19",
+     "grade": "",
+     "type": "Finals",
+     "place": 27
+    },
+    {
+     "athlete": "Adams",
+     "school": "LR",
+     "result": "26:42",
+     "grade": "",
+     "type": "Finals",
+     "place": 28
+    },
+    {
+     "athlete": "Hurd",
+     "school": "FA",
+     "result": "26:48",
+     "grade": "",
+     "type": "Finals",
+     "place": 29
+    },
+    {
+     "athlete": "Glennon",
+     "school": "GNG",
+     "result": "27:01",
+     "grade": "",
+     "type": "Finals",
+     "place": 30
+    },
+    {
+     "athlete": "Maguire",
+     "school": "GNG",
+     "result": "27:06",
+     "grade": "",
+     "type": "Finals",
+     "place": 31
+    },
+    {
+     "athlete": "Archambault",
+     "school": "GNG",
+     "result": "27:07",
+     "grade": "",
+     "type": "Finals",
+     "place": 32
+    },
+    {
+     "athlete": "Perron",
+     "school": "Pol",
+     "result": "27:10",
+     "grade": "",
+     "type": "Finals",
+     "place": 33
+    },
+    {
+     "athlete": "Parsons",
+     "school": "Pol",
+     "result": "27:21",
+     "grade": "",
+     "type": "Finals",
+     "place": 34
+    },
+    {
+     "athlete": "Dagneau",
+     "school": "Pol",
+     "result": "27:27",
+     "grade": "",
+     "type": "Finals",
+     "place": 35
+    },
+    {
+     "athlete": "Hubbard",
+     "school": "Pol",
+     "result": "27:40",
+     "grade": "",
+     "type": "Finals",
+     "place": 36
+    },
+    {
+     "athlete": "Bickford",
+     "school": "Pol",
+     "result": "27:52",
+     "grade": "",
+     "type": "Finals",
+     "place": 37
+    },
+    {
+     "athlete": "Solter",
+     "school": "FA",
+     "result": "28:17",
+     "grade": "",
+     "type": "Finals",
+     "place": 38
+    },
+    {
+     "athlete": "Hall",
+     "school": "Pol",
+     "result": "28:40",
+     "grade": "",
+     "type": "Finals",
+     "place": 39
+    },
+    {
+     "athlete": "Kackley",
+     "school": "FA",
+     "result": "30:24",
+     "grade": "",
+     "type": "Finals",
+     "place": 40
+    },
+    {
+     "athlete": "Walker",
+     "school": "LR",
+     "result": "30:46",
+     "grade": "",
+     "type": "Finals",
+     "place": 41
+    },
+    {
+     "athlete": "Beaulieu",
+     "school": "Pol",
+     "result": "30:55",
+     "grade": "",
+     "type": "Finals",
+     "place": 42
+    },
+    {
+     "athlete": "Meservier",
+     "school": "Pol",
+     "result": "30:55",
+     "grade": "",
+     "type": "Finals",
+     "place": 43
+    },
+    {
+     "athlete": "Hutchins",
+     "school": "LR",
+     "result": "31:14",
+     "grade": "",
+     "type": "Finals",
+     "place": 44
+    },
+    {
+     "athlete": "Powers",
+     "school": "FA",
+     "result": "31:15",
+     "grade": "",
+     "type": "Finals",
+     "place": 45
+    },
+    {
+     "athlete": "Shaw",
+     "school": "LR",
+     "result": "31:25",
+     "grade": "",
+     "type": "Finals",
+     "place": 46
+    }
+   ]
+  },
+  {
+   "event": "3.1 Mile Run CC",
+   "gender": "Boys",
+   "is_relay": false,
+   "results": [
+    {
+     "athlete": "Williams",
+     "school": "Pol",
+     "result": "16:06",
+     "grade": "",
+     "type": "Finals",
+     "place": 1
+    },
+    {
+     "athlete": "Even",
+     "school": "FA",
+     "result": "16:53",
+     "grade": "",
+     "type": "Finals",
+     "place": 2
+    },
+    {
+     "athlete": "Betts",
+     "school": "GNG",
+     "result": "17:39",
+     "grade": "",
+     "type": "Finals",
+     "place": 3
+    },
+    {
+     "athlete": "Eldridge",
+     "school": "LR",
+     "result": "18:04",
+     "grade": "",
+     "type": "Finals",
+     "place": 4
+    },
+    {
+     "athlete": "Mains",
+     "school": "LR",
+     "result": "18:09",
+     "grade": "",
+     "type": "Finals",
+     "place": 5
+    },
+    {
+     "athlete": "Tripp",
+     "school": "Pol",
+     "result": "18:21",
+     "grade": "",
+     "type": "Finals",
+     "place": 6
+    },
+    {
+     "athlete": "Lajoie",
+     "school": "Pol",
+     "result": "18:24",
+     "grade": "",
+     "type": "Finals",
+     "place": 7
+    },
+    {
+     "athlete": "Roy",
+     "school": "LR",
+     "result": "18:28",
+     "grade": "",
+     "type": "Finals",
+     "place": 8
+    },
+    {
+     "athlete": "England",
+     "school": "Pol",
+     "result": "18:32",
+     "grade": "",
+     "type": "Finals",
+     "place": 9
+    },
+    {
+     "athlete": "Moore",
+     "school": "LR",
+     "result": "18:43",
+     "grade": "",
+     "type": "Finals",
+     "place": 10
+    },
+    {
+     "athlete": "Payette",
+     "school": "Pol",
+     "result": "18:48",
+     "grade": "",
+     "type": "Finals",
+     "place": 11
+    },
+    {
+     "athlete": "Prince",
+     "school": "FA",
+     "result": "19:00",
+     "grade": "",
+     "type": "Finals",
+     "place": 12
+    },
+    {
+     "athlete": "Climo",
+     "school": "FA",
+     "result": "19:15",
+     "grade": "",
+     "type": "Finals",
+     "place": 13
+    },
+    {
+     "athlete": "Provencher",
+     "school": "Pol",
+     "result": "19:17",
+     "grade": "",
+     "type": "Finals",
+     "place": 14
+    },
+    {
+     "athlete": "Patterson",
+     "school": "FA",
+     "result": "19:23",
+     "grade": "",
+     "type": "Finals",
+     "place": 15
+    },
+    {
+     "athlete": "Kelley",
+     "school": "GNG",
+     "result": "19:32",
+     "grade": "",
+     "type": "Finals",
+     "place": 16
+    },
+    {
+     "athlete": "Kiyanitsa",
+     "school": "GNG",
+     "result": "19:42",
+     "grade": "",
+     "type": "Finals",
+     "place": 17
+    },
+    {
+     "athlete": "Beaulieu",
+     "school": "Pol",
+     "result": "19:52",
+     "grade": "",
+     "type": "Finals",
+     "place": 18
+    },
+    {
+     "athlete": "Rivard",
+     "school": "Pol",
+     "result": "20:01",
+     "grade": "",
+     "type": "Finals",
+     "place": 19
+    },
+    {
+     "athlete": "Garrett",
+     "school": "FA",
+     "result": "20:05",
+     "grade": "",
+     "type": "Finals",
+     "place": 20
+    },
+    {
+     "athlete": "Kelley",
+     "school": "GNG",
+     "result": "20:24",
+     "grade": "",
+     "type": "Finals",
+     "place": 21
+    },
+    {
+     "athlete": "Young",
+     "school": "Pol",
+     "result": "20:31",
+     "grade": "",
+     "type": "Finals",
+     "place": 22
+    },
+    {
+     "athlete": "Strain",
+     "school": "LR",
+     "result": "20:34",
+     "grade": "",
+     "type": "Finals",
+     "place": 23
+    },
+    {
+     "athlete": "Blanchard",
+     "school": "GNG",
+     "result": "20:36",
+     "grade": "",
+     "type": "Finals",
+     "place": 24
+    },
+    {
+     "athlete": "Marshall",
+     "school": "GNG",
+     "result": "21:00",
+     "grade": "",
+     "type": "Finals",
+     "place": 25
+    },
+    {
+     "athlete": "Palmer",
+     "school": "LR",
+     "result": "21:10",
+     "grade": "",
+     "type": "Finals",
+     "place": 26
+    },
+    {
+     "athlete": "Aldrich",
+     "school": "Pol",
+     "result": "21:24",
+     "grade": "",
+     "type": "Finals",
+     "place": 27
+    },
+    {
+     "athlete": "Hagenow",
+     "school": "FA",
+     "result": "21:36",
+     "grade": "",
+     "type": "Finals",
+     "place": 28
+    },
+    {
+     "athlete": "McCann",
+     "school": "GNG",
+     "result": "21:41",
+     "grade": "",
+     "type": "Finals",
+     "place": 29
+    },
+    {
+     "athlete": "York",
+     "school": "Pol",
+     "result": "21:58",
+     "grade": "",
+     "type": "Finals",
+     "place": 30
+    },
+    {
+     "athlete": "Flynn",
+     "school": "Pol",
+     "result": "22:13",
+     "grade": "",
+     "type": "Finals",
+     "place": 31
+    },
+    {
+     "athlete": "Reed",
+     "school": "FA",
+     "result": "22:15",
+     "grade": "",
+     "type": "Finals",
+     "place": 32
+    },
+    {
+     "athlete": "Ferland",
+     "school": "LR",
+     "result": "22:20",
+     "grade": "",
+     "type": "Finals",
+     "place": 33
+    },
+    {
+     "athlete": "Coyle",
+     "school": "Pol",
+     "result": "22:36",
+     "grade": "",
+     "type": "Finals",
+     "place": 34
+    },
+    {
+     "athlete": "VanBaars",
+     "school": "Pol",
+     "result": "23:11",
+     "grade": "",
+     "type": "Finals",
+     "place": 35
+    },
+    {
+     "athlete": "Smith",
+     "school": "LR",
+     "result": "23:18",
+     "grade": "",
+     "type": "Finals",
+     "place": 36
+    },
+    {
+     "athlete": "Densmore",
+     "school": "GNG",
+     "result": "23:41",
+     "grade": "",
+     "type": "Finals",
+     "place": 37
+    },
+    {
+     "athlete": "Parent",
+     "school": "Pol",
+     "result": "24:11",
+     "grade": "",
+     "type": "Finals",
+     "place": 38
+    },
+    {
+     "athlete": "Bishop",
+     "school": "FA",
+     "result": "24:15",
+     "grade": "",
+     "type": "Finals",
+     "place": 39
+    },
+    {
+     "athlete": "Wellinghurst",
+     "school": "FA",
+     "result": "24:34",
+     "grade": "",
+     "type": "Finals",
+     "place": 40
+    },
+    {
+     "athlete": "Bartlett",
+     "school": "Pol",
+     "result": "25:24",
+     "grade": "",
+     "type": "Finals",
+     "place": 41
+    },
+    {
+     "athlete": "Hayes",
+     "school": "LR",
+     "result": "27:05",
+     "grade": "",
+     "type": "Finals",
+     "place": 42
+    },
+    {
+     "athlete": "Mayberry",
+     "school": "LR",
+     "result": "30:10",
+     "grade": "",
+     "type": "Finals",
+     "place": 43
+    },
+    {
+     "athlete": "Bishop",
+     "school": "Pol",
+     "result": "33:09",
+     "grade": "",
+     "type": "Finals",
+     "place": 44
+    }
+   ]
+  }
+ ]
+}

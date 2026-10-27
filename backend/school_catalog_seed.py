@@ -1700,6 +1700,13 @@ FILE_RULES = [
     (['Cape'], 'XC', (2007, 2007), r'^scarboroughinviteboys$', 'me-ms-cape-elizabeth'),
     (['Raymond'], 'XC', (2007, 2007), r'^scarboroughinviteboys$', 'me-ms-jordan-small'),
     (['Damariscotta'], 'XC', (2007, 2007), r'^scarboroughinviteboys$', 'me-ms-great-salt-bay'),
+    # 2026-10-27 second read batch 24 (2006)
+    (['No'], 'XC', (2006, 2006), r'^deeringboys10_6$', 'me-hs-noble'),
+    (['C'], 'XC', (2006, 2006), r'^elboys9_1$', 'me-hs-cony'),
+    (['W'], 'XC', (2006, 2006), r'^freeport9_15boys$', 'me-hs-waynflete'),
+    (['G'], 'XC', (2006, 2006), r'^lawrence9_8girls$', 'me-hs-gardiner'),
+    (['G'], 'XC', (2006, 2006), r'^lee9_12boys$', 'me-hs-foxcroft'),
+    (['S'], 'XC', (2006, 2006), r'^marshwoodgirls10_13$', 'me-hs-sanford'),
     # 2026-10-24 unresolved-school review, batch 2
     (['F'], 'XC', (2004, 2004), r'^cape7oct04[bg]\.txt$', 'me-hs-falmouth'),   # Title lists Falmouth; only F team
     (['Y'], 'XC', (2004, 2004), r'^cape7oct04[bg]\.txt$', 'me-hs-yarmouth'),   # Title lists Yarmouth; only Y team

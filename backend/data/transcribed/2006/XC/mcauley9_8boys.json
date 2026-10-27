@@ -1,0 +1,172 @@
+{
+ "source": "backend/data/sub5_archive/2006/XC/mcauley9_8boys.pdf",
+ "meet_name": null,
+ "date": null,
+ "team_rankings": [
+  {
+   "kind": "xc",
+   "gender": "Boys",
+   "event_idx": 0,
+   "event_header": "Team scores",
+   "teams": [
+    {
+     "rank": 1,
+     "team": "Scarborough",
+     "score": 16
+    },
+    {
+     "rank": 2,
+     "team": "Kennebunk",
+     "score": 46
+    }
+   ]
+  }
+ ],
+ "parser": "XCListParser",
+ "notes": "PDF text wraps mid-line (\"4. McElwain (S)\" / \"17:47 5. Fulford ...\"; \"8. C. Eaton (K)\" / \"18:59 9. Ledue ...\"). The parse lost the wrapped rows 4 McElwain (S) 17:47 and 8 C. Eaton (K) 18:59 and merged the tie \"10. J. Prosack (S) and Chick (S) 19:19\" into one athlete \"J. Prosack (S) and Chick\" at place 10; now 10 J. Prosack and 11 Chick, both S, 19:19 (the next printed place is 12). Event given the printed distance \"Distance 2.95\". Meet name in the parse was the score line; the source has no meet title (file McAuley 9/8): left null. Team scores \"Scarborough 16, Kennebunk 46\": Scarborough 16 reproduces (1,2,3,4,6); Kennebunk rows give 55 (5,8,12,13,17), printed 46, kept as printed. Codes S Scarborough, K Kennebunk. No date printed.",
+ "events": [
+  {
+   "event": "2.95 Mile Run CC",
+   "gender": "Boys",
+   "is_relay": false,
+   "results": [
+    {
+     "athlete": "Moulin",
+     "school": "S",
+     "result": "17:31",
+     "grade": "",
+     "type": "Finals",
+     "place": 1
+    },
+    {
+     "athlete": "T. Griffin",
+     "school": "S",
+     "result": "17:33",
+     "grade": "",
+     "type": "Finals",
+     "place": 2
+    },
+    {
+     "athlete": "B. Violette",
+     "school": "S",
+     "result": "17:39",
+     "grade": "",
+     "type": "Finals",
+     "place": 3
+    },
+    {
+     "athlete": "McElwain",
+     "school": "S",
+     "result": "17:47",
+     "grade": "",
+     "type": "Finals",
+     "place": 4
+    },
+    {
+     "athlete": "Fulford",
+     "school": "K",
+     "result": "17:54",
+     "grade": "",
+     "type": "Finals",
+     "place": 5
+    },
+    {
+     "athlete": "Talbot",
+     "school": "S",
+     "result": "18:19",
+     "grade": "",
+     "type": "Finals",
+     "place": 6
+    },
+    {
+     "athlete": "Robinson",
+     "school": "S",
+     "result": "18:39",
+     "grade": "",
+     "type": "Finals",
+     "place": 7
+    },
+    {
+     "athlete": "C. Eaton",
+     "school": "K",
+     "result": "18:59",
+     "grade": "",
+     "type": "Finals",
+     "place": 8
+    },
+    {
+     "athlete": "Ledue",
+     "school": "S",
+     "result": "19:08",
+     "grade": "",
+     "type": "Finals",
+     "place": 9
+    },
+    {
+     "athlete": "J. Prosack",
+     "school": "S",
+     "result": "19:19",
+     "grade": "",
+     "type": "Finals",
+     "place": 10
+    },
+    {
+     "athlete": "Chick",
+     "school": "S",
+     "result": "19:19",
+     "grade": "",
+     "type": "Finals",
+     "place": 11
+    },
+    {
+     "athlete": "Adams",
+     "school": "K",
+     "result": "19:24",
+     "grade": "",
+     "type": "Finals",
+     "place": 12
+    },
+    {
+     "athlete": "Mahoney",
+     "school": "K",
+     "result": "19:30",
+     "grade": "",
+     "type": "Finals",
+     "place": 13
+    },
+    {
+     "athlete": "Scott",
+     "school": "S",
+     "result": "19:34",
+     "grade": "",
+     "type": "Finals",
+     "place": 14
+    },
+    {
+     "athlete": "S. Griffin",
+     "school": "S",
+     "result": "19:36",
+     "grade": "",
+     "type": "Finals",
+     "place": 15
+    },
+    {
+     "athlete": "Burns",
+     "school": "S",
+     "result": "19:49",
+     "grade": "",
+     "type": "Finals",
+     "place": 16
+    },
+    {
+     "athlete": "Gross",
+     "school": "K",
+     "result": "20:12",
+     "grade": "",
+     "type": "Finals",
+     "place": 17
+    }
+   ]
+  }
+ ]
+}
