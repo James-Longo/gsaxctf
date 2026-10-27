@@ -2744,6 +2744,27 @@ def test_transcription_no_team_scores_flag():
     assert cut.get('no_team_scores') is True and 'no_team_scores' not in plain
 
 
+def test_transcription_belongs_to_its_source_file():
+    """A .htm and a .pdf sharing a stem are different meets: an override that
+    names the .htm as its source is not applied to the .pdf."""
+    import json
+    import tempfile
+    import backend.scraper_v2 as sv
+    old = sv.TRANSCRIBED
+    with tempfile.TemporaryDirectory() as d:
+        os.makedirs(os.path.join(d, '2008', 'XC'))
+        with open(os.path.join(d, '2008', 'XC', 'invite.json'), 'w') as f:
+            json.dump({'events': [], 'team_rankings': [],
+                       'source': 'backend/data/sub5_archive/2008/XC/invite.htm'}, f)
+        sv.TRANSCRIBED = d
+        try:
+            htm = sv.load_transcription('archive/2008/XC/invite.htm')
+            pdf = sv.load_transcription('archive/2008/XC/invite.pdf')
+        finally:
+            sv.TRANSCRIBED = old
+    assert htm is not None and pdf is None
+
+
 def test_every_parsed_season_is_synced():
     """The resync reads only the seasons in SEASONS: a parsed season left out
     (2014 XC, recovered with no sub5 index page) never reaches the store."""

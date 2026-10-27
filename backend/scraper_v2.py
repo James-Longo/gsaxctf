@@ -656,6 +656,13 @@ def load_transcription(input_path):
         return None
     with open(p, encoding='utf-8') as f:
         d = json.load(f)
+    # a .htm and a .pdf can share a stem (the .pdf is stored as '<stem>_pdf');
+    # an override naming its source file belongs to that file only
+    src = d.get('source')
+    if isinstance(src, str):
+        sb, ib = os.path.basename(src), parts[-1]
+        if os.path.splitext(sb)[0] == stem and sb != ib:
+            return None
     events = []
     for e in d.get('events') or []:
         rows = []
