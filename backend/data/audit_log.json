@@ -359,6 +359,14 @@
   "parse_sha": "38086829d6360121",
   "source_sha": "d365223d37365076"
  },
+ "backend/data/parsed_results/2007/XC/belfast9_7.txt.json": {
+  "verdict": "fixed",
+  "by": "sonnet audit (second read, 2026-10-26)",
+  "notes": "57 boys + 43 girls rows match. Fixes: Chris Kibler boys place 2 '7:04' is 17:04 (typo: Morse 53 = places 1+2+10+16+24); team scores read from 'Teams:' lines (boys Medomak 31, Morse 53, Belfast 67, Erskine 88, Winslow 117, Rockland 215; girls Belfast 29, Medomak 41, Erskine 85, Morse 101); date 9/7/2007 printed. 'Rocklan' is Rockland.",
+  "date": "2026-10-26",
+  "parse_sha": "b0f311941f4bcef0",
+  "source_sha": "20f7735d7d3d9635"
+ },
  "backend/data/parsed_results/2007/XC/boys%20results%20b%20new.json": {
   "verdict": "source-error",
   "by": "sonnet audit (score mismatch, 2026-10-23)",
@@ -383,6 +391,14 @@
   "parse_sha": "66909e0a97de591a",
   "source_sha": "fd339348361b95c4"
  },
+ "backend/data/parsed_results/2007/XC/caribougirls9_5.json": {
+  "verdict": "fixed",
+  "by": "sonnet audit (second read, 2026-10-26)",
+  "notes": "26 finishers match. Parse added junk row 'Scratch, Anderson' (source: 'Danni Anderson PI Scratch', scratched, no mark) and took 'Kelsey Bowers PI' (scratch list) as meet_name; row removed, meet_name null. CAR Caribou, FK Fort Kent, PI Presque Isle, Lime Limestone.",
+  "date": "2026-10-26",
+  "parse_sha": "afeff66999c40261",
+  "source_sha": "7d8d650a65ca771c"
+ },
  "backend/data/parsed_results/2007/XC/central9_4.json": {
   "verdict": "fixed",
   "by": "sonnet audit (second read, 2026-10-26)",
@@ -390,6 +406,38 @@
   "date": "2026-10-26",
   "parse_sha": "4c273a9277ce3997",
   "source_sha": "6e1afec30c4f71ba"
+ },
+ "backend/data/parsed_results/2007/XC/cheverusboys9_14.json": {
+  "verdict": "fixed",
+  "by": "sonnet audit (second read, 2026-10-26)",
+  "notes": "42 rows match, but place 27 '??? Johnson C 20:43' was dropped (added as 'Johnson', Cheverus) and the printed team scores were missing (Cheverus 19, TA 39, Windham 78; Cheverus 19 reproduces from places 1+2+4+5+7, the others are source scoring). Date 9/14/07 printed. C Cheverus, TA Thornton Academy, W Windham.",
+  "date": "2026-10-26",
+  "parse_sha": "14cc0adcaf3f2871",
+  "source_sha": "5bdd4e1e2cdb44bf"
+ },
+ "backend/data/parsed_results/2007/XC/cheverusgirls10_5.json": {
+  "verdict": "fixed",
+  "by": "sonnet audit (second read, 2026-10-26)",
+  "notes": "Parse had no places, dropped 'Briana ??? K 25:26', and read 'Cushing | Morgan' as 'Morgan, Cushing' (columns swapped on that row; Morgan Cushing is a Kennebunk runner). Override: places 1-45 by printed order, Briana added, Morgan Cushing, event 3.1 Mile Run CC, date 10/05/2007, team scores Kennebunk 41, Cheverus 48, Westbrook 70, Sanford 74 (K and C reproduce). K Kennebunk, C Cheverus, W Westbrook, S Sanford.",
+  "date": "2026-10-26",
+  "parse_sha": "9c251ea19920893f",
+  "source_sha": "40a80188394889d7"
+ },
+ "backend/data/parsed_results/2007/XC/cheverusgirls9_14.json": {
+  "verdict": "fixed",
+  "by": "sonnet audit (second read, 2026-10-26)",
+  "notes": "45 rows match; missing printed team scores 'TA 34; Cheverus 35; Windham 60' (TA and Cheverus reproduce from places); date 09/14 and 3.1 mile course printed; last line Rebecca Rosenbloom has no mark (left out).",
+  "date": "2026-10-26",
+  "parse_sha": "cab498d5934f4187",
+  "source_sha": "c787f4f61b6cdb65"
+ },
+ "backend/data/parsed_results/2007/XC/elboys8_31.json": {
+  "verdict": "fixed",
+  "by": "sonnet audit (second read, 2026-10-26)",
+  "notes": "40 rows match the numbered list; missing team scores 'Lewiston 36, Mt. Blue 56, Brunswick 69, Edward Little 104, Morse 106' (Gardiner ns) added. Places 18 (Gammon EL) and 19 (Parker B) print 'una' (no time) and are left out. No date/distance printed.",
+  "date": "2026-10-26",
+  "parse_sha": "2f6d1f8fcd96edce",
+  "source_sha": "390054b9b06cdac5"
  },
  "backend/data/parsed_results/2007/XC/elgirls8_31.json": {
   "verdict": "fixed",
@@ -399,6 +447,14 @@
   "parse_sha": "a7fd76a2bc3d58ba",
   "source_sha": "7378e7c84bc1da5d"
  },
+ "backend/data/parsed_results/2007/XC/ellsworthboysvarsity.json": {
+  "verdict": "fixed",
+  "by": "sonnet audit (second read, 2026-10-26)",
+  "notes": "69 rows match. Parser pattern: the HTML hides the end of clipped Excel cells in <span style='display:none'>; the parse drops it: 'Spencer McElwai(n)', 'Steven Melbourn(e)', 'Patrick Egenhofe(r)', school 'Foxcroft Acad(emy)'. Fixed in override; team scores added (Caribou 57, Falmouth 71, Sanford 77, Presque Isle 107, Ellsworth 128, York 142, Foxcroft 153, Orono 157, John Bapst 232); date 9/1/2007.",
+  "date": "2026-10-26",
+  "parse_sha": "e89ce9a3b39ca159",
+  "source_sha": "ece14b5735d3e3b4"
+ },
  "backend/data/parsed_results/2007/XC/ellsworthjvgirls.json": {
   "verdict": "fixed",
   "by": "sonnet audit (second read, 2026-10-26)",
@@ -407,6 +463,46 @@
   "parse_sha": "d64d40b55d6a3dff",
   "source_sha": "457367b981cd1125"
  },
+ "backend/data/parsed_results/2007/XC/ellsworthvarsitygirls.json": {
+  "verdict": "fixed",
+  "by": "sonnet audit (second read, 2026-10-26)",
+  "notes": "71 rows match. Same hidden-span truncation: school 'Foxcroft Aca(demy)'. Team scores added (Falmouth 32, Caribou 92, York 92, MDI 100, John Bapst 110, Presque Isle 160, Old Town 166, Sanford 208, Ellsworth 218, Foxcroft Academy 288); date 9/1/2007. Source prints place 45 Kiezer 21:57 before place 46 Davison 21:56.",
+  "date": "2026-10-26",
+  "parse_sha": "5136daaac76334e6",
+  "source_sha": "2e6841ced8ffd2b8"
+ },
+ "backend/data/parsed_results/2007/XC/foxcroftboys9_18.json": {
+  "verdict": "fixed",
+  "by": "sonnet audit (second read, 2026-10-26)",
+  "notes": "40 rows and team places match the Hy-Tek sheet; header team scores not read: Foxcroft Academy 33, Mattanawcook 36, John Bapst 59, Lee 90 (Foxcroft reproduces). Added via override.",
+  "date": "2026-10-26",
+  "parse_sha": "b3f1727faa17f75d",
+  "source_sha": "5cd550d52a6a0fb7"
+ },
+ "backend/data/parsed_results/2007/XC/foxcroftgirls9_18.json": {
+  "verdict": "fixed",
+  "by": "sonnet audit (second read, 2026-10-26)",
+  "notes": "26 rows match; header team scores John Bapst 28, Mattanawcook 29 not read; added via override.",
+  "date": "2026-10-26",
+  "parse_sha": "ce54cb07724e73c5",
+  "source_sha": "15e15ec8cfeacb4d"
+ },
+ "backend/data/parsed_results/2007/XC/freeportboys9_14.json": {
+  "verdict": "fixed",
+  "by": "sonnet audit (second read, 2026-10-26)",
+  "notes": "Score sheet with a right-hand block: places 48 Jamie Rodel W 23:45, 49 Stj Mason Y 23:55, 50 Connor Brown Y 24:14 were dropped (added); places 30-31 are unnamed 'Merriconeag' M rows read as athlete named Merriconeag (removed). Team scores York 33, Poland 36, Freeport 62, Waynflete 109 (all reproduce). Page 2 header says 'Team: Girls' but rows continue the boys list. Date 9/13/2007, Pinland Farm 3.1 mi. F Freeport, Y York, P Poland, W Waynflete.",
+  "date": "2026-10-26",
+  "parse_sha": "265a1c3bf77bce35",
+  "source_sha": "d40bc0d5ad104f6f"
+ },
+ "backend/data/parsed_results/2007/XC/freeportgirls9_14.json": {
+  "verdict": "fixed",
+  "by": "sonnet audit (second read, 2026-10-26)",
+  "notes": "Places 48 Grace High W 28:31, 49 Hannah Rindlab W 28:31, 50 Mica Thompson W 28:43 were dropped (right-hand block; added); place 52 unnamed 'Merriconeag' M removed. Team scores Freeport 38, York 39, Waynflete 60, Poland 89 (all reproduce). Date 9/13/2007, 3.1 mi.",
+  "date": "2026-10-26",
+  "parse_sha": "0a43dcb52fb9e7a4",
+  "source_sha": "9e405cf7236bac04"
+ },
  "backend/data/parsed_results/2007/XC/ftkentboys9_12.json": {
   "verdict": "fixed",
   "by": "sonnet audit (second read, 2026-10-26)",
@@ -414,6 +510,22 @@
   "date": "2026-10-26",
   "parse_sha": "3197a4faea1a06d7",
   "source_sha": "f487579fc2292f8d"
+ },
+ "backend/data/parsed_results/2007/XC/gsaboys9_18.json": {
+  "verdict": "confirmed",
+  "by": "sonnet audit (second read, 2026-10-26)",
+  "notes": "33 rows match (Alec Phippen Ellsworth 13'54.11 ... Tyler Manduca Bucksport 23'45.06). 5 implausible flags are because the sheet prints no distance (parse assumes 5K); times are real for the short GSA course (same meet in 2018-2024 is a 2.9 mile course). Date 9/18/2007 from the sub5 index.",
+  "date": "2026-10-26",
+  "parse_sha": "2e76b0affa5e48bf",
+  "source_sha": "b5b8e62140568070"
+ },
+ "backend/data/parsed_results/2007/XC/gsagirls9_18.json": {
+  "verdict": "confirmed",
+  "by": "sonnet audit (second read, 2026-10-26)",
+  "notes": "14 rows match (Casey McCloskey PVHS 16'11.33 ... Corinne Powell Ellsworth 20'39.40). 3 implausible flags only because no distance is printed. Date from the sub5 index.",
+  "date": "2026-10-26",
+  "parse_sha": "281157893e2b0ebe",
+  "source_sha": "8bcce39f51f93a0e"
  },
  "backend/data/parsed_results/2007/XC/madison10_3.json": {
   "verdict": "fixed",
@@ -503,6 +615,14 @@
   "parse_sha": "46b253153832f7a9",
   "source_sha": "aede370cad7b0389"
  },
+ "backend/data/parsed_results/2007/XC/smaarelays.json": {
+  "verdict": "fixed",
+  "by": "sonnet audit (second read, 2026-10-26)",
+  "notes": "Old parse labelled every list 'JV', swapped genders on two lists and dropped tied rows. Override rebuilt from the sheet's ranking tables: girls and boys varsity fastest legs (16 and 21 rows with ties), JV and Freshmen lists (surnames only, two 'Unknown' boys JV rows left out as unnamed). Leg grids (relay leg sheets, no place) and h:mm:ss team total times not entered; ':00' suffix is Excel (9:23:00 = 9:23). Leg length not printed (later years 1.55-1.6 mi) so no distance. Date null (index).",
+  "date": "2026-10-26",
+  "parse_sha": "08123dfd19849b7d",
+  "source_sha": "f934a52a14d6054b"
+ },
  "backend/data/parsed_results/2007/XC/thorntonboys9_19.json": {
   "verdict": "fixed",
   "by": "sonnet audit (second read, 2026-10-26)",
@@ -542,6 +662,22 @@
   "date": "2026-10-26",
   "parse_sha": "3275d330faa87497",
   "source_sha": "680040c366a5d05a"
+ },
+ "backend/data/parsed_results/2008/XC/MVCBoys.json": {
+  "verdict": "fixed",
+  "by": "sonnet audit (second read, 2026-10-26)",
+  "notes": "Rows, grades, marks, team places and printed team scores all agree (72 rows). School fixes in override: 'WiC Jv' (Blake Plummer) did not resolve, it is Wiscasset (same runner, Wiscasset in focboysheats/boothbay9_17/wmcboys); 'Ma Jv1' (Tyler Guzman) wrongly resolved to Mattanawcook, Ma is Monmouth Academy (Guzman/Manduca/Merrill are Monmouth in other races).",
+  "date": "2026-10-26",
+  "parse_sha": "9725f153797991a4",
+  "source_sha": "c46c355b7d2a55c1"
+ },
+ "backend/data/parsed_results/2008/XC/MonmouthBoys9_24.json": {
+  "verdict": "confirmed",
+  "by": "sonnet audit (second read, 2026-10-26)",
+  "notes": "All 62 rows agree (place, name, mark, team places; printed team scores in the parse). Only open item: 'A. R. Gould' (Ryan G, Daniel M) is unresolved because the catalog has no A.R. Gould School entry (not Gould Academy of Bethel; the NYA 2008 meet and 2011 track meets print it too): needs a catalog entry, not a parse fix. 'Mtt McClintock' is the source's spelling.",
+  "date": "2026-10-26",
+  "parse_sha": "44b01c31c9f20638",
+  "source_sha": "22e089cad44737a3"
  },
  "backend/data/parsed_results/2008/XC/NYA10-17--08Boys.json": {
   "verdict": "fixed",
@@ -767,6 +903,14 @@
   "parse_sha": "b61d353ed35d612b",
   "source_sha": "575fd255673e2322"
  },
+ "backend/data/parsed_results/2008/XC/combined%20boys%20west.txt.json": {
+  "verdict": "fixed",
+  "by": "sonnet audit (second read, 2026-10-26)",
+  "notes": "All 292 rows, schools, grades, team places and 42 printed team scores agree. Fixes in override: 'RHS' (Evan Winokurzew, place 196, unresolved) written Richmond High School (he is Richmond in all other 2006-2008 races, wmcboys prints RHS for the same 20:07.68); grade '09' (Warren, Lentine, Gray, Churchill) was dropped by the parser, written 9. PARSER: Year column '09' is dropped (12 and 9 kept).",
+  "date": "2026-10-26",
+  "parse_sha": "cb35c5068eb0cabf",
+  "source_sha": "1b2c5331d8044075"
+ },
  "backend/data/parsed_results/2008/XC/conyboys_sept26.json": {
   "verdict": "confirmed",
   "by": "sonnet audit (second read, 2026-10-26)",
@@ -839,6 +983,14 @@
   "parse_sha": "c4fca4d4fb753d7c",
   "source_sha": "5e00a64758a40697"
  },
+ "backend/data/parsed_results/2008/XC/focboyscompiled.txt.json": {
+  "verdict": "fixed",
+  "by": "sonnet audit (second read, 2026-10-26)",
+  "notes": "All 553 rows, years, team places and 48 printed team scores agree. One fix in override: 'Fox Islands School' (Charles Jones, SO, place 39) was unresolved, written 'Fox Islands' (co-op North Haven/Vinalhaven; focboysheats prints Fox Islands for the same 17:59.4).",
+  "date": "2026-10-26",
+  "parse_sha": "beb5e18954c53b5a",
+  "source_sha": "f6c9d0ce9a10b23b"
+ },
  "backend/data/parsed_results/2008/XC/foxcroft9_19.json": {
   "verdict": "fixed",
   "by": "sonnet audit (second read, 2026-10-26)",
@@ -871,6 +1023,14 @@
   "parse_sha": "3a137fd5a55ada04",
   "source_sha": "9f1406a23ee82029"
  },
+ "backend/data/parsed_results/2008/XC/girls_varsity_ot_meet9.30.08.json": {
+  "verdict": "confirmed",
+  "by": "sonnet audit (second read, 2026-10-26)",
+  "notes": "All 32 rows agree (place, name, school, mark, points) and the printed team scores MDI 33 / Caribou 52 / Presque Isle 66 / Old Town 80 are in the parse. Source typo: Old Town's scorer list prints '1 13 16 24 25 26' but the first scorer is place 2 (2+13+16+24+25 = 80 = printed).",
+  "date": "2026-10-26",
+  "parse_sha": "a8d362786ef070f1",
+  "source_sha": "88b28f5fd24d37f9"
+ },
  "backend/data/parsed_results/2008/XC/grayboys_oct17.json": {
   "verdict": "source-error",
   "by": "sonnet audit (second read, 2026-10-26)",
@@ -878,6 +1038,14 @@
   "date": "2026-10-26",
   "parse_sha": "aa79b465053cb0a2",
   "source_sha": "0a4973dafec713bc"
+ },
+ "backend/data/parsed_results/2008/XC/graygirls_oct17.json": {
+  "verdict": "fixed",
+  "by": "sonnet audit (second read, 2026-10-26)",
+  "notes": "Bennett, Leah printed team 'LRl' (typo of LR) was unresolved; written Lake Region. Team scores (Fryberg 20, Poland 42, Lake Region 92, Gray 95) added; they reproduce from the places. All 36 rows otherwise match the source.",
+  "date": "2026-10-26",
+  "parse_sha": "a8277106c4ea5cd1",
+  "source_sha": "407ecd1cf2c0bb5b"
  },
  "backend/data/parsed_results/2008/XC/gsaboys9_19.json": {
   "verdict": "confirmed",
@@ -911,6 +1079,38 @@
   "parse_sha": "3e1291ff5345b872",
   "source_sha": "e376f04ef99008a4"
  },
+ "backend/data/parsed_results/2008/XC/kennebunkgirls9_12.json": {
+  "verdict": "fixed",
+  "by": "sonnet audit (second read, 2026-10-26)",
+  "notes": "All 20 rows match. Team scores in the heading (Scarboro-31 McAuley-48 Kennebunk-53) were not in the parse; added. Scarborough reproduces; McAuley rows give 49 and Kennebunk 56 (source discrepancy, top-20 list only).",
+  "date": "2026-10-26",
+  "parse_sha": "ef630bacd181bf99",
+  "source_sha": "224878b709455522"
+ },
+ "backend/data/parsed_results/2008/XC/lakeregion9_12.json": {
+  "verdict": "fixed",
+  "by": "sonnet audit (second read, 2026-10-26)",
+  "notes": "Boys place 52 Bridge-Koenigsberg (LR) 26:39 dropped by the parser; restored. 'L, Heureux' -> L'Heureux. Boys place 60 Ho (NYA) DQ left out. Girls 43 rows match. Team scores added (girls reproduce; boys NYA/St Dom/LR do not).",
+  "date": "2026-10-26",
+  "parse_sha": "70ce85694db84396",
+  "source_sha": "f23f7d532198f0fa"
+ },
+ "backend/data/parsed_results/2008/XC/lakeregioninvite.json": {
+  "verdict": "fixed",
+  "by": "sonnet audit (second read, 2026-10-26)",
+  "notes": "Girls place 15 Rabasco missing; 'Knausenberger SD' and 'SImmons Wal' team glued to name (-> unresolved); boys 55 Bridge-Keonigsberg school lost; boys G=Gould (Gormley, Matthews) unresolved; 2 girls DNF rows dropped; team scores added. Note: db_audit show prints lakeregioninvite.pdf (scan, different meet) instead of the htm for this stem.",
+  "date": "2026-10-26",
+  "parse_sha": "dd7b4ae576b5da19",
+  "source_sha": "09f2f899d3bc05df"
+ },
+ "backend/data/parsed_results/2008/XC/lalibeteresultsbyteam.json": {
+  "verdict": "fixed",
+  "by": "sonnet audit (second read, 2026-10-26)",
+  "notes": "Override (existing) checked against the source: 278 distinct rows. Fixed: (1) sex from the printed GENDER column (74 rows sat in a 'Mixed' event; now Girls 129 / Boys 149, combined_race kept); (2) name order: Camden and Erskine print FIRST LAST (all rows) and Monmouth DEVON AYER, Waterville MARIAM KHAN single rows too, written SURNAME, FIRST; 'MARY CAITLIN' (no surname printed) is Mary Caitlin Parks, Camden (emclassbgirls, maranacookgirlsresults9_5); (3) KRISTEN BRIDGE printed twice in the source, one row kept; (4) 'BAKER ASHLEY ` ... MORSE F 29:57.0' (stray backtick) was dropped, restored. PARSER: a stray character after the name drops the spreadsheet row.",
+  "date": "2026-10-26",
+  "parse_sha": "19a91c4c91e63609",
+  "source_sha": "8f99ab1d330a036f"
+ },
  "backend/data/parsed_results/2008/XC/leeinvitegirls.json": {
   "verdict": "source-error",
   "by": "sonnet audit (score mismatch, 2026-10-23)",
@@ -918,6 +1118,14 @@
   "date": "2026-10-23",
   "parse_sha": "53cb24bcb8627f15",
   "source_sha": "05f6d3ef048f3022"
+ },
+ "backend/data/parsed_results/2008/XC/lincoln9_26.json": {
+  "verdict": "fixed",
+  "by": "sonnet audit (second read, 2026-10-26)",
+  "notes": "Rows match except boys place 25 Bragdon (R) '25:0' (truncated time, left out, noted). Team scores in the header added; girls Lincoln Academy 40 vs rows 42 (source discrepancy); girls Hersom 25:15 before Williams 25:08 (source out of order).",
+  "date": "2026-10-26",
+  "parse_sha": "62c5bf02461b9be4",
+  "source_sha": "4d470fb0fa6132ef"
  },
  "backend/data/parsed_results/2008/XC/marshwood9_12.json": {
   "verdict": "source-error",
@@ -927,6 +1135,22 @@
   "parse_sha": "340ce9be67525acc",
   "source_sha": "c3d6bb2d4355eaf5"
  },
+ "backend/data/parsed_results/2008/XC/marshwood9_24.json": {
+  "verdict": "fixed",
+  "by": "sonnet audit (second read, 2026-10-26)",
+  "notes": "Override checked: all 47 rows agree. Added the printed team scores TA 22 / SP 54 / Marshwood 61 (Westbrook NS) to the existing override (notes kept). TA reproduces, SP and Marshwood do not (source scoring).",
+  "date": "2026-10-26",
+  "parse_sha": "85f2ce5cb04dcd71",
+  "source_sha": "f1b66bb60a166a46"
+ },
+ "backend/data/parsed_results/2008/XC/marshwoodboys9_24.json": {
+  "verdict": "fixed",
+  "by": "sonnet audit (second read, 2026-10-26)",
+  "notes": "All 50 rows match; team scores printed beside the results (TA 33, SP 49, Marshwood 53, Westbrook 89) were not in the parse; added. Westbrook rows give 140 vs 89 printed (source discrepancy). Slover (M) listed at 46 and 47.",
+  "date": "2026-10-26",
+  "parse_sha": "0d077816b83bad2e",
+  "source_sha": "4f6ed14baa75f89d"
+ },
  "backend/data/parsed_results/2008/XC/massabesicboys_oct18.json": {
   "verdict": "fixed",
   "by": "sonnet audit (score mismatch, 2026-10-23)",
@@ -934,6 +1158,54 @@
   "date": "2026-10-23",
   "parse_sha": "18dfc7b0907d026c",
   "source_sha": "2890b592d46f0a47"
+ },
+ "backend/data/parsed_results/2008/XC/mbrelaysboys.txt.json": {
+  "verdict": "confirmed",
+  "by": "sonnet audit (second read, 2026-10-26)",
+  "notes": "Override checked: all 164 rows agree with the source (place, name, school, time); no team scores printed. Event named 2.03 Mile Run CC by the orchestrator (Mt. Blue Relays leg length).",
+  "date": "2026-10-26",
+  "parse_sha": "28b33148352ae21e",
+  "source_sha": "bef6299ce2e06a2e"
+ },
+ "backend/data/parsed_results/2008/XC/mbrelaysgirls.txt.json": {
+  "verdict": "confirmed",
+  "by": "sonnet audit (second read, 2026-10-26)",
+  "notes": "137 rows (Abby Mace Maranacook 12:44 ... Carrie Vigue Waterville 28:07) match place, name, school and time; existing override names the event 2.03 Mile Run CC (Mt. Blue Relays leg). No team scores printed, no date in the sheet (index supplies it).",
+  "date": "2026-10-26",
+  "parse_sha": "58c6ad19eecdd9fe",
+  "source_sha": "9c8e56c11e809b20"
+ },
+ "backend/data/parsed_results/2008/XC/mcauley_october%2010.json": {
+  "verdict": "fixed",
+  "by": "sonnet audit (second read, 2026-10-26)",
+  "notes": "Scanned Hy-Tek (read from images). Girls: place 11 Kaiser (McAuley) and 27 Olsen (Marshwood) missing; place 20 Cruz time 25:30 (parse 29:30). Boys all 18 right. Team scores (+handwritten Bonny Eagle 34 / Marshwood 67 girls) and Points-column team places added.",
+  "date": "2026-10-26",
+  "parse_sha": "83941a6091ae20bf",
+  "source_sha": "c493c58c7e5579e7"
+ },
+ "backend/data/parsed_results/2008/XC/mcauleyboys_oct17.json": {
+  "verdict": "fixed",
+  "by": "sonnet audit (second read, 2026-10-26)",
+  "notes": "Rows match; Johnson and Jerome printed team 'C' were unresolved: written Cheverus (Pat Jerome ran for Cheverus at 4 other 2008 meets; Lewis Johnson in Cheverus's column of the SMAA lineup). Team scores added; Portland/South Portland do not reproduce from the listed top 28 (source).",
+  "date": "2026-10-26",
+  "parse_sha": "877a1a58edf9f11f",
+  "source_sha": "7b1d1125db61409c"
+ },
+ "backend/data/parsed_results/2008/XC/mcauleygirls_oct17.json": {
+  "verdict": "fixed",
+  "by": "sonnet audit (second read, 2026-10-26)",
+  "notes": "All 35 rows match; team scores in the heading (McAuley 44, Cheverus 46, South Portland 75, Portland 84, Deering 89) were not in the parse; added, 4 of 5 reproduce from the rows.",
+  "date": "2026-10-26",
+  "parse_sha": "313095eaebdd459d",
+  "source_sha": "3f47fe19d82e0d4c"
+ },
+ "backend/data/parsed_results/2008/XC/mdirelays.json": {
+  "verdict": "fixed",
+  "by": "sonnet audit (second read, 2026-10-26)",
+  "notes": "All 117 girls + 121 boys leg rows match; two school errors: girls 86 Deana Kizer 'KB' unresolved -> John Bapst (typo; Deanna Kizer is John Bapst in 20+ meets); boys 71 Travis Dennison 'El' resolved to Edward Little -> Ellsworth (EL on every other Ellsworth row). Team relay tables are not individual marks, not parsed.",
+  "date": "2026-10-26",
+  "parse_sha": "570137a92e734338",
+  "source_sha": "ea36498d7338d808"
  },
  "backend/data/parsed_results/2008/XC/ms-camden-hills-invitational-2008.json": {
   "verdict": "fixed",
@@ -943,6 +1215,22 @@
   "parse_sha": "d899e3aff2f8f006",
   "source_sha": "a9c49d284f55c5de"
  },
+ "backend/data/parsed_results/2008/XC/mvc9_10.json": {
+  "verdict": "fixed",
+  "by": "sonnet audit (second read, 2026-10-26)",
+  "notes": "All 31 girls + 55 boys rows match; team scores printed in the headings were not in the parse; added. Only some reproduce from the rows (girls Monmouth/Lisbon, boys top 3): source discrepancy.",
+  "date": "2026-10-26",
+  "parse_sha": "13a2a182bc73caa4",
+  "source_sha": "dc4d8d742c1a3a63"
+ },
+ "backend/data/parsed_results/2008/XC/polandboys9_19.json": {
+  "verdict": "fixed",
+  "by": "sonnet audit (second read, 2026-10-26)",
+  "notes": "Rows match; Churchill team 'NYS' (typo, NYA) and Boulay lowercase 'w' (Wells) were unresolved; fixed. Ke;sey -> Kelsey. Team scores (Lisbon 33, NYA 55, Poland 74, Wells 87) added, all reproduce.",
+  "date": "2026-10-26",
+  "parse_sha": "7b3ab2600d1c2d1e",
+  "source_sha": "f58be922abc8f622"
+ },
  "backend/data/parsed_results/2008/XC/pvcgirls.txt.json": {
   "verdict": "fixed",
   "by": "sonnet audit (second read, 2026-10-25)",
@@ -951,6 +1239,22 @@
   "parse_sha": "647feb462462c5e1",
   "source_sha": "f07bd3f2d0907bdb"
  },
+ "backend/data/parsed_results/2008/XC/sacomiddleboys_oct15.json": {
+  "verdict": "fixed",
+  "by": "sonnet audit (second read, 2026-10-26)",
+  "notes": "All 38 rows match; three 'TA' rows (Sawyer, Bilodeau, Zuke) resolved to the high school Thornton Academy but the meet is the middle-school meet at Saco: written Thornton Academy Middle School. Team scores Marshwood 22, Saco 39 added (Saco rows give 42; source discrepancy).",
+  "date": "2026-10-26",
+  "parse_sha": "2a2f5e5a5aba210f",
+  "source_sha": "7ff48164d6af783f"
+ },
+ "backend/data/parsed_results/2008/XC/sacomiddlegirls_oct15.json": {
+  "verdict": "confirmed",
+  "by": "sonnet audit (second read, 2026-10-26)",
+  "notes": "All 23 rows match the source table (place, surname, team M/S, time); M and S resolve to Marshwood and Saco middle schools (meet 'Middle School Meet at Saco (Thornton, Saco, Marshwood)'); no team scores or grades printed.",
+  "date": "2026-10-26",
+  "parse_sha": "5dc8c49c16635966",
+  "source_sha": "314a5e4c5fc8c9f5"
+ },
  "backend/data/parsed_results/2008/XC/skowhegan9_26.json": {
   "verdict": "source-error",
   "by": "sonnet audit (score mismatch, 2026-10-23)",
@@ -958,6 +1262,30 @@
   "date": "2026-10-23",
   "parse_sha": "b34c412ad6ba0108",
   "source_sha": "600bf2ce5fd9d42a"
+ },
+ "backend/data/parsed_results/2008/XC/smaasecond7boys_oct20.json": {
+  "verdict": "fixed",
+  "by": "sonnet audit (second read, 2026-10-26)",
+  "notes": "All 77 rows match; 'Sand' (Sargent, Harper) resolved to club-sandy-river-tc: it is Sanford (Peter Sargent is Sanford at scarboroughboys10_2 and ellsworthboysjv). School code Sand -> Sanford for this stem.",
+  "date": "2026-10-26",
+  "parse_sha": "af807404032659d6",
+  "source_sha": "7bb78d6b44e60714"
+ },
+ "backend/data/parsed_results/2008/XC/smaasecond7girls_oct20.json": {
+  "verdict": "fixed",
+  "by": "sonnet audit (second read, 2026-10-26)",
+  "notes": "Override rows 21 and 39 had blank athlete names (source wraps 'Becca Giacomantonio' / 'Lauren Clum Russell' onto a second line); names filled, whitespace collapsed, junk header removed from meet_name. 64 rows now match the PDF. No date printed.",
+  "date": "2026-10-26",
+  "parse_sha": "6a3eb90409adc7f1",
+  "source_sha": "0ad5eb560564c277"
+ },
+ "backend/data/parsed_results/2008/XC/smaateams.json": {
+  "verdict": "fixed",
+  "by": "sonnet audit (second read, 2026-10-26)",
+  "notes": "SMAA Relays at Thornton Academy (high-school meet): 8 schools resolved to middle schools (me-ms-kennebunk, bonny-eagle, sanford, gorham, scarborough, massabesic, noble, windham); fixed to high schools. Boys ties dropped by the parser restored: 6 Morrison (Massabesic), 13 Clement (South Portland), 15 Nakanishi (Scarborough). Team relay times not individual marks.",
+  "date": "2026-10-26",
+  "parse_sha": "3d9876e1f522e32a",
+  "source_sha": "f6c038447f15ce73"
  },
  "backend/data/parsed_results/2008/XC/smmsaajuniorboys.json": {
   "verdict": "fixed",
@@ -991,6 +1319,86 @@
   "parse_sha": "63570a92645ef104",
   "source_sha": "03c778006f067522"
  },
+ "backend/data/parsed_results/2008/XC/thorntonboys9_19.json": {
+  "verdict": "fixed",
+  "by": "sonnet audit (second read, 2026-10-26)",
+  "notes": "All 23 rows match; team scores (Cheverus 24, TA 38, Windham 71) from the side table were not in the parse; added, all reproduce. Code C = Cheverus here (also at mcauleyboys_oct17 for Johnson/Jerome).",
+  "date": "2026-10-26",
+  "parse_sha": "774b5a5c13816caf",
+  "source_sha": "31ab3aa771fc8422"
+ },
+ "backend/data/parsed_results/2008/XC/thorntonboys_oct10.json": {
+  "verdict": "fixed",
+  "by": "sonnet audit (second read, 2026-10-26)",
+  "notes": "All 55 rows match (two-column table); team scores Scarborough 19, TA 47, Deering 71, Noble ns added (Scarborough and TA reproduce; Deering rows give 76). Kevin Gwinn printed twice (52 Sc, 55 TA; he is TA elsewhere) - source slip kept as printed.",
+  "date": "2026-10-26",
+  "parse_sha": "960cc56f8bd0a3bd",
+  "source_sha": "b230eabedcf1f9be"
+ },
+ "backend/data/parsed_results/2008/XC/thorntongirls9_19.json": {
+  "verdict": "fixed",
+  "by": "sonnet audit (second read, 2026-10-26)",
+  "notes": "All 48 rows match; team scores (Cheverus 31, Windham 43, TA 49) from the side table were not in the parse; added, all reproduce.",
+  "date": "2026-10-26",
+  "parse_sha": "a172bdbc5d97dbac",
+  "source_sha": "8531cd9aa1d2672e"
+ },
+ "backend/data/parsed_results/2008/XC/thorntongirls_oct10.json": {
+  "verdict": "fixed",
+  "by": "sonnet audit (second read, 2026-10-26)",
+  "notes": "All 55 rows agree. Parse had no team scores; printed 'Scarborough 31 / TA 43 / Deering 79 / Noble 96' (side columns) added in override. Sc and TA reproduce, De/No do not (source scoring).",
+  "date": "2026-10-26",
+  "parse_sha": "cc854fb7845e1323",
+  "source_sha": "040d7f8181a34962"
+ },
+ "backend/data/parsed_results/2008/XC/thorntonmiddleboys9_23.json": {
+  "verdict": "fixed",
+  "by": "sonnet audit (second read, 2026-10-26)",
+  "notes": "All 36 rows agree. Printed 'SACO 33 / Sanford 37 / THORNTON 58' added in override. Saco and Sanford reproduce; Thornton prints 58, rows give 61 (source error, printed kept).",
+  "date": "2026-10-26",
+  "parse_sha": "dcffcd66df2839ea",
+  "source_sha": "3f0dfa46ed9d4cee"
+ },
+ "backend/data/parsed_results/2008/XC/thorntonmiddlegirls9_23.json": {
+  "verdict": "fixed",
+  "by": "sonnet audit (second read, 2026-10-26)",
+  "notes": "All 26 rows agree. Printed 'Sanford 25 / Saco 30' added in override (both reproduce).",
+  "date": "2026-10-26",
+  "parse_sha": "49ef365e6db75ef1",
+  "source_sha": "2fabbcc8afcb7694"
+ },
+ "backend/data/parsed_results/2008/XC/traipboys10_15.json": {
+  "verdict": "fixed",
+  "by": "sonnet audit (second read, 2026-10-26)",
+  "notes": "Winner missing: source '1 Matt Rand C 1724-course record' dropped (glued note). Restored as 17:24. Printed Cape 17 / York 64 / Traip 74 / Wells 97 added. PARSER: an XCList row whose mark is followed by an em-dash note ('1724-course record') loses the whole row (also traipgirls10_15 place 1).",
+  "date": "2026-10-26",
+  "parse_sha": "0fdaaa7c29a82f5b",
+  "source_sha": "da0b165e14cdebd5"
+ },
+ "backend/data/parsed_results/2008/XC/traipboys9_12.json": {
+  "verdict": "fixed",
+  "by": "sonnet audit (second read, 2026-10-26)",
+  "notes": "One row missing: '45 Blanchard, D. G 25:25' and '45 Weston, P. W 25:29' (place 45 printed twice, then 47); the repeated place was dropped. Restored Weston as place 46. Printed Falmouth 19 / Traip 51 / Wells 80 / GNG 84 added. PARSER: a second row with an already-used place number is dropped by XCListParser.",
+  "date": "2026-10-26",
+  "parse_sha": "c289e428af176dac",
+  "source_sha": "c81f9a073bb8d735"
+ },
+ "backend/data/parsed_results/2008/XC/traipgirls10_15.json": {
+  "verdict": "fixed",
+  "by": "sonnet audit (second read, 2026-10-26)",
+  "notes": "Winner missing: '1 Emily Attwood C 1932-course record' dropped (same glued-note pattern as traipboys10_15). Restored 19:32. Printed CAPE 17 / York Schools 44 / TRAIP 80 added (Wells NS).",
+  "date": "2026-10-26",
+  "parse_sha": "88a048c09a4d42f1",
+  "source_sha": "325632c6614320f8"
+ },
+ "backend/data/parsed_results/2008/XC/traipgirls9_12.json": {
+  "verdict": "fixed",
+  "by": "sonnet audit (second read, 2026-10-26)",
+  "notes": "All 32 rows agree (typo marks 24;15, 30;42, 37'09 read correctly). Printed Falmouth 19 / Traip 55 / GNG 64 added (Wells NS).",
+  "date": "2026-10-26",
+  "parse_sha": "83a40d0c2c7f4b42",
+  "source_sha": "5f61c9dc9af68a1b"
+ },
  "backend/data/parsed_results/2008/XC/tripp9-17GIRLS.json": {
   "verdict": "source-error",
   "by": "sonnet audit (score mismatch, 2026-10-23)",
@@ -1014,6 +1422,54 @@
   "date": "2026-10-23",
   "parse_sha": "1807963e3d870688",
   "source_sha": "4d2236e71024f910"
+ },
+ "backend/data/parsed_results/2008/XC/wellsboys9_25.json": {
+  "verdict": "fixed",
+  "by": "sonnet audit (second read, 2026-10-26)",
+  "notes": "Rows agree except school 'unknown' for Hecht and Brown, H. (both York: Ben Hecht and Hayden Brown run for York in traipboys10_15 / yorkboys9_19) and 'Troy, Giguere' (comma after the first name; Troy Giguere, York) written Giguere, Troy. Printed Team Resusts York 25 / Poland 65 / Traip 67 / Wells 77 added. Header date Oct. 25 contradicts the file name (9_25); the sub5 index date is used.",
+  "date": "2026-10-26",
+  "parse_sha": "dbd4d17b1e51858a",
+  "source_sha": "d12a7deb572f81e5"
+ },
+ "backend/data/parsed_results/2008/XC/winslowboys9_5.json": {
+  "verdict": "fixed",
+  "by": "sonnet audit (second read, 2026-10-26)",
+  "notes": "All 65 rows agree but every place is empty: the sheet's columns are Name School Place Time and the parser leaves place None. Places 1-65 filled (each checked against the printed number). PARSER: 'Name School Place Time' header (place between school and time) gives place None. Team scores are in winslowscores9_5.",
+  "date": "2026-10-26",
+  "parse_sha": "bc4eb8f2379103a1",
+  "source_sha": "f778475d372f8b66"
+ },
+ "backend/data/parsed_results/2008/XC/winslowgirls9_5.json": {
+  "verdict": "fixed",
+  "by": "sonnet audit (second read, 2026-10-26)",
+  "notes": "All 47 rows agree but every place is empty (same 'Name School Place Time' layout as winslowboys9_5). Places 1-47 filled, each checked. Team scores are in winslowscores9_5.",
+  "date": "2026-10-26",
+  "parse_sha": "5a440a8a8f87d67a",
+  "source_sha": "dfd95dd3ce6d3380"
+ },
+ "backend/data/parsed_results/2008/XC/wmcboys.json": {
+  "verdict": "fixed",
+  "by": "sonnet audit (second read, 2026-10-26)",
+  "notes": "97 rows, 13 team scores and grades match the Hy-Tek sheet. Defects: (1) 'Evan Winokurzew SR? RHS' (place 56) is unresolved; RHS is Richmond High School (Evan, Elsie and Charity Winokurzew are Richmond High School runners in athletes.json.gz and the 2003-2006 Western Class C/D results), catalog me-hs-richmond. (2) Parser pattern: N. Yarmouth Acad rows with grade '09' (places 32, 36, 39, 49) lose their grade while '10' and '12' are kept (grade 09 is dropped). Rule needed for RHS; no override written.",
+  "date": "2026-10-26",
+  "parse_sha": "813bf15b445c026a",
+  "source_sha": "41d3d72f5ae9ac0c"
+ },
+ "backend/data/parsed_results/2008/XC/yorkboys9_19.json": {
+  "verdict": "fixed",
+  "by": "sonnet audit (second read, 2026-10-26)",
+  "notes": "All 64 rows agree. Printed York 22 / Traip 41 / Gray-NG 73 added (York reproduces; the others do not, source scoring).",
+  "date": "2026-10-26",
+  "parse_sha": "8ad15980aef01157",
+  "source_sha": "ba9c388c1830953f"
+ },
+ "backend/data/parsed_results/2008/XC/yorkgirls9_19.json": {
+  "verdict": "fixed",
+  "by": "sonnet audit (second read, 2026-10-26)",
+  "notes": "All 33 rows agree. Printed York 16 / Gray-NG 47 added (York reproduces; Traip ns not scored).",
+  "date": "2026-10-26",
+  "parse_sha": "d4019402c22ca8a8",
+  "source_sha": "a526f91015163314"
  },
  "backend/data/parsed_results/2009/XC/08-27-09_XC_Boys.json": {
   "verdict": "fixed",
@@ -1446,6 +1902,14 @@
   "date": "2026-10-26",
   "parse_sha": "1313a99ba03922a9",
   "source_sha": "0f30ee50b1d8efb5"
+ },
+ "backend/data/parsed_results/2009/XC/pvcboysvarsity.txt.json": {
+  "verdict": "confirmed",
+  "by": "sonnet audit (second read, 2026-10-26)",
+  "notes": "Override (Class B / C split) checked against the source: all 102 rows (42 B, 60 C) agree on place, name, grade, mark and team-score place (checked programmatically); schools right (B-/C- prefixes dropped); team scores B 36/49/75/97/106/156 and C 49/49/56/108/117/158/165 match the printed Team Scores block (Bangor Christian listed before Orono on the 49 tie as printed).",
+  "date": "2026-10-26",
+  "parse_sha": "3a05157dbcdc4127",
+  "source_sha": "7824272173e849d1"
  },
  "backend/data/parsed_results/2009/XC/pvcgirlsvarsity.txt.json": {
   "verdict": "fixed",

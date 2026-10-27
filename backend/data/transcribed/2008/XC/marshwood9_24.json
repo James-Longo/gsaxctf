@@ -386,8 +386,35 @@
  ],
  "date": null,
  "meet_name": "South Portland, Thornton, & Westbrook at Marshwood     9/24/08",
- "team_rankings": [],
+ "team_rankings": [
+  {
+   "kind": "xc",
+   "gender": "Girls",
+   "event_header": "Girls team scores",
+   "totals_only": true,
+   "teams": [
+    {
+     "rank": 1,
+     "team": "Thornton Academy",
+     "score": 22.0,
+     "places": []
+    },
+    {
+     "rank": 2,
+     "team": "South Portland",
+     "score": 54.0,
+     "places": []
+    },
+    {
+     "rank": 3,
+     "team": "Marshwood",
+     "score": 61.0,
+     "places": []
+    }
+   ]
+  }
+ ],
  "parser": "XCListParser",
  "source": "backend/data/sub5_archive/2008/XC/marshwood9_24.pdf",
- "notes": "Whole race relabelled Boys -> Girls. The sibling file marshwoodboys9_24.pdf is the boys race (50 runners, winner 19:05); this file (winner Donahue SP 21:32, 47 runners, team scores TA 22 / SP 54 / M 61) has no sex label and is the girls race: 36 of its runners (Donahue, Glynn, Letourneau, Fisher, Atherton, Olsen, Dube, ...) are girls in their many other races. Only gender changed; rows untouched."
+ "notes": "Whole race relabelled Boys -> Girls. The sibling file marshwoodboys9_24.pdf is the boys race (50 runners, winner 19:05); this file (winner Donahue SP 21:32, 47 runners, team scores TA 22 / SP 54 / M 61) has no sex label and is the girls race: 36 of its runners (Donahue, Glynn, Letourneau, Fisher, Atherton, Olsen, Dube, ...) are girls in their many other races. Only gender changed; rows untouched. 2nd read: all 47 rows agree with the source (SP/TA/M/W = South Portland, Thornton Academy, Marshwood, Westbrook from the title). Added the printed team scores: TA 22 (2+3+4+5+8, reproduces), SP 54, Marshwood 61 (printed; do not reproduce from raw places), Westbrook NS (not scored, left out)."
 }

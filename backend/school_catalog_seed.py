@@ -392,6 +392,7 @@ ME_HS = [
     ('me-hs-rangeley', 'Rangeley Lakes Regional School', 'Rangeley', None, ['Rangeley', 'Rangeley Lakes'], [], ['Lakers'], {}),
     ('me-hs-temple', 'Temple Academy', 'Waterville', None, ['Temple Academy'], [], [], {}),
     ('me-hs-hebron', 'Hebron Academy', 'Hebron', None, ['Hebron Academy', 'Hebron'], ['HEB'], [], {}),
+    ('me-hs-ar-gould', 'A.R. Gould School', 'South Portland', None, ['A.R. Gould School', 'A. R. Gould School', 'A.R. Gould', 'A. R. Gould', 'AR Gould'], [], [], {}),   # Long Creek Youth Development Center school, not Gould Academy
     ('me-hs-berwick', 'Berwick Academy', 'South Berwick', None, ['Berwick Academy', 'Berwick'], [], [], {}),
     ('me-hs-pine-tree', 'Pine Tree Academy', 'Freeport', None, ['Pine Tree Academy'], [], [], {}),
     ('me-hs-calvary-chapel', 'Calvary Chapel Christian School', 'Orrington', None,
@@ -1664,6 +1665,13 @@ FILE_RULES = [
     (['TA'], 'XC', (2008, 2008), r'^smmsaa(junior|senior)(boys|girls)$', 'me-ms-thornton'),
     (['Wells'], 'XC', (2008, 2008), r'^smmsaa(junior|senior)(boys|girls)$', 'me-ms-wells'),
     (['Freyburg'], 'XC', (2008, 2008), r'^Yarmouth_XC_Boys$', 'me-hs-fryeburg'),
+    # 2026-10-26 second read batch 22 (2007-2008)
+    (['Sand'], 'XC', (2008, 2008), r'^smaasecond7(boys|girls)_oct20$', 'me-hs-sanford'),
+    (['WiC Jv'], 'XC', (2008, 2008), r'^MVCBoys$', 'me-hs-wiscasset'),
+    (['Ma Jv', 'Ma Jv1', 'Ma Jv2'], 'XC', (2008, 2008), r'^MVCBoys$', 'me-hs-monmouth'),
+    (['RHS'], 'XC', (2008, 2008), r'^combined%20boys%20west\.txt$', 'me-hs-richmond'),
+    (['Fox Islands School'], 'XC', (2008, 2008), r'^focboyscompiled\.txt$', 'coop-fox-islands'),
+    (['RHS'], 'XC', (2008, 2008), r'^wmcboys$', 'me-hs-richmond'),
     # 2026-10-24 unresolved-school review, batch 2
     (['F'], 'XC', (2004, 2004), r'^cape7oct04[bg]\.txt$', 'me-hs-falmouth'),   # Title lists Falmouth; only F team
     (['Y'], 'XC', (2004, 2004), r'^cape7oct04[bg]\.txt$', 'me-hs-yarmouth'),   # Title lists Yarmouth; only Y team
