@@ -46,6 +46,7 @@ import os
 import random
 import re
 import sys
+import time
 from collections import defaultdict
 from datetime import date
 
@@ -56,6 +57,16 @@ from backend.json_store import (TEAMS_DIR, _chunk_files, _load_json, enrich_rows
                                 canonical_team_name, parse_mark_value)
 
 SEASON_START = (8, 15)       # day 0 of the season
+
+
+def progress_log(stream=sys.stderr):
+    """A print-like logger for long runs: clock time and minutes since start,
+    flushed at once, so a run sent to a log file can be read while it works."""
+    t0 = time.time()
+
+    def say(*x):
+        print(time.strftime('%H:%M:%S'), f'{(time.time() - t0) / 60:6.1f}m', *x, file=stream, flush=True)
+    return say
 
 
 def season_day(year, iso):
@@ -584,7 +595,12 @@ DEFAULTS = dict(
     slow_clip=2.5,     # races this many race_sd slower than the estimate
                        # (a fall, a sick day) are down-weighted
     use_prior=True,
-    dnf=True,          # runners can drop out of a simulated race (DNF_BASE, DNF_REPEAT)
+    dnf='history',     # who can drop out of a simulated race (DNF_BASE, DNF_REPEAT): 'all',
+                       # 'history' (only runners with an earlier DNF) or False. Backtest
+                       # 2026-10-26, 230 podiums: 'all' -0.010 +/- 0.004 vs False (a five-runner
+                       # team misses scoring in ~5% of sims and drops in expected place);
+                       # 'history' +0.006 +/- 0.003 vs 'all' (5 of 6 changed seasons better),
+                       # -0.004 +/- 0.004 vs False; Brier unchanged
     program_icc=0.074, # program effect: share of a runner's race-day result shared with the rest
                        # of their school's runners that day (simulate_postseason); measured
                        # from teammates' misses at championships. Backtest 2026-10-18: podiums
@@ -1369,15 +1385,19 @@ def load_dnfs():
     return _dnfs
 
 
-def dnf_chance(ratings, year, gender, cutoff):
+def dnf_chance(ratings, year, gender, cutoff, mode='all'):
     """aid -> chance of not finishing a race, from the runner's own DNFs before
-    `cutoff` (any season) on top of the base rate."""
+    `cutoff` (any season) on top of the base rate; mode 'history' gives runners
+    with no DNF on file none."""
     count = defaultdict(int)
     for y, g, day, _, nk, team in load_dnfs():
         if g == gender and (y < year or (y == year and day is not None and day < cutoff)):
             count[(nk, team)] += 1
-    return {a: DNF_BASE * DNF_REPEAT[min(2, count.get((_name_key(r['name']), r['team']), 0))]
-            for a, r in ratings.items()}
+    out = {}
+    for a, r in ratings.items():
+        k = min(2, count.get((_name_key(r['name']), r['team']), 0))
+        out[a] = 0.0 if mode == 'history' and k == 0 else DNF_BASE * DNF_REPEAT[k]
+    return out
 
 
 def simulate_postseason(obs, year, gender, cutoff, groups, calib, noise,
@@ -1394,8 +1414,8 @@ def simulate_postseason(obs, year, gender, cutoff, groups, calib, noise,
     if ratings is None:
         ratings, _ = season_ratings(rate_obs if rate_obs is not None else obs,
                                     year, gender, cutoff, calib, params)
-    p_dnf = (dnf_chance(ratings, year, gender, cutoff)
-             if dict(DEFAULTS, **(params or {}))['dnf'] else defaultdict(float))
+    dnf = dict(DEFAULTS, **(params or {}))['dnf']
+    p_dnf = dnf_chance(ratings, year, gender, cutoff, dnf) if dnf else defaultdict(float)
     by_school = defaultdict(list)
     for aid, r in ratings.items():
         if r['team'] in groups['schools']:

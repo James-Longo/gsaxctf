@@ -34,6 +34,9 @@ team's five scorers (teams with five finishers), then over everyone (`--time`,
 `time_summary`).
 
     python3 -m backend.xc_postseason_cv [--sims N] [--procs N] [--round 1|2]
+
+Progress (timestamped, "k of n" fold tasks) goes to stderr; send it to a log
+file (2> cv.log) and read that while it runs.
 """
 
 import os
@@ -389,10 +392,10 @@ def _fold_task(args):
         entries = xp.pick_entries(ratings, {t: {t} for t in {o.team for o in rows_}})
         if len(entries) < 20:
             continue
+        dnf = m['params'].get('dnf', xp.DEFAULTS['dnf'])
         teams, _ = xp.simulate(ratings, entries, noise, sims=sims, seed=year,
                                icc=m['params'].get('program_icc', xp.DEFAULTS['program_icc']),
-                               p_dnf=xp.dnf_chance(ratings, year, g, x['day'])
-                               if m['params'].get('dnf', xp.DEFAULTS['dnf']) else None)
+                               p_dnf=xp.dnf_chance(ratings, year, g, x['day'], dnf) if dnf else None)
         n = len([t for t in teams if teams[t]['scored'] > 0])
         pred = {t: dict(place_dist=v['place_dist'],
                         exp_place_all=sum(p * c for p, c in v['place_dist'].items())
@@ -438,10 +441,11 @@ def run(methods, sims=600, procs=12, log=print):
     with Pool(procs) as pool:
         tasks = [(mi, y, sims) for mi in range(len(methods)) for y in FOLDS]
         res = defaultdict(list)
-        for mi, y, out in pool.imap_unordered(_fold_task, tasks):
+        for i, (mi, y, out) in enumerate(pool.imap_unordered(_fold_task, tasks), 1):
             for r in out:
                 r['fold'] = y
             res[mi].extend(out)
+            log(f"{methods[mi]['name']} {y} done ({i} of {len(tasks)})")
     return {methods[mi]['name']: dict(method=methods[mi], podiums=res[mi]) for mi in res}
 
 
@@ -668,9 +672,10 @@ if __name__ == '__main__':
     ap.add_argument('--methods', default='ROUND1')
     ap.add_argument('--time', action='store_true', help='also score individual times (experiment())')
     a = ap.parse_args()
+    log = xp.progress_log()
     methods = globals()[a.methods] if a.methods in globals() else json.load(open(a.methods))
     if a.time:
-        times, pods, tables = experiment(methods, a.sims, a.procs)
+        times, pods, tables = experiment(methods, a.sims, a.procs, log=log)
         pickle.dump(dict(times=times, pods=pods, tables=tables), open(a.out, 'wb'))
         if 'model (current)' in times:
             write_time_recalibration(times['model (current)'])
@@ -688,7 +693,7 @@ if __name__ == '__main__':
                   f"all {t['all']['medae']:.1f}s ({t['all']['bias']:+.1f}) "
                   f"(championships {t['champ']['medae']:.1f}s, {t['champ']['bias']:+.1f}s)", flush=True)
         raise SystemExit
-    res = run(methods, sims=a.sims, procs=a.procs)
+    res = run(methods, sims=a.sims, procs=a.procs, log=log)
     pickle.dump(res, open(a.out, 'wb'))
     for r in summarize(res):
         print(f"{r['name']:26s} objective {r['objective']:.3f}±{r['objective_se']:.3f}  "

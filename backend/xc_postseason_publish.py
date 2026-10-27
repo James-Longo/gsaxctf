@@ -7,6 +7,10 @@ listed in ui/public/data/xc_postseason/index.json.
     python3 -m backend.xc_postseason_publish --asof 2026-10-15 --sims 5000
     python3 -m backend.xc_postseason_publish --seasons past      # every past season on file
 
+A run takes an hour or more. Progress goes to stderr, one timestamped line per
+stage with minutes elapsed and "k of n": send it to a file and read the file
+while it runs (2> publish.log), never through tail.
+
 This season: each meet is predicted from results before it only: a meet already
 run (date on or before --asof) uses results through the day before it, so a
 past prediction stays as it was; meets still ahead use results through --asof.
@@ -291,6 +295,7 @@ def predict_season(year, asof, sims, obs, noise, cal, seed=0, say=lambda *a: Non
 
     data = {'Boys': {}, 'Girls': {}}
     race_ids = set()
+    n_runs, k = 2 * len(set(cut_of.values())), 0
     for cut_date in sorted(set(cut_of.values())):
         # ratings use results strictly before `cutoff`: through cut_date, the day before the race
         cutoff = xp.season_day(year, cut_date) + 1
@@ -302,11 +307,12 @@ def predict_season(year, asof, sims, obs, noise, cal, seed=0, say=lambda *a: Non
                 races[o.aid].append(o)
         race_ids |= {o.race for v in races.values() for o in v}
         for g in ('Boys', 'Girls'):
+            k += 1
             ratings, _ = xp.season_ratings(obs, year, g, cutoff, cal, {})
+            say(f'{g}: {len(ratings)} rated; simulating {sims} ({k} of {n_runs})')
             rat, school_of, _, res = xp.simulate_postseason(
                 obs, year, g, cutoff, groups, cal, noise, sims=sims, seed=seed,
                 form_carry=xp.FORM_CARRY, ratings=ratings)
-            say(g, len(rat), 'rated')
             for m in groups['meets']:
                 mid = m['id']
                 if mid not in mids or mid not in res:
@@ -496,7 +502,7 @@ def main():
     ap.add_argument('--seasons', choices=['current', 'past', 'all'], default='current')
     ap.add_argument('--procs', type=int, default=min(10, os.cpu_count() or 1))
     a = ap.parse_args()
-    say = lambda *x: print(*x, file=sys.stderr, flush=True)
+    say = xp.progress_log()
     obs = xp.load()
     say(f'{len(obs):,} observations')
     # error model from every past season, each predicted without itself
@@ -507,11 +513,11 @@ def main():
         from multiprocessing import get_context
         _G.update(obs=obs, calibs=calibs, rows=rows, sims=a.past_sims)
         with get_context('fork').Pool(a.procs) as pool:
-            for y, out in pool.imap_unordered(_past_task, BACKTEST_YEARS):
-                if out is None:
-                    say(y, 'skipped: regionals or states not on file')
-                    continue
-                write(out)
+            for i, (y, out) in enumerate(pool.imap_unordered(_past_task, BACKTEST_YEARS), 1):
+                say(y, 'done' if out else 'skipped: regionals or states not on file',
+                    f'({i} of {len(BACKTEST_YEARS)})')
+                if out is not None:
+                    write(out)
     if a.seasons in ('current', 'all'):
         year = int(a.asof[:4])
         write(predict_season(year, a.asof, a.sims, obs, xp.NoiseModel(rows), xp.Calibration(obs), say=say))
