@@ -961,6 +961,22 @@ def test_spreadsheet_block_split_under_race_heading():
     assert got == [('Boys', 3), ('Boys', 4), ('Girls', 3), ('Girls', 4)], got
 
 
+def test_spreadsheet_keeps_text_excel_hid_in_a_span():
+    """Excel hides the overflow of a narrow cell: "McElwai<span
+    style='display:none'>n</span>" is McElwain, not McElwai."""
+    from backend.parsers.spreadsheet import SpreadsheetTableParser
+    def tr(cells):
+        return '<tr>' + ''.join(f'<td>{c}</td>' for c in cells) + '</tr>'
+    rows = [tr(['place', 'name', 'school', 'time'])]
+    sch = ['Ells', 'Bucks', 'MDI', 'GSA']
+    for k in range(1, 5):
+        rows.append(tr([k, f"{chr(64 + k)}nn McElwai<span style='display:none'>n</span>", sch[k - 1], f'1{k + 5}:00']))
+    html = '<html><body><table>' + ''.join(rows) + '</table></body></html>'
+    r = SpreadsheetTableParser(None).parse(html, 'ellsworthboysvarsity.htm', 'XC')
+    names = [x['athlete'] for e in r['events'] for x in e['results']]
+    assert names == [f'{chr(64 + k)}nn McElwain' for k in range(1, 5)], names
+
+
 def test_late_gender_division_header_and_mile_typo():
     """USATF JO Hy-Tek: "2000 Meter Run CC 8 & Under Division Girls" with no
     "Event N"; a meet report's "5000 Miles" is 5,000 m."""

@@ -119,6 +119,11 @@ class SpreadsheetTableParser(BaseParser):
             soup = BeautifulSoup(text, 'lxml')
         except Exception:
             return empty
+        # Excel hides the overflow of a narrow cell in a display:none span
+        # ("McElwai<span style='display:none'>n</span>"); read_html skips
+        # hidden elements, so keep the text (hidden rows and cells stay out)
+        for sp in soup.find_all('span', style=re.compile(r'display\s*:\s*none', re.I)):
+            sp.unwrap()
         events = []
         title = None
         seen, seen_names = set(), set()
