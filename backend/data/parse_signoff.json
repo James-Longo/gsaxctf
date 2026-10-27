@@ -3807,6 +3807,20 @@
   "by": "sonnet audit (score mismatch, 2026-10-23) (audit: source-error)",
   "evidence": "Parse matches the 20 rows and the sheet's own Points column. Printed Fort Kent 19, Limestone 45. Fort Kent points 1+2+3+5+8 = 19 OK. Limestone's points column reads 4,6,7,9,10 (6th = 13), sum 36; printed 45 = 6+7+9+10+13, i.e. it skips Demsie's point 4, but Demsie (place 5, 19:47, L) is on the sheet with Points 4 and Fort Kent's own points (1,2,3,5) leave 4 to him. Sheet contradicts itself: 36 from its rows vs 45 printed. Madawaska 4 finishers, Greater Houlton Christian 3: NS as printed."
  },
+ "backend/data/parsed_results/2006/XC/GSA9_19boys.json": {
+  "parse_sha": "27273c0b2741d809",
+  "source_sha": "10c26541fc414406",
+  "date": "2026-10-26",
+  "by": "sonnet audit (second read, 2026-10-26) (audit: confirmed)",
+  "evidence": "44 rows match (Addison Pellerano GSA 14:58.39 ... Jonathan Hayes GSA 23:40.63; 2.76 miles). The last two source rows, 45 Travis Pennison and 46 Devin Arnnott (Ellsworth), print NT (no time) and are left out as rows without a mark. No team scores printed."
+ },
+ "backend/data/parsed_results/2006/XC/GSA9_19girls.json": {
+  "parse_sha": "1a31d68d97aa8ad7",
+  "source_sha": "8077eaf1af2f206c",
+  "date": "2026-10-26",
+  "by": "sonnet audit (second read, 2026-10-26) (audit: confirmed)",
+  "evidence": "36 rows match (2.76 miles, Blue Hill, Sept 19 2006; GSA/Hampden/Ellsworth/Bucksport/Searsport). No team scores printed."
+ },
  "backend/data/parsed_results/2006/XC/MVC06boys.txt.json": {
   "parse_sha": "2211e99a530f4444",
   "source_sha": "1b15c207f4afbf8d",
@@ -3818,6 +3832,20 @@
   "parse_sha": "bdd79836ec320316",
   "source_sha": "117678e28fbcab80",
   "date": "2026-10-21",
+  "by": "auto: team scores verified exactly, all schools identified, no flags",
+  "evidence": ""
+ },
+ "backend/data/parsed_results/2006/XC/NYA9-15-06boys.json": {
+  "parse_sha": "941cfcd95629eebf",
+  "source_sha": "1b24e498172684b0",
+  "date": "2026-10-26",
+  "by": "auto: team scores verified exactly, all schools identified, no flags",
+  "evidence": ""
+ },
+ "backend/data/parsed_results/2006/XC/NYA9-15-06girls.json": {
+  "parse_sha": "48026b7eaebd6fc1",
+  "source_sha": "58200d6a2dda74ac",
+  "date": "2026-10-26",
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
  },
@@ -3863,6 +3891,27 @@
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
  },
+ "backend/data/parsed_results/2006/XC/biddeford9_15boys.json": {
+  "parse_sha": "bc04283e76aceffa",
+  "source_sha": "91ac8d08fa79db11",
+  "date": "2026-10-26",
+  "by": "auto: team scores verified exactly, all schools identified, no flags",
+  "evidence": ""
+ },
+ "backend/data/parsed_results/2006/XC/bonnyeagle9_29.json": {
+  "parse_sha": "bfa068b26edc4eba",
+  "source_sha": "14056240121fe8a8",
+  "date": "2026-10-26",
+  "by": "auto: team scores verified exactly, all schools identified, no flags",
+  "evidence": ""
+ },
+ "backend/data/parsed_results/2006/XC/bonnyeagle9_8boys.json": {
+  "parse_sha": "ca3247ab6af95f6f",
+  "source_sha": "90bddc00721d4c81",
+  "date": "2026-10-26",
+  "by": "auto: team scores verified exactly, all schools identified, no flags",
+  "evidence": ""
+ },
  "backend/data/parsed_results/2006/XC/bonnyeagle9_8girls.json": {
   "parse_sha": "0c02c7210897993e",
   "source_sha": "16512ba425bf829e",
@@ -3902,6 +3951,48 @@
   "parse_sha": "f219c4bd11975ae6",
   "source_sha": "dd937de5c1dbd411",
   "date": "2026-10-19",
+  "by": "auto: team scores verified exactly, all schools identified, no flags",
+  "evidence": ""
+ },
+ "backend/data/parsed_results/2006/XC/caribouinviteboysjv.json": {
+  "parse_sha": "0e25f44e74b917ea",
+  "source_sha": "e2ee9ca98853dc3f",
+  "date": "2026-10-26",
+  "by": "auto: team scores verified exactly, all schools identified, no flags",
+  "evidence": ""
+ },
+ "backend/data/parsed_results/2006/XC/caribouinviteboysvarsity.json": {
+  "parse_sha": "e4d2e1a6ca0ba864",
+  "source_sha": "5aec8d32d8814bac",
+  "date": "2026-10-26",
+  "by": "auto: team scores verified exactly, all schools identified, no flags",
+  "evidence": ""
+ },
+ "backend/data/parsed_results/2006/XC/caribouinvitegirlsjv.json": {
+  "parse_sha": "691662470a0a3922",
+  "source_sha": "c36c76cac73cf4d1",
+  "date": "2026-10-26",
+  "by": "auto: team scores verified exactly, all schools identified, no flags",
+  "evidence": ""
+ },
+ "backend/data/parsed_results/2006/XC/caribouinvitegirlsvarsity.json": {
+  "parse_sha": "a88816e3e6cf72af",
+  "source_sha": "8a7197f9fb8ee279",
+  "date": "2026-10-26",
+  "by": "auto: team scores verified exactly, all schools identified, no flags",
+  "evidence": ""
+ },
+ "backend/data/parsed_results/2006/XC/central9_5.json": {
+  "parse_sha": "dcdc5afe7c77981a",
+  "source_sha": "3af1227bd24f9e46",
+  "date": "2026-10-26",
+  "by": "auto: team scores verified exactly, all schools identified, no flags",
+  "evidence": ""
+ },
+ "backend/data/parsed_results/2006/XC/cheverus9_8boys.json": {
+  "parse_sha": "0a98ac41a6d3322f",
+  "source_sha": "5095a52a3ba652ab",
+  "date": "2026-10-26",
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
  },
@@ -4277,11 +4368,11 @@
   "evidence": ""
  },
  "backend/data/parsed_results/2006/XC/mtblue9_5boys.json": {
-  "parse_sha": "2898f753563a11b6",
+  "parse_sha": "9e7d1f2ee2f1fdda",
   "source_sha": "290abef887ac9b6e",
-  "date": "2026-10-19",
-  "by": "auto: team scores verified exactly, all schools identified, no flags",
-  "evidence": ""
+  "date": "2026-10-26",
+  "by": "sonnet audit (second read, 2026-10-26) (audit: confirmed)",
+  "evidence": "34 rows match (names, MB/L/Mess/Sk codes = Mt. Blue, Lawrence, Messalonskee, Skowhegan per the team box; 24:06:00 style marks are 24:06). Team scores printed 18/47/73 (Skowhegan NS): Mt. Blue 1+2+4+5+6=18 reproduces; Lawrence and Messalonskee do not from the listed places (source arithmetic)."
  },
  "backend/data/parsed_results/2006/XC/mtblue9_5girls.json": {
   "parse_sha": "8e8c34a6816eb2f8",
@@ -4345,6 +4436,13 @@
   "date": "2026-10-21",
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
+ },
+ "backend/data/parsed_results/2006/XC/presqueisle9_13teamscores.txt.json": {
+  "parse_sha": "4f0ab5be9720a605",
+  "source_sha": "a2e2fe414b4794f9",
+  "date": "2026-10-26",
+  "by": "sonnet audit (second read, 2026-10-26) (audit: confirmed)",
+  "evidence": "Team-score-only file ('Boys Varsity: Caribou 15, PI 53, Mad. 75'; 'Girls Varsity: PI 28, Caribou 42, GHCA 60'; no scores for incomplete teams). The existing override carries exactly these; team names use the race files' codes. The mismatch warning is only because the file has no individual rows (they are in presqueisle9_13boys/girls)."
  },
  "backend/data/parsed_results/2006/XC/pvcbjv.txt.json": {
   "parse_sha": "9409b2cfd51fcdcf",
@@ -5298,6 +5396,13 @@
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
  },
+ "backend/data/parsed_results/2007/XC/MVC-Boys-10-13.json": {
+  "parse_sha": "556f22820cc3f08e",
+  "source_sha": "93c1edaf4665d81a",
+  "date": "2026-10-26",
+  "by": "auto: team scores verified exactly, all schools identified, no flags",
+  "evidence": ""
+ },
  "backend/data/parsed_results/2007/XC/MVC-Girls-10-13.json": {
   "parse_sha": "09d68ed92a0a8ba2",
   "source_sha": "f0b4bd7fdc40d718",
@@ -5480,6 +5585,13 @@
   "by": "sonnet audit (score mismatch, 2026-10-23) (audit: source-error)",
   "evidence": "Parse matches the 41 numbered rows; four trailing names without place or time (Zack Foster CAR, Chase Dunn CAR, Chris Gaskell Lime, Chris Toothaker Lime) are not finishers and are not in the parse. Printed: Caribou 19, Presque Isle 38, Fort Kent 99, Limestone 93. With 7 runners per team taking places: Caribou 1+3+4+5+6=19, PI 2+7+8+9+12=38, Fort Kent 13+20+21+22+23=99 match; Limestone's finishers (15,21,24,28,38,39,41) give 14+16+18+19+24=91, printed 93 (cap 5 gives 74, no cap 126). The three that fix the rule reproduce exactly, Limestone is 2 off. Source total error."
  },
+ "backend/data/parsed_results/2007/XC/cheverusboys10_12.txt.json": {
+  "parse_sha": "0a1fcf4e02377ebc",
+  "source_sha": "c3769cc4205d9c93",
+  "date": "2026-10-26",
+  "by": "sonnet audit (second read, 2026-10-26) (audit: confirmed)",
+  "evidence": "Override matches the source: 31 rows (place 13 '? 18:00 ?????' has no team or name, left out; others keep printed places). Codes C/P/D = Cheverus/Portland/Deering from the title 'Cheverus vs Deering vs Portland'. No team scores printed."
+ },
  "backend/data/parsed_results/2007/XC/cheverusboys9_14.json": {
   "parse_sha": "40103aa68bdf5247",
   "source_sha": "5bdd4e1e2cdb44bf",
@@ -5641,6 +5753,13 @@
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
  },
+ "backend/data/parsed_results/2007/XC/ellsworthjvboys.json": {
+  "parse_sha": "8dd8a92f923c3784",
+  "source_sha": "e1a7fbdd3863be99",
+  "date": "2026-10-26",
+  "by": "auto: team scores verified exactly, all schools identified, no flags",
+  "evidence": ""
+ },
  "backend/data/parsed_results/2007/XC/ellsworthjvgirls.json": {
   "parse_sha": "d64d40b55d6a3dff",
   "source_sha": "457367b981cd1125",
@@ -5700,6 +5819,13 @@
  "backend/data/parsed_results/2007/XC/freeportgirls9_14.json": {
   "parse_sha": "9e6ab767b5bbf959",
   "source_sha": "9e405cf7236bac04",
+  "date": "2026-10-26",
+  "by": "auto: team scores verified exactly, all schools identified, no flags",
+  "evidence": ""
+ },
+ "backend/data/parsed_results/2007/XC/ftkentgirls9_12.json": {
+  "parse_sha": "1ffac20193314aff",
+  "source_sha": "ccdb6bb6c987912e",
   "date": "2026-10-26",
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
@@ -5774,6 +5900,20 @@
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
  },
+ "backend/data/parsed_results/2007/XC/kennebunkgirls10_11.json": {
+  "parse_sha": "bf771fee932f7bcc",
+  "source_sha": "47c674f966483214",
+  "date": "2026-10-26",
+  "by": "auto: team scores verified exactly, all schools identified, no flags",
+  "evidence": ""
+ },
+ "backend/data/parsed_results/2007/XC/kittery9_26.json": {
+  "parse_sha": "80f648199f3a652d",
+  "source_sha": "4191280cfc012249",
+  "date": "2026-10-26",
+  "by": "auto: team scores verified exactly, all schools identified, no flags",
+  "evidence": ""
+ },
  "backend/data/parsed_results/2007/XC/kvacboys.txt.json": {
   "parse_sha": "95ccb2f46f82d6b2",
   "source_sha": "ae92d8b852fac4d0",
@@ -5802,6 +5942,20 @@
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
  },
+ "backend/data/parsed_results/2007/XC/lakeregionboys9_14.json": {
+  "parse_sha": "438d2eec10c732be",
+  "source_sha": "473a7b62571a8df2",
+  "date": "2026-10-26",
+  "by": "sonnet audit (second read, 2026-10-26) (audit: confirmed)",
+  "evidence": "Override matches the two-block table row by row (56 rows, SCH column GR/LR/TR/NYA). No team scores printed."
+ },
+ "backend/data/parsed_results/2007/XC/lakeregiongirls9_14.json": {
+  "parse_sha": "29223a86875b2d73",
+  "source_sha": "e3fdb03261fa42e5",
+  "date": "2026-10-26",
+  "by": "sonnet audit (second read, 2026-10-26) (audit: confirmed)",
+  "evidence": "Override matches (32 rows, SCH column GR/TR/NYA/LR). No team scores printed."
+ },
  "backend/data/parsed_results/2007/XC/lawrenceboys9_7.json": {
   "parse_sha": "cdf0a90bc7961ace",
   "source_sha": "53034f3b678542c5",
@@ -5813,6 +5967,20 @@
   "parse_sha": "882123d6e6e6d9be",
   "source_sha": "72fd22ff3e464594",
   "date": "2026-10-16",
+  "by": "auto: team scores verified exactly, all schools identified, no flags",
+  "evidence": ""
+ },
+ "backend/data/parsed_results/2007/XC/leeinviteboys.json": {
+  "parse_sha": "3a22b8831fd0ac66",
+  "source_sha": "7c91f6391fd66a62",
+  "date": "2026-10-26",
+  "by": "auto: team scores verified exactly, all schools identified, no flags",
+  "evidence": ""
+ },
+ "backend/data/parsed_results/2007/XC/leeinvitegirls.json": {
+  "parse_sha": "2cc43a71456ff3bb",
+  "source_sha": "308e95c0af5e4826",
+  "date": "2026-10-26",
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
  },
@@ -5886,6 +6054,13 @@
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
  },
+ "backend/data/parsed_results/2007/XC/medomakboys9_21.json": {
+  "parse_sha": "4e09b3570091357d",
+  "source_sha": "a5922c43599cc879",
+  "date": "2026-10-26",
+  "by": "auto: team scores verified exactly, all schools identified, no flags",
+  "evidence": ""
+ },
  "backend/data/parsed_results/2007/XC/ms-2007-class-a-eastern-maine-regional-xc-championship-2007.json": {
   "parse_sha": "415d7ffaf2207fe9",
   "source_sha": "75c598038044582e",
@@ -5942,12 +6117,33 @@
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
  },
+ "backend/data/parsed_results/2007/XC/newenglandgirls.txt.json": {
+  "parse_sha": "099affc957cd762a",
+  "source_sha": "e9112b8917bb0c74",
+  "date": "2026-10-26",
+  "by": "auto: team scores verified exactly, all schools identified, no flags",
+  "evidence": ""
+ },
+ "backend/data/parsed_results/2007/XC/nobleboys10_5.json": {
+  "parse_sha": "cd797c88fdb0ccc1",
+  "source_sha": "383c5e72622c1ad2",
+  "date": "2026-10-26",
+  "by": "sonnet audit (second read, 2026-10-26) (audit: source-error)",
+  "evidence": "All 23 rows agree (Sc Scarborough, TA Thornton, D Deering; codes match the girls file). Printed team block 'Scarborough 30, TA 40, Deering 57, Noble ns' does not reproduce from the sheet's own places: Scarborough 1+4+11+12+14 = 42, TA 2+5+6+7+9 = 29, Deering 3+8+10+18+19 = 58 (Scarborough and TA look swapped, 30~29 and 40~42). No override: scores left out rather than stored wrong."
+ },
  "backend/data/parsed_results/2007/XC/noblegirls10_5.json": {
   "parse_sha": "870f250089381621",
   "source_sha": "8c95274b90b3bc73",
   "date": "2026-10-25",
   "by": "sonnet audit (second read, 2026-10-25) (audit: source-error)",
   "evidence": "printed Scarborough 19, but its best five places (1,4,5,6,8) sum 24; TA 39, but its best five (2,3,7,9,10) sum 31; Deering 81 vs 140 (16,26,29,31,38); Noble 117 vs 218 (33,34,41,54,56). No scoring convention gives them (a 5-runner total can't be below the sum of the team's five best places). Four rows with no name (places 16 D, 18 Sc, 50 Sc, 66 Sc) stay out and do not change this. Atherton 'T' = TA kept."
+ },
+ "backend/data/parsed_results/2007/XC/noblemiddle10_17.json": {
+  "parse_sha": "994e5741e6da8245",
+  "source_sha": "8b164a38ad804138",
+  "date": "2026-10-26",
+  "by": "auto: team scores verified exactly, all schools identified, no flags",
+  "evidence": ""
  },
  "backend/data/parsed_results/2007/XC/ot%20xc%20meet%20boys%20jv%20results%209.22.07.txt.json": {
   "parse_sha": "f656557f8a7de494",
@@ -5990,6 +6186,20 @@
   "date": "2026-10-25",
   "by": "auto re-check 2026-10-25: changed by a deliberate re-parse; team scores still verified exactly, every school identified, no flags",
   "evidence": "meet_ledger confidence fields after the 2026-10-25 rebuild"
+ },
+ "backend/data/parsed_results/2007/XC/presqueislejv9_8.json": {
+  "parse_sha": "1f7febf3a75c9f49",
+  "source_sha": "0433bac9a30a7c84",
+  "date": "2026-10-26",
+  "by": "sonnet audit (second read, 2026-10-26) (audit: confirmed)",
+  "evidence": "JV Girls (21 rows, 9/8/07) and JV Boys (24 rows, 9/7/07 printed), UMPI. Every row, place, school and time agrees with the source (PI, MDI, JB, Caribou, Matt. = Mattanawcook, Orono). No team scores printed."
+ },
+ "backend/data/parsed_results/2007/XC/presqueislevarsity9_8.json": {
+  "parse_sha": "1d5d0362a4a0c65d",
+  "source_sha": "1ca6204bd0432541",
+  "date": "2026-10-26",
+  "by": "auto: team scores verified exactly, all schools identified, no flags",
+  "evidence": ""
  },
  "backend/data/parsed_results/2007/XC/pvcboys.txt.json": {
   "parse_sha": "4f97819c9a10380d",
@@ -6047,6 +6257,34 @@
   "by": "sonnet audit (score mismatch, 2026-10-23) (audit: source-error)",
   "evidence": "Parse matches the 44 source rows (Haley Bail printed twice, places 43/44, 32:53 and 33:03, as in source). Printed: Ray 22, Dur 48, Lit. 82, Mon 83, Rich NS. Rows (Richmond 3 finishers removed, only a team's first 7 take places): Ray places 1,2,4,6,9 = 22 OK; Dur 3,5,8,13,18 -> ranks 3,5,8,13,16 = 45 (printed 48); Lit 7,12,20,29,31 -> 83 (printed 82); Mon 11,17,19,21,28 -> 83 (printed 83 OK, tie with Litchfield 83). With every runner scoring: Dur 45, Mon 87, Lit 91. No rule gives Dur 48 and Lit 82 together. SCHOOL: Ray (Raymond MS) resolves to '?' and Litch (Litchfield MS, Maine) resolves to oos-auto-ct-litchfield (wrong, Connecticut); both are Maine middle schools named in the title 'Raymond, Durham, Litchfield, Monmouth @ Richmond' and the sub5 index ('Richmond, Monmouth, Durham, Valley, Litchfield, Raymond Middle School Meet'). Catalog has no Litchfield MS, and Raymond MS only as me-ms-windham-raymond (unchecked as same school)."
  },
+ "backend/data/parsed_results/2007/XC/sacomiddleboys10_3.json": {
+  "parse_sha": "cbc258a842cddc5f",
+  "source_sha": "1ecd7c22488482ea",
+  "date": "2026-10-26",
+  "by": "auto: team scores verified exactly, all schools identified, no flags",
+  "evidence": ""
+ },
+ "backend/data/parsed_results/2007/XC/sacomiddlegirls10_3.json": {
+  "parse_sha": "4b8e03618e4065c9",
+  "source_sha": "21f7e0c565ac4a7b",
+  "date": "2026-10-26",
+  "by": "sonnet audit (second read, 2026-10-26) (audit: source-error)",
+  "evidence": "33 rows match the PDF (override with full middle-school names; Ma Massabesic, Sa Saco, Md Marshwood, TA Thornton Academy, Ki Shapleigh/Kittery, from the existing override's evidence). The sheet prints places 34-49 with no names or times (blank lines) and its side list 'Massabesic 20, Marshwood 67, TA 75, Saco 76' does not reproduce from the 33 visible rows (Marshwood 74, Saco 88, TA 93; Massabesic 2+3+4+5+6=20 does). No team_rankings kept."
+ },
+ "backend/data/parsed_results/2007/XC/sanfordmiddle9_26.json": {
+  "parse_sha": "5ae9595f4b5b07e4",
+  "source_sha": "953e031ee5a39626",
+  "date": "2026-10-26",
+  "by": "auto: team scores verified exactly, all schools identified, no flags",
+  "evidence": ""
+ },
+ "backend/data/parsed_results/2007/XC/sanfordmiddlegirls9_26.json": {
+  "parse_sha": "0fc80dd727d198f8",
+  "source_sha": "86712ebd6bad24e6",
+  "date": "2026-10-26",
+  "by": "auto: team scores verified exactly, all schools identified, no flags",
+  "evidence": ""
+ },
  "backend/data/parsed_results/2007/XC/scarboroughboys9_7.json": {
   "parse_sha": "49e413d7940f2174",
   "source_sha": "fe4b574533a68c3d",
@@ -6058,6 +6296,13 @@
   "parse_sha": "9957c4e142930a75",
   "source_sha": "c008f43f1993bf8e",
   "date": "2026-10-16",
+  "by": "auto: team scores verified exactly, all schools identified, no flags",
+  "evidence": ""
+ },
+ "backend/data/parsed_results/2007/XC/scarboroughinviteboys.json": {
+  "parse_sha": "57721e39609e51b1",
+  "source_sha": "35a36ed3bc1f8320",
+  "date": "2026-10-26",
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
  },
@@ -6079,6 +6324,13 @@
   "parse_sha": "5a8e7679f3273e77",
   "source_sha": "e55e9d7ac45c4a5e",
   "date": "2026-10-16",
+  "by": "auto: team scores verified exactly, all schools identified, no flags",
+  "evidence": ""
+ },
+ "backend/data/parsed_results/2007/XC/southportlandboys9_14.json": {
+  "parse_sha": "245b7868493db041",
+  "source_sha": "9b887f0943d846ee",
+  "date": "2026-10-26",
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
  },
@@ -6145,6 +6397,34 @@
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
  },
+ "backend/data/parsed_results/2007/XC/thorntonboys9_7.json": {
+  "parse_sha": "d3a1f7924046d1d9",
+  "source_sha": "8aa6f42fa06bc0e8",
+  "date": "2026-10-26",
+  "by": "auto: team scores verified exactly, all schools identified, no flags",
+  "evidence": ""
+ },
+ "backend/data/parsed_results/2007/XC/thorntongirls9_19.json": {
+  "parse_sha": "6fc1a311dc7bba36",
+  "source_sha": "dd6debee1605af3d",
+  "date": "2026-10-26",
+  "by": "auto: team scores verified exactly, all schools identified, no flags",
+  "evidence": ""
+ },
+ "backend/data/parsed_results/2007/XC/thorntongirls9_7.json": {
+  "parse_sha": "9f2beff417ca2971",
+  "source_sha": "3f98208b3d308b58",
+  "date": "2026-10-26",
+  "by": "auto: team scores verified exactly, all schools identified, no flags",
+  "evidence": ""
+ },
+ "backend/data/parsed_results/2007/XC/thorntonjv9_19.json": {
+  "parse_sha": "7ae0abcc2f6c6a38",
+  "source_sha": "cb75fbbf1af5ab9d",
+  "date": "2026-10-26",
+  "by": "auto: team scores verified exactly, all schools identified, no flags",
+  "evidence": ""
+ },
  "backend/data/parsed_results/2007/XC/traipboys9_21.json": {
   "parse_sha": "4f619f9c4d5d4d35",
   "source_sha": "59c0365a7e782f55",
@@ -6177,6 +6457,13 @@
   "parse_sha": "fd4a4abee91eed85",
   "source_sha": "9efcde19a8a11b6d",
   "date": "2026-10-16",
+  "by": "auto: team scores verified exactly, all schools identified, no flags",
+  "evidence": ""
+ },
+ "backend/data/parsed_results/2007/XC/wellsgirls9_14.json": {
+  "parse_sha": "428d9405e701edd3",
+  "source_sha": "910e87d62d1e54ec",
+  "date": "2026-10-26",
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
  },
@@ -7497,11 +7784,11 @@
   "evidence": ""
  },
  "backend/data/parsed_results/2008/XC/freeportgirls_oct17.json": {
-  "parse_sha": "00fa71127faa3ec0",
+  "parse_sha": "29324a3cbe779922",
   "source_sha": "4321dd7f3ecf444d",
-  "date": "2026-10-24",
-  "by": "auto: team scores verified exactly, all schools identified, no flags",
-  "evidence": ""
+  "date": "2026-10-26",
+  "by": "sonnet audit (second read, 2026-10-26) (audit: confirmed)",
+  "evidence": "Existing override checked against the source: 62 rows (places 1-62 incl. 48-50 from the right-hand block), schools F Freeport/Fa Falmouth/G Greely/Y Yarmouth/M Merriconeag per 'Opponents: Yarmouth, Falmouth, Greely, Merri', team scores Greely 35, Freeport 39, Falmouth 48, Yarmouth 105 (Total lines; Yarmouth 15+18+23+24+25 = 105). Name 'AliPerkins' and 'Jena, Mannette' as printed."
  },
  "backend/data/parsed_results/2008/XC/freeportmsboys_oct16.json": {
   "parse_sha": "1bd6b471f87c543c",

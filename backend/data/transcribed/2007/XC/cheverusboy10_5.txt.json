@@ -378,8 +378,37 @@
  ],
  "date": null,
  "meet_name": "October 5 2007",
- "team_rankings": [],
+ "team_rankings": [
+  {
+   "kind": "xc",
+   "gender": "Boys",
+   "event_header": "Run CC",
+   "teams": [
+    {
+     "rank": 1,
+     "team": "Cheverus",
+     "score": 16
+    },
+    {
+     "rank": 2,
+     "team": "Sanford",
+     "score": 47
+    },
+    {
+     "rank": 3,
+     "team": "Kennebunk",
+     "score": 98
+    },
+    {
+     "rank": 4,
+     "team": "Westbrook",
+     "score": 107
+    }
+   ],
+   "totals_only": true
+  }
+ ],
  "parser": "XCListParser",
  "source": "backend/data/sub5_archive/2007/XC/cheverusboy10_5.txt.htm",
- "notes": "Reader 2026-10-23: the parse with the 2026-10-23 parser fixes (tab-separated team code and surname), plus place 43 \"C McDonald 24:11\", which that parse drops (a surname with an inner capital)."
+ "notes": "Reader 2026-10-23: the parse with the 2026-10-23 parser fixes (tab-separated team code and surname), plus place 43 \"C McDonald 24:11\", which that parse drops (a surname with an inner capital). Second read 2026-10-26: all 46 rows match the source by place, code, surname and time (place 43 McDonald included). Added the team scores the header prints and the override had left out: 'Cheverus (16) Sanford (47) Kennebunk (98) Westbrook (107)' (Cheverus 1+2+3+4+6=16 reproduces; the sheet's own places give Sanford 48, Kennebunk 110, Westbrook 100, so those three are source scoring). Date October 5 2007 is in the sub5 index."
 }

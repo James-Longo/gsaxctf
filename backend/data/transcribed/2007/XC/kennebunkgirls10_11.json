@@ -508,7 +508,26 @@
    ]
   }
  ],
- "team_rankings": [],
+ "team_rankings": [
+  {
+   "kind": "xc",
+   "gender": "Girls",
+   "event_header": "Run CC",
+   "teams": [
+    {
+     "rank": 1,
+     "team": "Kennebunk",
+     "score": 23
+    },
+    {
+     "rank": 2,
+     "team": "Thornton Academy",
+     "score": 37
+    }
+   ],
+   "totals_only": true
+  }
+ ],
  "parser": "SpreadsheetTableParser",
- "notes": "Rows 50-62 are the second column of a two-column table (place, name, code, time); the parser left the code inside the athlete field ('LeClair, TA') with school blank. Split into athlete and the printed code (TA, K); codes TA/K/B keep their existing per-file mapping (Thornton Academy, Kennebunk, Biddeford per the page's own team table). All other rows unchanged."
+ "notes": "Rows 50-62 are the second column of a two-column table (place, name, code, time); the parser left the code inside the athlete field ('LeClair, TA') with school blank. Split into athlete and the printed code (TA, K); codes TA/K/B keep their existing per-file mapping (Thornton Academy, Kennebunk, Biddeford per the page's own team table). All other rows unchanged. Second read 2026-10-26: all 62 rows match the source (places 1-49 left block, 50-62 right block). Added the team scores the page prints beside the first rows, 'Kennebunk 23 / TA 37 / Biddeford NS': Kennebunk 2+3+5+6+7=23 and Thornton 1+4+9+11+12=37 reproduce; Biddeford is not scored (NS) and left out. Date October 11 2007 comes from the sub5 index."
 }
