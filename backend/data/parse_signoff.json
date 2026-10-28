@@ -45947,6 +45947,13 @@
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
  },
+ "backend/data/parsed_results/2022/XC/ms-wmcsacopee-valley-2022.json": {
+  "parse_sha": "37f4468701207520",
+  "source_sha": "e4ac0eccdfe1ec0a",
+  "date": "2026-10-28",
+  "by": "MileSplit second read (fixed) 2026-10-28: copy corrected against its cached raw pages",
+  "evidence": "reader compared every row with every cached MileSplit page of the meet; printed team totals stored as printed"
+ },
  "backend/data/parsed_results/2022/XC/mtblueboys_sept2.json": {
   "parse_sha": "4a935ae72a9afb05",
   "source_sha": "d09fc8442e6d496a",
@@ -48537,6 +48544,13 @@
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
  },
+ "backend/data/parsed_results/2023/XC/ms-ccc-opener-at-lake-region-2023.json": {
+  "parse_sha": "a41cd25ddbc416e8",
+  "source_sha": "12225d3527b91e2f",
+  "date": "2026-10-28",
+  "by": "auto: team scores verified exactly, all schools identified, no flags",
+  "evidence": ""
+ },
  "backend/data/parsed_results/2023/XC/ms-dan-dors-invitational-2023.json": {
   "parse_sha": "0070cc87d689e6c3",
   "source_sha": "fe19320ad9de50a4",
@@ -48569,6 +48583,13 @@
   "parse_sha": "d08d855c2d204cc3",
   "source_sha": "77875b0fdd6330fc",
   "date": "2026-10-18",
+  "by": "auto: team scores verified exactly, all schools identified, no flags",
+  "evidence": ""
+ },
+ "backend/data/parsed_results/2023/XC/ms-gorham-middle-school-2023.json": {
+  "parse_sha": "c9e0eef2417d4002",
+  "source_sha": "32f3e509e0dc00d6",
+  "date": "2026-10-28",
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
  },
@@ -48662,6 +48683,13 @@
   "date": "2026-10-19",
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
+ },
+ "backend/data/parsed_results/2023/XC/ms-seacoast-invitational-2023.json": {
+  "parse_sha": "3c968470577f9e3f",
+  "source_sha": "5207078fd44f3e18",
+  "date": "2026-10-28",
+  "by": "sonnet audit (second read, 2026-10-28) (audit: confirmed)",
+  "evidence": "Single page (964487) read row by row: Girls 11 and Boys 26 rows match name, school, time. Schools Narraguagus, Sumner, Jonesport-Beals, Calais, Machias, Woodland resolve correctly. No team scores printed. Event named \"Run CC\" without distance (meet title says 5k)."
  },
  "backend/data/parsed_results/2023/XC/ms-smaa-2nd-seven-2023.json": {
   "parse_sha": "b6e307e12796077a",
@@ -50987,6 +51015,13 @@
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
  },
+ "backend/data/parsed_results/2024/XC/ms-downeast-athletic-conference-championship-2024.json": {
+  "parse_sha": "a1a33509c7444ea9",
+  "source_sha": "ba783b86e78bbc87",
+  "date": "2026-10-28",
+  "by": "MileSplit second read (fixed) 2026-10-28: copy corrected against its cached raw pages",
+  "evidence": "reader compared every row with every cached MileSplit page of the meet; printed team totals stored as printed"
+ },
  "backend/data/parsed_results/2024/XC/ms-edward-little-hs-meet-1-2024.json": {
   "parse_sha": "a0c85ef2c1b5483e",
   "source_sha": "efbeecda65df1a26",
@@ -51012,6 +51047,13 @@
   "parse_sha": "3cc089b62db5ce71",
   "source_sha": "c80e085361640244",
   "date": "2026-10-19",
+  "by": "auto: team scores verified exactly, all schools identified, no flags",
+  "evidence": ""
+ },
+ "backend/data/parsed_results/2024/XC/ms-fryeburg-academy-potato-invitational-2024.json": {
+  "parse_sha": "e0ffb1cc922bbc22",
+  "source_sha": "f9faaffd6493ad7a",
+  "date": "2026-10-28",
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
  },
@@ -51099,10 +51141,24 @@
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
  },
+ "backend/data/parsed_results/2024/XC/ms-mvc-winthrop-2024.json": {
+  "parse_sha": "aaead29adee38124",
+  "source_sha": "ff1fc5511f93154f",
+  "date": "2026-10-28",
+  "by": "sonnet audit (second read, 2026-10-28) (audit: confirmed)",
+  "evidence": "Cached pages 1077292 (Boys 5k, 72 rows) and 1077297 (Girls 5k, 40 rows) both read: every row agrees (place, name, school, mark). The source skips places in the boys list (38 places between 1 and 110 are absent, e.g. 20, 21, 31, 32): the page itself omits those finishers, the parse mirrors it. PTS column is 0 for every boy (no team_place, as stored) and equals the individual place for the girls (team_place copies it; MileSplit's points are not true team points - not a team score, none printed). Schools resolve (Dirigo, Winthrop, Madison, Lisbon, Kents Hill, Mt. Abram, Maranacook, Carrabec, Oak Hill, Monmouth). No duplicate of another 2024 file."
+ },
  "backend/data/parsed_results/2024/XC/ms-noble-high-school-2024.json": {
   "parse_sha": "5c8e785d41c08668",
   "source_sha": "79ca20ce00cd8486",
   "date": "2026-10-18",
+  "by": "auto: team scores verified exactly, all schools identified, no flags",
+  "evidence": ""
+ },
+ "backend/data/parsed_results/2024/XC/ms-nokomis-ms-xc-meet-2024.json": {
+  "parse_sha": "54f436bdfeda150f",
+  "source_sha": "388ef6ebd9bde438",
+  "date": "2026-10-28",
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
  },
@@ -51148,6 +51204,27 @@
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
  },
+ "backend/data/parsed_results/2024/XC/ms-seacoast-invitational-2024.json": {
+  "parse_sha": "74b680a48c3f3670",
+  "source_sha": "0da365ce6cce3846",
+  "date": "2026-10-28",
+  "by": "sonnet audit (second read, 2026-10-28) (audit: confirmed)",
+  "evidence": "Cached page 1082733 (title 'Seacoast Invitational - 9/28/2024'): Girls 5k (11 rows) and Boys 5k (21 rows) agree row for row (place, name, school, mark); schools Narraguagus, Bucksport, Sumner, Deer Isle Stonington, Searsport resolve; date 2024-09-28 as printed; no team scores or other races printed; no duplicate of another 2024 file."
+ },
+ "backend/data/parsed_results/2024/XC/ms-smaa-2-south-portland-2024.json": {
+  "parse_sha": "680f386e57d874ae",
+  "source_sha": "ccf73982f8b6b27c",
+  "date": "2026-10-28",
+  "by": "auto: team scores verified exactly, all schools identified, no flags",
+  "evidence": ""
+ },
+ "backend/data/parsed_results/2024/XC/ms-smmsac-extravaganza-2024-2024-10-24.json": {
+  "parse_sha": "09618b730040e8a9",
+  "source_sha": "c8be49442e6819a4",
+  "date": "2026-10-28",
+  "by": "MileSplit second read (fixed) 2026-10-28: copy corrected against its cached raw pages",
+  "evidence": "reader compared every row with every cached MileSplit page of the meet; printed team totals stored as printed"
+ },
  "backend/data/parsed_results/2024/XC/ms-smmsac-extravaganza-2024.json": {
   "parse_sha": "0c605c41f2f05492",
   "source_sha": "7c760e2cc3b08700",
@@ -51187,6 +51264,13 @@
   "parse_sha": "cbf0f244c9210fdb",
   "source_sha": "9e9f2c3b972b7984",
   "date": "2026-10-19",
+  "by": "auto: team scores verified exactly, all schools identified, no flags",
+  "evidence": ""
+ },
+ "backend/data/parsed_results/2024/XC/ms-york-county-smmsac-xc-festival-2024.json": {
+  "parse_sha": "cac0a66dfe5ba6f1",
+  "source_sha": "030afb84d1ceae8e",
+  "date": "2026-10-28",
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
  },

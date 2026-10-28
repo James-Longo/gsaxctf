@@ -1,13 +1,13 @@
 {
 "_meta": {
 "methods_by_rows": {
-"exact/alias": 1720779,
+"exact/alias": 1720929,
 "code": 255253,
 "truncation": 119264,
 "athlete-continuity": 51440,
 "mascot": 28413,
 "bare name + level context": 25500,
-"unresolved": 17786,
+"unresolved": 17782,
 "manual (file rule)": 14969,
 "co-op label": 12521,
 "state-tagged (auto entry)": 10609,
@@ -22,8 +22,8 @@
 "co-op label -> host (co-op not active)": 183
 },
 "methods_by_strings": {
-"exact/alias": 4108,
-"unresolved": 2199,
+"exact/alias": 4107,
+"unresolved": 2196,
 "state-tagged (auto entry)": 1567,
 "debris-salvage": 913,
 "code": 766,
@@ -39,7 +39,7 @@
 "file-expansion": 13,
 "later-hs": 3
 },
-"distinct_strings": 11957,
+"distinct_strings": 11953,
 "note": "'raw' keys are whitespace-collapsed school strings exactly as printed. 'overrides' are per-file answers (year/season/file-stem) that differ from the string's global id."
 },
 "raw": {
@@ -1330,10 +1330,10 @@
 "how": "exact/alias"
 },
 "Yarmouth": {
-"rows": 8382,
+"rows": 8388,
 "seasons": {
 "Outdoor": 1889,
-"XC": 3226,
+"XC": 3232,
 "Indoor": 3267
 },
 "years": [
@@ -1344,7 +1344,7 @@
 "method": "exact",
 "by_id": {
 "me-hs-yarmouth": 8003,
-"me-ms-harrison": 379
+"me-ms-harrison": 385
 },
 "context_dependent": true,
 "by_level": {
@@ -3086,6 +3086,20 @@
 "unresolved_rows": 131,
 "how": "athlete-continuity"
 },
+"Tripp": {
+"rows": 3573,
+"seasons": {
+"XC": 272,
+"Outdoor": 3301
+},
+"years": [
+2007,
+2026
+],
+"id": "me-ms-tripp",
+"method": "exact",
+"how": "exact/alias"
+},
 "Winslow High School": {
 "rows": 3572,
 "seasons": {
@@ -3125,20 +3139,6 @@
 "flags": [
 "athletes contradict name match (me-hs-wiscasset -> me-ms-wiscasset, 18/18)"
 ],
-"how": "exact/alias"
-},
-"Tripp": {
-"rows": 3567,
-"seasons": {
-"XC": 266,
-"Outdoor": 3301
-},
-"years": [
-2007,
-2026
-],
-"id": "me-ms-tripp",
-"method": "exact",
 "how": "exact/alias"
 },
 "Hermon High": {
@@ -3332,11 +3332,11 @@
 "how": "exact/alias"
 },
 "Biddeford High School": {
-"rows": 3267,
+"rows": 3268,
 "seasons": {
 "Indoor": 527,
 "Outdoor": 1750,
-"XC": 990
+"XC": 991
 },
 "years": [
 2003,
@@ -3766,11 +3766,11 @@
 "how": "exact/alias"
 },
 "Wells High School": {
-"rows": 3001,
+"rows": 3002,
 "seasons": {
 "Indoor": 529,
 "Outdoor": 1284,
-"XC": 1188
+"XC": 1189
 },
 "years": [
 2003,
@@ -3827,9 +3827,9 @@
 "how": "exact/alias"
 },
 "Cape Elizabeth High School": {
-"rows": 2977,
+"rows": 2978,
 "seasons": {
-"XC": 1565,
+"XC": 1566,
 "Outdoor": 1014,
 "Indoor": 398
 },
@@ -4944,6 +4944,20 @@
 },
 "how": "exact/alias"
 },
+"Gorham MS": {
+"rows": 2187,
+"seasons": {
+"Outdoor": 1512,
+"XC": 675
+},
+"years": [
+2022,
+2026
+],
+"id": "me-ms-gorham",
+"method": "exact",
+"how": "exact/alias"
+},
 "Skow": {
 "rows": 2184,
 "seasons": {
@@ -4970,20 +4984,6 @@
 2026
 ],
 "id": "me-hs-deering",
-"method": "exact",
-"how": "exact/alias"
-},
-"Gorham MS": {
-"rows": 2170,
-"seasons": {
-"Outdoor": 1512,
-"XC": 658
-},
-"years": [
-2022,
-2026
-],
-"id": "me-ms-gorham",
 "method": "exact",
 "how": "exact/alias"
 },
@@ -5169,9 +5169,9 @@
 "how": "exact/alias"
 },
 "Washington Academy": {
-"rows": 2011,
+"rows": 2016,
 "seasons": {
-"XC": 1080,
+"XC": 1085,
 "Outdoor": 931
 },
 "years": [
@@ -8774,6 +8774,20 @@
 ],
 "how": "exact/alias"
 },
+"Windham MS": {
+"rows": 825,
+"seasons": {
+"Outdoor": 547,
+"XC": 278
+},
+"years": [
+2023,
+2026
+],
+"id": "me-ms-windham",
+"method": "exact",
+"how": "exact/alias"
+},
 "Sumner Memorial High School": {
 "rows": 823,
 "seasons": {
@@ -8866,20 +8880,6 @@
 2024
 ],
 "id": "me-hs-freeport",
-"method": "exact",
-"how": "exact/alias"
-},
-"Windham MS": {
-"rows": 810,
-"seasons": {
-"Outdoor": 547,
-"XC": 263
-},
-"years": [
-2023,
-2026
-],
-"id": "me-ms-windham",
 "method": "exact",
 "how": "exact/alias"
 },
@@ -10942,6 +10942,48 @@
 "method": "exact",
 "how": "exact/alias"
 },
+"Westbrook MS": {
+"rows": 526,
+"seasons": {
+"XC": 173,
+"Outdoor": 353
+},
+"years": [
+2022,
+2026
+],
+"id": "me-ms-westbrook",
+"method": "exact",
+"how": "exact/alias"
+},
+"Falmouth Middle School": {
+"rows": 524,
+"seasons": {
+"Outdoor": 64,
+"XC": 460
+},
+"years": [
+2007,
+2026
+],
+"id": "me-ms-falmouth",
+"method": "exact",
+"how": "exact/alias"
+},
+"Lincoln MS": {
+"rows": 524,
+"seasons": {
+"Outdoor": 198,
+"XC": 326
+},
+"years": [
+2023,
+2026
+],
+"id": "me-ms-lincoln-portland",
+"method": "exact",
+"how": "exact/alias"
+},
 "Belfast High School": {
 "rows": 523,
 "seasons": {
@@ -10994,17 +11036,17 @@
 },
 "how": "exact/alias"
 },
-"Westbrook MS": {
+"Bonny Eagle MS": {
 "rows": 520,
 "seasons": {
-"XC": 167,
-"Outdoor": 353
+"XC": 513,
+"Outdoor": 7
 },
 "years": [
-2022,
+2005,
 2026
 ],
-"id": "me-ms-westbrook",
+"id": "me-ms-bonny-eagle",
 "method": "exact",
 "how": "exact/alias"
 },
@@ -11049,34 +11091,6 @@
 "method": "exact",
 "how": "exact/alias"
 },
-"Lincoln MS": {
-"rows": 513,
-"seasons": {
-"Outdoor": 198,
-"XC": 315
-},
-"years": [
-2023,
-2026
-],
-"id": "me-ms-lincoln-portland",
-"method": "exact",
-"how": "exact/alias"
-},
-"Bonny Eagle MS": {
-"rows": 511,
-"seasons": {
-"XC": 504,
-"Outdoor": 7
-},
-"years": [
-2005,
-2026
-],
-"id": "me-ms-bonny-eagle",
-"method": "exact",
-"how": "exact/alias"
-},
 "Moore": {
 "rows": 511,
 "seasons": {
@@ -11088,20 +11102,6 @@
 2019
 ],
 "id": "me-ms-lyman-moore",
-"method": "exact",
-"how": "exact/alias"
-},
-"Falmouth Middle School": {
-"rows": 510,
-"seasons": {
-"Outdoor": 64,
-"XC": 446
-},
-"years": [
-2007,
-2026
-],
-"id": "me-ms-falmouth",
 "method": "exact",
 "how": "exact/alias"
 },
@@ -11658,6 +11658,35 @@
 "method": "code",
 "how": "code"
 },
+"Gray New Gloucester": {
+"rows": 458,
+"seasons": {
+"Indoor": 153,
+"Outdoor": 162,
+"XC": 143
+},
+"years": [
+2006,
+2023
+],
+"id": "me-hs-gray-ng",
+"method": "exact",
+"by_id": {
+"me-hs-gray-ng": 341,
+"me-ms-gray-ng": 117
+},
+"context_dependent": true,
+"by_level": {
+"hs": "me-hs-gray-ng",
+"ms": "me-ms-gray-ng"
+},
+"by_season": {
+"Indoor": "me-hs-gray-ng",
+"Outdoor": "me-hs-gray-ng",
+"XC": "me-ms-gray-ng"
+},
+"how": "exact/alias"
+},
 "Mount Desert Isl": {
 "rows": 454,
 "seasons": {
@@ -11722,35 +11751,6 @@
 ],
 "id": "me-hs-fort-fairfield",
 "method": "exact",
-"how": "exact/alias"
-},
-"Gray New Gloucester": {
-"rows": 445,
-"seasons": {
-"Indoor": 153,
-"Outdoor": 162,
-"XC": 130
-},
-"years": [
-2006,
-2023
-],
-"id": "me-hs-gray-ng",
-"method": "exact",
-"by_id": {
-"me-hs-gray-ng": 341,
-"me-ms-gray-ng": 104
-},
-"context_dependent": true,
-"by_level": {
-"hs": "me-hs-gray-ng",
-"ms": "me-ms-gray-ng"
-},
-"by_season": {
-"Indoor": "me-hs-gray-ng",
-"Outdoor": "me-hs-gray-ng",
-"XC": "me-ms-gray-ng"
-},
 "how": "exact/alias"
 },
 "BUC": {
@@ -11879,6 +11879,20 @@
 "unresolved_rows": 69,
 "how": "athlete-continuity"
 },
+"Lyman Moore Middle School": {
+"rows": 438,
+"seasons": {
+"Outdoor": 9,
+"XC": 429
+},
+"years": [
+2011,
+2026
+],
+"id": "me-ms-lyman-moore",
+"method": "exact",
+"how": "exact/alias"
+},
 "Worcester St": {
 "rows": 437,
 "seasons": {
@@ -11948,20 +11962,6 @@
 2026
 ],
 "id": "oos-nh-phillips-exeter-academy",
-"method": "exact",
-"how": "exact/alias"
-},
-"Lyman Moore Middle School": {
-"rows": 427,
-"seasons": {
-"Outdoor": 9,
-"XC": 418
-},
-"years": [
-2011,
-2026
-],
-"id": "me-ms-lyman-moore",
 "method": "exact",
 "how": "exact/alias"
 },
@@ -12915,6 +12915,20 @@
 "method": "code",
 "how": "code"
 },
+"South Portland Middle School": {
+"rows": 379,
+"seasons": {
+"XC": 367,
+"Outdoor": 12
+},
+"years": [
+2023,
+2026
+],
+"id": "me-ms-south-portland",
+"method": "exact",
+"how": "exact/alias"
+},
 "Yarmouth Mid": {
 "rows": 378,
 "seasons": {
@@ -13133,20 +13147,6 @@
 "id": "me-hs-edward-little",
 "method": "code+glued-gender",
 "how": "code"
-},
-"South Portland Middle School": {
-"rows": 362,
-"seasons": {
-"XC": 350,
-"Outdoor": 12
-},
-"years": [
-2023,
-2026
-],
-"id": "me-ms-south-portland",
-"method": "exact",
-"how": "exact/alias"
 },
 "Greely Middle School": {
 "rows": 361,
@@ -14088,6 +14088,19 @@
 ],
 "how": "athlete-continuity"
 },
+"King MS": {
+"rows": 321,
+"seasons": {
+"XC": 321
+},
+"years": [
+2022,
+2026
+],
+"id": "me-ms-king",
+"method": "exact",
+"how": "exact/alias"
+},
 "Lrhs": {
 "rows": 320,
 "seasons": {
@@ -14352,19 +14365,6 @@
 2022
 ],
 "id": "col-umass-boston",
-"method": "exact",
-"how": "exact/alias"
-},
-"King MS": {
-"rows": 313,
-"seasons": {
-"XC": 313
-},
-"years": [
-2022,
-2026
-],
-"id": "me-ms-king",
 "method": "exact",
 "how": "exact/alias"
 },
@@ -17239,6 +17239,21 @@
 "method": "code",
 "how": "code"
 },
+"Whittier": {
+"rows": 221,
+"seasons": {
+"Outdoor": 61,
+"XC": 70,
+"Indoor": 90
+},
+"years": [
+2013,
+2025
+],
+"id": "me-ms-whittier",
+"method": "exact",
+"how": "exact/alias"
+},
 "MIL": {
 "rows": 221,
 "seasons": {
@@ -17413,21 +17428,6 @@
 2019
 ],
 "id": "me-ms-hancock",
-"method": "exact",
-"how": "exact/alias"
-},
-"Whittier": {
-"rows": 217,
-"seasons": {
-"Outdoor": 61,
-"XC": 66,
-"Indoor": 90
-},
-"years": [
-2013,
-2025
-],
-"id": "me-ms-whittier",
 "method": "exact",
 "how": "exact/alias"
 },
@@ -17865,6 +17865,19 @@
 "method": "truncation",
 "how": "truncation"
 },
+"Friends School of Portland": {
+"rows": 205,
+"seasons": {
+"XC": 205
+},
+"years": [
+2010,
+2026
+],
+"id": "me-ms-friends-portland",
+"method": "exact",
+"how": "exact/alias"
+},
 "Presque Isle Mid": {
 "rows": 205,
 "seasons": {
@@ -18075,19 +18088,6 @@
 },
 "context_dependent": true,
 "how": "code"
-},
-"Friends School of Portland": {
-"rows": 200,
-"seasons": {
-"XC": 200
-},
-"years": [
-2010,
-2026
-],
-"id": "me-ms-friends-portland",
-"method": "exact",
-"how": "exact/alias"
 },
 "John Bapst High School": {
 "rows": 198,
@@ -22521,6 +22521,19 @@
 "unresolved_rows": 2,
 "how": "code"
 },
+"Southern Maine Catholic (combined MS team)": {
+"rows": 117,
+"seasons": {
+"XC": 117
+},
+"years": [
+2014,
+2026
+],
+"id": "me-ms-southern-maine-catholic",
+"method": "exact",
+"how": "exact/alias"
+},
 "OCEAN": {
 "rows": 117,
 "seasons": {
@@ -23078,19 +23091,6 @@
 2012
 ],
 "id": "me-ms-holbrook-dedham",
-"method": "exact",
-"how": "exact/alias"
-},
-"Southern Maine Catholic (combined MS team)": {
-"rows": 112,
-"seasons": {
-"XC": 112
-},
-"years": [
-2014,
-2026
-],
-"id": "me-ms-southern-maine-catholic",
 "method": "exact",
 "how": "exact/alias"
 },
@@ -81158,19 +81158,6 @@
 "method": "stem",
 "how": "exact/alias"
 },
-"WashingtonAcademy": {
-"rows": 5,
-"seasons": {
-"XC": 5
-},
-"years": [
-2023,
-2023
-],
-"id": "me-hs-washington-academy",
-"method": "exact+deglue",
-"how": "exact/alias"
-},
 "Molly Ockett MS": {
 "rows": 5,
 "seasons": {
@@ -111102,19 +111089,6 @@
 "id": "me-ms-mt-ararat",
 "method": "exact",
 "how": "exact/alias"
-},
-"Unknown School": {
-"rows": 2,
-"seasons": {
-"XC": 2
-},
-"years": [
-2023,
-2023
-],
-"id": null,
-"method": "unresolved",
-"how": "unresolved"
 },
 "kenn": {
 "rows": 2,
@@ -159942,19 +159916,6 @@
 "method": "code",
 "how": "code"
 },
-"bid": {
-"rows": 1,
-"seasons": {
-"XC": 1
-},
-"years": [
-2023,
-2023
-],
-"id": null,
-"method": "unresolved",
-"how": "unresolved"
-},
 "mas": {
 "rows": 1,
 "seasons": {
@@ -161245,19 +161206,6 @@
 "id": "me-hs-waterville",
 "method": "fuzzy+athletes",
 "how": "spelling (fuzzy)"
-},
-"Kinani Cape": {
-"rows": 1,
-"seasons": {
-"XC": 1
-},
-"years": [
-2024,
-2024
-],
-"id": null,
-"method": "unresolved",
-"how": "unresolved"
 },
 "MMR": {
 "rows": 1,
@@ -232807,7 +232755,13 @@
 "id": null,
 "basis": "name only (no joined rows)"
 },
-"Bid": null,
+"Bid": {
+"id": "me-hs-biddeford",
+"held": {
+"None": 4,
+"me-hs-biddeford": 1
+}
+},
 "Biddeford High School": "me-hs-biddeford",
 "Biddeford Middle School": "me-ms-biddeford",
 "Billerica Memorial High School": "oos-ma-billerica-memorial-high-school",
@@ -234590,7 +234544,10 @@
 "Unattached": "x-unattached",
 "Union": "oos-auto-vt-union",
 "Union 122 combined middleschool team": "me-ms-union-122",
-"Unknown School": null,
+"Unknown School": {
+"id": null,
+"basis": "name only (no joined rows)"
+},
 "Unknown blank": "x-unknown",
 "Upper Kennebec Valley JuniorSenior High School": "me-hs-upper-kennebec",
 "Upper Kennebec Valley Middle School": "me-ms-upper-kennebec",
@@ -252514,20 +252471,6 @@
 "rows": 2,
 "seasons": {
 "Outdoor": 2
-},
-"years": [
-2023,
-2023
-],
-"id": null,
-"method": "unresolved",
-"how": "unresolved"
-},
-{
-"raw": "Unknown School",
-"rows": 2,
-"seasons": {
-"XC": 2
 },
 "years": [
 2023,
@@ -275557,20 +275500,6 @@
 "how": "unresolved"
 },
 {
-"raw": "bid",
-"rows": 1,
-"seasons": {
-"XC": 1
-},
-"years": [
-2023,
-2023
-],
-"id": null,
-"method": "unresolved",
-"how": "unresolved"
-},
-{
 "raw": "Newington-CTc",
 "rows": 1,
 "seasons": {
@@ -275656,20 +275585,6 @@
 },
 {
 "raw": "UNA-Kennebec Vall",
-"rows": 1,
-"seasons": {
-"XC": 1
-},
-"years": [
-2024,
-2024
-],
-"id": null,
-"method": "unresolved",
-"how": "unresolved"
-},
-{
-"raw": "Kinani Cape",
 "rows": 1,
 "seasons": {
 "XC": 1

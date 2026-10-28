@@ -322,6 +322,36 @@
    ]
   }
  ],
- "team_rankings": [],
- "notes": "Transcribed from MileSplit raw result text (me.milesplit.com). Schools kept as MileSplit prints them. Prelim/final/heat rows as printed; points column not copied; exhibition marks (x) flagged. Abbreviated or mascot school names (LAC, MTB, Dragons ...) expanded to full names."
+ "team_rankings": [
+  {
+   "kind": "xc",
+   "gender": "Boys",
+   "event_header": "5k Run CC",
+   "teams": [
+    {
+     "rank": 1,
+     "team": "Narraguagus High School",
+     "score": 21
+    },
+    {
+     "rank": 2,
+     "team": "Sumner Memorial High School",
+     "score": 41
+    },
+    {
+     "rank": 3,
+     "team": "Machias Memorial High School",
+     "score": 66
+    },
+    {
+     "rank": 4,
+     "team": "Woodland Junior-Senior High School",
+     "score": 104
+    }
+   ],
+   "totals_only": true,
+   "event_idx": 1
+  }
+ ],
+ "notes": "Transcribed from MileSplit raw result text (me.milesplit.com). Schools kept as MileSplit prints them. Prelim/final/heat rows as printed; points column not copied; exhibition marks (x) flagged. Abbreviated or mascot school names (LAC, MTB, Dragons ...) expanded to full names. Second read 2026-10-28 against the cached raw page: all 37 rows agree (place, name, school, mark); Notes column ('DAC Champion / New Course Record') not stored. The printed Boys Team Scores (Narraguagus 21, Sumner 41, Machias 66, Woodland 104; Calais has no team score; 'No Girls Team Score') were missing and are added as team_rankings, totals only: Narraguagus (1+2+3+6+9) and Woodland (11+19+21+26+27, raw places) reproduce, Sumner (raw 4+5+7+13+14 = 43) and Machias (8+10+16+17+18 = 69) do not, so team_place is not set."
 }
