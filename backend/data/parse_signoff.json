@@ -517,6 +517,13 @@
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
  },
+ "backend/data/parsed_results/2003/XC/pendale03bv.json": {
+  "parse_sha": "7351d97616e816d0",
+  "source_sha": "a2d54c2a7f46afb9",
+  "date": "2026-10-28",
+  "by": "second read (fixed) 2026-10-23..28: override written from the source; printed team scores kept as printed",
+  "evidence": "reader compared every row with the source; the printed team totals do not reproduce from the sheet's own places (source arithmetic), as the audit and override notes record"
+ },
  "backend/data/parsed_results/2003/XC/pendale03gv.json": {
   "parse_sha": "6dc86d0f6fdd1e28",
   "source_sha": "bf95ca2bb7c596a4",
@@ -678,6 +685,13 @@
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
  },
+ "backend/data/parsed_results/2003/XC/thornton17oct03.json": {
+  "parse_sha": "ea165fc7164b6622",
+  "source_sha": "7528079e2285f990",
+  "date": "2026-10-28",
+  "by": "second read (fixed) 2026-10-23..28: override written from the source; printed team scores kept as printed",
+  "evidence": "reader compared every row with the source; the printed team totals do not reproduce from the sheet's own places (source arithmetic), as the audit and override notes record"
+ },
  "backend/data/parsed_results/2003/XC/thornton17oct03g.json": {
   "parse_sha": "1db2dbb67b4b47e2",
   "source_sha": "433b71e5b0149dda",
@@ -727,6 +741,13 @@
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
  },
+ "backend/data/parsed_results/2003/XC/westbrook10oct03b.json": {
+  "parse_sha": "5dd1aba2402d08c7",
+  "source_sha": "76b6e9b45ff9b864",
+  "date": "2026-10-28",
+  "by": "second read (fixed) 2026-10-23..28: override written from the source; printed team scores kept as printed",
+  "evidence": "reader compared every row with the source; the printed team totals do not reproduce from the sheet's own places (source arithmetic), as the audit and override notes record"
+ },
  "backend/data/parsed_results/2003/XC/westbrook10oct03g.json": {
   "parse_sha": "f210a610e9aab903",
   "source_sha": "3063533694bb335c",
@@ -768,6 +789,13 @@
   "date": "2026-10-23",
   "by": "sonnet audit (score mismatch, 2026-10-23) (audit: source-error)",
   "evidence": "Parse rows match the source (7 races, top 10 + 'Other local finishers' each; 17,17,17,18,16,18,16 rows; counts agree). Scoring rule that reproduces the sheet: each team's best 5 of its 7 race places (race places, each race scored separately). By that rule MDI 10, Ellsworth 14, Lisbon 18, Morse 20, Mt. Blue 21, Hampden 24, Monmouth 65, Maranacook 69, Skowhegan 78, Winslow 121 all match exactly (MDI places 1,1,1,2,5,6 -> 1+1+1+2+5=10). Teams with <5 listed runners (Yarmouth, Mt Ararat, Bangor, Leavitt, Brunswick, Belfast, Lewiston, Oxford Hills, Hyde, Sanford) are scored on finishers the sheet does not list (it lists only top 10 + local finishers): checker-rule/truncated list. Four printed totals contradict the sheet's own rows: Edward Little printed 13 but places 2,2,3,3,4,5,5 -> best five = 14; Messalonskee printed 62, places 11,12,13,13,14,15,17 -> 63 (no lower possible); Erskine printed 78, listed 14,16,18,20,20,22 (none in race 4, where places 11/12 are unlisted -> best possible 11+14+16+18+20=79) -> cannot be 78; Waterville printed 53, listed 6,7,18,22,22,22 (race 7 absent, place >=11) -> minimum 6+7+11+18+22=64, listed best five 75. Sheet is headed 'Corrected Team Scores' and the corrections do not match its own rows. School finding: 'OH' resolved to me-hs-oak-hill; the printed team-score list has Oxford Hills (83) and no Oak Hill, so OH = Oxford Hills (me-hs-oxford-hills). Same in sibling wtvl03g (Mandy Ivey (OH), team list has Oxford Hills 74). 'G' = Gardiner (girls team list has Gardiner 100)."
+ },
+ "backend/data/parsed_results/2003/XC/wtvl03g.json": {
+  "parse_sha": "15cc756f432f57ff",
+  "source_sha": "83437158a363b6df",
+  "date": "2026-10-28",
+  "by": "second read (fixed) 2026-10-23..28: override written from the source; printed team scores kept as printed",
+  "evidence": "reader compared every row with the source; the printed team totals do not reproduce from the sheet's own places (source arithmetic), as the audit and override notes record"
  },
  "backend/data/parsed_results/2004/Indoor/1A04.json": {
   "parse_sha": "94f15bc21a235bf8",
@@ -1287,6 +1315,13 @@
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
  },
+ "backend/data/parsed_results/2004/XC/cape7oct04g.txt.json": {
+  "parse_sha": "86aaba5d009a66a2",
+  "source_sha": "89eefb4831f44625",
+  "date": "2026-10-28",
+  "by": "second read (fixed) 2026-10-23..28: override written from the source; printed team scores kept as printed",
+  "evidence": "reader compared every row with the source; the printed team totals do not reproduce from the sheet's own places (source arithmetic), as the audit and override notes record"
+ },
  "backend/data/parsed_results/2004/XC/caribou1sept04.json": {
   "parse_sha": "1e84924340028357",
   "source_sha": "28cb2c20f4aafc06",
@@ -1343,12 +1378,26 @@
   "by": "sonnet audit (score mismatch, 2026-10-23) (audit: source-error)",
   "evidence": "All 33 rows match the source (vertical table Place/Time/School/Name; names re-ordered/cased; '21:01 *' on Brunton is printed but meaning unstated). Incomplete teams (Lee 4 finishers, Hermon 3, BC 2) drop out, leaving Foxcroft, Sumner, Schenck. From the sheet's own rows: Foxcroft places 2,3,6,11,20 -> team places 2,3,5,9,12 = 31 (printed 29); Sumner 1,9,10,12,21 -> 1,7,8,10,13 = 39 (printed 44); Schenck 5,8,13,22,27 -> 4,6,11,14,19 = 54 (printed 51). The totals sum alike (124) but are distributed differently. Brute force: all three printed totals reproduce exactly (29/44/51) only if one Sumner runner, either #9 Kelsey Osborne or #10 Kelsey Linscott, is left out of team scoring (or belongs to a non-scoring team); nothing on the sheet says which or why, so the printed team scores contradict the sheet's own rows. School finding: 'BC' parsed '?' -> it is Bangor Christian (me-hs-bangor-christian): Casey McGill is listed as 'FR Bangor Christian' in the same season's pvc04jvg.txt.htm; BC (Tanisha Vadois, Casey McGill) are non-scoring 2-runner team here."
  },
+ "backend/data/parsed_results/2004/XC/cheverus15oct04b.json": {
+  "parse_sha": "6ce0c3ff53815297",
+  "source_sha": "d1b63093be8462bc",
+  "date": "2026-10-28",
+  "by": "second read (fixed) 2026-10-23..28: override written from the source; printed team scores kept as printed",
+  "evidence": "reader compared every row with the source; the printed team totals do not reproduce from the sheet's own places (source arithmetic), as the audit and override notes record"
+ },
  "backend/data/parsed_results/2004/XC/cheverus1oct04b.json": {
   "parse_sha": "40d989e7ea7b466a",
   "source_sha": "cf95660618284ce2",
   "date": "2026-10-28",
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
+ },
+ "backend/data/parsed_results/2004/XC/cheverus1oct04g.json": {
+  "parse_sha": "5be7bcf68f553b62",
+  "source_sha": "0f1a7f1edf2b2f65",
+  "date": "2026-10-28",
+  "by": "second read (fixed) 2026-10-23..28: override written from the source; printed team scores kept as printed",
+  "evidence": "reader compared every row with the source; the printed team totals do not reproduce from the sheet's own places (source arithmetic), as the audit and override notes record"
  },
  "backend/data/parsed_results/2004/XC/classabstate04.txt.json": {
   "parse_sha": "e69d897dd4e70c0d",
@@ -1679,6 +1728,13 @@
   "by": "auto re-check 2026-10-25: changed by a deliberate re-parse; team scores still verified exactly, every school identified, no flags",
   "evidence": "meet_ledger confidence fields after the 2026-10-25 rebuild"
  },
+ "backend/data/parsed_results/2004/XC/kennebunk15oct04b.json": {
+  "parse_sha": "6978d3bfabb1743a",
+  "source_sha": "1ce453a7fb92b3a9",
+  "date": "2026-10-28",
+  "by": "second read (fixed) 2026-10-23..28: override written from the source; printed team scores kept as printed",
+  "evidence": "reader compared every row with the source; the printed team totals do not reproduce from the sheet's own places (source arithmetic), as the audit and override notes record"
+ },
  "backend/data/parsed_results/2004/XC/kennebunk15oct04g.json": {
   "parse_sha": "e4c5b4812605500f",
   "source_sha": "a27ffe72bc3c1ef8",
@@ -1938,6 +1994,13 @@
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
  },
+ "backend/data/parsed_results/2004/XC/sanford8oct04g.json": {
+  "parse_sha": "04431d7b92bedea2",
+  "source_sha": "2b3f3fa6eb67c016",
+  "date": "2026-10-28",
+  "by": "second read (fixed) 2026-10-23..28: override written from the source; printed team scores kept as printed",
+  "evidence": "reader compared every row with the source; the printed team totals do not reproduce from the sheet's own places (source arithmetic), as the audit and override notes record"
+ },
  "backend/data/parsed_results/2004/XC/scarborough15oct04b.json": {
   "parse_sha": "472d16921d30c001",
   "source_sha": "2e3684ba78ed6764",
@@ -2056,6 +2119,13 @@
   "date": "2026-10-24",
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
+ },
+ "backend/data/parsed_results/2004/XC/ta22sept04b.json": {
+  "parse_sha": "8b9b9d017f73e4a8",
+  "source_sha": "a7198239ab1dfb26",
+  "date": "2026-10-28",
+  "by": "second read (fixed) 2026-10-23..28: override written from the source; printed team scores kept as printed",
+  "evidence": "reader compared every row with the source; the printed team totals do not reproduce from the sheet's own places (source arithmetic), as the audit and override notes record"
  },
  "backend/data/parsed_results/2004/XC/ta22sept04g.json": {
   "parse_sha": "ff9995a7dd0f2c29",
@@ -2603,6 +2673,13 @@
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
  },
+ "backend/data/parsed_results/2005/XC/BUCKSPORT%20INVITATIONAL.json": {
+  "parse_sha": "c4271269e821a61b",
+  "source_sha": "64b45135a3873133",
+  "date": "2026-10-28",
+  "by": "second read (fixed) 2026-10-23..28: override written from the source; printed team scores kept as printed",
+  "evidence": "reader compared every row with the source; the printed team totals do not reproduce from the sheet's own places (source arithmetic), as the audit and override notes record"
+ },
  "backend/data/parsed_results/2005/XC/CHANDLER%20RELAY%20RESULTS.txt.json": {
   "parse_sha": "35f8f54cc2abf45b",
   "source_sha": "daa089a41ad04d55",
@@ -2623,6 +2700,13 @@
   "date": "2026-10-24",
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
+ },
+ "backend/data/parsed_results/2005/XC/LakeRegionInvitationalG.json": {
+  "parse_sha": "9d2420717472ca69",
+  "source_sha": "02ada4d6f9472bc4",
+  "date": "2026-10-28",
+  "by": "second read (fixed) 2026-10-23..28: override written from the source; printed team scores kept as printed",
+  "evidence": "reader compared every row with the source; the printed team totals do not reproduce from the sheet's own places (source arithmetic), as the audit and override notes record"
  },
  "backend/data/parsed_results/2005/XC/MARANACOOK-GIRLS-9-2.txt.json": {
   "parse_sha": "75ec0d7f0c99b8b9",
@@ -2743,6 +2827,13 @@
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
  },
+ "backend/data/parsed_results/2005/XC/caribou9_14b.json": {
+  "parse_sha": "63723dd16f694546",
+  "source_sha": "e880f6c8543a55b6",
+  "date": "2026-10-28",
+  "by": "second read (fixed) 2026-10-23..28: override written from the source; printed team scores kept as printed",
+  "evidence": "reader compared every row with the source; the printed team totals do not reproduce from the sheet's own places (source arithmetic), as the audit and override notes record"
+ },
  "backend/data/parsed_results/2005/XC/cheverus10_7B.txt.json": {
   "parse_sha": "bee1481bee93848d",
   "source_sha": "3d2bc1b5baae493b",
@@ -2833,6 +2924,20 @@
   "date": "2026-10-21",
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
+ },
+ "backend/data/parsed_results/2005/XC/edwardlittle9_16G.json": {
+  "parse_sha": "e2f3753e0fa12f26",
+  "source_sha": "09ce45eba7fee66b",
+  "date": "2026-10-28",
+  "by": "second read (fixed) 2026-10-23..28: override written from the source; printed team scores kept as printed",
+  "evidence": "reader compared every row with the source; the printed team totals do not reproduce from the sheet's own places (source arithmetic), as the audit and override notes record"
+ },
+ "backend/data/parsed_results/2005/XC/ellsworthinvite.txt.json": {
+  "parse_sha": "535b61324b0302b1",
+  "source_sha": "a341a59be02711a6",
+  "date": "2026-10-28",
+  "by": "second read (fixed) 2026-10-23..28: override written from the source; printed team scores kept as printed",
+  "evidence": "reader compared every row with the source; the printed team totals do not reproduce from the sheet's own places (source arithmetic), as the audit and override notes record"
  },
  "backend/data/parsed_results/2005/XC/emclassaboys.txt.json": {
   "parse_sha": "6ed8383e9d6aa630",
@@ -3134,6 +3239,13 @@
   "date": "2026-10-16",
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
+ },
+ "backend/data/parsed_results/2005/XC/mtblue9_6B.json": {
+  "parse_sha": "bf2fb6868c4d5d37",
+  "source_sha": "ab73646928d6120d",
+  "date": "2026-10-28",
+  "by": "second read (fixed) 2026-10-23..28: override written from the source; printed team scores kept as printed",
+  "evidence": "reader compared every row with the source; the printed team totals do not reproduce from the sheet's own places (source arithmetic), as the audit and override notes record"
  },
  "backend/data/parsed_results/2005/XC/mtblue9_6G.json": {
   "parse_sha": "835dc32e0ad86677",
@@ -4682,6 +4794,13 @@
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
  },
+ "backend/data/parsed_results/2006/XC/elgirls9_1.json": {
+  "parse_sha": "b6604c2e51376c42",
+  "source_sha": "2d011b57dc29cca1",
+  "date": "2026-10-28",
+  "by": "second read (fixed) 2026-10-23..28: override written from the source; printed team scores kept as printed",
+  "evidence": "reader compared every row with the source; the printed team totals do not reproduce from the sheet's own places (source arithmetic), as the audit and override notes record"
+ },
  "backend/data/parsed_results/2006/XC/ellsworthvarsityboys.json": {
   "parse_sha": "e1f8f07081876f83",
   "source_sha": "03c5e13c355739dd",
@@ -4737,6 +4856,13 @@
   "date": "2026-10-25",
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
+ },
+ "backend/data/parsed_results/2006/XC/freeport9_15boys.json": {
+  "parse_sha": "12f61437fbcf30fd",
+  "source_sha": "e7307c15a65e52a5",
+  "date": "2026-10-28",
+  "by": "second read (fixed) 2026-10-23..28: override written from the source; printed team scores kept as printed",
+  "evidence": "reader compared every row with the source; the printed team totals do not reproduce from the sheet's own places (source arithmetic), as the audit and override notes record"
  },
  "backend/data/parsed_results/2006/XC/freeport9_15girls.json": {
   "parse_sha": "9a6cd2be53588cad",
@@ -4892,6 +5018,13 @@
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
  },
+ "backend/data/parsed_results/2006/XC/lawrence9_8girls.json": {
+  "parse_sha": "d0f2810a3f33fe8d",
+  "source_sha": "1ff296e32aecb82b",
+  "date": "2026-10-28",
+  "by": "second read (fixed) 2026-10-23..28: override written from the source; printed team scores kept as printed",
+  "evidence": "reader compared every row with the source; the printed team totals do not reproduce from the sheet's own places (source arithmetic), as the audit and override notes record"
+ },
  "backend/data/parsed_results/2006/XC/leavitt9_22boys.json": {
   "parse_sha": "243e8519e92216f2",
   "source_sha": "e0a20cc8dc3cfb48",
@@ -4997,6 +5130,20 @@
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
  },
+ "backend/data/parsed_results/2006/XC/marshwoodgirls10_13.json": {
+  "parse_sha": "01018aeb0d7b5e64",
+  "source_sha": "eec09e8f4b52d67b",
+  "date": "2026-10-28",
+  "by": "second read (fixed) 2026-10-23..28: override written from the source; printed team scores kept as printed",
+  "evidence": "reader compared every row with the source; the printed team totals do not reproduce from the sheet's own places (source arithmetic), as the audit and override notes record"
+ },
+ "backend/data/parsed_results/2006/XC/massabesic9_22boys.json": {
+  "parse_sha": "34cb7787b244d217",
+  "source_sha": "9bc35bca60c969b8",
+  "date": "2026-10-28",
+  "by": "second read (fixed) 2026-10-23..28: override written from the source; printed team scores kept as printed",
+  "evidence": "reader compared every row with the source; the printed team totals do not reproduce from the sheet's own places (source arithmetic), as the audit and override notes record"
+ },
  "backend/data/parsed_results/2006/XC/massabesic9_22girls.json": {
   "parse_sha": "16227d0a9f8291b2",
   "source_sha": "b117181d1bb95d10",
@@ -5025,6 +5172,13 @@
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
  },
+ "backend/data/parsed_results/2006/XC/mcauley9_8girls.json": {
+  "parse_sha": "b622999bfbb6645d",
+  "source_sha": "cc618b5675f8d066",
+  "date": "2026-10-28",
+  "by": "second read (fixed) 2026-10-23..28: override written from the source; printed team scores kept as printed",
+  "evidence": "reader compared every row with the source; the printed team totals do not reproduce from the sheet's own places (source arithmetic), as the audit and override notes record"
+ },
  "backend/data/parsed_results/2006/XC/medomak9_22boys.json": {
   "parse_sha": "e5dceee51dafa395",
   "source_sha": "1fed6d85581fa3b3",
@@ -5045,6 +5199,13 @@
   "date": "2026-10-27",
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
+ },
+ "backend/data/parsed_results/2006/XC/monmouth9_20girls.json": {
+  "parse_sha": "6c7b2f2c87224080",
+  "source_sha": "c970e247e9d6f3b2",
+  "date": "2026-10-28",
+  "by": "second read (fixed) 2026-10-23..28: override written from the source; printed team scores kept as printed",
+  "evidence": "reader compared every row with the source; the printed team totals do not reproduce from the sheet's own places (source arithmetic), as the audit and override notes record"
  },
  "backend/data/parsed_results/2006/XC/ms-2006-class-a-eastern-maine-regional-xc-championship-2006.json": {
   "parse_sha": "a6428a91d964b122",
@@ -5270,6 +5431,13 @@
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
  },
+ "backend/data/parsed_results/2006/XC/sanford9_14girls.json": {
+  "parse_sha": "f1e5bf177bc76cc7",
+  "source_sha": "33990a06b97c3bb4",
+  "date": "2026-10-28",
+  "by": "second read (fixed) 2026-10-23..28: override written from the source; printed team scores kept as printed",
+  "evidence": "reader compared every row with the source; the printed team totals do not reproduce from the sheet's own places (source arithmetic), as the audit and override notes record"
+ },
  "backend/data/parsed_results/2006/XC/scarborough9_20boys.json": {
   "parse_sha": "8c8023be05f6ddfb",
   "source_sha": "2f0b529cf174d0dc",
@@ -5326,6 +5494,13 @@
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
  },
+ "backend/data/parsed_results/2006/XC/seacoastinvitationalboys.json": {
+  "parse_sha": "dbf9569f5f9c5deb",
+  "source_sha": "b823b60c146195be",
+  "date": "2026-10-28",
+  "by": "second read (fixed) 2026-10-23..28: override written from the source; printed team scores kept as printed",
+  "evidence": "reader compared every row with the source; the printed team totals do not reproduce from the sheet's own places (source arithmetic), as the audit and override notes record"
+ },
  "backend/data/parsed_results/2006/XC/seacoastinvitationalgirls.json": {
   "parse_sha": "3f7563719c7ed528",
   "source_sha": "e24b758fce2ab4d0",
@@ -5360,6 +5535,13 @@
   "date": "2026-10-21",
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
+ },
+ "backend/data/parsed_results/2006/XC/southportlandboys10_13.json": {
+  "parse_sha": "6b424c3facab5c43",
+  "source_sha": "10408d38faf59bdb",
+  "date": "2026-10-28",
+  "by": "second read (fixed) 2026-10-23..28: override written from the source; printed team scores kept as printed",
+  "evidence": "reader compared every row with the source; the printed team totals do not reproduce from the sheet's own places (source arithmetic), as the audit and override notes record"
  },
  "backend/data/parsed_results/2006/XC/spboys9_7.json": {
   "parse_sha": "6e05084e9de082b6",
@@ -5514,6 +5696,13 @@
   "date": "2026-10-16",
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
+ },
+ "backend/data/parsed_results/2006/XC/wolverineinvite.json": {
+  "parse_sha": "f02cd7b4f473d563",
+  "source_sha": "50240a786e179008",
+  "date": "2026-10-28",
+  "by": "second read (fixed) 2026-10-23..28: override written from the source; printed team scores kept as printed",
+  "evidence": "reader compared every row with the source; the printed team totals do not reproduce from the sheet's own places (source arithmetic), as the audit and override notes record"
  },
  "backend/data/parsed_results/2006/XC/yarmouth9_15boys.json": {
   "parse_sha": "318f0ed09f0f97af",
@@ -6481,6 +6670,13 @@
   "by": "sonnet audit (score mismatch, 2026-10-23) (audit: source-error)",
   "evidence": "Parse matches the 41 numbered rows; four trailing names without place or time (Zack Foster CAR, Chase Dunn CAR, Chris Gaskell Lime, Chris Toothaker Lime) are not finishers and are not in the parse. Printed: Caribou 19, Presque Isle 38, Fort Kent 99, Limestone 93. With 7 runners per team taking places: Caribou 1+3+4+5+6=19, PI 2+7+8+9+12=38, Fort Kent 13+20+21+22+23=99 match; Limestone's finishers (15,21,24,28,38,39,41) give 14+16+18+19+24=91, printed 93 (cap 5 gives 74, no cap 126). The three that fix the rule reproduce exactly, Limestone is 2 off. Source total error."
  },
+ "backend/data/parsed_results/2007/XC/cheverusboy10_5.txt.json": {
+  "parse_sha": "98ea3b9dddd769a0",
+  "source_sha": "4c2388a33fd25cad",
+  "date": "2026-10-28",
+  "by": "second read (fixed) 2026-10-23..28: override written from the source; printed team scores kept as printed",
+  "evidence": "reader compared every row with the source; the printed team totals do not reproduce from the sheet's own places (source arithmetic), as the audit and override notes record"
+ },
  "backend/data/parsed_results/2007/XC/cheverusboys10_12.txt.json": {
   "parse_sha": "0a1fcf4e02377ebc",
   "source_sha": "c3769cc4205d9c93",
@@ -6648,6 +6844,20 @@
   "date": "2026-10-16",
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
+ },
+ "backend/data/parsed_results/2007/XC/elboys8_31.json": {
+  "parse_sha": "dcc58217f12be7ec",
+  "source_sha": "390054b9b06cdac5",
+  "date": "2026-10-28",
+  "by": "second read (fixed) 2026-10-23..28: override written from the source; printed team scores kept as printed",
+  "evidence": "reader compared every row with the source; the printed team totals do not reproduce from the sheet's own places (source arithmetic), as the audit and override notes record"
+ },
+ "backend/data/parsed_results/2007/XC/ellsworthboysvarsity.json": {
+  "parse_sha": "28e1e59d738460de",
+  "source_sha": "ece14b5735d3e3b4",
+  "date": "2026-10-28",
+  "by": "second read (fixed) 2026-10-23..28: override written from the source; printed team scores kept as printed",
+  "evidence": "reader compared every row with the source; the printed team totals do not reproduce from the sheet's own places (source arithmetic), as the audit and override notes record"
  },
  "backend/data/parsed_results/2007/XC/ellsworthjvboys.json": {
   "parse_sha": "8dd8a92f923c3784",
@@ -6957,6 +7167,13 @@
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
  },
+ "backend/data/parsed_results/2007/XC/medomakgirls9_21.json": {
+  "parse_sha": "1ba6b9a6dab26b7e",
+  "source_sha": "1c3785abfe72a282",
+  "date": "2026-10-28",
+  "by": "second read (fixed) 2026-10-23..28: override written from the source; printed team scores kept as printed",
+  "evidence": "reader compared every row with the source; the printed team totals do not reproduce from the sheet's own places (source arithmetic), as the audit and override notes record"
+ },
  "backend/data/parsed_results/2007/XC/ms-2007-class-a-eastern-maine-regional-xc-championship-2007.json": {
   "parse_sha": "415d7ffaf2207fe9",
   "source_sha": "75c598038044582e",
@@ -7006,6 +7223,13 @@
   "by": "sonnet audit (score mismatch, 2026-10-23) (audit: source-error)",
   "evidence": "Parse matches the 36 rows (MB Mt. Blue, L Lawrence, Mess Messalonskee, Sk Skowhegan). Printed 1st Mt. Blue 21, Law 55, Mess 81, Skow 103. With 7 runners per team taking places and incomplete teams still holding places: Mt. Blue 1+2+5+6+7=21, Lawrence 4+10+12+13+16=55, Messalonskee 3+15+19+21+23=81 reproduce. Skowhegan has only 4 finishers (ranks 11,14,18,22 = 65); printed 103 needs a fifth score of 38, but there are only 36 finishers (a field+1 filler would be 37 = 102, last-scoring+1 would be 24 = 89). The Skowhegan total is not derivable from the sheet."
  },
+ "backend/data/parsed_results/2007/XC/mtbluegirls9_4.json": {
+  "parse_sha": "28b015d7c8dd3b19",
+  "source_sha": "4ce99d30323eac39",
+  "date": "2026-10-28",
+  "by": "second read (fixed) 2026-10-23..28: override written from the source; printed team scores kept as printed",
+  "evidence": "reader compared every row with the source; the printed team totals do not reproduce from the sheet's own places (source arithmetic), as the audit and override notes record"
+ },
  "backend/data/parsed_results/2007/XC/newenglandboys.txt.json": {
   "parse_sha": "3ec6bd8804b12657",
   "source_sha": "3dd6866a9e6b786f",
@@ -7040,6 +7264,13 @@
   "date": "2026-10-26",
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
+ },
+ "backend/data/parsed_results/2007/XC/noblemiddlegirls10_17.json": {
+  "parse_sha": "55eced0aef39a149",
+  "source_sha": "3150e938e93ae156",
+  "date": "2026-10-28",
+  "by": "second read (fixed) 2026-10-23..28: override written from the source; printed team scores kept as printed",
+  "evidence": "reader compared every row with the source; the printed team totals do not reproduce from the sheet's own places (source arithmetic), as the audit and override notes record"
  },
  "backend/data/parsed_results/2007/XC/ot%20xc%20meet%20boys%20jv%20results%209.22.07.txt.json": {
   "parse_sha": "f656557f8a7de494",
@@ -7145,6 +7376,13 @@
   "date": "2026-10-23",
   "by": "sonnet audit (score mismatch, 2026-10-23) (audit: confirmed)",
   "evidence": "Parse matches the 19 rows. Printed 'Team Scores: HY: 104; KH, Rich., BO, GR: NS'. Hyde is the only scoring team (8 finishers: places 6, 8, 9, 11, 16, 17, 18, 19). 104 = 6+8+9+11+16+17+18+19: the sheet sums every Hyde finisher's overall place, not the top five (top five would be 6+8+9+11+16=50). Rule the checker lacks: lone scoring team scored as the sum of all its finishers' places."
+ },
+ "backend/data/parsed_results/2007/XC/richmondmiddleboys9_15.json": {
+  "parse_sha": "044a48a8777646cf",
+  "source_sha": "b7b54129a583a93d",
+  "date": "2026-10-28",
+  "by": "second read (fixed) 2026-10-23..28: override written from the source; printed team scores kept as printed",
+  "evidence": "reader compared every row with the source; the printed team totals do not reproduce from the sheet's own places (source arithmetic), as the audit and override notes record"
  },
  "backend/data/parsed_results/2007/XC/richmondmiddlegirls9_15.json": {
   "parse_sha": "b8ac91b9394faf70",
@@ -7349,12 +7587,26 @@
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
  },
+ "backend/data/parsed_results/2007/XC/watervilleboys9_7.json": {
+  "parse_sha": "b03223be6b684469",
+  "source_sha": "2fcfe626b6e8ca05",
+  "date": "2026-10-28",
+  "by": "second read (fixed) 2026-10-23..28: override written from the source; printed team scores kept as printed",
+  "evidence": "reader compared every row with the source; the printed team totals do not reproduce from the sheet's own places (source arithmetic), as the audit and override notes record"
+ },
  "backend/data/parsed_results/2007/XC/watervillegirls9_7.json": {
   "parse_sha": "fd4a4abee91eed85",
   "source_sha": "9efcde19a8a11b6d",
   "date": "2026-10-16",
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
+ },
+ "backend/data/parsed_results/2007/XC/wellsboys9_14.json": {
+  "parse_sha": "ef3384f9274dd45c",
+  "source_sha": "a6647cc4005a1a9e",
+  "date": "2026-10-28",
+  "by": "second read (fixed) 2026-10-23..28: override written from the source; printed team scores kept as printed",
+  "evidence": "reader compared every row with the source; the printed team totals do not reproduce from the sheet's own places (source arithmetic), as the audit and override notes record"
  },
  "backend/data/parsed_results/2007/XC/wellsgirls9_14.json": {
   "parse_sha": "428d9405e701edd3",
@@ -7383,6 +7635,13 @@
   "date": "2026-10-16",
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
+ },
+ "backend/data/parsed_results/2007/XC/winthrop9_19.txt.json": {
+  "parse_sha": "915d6f2ea20c74d1",
+  "source_sha": "fba5722bdb33f271",
+  "date": "2026-10-28",
+  "by": "second read (fixed) 2026-10-23..28: override written from the source; printed team scores kept as printed",
+  "evidence": "reader compared every row with the source; the printed team totals do not reproduce from the sheet's own places (source arithmetic), as the audit and override notes record"
  },
  "backend/data/parsed_results/2007/XC/wmcboys.json": {
   "parse_sha": "33618af1c6750c70",
@@ -8294,6 +8553,13 @@
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
  },
+ "backend/data/parsed_results/2008/XC/Searsport%20Inv%20Boys%202008.json": {
+  "parse_sha": "14ff7e11935ad901",
+  "source_sha": "d0b7e3dd86989a9e",
+  "date": "2026-10-28",
+  "by": "second read (fixed) 2026-10-23..28: override written from the source; printed team scores kept as printed",
+  "evidence": "reader compared every row with the source; the printed team totals do not reproduce from the sheet's own places (source arithmetic), as the audit and override notes record"
+ },
  "backend/data/parsed_results/2008/XC/Searsport%20Invi%20Girls2008.json": {
   "parse_sha": "6061065e293a1acc",
   "source_sha": "ae04185a4830b564",
@@ -8357,6 +8623,13 @@
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
  },
+ "backend/data/parsed_results/2008/XC/belfast9_13.json": {
+  "parse_sha": "bff2f3492eb8d894",
+  "source_sha": "d615a1159b965290",
+  "date": "2026-10-28",
+  "by": "second read (fixed) 2026-10-23..28: override written from the source; printed team scores kept as printed",
+  "evidence": "reader compared every row with the source; the printed team totals do not reproduce from the sheet's own places (source arithmetic), as the audit and override notes record"
+ },
  "backend/data/parsed_results/2008/XC/biddefordboys9_13.json": {
   "parse_sha": "c649683d942d2b75",
   "source_sha": "3566749e5fa89645",
@@ -8391,6 +8664,27 @@
   "date": "2026-10-26",
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
+ },
+ "backend/data/parsed_results/2008/XC/bonnyeagleboys9_12.json": {
+  "parse_sha": "77d4941c14ab1541",
+  "source_sha": "f962f359eebbf9b6",
+  "date": "2026-10-28",
+  "by": "second read (fixed) 2026-10-23..28: override written from the source; printed team scores kept as printed",
+  "evidence": "reader compared every row with the source; the printed team totals do not reproduce from the sheet's own places (source arithmetic), as the audit and override notes record"
+ },
+ "backend/data/parsed_results/2008/XC/bonnyeaglegirls9_12.json": {
+  "parse_sha": "031a40cd72ff4d63",
+  "source_sha": "883a3cc5d7cac427",
+  "date": "2026-10-28",
+  "by": "second read (fixed) 2026-10-23..28: override written from the source; printed team scores kept as printed",
+  "evidence": "reader compared every row with the source; the printed team totals do not reproduce from the sheet's own places (source arithmetic), as the audit and override notes record"
+ },
+ "backend/data/parsed_results/2008/XC/boothbay9_17.json": {
+  "parse_sha": "ec878266951af09b",
+  "source_sha": "132be5f3bfec11dc",
+  "date": "2026-10-28",
+  "by": "second read (fixed) 2026-10-23..28: override written from the source; printed team scores kept as printed",
+  "evidence": "reader compared every row with the source; the printed team totals do not reproduce from the sheet's own places (source arithmetic), as the audit and override notes record"
  },
  "backend/data/parsed_results/2008/XC/boys_varsity_ot_meet09.30.08.json": {
   "parse_sha": "a0c3aa363aac7452",
@@ -8454,6 +8748,13 @@
   "date": "2026-10-16",
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
+ },
+ "backend/data/parsed_results/2008/XC/capitalareamiddleinvite_oct16.json": {
+  "parse_sha": "ed3264947aaa0c14",
+  "source_sha": "4ae211d63772e54d",
+  "date": "2026-10-28",
+  "by": "second read (fixed) 2026-10-23..28: override written from the source; printed team scores kept as printed",
+  "evidence": "reader compared every row with the source; the printed team totals do not reproduce from the sheet's own places (source arithmetic), as the audit and override notes record"
  },
  "backend/data/parsed_results/2008/XC/caribouinviteboysjv.json": {
   "parse_sha": "8f8c28b1701e1f74",
@@ -8559,6 +8860,13 @@
   "date": "2026-10-26",
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
+ },
+ "backend/data/parsed_results/2008/XC/ellsworthgirls.json": {
+  "parse_sha": "f7e8a5ccf9386618",
+  "source_sha": "7d74af85a97d91b5",
+  "date": "2026-10-28",
+  "by": "second read (fixed) 2026-10-23..28: override written from the source; printed team scores kept as printed",
+  "evidence": "reader compared every row with the source; the printed team totals do not reproduce from the sheet's own places (source arithmetic), as the audit and override notes record"
  },
  "backend/data/parsed_results/2008/XC/ellsworthgirlsjv.json": {
   "parse_sha": "c0e5cac684f2c76b",
@@ -8854,6 +9162,13 @@
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
  },
+ "backend/data/parsed_results/2008/XC/lakeregion9_12.json": {
+  "parse_sha": "db9246c01acc0df2",
+  "source_sha": "f23f7d532198f0fa",
+  "date": "2026-10-28",
+  "by": "second read (fixed) 2026-10-23..28: override written from the source; printed team scores kept as printed",
+  "evidence": "reader compared every row with the source; the printed team totals do not reproduce from the sheet's own places (source arithmetic), as the audit and override notes record"
+ },
  "backend/data/parsed_results/2008/XC/lakeregioninvite.json": {
   "parse_sha": "3308a2a7944bde57",
   "source_sha": "09f2f899d3bc05df",
@@ -8930,6 +9245,13 @@
   "date": "2026-10-26",
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
+ },
+ "backend/data/parsed_results/2008/XC/marshwoodboys9_24.json": {
+  "parse_sha": "c1d9474b41eb49a6",
+  "source_sha": "4f6ed14baa75f89d",
+  "date": "2026-10-28",
+  "by": "second read (fixed) 2026-10-23..28: override written from the source; printed team scores kept as printed",
+  "evidence": "reader compared every row with the source; the printed team totals do not reproduce from the sheet's own places (source arithmetic), as the audit and override notes record"
  },
  "backend/data/parsed_results/2008/XC/massabesicboys9_19.json": {
   "parse_sha": "046226a1320e0389",
@@ -9351,6 +9673,13 @@
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
  },
+ "backend/data/parsed_results/2008/XC/traipgirls9_12.json": {
+  "parse_sha": "74b4ba4f9abe2388",
+  "source_sha": "5f61c9dc9af68a1b",
+  "date": "2026-10-28",
+  "by": "second read (fixed) 2026-10-23..28: override written from the source; printed team scores kept as printed",
+  "evidence": "reader compared every row with the source; the printed team totals do not reproduce from the sheet's own places (source arithmetic), as the audit and override notes record"
+ },
  "backend/data/parsed_results/2008/XC/tripp9-17BOYS.json": {
   "parse_sha": "b5519394896602cd",
   "source_sha": "32fae392d15ac999",
@@ -9364,6 +9693,13 @@
   "date": "2026-10-23",
   "by": "sonnet audit (score mismatch, 2026-10-23) (audit: source-error)",
   "evidence": "Parse matches the 50 rows (middle-school meet; MA Mt. Ararat, Bruns Brunswick, OH Oxford Hills, Tripp). Printed: Brunswick 26, Mt Ararat 33, Oxford Hills 59, Tripp 103. Brunswick (2+3+4+6+11) and Mt Ararat (1+5+8+9+10) reproduce. Oxford Hills finishers 7,16,25,26,46,47: even if every other team's 6th/7th runners are removed (no displacement at all) its best five are 7+12+14+15+20=68, and with 7-runner displacement 7+16+18+19+26=86, 120 raw; printed 59 is below the minimum possible 68 under any scoring. Tripp: 83 at best (13+16+17+18+19), 103 printed, 161 raw. Printed OH/Tripp totals cannot come from the sheet's rows."
+ },
+ "backend/data/parsed_results/2008/XC/waterville9_12.json": {
+  "parse_sha": "f061d1f00c0758cd",
+  "source_sha": "4d2236e71024f910",
+  "date": "2026-10-28",
+  "by": "second read (fixed) 2026-10-23..28: override written from the source; printed team scores kept as printed",
+  "evidence": "reader compared every row with the source; the printed team totals do not reproduce from the sheet's own places (source arithmetic), as the audit and override notes record"
  },
  "backend/data/parsed_results/2008/XC/wellsboys9_25.json": {
   "parse_sha": "166420c08b15d703",
@@ -10576,6 +10912,13 @@
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
  },
+ "backend/data/parsed_results/2009/XC/cheverusgirls_oct16.json": {
+  "parse_sha": "680b67dbff82aa07",
+  "source_sha": "5b6cfa861caa7160",
+  "date": "2026-10-28",
+  "by": "second read (fixed) 2026-10-23..28: override written from the source; printed team scores kept as printed",
+  "evidence": "reader compared every row with the source; the printed team totals do not reproduce from the sheet's own places (source arithmetic), as the audit and override notes record"
+ },
  "backend/data/parsed_results/2009/XC/cheverusgirls_oct9.json": {
   "parse_sha": "bca17d3af7b621e9",
   "source_sha": "da331c8c863d6bde",
@@ -10842,6 +11185,13 @@
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
  },
+ "backend/data/parsed_results/2009/XC/lakeregioninvite.json": {
+  "parse_sha": "dce582f4fad4bad8",
+  "source_sha": "095bd1379ebd62ed",
+  "date": "2026-10-28",
+  "by": "second read (fixed) 2026-10-23..28: override written from the source; printed team scores kept as printed",
+  "evidence": "reader compared every row with the source; the printed team totals do not reproduce from the sheet's own places (source arithmetic), as the audit and override notes record"
+ },
  "backend/data/parsed_results/2009/XC/lalibertejuniorvarsityresults.json": {
   "parse_sha": "0e2569eb552d2937",
   "source_sha": "de108e3869546c28",
@@ -10933,12 +11283,26 @@
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
  },
+ "backend/data/parsed_results/2009/XC/marshwoodgirls_sept17.json": {
+  "parse_sha": "b9ef0d54c03419ee",
+  "source_sha": "05eb2f91de226076",
+  "date": "2026-10-28",
+  "by": "second read (fixed) 2026-10-23..28: override written from the source; printed team scores kept as printed",
+  "evidence": "reader compared every row with the source; the printed team totals do not reproduce from the sheet's own places (source arithmetic), as the audit and override notes record"
+ },
  "backend/data/parsed_results/2009/XC/massabesicboys_oct9.json": {
   "parse_sha": "3027cf54cadf822a",
   "source_sha": "db7b5a047f6fa8c5",
   "date": "2026-10-26",
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
+ },
+ "backend/data/parsed_results/2009/XC/massabesicboys_sept11.json": {
+  "parse_sha": "b5bb2118ca6a2f88",
+  "source_sha": "100dab14c269558b",
+  "date": "2026-10-28",
+  "by": "second read (fixed) 2026-10-23..28: override written from the source; printed team scores kept as printed",
+  "evidence": "reader compared every row with the source; the printed team totals do not reproduce from the sheet's own places (source arithmetic), as the audit and override notes record"
  },
  "backend/data/parsed_results/2009/XC/massabesicgirls_oct9.json": {
   "parse_sha": "cc383192a0f8ab09",
@@ -11416,6 +11780,13 @@
   "by": "sonnet audit (score mismatch, 2026-10-23) (audit: source-error)",
   "evidence": "Parse matches the rows (37 boys, 30 girls; Joshia White L DNF has no place). Girls all reproduce with a cap of 7 per team: MB 1,3,4,6,7=21; Mess 2,9,10,13,15=49; L 5,12,14,16,17=64. Boys: MB 1,3,5,7,8=24, L 2,12,13,15,17=59, Mess 4,16,18,19,20=77 reproduce, but Skowhegan's scorers (printed places 6,11,17,29,30) come out 6,11,14,23,24=78, printed 76 (Skowhegan would also be 3rd below Messalonskee 77, not above it). No cap value gives 76. The source's boys Skowhegan total does not follow from its own rows."
  },
+ "backend/data/parsed_results/2009/XC/nobleboys_oct16.json": {
+  "parse_sha": "ad050f67be5ceaa7",
+  "source_sha": "58dc3255eb219d8f",
+  "date": "2026-10-28",
+  "by": "second read (fixed) 2026-10-23..28: override written from the source; printed team scores kept as printed",
+  "evidence": "reader compared every row with the source; the printed team totals do not reproduce from the sheet's own places (source arithmetic), as the audit and override notes record"
+ },
  "backend/data/parsed_results/2009/XC/noblegirls_oct16.json": {
   "parse_sha": "f5984853982148d0",
   "source_sha": "7869108dcd2da76f",
@@ -11457,6 +11828,13 @@
   "date": "2026-10-26",
   "by": "sonnet audit (second read, 2026-10-26) (audit: confirmed)",
   "evidence": "Parse matches the source: JV Girls 33 rows and JV Boys 37 rows, places 1-33 / 1-37, schools MDI, CAR Caribou, JB John Bapst, ELL Ellsworth, HER Hermon, OT Old Town, PI Presque Isle (same codes as the varsity file of the meet); '9.12.09' printed. No team scores in this file (the JV team lines are printed in piinvitevarsity: JV Girls Old Town 38, John Bapst 40, Caribou 55, Ellsworth 81; JV Boys Ellsworth 20, Caribou 41), so none to compare."
+ },
+ "backend/data/parsed_results/2009/XC/piinvitevarsity.json": {
+  "parse_sha": "f39e29c3761526a4",
+  "source_sha": "0f30ee50b1d8efb5",
+  "date": "2026-10-28",
+  "by": "second read (fixed) 2026-10-23..28: override written from the source; printed team scores kept as printed",
+  "evidence": "reader compared every row with the source; the printed team totals do not reproduce from the sheet's own places (source arithmetic), as the audit and override notes record"
  },
  "backend/data/parsed_results/2009/XC/poland_sept4.json": {
   "parse_sha": "b403ea633c08f0fd",
@@ -11541,6 +11919,13 @@
   "date": "2026-10-26",
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
+ },
+ "backend/data/parsed_results/2009/XC/sacomiddlegirls_oct14.json": {
+  "parse_sha": "ba6e9d26b09929e2",
+  "source_sha": "e5a3969be6afeaec",
+  "date": "2026-10-28",
+  "by": "second read (fixed) 2026-10-23..28: override written from the source; printed team scores kept as printed",
+  "evidence": "reader compared every row with the source; the printed team totals do not reproduce from the sheet's own places (source arithmetic), as the audit and override notes record"
  },
  "backend/data/parsed_results/2009/XC/sanfordboys_oct2.json": {
   "parse_sha": "2df3e3098ee9f36f",
@@ -11738,6 +12123,20 @@
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
  },
+ "backend/data/parsed_results/2009/XC/thorntonboys_oct2.json": {
+  "parse_sha": "b2aae420b71e1a97",
+  "source_sha": "ccae140c0952bb3d",
+  "date": "2026-10-28",
+  "by": "second read (fixed) 2026-10-23..28: override written from the source; printed team scores kept as printed",
+  "evidence": "reader compared every row with the source; the printed team totals do not reproduce from the sheet's own places (source arithmetic), as the audit and override notes record"
+ },
+ "backend/data/parsed_results/2009/XC/thorntonboys_sept25.json": {
+  "parse_sha": "bbe8af7868f0250b",
+  "source_sha": "792fe9514ca69bf4",
+  "date": "2026-10-28",
+  "by": "second read (fixed) 2026-10-23..28: override written from the source; printed team scores kept as printed",
+  "evidence": "reader compared every row with the source; the printed team totals do not reproduce from the sheet's own places (source arithmetic), as the audit and override notes record"
+ },
  "backend/data/parsed_results/2009/XC/thorntongirls_oct16.json": {
   "parse_sha": "b9568725def2ab75",
   "source_sha": "75295bcb7c5de729",
@@ -11765,6 +12164,13 @@
   "date": "2026-10-26",
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
+ },
+ "backend/data/parsed_results/2009/XC/thorntonmiddleboys_sept23.json": {
+  "parse_sha": "98d5dbf329840e49",
+  "source_sha": "da4c37ba6935fe75",
+  "date": "2026-10-28",
+  "by": "second read (fixed) 2026-10-23..28: override written from the source; printed team scores kept as printed",
+  "evidence": "reader compared every row with the source; the printed team totals do not reproduce from the sheet's own places (source arithmetic), as the audit and override notes record"
  },
  "backend/data/parsed_results/2009/XC/thorntonmiddlegirls_sept23.json": {
   "parse_sha": "e4f1dcc2f95bf3c7",
@@ -11800,6 +12206,13 @@
   "date": "2026-10-26",
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
+ },
+ "backend/data/parsed_results/2009/XC/wellsgirls_sept18.json": {
+  "parse_sha": "ff2a53a40bfa0323",
+  "source_sha": "c65e415a6d7108e8",
+  "date": "2026-10-28",
+  "by": "second read (fixed) 2026-10-23..28: override written from the source; printed team scores kept as printed",
+  "evidence": "reader compared every row with the source; the printed team totals do not reproduce from the sheet's own places (source arithmetic), as the audit and override notes record"
  },
  "backend/data/parsed_results/2009/XC/wellsgirls_sept25.json": {
   "parse_sha": "0ca19ec27da6362d",
@@ -11933,6 +12346,20 @@
   "date": "2026-10-26",
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
+ },
+ "backend/data/parsed_results/2009/XC/yarmouthgirls_sept11.json": {
+  "parse_sha": "51cf531dd601a3ce",
+  "source_sha": "19cbb7c3a758a88f",
+  "date": "2026-10-28",
+  "by": "second read (fixed) 2026-10-23..28: override written from the source; printed team scores kept as printed",
+  "evidence": "reader compared every row with the source; the printed team totals do not reproduce from the sheet's own places (source arithmetic), as the audit and override notes record"
+ },
+ "backend/data/parsed_results/2009/XC/york_sept4.json": {
+  "parse_sha": "39349e7df656de9c",
+  "source_sha": "18c51e15e3054d94",
+  "date": "2026-10-28",
+  "by": "second read (fixed) 2026-10-23..28: override written from the source; printed team scores kept as printed",
+  "evidence": "reader compared every row with the source; the printed team totals do not reproduce from the sheet's own places (source arithmetic), as the audit and override notes record"
  },
  "backend/data/parsed_results/2009/XC/yorkcountymsboys6th.json": {
   "parse_sha": "4f5587bff252f3a3",
@@ -12809,6 +13236,13 @@
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
  },
+ "backend/data/parsed_results/2010/XC/Wellsboys_sept16.json": {
+  "parse_sha": "609e3d9242d6c664",
+  "source_sha": "ff14873c8ff771d8",
+  "date": "2026-10-28",
+  "by": "second read (fixed) 2026-10-23..28: override written from the source; printed team scores kept as printed",
+  "evidence": "reader compared every row with the source; the printed team totals do not reproduce from the sheet's own places (source arithmetic), as the audit and override notes record"
+ },
  "backend/data/parsed_results/2010/XC/Wellsgirls_sept16.json": {
   "parse_sha": "4a77b48560a8baff",
   "source_sha": "417f9d6e320d5db2",
@@ -12871,6 +13305,20 @@
   "date": "2026-10-21",
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
+ },
+ "backend/data/parsed_results/2010/XC/biddefordboys_sept29.json": {
+  "parse_sha": "8a9289f96d287d5c",
+  "source_sha": "d677549da2b303ae",
+  "date": "2026-10-28",
+  "by": "second read (fixed) 2026-10-23..28: override written from the source; printed team scores kept as printed",
+  "evidence": "reader compared every row with the source; the printed team totals do not reproduce from the sheet's own places (source arithmetic), as the audit and override notes record"
+ },
+ "backend/data/parsed_results/2010/XC/biddefordgirls_sept29.json": {
+  "parse_sha": "caac130f3f342ab8",
+  "source_sha": "1e90984d2a107437",
+  "date": "2026-10-28",
+  "by": "second read (fixed) 2026-10-23..28: override written from the source; printed team scores kept as printed",
+  "evidence": "reader compared every row with the source; the printed team totals do not reproduce from the sheet's own places (source arithmetic), as the audit and override notes record"
  },
  "backend/data/parsed_results/2010/XC/brunswickboys_sept23.json": {
   "parse_sha": "4b3813aaef96b6ca",
@@ -12935,12 +13383,26 @@
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
  },
+ "backend/data/parsed_results/2010/XC/cheverusboys_sept30.json": {
+  "parse_sha": "86e9e309b914569d",
+  "source_sha": "39af72cdd7573c45",
+  "date": "2026-10-28",
+  "by": "second read (fixed) 2026-10-23..28: override written from the source; printed team scores kept as printed",
+  "evidence": "reader compared every row with the source; the printed team totals do not reproduce from the sheet's own places (source arithmetic), as the audit and override notes record"
+ },
  "backend/data/parsed_results/2010/XC/cheverusgirls_sept10.json": {
   "parse_sha": "b76a0ae6a8eb9104",
   "source_sha": "843cc637e1192888",
   "date": "2026-10-26",
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
+ },
+ "backend/data/parsed_results/2010/XC/cheverusgirls_sept30.json": {
+  "parse_sha": "5e8857dea6772152",
+  "source_sha": "6328c26afda96af5",
+  "date": "2026-10-28",
+  "by": "second read (fixed) 2026-10-23..28: override written from the source; printed team scores kept as printed",
+  "evidence": "reader compared every row with the source; the printed team totals do not reproduce from the sheet's own places (source arithmetic), as the audit and override notes record"
  },
  "backend/data/parsed_results/2010/XC/cheverusxc_10_15_10_boys.json": {
   "parse_sha": "5c4a2c84aff64b00",
@@ -13082,6 +13544,13 @@
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
  },
+ "backend/data/parsed_results/2010/XC/falmouthms_sept30.json": {
+  "parse_sha": "1b55ee81d20b4327",
+  "source_sha": "0660236b66bbd9b5",
+  "date": "2026-10-28",
+  "by": "second read (fixed) 2026-10-23..28: override written from the source; printed team scores kept as printed",
+  "evidence": "reader compared every row with the source; the printed team totals do not reproduce from the sheet's own places (source arithmetic), as the audit and override notes record"
+ },
  "backend/data/parsed_results/2010/XC/focboys.txt.json": {
   "parse_sha": "63cd665bf3f111f3",
   "source_sha": "d0a22bb942506dff",
@@ -13130,6 +13599,13 @@
   "date": "2026-10-26",
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
+ },
+ "backend/data/parsed_results/2010/XC/freeportmsboys_sept29.json": {
+  "parse_sha": "3926d5056e92c814",
+  "source_sha": "db8aac14b9dd402c",
+  "date": "2026-10-28",
+  "by": "second read (fixed) 2026-10-23..28: override written from the source; printed team scores kept as printed",
+  "evidence": "reader compared every row with the source; the printed team totals do not reproduce from the sheet's own places (source arithmetic), as the audit and override notes record"
  },
  "backend/data/parsed_results/2010/XC/freeportmsgirls_sept29.json": {
   "parse_sha": "00940335d62d2b44",
@@ -13964,6 +14440,13 @@
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
  },
+ "backend/data/parsed_results/2010/XC/presqueisle_sept17.json": {
+  "parse_sha": "837a4621aa649893",
+  "source_sha": "bf577f9b2923d34f",
+  "date": "2026-10-28",
+  "by": "second read (fixed) 2026-10-23..28: override written from the source; printed team scores kept as printed",
+  "evidence": "reader compared every row with the source; the printed team totals do not reproduce from the sheet's own places (source arithmetic), as the audit and override notes record"
+ },
  "backend/data/parsed_results/2010/XC/pvcboys.txt.json": {
   "parse_sha": "66aeded34e84f007",
   "source_sha": "b7b48c90ae33396f",
@@ -14173,6 +14656,13 @@
   "date": "2026-10-21",
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
+ },
+ "backend/data/parsed_results/2010/XC/stjoes_oct8.json": {
+  "parse_sha": "31b31c3bcebb406f",
+  "source_sha": "818f912a7b0e996f",
+  "date": "2026-10-28",
+  "by": "second read (fixed) 2026-10-23..28: override written from the source; printed team scores kept as printed",
+  "evidence": "reader compared every row with the source; the printed team totals do not reproduce from the sheet's own places (source arithmetic), as the audit and override notes record"
  },
  "backend/data/parsed_results/2010/XC/telstar_sept3.json": {
   "parse_sha": "d13bb8e0ac30b298",
@@ -15287,6 +15777,13 @@
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
  },
+ "backend/data/parsed_results/2011/XC/Lee%20Academy%20Invitational%20Meet%20Results.json": {
+  "parse_sha": "78c6e550201af396",
+  "source_sha": "31ae63067b5acdb2",
+  "date": "2026-10-28",
+  "by": "second read (fixed) 2026-10-23..28: override written from the source; printed team scores kept as printed",
+  "evidence": "reader compared every row with the source; the printed team totals do not reproduce from the sheet's own places (source arithmetic), as the audit and override notes record"
+ },
  "backend/data/parsed_results/2011/XC/LisbonBoysResults_oct5.json": {
   "parse_sha": "e54bd0569d4df752",
   "source_sha": "b9f9a7a471b4fc1e",
@@ -15441,6 +15938,13 @@
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
  },
+ "backend/data/parsed_results/2011/XC/aroostookinviteboys_sept16.json": {
+  "parse_sha": "8c9768fd9a849984",
+  "source_sha": "22c43191d4fe8e7e",
+  "date": "2026-10-28",
+  "by": "second read (fixed) 2026-10-23..28: override written from the source; printed team scores kept as printed",
+  "evidence": "reader compared every row with the source; the printed team totals do not reproduce from the sheet's own places (source arithmetic), as the audit and override notes record"
+ },
  "backend/data/parsed_results/2011/XC/aroostookinvitegirls.json": {
   "parse_sha": "e9a21867ae9cdaf1",
   "source_sha": "5fc8d9476d9b8c75",
@@ -15566,6 +16070,13 @@
   "date": "2026-10-21",
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
+ },
+ "backend/data/parsed_results/2011/XC/bucksportinvite_sept9.json": {
+  "parse_sha": "3666a211027efb20",
+  "source_sha": "f7f9c7d068002187",
+  "date": "2026-10-28",
+  "by": "second read (fixed) 2026-10-23..28: override written from the source; printed team scores kept as printed",
+  "evidence": "reader compared every row with the source; the printed team totals do not reproduce from the sheet's own places (source arithmetic), as the audit and override notes record"
  },
  "backend/data/parsed_results/2011/XC/camdenhillsgirls.txt.json": {
   "parse_sha": "f6eaeb9080c10707",
@@ -15742,6 +16253,13 @@
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
  },
+ "backend/data/parsed_results/2011/XC/erskine_sept29.json": {
+  "parse_sha": "48845f051109068f",
+  "source_sha": "4787f407e83341ac",
+  "date": "2026-10-28",
+  "by": "second read (fixed) 2026-10-23..28: override written from the source; printed team scores kept as printed",
+  "evidence": "reader compared every row with the source; the printed team totals do not reproduce from the sheet's own places (source arithmetic), as the audit and override notes record"
+ },
  "backend/data/parsed_results/2011/XC/falmourhgirls_sept2.json": {
   "parse_sha": "ae6c40a5cab3b1e4",
   "source_sha": "0e166e3eabc9bb18",
@@ -15811,6 +16329,13 @@
   "date": "2026-10-26",
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
+ },
+ "backend/data/parsed_results/2011/XC/freeport_sept9.json": {
+  "parse_sha": "aaf24ebd070f25b4",
+  "source_sha": "9672530863568305",
+  "date": "2026-10-28",
+  "by": "second read (fixed) 2026-10-23..28: override written from the source; printed team scores kept as printed",
+  "evidence": "reader compared every row with the source; the printed team totals do not reproduce from the sheet's own places (source arithmetic), as the audit and override notes record"
  },
  "backend/data/parsed_results/2011/XC/fryeburg_oct1.json": {
   "parse_sha": "f867adbdb124d715",
@@ -15909,6 +16434,13 @@
   "date": "2026-10-26",
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
+ },
+ "backend/data/parsed_results/2011/XC/kennebunkmsgirls_sept21.json": {
+  "parse_sha": "417dc0b41eb45a4f",
+  "source_sha": "f1933250abb813a4",
+  "date": "2026-10-28",
+  "by": "second read (fixed) 2026-10-23..28: override written from the source; printed team scores kept as printed",
+  "evidence": "reader compared every row with the source; the printed team totals do not reproduce from the sheet's own places (source arithmetic), as the audit and override notes record"
  },
  "backend/data/parsed_results/2011/XC/kvacboyscombined.txt.json": {
   "parse_sha": "47e283fb88477c3d",
@@ -16329,6 +16861,13 @@
   "date": "2026-10-19",
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
+ },
+ "backend/data/parsed_results/2011/XC/ms-laliberte-invitational-2011.json": {
+  "parse_sha": "640b44aa3ecb4025",
+  "source_sha": "86336b87068251b6",
+  "date": "2026-10-28",
+  "by": "second read (fixed) 2026-10-23..28: override written from the source; printed team scores kept as printed",
+  "evidence": "reader compared every row with the source; the printed team totals do not reproduce from the sheet's own places (source arithmetic), as the audit and override notes record"
  },
  "backend/data/parsed_results/2011/XC/ms-lawrence-jh-xc-2011.json": {
   "parse_sha": "1e855c22ecf33750",
@@ -16763,6 +17302,13 @@
   "date": "2026-10-21",
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
+ },
+ "backend/data/parsed_results/2011/XC/presqueisleinvite_jv.json": {
+  "parse_sha": "21e0ee6305c1ed87",
+  "source_sha": "b482d59109f02bdf",
+  "date": "2026-10-28",
+  "by": "second read (fixed) 2026-10-23..28: override written from the source; printed team scores kept as printed",
+  "evidence": "reader compared every row with the source; the printed team totals do not reproduce from the sheet's own places (source arithmetic), as the audit and override notes record"
  },
  "backend/data/parsed_results/2011/XC/presqueisleinvite_varsity.json": {
   "parse_sha": "6d2c60207c2cc89b",
@@ -19060,6 +19606,13 @@
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
  },
+ "backend/data/parsed_results/2012/XC/gngboys_sept21.json": {
+  "parse_sha": "54c3d38264bc326a",
+  "source_sha": "4031e85f8b2db41a",
+  "date": "2026-10-28",
+  "by": "second read (fixed) 2026-10-23..28: override written from the source; printed team scores kept as printed",
+  "evidence": "reader compared every row with the source; the printed team totals do not reproduce from the sheet's own places (source arithmetic), as the audit and override notes record"
+ },
  "backend/data/parsed_results/2012/XC/gngboys_sept7.json": {
   "parse_sha": "831a71add1d89fe2",
   "source_sha": "774db4c80117a714",
@@ -19144,6 +19697,13 @@
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
  },
+ "backend/data/parsed_results/2012/XC/kennebunkgirls_sept7.json": {
+  "parse_sha": "8fc56a7a1aebea40",
+  "source_sha": "490c51d9ab85c9e7",
+  "date": "2026-10-28",
+  "by": "second read (fixed) 2026-10-23..28: override written from the source; printed team scores kept as printed",
+  "evidence": "reader compared every row with the source; the printed team totals do not reproduce from the sheet's own places (source arithmetic), as the audit and override notes record"
+ },
  "backend/data/parsed_results/2012/XC/kvacboyscombined.txt.json": {
   "parse_sha": "68b87059c82dffc1",
   "source_sha": "0d7f9fb5ca9ab94b",
@@ -19186,6 +19746,13 @@
   "by": "sonnet audit (second read, 2026-10-25) (audit: confirmed)",
   "evidence": "All 25 rows of Girls 2400 Meter Run match (middle-school meet, Waterville/Skowhegan/Lawrence Junior High); schools resolve to me-ms entries."
  },
+ "backend/data/parsed_results/2012/XC/leeinvietboysboysvarsity.json": {
+  "parse_sha": "bdb25d14c964e0a3",
+  "source_sha": "0b9f63d4b5d05a3e",
+  "date": "2026-10-28",
+  "by": "second read (fixed) 2026-10-23..28: override written from the source; printed team scores kept as printed",
+  "evidence": "reader compared every row with the source; the printed team totals do not reproduce from the sheet's own places (source arithmetic), as the audit and override notes record"
+ },
  "backend/data/parsed_results/2012/XC/leeinviteboysjv.json": {
   "parse_sha": "a31eca3f4f09bd64",
   "source_sha": "bd5b9f10b694c40a",
@@ -19199,6 +19766,13 @@
   "date": "2026-10-25",
   "by": "sonnet audit (second read, 2026-10-25) (audit: confirmed)",
   "evidence": "All 12 JV girls rows match; the sheet prints no JV team scores."
+ },
+ "backend/data/parsed_results/2012/XC/leeinvitegirlsvarsity.json": {
+  "parse_sha": "2124de14b82805ff",
+  "source_sha": "0d835dd92c338109",
+  "date": "2026-10-28",
+  "by": "second read (fixed) 2026-10-23..28: override written from the source; printed team scores kept as printed",
+  "evidence": "reader compared every row with the source; the printed team totals do not reproduce from the sheet's own places (source arithmetic), as the audit and override notes record"
  },
  "backend/data/parsed_results/2012/XC/lewistonboys_sept7.json": {
   "parse_sha": "6c7e5d20d17ff04b",
@@ -19263,6 +19837,13 @@
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
  },
+ "backend/data/parsed_results/2012/XC/marshwoodboys_sept14.json": {
+  "parse_sha": "524a0d9be5a3d6a0",
+  "source_sha": "c25c2f8e524ce313",
+  "date": "2026-10-28",
+  "by": "second read (fixed) 2026-10-23..28: override written from the source; printed team scores kept as printed",
+  "evidence": "reader compared every row with the source; the printed team totals do not reproduce from the sheet's own places (source arithmetic), as the audit and override notes record"
+ },
  "backend/data/parsed_results/2012/XC/marshwoodboys_sept21.json": {
   "parse_sha": "4e130332c27b42e2",
   "source_sha": "f43a2ad4cf4abe55",
@@ -19284,12 +19865,26 @@
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
  },
+ "backend/data/parsed_results/2012/XC/massabesicboys_oct5.json": {
+  "parse_sha": "b0d1bcdc2000b4bd",
+  "source_sha": "a2ff5e92f2abd459",
+  "date": "2026-10-28",
+  "by": "second read (fixed) 2026-10-23..28: override written from the source; printed team scores kept as printed",
+  "evidence": "reader compared every row with the source; the printed team totals do not reproduce from the sheet's own places (source arithmetic), as the audit and override notes record"
+ },
  "backend/data/parsed_results/2012/XC/massabesicboys_sept25.json": {
   "parse_sha": "637888b2c2ed41eb",
   "source_sha": "67404f1bc4aafde7",
   "date": "2026-10-25",
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
+ },
+ "backend/data/parsed_results/2012/XC/massabesicgirls_oct5.json": {
+  "parse_sha": "70848f3458bd81fb",
+  "source_sha": "9dda7c540efb98b9",
+  "date": "2026-10-28",
+  "by": "second read (fixed) 2026-10-23..28: override written from the source; printed team scores kept as printed",
+  "evidence": "reader compared every row with the source; the printed team totals do not reproduce from the sheet's own places (source arithmetic), as the audit and override notes record"
  },
  "backend/data/parsed_results/2012/XC/massabesicgirls_sept25.json": {
   "parse_sha": "f7963764439cde23",
@@ -19872,6 +20467,13 @@
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
  },
+ "backend/data/parsed_results/2012/XC/mtblueboys_august31.json": {
+  "parse_sha": "e564ecea6288c9a8",
+  "source_sha": "314e5a5a476b9e25",
+  "date": "2026-10-28",
+  "by": "second read (fixed) 2026-10-23..28: override written from the source; printed team scores kept as printed",
+  "evidence": "reader compared every row with the source; the printed team totals do not reproduce from the sheet's own places (source arithmetic), as the audit and override notes record"
+ },
  "backend/data/parsed_results/2012/XC/mtbluegirls_august31.json": {
   "parse_sha": "f2eb410b378d5156",
   "source_sha": "755b28f03632e44c",
@@ -20061,6 +20663,13 @@
   "by": "sonnet audit (score mismatch, 2026-10-23) (audit: source-error)",
   "evidence": "Parse matches the source (69 rows; 'MAr' for Driver is Marshwood; 36 Scarpelli 21:27 is printed out of time order, place kept). The sheet prints a team-place list per team: Massabesic 1,2,3,5,6 (6th/7th 16,18) = 17; Marshwood 4,7,8,12,13 (14,17) = 44; Sanford 9,10,11,15,19 (21,22) = 64; Noble 20,23,24,25,26 = 118. Rule that reproduces them: only a team's first 7 runners take a team place (8th+ are skipped, so Sanford's 5th, overall 22, becomes 19 after Marshwood's 8th-10th are skipped); the checker's 67 for Sanford (9,10,11,15,22) comes from not skipping 8th+. Under that rule Mas 17, Mar 44, S 64 reproduce; Noble's rows give 21,23,24,25,26 = 119 but is printed 20,...=118: Pomereau (Noble, 20:27, overall 24) is placed team place 20 and Talbot (Sanford, 20:21, overall 23) team place 21, but Talbot finished before Pomereau, so Talbot should be 20 and Pomereau 21 (Sanford's 6th/7th are listed 21,22 and the sequence 19,20,21,22 has Talbot and Pomereau swapped). Noble 118 should be 119 by the sheet's own rows. Checker-rule: 7 runners per team take places (explains Sanford 64)."
  },
+ "backend/data/parsed_results/2012/XC/sanfordboys_sept14.json": {
+  "parse_sha": "80510989121f304d",
+  "source_sha": "e5e22d03c8341aa0",
+  "date": "2026-10-28",
+  "by": "second read (fixed) 2026-10-23..28: override written from the source; printed team scores kept as printed",
+  "evidence": "reader compared every row with the source; the printed team totals do not reproduce from the sheet's own places (source arithmetic), as the audit and override notes record"
+ },
  "backend/data/parsed_results/2012/XC/sanfordgirls_oct12.json": {
   "parse_sha": "ddfe4b0515f1e99c",
   "source_sha": "36a7f0dd3648fd5d",
@@ -20222,6 +20831,13 @@
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
  },
+ "backend/data/parsed_results/2012/XC/thorntongirls_sept14.json": {
+  "parse_sha": "e996cc73681b9717",
+  "source_sha": "893b76f2d8a0709c",
+  "date": "2026-10-28",
+  "by": "second read (fixed) 2026-10-23..28: override written from the source; printed team scores kept as printed",
+  "evidence": "reader compared every row with the source; the printed team totals do not reproduce from the sheet's own places (source arithmetic), as the audit and override notes record"
+ },
  "backend/data/parsed_results/2012/XC/thorntonms_sept26.json": {
   "parse_sha": "89eb85b304ab7605",
   "source_sha": "14eca0b219a4e0d9",
@@ -20263,6 +20879,13 @@
   "date": "2026-10-25",
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
+ },
+ "backend/data/parsed_results/2012/XC/watervilleGirlsJHChamp2012.json": {
+  "parse_sha": "0f67e0146b556a3a",
+  "source_sha": "64536d1639d89bec",
+  "date": "2026-10-28",
+  "by": "second read (fixed) 2026-10-23..28: override written from the source; printed team scores kept as printed",
+  "evidence": "reader compared every row with the source; the printed team totals do not reproduce from the sheet's own places (source arithmetic), as the audit and override notes record"
  },
  "backend/data/parsed_results/2012/XC/watervilleboys_sept6.json": {
   "parse_sha": "65f648bb1141d420",
@@ -20319,6 +20942,13 @@
   "date": "2026-10-25",
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
+ },
+ "backend/data/parsed_results/2012/XC/windhamgirls_sept21.json": {
+  "parse_sha": "ecd9f543bc1ddbbf",
+  "source_sha": "4b466bc35d11fdc4",
+  "date": "2026-10-28",
+  "by": "second read (fixed) 2026-10-23..28: override written from the source; printed team scores kept as printed",
+  "evidence": "reader compared every row with the source; the printed team totals do not reproduce from the sheet's own places (source arithmetic), as the audit and override notes record"
  },
  "backend/data/parsed_results/2012/XC/winslowboys_august31.json": {
   "parse_sha": "fc0159e199501246",
@@ -20403,6 +21033,13 @@
   "date": "2026-10-23",
   "by": "sonnet audit (score mismatch, 2026-10-23) (audit: source-error)",
   "evidence": "Rows match the source (girls 38, boys 44; the continuation rows after place 27 and the per-school re-listings at the end are the same runners). Cap of 7 scorers per team (and incomplete teams removed) reproduces girls Yarmouth 19 and NYA 44 (GNG 4 and LR 2 finishers = NS, as printed), and boys NYA 2+4+6+14+18=44, Grey NG 5+10+15+16+19=65, Lake Reg. 7+17+20+21+22=87. Boys Yarmouth is printed 33 but its five scorers (sheet places 1,3,8,9,11) are 1+3+8+9+11=32, with no displacement before place 11 (places 2,4,5,6,7,10 are all other scorers' top runners). Off-by-one in the printed total."
+ },
+ "backend/data/parsed_results/2012/XC/york_sept13.json": {
+  "parse_sha": "b341b7c47b8db6f3",
+  "source_sha": "f1ac4625cef96812",
+  "date": "2026-10-28",
+  "by": "second read (fixed) 2026-10-23..28: override written from the source; printed team scores kept as printed",
+  "evidence": "reader compared every row with the source; the printed team totals do not reproduce from the sheet's own places (source arithmetic), as the audit and override notes record"
  },
  "backend/data/parsed_results/2012/XC/yorkboys_oct4.json": {
   "parse_sha": "652d47b2896f008a",
@@ -21300,6 +21937,13 @@
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
  },
+ "backend/data/parsed_results/2013/XC/bucksportinvite13.json": {
+  "parse_sha": "fd2c1565a01216fc",
+  "source_sha": "ed6d76245d8ddafe",
+  "date": "2026-10-28",
+  "by": "second read (fixed) 2026-10-23..28: override written from the source; printed team scores kept as printed",
+  "evidence": "reader compared every row with the source; the printed team totals do not reproduce from the sheet's own places (source arithmetic), as the audit and override notes record"
+ },
  "backend/data/parsed_results/2013/XC/classaemboys.json": {
   "parse_sha": "77e411709f9a37cc",
   "source_sha": "1b48caa45b9ef7b4",
@@ -21600,6 +22244,13 @@
   "date": "2026-10-25",
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
+ },
+ "backend/data/parsed_results/2013/XC/mciboys_sept20.json": {
+  "parse_sha": "19477f80ae290018",
+  "source_sha": "a3955a5daabc9e37",
+  "date": "2026-10-28",
+  "by": "second read (fixed) 2026-10-23..28: override written from the source; printed team scores kept as printed",
+  "evidence": "reader compared every row with the source; the printed team totals do not reproduce from the sheet's own places (source arithmetic), as the audit and override notes record"
  },
  "backend/data/parsed_results/2013/XC/medomakboys_sept20.json": {
   "parse_sha": "9a7ac4408c20542a",
@@ -22266,6 +22917,13 @@
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
  },
+ "backend/data/parsed_results/2013/XC/scarboroughmsgirls_sept25.json": {
+  "parse_sha": "0ce6269e66bca8fb",
+  "source_sha": "7fec3ec0da6a60f8",
+  "date": "2026-10-28",
+  "by": "second read (fixed) 2026-10-23..28: override written from the source; printed team scores kept as printed",
+  "evidence": "reader compared every row with the source; the printed team totals do not reproduce from the sheet's own places (source arithmetic), as the audit and override notes record"
+ },
  "backend/data/parsed_results/2013/XC/smaarelays.json": {
   "parse_sha": "3e8371686e2be8e4",
   "source_sha": "9dde2da8cad966a1",
@@ -22343,12 +23001,26 @@
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
  },
+ "backend/data/parsed_results/2013/XC/tagirls_sept20.json": {
+  "parse_sha": "97e84cd4982479d5",
+  "source_sha": "5c150cdb3d8b217d",
+  "date": "2026-10-28",
+  "by": "second read (fixed) 2026-10-23..28: override written from the source; printed team scores kept as printed",
+  "evidence": "reader compared every row with the source; the printed team totals do not reproduce from the sheet's own places (source arithmetic), as the audit and override notes record"
+ },
  "backend/data/parsed_results/2013/XC/traip_sept27.json": {
   "parse_sha": "754d89dd25fb9404",
   "source_sha": "41e01cbe3c1835bd",
   "date": "2026-10-25",
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
+ },
+ "backend/data/parsed_results/2013/XC/watervilljuniorhigh_sept11.json": {
+  "parse_sha": "768569ed69ded550",
+  "source_sha": "c3a85a44db756fb9",
+  "date": "2026-10-28",
+  "by": "second read (fixed) 2026-10-23..28: override written from the source; printed team scores kept as printed",
+  "evidence": "reader compared every row with the source; the printed team totals do not reproduce from the sheet's own places (source arithmetic), as the audit and override notes record"
  },
  "backend/data/parsed_results/2013/XC/wells%2078%20girls.json": {
   "parse_sha": "33385b2cd254e1c5",
@@ -27173,6 +27845,13 @@
   "by": "sonnet audit (second read, 2026-10-24) (audit: confirmed)",
   "evidence": "Team scores match: Falmouth 17, Kennebunk 60, Fryeburg Academy 81, Traip 112, St. Dominic 118 (5 runners only)."
  },
+ "backend/data/parsed_results/2016/XC/Girls-Cross-Country-Sanford-TA-BE-MGA-Sept9.json": {
+  "parse_sha": "fb912ed16eb9b05f",
+  "source_sha": "018ee12918418859",
+  "date": "2026-10-28",
+  "by": "second read (fixed) 2026-10-23..28: override written from the source; printed team scores kept as printed",
+  "evidence": "reader compared every row with the source; the printed team totals do not reproduce from the sheet's own places (source arithmetic), as the audit and override notes record"
+ },
  "backend/data/parsed_results/2016/XC/Girls-meet-results.102F62F16-@-Marshwood-Sheet1.json": {
   "parse_sha": "a13b891472b5880b",
   "source_sha": "7c210959cdf8a122",
@@ -27383,6 +28062,13 @@
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
  },
+ "backend/data/parsed_results/2016/XC/SEP.-9-GIRLS.json": {
+  "parse_sha": "b7fadd0418254d4d",
+  "source_sha": "b1a44337d56063dd",
+  "date": "2026-10-28",
+  "by": "second read (fixed) 2026-10-23..28: override written from the source; printed team scores kept as printed",
+  "evidence": "reader compared every row with the source; the printed team totals do not reproduce from the sheet's own places (source arithmetic), as the audit and override notes record"
+ },
  "backend/data/parsed_results/2016/XC/SMAA-Boys-Results.txt.json": {
   "parse_sha": "a9bc16e0bf43d105",
   "source_sha": "08db4e1169a88eef",
@@ -27410,6 +28096,13 @@
   "date": "2026-10-24",
   "by": "sonnet audit (second read, 2026-10-24) (audit: confirmed)",
   "evidence": "Team scores match: Westbrook 25, Marshwood 41, Gorham 84, Windham 100, Bonny Eagle 133, Biddeford 142, Deering 209."
+ },
+ "backend/data/parsed_results/2016/XC/TA-BE-Sanford-Boys.json": {
+  "parse_sha": "0504ecbee07ca1ac",
+  "source_sha": "cc7aece76eea7d15",
+  "date": "2026-10-28",
+  "by": "second read (fixed) 2026-10-23..28: override written from the source; printed team scores kept as printed",
+  "evidence": "reader compared every row with the source; the printed team totals do not reproduce from the sheet's own places (source arithmetic), as the audit and override notes record"
  },
  "backend/data/parsed_results/2016/XC/TAMS-10-12-16-boys.json": {
   "parse_sha": "327345b3db5b4e05",
@@ -30210,6 +30903,13 @@
   "date": "2026-10-24",
   "by": "sonnet audit (second read, 2026-10-24) (audit: confirmed)",
   "evidence": "All 36 boys rows (28 placed + 8 DQ) match: place, name, class, school, finals, Points -> team_place; the tie at 15 (Hafener, Wheelock 24:49.47) kept; Christian Blakely has no class on the sheet. Schools right (HER = Hermon, Bapst Crusaders, Foxcroft, Bangor Christian). Date right."
+ },
+ "backend/data/parsed_results/2017/XC/SEP-28-KITTERY.json": {
+  "parse_sha": "dec662294b2290f9",
+  "source_sha": "628a1731fb5c3c67",
+  "date": "2026-10-28",
+  "by": "second read (fixed) 2026-10-23..28: override written from the source; printed team scores kept as printed",
+  "evidence": "reader compared every row with the source; the printed team totals do not reproduce from the sheet's own places (source arithmetic), as the audit and override notes record"
  },
  "backend/data/parsed_results/2017/XC/SEP-8-RESULTS.json": {
   "parse_sha": "d666e0a0ed371c4f",
@@ -33151,6 +33851,13 @@
   "by": "sonnet audit (second read, 2026-10-24) (audit: confirmed)",
   "evidence": "All 611 rows (Unseeded, Freshman and Seeded sections of the Girls 5k, places restart per section) checked by script against the source: place, name, grade, school, mark identical; no source row missing or extra. Schools resolve sensibly (Burrillville-RI, Cumberland-RI, Harwood-VT, Charlottetown, Colonel Gray-PEI, Gillis, King's Edgehill to their out-of-state catalog ids; Boothbay-Wisc to the coop). No team scores printed."
  },
+ "backend/data/parsed_results/2018/XC/SEP.-21-RESULTS.json": {
+  "parse_sha": "271bfe2b7f3d74c7",
+  "source_sha": "3e642946f2bda173",
+  "date": "2026-10-28",
+  "by": "second read (fixed) 2026-10-23..28: override written from the source; printed team scores kept as printed",
+  "evidence": "reader compared every row with the source; the printed team totals do not reproduce from the sheet's own places (source arithmetic), as the audit and override notes record"
+ },
  "backend/data/parsed_results/2018/XC/SEP.-7-IN-YORK.json": {
   "parse_sha": "d8d4290b3e524583",
   "source_sha": "12416d0b0164ad92",
@@ -35594,6 +36301,13 @@
   "by": "sonnet audit (score mismatch, 2026-10-23) (audit: source-error)",
   "evidence": "All rows match the PDF (girls 23, boys 37). The sheet's printed 'Score' column is team place; teams printed 'No Team Score' (Washburn girls with 5 finishers, Fort Kent boys with 4) are removed from team places. Girls: MSSM 1+2+6+9+10=28, Houlton/GHCA 3+4+5+7+16=35 match; Fort Kent 8+13+14+15+17=67 but printed 'Fort Kent ... 70'. Boys: Washburn 3+4+5+6+10=28, MSSM 7+8+9+11+14=49, Houlton 1+2+13+25+26=67, Madawaska 19+20+21+23+24=107 match the printed place lists, but the boys' team-place column skips 15 and 16: row 'Logan Madden 22:01 14' is followed by 'Hudson Labbe (FK, no score)' and 'Derek Cruz 22:17 17'; Cruz should be 15 (overall 17 minus Sanclemente and Labbe, Fort Kent), so every later team place is 2 too high. Correct values from the rows: Washburn list ...12,15; Houlton 1+2+13+23+24=63 (printed 67); Madawaska 17+18+19+21+22=97 (printed 107). Source numbering error, not a checker gap."
  },
+ "backend/data/parsed_results/2019/XC/BHS-X-Country_HomeMeet_9.27.19-2.json": {
+  "parse_sha": "7d815e7bb62a327a",
+  "source_sha": "5e193c589901419f",
+  "date": "2026-10-28",
+  "by": "second read (fixed) 2026-10-23..28: override written from the source; printed team scores kept as printed",
+  "evidence": "reader compared every row with the source; the printed team totals do not reproduce from the sheet's own places (source arithmetic), as the audit and override notes record"
+ },
  "backend/data/parsed_results/2019/XC/BOYS-LR.json": {
   "parse_sha": "d611581c8d05a249",
   "source_sha": "3e7df585e9efbb8d",
@@ -37105,6 +37819,13 @@
   "date": "2026-10-24",
   "by": "sonnet audit (second read, 2026-10-24) (audit: confirmed)",
   "evidence": "Scarborough Middle School 10/2/2019 boys 1.5 mile (printed '3k'): all 47 rows match place, name, school, time by script. WIN = Windham Middle School (Graden Joly is Windham in lyman-moore-19 the same season). Meet name in the parse is the Hy-Tek license line; the pipeline uses the sub5 index name 'Middle School Meet at Scarborough'. No team scores printed; Points column dropped."
+ },
+ "backend/data/parsed_results/2019/XC/thorntonboyssept6.json": {
+  "parse_sha": "b058b16faef6884f",
+  "source_sha": "bed404baafa426c1",
+  "date": "2026-10-28",
+  "by": "second read (fixed) 2026-10-23..28: override written from the source; printed team scores kept as printed",
+  "evidence": "reader compared every row with the source; the printed team totals do not reproduce from the sheet's own places (source arithmetic), as the audit and override notes record"
  },
  "backend/data/parsed_results/2019/XC/thorntongirlssept6.json": {
   "parse_sha": "e5a702cf7003728c",
@@ -41208,6 +41929,13 @@
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
  },
+ "backend/data/parsed_results/2021/XC/thornton_sept10.json": {
+  "parse_sha": "1712647079e2c0a3",
+  "source_sha": "7b2953acb43d3d94",
+  "date": "2026-10-28",
+  "by": "second read (fixed) 2026-10-23..28: override written from the source; printed team scores kept as printed",
+  "evidence": "reader compared every row with the source; the printed team totals do not reproduce from the sheet's own places (source arithmetic), as the audit and override notes record"
+ },
  "backend/data/parsed_results/2021/XC/trippms_2021_10_14_boys.json": {
   "parse_sha": "c5bfdf808f632e54",
   "source_sha": "26dd3f10e77ee37a",
@@ -41235,6 +41963,13 @@
   "date": "2026-10-24",
   "by": "sonnet audit (second read, 2026-10-24) (audit: confirmed)",
   "evidence": "Single row '1 Jonathan Schomaker SR Leavitt 17:55.7 17:55.70' (2021 State XC Championships, wheelchair, event header 'Boys 1.2 Mile Run Class B'); parse row identical: place, name, SR, Leavitt -> me-hs-leavitt, 17:55.70. Event distance is as the source prints it (1.2 mile)."
+ },
+ "backend/data/parsed_results/2021/XC/xc-meet-results-TAMS-10-6-21.json": {
+  "parse_sha": "13c3d55c8bb25229",
+  "source_sha": "f5b46f83f5b8da4f",
+  "date": "2026-10-28",
+  "by": "second read (fixed) 2026-10-23..28: override written from the source; printed team scores kept as printed",
+  "evidence": "reader compared every row with the source; the printed team totals do not reproduce from the sheet's own places (source arithmetic), as the audit and override notes record"
  },
  "backend/data/parsed_results/2021/XC/york-boys-21-xc.txt.json": {
   "parse_sha": "bd17e9fe1c6e90e0",
@@ -44959,6 +45694,13 @@
   "date": "2026-10-16",
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
+ },
+ "backend/data/parsed_results/2023/XC/Girls-Cross-Country-Meet-9-14-23.json": {
+  "parse_sha": "302aa74ba42843c9",
+  "source_sha": "b9640d50e1518878",
+  "date": "2026-10-28",
+  "by": "second read (fixed) 2026-10-23..28: override written from the source; printed team scores kept as printed",
+  "evidence": "reader compared every row with the source; the printed team totals do not reproduce from the sheet's own places (source arithmetic), as the audit and override notes record"
  },
  "backend/data/parsed_results/2023/XC/Girls-Meet.json": {
   "parse_sha": "d837cbbbb646954e",
