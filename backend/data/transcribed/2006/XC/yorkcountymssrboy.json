@@ -280,7 +280,7 @@
     {
      "athlete": "Wright",
      "school": "Wells Middle School",
-     "result": "10:02",
+     "result": "11:02",
      "grade": "",
      "type": "Finals",
      "place": 35
@@ -629,5 +629,5 @@
  "team_rankings": [],
  "parser": "SpreadsheetTableParser",
  "source": "backend/data/sub5_archive/2006/XC/yorkcountymssrboy.htm",
- "notes": "Parser read place, surname and time but not the school (third cell of each row); filled from it for all 77 rows. This is the York County Middle School XC Festival (sub5 index title), so each school is written \"<town> Middle School\" to land on the middle school (the file name does not mark it as a middle-school meet). Printed typos left as is (place 35 Wright, Wells, 10:02 sits between 11:00 and 11:03, so probably 11:02; \"Galnte\", \"Brwon\", \"hirsh\")."
+ "notes": "Parser read place, surname and time but not the school (third cell of each row); filled from it for all 77 rows. This is the York County Middle School XC Festival (sub5 index title), so each school is written \"<town> Middle School\" to land on the middle school (the file name does not mark it as a middle-school meet). Printed typos left as is ( \"Galnte\", \"Brwon\", \"hirsh\"). Second read 2026-10-27: place 35 Wright (Wells) is printed 10:02 between 34th 11:00 and 36th 11:03; the finish order fixes it as 11:02, written so (typo corrected, source prints 10:02). Every other row (77) checked against the source: name, school, time agree."
 }
