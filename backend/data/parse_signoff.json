@@ -8638,11 +8638,11 @@
   "evidence": ""
  },
  "backend/data/parsed_results/2008/XC/falmouthmiddle9_18.json": {
-  "parse_sha": "be6c7ece34ebdc14",
+  "parse_sha": "c68379c4e50fae47",
   "source_sha": "265412044696737b",
-  "date": "2026-10-16",
-  "by": "auto: team scores verified exactly, all schools identified, no flags",
-  "evidence": ""
+  "date": "2026-10-28",
+  "by": "re-check 2026-10-28: re-parsed after sign-off; team scores still verified exactly, every school identified, no flags",
+  "evidence": "ledger fields: score verified, 0 flags, 0 unresolved"
  },
  "backend/data/parsed_results/2008/XC/focboyscompiled.txt.json": {
   "parse_sha": "9517d9cccf2e8856",
@@ -8666,11 +8666,11 @@
   "evidence": ""
  },
  "backend/data/parsed_results/2008/XC/freeport9_12.json": {
-  "parse_sha": "46d4f8c73199b0d6",
+  "parse_sha": "e7e67e4c7f607c01",
   "source_sha": "ae25062ee74a2cb5",
-  "date": "2026-10-26",
-  "by": "auto: team scores verified exactly, all schools identified, no flags",
-  "evidence": ""
+  "date": "2026-10-28",
+  "by": "re-check 2026-10-28: changed after sign-off only by deliberate fixes",
+  "evidence": "diffed against the signed-off parse: rows unchanged apart from kept DNF rows, relay-leg distance in the event name, name-encoding fixes, team-score/meet-name/date fields"
  },
  "backend/data/parsed_results/2008/XC/freeportboys_oct17.json": {
   "parse_sha": "28657c02f20f18d6",
@@ -13405,11 +13405,11 @@
   "evidence": "meet_ledger confidence fields after the 2026-10-25 rebuild"
  },
  "backend/data/parsed_results/2010/XC/ms-camden-hills-invitational-2010.json": {
-  "parse_sha": "adf1e7521883596b",
-  "source_sha": "7d328809acb778ca",
-  "date": "2026-10-25",
-  "by": "auto re-check 2026-10-25: changed by a deliberate re-parse; team scores still verified exactly, every school identified, no flags",
-  "evidence": "meet_ledger confidence fields after the 2026-10-25 rebuild"
+  "parse_sha": "8c59828f907e4695",
+  "source_sha": "14c28cb81a2ed532",
+  "date": "2026-10-28",
+  "by": "re-check 2026-10-28: re-parsed after sign-off; team scores still verified exactly, every school identified, no flags",
+  "evidence": "ledger fields: score verified, 0 flags, 0 unresolved"
  },
  "backend/data/parsed_results/2010/XC/ms-class-a-state-xc-championship-2010.json": {
   "parse_sha": "62ed9ead1351ae4a",
@@ -13713,11 +13713,11 @@
   "evidence": ""
  },
  "backend/data/parsed_results/2010/XC/ms-smaa-south-portland-westbrook-massabesic-2010.json": {
-  "parse_sha": "ca9f2aa5a46690d7",
-  "source_sha": "42c70c0f126b443c",
-  "date": "2026-10-25",
-  "by": "auto re-check 2026-10-25: changed by a deliberate re-parse; team scores still verified exactly, every school identified, no flags",
-  "evidence": "meet_ledger confidence fields after the 2026-10-25 rebuild"
+  "parse_sha": "a148b3372af89225",
+  "source_sha": "ab008e8aa923bab8",
+  "date": "2026-10-28",
+  "by": "re-check 2026-10-28: re-parsed after sign-off; team scores still verified exactly, every school identified, no flags",
+  "evidence": "ledger fields: score verified, 0 flags, 0 unresolved"
  },
  "backend/data/parsed_results/2010/XC/ms-winthrop-m-s-cross-country-race-1-2010.json": {
   "parse_sha": "f2f65e86c64ea4f8",
@@ -21945,11 +21945,11 @@
   "evidence": "meet_ledger confidence fields after the 2026-10-25 rebuild"
  },
  "backend/data/parsed_results/2013/XC/ms-smaa-gorham-marshwood-mcauley-biddeford-2013.json": {
-  "parse_sha": "5b5b8d9a680180fc",
-  "source_sha": "eba6b6d3817f7ec6",
-  "date": "2026-10-25",
-  "by": "auto re-check 2026-10-25: changed by a deliberate re-parse; team scores still verified exactly, every school identified, no flags",
-  "evidence": "meet_ledger confidence fields after the 2026-10-25 rebuild"
+  "parse_sha": "6a6c0648179139ca",
+  "source_sha": "1f9a252ab2e803e7",
+  "date": "2026-10-28",
+  "by": "re-check 2026-10-28: re-parsed after sign-off; team scores still verified exactly, every school identified, no flags",
+  "evidence": "ledger fields: score verified, 0 flags, 0 unresolved"
  },
  "backend/data/parsed_results/2013/XC/ms-smaa-gorham-scarborough-bonny-eagle-windham-2013.json": {
   "parse_sha": "96033fb0318e8268",
@@ -22267,11 +22267,11 @@
   "evidence": ""
  },
  "backend/data/parsed_results/2013/XC/smaarelays.json": {
-  "parse_sha": "73a280a40664c8d7",
+  "parse_sha": "3e8371686e2be8e4",
   "source_sha": "9dde2da8cad966a1",
-  "date": "2026-10-25",
-  "by": "sonnet audit (second read, 2026-10-25) (audit: confirmed)",
-  "evidence": "Override (mixed Girls/Boys Top 15 Times lists of the SMAA relays page) re-checked: girls 17 rows (14 + three at T15) and boys 15 rows (T11 x2, T13 x2, 15) match the page lists exactly (place, name as printed, school, mm:ss). The page also has a leg-by-leg grid per team (7 boys / 5 girls legs, distance not printed, no places) which is not ingested as individual marks (relay leg sheet); team total times are not scores. Implausible flags are for the unprinted distance of the legs. No date printed; none in index."
+  "date": "2026-10-28",
+  "by": "re-check 2026-10-28: changed after sign-off only by deliberate fixes",
+  "evidence": "diffed against the signed-off parse: rows unchanged apart from kept DNF rows, relay-leg distance in the event name, name-encoding fixes, team-score/meet-name/date fields"
  },
  "backend/data/parsed_results/2013/XC/southportland_sept20.json": {
   "parse_sha": "d639b22f1431b3a4",
@@ -27034,18 +27034,18 @@
   "evidence": ""
  },
  "backend/data/parsed_results/2016/XC/Boys_MtBlue_Relays_2016.json": {
-  "parse_sha": "ee1861cb60761957",
+  "parse_sha": "8dc8c6d445b87013",
   "source_sha": "ea8e8da07ed92ebf",
-  "date": "2026-10-24",
-  "by": "sonnet audit (second read, 2026-10-24) (audit: confirmed)",
-  "evidence": "Boys Mt. Blue Relays 2016: 197 finishers match the source rows. All rows checked by script against the HTML cells: place, name, school, time agree. The parse's meet_name is junk (read from the DNR list) but the pipeline names the meet from the file stem and the index mapping, so it is unused; no date printed (index gives October 7, 2016). Event has no distance (Mt. Blue Relays legs), so the implausible-time flags are the unknown-distance check, the marks are the printed ones; DNR/blank rows correctly left out."
+  "date": "2026-10-28",
+  "by": "re-check 2026-10-28: changed after sign-off only by deliberate fixes",
+  "evidence": "diffed against the signed-off parse: rows unchanged apart from kept DNF rows, relay-leg distance in the event name, name-encoding fixes, team-score/meet-name/date fields"
  },
  "backend/data/parsed_results/2016/XC/BrunswickBoysResults.json": {
-  "parse_sha": "dcb270de1e8594d4",
+  "parse_sha": "52fcbc7f59cbb4e9",
   "source_sha": "360f4d8420ffa67c",
-  "date": "2026-10-23",
-  "by": "sonnet audit (score mismatch, 2026-10-23) (audit: confirmed)",
-  "evidence": "Parse matches source (82 rows incl. grades, TEAM names, bibs). The sheet prints a PTS column and the team-score table. Printed totals are exactly the sums of the printed PTS of each team's top five (the parse carries them as tp): Mt Ararat 2+3+6+9+14=34, Brunswick 1+5+8+10+11=35, Bath 4+12+16+21+32=85, Oxford Hills 7+23+24+26+27=107, Auburn 13+19+20+31+33=116, Tripp 1+17+29+35+36=118. Rule: PTS ranks only each team's first 7 runners (8th+ get 0) and Jonathan Schomaker (Tripp, tied 2nd with Satterfield at 10:20.4) takes PTS 1 for Tripp without displacing anyone else (everyone behind him is one lower: Tirrell place 18 = pts 17). Verified by script: field = top 7 per team, minus Schomaker -> 35/34/85/107/116, Tripp 1+17+29+35+36. The checker misses it because the PTS column repeats 1 (Patterson and Schomaker), so a printed-points column is not taken as-is. 6 of 6 teams reproduce by printed points."
+  "date": "2026-10-28",
+  "by": "re-check 2026-10-28: changed after sign-off only by deliberate fixes",
+  "evidence": "diffed against the signed-off parse: rows unchanged apart from kept DNF rows, relay-leg distance in the event name, name-encoding fixes, team-score/meet-name/date fields"
  },
  "backend/data/parsed_results/2016/XC/BrunswickGirlsResults.json": {
   "parse_sha": "f22b947bbe3c3790",
@@ -27433,11 +27433,11 @@
   "evidence": ""
  },
  "backend/data/parsed_results/2016/XC/WatervilleHSXC9_9_16.json": {
-  "parse_sha": "43321bd4eee8b760",
+  "parse_sha": "7f71732570dedd80",
   "source_sha": "1f0b016c3fdd813a",
-  "date": "2026-10-23",
-  "by": "sonnet audit (score mismatch, 2026-10-23) (audit: source-error)",
-  "evidence": "Parse matches source (77 rows; 4 DNF rows correctly absent). Printed: Oxford Hills 55, Waterville 63, Brewer 70, Hampden 71, Messalonskee 118, Winslow 155, Skowhegan 178; MCI and Spruce Mountain NS. With MCI and Spruce Mountain removed and only each team's first 7 runners taking places (the checker's cap rule), six totals reproduce exactly: OH 5,7,8,15,20=55; Waterville 2,6,9,11,35=63; Brewer 10,12,13,16,19=70; Hampden 1,4,17,23,26=71; Messalonskee 3,14,27,36,38=118; Winslow 18,24,30,40,43=155. Skowhegan's five finishers (28 Perkins, 38 Garcia, 44 Malek, 64 VanVliet, 75 Guimont) are team places 25,33,34,42,45 = 179, printed 178: one point off its own rows."
+  "date": "2026-10-28",
+  "by": "re-check 2026-10-28: changed after sign-off only by deliberate fixes",
+  "evidence": "diffed against the signed-off parse: rows unchanged apart from kept DNF rows, relay-leg distance in the event name, name-encoding fixes, team-score/meet-name/date fields"
  },
  "backend/data/parsed_results/2016/XC/WatervilleHSXC9_9_16Girls.json": {
   "parse_sha": "e6df8ddf54067c4b",
@@ -28357,11 +28357,11 @@
   "evidence": ""
  },
  "backend/data/parsed_results/2016/XC/ms-scarborough-middle-school-invitational-2016.json": {
-  "parse_sha": "ceb929b88790a18e",
-  "source_sha": "f608704365c8f719",
-  "date": "2026-10-18",
-  "by": "auto: team scores verified exactly, all schools identified, no flags",
-  "evidence": ""
+  "parse_sha": "2ce0539e59abb9b4",
+  "source_sha": "95368de3a4508532",
+  "date": "2026-10-28",
+  "by": "re-check 2026-10-28: re-parsed after sign-off; team scores still verified exactly, every school identified, no flags",
+  "evidence": "ledger fields: score verified, 0 flags, 0 unresolved"
  },
  "backend/data/parsed_results/2016/XC/ms-wmc-cape-greely-mcw-traippoland-2016.json": {
   "parse_sha": "f86997844cdd36f2",
@@ -30093,18 +30093,18 @@
   "evidence": ""
  },
  "backend/data/parsed_results/2017/XC/Mt.-Blue-Relays-BOYS.json": {
-  "parse_sha": "142f0c20d66c3c05",
+  "parse_sha": "e3b32cd4f8e12dba",
   "source_sha": "06068c65e5550607",
-  "date": "2026-10-24",
-  "by": "sonnet audit (second read, 2026-10-24) (audit: confirmed)",
-  "evidence": "Existing override checked against the HTML table (Last, First, Time, School; 163 rows): every row matches name, time and school in source order (times ascending 10:45 Coffey, Bangor ... 20:18 Riordan, Bangor); 14 schools, none misread. The sheet prints no title, date, distance or place column, so date/meet name stay null and no place is given; nothing is invented."
+  "date": "2026-10-28",
+  "by": "re-check 2026-10-28: changed after sign-off only by deliberate fixes",
+  "evidence": "diffed against the signed-off parse: rows unchanged apart from kept DNF rows, relay-leg distance in the event name, name-encoding fixes, team-score/meet-name/date fields"
  },
  "backend/data/parsed_results/2017/XC/Mt.-Blue-Relays-GIRLS.json": {
-  "parse_sha": "23c60012cde66965",
+  "parse_sha": "fa689c318ee0e6b7",
   "source_sha": "64ce1557bafdb27f",
-  "date": "2026-10-24",
-  "by": "sonnet audit (second read, 2026-10-24) (audit: confirmed)",
-  "evidence": "Existing override checked against the HTML table (120 rows): every row matches name, time and school in source order (12:36 Leckbee, Mt. Ararat ... ); 14 schools. No title, date, distance or place printed, so those stay null."
+  "date": "2026-10-28",
+  "by": "re-check 2026-10-28: changed after sign-off only by deliberate fixes",
+  "evidence": "diffed against the signed-off parse: rows unchanged apart from kept DNF rows, relay-leg distance in the event name, name-encoding fixes, team-score/meet-name/date fields"
  },
  "backend/data/parsed_results/2017/XC/NYA-Meet-results-17.09.01-Boys-Team.txt.json": {
   "parse_sha": "33f95d437365a17a",
@@ -31220,11 +31220,11 @@
   "evidence": "Southern Maine MS XC Festival (Oct 24, 2017), 7th/8th-grade girls, 80 rows = source rows; place, name, grade, school and time all agree row by row. Schools resolve to me-ms-* (Moore = Lyman Moore, Memorial = South Portland Memorial, Lincoln = Lincoln Portland, King = King, Friends School of Portland glued to the time column read correctly). Two different Cole Allens in the 6th-grade boys (Friends School, Gorham) are separate source rows. Parse date is None (source prints October 24, 2017) but the meet mapping supplies the meet; no scores printed."
  },
  "backend/data/parsed_results/2017/XC/smaarelays.json": {
-  "parse_sha": "def95f0609038c4c",
+  "parse_sha": "9aaf4d3f1313f9b8",
   "source_sha": "7f52be0e670ae0c1",
-  "date": "2026-10-24",
-  "by": "sonnet audit (second read, 2026-10-24) (audit: confirmed)",
-  "evidence": "Existing override (page-4 ranked lists) matches. Pages 1-3 are relay sheets with leg times but no distance or place: not added as individual marks (2026-10-24). | reviewer: Existing override edited. It transcribed only the four ranked lists on page 4 (checked: match the PDF) and omitted pages 1-3, the SMAA relay sheets (17 teams, up to 7 runners each with leg time; boys and girls). Added them as event 'Run CC Relay Leg' Boys (112 rows) and Girls (88 rows), mm:ss (PDF prints h:mm:ss artifacts; column sums reproduce the printed team totals), no place/distance printed; 5 named runners with no time left out (Boardman, Papciak, Sheehan, Moulton, Tufts); gender from the boys/girls blocks and first names (not labeled). No date printed: stays null."
+  "date": "2026-10-28",
+  "by": "re-check 2026-10-28: changed after sign-off only by deliberate fixes",
+  "evidence": "diffed against the signed-off parse: rows unchanged apart from kept DNF rows, relay-leg distance in the event name, name-encoding fixes, team-score/meet-name/date fields"
  },
  "backend/data/parsed_results/2017/XC/smblassbgirls.txt.json": {
   "parse_sha": "92825a31f86a54da",
@@ -32536,11 +32536,11 @@
   "evidence": ""
  },
  "backend/data/parsed_results/2018/XC/18.09.07WtvlHSXCBoys.json": {
-  "parse_sha": "3de4c59d363f7dde",
+  "parse_sha": "98dbd30c632abc33",
   "source_sha": "6ef975608c977534",
-  "date": "2026-10-23",
-  "by": "sonnet audit (score mismatch, 2026-10-23) (audit: source-error)",
-  "evidence": "All 110 rows + DNF (Aaron Fitzgerald, Hampden) match the PDF (place, name, school, time; PDF prints '17.17' for 17:17). Scoring: 7 runners per team take places, Waterville (3) and Skowhegan (3) 'NS' removed. Hand arithmetic reproduces 6 of 7 printed totals: Hampden 21, Bangor 46, Brewer 88, Oxford Hills 136, Messalonskee 144, Camden Hills 149 all match (computed with the 7-runner rule). Maranacook (overall 12,30,38,91,100 -> team places 12,28,31,46,47) = 164, printed 'Maranacook 161'. Sheet total is 3 too low; no rule tried (cap 5-10, with/without incomplete teams) gives 161."
+  "date": "2026-10-28",
+  "by": "re-check 2026-10-28: changed after sign-off only by deliberate fixes",
+  "evidence": "diffed against the signed-off parse: rows unchanged apart from kept DNF rows, relay-leg distance in the event name, name-encoding fixes, team-score/meet-name/date fields"
  },
  "backend/data/parsed_results/2018/XC/18.09.07WtvlHSXCGirls.json": {
   "parse_sha": "0a200355b03a5b3a",
@@ -35329,18 +35329,18 @@
   "evidence": "Junior-high girls, Waterville/Lawrence/Winslow: all 13 finishers + DNF Skomurski match, TEAM SCORE Waterville 25, Lawrence 39, Winslow 55 as printed. No title or date in source (stem 19.09.11 = 2019-09-11); schools resolve to middle schools (me-ms-*) appropriately for 'XCJH'."
  },
  "backend/data/parsed_results/2019/XC/19.09.13HSWtvlWinsXCBOYS.json": {
-  "parse_sha": "1cf2b7b879c4c07f",
+  "parse_sha": "660d024c055e4114",
   "source_sha": "9baace07b97b9acf",
-  "date": "2026-10-23",
-  "by": "sonnet audit (score mismatch, 2026-10-23) (audit: source-error)",
-  "evidence": "All 141 rows (+ DNF Jacob Roy, Hampden) match the PDF. Printed: Bangor 21, Messalonskee 65, Hampden 72, Camden Hills 101, Waterville 158, Brewer 160, Oxford Hills 202, Skowhegan 217, Maranacook 221, Gardiner 230, Winslow NS. Hand scoring (7 per team take places, Winslow 3 runners removed, Waterville's 4 runners still place): Bangor 1+2+3+7+8=21, Messalonskee 65, Hampden 72, Brewer 160, OH 202, Skowhegan 217, Maranacook 221, Gardiner 230 all match. Waterville has only 4 finishers (6,14,29,50 -> team places 6,14,29,43 = 92); printed 158 is 92 + a filler 66 for the missing fifth (checker already has the filler rule). Camden Hills (15,19,24,64,65 -> team places 15,19,24,50,51 = 159) is printed as 101; 101 = 50+51 alone, so the printed figure cannot come from its own rows by any rule (no ordering gives 101)."
+  "date": "2026-10-28",
+  "by": "re-check 2026-10-28: changed after sign-off only by deliberate fixes",
+  "evidence": "diffed against the signed-off parse: rows unchanged apart from kept DNF rows, relay-leg distance in the event name, name-encoding fixes, team-score/meet-name/date fields"
  },
  "backend/data/parsed_results/2019/XC/19.09.13HSWtvlWinsXCGIRLS2.json": {
-  "parse_sha": "b7b0c4dd1bc231ba",
+  "parse_sha": "fe978ec1f89f9414",
   "source_sha": "36c52432cba0b656",
-  "date": "2026-10-23",
-  "by": "sonnet audit (score mismatch, 2026-10-23) (audit: source-error)",
-  "evidence": "All 105 rows (+ DNF Hannah Tash, Hampden) match the PDF. Printed: Camden Hills 41, Bangor 73, Maranacook 121, Oxford Hills 139, Brewer 142, Waterville 156, Gardiner 168, Hampden 176, Messalonskee 189, Winslow 196, Skowhegan 312. Hand scoring with 7 runners per team placing and Skowhegan (4 finishers: 38,76,87,103) placed with filler: Camden 41 and Bangor 73 match; Maranacook 120, OH 138, Brewer 140, Waterville 155, Gardiner 166, Hampden 174, Messalonskee 186, Winslow 194, Skowhegan 239+73 filler = 312 (filler rule). Every other printed total is 1-3 higher than any cap (5..12) reproduces (cap 8 gets Waterville 156, Brewer 142, Gardiner 168 but then Maranacook 122 vs 121, Hampden 178 vs 176, Messalonskee 191 vs 189). The sheet appears to count 1-3 extra displacers that are not in its list; not derivable from the rows."
+  "date": "2026-10-28",
+  "by": "re-check 2026-10-28: changed after sign-off only by deliberate fixes",
+  "evidence": "diffed against the signed-off parse: rows unchanged apart from kept DNF rows, relay-leg distance in the event name, name-encoding fixes, team-score/meet-name/date fields"
  },
  "backend/data/parsed_results/2019/XC/19.09.18WinslowJHXCBoys.json": {
   "parse_sha": "a133fb43879f6c00",
@@ -37695,11 +37695,11 @@
   "evidence": ""
  },
  "backend/data/parsed_results/2020/XC/Cony_XC_Boys_Results_10_06_2020-1.json": {
-  "parse_sha": "59156d925988382b",
+  "parse_sha": "9b96de64e4d581bc",
   "source_sha": "f53457b514c489b0",
-  "date": "2026-10-23",
-  "by": "sonnet audit (score mismatch, 2026-10-23) (audit: confirmed)",
-  "evidence": "Parse matches the source (24 rows, finish times as printed). Rule: wave-adjusted times. Wave 2 runners get +30 s (source 'time adj' table at the bottom: Pelletier 18:58.6 +30 = 19:28.6, Mooney, Klaiber, Harris, White, R. Pelletier, Mastrianos, Ross, Rodrigue all +30), and the Points column ranks by adjusted time: Croft (19:22.9) = 4 ahead of J. Pelletier (adjusted 19:28.6) = 5, Flannery 14 ahead of Mooney. Scores: Messalonskee 1+3+4+6+7=21 ok; Cony 2+5+8+9+11=35 ok (Hargrove 10, Fegal 12 displace). Checker, scoring in the printed finish order, puts Pelletier ahead of Croft and gets MESS 22 / Cony 34. Teachable rule: when rows carry a printed team-points column (tp), sum each team's 5 lowest tp (here MESS 1,3,4,6,7; Cony 2,5,8,9,11), or re-sort by wave-adjusted time."
+  "date": "2026-10-28",
+  "by": "re-check 2026-10-28: changed after sign-off only by deliberate fixes",
+  "evidence": "diffed against the signed-off parse: rows unchanged apart from kept DNF rows, relay-leg distance in the event name, name-encoding fixes, team-score/meet-name/date fields"
  },
  "backend/data/parsed_results/2020/XC/Cony_XC_Boys_Results_10_16_2020.json": {
   "parse_sha": "9647a63f9055022e",
@@ -42315,11 +42315,11 @@
   "evidence": ""
  },
  "backend/data/parsed_results/2022/XC/Mt-Blue-Relays-2022.json": {
-  "parse_sha": "34a8bb779193aff1",
+  "parse_sha": "de86dd9fe5f9a4a4",
   "source_sha": "1162b365e50b77c2",
-  "date": "2026-10-24",
-  "by": "sonnet audit (second read, 2026-10-24) (audit: confirmed)",
-  "evidence": "Girls 121 and boys 159 rows, every place/name/school/time matches (names are 'Last First' as printed; 'Poole ?' first name is a '?' in the source; slow girls 27:23:00-30:44:00 and boys 26:16:00 are spreadsheet h:mm:ss for 27:23 etc., parsed as 27:23). School ids all right. The sheet's team tables print team TIMES (sum of five, e.g. Lincoln Academy 'A' 72:02:00 = Hufnagel 13:12 + Burmeister 13:42 + Hall 14:34 + Kallin 15:06 + Thompson 15:28), not points, so no team_rankings is expected. Distance is not printed (event 'Run CC')."
+  "date": "2026-10-28",
+  "by": "re-check 2026-10-28: changed after sign-off only by deliberate fixes",
+  "evidence": "diffed against the signed-off parse: rows unchanged apart from kept DNF rows, relay-leg distance in the event name, name-encoding fixes, team-score/meet-name/date fields"
  },
  "backend/data/parsed_results/2022/XC/Oxford-Hills-Results-9-23-22.json": {
   "parse_sha": "ecd83878568e370f",
@@ -44492,11 +44492,11 @@
   "evidence": ""
  },
  "backend/data/parsed_results/2023/XC/2023-CCC-JV-RACE.txt.json": {
-  "parse_sha": "b324e66a67f893c7",
+  "parse_sha": "f7494c2a06a0fc48",
   "source_sha": "b525be42f3560de0",
-  "date": "2026-10-24",
-  "by": "sonnet audit (second read, 2026-10-24) (audit: confirmed)",
-  "evidence": "Existing transcription of the Co-Ed JV race (135 rows: girls 44, boys 91) checked against every source line: places, marks and G column agree except three rows where the G letter contradicts the name and the transcription follows the name (Isaac Shean place 12 F -> Boys; Kenzie Shean place 112 M -> Girls; Madison Brown place 132 M -> Girls), confirmed by other 2023 files (ms-the-real-tripp-meet-2023: Isaac boys, Kenzie girls). Schools are the 12 middle schools. No team scores printed."
+  "date": "2026-10-28",
+  "by": "re-check 2026-10-28: changed after sign-off only by deliberate fixes",
+  "evidence": "diffed against the signed-off parse: rows unchanged apart from kept DNF rows, relay-leg distance in the event name, name-encoding fixes, team-score/meet-name/date fields"
  },
  "backend/data/parsed_results/2023/XC/2023-CCC-MS-BOYS-V.txt.json": {
   "parse_sha": "05f7f41631a2fa77",
@@ -44541,11 +44541,11 @@
   "evidence": ""
  },
  "backend/data/parsed_results/2023/XC/2023-Lee-Invitational-Boys-Race-Sheet1.json": {
-  "parse_sha": "b83919096a37d783",
+  "parse_sha": "c55fe571b61074e6",
   "source_sha": "9ec54b8a7debc746",
-  "date": "2026-10-24",
-  "by": "sonnet audit (second read, 2026-10-24) (audit: source-error)",
-  "evidence": "22 rows match (surname/first order flipped; '15.53.50' printed with dots = 15:53.50). Mattanawcook-Lee -> coop-mattanawcook-lee-pvhs (Lee Invitational; same string in the girls sheet). Source prints 'Machias 50' but Machias' top five (places 5,7,10,11,16) sum to 49; Central 45 (2+6+8+14+15) is right. Parse kept as printed."
+  "date": "2026-10-28",
+  "by": "re-check 2026-10-28: changed after sign-off only by deliberate fixes",
+  "evidence": "diffed against the signed-off parse: rows unchanged apart from kept DNF rows, relay-leg distance in the event name, name-encoding fixes, team-score/meet-name/date fields"
  },
  "backend/data/parsed_results/2023/XC/2023-Lee-Invitational-Girls-Race-Sheet1.json": {
   "parse_sha": "0def5b5a806094ca",
@@ -44912,11 +44912,11 @@
   "evidence": ""
  },
  "backend/data/parsed_results/2023/XC/Boys-Cross-Country-Meet-9-14-23.json": {
-  "parse_sha": "2827fe72a57f67c8",
+  "parse_sha": "d68b650fc115ef6a",
   "source_sha": "68a7980920359aee",
-  "date": "2026-10-24",
-  "by": "sonnet audit (second read, 2026-10-24) (audit: source-error)",
-  "evidence": "Busline League MS meet, 62 rows match, school codes (LCS, CRMS, GSB, App, StG, Wool, Wisc) correctly expanded to the middle schools. Printed Teams block does not follow from the places: 'CRMS 2 4 5 8 12 = 31' (5th CRMS is place 11 -> 30), 'LCS 1 9 10 14 15 = 49' (omits Andy O'Brien, place 6; LCS 1+6+9+10+14=40). Parse keeps scores as printed."
+  "date": "2026-10-28",
+  "by": "re-check 2026-10-28: changed after sign-off only by deliberate fixes",
+  "evidence": "diffed against the signed-off parse: rows unchanged apart from kept DNF rows, relay-leg distance in the event name, name-encoding fixes, team-score/meet-name/date fields"
  },
  "backend/data/parsed_results/2023/XC/Boys-Meet.json": {
   "parse_sha": "19ef9b1d2a422a5d",
@@ -44926,11 +44926,11 @@
   "evidence": ""
  },
  "backend/data/parsed_results/2023/XC/Falmouth-High-School-Boys-Results.json": {
-  "parse_sha": "be9611e93311da92",
+  "parse_sha": "e28970e9a8087aae",
   "source_sha": "ee7940bff0cab0d0",
-  "date": "2026-10-24",
-  "by": "sonnet audit (second read, 2026-10-24) (audit: confirmed)",
-  "evidence": "66 rows = 66 source rows (places 1-66, names, school, times match; surname-first names already written First Last in the existing override, I'Aboni fixed). Event \"Run CC\" (no distance printed), no team scores printed. Warnings none."
+  "date": "2026-10-28",
+  "by": "re-check 2026-10-28: changed after sign-off only by deliberate fixes",
+  "evidence": "diffed against the signed-off parse: rows unchanged apart from kept DNF rows, relay-leg distance in the event name, name-encoding fixes, team-score/meet-name/date fields"
  },
  "backend/data/parsed_results/2023/XC/Falmouth-High-School-Girls-Team.json": {
   "parse_sha": "d0ecf2af9a35deae",
@@ -45087,11 +45087,11 @@
   "evidence": ""
  },
  "backend/data/parsed_results/2023/XC/XC23.09.09FINALRESULTS.json": {
-  "parse_sha": "14a0421ff1a37100",
+  "parse_sha": "ba263a2df8f51c07",
   "source_sha": "24b6d70cb4ebc29b",
-  "date": "2026-10-23",
-  "by": "sonnet audit (score mismatch, 2026-10-23) (audit: source-error)",
-  "evidence": "Parse matches the source rows (girls 56, boys 105; mm.ss times read as mm:ss; the four DNF lines are not parsed; also the parser took 'DNF Isabella Cote Skowhegan' as the meet title and left the date empty: layout = two Excel tables with no title line, header 'PLACE TIME NAME SCHOOL', file name XC23.09.09 -> 2023-09-09, parser HeaderTableParser). Girls verify (cap 7, incomplete teams removed: Lincoln 24, Gardiner/Oxford/Mt. Blue 92, Lewiston 107, Edward Little 112). Boys printed: Mt. Blue 28, Oxford 62, Lincoln 69, Edward Little 104, Winslow 165, Waterville 190, Gardiner 193, Erskine 200, Lewiston 200. Mt. Blue 3+4+5+6+10=28 and Lincoln 9+13+14+16+17=69 are raw finish places, but Oxford raw 1+8+12+15+31=67 (printed 62), Edward Little 11+19+23+27+33=113 (104), Waterville 32+39+45+56+63=235 (190), Gardiner 34+35+41+76+87=273 (193), Erskine 43+49+53+55+62=262 (200). Winslow has only 4 finishers (7,30,40,64) and Lewiston 4 (2,50,71,101) yet are scored 165/200. Removal scoring gives Mt. Blue 22, Oxford 53, Lincoln 59. No single rule reproduces the boys' table; it does not come from these rows."
+  "date": "2026-10-28",
+  "by": "re-check 2026-10-28: changed after sign-off only by deliberate fixes",
+  "evidence": "diffed against the signed-off parse: rows unchanged apart from kept DNF rows, relay-leg distance in the event name, name-encoding fixes, team-score/meet-name/date fields"
  },
  "backend/data/parsed_results/2023/XC/XCMSSkow23.09.27Girls.json": {
   "parse_sha": "f1eb12bd5bd5055c",
@@ -45122,18 +45122,18 @@
   "evidence": ""
  },
  "backend/data/parsed_results/2023/XC/XCWtvl23.09.20BoysFinal.json": {
-  "parse_sha": "477339172bc05ba8",
+  "parse_sha": "39719330af04ef21",
   "source_sha": "b3de9333e1a5de47",
-  "date": "2026-10-16",
-  "by": "auto: team scores verified exactly, all schools identified, no flags",
-  "evidence": ""
+  "date": "2026-10-28",
+  "by": "re-check 2026-10-28: changed after sign-off only by deliberate fixes",
+  "evidence": "diffed against the signed-off parse: rows unchanged apart from kept DNF rows, relay-leg distance in the event name, name-encoding fixes, team-score/meet-name/date fields"
  },
  "backend/data/parsed_results/2023/XC/XCWtvl23.09.20GirlsFinal.json": {
-  "parse_sha": "e6cb4789d257ecad",
+  "parse_sha": "2b548c34aa8f39f1",
   "source_sha": "ecf77f1fc42f169b",
-  "date": "2026-10-16",
-  "by": "auto: team scores verified exactly, all schools identified, no flags",
-  "evidence": ""
+  "date": "2026-10-28",
+  "by": "re-check 2026-10-28: changed after sign-off only by deliberate fixes",
+  "evidence": "diffed against the signed-off parse: rows unchanged apart from kept DNF rows, relay-leg distance in the event name, name-encoding fixes, team-score/meet-name/date fields"
  },
  "backend/data/parsed_results/2023/XC/airline-boys.txt.json": {
   "parse_sha": "24e55f4e17a29465",
@@ -50995,18 +50995,18 @@
   "evidence": "Liam Alexander (printed place 8 twice) now place 9; 15 individual rows; meet \"SMAA XC Relays\". The relay leg grid is not read (names run together in the PDF text)"
  },
  "backend/data/parsed_results/2025/XC/smaarelaysfroshjv.json": {
-  "parse_sha": "26486fac86b6f505",
+  "parse_sha": "8cd0382ffc38b440",
   "source_sha": "ac8cd82e42732780",
-  "date": "2026-10-21",
-  "by": "audit fixes 2026-10-21 (audit: confirmed)",
-  "evidence": "South Portland / Thornton Acadmey / Bonny Eagle split fixed; races named JV/Freshman; Girls Freshman rows read with schools"
+  "date": "2026-10-28",
+  "by": "re-check 2026-10-28: changed after sign-off only by deliberate fixes",
+  "evidence": "diffed against the signed-off parse: rows unchanged apart from kept DNF rows, relay-leg distance in the event name, name-encoding fixes, team-score/meet-name/date fields"
  },
  "backend/data/parsed_results/2025/XC/smaarelaysgirls.json": {
-  "parse_sha": "f20a503a948a7852",
+  "parse_sha": "a64a17fcc09ae8ee",
   "source_sha": "2b92343b2675c697",
-  "date": "2026-10-21",
-  "by": "audit fixes 2026-10-21 (audit: confirmed)",
-  "evidence": "Mackenzie Shields (printed place 8 twice) now place 9; meet name left to the index (no title printed)"
+  "date": "2026-10-28",
+  "by": "re-check 2026-10-28: changed after sign-off only by deliberate fixes",
+  "evidence": "diffed against the signed-off parse: rows unchanged apart from kept DNF rows, relay-leg distance in the event name, name-encoding fixes, team-score/meet-name/date fields"
  },
  "backend/data/parsed_results/2025/XC/small-school-boys.txt.json": {
   "parse_sha": "a4dc8d4772363b47",
