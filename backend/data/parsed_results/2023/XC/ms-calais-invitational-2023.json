@@ -60,7 +60,7 @@
     },
     {
      "place": 6,
-     "athlete": "Dakoda David",
+     "athlete": "Dakoda Davis",
      "school": "Washington Academy",
      "grade": "",
      "result": "16:22",
@@ -340,7 +340,7 @@
     {
      "place": 8,
      "athlete": "Acadia Thimlar",
-     "school": "Sumner Memorial High School",
+     "school": "Washington Academy",
      "grade": "",
      "result": "25:52",
      "type": "Finals"
@@ -388,6 +388,63 @@
    ]
   }
  ],
- "team_rankings": [],
- "notes": "Transcribed from MileSplit raw result text (me.milesplit.com). Schools kept as MileSplit prints them. Prelim/final/heat rows as printed; points column not copied; exhibition marks (x) flagged. Abbreviated or mascot school names (LAC, MTB, Dragons ...) expanded to full names. | Second read 2026-10-28: boys school string \"WashingtonAcademy\" (glued in the sheet) written Washington Academy. All 32 boys rows match the sheet. Girls pages (961499, 961612) not cached; girls row 8 Acadia Thimlar is stored as Sumner Memorial but is Washington Academy in the Narraguagus meet of 2023-09-15: check when the page is fetched."
+ "team_rankings": [
+  {
+   "kind": "xc",
+   "gender": "Boys",
+   "event_header": "2.84 Mile Run CC",
+   "teams": [
+    {
+     "rank": 1,
+     "team": "Sumner Memorial High School",
+     "score": 16,
+     "places": [
+      1,
+      2,
+      3,
+      4,
+      6
+     ]
+    },
+    {
+     "rank": 2,
+     "team": "Washington Academy",
+     "score": 62,
+     "places": [
+      5,
+      10,
+      12,
+      16,
+      19
+     ]
+    },
+    {
+     "rank": 3,
+     "team": "Woodland Junior-Senior High School",
+     "score": 86,
+     "places": [
+      7,
+      9,
+      20,
+      23,
+      27
+     ]
+    },
+    {
+     "rank": 4,
+     "team": "Machias Memorial High School",
+     "score": 95,
+     "places": [
+      12,
+      15,
+      21,
+      22,
+      24
+     ]
+    }
+   ],
+   "event_idx": 0
+  }
+ ],
+ "notes": "Transcribed from MileSplit raw result text (me.milesplit.com). Schools kept as MileSplit prints them. Prelim/final/heat rows as printed; points column not copied; exhibition marks (x) flagged. Abbreviated or mascot school names (LAC, MTB, Dragons ...) expanded to full names. | Second read 2026-10-28: boys school string \"WashingtonAcademy\" (glued in the sheet) written Washington Academy. All 32 boys rows match the sheet. Girls pages (961499, 961612) not cached; girls row 8 Acadia Thimlar is stored as Sumner Memorial but is Washington Academy in the Narraguagus meet of 2023-09-15: check when the page is fetched. | Full re-read 2026-10-28 (all cached pages): all three pages (961617 boys sheet, 961612 girls sheet, 961499 text list of both) agree; boys 32 and girls 13 rows match. Girls page now read: Acadia Thimlar is printed \"Sumner\" in both girls pages but is a Washington Academy runner (Narraguagus meet 2023-09-15, WA girls; WA outdoor relays in the athlete catalog): school set to Washington Academy (source error). Boys \"Dakoda David\" is Dakoda Davis (Washington Academy; Davis in the Narraguagus meet and WA relays). Boys team scores printed on page 961499 and stored (Calais \"no score\"): Sumner 1,2,3,4,6 = 16; Washington Academy 5,10,12,16,19 = 62; Woodland 7,9,20,23,27 = 86; Machias \"12,15,21,22,24 = 95\". Computing from finish order (Calais runners excluded) reproduces Sumner, Washington Academy and Woodland; Machias runs 11,15,21,22,24 = 93, so the printed Machias line (a repeated 12 and a total of 95) is a source error, stored as printed. No girls team score printed."
 }

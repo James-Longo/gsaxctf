@@ -1,17 +1,17 @@
 {
 "_meta": {
 "methods_by_rows": {
-"exact/alias": 1720929,
-"code": 255253,
+"exact/alias": 1720959,
+"code": 255226,
 "truncation": 119264,
 "athlete-continuity": 51440,
 "mascot": 28413,
-"bare name + level context": 25500,
+"bare name + level context": 25499,
 "unresolved": 17782,
 "manual (file rule)": 14969,
 "co-op label": 12521,
 "state-tagged (auto entry)": 10609,
-"spelling (fuzzy)": 3464,
+"spelling (fuzzy)": 3462,
 "file-expansion": 2785,
 "debris-salvage": 1767,
 "debris": 1043,
@@ -22,7 +22,7 @@
 "co-op label -> host (co-op not active)": 183
 },
 "methods_by_strings": {
-"exact/alias": 4107,
+"exact/alias": 4106,
 "unresolved": 2196,
 "state-tagged (auto entry)": 1567,
 "debris-salvage": 913,
@@ -30,7 +30,7 @@
 "debris": 723,
 "truncation": 542,
 "athlete-continuity": 468,
-"spelling (fuzzy)": 292,
+"spelling (fuzzy)": 291,
 "manual (file rule)": 145,
 "co-op label": 76,
 "bare name + level context": 66,
@@ -39,7 +39,7 @@
 "file-expansion": 13,
 "later-hs": 3
 },
-"distinct_strings": 11953,
+"distinct_strings": 11951,
 "note": "'raw' keys are whitespace-collapsed school strings exactly as printed. 'overrides' are per-file answers (year/season/file-stem) that differ from the string's global id."
 },
 "raw": {
@@ -1056,11 +1056,11 @@
 "how": "exact/alias"
 },
 "Thornton Academy": {
-"rows": 9567,
+"rows": 9568,
 "seasons": {
 "Indoor": 1508,
 "Outdoor": 3909,
-"XC": 4150
+"XC": 4151
 },
 "years": [
 2003,
@@ -1069,7 +1069,7 @@
 "id": "me-hs-thornton",
 "method": "exact",
 "by_id": {
-"me-hs-thornton": 9242,
+"me-hs-thornton": 9243,
 "me-ms-thornton": 325
 },
 "context_dependent": true,
@@ -1354,11 +1354,11 @@
 "how": "exact/alias"
 },
 "Bangor High School": {
-"rows": 8111,
+"rows": 8142,
 "seasons": {
 "Indoor": 999,
 "Outdoor": 2602,
-"XC": 4510
+"XC": 4541
 },
 "years": [
 2003,
@@ -3409,11 +3409,11 @@
 "how": "mascot"
 },
 "Waterville High School": {
-"rows": 3202,
+"rows": 3203,
 "seasons": {
 "Indoor": 488,
 "Outdoor": 2245,
-"XC": 469
+"XC": 470
 },
 "years": [
 2003,
@@ -3765,6 +3765,21 @@
 "method": "exact",
 "how": "exact/alias"
 },
+"Cape Elizabeth High School": {
+"rows": 3005,
+"seasons": {
+"XC": 1593,
+"Outdoor": 1014,
+"Indoor": 398
+},
+"years": [
+2003,
+2026
+],
+"id": "me-hs-cape-elizabeth",
+"method": "exact",
+"how": "exact/alias"
+},
 "Wells High School": {
 "rows": 3002,
 "seasons": {
@@ -3824,21 +3839,6 @@
 "athletes contradict name match (me-ms-oceanside -> me-ms-rockland, 10/11)",
 "athletes contradict name match (me-ms-oceanside -> me-ms-rockland, 22/26)"
 ],
-"how": "exact/alias"
-},
-"Cape Elizabeth High School": {
-"rows": 2978,
-"seasons": {
-"XC": 1566,
-"Outdoor": 1014,
-"Indoor": 398
-},
-"years": [
-2003,
-2026
-],
-"id": "me-hs-cape-elizabeth",
-"method": "exact",
 "how": "exact/alias"
 },
 "BJHS": {
@@ -4922,9 +4922,9 @@
 "how": "code"
 },
 "Waynflete School": {
-"rows": 2197,
+"rows": 2198,
 "seasons": {
-"XC": 2006,
+"XC": 2007,
 "Outdoor": 191
 },
 "years": [
@@ -4934,7 +4934,7 @@
 "id": "me-hs-waynflete",
 "method": "exact",
 "by_id": {
-"me-hs-waynflete": 2172,
+"me-hs-waynflete": 2173,
 "me-ms-waynflete": 25
 },
 "context_dependent": true,
@@ -5169,9 +5169,9 @@
 "how": "exact/alias"
 },
 "Washington Academy": {
-"rows": 2016,
+"rows": 2017,
 "seasons": {
-"XC": 1085,
+"XC": 1086,
 "Outdoor": 931
 },
 "years": [
@@ -8789,10 +8789,10 @@
 "how": "exact/alias"
 },
 "Sumner Memorial High School": {
-"rows": 823,
+"rows": 822,
 "seasons": {
 "Outdoor": 369,
-"XC": 314,
+"XC": 313,
 "Indoor": 140
 },
 "years": [
@@ -10408,19 +10408,6 @@
 "method": "exact",
 "how": "exact/alias"
 },
-"CEHS": {
-"rows": 580,
-"seasons": {
-"XC": 580
-},
-"years": [
-2017,
-2025
-],
-"id": "me-hs-cape-elizabeth",
-"method": "code",
-"how": "code"
-},
 "SMS": {
 "rows": 579,
 "seasons": {
@@ -10708,6 +10695,19 @@
 "me-hs-mt-view": 22
 },
 "context_dependent": true,
+"how": "code"
+},
+"CEHS": {
+"rows": 553,
+"seasons": {
+"XC": 553
+},
+"years": [
+2017,
+2025
+],
+"id": "me-hs-cape-elizabeth",
+"method": "code",
 "how": "code"
 },
 "Oxford": {
@@ -30848,20 +30848,6 @@
 "method": "exact",
 "how": "exact/alias"
 },
-"Bangor HS": {
-"rows": 57,
-"seasons": {
-"Indoor": 31,
-"XC": 26
-},
-"years": [
-2009,
-2024
-],
-"id": "me-hs-bangor",
-"method": "exact",
-"how": "exact/alias"
-},
 "Durham Middle SC": {
 "rows": 57,
 "seasons": {
@@ -35162,6 +35148,20 @@
 "method": "unresolved",
 "how": "unresolved"
 },
+"Bangor HS": {
+"rows": 42,
+"seasons": {
+"Indoor": 31,
+"XC": 11
+},
+"years": [
+2009,
+2013
+],
+"id": "me-hs-bangor",
+"method": "exact",
+"how": "exact/alias"
+},
 "Lake": {
 "rows": 42,
 "seasons": {
@@ -35324,20 +35324,6 @@
 "id": "me-ms-glenburn",
 "method": "exact",
 "how": "exact/alias"
-},
-"Wayneflete": {
-"rows": 42,
-"seasons": {
-"Indoor": 1,
-"XC": 41
-},
-"years": [
-2019,
-2024
-],
-"id": "me-hs-waynflete",
-"method": "fuzzy+athletes",
-"how": "spelling (fuzzy)"
 },
 "Gorham-ME": {
 "rows": 42,
@@ -35776,6 +35762,20 @@
 "id": "col-roger-williams",
 "method": "exact",
 "how": "exact/alias"
+},
+"Wayneflete": {
+"rows": 41,
+"seasons": {
+"Indoor": 1,
+"XC": 40
+},
+"years": [
+2019,
+2019
+],
+"id": "me-hs-waynflete",
+"method": "fuzzy+athletes",
+"how": "spelling (fuzzy)"
 },
 "Bhs Outdoor 2004": {
 "rows": 40,
@@ -36479,29 +36479,6 @@
 "method": "exact",
 "how": "exact/alias"
 },
-"Thorton": {
-"rows": 39,
-"seasons": {
-"Indoor": 33,
-"XC": 6
-},
-"years": [
-2022,
-2025
-],
-"id": "me-ms-thornton",
-"method": "athlete-continuity (name suggested me-hs-thornton)",
-"by_id": {
-"me-ms-thornton": 33,
-"me-hs-thornton": 6
-},
-"context_dependent": true,
-"by_season": {
-"Indoor": "me-ms-thornton",
-"XC": "me-hs-thornton"
-},
-"how": "athlete-continuity"
-},
 "Marshwood HS": {
 "rows": 39,
 "seasons": {
@@ -36891,6 +36868,29 @@
 "id": "me-ms-dirigo",
 "method": "code+season-words",
 "how": "code"
+},
+"Thorton": {
+"rows": 38,
+"seasons": {
+"Indoor": 33,
+"XC": 5
+},
+"years": [
+2022,
+2025
+],
+"id": "me-ms-thornton",
+"method": "athlete-continuity (name suggested me-hs-thornton)",
+"by_id": {
+"me-ms-thornton": 33,
+"me-hs-thornton": 5
+},
+"context_dependent": true,
+"by_season": {
+"Indoor": "me-ms-thornton",
+"XC": "me-hs-thornton"
+},
+"how": "athlete-continuity"
 },
 "Old Orchard MS": {
 "rows": 38,
@@ -52659,19 +52659,6 @@
 "id": "me-ms-upper-kennebec",
 "method": "athlete-continuity",
 "how": "athlete-continuity"
-},
-"Bangor Hs": {
-"rows": 16,
-"seasons": {
-"XC": 16
-},
-"years": [
-2024,
-2024
-],
-"id": "me-hs-bangor",
-"method": "exact",
-"how": "exact/alias"
 },
 "Sedgwick Elementary School": {
 "rows": 16,
@@ -76143,7 +76130,7 @@
 "method": "stem",
 "how": "exact/alias"
 },
-"St. John'S Catholic": {
+"St. John's Catholic": {
 "rows": 6,
 "seasons": {
 "XC": 6
@@ -161194,19 +161181,6 @@
 "method": "unresolved",
 "how": "unresolved"
 },
-"Waterviile": {
-"rows": 1,
-"seasons": {
-"XC": 1
-},
-"years": [
-2024,
-2024
-],
-"id": "me-hs-waterville",
-"method": "fuzzy+athletes",
-"how": "spelling (fuzzy)"
-},
 "MMR": {
 "rows": 1,
 "seasons": {
@@ -228952,8 +228926,7 @@
 "Searsport District High School": "me-hs-searsport"
 },
 "2024/XC/ms-smaa-relays-2024": {
-"Thornton Academy": "me-hs-thornton",
-"Thorton": "me-hs-thornton"
+"Thornton Academy": "me-hs-thornton"
 },
 "2024/XC/ms-thornton-academy-2024": {
 "Thornton Academy": "me-hs-thornton"
@@ -232755,13 +232728,7 @@
 "id": null,
 "basis": "name only (no joined rows)"
 },
-"Bid": {
-"id": "me-hs-biddeford",
-"held": {
-"None": 4,
-"me-hs-biddeford": 1
-}
-},
+"Bid": null,
 "Biddeford High School": "me-hs-biddeford",
 "Biddeford Middle School": "me-ms-biddeford",
 "Billerica Memorial High School": "oos-ma-billerica-memorial-high-school",
@@ -234544,10 +234511,6 @@
 "Unattached": "x-unattached",
 "Union": "oos-auto-vt-union",
 "Union 122 combined middleschool team": "me-ms-union-122",
-"Unknown School": {
-"id": null,
-"basis": "name only (no joined rows)"
-},
 "Unknown blank": "x-unknown",
 "Upper Kennebec Valley JuniorSenior High School": "me-hs-upper-kennebec",
 "Upper Kennebec Valley Middle School": "me-ms-upper-kennebec",
