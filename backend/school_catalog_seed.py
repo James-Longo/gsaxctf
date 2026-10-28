@@ -1712,6 +1712,11 @@ FILE_RULES = [
     (['W'], 'XC', (2006, 2006), r'^windham9_27girls$', 'me-hs-windham'),
     (['FI'], 'XC', (2006, 2006), r'^Camden%20Hills%20BOYS%20RACE$', 'coop-fox-islands'),
     (['RO'], 'XC', (2006, 2006), r'^camdenhills10_6girls$', 'me-hs-rockland'),
+    # 2026-10-27 second read batch 26 (2004-2005)
+    (['Ken'], 'XC', (2005, 2005), r'^yorkMS(jb|jg|sb|sg)$', 'me-ms-kennebunk'),
+    (['Mar'], 'XC', (2005, 2005), r'^yorkMS(jb|jg|sb|sg)$', 'me-ms-marshwood'),
+    (['Mass'], 'XC', (2005, 2005), r'^yorkMS(jb|jg|sb|sg)$', 'me-ms-massabesic'),
+    (['Nhc'], 'XC', (2005, 2005), r'^eagleclassic(boys|girls)$', 'me-hs-north-haven'),
     # 2026-10-24 unresolved-school review, batch 2
     (['F'], 'XC', (2004, 2004), r'^cape7oct04[bg]\.txt$', 'me-hs-falmouth'),   # Title lists Falmouth; only F team
     (['Y'], 'XC', (2004, 2004), r'^cape7oct04[bg]\.txt$', 'me-hs-yarmouth'),   # Title lists Yarmouth; only Y team

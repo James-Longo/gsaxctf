@@ -31,7 +31,7 @@
     },
     {
      "athlete": "Popovich",
-     "school": "Go",
+     "school": "Gorham",
      "result": "23:02",
      "grade": "",
      "type": "Finals",
@@ -250,8 +250,42 @@
  ],
  "date": null,
  "meet_name": "Lake Region Invitational",
- "team_rankings": [],
+ "team_rankings": [
+  {
+   "kind": "xc",
+   "gender": "Girls",
+   "event_header": "Lake Region Invitational",
+   "teams": [
+    {
+     "rank": 1,
+     "team": "Scarborough",
+     "score": 20
+    },
+    {
+     "rank": 2,
+     "team": "Gray-New Gloucester",
+     "score": 67
+    },
+    {
+     "rank": 3,
+     "team": "Lake Region",
+     "score": 76
+    },
+    {
+     "rank": 4,
+     "team": "St. Dominic",
+     "score": 103
+    },
+    {
+     "rank": 5,
+     "team": "Poland",
+     "score": 104
+    }
+   ],
+   "totals_only": true
+  }
+ ],
  "parser": "XCListParser",
  "source": "backend/data/sub5_archive/2005/XC/LakeRegionInvitationalG.pdf",
- "notes": "Whole race relabelled Boys -> Girls: file name ends 'G' (LakeRegionInvitationalG), winner E. Jesseman 20.12 'New Course Record' and 18 listed runners (Erica Jesseman, Saldanha, Titzers, Chamberlains, Mills, McElwain, ...) are girls in all their other races; no boys' list in the file. Also restored row 22 'Christy Pol 29.13.' which the parser dropped because of the trailing period (school kept as printed code Pol, time 29:13). Times in the source use '.' as the minute separator, parse already reads them as mm:ss."
+ "notes": "Whole race relabelled Boys -> Girls: file name ends 'G' (LakeRegionInvitationalG), winner E. Jesseman 20.12 'New Course Record' and 18 listed runners (Erica Jesseman, Saldanha, Titzers, Chamberlains, Mills, McElwain, ...) are girls in all their other races; no boys' list in the file. Also restored row 22 'Christy Pol 29.13.' which the parser dropped because of the trailing period (school kept as printed code Pol, time 29:13). Times in the source use '.' as the minute separator, parse already reads them as mm:ss. Second read 2026-10-27: place 4 Popovich school 'Go' (unresolved) is Gorham: the score line prints 'Gorham-NS' and the same meet writes Gor for McGill and Minor. Added the printed team scores (Scarboro 20, Gray-New Gloucester 67, Lake Region 76, St Doms 103, Poland 104, Gorham NS; Scarborough 20 reproduces from places 1,2,4,6,7 after Gorham's Popovich is skipped). Marks 'mm.ss' read as mm:ss; the 30 rows otherwise match the source place for place."
 }
