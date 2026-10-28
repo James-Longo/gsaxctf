@@ -39157,6 +39157,20 @@
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
  },
+ "backend/data/parsed_results/2019/XC/ms-maisad-cross-country-meet-2019.json": {
+  "parse_sha": "6008c6d3e19ce624",
+  "source_sha": "f326e44ddb2f6472",
+  "date": "2026-10-28",
+  "by": "sonnet audit (second read, 2026-10-28) (audit: confirmed)",
+  "evidence": "Girls 12 + boys 32 rows match, TmPl column agrees with the stored team_place in every row (no team totals printed). The parse comes from the existing transcription override (gender split), which agrees with the source."
+ },
+ "backend/data/parsed_results/2019/XC/ms-mvc-mon-bbwisc-tel-dir-mt-v-rich-hall-dale-2019.json": {
+  "parse_sha": "7b5b0ceab212b183",
+  "source_sha": "bf1401e250532d4f",
+  "date": "2026-10-28",
+  "by": "sonnet audit (second read, 2026-10-28) (audit: confirmed)",
+  "evidence": "Boys 45 + girls 24 rows match (ALL-CAPS first/last columns re-ordered; tie at 18 and 8 kept). Codes MOUNMOUTH = Monmouth, RICHMOUND = Richmond already in milesplit_codes. No team scores printed."
+ },
  "backend/data/parsed_results/2019/XC/ms-saco-middle-school-meet-2019.json": {
   "parse_sha": "078160c2f1fd06fa",
   "source_sha": "85b74b494cdeb9a2",
@@ -39206,12 +39220,26 @@
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
  },
+ "backend/data/parsed_results/2019/XC/ms-wmc-fa-nya-sd-yarm-sv-2019.json": {
+  "parse_sha": "5f96bceb79f88f0f",
+  "source_sha": "d6d1b6750a328822",
+  "date": "2026-10-28",
+  "by": "sonnet audit (second read, 2026-10-28) (audit: confirmed)",
+  "evidence": "Boys 67 + girls 38 rows (initial-only names as printed) match; 5 rows with truncated marks left out (18:5 Corey, 19 Torigney, 23:1 Bernier, 24:5 Brennan, girls 22:4 Carty) and '24:10 King' correctly kept. YHS/SDRHS/NYA/FA/SVHS resolve correctly (Yarmouth, St. Dominic, North Yarmouth Academy, Fryeburg, Sacopee Valley). No team scores printed."
+ },
  "backend/data/parsed_results/2019/XC/ms-wmc-freep-greely-wells-ce-2019.json": {
   "parse_sha": "121d30be5cb33688",
   "source_sha": "c65a9447f878dd42",
   "date": "2026-10-19",
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
+ },
+ "backend/data/parsed_results/2019/XC/ms-wmc-gng-lr-oob-sd-sv-traip-waynflete-york-boys-frye-2019.json": {
+  "parse_sha": "adfe779b493deb92",
+  "source_sha": "efcebd031ca9437a",
+  "date": "2026-10-28",
+  "by": "MileSplit second read 2026-10-28 (batch 33): copy checked against its cached raw pages",
+  "evidence": "reader compared every row with the cached MileSplit pages; fixes made in the file; printed team totals stored as printed"
  },
  "backend/data/parsed_results/2019/XC/ms-wmc-gng-mcw-sd-traip-freepyarmouth-2019.json": {
   "parse_sha": "c3b0ffc64fffec20",
@@ -41110,6 +41138,27 @@
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
  },
+ "backend/data/parsed_results/2020/XC/ms-cape-elizabeth-vs-south-portland-scrimmage-2020.json": {
+  "parse_sha": "b6682a67da82aab0",
+  "source_sha": "82bb908d819d2fe6",
+  "date": "2026-10-28",
+  "by": "auto: team scores verified exactly, all schools identified, no flags",
+  "evidence": ""
+ },
+ "backend/data/parsed_results/2020/XC/ms-kvac-erksine-academy-nokomis-cony-2020.json": {
+  "parse_sha": "4bfe891a860935de",
+  "source_sha": "8d66f9b13393a9b5",
+  "date": "2026-10-28",
+  "by": "sonnet audit (second read, 2026-10-28) (audit: confirmed)",
+  "evidence": "Boys 32 + girls 11 rows match (Erskine, Cony, Nokomis); names as printed ('Jakubisn, J.J.'); no team scores printed."
+ },
+ "backend/data/parsed_results/2020/XC/ms-kvac-gardiner-cony-2020.json": {
+  "parse_sha": "539e16a5c23c74c8",
+  "source_sha": "f36a69b62ff3ad6c",
+  "date": "2026-10-28",
+  "by": "sonnet audit (second read, 2026-10-28) (audit: confirmed)",
+  "evidence": "Boys 19 + girls 13 rows match. Source typo '21.31.00' (Jake Harris, boys 14) read as 21:31.00 (between 20:58 and 21:41). Cony/Gardiner. No team scores printed."
+ },
  "backend/data/parsed_results/2020/XC/ms-kvacoceanside-camden-hills-medomak-valley-2020.json": {
   "parse_sha": "c3eb7cf2e701b31b",
   "source_sha": "e67d2eb4b49995f2",
@@ -41117,10 +41166,31 @@
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
  },
+ "backend/data/parsed_results/2020/XC/ms-lake-region-vs-st-doms-2020.json": {
+  "parse_sha": "26e9979012819c62",
+  "source_sha": "fab702d4006eced4",
+  "date": "2026-10-28",
+  "by": "sonnet audit (second read, 2026-10-28) (audit: confirmed)",
+  "evidence": "Boys 18 rows (714371) and girls 12 rows (714372) match: SD = St. Dominic, LR = Lake Region; no team scores printed."
+ },
+ "backend/data/parsed_results/2020/XC/ms-mt-blue-relays-2020.json": {
+  "parse_sha": "8abd04dae933c266",
+  "source_sha": "1f8dc50f7539e9a6",
+  "date": "2026-10-28",
+  "by": "sonnet audit (second read, 2026-10-28) (audit: confirmed)",
+  "evidence": "4 pages: boys 10 rows (711420) and girls 9 rows (711422) match; individual lists (711423) add coaches/parents (Brian Kelly Coach, Josh Robbins Parent, Julia Daly, Shelley Joyce, Meng Hardy Parent) correctly left out; the relay team page (711421: 6 four-person teams, 58:34-73:01) is team data, not individual marks, correctly not stored. No team scores."
+ },
  "backend/data/parsed_results/2020/XC/ms-portland-cheverus-2020.json": {
   "parse_sha": "4a09aeebeaf6e78f",
   "source_sha": "7b49a4c684508fd8",
   "date": "2026-10-18",
+  "by": "auto: team scores verified exactly, all schools identified, no flags",
+  "evidence": ""
+ },
+ "backend/data/parsed_results/2020/XC/ms-pvc-lee-academy-2020.json": {
+  "parse_sha": "67fd59072c493f19",
+  "source_sha": "0be6461d917863f0",
+  "date": "2026-10-28",
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
  },
@@ -41166,6 +41236,27 @@
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
  },
+ "backend/data/parsed_results/2020/XC/ms-smaawestbrook-bonny-eagle-2020.json": {
+  "parse_sha": "73d4e9e16e289862",
+  "source_sha": "581fed1c52ef92dc",
+  "date": "2026-10-28",
+  "by": "sonnet audit (second read, 2026-10-28) (audit: source-error)",
+  "evidence": "All 34 boys + 18 girls rows match the sheet. Source error: boys places 22 (Kovacs 22:27) and 23 (Ames 22:22) are out of time order. No team scores printed. BE = Bonny Eagle, West = Westbrook."
+ },
+ "backend/data/parsed_results/2020/XC/ms-smaawindham-bonny-eagle-2020.json": {
+  "parse_sha": "382dab7f26388b32",
+  "source_sha": "e8bfad8bbadf3cc3",
+  "date": "2026-10-28",
+  "by": "MileSplit second read 2026-10-28 (batch 33): copy checked against its cached raw pages",
+  "evidence": "reader compared every row with the cached MileSplit pages; fixes made in the file; printed team totals stored as printed"
+ },
+ "backend/data/parsed_results/2020/XC/ms-wmc-greely-cape-elizabeth-2020.json": {
+  "parse_sha": "e4a5ceb70ab2ce94",
+  "source_sha": "a9095a4533b44331",
+  "date": "2026-10-28",
+  "by": "MileSplit second read 2026-10-28 (batch 33): copy checked against its cached raw pages",
+  "evidence": "reader compared every row with the cached MileSplit pages; fixes made in the file; printed team totals stored as printed"
+ },
  "backend/data/parsed_results/2020/XC/ms-wmc-nya-freeport-2020.json": {
   "parse_sha": "4918c68632c46317",
   "source_sha": "1e5c3ed997521fae",
@@ -41187,12 +41278,26 @@
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
  },
+ "backend/data/parsed_results/2020/XC/ms-wmcmcw-ce-2020.json": {
+  "parse_sha": "c8a5521dcc3c14fd",
+  "source_sha": "fcdaeb8492a9e7dd",
+  "date": "2026-10-28",
+  "by": "MileSplit second read 2026-10-28 (batch 33): copy checked against its cached raw pages",
+  "evidence": "reader compared every row with the cached MileSplit pages; fixes made in the file; printed team totals stored as printed"
+ },
  "backend/data/parsed_results/2020/XC/ms-wmcnya-greely-2020.json": {
   "parse_sha": "e5b2042819d03948",
   "source_sha": "40c769c5f2b3d21e",
   "date": "2026-10-18",
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
+ },
+ "backend/data/parsed_results/2020/XC/ms-wmcwaynflete-cape-2020.json": {
+  "parse_sha": "e3aa1dbc55207ef7",
+  "source_sha": "1c813c53b3a6664f",
+  "date": "2026-10-28",
+  "by": "sonnet audit (second read, 2026-10-28) (audit: confirmed)",
+  "evidence": "Boys 40 rows (703288) and girls 32 rows (703283): place, name (Last, First flipped; 'Schair-Rigolletti, Eli W' -> Eli W Schair-Rigolletti), W = Waynflete, CE = Cape Elizabeth, time all match. No team scores printed."
  },
  "backend/data/parsed_results/2020/XC/old-town-boys.txt.json": {
   "parse_sha": "3fd6f26d29ca98d5",
@@ -43434,6 +43539,13 @@
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
  },
+ "backend/data/parsed_results/2021/XC/ms-freeport-falcon-4k-xc-challenge-2021.json": {
+  "parse_sha": "78b279048bda9c77",
+  "source_sha": "e3f5ccc6a1e50326",
+  "date": "2026-10-28",
+  "by": "sonnet audit (second read, 2026-10-28) (audit: confirmed)",
+  "evidence": "Falcon 4k, both pages (757395 boys 54 rows, 757396 girls 31 rows): place, name, grade (Year), school (CEHS/Freeport/Yarmouth) and time all match row by row; 'Conrad cole' lowercase as printed; no team scores printed; date 2021-08-26 printed."
+ },
  "backend/data/parsed_results/2021/XC/ms-kvac-oxford-hills-maranacook-mt-blue-mt-ararat-leavitt-2021.json": {
   "parse_sha": "e10088c53d8d8ba3",
   "source_sha": "ce242f137f2a6c32",
@@ -43454,6 +43566,20 @@
   "date": "2026-10-18",
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
+ },
+ "backend/data/parsed_results/2021/XC/ms-mvc-dir-carr-mad-mt-v-sp-mt-mt-ab-telstar-2021.json": {
+  "parse_sha": "93e4da65e8eda16d",
+  "source_sha": "80868c861f1d939b",
+  "date": "2026-10-28",
+  "by": "MileSplit second read 2026-10-28 (batch 33): copy checked against its cached raw pages",
+  "evidence": "reader compared every row with the cached MileSplit pages; fixes made in the file; printed team totals stored as printed"
+ },
+ "backend/data/parsed_results/2021/XC/ms-quabacook-relays-2021.json": {
+  "parse_sha": "c72a74582b4bf711",
+  "source_sha": "c4b95c5bae11482f",
+  "date": "2026-10-28",
+  "by": "MileSplit second read 2026-10-28 (batch 33): copy checked against its cached raw pages",
+  "evidence": "reader compared every row with the cached MileSplit pages; fixes made in the file; printed team totals stored as printed"
  },
  "backend/data/parsed_results/2021/XC/ms-saco-middle-school-xc-meet-2021.json": {
   "parse_sha": "7e6315f98d7c856f",
@@ -43504,12 +43630,40 @@
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
  },
+ "backend/data/parsed_results/2021/XC/ms-smaa-relays-2021.json": {
+  "parse_sha": "74fdcd7277add462",
+  "source_sha": "f9b4e4a4cef1469f",
+  "date": "2026-10-28",
+  "by": "sonnet audit (second read, 2026-10-28) (audit: source-error)",
+  "evidence": "Parse matches the source row for row (boys 94, freshman boys 10, freshman girls 10, JV girls 10, girls 69, JV boys 10). Source error in JV Girls: places 6 and 7 carry 11:30 and 11:31 after places 1-5 of 12:14-14:10 ('6 Camille Culpovich Windham 11:30', '7 Penelope Nets Kennebunk 11:31'), times out of place order. Freshman/JV pages list only 10 rows each."
+ },
  "backend/data/parsed_results/2021/XC/ms-westbrook-ms-xc-meet-2021.json": {
   "parse_sha": "c64e3b38c2f55f6a",
   "source_sha": "1829e847f06589af",
   "date": "2026-10-19",
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
+ },
+ "backend/data/parsed_results/2021/XC/ms-wmc-fa-lrgng-sv-poland-2021.json": {
+  "parse_sha": "1b9227f0f34c4dbf",
+  "source_sha": "00ec2a43e0fef18a",
+  "date": "2026-10-28",
+  "by": "MileSplit second read 2026-10-28 (batch 33): copy checked against its cached raw pages",
+  "evidence": "reader compared every row with the cached MileSplit pages; fixes made in the file; printed team totals stored as printed"
+ },
+ "backend/data/parsed_results/2021/XC/ms-wmc-free-greely-wells-york-2021.json": {
+  "parse_sha": "6ca22c5ebf8ed0f3",
+  "source_sha": "ba4d6f5669aa3e12",
+  "date": "2026-10-28",
+  "by": "MileSplit second read 2026-10-28 (batch 33): copy checked against its cached raw pages",
+  "evidence": "reader compared every row with the cached MileSplit pages; fixes made in the file; printed team totals stored as printed"
+ },
+ "backend/data/parsed_results/2021/XC/ms-wmc-fryeburg-academy-nya-st-dominic-sacopee-valley-2021.json": {
+  "parse_sha": "51780ccf2ec9d169",
+  "source_sha": "88aa7e125997f7e4",
+  "date": "2026-10-28",
+  "by": "sonnet audit (second read, 2026-10-28) (audit: confirmed)",
+  "evidence": "All 29 rows agree (boys 18, girls 11). Codes NYA, Fryeburg, St Dom/St. Dom, SVHS resolve correctly. Names as printed (A Bautiota, C. KIng). No team scores printed."
  },
  "backend/data/parsed_results/2021/XC/ms-wmc-fryeburg-greely-traip-wells-york-freeport-2021.json": {
   "parse_sha": "496c580aa1ff9fa3",
@@ -43538,6 +43692,27 @@
   "date": "2026-10-19",
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
+ },
+ "backend/data/parsed_results/2021/XC/ms-wmc-poland-sacopee-valley-lake-region-fryeburg-academy-2021.json": {
+  "parse_sha": "c0530cc4842bd41f",
+  "source_sha": "3a1a50fcf63d98b9",
+  "date": "2026-10-28",
+  "by": "sonnet audit (second read, 2026-10-28) (audit: source-error)",
+  "evidence": "Parse matches the source row for row (boys 18, girls 17). Source error: the girls list starts at place 2 ('2 Lisha Powell Poland 21:58'); place 1 is missing from the page, so one finisher is lost. Lake Region, in the title, has no runners on the page."
+ },
+ "backend/data/parsed_results/2021/XC/ms-wmc-sd-wayn-yar-cape-elizabeth-2021.json": {
+  "parse_sha": "c90e7370dcdfa427",
+  "source_sha": "1a5149f47b8c8b0c",
+  "date": "2026-10-28",
+  "by": "MileSplit second read 2026-10-28 (batch 33): copy checked against its cached raw pages",
+  "evidence": "reader compared every row with the cached MileSplit pages; fixes made in the file; printed team totals stored as printed"
+ },
+ "backend/data/parsed_results/2021/XC/ms-wmcfreeport-traip-fryeburg-academy-2021.json": {
+  "parse_sha": "78b144a5981931e3",
+  "source_sha": "242a4e1cb8545da3",
+  "date": "2026-10-28",
+  "by": "sonnet audit (second read, 2026-10-28) (audit: confirmed)",
+  "evidence": "All 48 rows agree (boys 25, girls 23; place, name, school, time). Source name typos kept as printed (Zoca Stacy for Zach Stacy, Issac Twombly-Wiser). No team scores printed."
  },
  "backend/data/parsed_results/2021/XC/ne-boys-1.txt.json": {
   "parse_sha": "1372d797f01f8d23",
@@ -45765,6 +45940,13 @@
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
  },
+ "backend/data/parsed_results/2022/XC/ms-cony-ms-xc-meet-2022.json": {
+  "parse_sha": "3a794882f5d2432a",
+  "source_sha": "8c07be9501a874dc",
+  "date": "2026-10-28",
+  "by": "sonnet audit (second read, 2026-10-28) (audit: confirmed)",
+  "evidence": "All 70 rows agree (boys 37, girls 33; place, name, school, time). Source typos in times only: '20.07.57' (Pierce) and '22.46.81' (Keller) read as 20:07.57 and 22:46.81, which fit the place order. Schools all middle schools (Windsor, Hall-Dale, Maranacook, Winthrop, Cony, Richmond, St. Michael's) resolve to me-ms-*. No team scores printed."
+ },
  "backend/data/parsed_results/2022/XC/ms-cony-xc-meet-2022.json": {
   "parse_sha": "651f46f6bcf500a7",
   "source_sha": "06109588999ba84a",
@@ -45778,6 +45960,13 @@
   "date": "2026-10-19",
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
+ },
+ "backend/data/parsed_results/2022/XC/ms-downeast-athletic-conference-championship-2022.json": {
+  "parse_sha": "9f9903f84f3e7b25",
+  "source_sha": "c18e8ff8e8a3a134",
+  "date": "2026-10-28",
+  "by": "MileSplit second read 2026-10-28 (batch 33): copy checked against its cached raw pages",
+  "evidence": "reader compared every row with the cached MileSplit pages; fixes made in the file; printed team totals stored as printed"
  },
  "backend/data/parsed_results/2022/XC/ms-freeport-falcon-4k-xc-challenge-2022.json": {
   "parse_sha": "20d032bc4cb9dac0",
@@ -45800,6 +45989,13 @@
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
  },
+ "backend/data/parsed_results/2022/XC/ms-fryeburg-academy-potato-invitational-2022.json": {
+  "parse_sha": "abd087f2d238f6b6",
+  "source_sha": "e2ae825b8ad44c5e",
+  "date": "2026-10-28",
+  "by": "sonnet audit (second read, 2026-10-28) (audit: confirmed)",
+  "evidence": "Rows agree: boys 49 of 51 (place 29 has no name, 23:52, a tie; place 41 Tyler Burns Freeport time printed as '28' only: left out as unreadable), girls 27 of 28 (place 28 Aleigha Monroe FA has no mark: left out; place 27 'Kacey Jane Clakr' as printed). Girls 9-27 times printed 24:00:00 style (mm:ss:00) read as mm:ss. Codes FA=Fryeburg Academy (milesplit_codes 499828), OOB=Old Orchard Beach, NYA, Traip, Lisbon, Freeport. No team scores printed."
+ },
  "backend/data/parsed_results/2022/XC/ms-gng-ms-xc-meet-2022.json": {
   "parse_sha": "64c07d2fdc03f4e0",
   "source_sha": "5f4562d832acd78b",
@@ -45814,12 +46010,47 @@
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
  },
+ "backend/data/parsed_results/2022/XC/ms-gsb-school-cross-country-meet-2022.json": {
+  "parse_sha": "078b1725a46552c7",
+  "source_sha": "ffe00048e3301cb0",
+  "date": "2026-10-28",
+  "by": "MileSplit second read 2026-10-28 (batch 33): copy checked against its cached raw pages",
+  "evidence": "reader compared every row with the cached MileSplit pages; fixes made in the file; printed team totals stored as printed"
+ },
+ "backend/data/parsed_results/2022/XC/ms-kvac-lewiston-mt-ararat-edward-little-2022.json": {
+  "parse_sha": "2e1187c292dcb8fd",
+  "source_sha": "28e015123f28480a",
+  "date": "2026-10-28",
+  "by": "auto: team scores verified exactly, all schools identified, no flags",
+  "evidence": ""
+ },
+ "backend/data/parsed_results/2022/XC/ms-laliberte-invitational-2022.json": {
+  "parse_sha": "81ee1c3b12f39072",
+  "source_sha": "6457ec121fe84a30",
+  "date": "2026-10-28",
+  "by": "MileSplit second read 2026-10-28 (batch 33): copy checked against its cached raw pages",
+  "evidence": "reader compared every row with the cached MileSplit pages; fixes made in the file; printed team totals stored as printed"
+ },
  "backend/data/parsed_results/2022/XC/ms-lewiston-xc-meet-2022.json": {
   "parse_sha": "396e405e17bb037c",
   "source_sha": "3bf2f649dfdfc37e",
   "date": "2026-10-18",
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
+ },
+ "backend/data/parsed_results/2022/XC/ms-lincolnville-home-meet-2022.json": {
+  "parse_sha": "7e3ad6954b22766d",
+  "source_sha": "c2dce10424ee231c",
+  "date": "2026-10-28",
+  "by": "sonnet audit (second read, 2026-10-28) (audit: confirmed)",
+  "evidence": "All 74 rows (37 girls, 37 boys) agree with pages 847537/847548 (place, name, school, time). Codes LCS=Lincolnville Central, BBES=Boothbay Region Elementary (milesplit_codes 504367), AVS=Appleton Village, SMS=Searsport MS, Wisc=Wiscasset MS, NHCS=North Haven Community School. Note: NHCS resolves to me-hs-north-haven (no me-ms-north-haven in the catalog) although these are middle-school runners at a middle-school meet. Pages 846257/846398 hold only a title line. No team scores printed."
+ },
+ "backend/data/parsed_results/2022/XC/ms-lincolnville-ms-xc-meet-2022.json": {
+  "parse_sha": "af0b732fab0857e1",
+  "source_sha": "f888be1b82132229",
+  "date": "2026-10-28",
+  "by": "MileSplit second read 2026-10-28 (batch 33): copy checked against its cached raw pages",
+  "evidence": "reader compared every row with the cached MileSplit pages; fixes made in the file; printed team totals stored as printed"
  },
  "backend/data/parsed_results/2022/XC/ms-medomak-xc-meet-2022.json": {
   "parse_sha": "a109c4ca42bf426f",
@@ -45877,6 +46108,13 @@
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
  },
+ "backend/data/parsed_results/2022/XC/ms-smaa-gorham-kennebunk-portland-south-portland-biddeford-2022.json": {
+  "parse_sha": "10d3e30e521920e6",
+  "source_sha": "d83c8307f9b3ff3c",
+  "date": "2026-10-28",
+  "by": "MileSplit second read 2026-10-28 (batch 33): copy checked against its cached raw pages",
+  "evidence": "reader compared every row with the cached MileSplit pages; fixes made in the file; printed team totals stored as printed"
+ },
  "backend/data/parsed_results/2022/XC/ms-smaa-massabesic-2022.json": {
   "parse_sha": "a50b32293157f1aa",
   "source_sha": "c4b82d0059518de9",
@@ -45890,6 +46128,13 @@
   "date": "2026-10-18",
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
+ },
+ "backend/data/parsed_results/2022/XC/ms-smaa-relays-2022.json": {
+  "parse_sha": "7e0354e57c01ecf2",
+  "source_sha": "11d4deb17a6b9df0",
+  "date": "2026-10-28",
+  "by": "MileSplit second read 2026-10-28 (batch 33): copy checked against its cached raw pages",
+  "evidence": "reader compared every row with the cached MileSplit pages; fixes made in the file; printed team totals stored as printed"
  },
  "backend/data/parsed_results/2022/XC/ms-westbrook-ms-xc-meet-2022.json": {
   "parse_sha": "86ff9fc72f239dfc",
@@ -45932,6 +46177,13 @@
   "date": "2026-10-19",
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
+ },
+ "backend/data/parsed_results/2022/XC/ms-wmc-poland-2022.json": {
+  "parse_sha": "6b4c9fe8785ccf15",
+  "source_sha": "d38a7d359178ea2d",
+  "date": "2026-10-28",
+  "by": "MileSplit second read 2026-10-28 (batch 33): copy checked against its cached raw pages",
+  "evidence": "reader compared every row with the cached MileSplit pages; fixes made in the file; printed team totals stored as printed"
  },
  "backend/data/parsed_results/2022/XC/ms-wmc-traip-york-wells-yarmouth-2022.json": {
   "parse_sha": "f18dac48f12c55cf",
