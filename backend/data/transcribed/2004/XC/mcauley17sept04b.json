@@ -5,7 +5,8 @@
  "school_codes": {
   "P": "Portland",
   "TA": "Thornton Academy",
-  "N": "Noble"
+  "N": "Noble",
+  "M": "McAuley"
  },
  "events": [
   {
@@ -18,145 +19,184 @@
      "school": "Portland",
      "result": "16:37",
      "grade": "",
-     "type": "Finals"
+     "type": "Finals",
+     "place": 1
     },
     {
      "athlete": "A. Taye",
      "school": "Portland",
      "result": "16:37",
      "grade": "",
-     "type": "Finals"
+     "type": "Finals",
+     "place": 2
     },
     {
      "athlete": "Rumery",
      "school": "Thornton Academy",
      "result": "17:56",
      "grade": "",
-     "type": "Finals"
+     "type": "Finals",
+     "place": 3
     },
     {
      "athlete": "Hoseit",
      "school": "Thornton Academy",
      "result": "18:36",
      "grade": "",
-     "type": "Finals"
+     "type": "Finals",
+     "place": 4
     },
     {
      "athlete": "Thomas",
      "school": "Portland",
      "result": "18:43",
      "grade": "",
-     "type": "Finals"
+     "type": "Finals",
+     "place": 5
     },
     {
      "athlete": "Methot",
      "school": "Portland",
      "result": "18:58",
      "grade": "",
-     "type": "Finals"
+     "type": "Finals",
+     "place": 6
     },
     {
      "athlete": "Babirak",
      "school": "Thornton Academy",
      "result": "19:12",
      "grade": "",
-     "type": "Finals"
+     "type": "Finals",
+     "place": 7
     },
     {
      "athlete": "Mondor",
      "school": "Thornton Academy",
      "result": "19:17",
      "grade": "",
-     "type": "Finals"
+     "type": "Finals",
+     "place": 8
     },
     {
      "athlete": "Gadbois",
      "school": "Portland",
      "result": "19:31",
      "grade": "",
-     "type": "Finals"
+     "type": "Finals",
+     "place": 9
     },
     {
      "athlete": "Gagnon",
      "school": "Thornton Academy",
      "result": "19:32",
      "grade": "",
-     "type": "Finals"
+     "type": "Finals",
+     "place": 10
     },
     {
      "athlete": "Spills",
      "school": "Portland",
      "result": "19:44",
      "grade": "",
-     "type": "Finals"
+     "type": "Finals",
+     "place": 11
     },
     {
      "athlete": "Morse",
      "school": "Thornton Academy",
      "result": "19:47",
      "grade": "",
-     "type": "Finals"
+     "type": "Finals",
+     "place": 12
     },
     {
      "athlete": "DeFrancesco",
      "school": "Thornton Academy",
      "result": "19:49",
      "grade": "",
-     "type": "Finals"
+     "type": "Finals",
+     "place": 13
     },
     {
      "athlete": "J. Macisso",
      "school": "Portland",
      "result": "20:02",
      "grade": "",
-     "type": "Finals"
+     "type": "Finals",
+     "place": 14
     },
     {
      "athlete": "Foster",
      "school": "Portland",
      "result": "20:04",
      "grade": "",
-     "type": "Finals"
+     "type": "Finals",
+     "place": 15
     },
     {
      "athlete": "Fuller",
      "school": "Portland",
      "result": "21:06",
      "grade": "",
-     "type": "Finals"
+     "type": "Finals",
+     "place": 16
     },
     {
      "athlete": "Petersen",
      "school": "Thornton Academy",
      "result": "2:06",
      "grade": "",
-     "type": "Finals"
+     "type": "Finals",
+     "place": 17
     },
     {
      "athlete": "Moekler",
      "school": "Thornton Academy",
      "result": "20:41",
      "grade": "",
-     "type": "Finals"
+     "type": "Finals",
+     "place": 18
     },
     {
      "athlete": "Diego",
      "school": "Noble",
      "result": "22:41",
      "grade": "",
-     "type": "Finals"
+     "type": "Finals",
+     "place": 19
     },
     {
      "athlete": "Mende",
      "school": "Noble",
      "result": "23:01",
      "grade": "",
-     "type": "Finals"
+     "type": "Finals",
+     "place": 20
     }
    ]
   }
  ],
- "team_rankings": [],
- "notes": "Copy of the parse (20 rows) with the code (second line of each entry) split off the surname ('Rumery, TA') and expanded: P=Portland, TA=Thornton Academy, N=Noble (title 'Noble, TA, Portland at McAuley'; the girls twin mcauley17sept04g uses the same codes). Petersen (TA) is printed '2:06', not a readable 3-mile mark (neighbours 21:06 and 20:41); kept as printed.",
+ "team_rankings": [
+  {
+   "kind": "xc",
+   "gender": "Boys",
+   "event_header": "Run CC",
+   "teams": [
+    {
+     "rank": 1,
+     "team": "Portland",
+     "score": 23
+    },
+    {
+     "rank": 2,
+     "team": "Thornton Academy",
+     "score": 32
+    }
+   ],
+   "totals_only": true
+  }
+ ],
+ "notes": "Copy of the parse (20 rows) with the code (second line of each entry) split off the surname ('Rumery, TA') and expanded: P=Portland, TA=Thornton Academy, N=Noble (title 'Noble, TA, Portland at McAuley'; the girls twin mcauley17sept04g uses the same codes). Petersen (TA) is printed '2:06', not a readable 3-mile mark (neighbours 21:06 and 20:41); kept as printed. | 2026-10-28 second read a28: re-read against the source; all 20 rows agree with the override. The sheet has no place column but lists runners in finish order, so places 1-20 are added (checked against the printed scores: Portland 1+2+5+6+9 = 23 and TA 3+4+7+8+10 = 32 use exactly these positions). Printed team scores Portland 23, TA 32 added (totals only); Noble is printed 'ns' (fewer than five finishers) and is not ranked. The times of Fuller (21:06, between 20:04 and 17th place) and Petersen (2:06) do not fit their finish positions; both are kept as printed, source-side typos that cannot be corrected with certainty. Date September 17, 2004 as printed.",
  "parser": "SpreadsheetTableParser"
 }

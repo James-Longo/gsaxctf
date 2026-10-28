@@ -1728,6 +1728,11 @@ FILE_RULES = [
     (['M'], 'XC', (2004, 2004), r'^cheverus1oct04[bg]$', 'me-hs-marshwood'),
     (['W'], 'XC', (2004, 2004), r'^cheverus1oct04[bg]$', 'me-hs-windham'),
     (['L'], 'XC', (2004, 2004), r'^kennebunk15oct04g$', 'me-hs-kennebunk'),
+    # 2026-10-28 second read batch 28 (2003-2004)
+    (['Litchfield'], 'XC', (2004, 2004), r'^maranacook30sept04ms(b|g)$', 'me-ms-carrie-ricker'),
+    (['Matt. Acad.'], 'XC', (2004, 2004), r'^ells04.*$', 'me-hs-mattanawcook'),
+    (['Ma-Jv1'], 'XC', (2004, 2004), r'^(girls|boys)-mvc$', 'me-hs-monmouth'),
+    (['PVHS'], 'XC', (2003, 2003), r'^pvc', 'me-hs-penobscot-valley'),
     # 2026-10-24 unresolved-school review, batch 2
     (['F'], 'XC', (2004, 2004), r'^cape7oct04[bg]\.txt$', 'me-hs-falmouth'),   # Title lists Falmouth; only F team
     (['Y'], 'XC', (2004, 2004), r'^cape7oct04[bg]\.txt$', 'me-hs-yarmouth'),   # Title lists Yarmouth; only Y team

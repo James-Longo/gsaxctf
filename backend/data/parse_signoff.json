@@ -307,6 +307,27 @@
   "by": "sonnet audit (score mismatch, 2026-10-23) (audit: source-error)",
   "evidence": "Four races (boys varsity 50, girls varsity 43, JV boys 42, JV girls 34 rows), all rows match the source in order. Printed team totals contradict the sheet's own rows. Boys varsity: JB printed 26 but its five scorers are places 4,6,7,10,21; even removing every non-scoring team's runner ahead of them (MAC #3, ORN #8) the ranks are 3,5,6,8,18 = 40 at best, so 26 is impossible; the other five (SU 62, OT 70, CEN 93, PCHS 126, MATT 144) are within a few points of 63/68/86/132/144 under the best rule but not reproducible, and Bucksport (6 finishers, 134) is omitted from the printed scores though complete. Girls varsity: JB 35, OT 39, MDI 99, SU 110, GSA 114 reproduce exactly; Bucksport printed 138 but places 13,29,31,35,40 -> 11,26,27,30,34 = 128 (138 only if the 4 Mattanawcook runners are left displacing, which would break OT/MDI/SU/GSA). JV boys: MDI 15 and Shead 70 reproduce (7-per-team cap), OT printed 53 vs 8+9+11+12+15 = 55. JV girls: JB 22 reproduces, Machias printed 49 vs 3,6,11,12,16 = 48, PCHS printed 67 vs 5+10+13+14+15 = 57. School findings: (1) boys varsity place 17 'Victor Yaques - SUN - 17:43' parsed '?' -> SUN is SUM = Sumner (me-hs-sumner): Sumner is scored as 'SU', and Victor Jacques of Sumner appears in 2003 pvc/festival files; (2) place 35 'Andrew Brunton - UM - 19:07' parsed col-umaine (a college in a high-school meet) -> Sumner (me-hs-sumner): Andrew Brunton '9 Sumner 19:06.9' in another 2003 file with the same time; (3) JV boys place 42 'Blain Davis - 37:59' has no school (parsed '') -> evidence points to Mattanawcook (Blaine Davis, Mattanawcook, 38:55.1 in another 2003 file; M.A. in 2004), but the line itself prints none. Also source oddity: JV boys place 10 'Kyle BUCKSk' (looks like a find/replace on 'Black')."
  },
+ "backend/data/parsed_results/2003/XC/central03girls.json": {
+  "parse_sha": "6b58351426aedf5c",
+  "source_sha": "d96abd1b33c5bc87",
+  "date": "2026-10-28",
+  "by": "sonnet audit (second read, 2026-10-28) (audit: confirmed)",
+  "evidence": "Existing override re-checked against the source: 34 rows (place, time, name) agree; DOX = Foxcroft typo, Lanzara Schenck from other races; place 34 Jen Cliff 30:01 is printed out of order (kept); places 35-40 blank in the source. No team scores printed."
+ },
+ "backend/data/parsed_results/2003/XC/cheverusb24sept03.json": {
+  "parse_sha": "34e4ccf609e3c90a",
+  "source_sha": "432e75389f99ef42",
+  "date": "2026-10-28",
+  "by": "auto: team scores verified exactly, all schools identified, no flags",
+  "evidence": ""
+ },
+ "backend/data/parsed_results/2003/XC/cheverusg24sept03.json": {
+  "parse_sha": "0a2b405c0c8a852e",
+  "source_sha": "fbc89be0823f5dc3",
+  "date": "2026-10-28",
+  "by": "auto: team scores verified exactly, all schools identified, no flags",
+  "evidence": ""
+ },
  "backend/data/parsed_results/2003/XC/eastboysa.txt.json": {
   "parse_sha": "2ef53000211eb5aa",
   "source_sha": "9f77ee8162f47e9d",
@@ -363,6 +384,13 @@
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
  },
+ "backend/data/parsed_results/2003/XC/ells03bjv.json": {
+  "parse_sha": "bead67f92d23c618",
+  "source_sha": "2cd36532642c65ec",
+  "date": "2026-10-28",
+  "by": "auto: team scores verified exactly, all schools identified, no flags",
+  "evidence": ""
+ },
  "backend/data/parsed_results/2003/XC/ells03gjv.json": {
   "parse_sha": "9056ae04921f0763",
   "source_sha": "3923b946a8f135c9",
@@ -391,6 +419,13 @@
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
  },
+ "backend/data/parsed_results/2003/XC/falmouth1203g.json": {
+  "parse_sha": "ee85f0057692072d",
+  "source_sha": "cbc1bff94d40738a",
+  "date": "2026-10-28",
+  "by": "auto: team scores verified exactly, all schools identified, no flags",
+  "evidence": ""
+ },
  "backend/data/parsed_results/2003/XC/falmouth23sept03.json": {
   "parse_sha": "19b3cbb0d20b9192",
   "source_sha": "8d5ea9f4e7d2b8b4",
@@ -412,10 +447,24 @@
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
  },
+ "backend/data/parsed_results/2003/XC/foxcroft23sept03.json": {
+  "parse_sha": "89b94532f2939184",
+  "source_sha": "e5dbef1f38ac3e92",
+  "date": "2026-10-28",
+  "by": "auto: team scores verified exactly, all schools identified, no flags",
+  "evidence": ""
+ },
  "backend/data/parsed_results/2003/XC/ftkentb03.json": {
   "parse_sha": "140792f54b09841b",
   "source_sha": "7f9da0fe1f3495d5",
   "date": "2026-10-19",
+  "by": "auto: team scores verified exactly, all schools identified, no flags",
+  "evidence": ""
+ },
+ "backend/data/parsed_results/2003/XC/marshwood3oct03b.json": {
+  "parse_sha": "7b4552c570c96638",
+  "source_sha": "bc9ec380b500316d",
+  "date": "2026-10-28",
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
  },
@@ -461,10 +510,31 @@
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
  },
+ "backend/data/parsed_results/2003/XC/pendale03bjv.json": {
+  "parse_sha": "0ea74b59e5b70edb",
+  "source_sha": "827991cfbb2c956c",
+  "date": "2026-10-28",
+  "by": "auto: team scores verified exactly, all schools identified, no flags",
+  "evidence": ""
+ },
+ "backend/data/parsed_results/2003/XC/pendale03gv.json": {
+  "parse_sha": "6dc86d0f6fdd1e28",
+  "source_sha": "bf95ca2bb7c596a4",
+  "date": "2026-10-28",
+  "by": "auto: team scores verified exactly, all schools identified, no flags",
+  "evidence": ""
+ },
  "backend/data/parsed_results/2003/XC/pvcgv.txt.json": {
   "parse_sha": "4b4a191a40e40e71",
   "source_sha": "aa4df2c24a0fa302",
   "date": "2026-10-26",
+  "by": "auto: team scores verified exactly, all schools identified, no flags",
+  "evidence": ""
+ },
+ "backend/data/parsed_results/2003/XC/pvcjvb.txt.json": {
+  "parse_sha": "069875b8a078b814",
+  "source_sha": "129c01a23a235b5d",
+  "date": "2026-10-28",
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
  },
@@ -531,6 +601,27 @@
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
  },
+ "backend/data/parsed_results/2003/XC/smaarelays.json": {
+  "parse_sha": "4d174838c65f70ec",
+  "source_sha": "e86b576c1810a5d6",
+  "date": "2026-10-28",
+  "by": "sonnet audit (second read, 2026-10-28) (audit: confirmed)",
+  "evidence": "Second read (2026-10-28): relay leg grid; the existing override keeps every leg runner as an unranked 'Run CC' row (no place, no leg distance printed), as the 2006 SMAA relays do; kept unchanged (the 2003 team listing is excluded because its rows are here)."
+ },
+ "backend/data/parsed_results/2003/XC/sp25sept03.json": {
+  "parse_sha": "debbccfd183774c1",
+  "source_sha": "423867d709b7b2fc",
+  "date": "2026-10-28",
+  "by": "auto: team scores verified exactly, all schools identified, no flags",
+  "evidence": ""
+ },
+ "backend/data/parsed_results/2003/XC/spg25sept03.json": {
+  "parse_sha": "b38615ee5037057f",
+  "source_sha": "9a7ab0dccc2e2a86",
+  "date": "2026-10-28",
+  "by": "auto: team scores verified exactly, all schools identified, no flags",
+  "evidence": ""
+ },
  "backend/data/parsed_results/2003/XC/stateboysa.txt.json": {
   "parse_sha": "6d95c58dd70f01d1",
   "source_sha": "3929d4838e02d625",
@@ -587,6 +678,27 @@
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
  },
+ "backend/data/parsed_results/2003/XC/thornton17oct03g.json": {
+  "parse_sha": "1db2dbb67b4b47e2",
+  "source_sha": "433b71e5b0149dda",
+  "date": "2026-10-28",
+  "by": "auto: team scores verified exactly, all schools identified, no flags",
+  "evidence": ""
+ },
+ "backend/data/parsed_results/2003/XC/thornton19sept03b.json": {
+  "parse_sha": "fce7367c1e9fde15",
+  "source_sha": "ac9f7b031bad14c3",
+  "date": "2026-10-28",
+  "by": "auto: team scores verified exactly, all schools identified, no flags",
+  "evidence": ""
+ },
+ "backend/data/parsed_results/2003/XC/thornton19sept03g.json": {
+  "parse_sha": "f316f43f69a32f9d",
+  "source_sha": "4f297b637c11915a",
+  "date": "2026-10-28",
+  "by": "auto: team scores verified exactly, all schools identified, no flags",
+  "evidence": ""
+ },
  "backend/data/parsed_results/2003/XC/westboysa.json": {
   "parse_sha": "6a4c860c2ae28725",
   "source_sha": "ffbb0577f879b57d",
@@ -612,6 +724,13 @@
   "parse_sha": "59439bbca3dad98f",
   "source_sha": "11083df33c4c4656",
   "date": "2026-10-16",
+  "by": "auto: team scores verified exactly, all schools identified, no flags",
+  "evidence": ""
+ },
+ "backend/data/parsed_results/2003/XC/westbrook10oct03g.json": {
+  "parse_sha": "f210a610e9aab903",
+  "source_sha": "3063533694bb335c",
+  "date": "2026-10-28",
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
  },
@@ -1329,6 +1448,13 @@
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
  },
+ "backend/data/parsed_results/2004/XC/ells04gjv.json": {
+  "parse_sha": "f0f729e6ae89ab4e",
+  "source_sha": "88e39ab94293abcc",
+  "date": "2026-10-28",
+  "by": "auto: team scores verified exactly, all schools identified, no flags",
+  "evidence": ""
+ },
  "backend/data/parsed_results/2004/XC/ells04gv.json": {
   "parse_sha": "0e5d91f9fcecf36f",
   "source_sha": "e5358e115677819d",
@@ -1476,6 +1602,13 @@
   "by": "sonnet audit (second read, 2026-10-28) (audit: confirmed)",
   "evidence": "Hy-Tek heat sheet, all rows (place, name, school, time) match the source; each heat is its own race with places within the heat (Race n of 8 of the Rene's Run girls heats; the page's KVAC/Auburn Middle School header is template text, sub5 index lists Rene's Run at Lawrence 9/11/2004, date comes from the index). No team scores printed. Source spellings kept (e.g. Kim Enos, Becca Irwin match the festival)."
  },
+ "backend/data/parsed_results/2004/XC/girls-mvc.json": {
+  "parse_sha": "79afed30a6942aa3",
+  "source_sha": "2e8e5b8f582da5ce",
+  "date": "2026-10-28",
+  "by": "auto: team scores verified exactly, all schools identified, no flags",
+  "evidence": ""
+ },
  "backend/data/parsed_results/2004/XC/girls2.json": {
   "parse_sha": "00326795c4540007",
   "source_sha": "fa0747d7eb0e430d",
@@ -1602,6 +1735,13 @@
   "by": "auto re-check 2026-10-25: changed by a deliberate re-parse; team scores still verified exactly, every school identified, no flags",
   "evidence": "meet_ledger confidence fields after the 2026-10-25 rebuild"
  },
+ "backend/data/parsed_results/2004/XC/lynxinvite04girls.txt.json": {
+  "parse_sha": "46d3f06bc6745d6b",
+  "source_sha": "9c800349c1d5d7b9",
+  "date": "2026-10-28",
+  "by": "auto: team scores verified exactly, all schools identified, no flags",
+  "evidence": ""
+ },
  "backend/data/parsed_results/2004/XC/maranacook30sept04msscores.json": {
   "parse_sha": "860a99ca951e418d",
   "source_sha": "f0767a48de41876a",
@@ -1620,6 +1760,20 @@
   "parse_sha": "9e54b017c32a9065",
   "source_sha": "6320c2870b3b3a7a",
   "date": "2026-10-16",
+  "by": "auto: team scores verified exactly, all schools identified, no flags",
+  "evidence": ""
+ },
+ "backend/data/parsed_results/2004/XC/mcauley17sept04b.json": {
+  "parse_sha": "b649769c3699218f",
+  "source_sha": "36c6bce66eab9c1f",
+  "date": "2026-10-28",
+  "by": "auto: team scores verified exactly, all schools identified, no flags",
+  "evidence": ""
+ },
+ "backend/data/parsed_results/2004/XC/mcauley17sept04g.json": {
+  "parse_sha": "55d39df71626cb20",
+  "source_sha": "7e517af1892a9efe",
+  "date": "2026-10-28",
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
  },
@@ -1700,12 +1854,40 @@
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
  },
+ "backend/data/parsed_results/2004/XC/mtbluerelays04g.json": {
+  "parse_sha": "6b89a3118f01303a",
+  "source_sha": "f196b9349ed44d68",
+  "date": "2026-10-28",
+  "by": "sonnet audit (second read, 2026-10-28) (audit: confirmed)",
+  "evidence": "All 114 rows (place, name, school, mark) agree with the source, the 2.03 Mile event was already set in the existing override (leg 2.03 mi, orchestrator note); 'A/B/C/D/NS' team letters dropped (fine); no team scores printed. Date October 8, 2004 from the index."
+ },
  "backend/data/parsed_results/2004/XC/oxfordhills1oct04scores.json": {
   "parse_sha": "e4febf44f07631fc",
   "source_sha": "8febd91e4361d52f",
   "date": "2026-10-25",
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
+ },
+ "backend/data/parsed_results/2004/XC/pi15sept04bv.json": {
+  "parse_sha": "e260264d4536c475",
+  "source_sha": "6c8498a5310a37c2",
+  "date": "2026-10-28",
+  "by": "sonnet audit (second read, 2026-10-28) (audit: confirmed)",
+  "evidence": "All rows match the source (place, name, time, team) with no changes; team order printed without scores; no distance printed; \"4:00\" is the start time. Schools: PI = Presque Isle, GHCA = Greater Houlton Christian Academy, Limestone."
+ },
+ "backend/data/parsed_results/2004/XC/pi15sept04gv.json": {
+  "parse_sha": "0b6347fc8f2374c0",
+  "source_sha": "fb6549cae03e8f07",
+  "date": "2026-10-28",
+  "by": "sonnet audit (second read, 2026-10-28) (audit: confirmed)",
+  "evidence": "All rows match the source (place, name, time, team) with no changes; team order printed without scores; no distance printed; \"4:00\" is the start time. Schools: PI = Presque Isle, GHCA = Greater Houlton Christian Academy, Limestone."
+ },
+ "backend/data/parsed_results/2004/XC/pi15sept04jv.json": {
+  "parse_sha": "d7832746fdee3743",
+  "source_sha": "fd9be717c824ee43",
+  "date": "2026-10-28",
+  "by": "sonnet audit (second read, 2026-10-28) (audit: confirmed)",
+  "evidence": "All rows match the source (place, name, time, team) with no changes; team order printed without scores; no distance printed; \"4:00\" is the start time. Schools: PI = Presque Isle, GHCA = Greater Houlton Christian Academy, Limestone."
  },
  "backend/data/parsed_results/2004/XC/pvc04bv.txt.json": {
   "parse_sha": "8441e1e97a21c0a3",
@@ -1746,6 +1928,13 @@
   "parse_sha": "24512fcd517114e2",
   "source_sha": "a3a4abcb1f775c2e",
   "date": "2026-10-21",
+  "by": "auto: team scores verified exactly, all schools identified, no flags",
+  "evidence": ""
+ },
+ "backend/data/parsed_results/2004/XC/sanford8oct04b.json": {
+  "parse_sha": "8f2b2678898d1a26",
+  "source_sha": "3f4dcd274af2183a",
+  "date": "2026-10-28",
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
  },
@@ -1865,6 +2054,13 @@
   "parse_sha": "5f18487a2a00c8d9",
   "source_sha": "a77e6baa6ef419a7",
   "date": "2026-10-24",
+  "by": "auto: team scores verified exactly, all schools identified, no flags",
+  "evidence": ""
+ },
+ "backend/data/parsed_results/2004/XC/ta22sept04g.json": {
+  "parse_sha": "ff9995a7dd0f2c29",
+  "source_sha": "a6ded4f465b5e038",
+  "date": "2026-10-28",
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
  },
