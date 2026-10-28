@@ -3887,6 +3887,22 @@
   "parse_sha": "e56e23e66ed45d95",
   "source_sha": "91838f6215b4fd12"
  },
+ "backend/data/parsed_results/2009/XC/ms-jack-wilkinson-memorial-xc-meet-2009.json": {
+  "verdict": "fixed",
+  "by": "sonnet audit (second read, 2026-10-28)",
+  "notes": "Boys rows (35, results/94646) and girls rows (25, 94634) match the pages. The girls team block was misread: it held score=place of the first scorer and shifted scorer lists (Cheverus 1, Gorham 2, Bonny Eagle 7); the Team Scores page (94633) prints Cheverus 28 (1 3 5 9 10), Gorham 35 (2 4 6 11 12), Bonny Eagle 65 (7 8 14 16 20), all of which reproduce from the rows. Fixed in the ms- file. No boys team scores are printed.",
+  "date": "2026-10-28",
+  "parse_sha": "8311251e32096564",
+  "source_sha": "e3475e1416eb74d6"
+ },
+ "backend/data/parsed_results/2009/XC/ms-smaa-relays-2009-2009-09-03.json": {
+  "verdict": "fixed",
+  "by": "sonnet audit (second read, 2026-10-28)",
+  "notes": "Girls 1.55 mile (62 rows) and boys (85 rows) match the pages 95315/95317; the girls team scores were missing from the parse: added all 11 (Cheverus 52, Scarborough 82, Massabesic 105, Thornton 111, McAuley 136, Windham 155, South Portland 176, Deering 185, Kennebunk 186, Sanford 202, Biddeford 260), every one reproduces from the Pts column. Boys totals as printed do NOT reproduce: the printed place lists are shifted by one from the Pts column (Brian McHugh, place 1 South Portland, has no time on the page and is not scored) and South Portland lists a 43 that is no South Portland row (Scarborough prints 104, rows give 111; Cheverus 186 vs 190; etc.): source quirk, blocks kept as printed. McHugh (no mark) stays out. Third page 95333 is an unheaded list of times without places: not transcribed.",
+  "date": "2026-10-28",
+  "parse_sha": "c42a94f38ceb98d1",
+  "source_sha": "618ba2006d214034"
+ },
  "backend/data/parsed_results/2009/XC/mtblue_sept8.json": {
   "verdict": "source-error",
   "by": "sonnet audit (score mismatch, 2026-10-23)",
@@ -4598,6 +4614,22 @@
   "date": "2026-10-25",
   "parse_sha": "9af8f6d9445ab45a",
   "source_sha": "a4aef10bfcd67751"
+ },
+ "backend/data/parsed_results/2010/XC/ms-paul-brogan-invitational-2010.json": {
+  "verdict": "fixed",
+  "by": "sonnet audit (second read, 2026-10-28)",
+  "notes": "26 implausible flags are all FAST marks: the page prints no distance and the events were read as 5K, but the times are 0.45-0.50 of the runners own 5K medians (freshman winner 9:18, girls winner 8:27, 17-row boys winner 9:39), i.e. a short pre-season race like the 1.5-1.55 mile SMAA Relays. Events renamed 1.5 Mile Run CC (nearest standard distance, derived from the time ratios, not printed). Only the Boys Freshman Race page (results/126714) is cached: its 7 rows match exactly. The Boys/Girls Run CC rows (read 2026-10-21) cannot be re-checked against a cached page.",
+  "date": "2026-10-28",
+  "parse_sha": "18dd14a94d26cc50",
+  "source_sha": "870fe5d594baeef9"
+ },
+ "backend/data/parsed_results/2010/XC/ms-smaa-noble-portland-westbrook-thornton-academy-2010.json": {
+  "verdict": "confirmed",
+  "by": "sonnet audit (second read, 2026-10-28)",
+  "notes": "Boys 5000 (28 rows, results/136778) match the page row for row (names, grades, times, Pts) and the 3 team lines reproduce (Portland 33 = 2+3+4+5+19, Westbrook 38 = 1+6+8+11+12, Thornton 53 = 7+9+10+13+14). The girls page is not in the cache, so the 28 girls rows cannot be re-read; internally they are consistent (Thornton 17 = 1+2+3+5+6, Portland 43 = 4+7+9+11+12 from the tp column, Noble and Westbrook incomplete teams unscored, times in place order). Confirmed on the boys page and the girls internal check.",
+  "date": "2026-10-28",
+  "parse_sha": "63f51e98c6ae6bbc",
+  "source_sha": "f5f24fd00108dc11"
  },
  "backend/data/parsed_results/2010/XC/ms-smaa-south-portland-westbrook-massabesic-2010.json": {
   "verdict": "fixed",
@@ -6391,6 +6423,14 @@
   "parse_sha": "f7963764439cde23",
   "source_sha": "adbedcb0db0335c9"
  },
+ "backend/data/parsed_results/2012/XC/ms-hancock-county-championship-2012.json": {
+  "verdict": "fixed",
+  "by": "sonnet audit (second read, 2026-10-28)",
+  "notes": "Four pages (218186 boys varsity, 218187 girls varsity, 218188 boys JV, 218189 girls JV). The Boys JV race (19 rows) was missing and its team block (Ellsworth 19, George Stevens 54, MDI 57) sat on the varsity boys; the real varsity boys block (Ellsworth 23, MDI 41, George Stevens 82, Bucksport 95, Sumner 114) was absent. Added the JV boys event with its block, restored the varsity block, and added the Gr column grades to all rows. Girls varsity (20/55/58), girls JV (17/41) and both boys blocks all reproduce from the TmPl column; all other rows match.",
+  "date": "2026-10-28",
+  "parse_sha": "85ee20c78ee07b7f",
+  "source_sha": "5f0a71977ddc8e42"
+ },
  "backend/data/parsed_results/2012/XC/mtblueboys_august31.json": {
   "verdict": "fixed",
   "by": "sonnet audit (second read, 2026-10-25)",
@@ -7247,6 +7287,30 @@
   "parse_sha": "a0766d8e0d079a6b",
   "source_sha": "c199f8d5d02318e4"
  },
+ "backend/data/parsed_results/2013/XC/ms-airline-invitational-2013.json": {
+  "verdict": "fixed",
+  "by": "sonnet audit (second read, 2026-10-28)",
+  "notes": "Girls race winner Augusta Stockman (place 1, 11:34.99, Camden-Rockport) was missing: her page line carries trailing text (Old Course Record 11:38 Aleta Looker Ellsworth) and had been dropped, breaking the girls Camden-Rockport total. Added. Every other row of both races (boys 145, girls 163 + 4 DNF kept) matches pages 273803/273802 and all 28 team lines reproduce; Lincolnville block name aligned to the rows school string.",
+  "date": "2026-10-28",
+  "parse_sha": "d64b1fb7204b4ea9",
+  "source_sha": "f1a2d58cb44078db"
+ },
+ "backend/data/parsed_results/2013/XC/ms-kvac-mt-ararat-brunswick-ocean-morse-2013.json": {
+  "verdict": "fixed",
+  "by": "sonnet audit (second read, 2026-10-28)",
+  "notes": "KVAC League Meet #4 has 4 Hy-Tek pages (Boys FR/SO 265767, Boys JR/SR 265763, Girls FR/SO 265765, Girls JR/SR 265768); the file held two (Boys JR/SR, Girls FR/SO) and the team blocks were on the wrong races (the Boys block was FR/SO, the Girls block JR/SR). Rebuilt as 4 races (FR-SO / JR-SR); all 4 team blocks reproduce from the Points column (28/29, 20/39, 21/38, 27/28). Date: Hy-Tek header prints 9/26/2013 (MileSplit startDate 2013-10-02 is the posting date); file date set to 2013-09-26. BR13 = Brunswick (team Brunswick WT 2012-2013), MTA = Mt. Ararat, Morse XC = Morse.",
+  "date": "2026-10-28",
+  "parse_sha": "3d448a91b53bc288",
+  "source_sha": "43cd11d61166c317"
+ },
+ "backend/data/parsed_results/2013/XC/ms-smaa-deering-mcauley-portland-cheverus-2013.json": {
+  "verdict": "fixed",
+  "by": "sonnet audit (second read, 2026-10-28)",
+  "notes": "Boys (36) and girls (34) rows match pages 272103/272104. The girls team block lacked Cheverus (32 = 1+2+6+11+12) and Catherine McAuley (101); added as printed. All totals reproduce except McAuley (printed 15 17 22 23 24 = 101, but the Pts column gives Dube 21 so the rows add to 100; Deering prints a 21 where the Pts column says 22): a source inconsistency, noted.",
+  "date": "2026-10-28",
+  "parse_sha": "52cdadf04bc29677",
+  "source_sha": "6f9aeec8a85c9615"
+ },
  "backend/data/parsed_results/2013/XC/ms-smaa-gorham-marshwood-mcauley-biddeford-2013.json": {
   "verdict": "fixed",
   "by": "sonnet audit (second read, 2026-10-26)",
@@ -7254,6 +7318,30 @@
   "date": "2026-10-26",
   "parse_sha": "5b5b8d9a680180fc",
   "source_sha": "eba6b6d3817f7ec6"
+ },
+ "backend/data/parsed_results/2013/XC/ms-triple-c-2013-cross-country-festival-meet-2013.json": {
+  "verdict": "confirmed",
+  "by": "sonnet audit (second read, 2026-10-28)",
+  "notes": "Compared every row of pages 271219 (boys 94), 271214 (girls 80) and 271220 (JV list of 136 = 91 + 45 split by sex) with the parse: place, name, school, time all match (Durham expanded to Durham Community School). The varsity boys (13 teams) and girls (11 teams) blocks match the pages and every total reproduces from the TmPl column. The warning comes from the JV list: it is ONE list of boys and girls with ONE combined team score, which the sex split cannot reproduce per sex (Gray/NG 165 and Merriconeag 196 lose their girls); printed as printed. Parse equals the existing override. The unresolved-sex JV rows noted in the override stay as they were.",
+  "date": "2026-10-28",
+  "parse_sha": "5ee1e991c54ee0e8",
+  "source_sha": "eac81d3a5f1cf69f"
+ },
+ "backend/data/parsed_results/2013/XC/ms-winthrop-invitational-2013.json": {
+  "verdict": "fixed",
+  "by": "sonnet audit (second read, 2026-10-28)",
+  "notes": "Boys middle-school race (52 rows, results/273312) matches the page. The boys team block lacked Cony (64) and Windsor (108), printed with - placeholders in the 6th/7th columns (parser dropped those lines); added, all 5 reproduce. The girls page is not cached: the girls block lacked ranks 1 (Cony) and 6 (Windsor), added with scores derived from the rows (27 = 1+2+5+9+10; 179), which fill exactly the missing ranks; the other four girls totals reproduce from the rows.",
+  "date": "2026-10-28",
+  "parse_sha": "f567afaebc9b7d53",
+  "source_sha": "c4aa24b5420b6c6a"
+ },
+ "backend/data/parsed_results/2013/XC/ms-wmc-championship-2013.json": {
+  "verdict": "fixed",
+  "by": "sonnet audit (second read, 2026-10-28)",
+  "notes": "12 pages. The file held only the Boys JV race (271196, 137 rows) and the Girls varsity race (271199, 112 rows), each with the team block of another race (the girls varsity carried the girls JV block). Rebuilt as 4 races from their own pages: boys varsity 271195 (100 rows), boys JV 271196, girls varsity 271199, girls JV 271202 (92 rows with a time; 4 rows with no time left out: places 93-96). Each keeps the overall team block on its page (14, 9, 15, 7 teams), all totals reproduce from TmPl. The Div 1/Div 2 re-ranked team lists on pages 271197/271198/271200/271201/271205/271206/271208 are not stored (271203 repeats the girls varsity D1 list).",
+  "date": "2026-10-28",
+  "parse_sha": "9c915d311f0a481c",
+  "source_sha": "14567e21042cddeb"
  },
  "backend/data/parsed_results/2013/XC/mtbluegirls_sept6.json": {
   "verdict": "fixed",
@@ -7822,6 +7910,86 @@
   "date": "2026-10-25",
   "parse_sha": "e866faaba8576fe8",
   "source_sha": "67cb8c1d9a8f7cdd"
+ },
+ "backend/data/parsed_results/2014/XC/ms-girls-78.json": {
+  "verdict": "confirmed",
+  "by": "sonnet audit (second read, 2026-10-28)",
+  "notes": "Not a MileSplit page: sub5 sheet backend/data/sub5_archive/2014/XC/ms-girls-78.txt (Southern Maine Middle School XC Festival, Oct 27 2014, 7th and 8th grade girls, 1.5 Miles printed). All 69 rows match place, name, grade, school, time; schools resolve to me-ms-* teams; event 1.5 Mile Run CC is the printed distance; no team scores printed; date null in the parse but the index (web_date_mapping) has 2014-10-27.",
+  "date": "2026-10-28",
+  "parse_sha": "7ba232a14282fee2",
+  "source_sha": "21a46d43473d72c0"
+ },
+ "backend/data/parsed_results/2014/XC/ms-kents-hill-academy-cross-country-meet-2014.json": {
+  "verdict": "source-error",
+  "by": "sonnet audit (second read, 2026-10-28)",
+  "notes": "Boys (35 rows, results/332079) and girls (33, 332076) match the pages exactly and all team lines are as printed. The source page omits places 13, 20 and 24 of the boys race while the team table scores them (Kents Hill prints 6 7 12 19 21 = 65 but the page rows give only 6 7 21 23): Kents Hill boys 65 cannot be reproduced; the other 5 team totals reproduce. Girls blocks (Kents Hill 15, Gould 50) reproduce.",
+  "date": "2026-10-28",
+  "parse_sha": "b4166c0d59c88f57",
+  "source_sha": "1e4f3080441187bd"
+ },
+ "backend/data/parsed_results/2014/XC/ms-kvac-mt-ararat-brunswick-morse-2014.json": {
+  "verdict": "fixed",
+  "by": "sonnet audit (second read, 2026-10-28)",
+  "notes": "Two Hy-Tek pages each hold two races (327078 = FR/SO women 15 + men 26, 327080 = JR/SR women 19 + men 23). The file had only 2 of the 4 races, school strings carried the sex letter (\"M MTA\", \"W Morse XC\"; the Year column holds M/W) and all team blocks sat in one Boys block. Rebuilt as 4 races (FR-SO / JR-SR), 4 correct blocks, every total reproduces from Points. Date: header KVAC League Meet #4 - 9/25/2014 (the 10/1/2014 in the page header is the print time that the file had used); date set to 2014-09-25.",
+  "date": "2026-10-28",
+  "parse_sha": "541255b1f6ce183d",
+  "source_sha": "d4762fd9c5081fb1"
+ },
+ "backend/data/parsed_results/2014/XC/ms-laliberte-invitational-2014-2014-08-29.json": {
+  "verdict": "fixed",
+  "by": "sonnet audit (second read, 2026-10-28)",
+  "notes": "Rebuilt. Hy-Tek Event 1 (314423, 240 rows) and Event 2 (314424, 148 rows) are each ONE list of boys and girls (sex = B/G on the team; Brb = Brunswick boys, BRG = Brunswick girls). The file stored the girls inside Boys events and Event 1 twice (the boys-only copy 315066 labelled 2.8 Mile; the girls-only copy 314596 agrees with the list). Now 4 events: Boys/Girls 2.4 Mile (121/119 rows) and Boys/Girls 1.2 Mile (82/66). Distances from evidence: 2.4 matches the 2013 and 2015 Laliberte varsity (Harris 13:21/13:19) and his 16:12 state 5K; the Event 2 label 2.3 Mile cannot be right (winner 7:39.65 = 3:20/mile, runners 0.40 of their own 5K medians => about 1.2 miles). Team totals are computed on the combined list (penalty places 123+/241+ for teams under 5): complete teams reproduce exactly, incomplete ones cannot per sex. Codes: HD = Hall-Dale, McI = Maine Central Institute.",
+  "date": "2026-10-28",
+  "parse_sha": "a5419dc5c270dc4b",
+  "source_sha": "add2ecfe2327f88d"
+ },
+ "backend/data/parsed_results/2014/XC/ms-maisad-championship-cross-country-meet-2014.json": {
+  "verdict": "fixed",
+  "by": "sonnet audit (second read, 2026-10-28)",
+  "notes": "PARSER PATTERN (backend/milesplit.py main, 'one race printed in two files: keep the fuller list'): races of one gender that share the label (varsity and JV, Open and Varsity, Junior and Senior, 6th and 7th/8th grade) collapse to the fuller list and the other race's team block attaches to the survivor; the label needs the page's division (JV / Open / Junior / Senior / grade) as a suffix. MAISAD Championship 10/31/2014: Varsity Boys 26, Varsity Girls 38, JV Boys 13 rows (Boys 5k Run, p.339785); the JV boys race was lost and its block (Gould 19, Hyde 39) sat on the varsity boys race. Edited the ms- file: JV boys race added as '5k Run CC JV' (13 rows), blocks matched to their races: varsity boys Seacoast 34, Gould 40, Kents Hill 57, Hyde 79; girls Kents Hill 19, Gould 57, Seacoast 75, Hebron 98; JV Gould 19, Hyde 39 - all reproduce. 77 rows match the source.",
+  "date": "2026-10-28",
+  "parse_sha": "9b04c00f2589e76c",
+  "source_sha": "5dea3084351aef76"
+ },
+ "backend/data/parsed_results/2014/XC/ms-mt-blue-relays-2014.json": {
+  "verdict": "fixed",
+  "by": "sonnet audit (second read, 2026-10-28)",
+  "notes": "Boys 2.03 Mile (185 rows, results/330323) matches the page; its 12 team lines reproduce. The two Run CC events (29 boys, 18 girls rows from results/330329, not cached) are TEAM entries, not runners: athlete = a school name, school = entry letter A/B/D (resolved to Cony High School or to nothing = the 3 unresolved), mark = team total time (Mt. Blue A 0:57:13 = the Total Time printed under Mt. Blue). Removed. Girls 2.03 Mile (117 rows) cannot be re-read (page not cached) but its blocks reproduce from the rows; the block lacked Cony (rank 6), Skowhegan (8), Leavitt (9) (dropped - placeholder lines): added with scores derived from the rows (159/202/236) that fill exactly the missing ranks.",
+  "date": "2026-10-28",
+  "parse_sha": "b0670684fd8f83fb",
+  "source_sha": "0bb09c121c0443f2"
+ },
+ "backend/data/parsed_results/2014/XC/ms-mvc-boothbay-wiscasset-st-doms-madison-carrabec-lisbon-2014.json": {
+  "verdict": "fixed",
+  "by": "sonnet audit (second read, 2026-10-28)",
+  "notes": "All 71 rows match pages 329968/329970. School error: Allie Lycette, Jennie Riggs, Stephanie Walsworth are printed for Lisbon Falls Christi(an), not Lisbon High School; now Lisbon Falls Christian Academy (me-hs-lfca). Team blocks lacked the lines with - placeholders: boys St. Dominic 88 and Madison 88, girls Boothbay 45 and Carrabec 56; added. All reproduce from Pts except Carrabec girls (56: the girls page has no place 1, which the source does not print).",
+  "date": "2026-10-28",
+  "parse_sha": "ffd939cacc5c0719",
+  "source_sha": "93cd47150ffe8954"
+ },
+ "backend/data/parsed_results/2014/XC/ms-wells-xc-extravaganza-2014.json": {
+  "verdict": "fixed",
+  "by": "sonnet audit (second read, 2026-10-28)",
+  "notes": "4 pages: 6th grade boys 321158 (62 rows), 6th grade girls 321161 (46), 7th and 8th boys 321162 (94), 7th and 8th girls 321163 (55). The file held only the 7/8 races, and the boys block (Kennebunk 30, Marshwood 50, York 61, Massabesic 105, Shapleigh 122) was the 6th-grade boys block. Added both 6th-grade races with their blocks (girls York 37 ... Biddeford 142), renamed events 1 Mile Run CC 6th Grade / 7th & 8th Grade; all totals reproduce from TmPl. UNKNOWN RUNNER rows (no name, no school) left out.",
+  "date": "2026-10-28",
+  "parse_sha": "0a60781244387f1f",
+  "source_sha": "94c743a1b95563e8"
+ },
+ "backend/data/parsed_results/2014/XC/ms-wmc-championship-2014.json": {
+  "verdict": "fixed",
+  "by": "sonnet audit (second read, 2026-10-28)",
+  "notes": "PARSER PATTERN (backend/milesplit.py main, 'one race printed in two files: keep the fuller list'): races of one gender that share the label (varsity and JV, Open and Varsity, Junior and Senior, 6th and 7th/8th grade) collapse to the fuller list and the other race's team block attaches to the survivor; the label needs the page's division (JV / Open / Junior / Senior / grade) as a suffix. WMC Championship 10/17/2014 has four races (Varsity Boys 110 p.333492 'Boys 5k Run' combined, JV Boys 129 p.333498, Varsity Girls 104 p.333491, JV Girls 91 p.333499) plus Division 1/2 pages (333493, 333495, 333494, 333497) that are subsets of the combined pages. The parse held JV boys (129) and varsity girls (104) only, with the varsity boys team block (Falmouth 41 ...) attached to JV boys and the Division 2 girls block (6 teams) attached to girls. Edited the ms- file: four races ('5k Run CC' = varsity, '5k Run CC JV'), 434 rows all matched to the source by name, school, time; varsity boys block (16 teams) and varsity girls block (15 teams) reproduce from the places; JV pages print no team scores. Hannah Berzinis 21:15 on the Girls Div 1 page vs 21:16 on the combined page: combined kept.",
+  "date": "2026-10-28",
+  "parse_sha": "274da6efcbd3a193",
+  "source_sha": "22f20ca4edd3d942"
+ },
+ "backend/data/parsed_results/2014/XC/ms-wmc-falmouth-sacopee-valley-kennebunk-2014.json": {
+  "verdict": "fixed",
+  "by": "sonnet audit (second read, 2026-10-28)",
+  "notes": "All rows of pages 321311 (boys 49) and 321310 (girls 41) are in the file (the stale not-transcribed note removed: those -- rows are non-scoring finishers and are present). Boys block lacked Sacopee Valley (85 = 15+16+17+18+19, dropped line with - placeholders): added. Girls: the sheet enters Kennebunk twice (Kennebunk High Schoo 43, and Kennebunk 80 with places 12 14 17 18 19), both the same school: second printed line added; the one-school total from rows (42) matches neither, a source quirk. Header prints 2014-09-19, MileSplit startDate 2014-09-18 (kept).",
+  "date": "2026-10-28",
+  "parse_sha": "c6338b53598e11d0",
+  "source_sha": "6567da680d984273"
  },
  "backend/data/parsed_results/2014/XC/oronoboys.json": {
   "verdict": "fixed",
@@ -8463,6 +8631,14 @@
   "parse_sha": "bb89bf1a2394fec8",
   "source_sha": "8967c34e3911b084"
  },
+ "backend/data/parsed_results/2015/XC/ms-kvac-mt-a-morse-mt-b-law-brunswick-2015.json": {
+  "verdict": "fixed",
+  "by": "sonnet audit (second read, 2026-10-28)",
+  "notes": "Boys sheet (Hy-Tek, p.397373) prints 'Reno, Jake  Morse XC' twice at place 33: '33 Reno, Jake  Morse XC  21:22.88' (no points) and '33 Reno, Jake  Morse XC  19:01.45  26', and has no place 5 (rows run '4 French' then '6 Ashby'; the points column also skips 5). 19:01.45 fits place 5 (between 18:43.02 and 19:04.55) and is out of order at place 33, so that row is a mis-named place-5 row (runner unknown): dropped from the ms- file; Reno's points 26 (between Schurz 25 and Ouellette 27) moved to his 21:22.88 row. All other 113 rows match name, school, time (Bhs CC 2014 = Brunswick, Mt.B XC = Mount Blue, MTA = Mount Ararat, Morse XC, Lawrence HS; all resolve). Team scores reproduce from the printed points column (boys Bhs 47, Mt. Ararat 49, Mt. Blue 53, Morse 95; girls Mt. Blue 36, Morse 51, Bhs 56, Mt. Ararat 72); a recount from the finish order does not for the boys because the sheet's place-5 point belongs to the missing runner.",
+  "date": "2026-10-28",
+  "parse_sha": "089127c08e74ab71",
+  "source_sha": "18d30dbe9317739c"
+ },
  "backend/data/parsed_results/2015/XC/ms-smaa-2nd-7-meet-2015.json": {
   "verdict": "confirmed",
   "by": "sonnet audit (second read, 2026-10-26)",
@@ -8470,6 +8646,22 @@
   "date": "2026-10-26",
   "parse_sha": "ef69e3d69250df10",
   "source_sha": "4420f2c61b8421b5"
+ },
+ "backend/data/parsed_results/2015/XC/ms-smaa-mcasanta-bonny-eagle-2015.json": {
+  "verdict": "source-error",
+  "by": "sonnet audit (second read, 2026-10-28)",
+  "notes": "All 77 rows (39 boys, 38 girls) match the RaceTab page (name, grade, school, time, place). Printed team scores reproduce from the Pts column except one: boys Thornton 18, Bonny Eagle 47, Sanford 62 and girls Bonny Eagle 18, Thornton 43, McAuley 89 reproduce (seven runners per team displace). Girls Sanford printed 67 (places 9, 11, 12, 14, 21) but the sheet prints Pts 11 twice: 'Sonni Hackett  Catherine McAuley  25:55  11' and 'Becca Campbell  Sanford  26:18  11' (Pts 12 then 11 at the 12 / 12 tie, 13 never printed); counting the finish order Campbell is 13 and Sanford is 69. The sheet's own Pts column has the typo; parse keeps it as printed.",
+  "date": "2026-10-28",
+  "parse_sha": "9927c0d88f0118ee",
+  "source_sha": "85f7f72629ccff86"
+ },
+ "backend/data/parsed_results/2015/XC/ms-york-county-middle-school-cross-country-festival-2015.json": {
+  "verdict": "fixed",
+  "by": "sonnet audit (second read, 2026-10-28)",
+  "notes": "PARSER PATTERN (backend/milesplit.py main, 'one race printed in two files: keep the fuller list'): races of one gender that share the label (varsity and JV, Open and Varsity, Junior and Senior, 6th and 7th/8th grade) collapse to the fuller list and the other race's team block attaches to the survivor; the label needs the page's division (JV / Open / Junior / Senior / grade) as a suffix. York County MS festival 10/21/2015 prints four races: Event 1 Junior Boys 62, Event 2 Junior Girls 61, Event 3 Sr Boys 79, Event 4 Sr Girls 56 (1.5 Mile). The parse kept Sr Boys and Junior Girls only, with the Sr Girls block on Junior Girls. Edited the ms- file: four races ('1.5 Mile Run CC Junior' / 'Senior'), 258 rows all matched, each with its own block (25 teams); every printed score reproduces from the printed points column and from seven-runner displacement.",
+  "date": "2026-10-28",
+  "parse_sha": "82a26a974737ea62",
+  "source_sha": "1e079a8813c1605c"
  },
  "backend/data/parsed_results/2015/XC/overall_boys_ind_pvc_results_10.17.15.json": {
   "verdict": "fixed",
@@ -8768,11 +8960,11 @@
   "source_sha": "51ecae5b0882306c"
  },
  "backend/data/parsed_results/2016/XC/Lee-Invitational-2016-Varsity-Boys-Results.json": {
-  "verdict": "fixed",
-  "by": "sonnet audit (second read, 2026-10-24)",
-  "notes": "Lee Invitational Boys Varsity, no date printed (left null). 43 places in the PDF. Fixes: (1) place 22 prints 'Kyle Davis/ Dylan Bernakuer  NHS/ Sumner  17:56' (name and school wrapped on two lines); the parse dropped it. Added as two rows at place 22, 17:56: Kyle Davis NHS and Dylan Bernakuer Sumner (the PDF gives one place and time for the pair; Kyle Davis is Narraguagus and Dylan Bernaquer Sumner in the 9/23/16 Seacoast results). (2) Places 38 Joseph Moore, 39 Jeffrey Graham and 43 Jacob McBrine print no school; all three are Washington Academy runners in 2016 (Jeffrey Graham and Joseph Moore: Seacoast 9/23/16, Orono Riot, PVC, Class C North; McBrine: Washington Academy in 2015 GSA meet; Washington Academy is on this sheet as WA), so school set to Washington Academy. Codes: LA = Lee Academy, MA = Mattanawcook, NHS = Narraguagus, JB = John Bapst, WA = Washington Academy, Central = Central (Corinth), as already resolved. All other rows match.",
-  "date": "2026-10-24",
-  "parse_sha": "1a4e73043ffb9825",
+  "verdict": "confirmed",
+  "by": "sonnet audit (second read, 2026-10-28)",
+  "notes": "Override matches the PDF row for row (43 places, 44 rows: place 22 'Kyle Davis/ Dylan Bernakuer  NHS/ Sumner  17:56' is two rows; places 38, 39, 43 print no school and were set to Washington Academy from the runners' other races, per the override notes). Codes LA Lee Academy, MA Mattanawcook, NHS Narraguagus, JB John Bapst, WA Washington Academy, Central. The 3 implausible flags (Michael Noyes 15:39, Joseph Aldrich 18:29, Jacob Walls 21:18, each 1.33-1.35x faster than the runner's 5K median) are real printed marks: every mark on the sheet runs about 0.74x the runners' 5K pace (winner Addison Coty 14:11), so the course is short; no distance is printed, so the race stays 'Run CC'. The team scores sheet (Orono 25, Lee 43, Narraguagus 72, Washington 101, Central 102) is a separate file; Orono reproduces from this sheet, the others are within 1-3 points.",
+  "date": "2026-10-28",
+  "parse_sha": "b7fe31a84f4a0bf6",
   "source_sha": "d7d83743f2b155c5"
  },
  "backend/data/parsed_results/2016/XC/Lee-Invitational-Girl-Race-Results-2016.json": {
@@ -9062,6 +9254,22 @@
   "date": "2026-10-24",
   "parse_sha": "2d5a860886a7336e",
   "source_sha": "ec2ac409e0b54907"
+ },
+ "backend/data/parsed_results/2016/XC/ms-smaa-relays-2016.json": {
+  "verdict": "fixed",
+  "by": "sonnet audit (second read, 2026-10-28)",
+  "notes": "Three fixes in the ms- file. (1) PARSER PATTERN: the header 'Varsity Freshman Boys 1.54 Mile Run' (Freshman before the gender word, p.461772) is not read as boys, so the 7 boys freshman rows (Matthew Pooler Massabesic 8:35.00 ... Jacob Saucier 9:06.00) were lost; added as '1.54 Mile Run CC Freshman'. (2) PARSER PATTERN: RaceTab team lines whose 7th place prints '-' are dropped from the team block: added boys Noble 320 (20, 48, 83, 84, 85, 97) and girls Biddeford 121, Massabesic 145, South Portland 175, Deering 211, Noble 387 with their printed places. (3) All 221 rows now match. Every printed score equals the sum of the runners' printed Pts; a recount from the finish order differs by a few points (ties scored by the sheet's rule). Partial top-15 copies of this relay exist in sub5 (relays-results-setup, 2016-smaa-xc-relays-team-scores), not whole races.",
+  "date": "2026-10-28",
+  "parse_sha": "90564d9c5e0cf57b",
+  "source_sha": "b2269d1235310edc"
+ },
+ "backend/data/parsed_results/2016/XC/ms-wmc-championship-2016.json": {
+  "verdict": "fixed",
+  "by": "sonnet audit (second read, 2026-10-28)",
+  "notes": "PARSER PATTERN (backend/milesplit.py main, 'one race printed in two files: keep the fuller list'): races of one gender that share the label (varsity and JV, Open and Varsity, Junior and Senior, 6th and 7th/8th grade) collapse to the fuller list and the other race's team block attaches to the survivor; the label needs the page's division (JV / Open / Junior / Senior / grade) as a suffix. WMC Championship 10/14/2016: Varsity Boys 115, JV Boys 165, Varsity Girls 108 (p.480551), JV Girls 128, plus Division 1/2 pages (subsets). The parse held JV girls (128) as the only girls race and the varsity girls block (15 teams) on it. Edited the ms- file: varsity girls 108 added, JV girls labelled '5k Run CC JV', blocks matched (varsity girls 15 teams, JV girls 9 teams, varsity boys 16, JV boys 12) - all reproduce from the printed TmPl. Code 'LR' (11 rows + 2 team lines) = Lake Region High School (WMC member, resolves to me-hs-lake-region), expanded in the file. Hannah Berzinis 21:15 on the Girls Div 1 page vs 21:16 on the combined page: combined kept.",
+  "date": "2026-10-28",
+  "parse_sha": "27fea41042c92ad2",
+  "source_sha": "e096facea003158f"
  },
  "backend/data/parsed_results/2016/XC/mtblueboys_sept2.json": {
   "verdict": "fixed",
@@ -9478,6 +9686,30 @@
   "date": "2026-10-24",
   "parse_sha": "5fd673fc88e64626",
   "source_sha": "d27483b6a47b71f2"
+ },
+ "backend/data/parsed_results/2017/XC/ms-lake-region-invitational-2017.json": {
+  "verdict": "fixed",
+  "by": "sonnet audit (second read, 2026-10-28)",
+  "notes": "PARSER PATTERN: RaceTab team lines whose 7th place prints '-' (a team of exactly five) are dropped from the block: added boys St. Dominic 106 (places 1, 6, 22, 37, 40) and girls Poland 87 (5, 9, 11, 30, 32). All 120 rows match the source; every printed score equals the sum of the runners' printed Pts (a recount from the finish order differs by 1-11 where the sheet breaks ties by its own rule).",
+  "date": "2026-10-28",
+  "parse_sha": "c77a372c89f79ede",
+  "source_sha": "865b8ff55c1eef8a"
+ },
+ "backend/data/parsed_results/2017/XC/ms-maine-coast-waldorf-ms-xc-meet-2017.json": {
+  "verdict": "fixed",
+  "by": "sonnet audit (second read, 2026-10-28)",
+  "notes": "SOURCE MISSING: the girls page (https://me.milesplit.com/meets/293020-maine-coast-waldorf-ms-xc-meet-2017/results/548627/raw) is not in backend/data/milesplit_cache (only 548628, the boys page), so the 41 girls rows could be checked only for internal consistency (times ascending; team points reproduce: Cape Elizabeth 20, Maine Coast 40, Yarmouth 77). Ask: re-fetch page 548627 into the cache (one page) and re-read the girls; or accept. Boys page matches the parse row for row (50 rows; Josh Petruzzi 13:18 ... Skyler Burke 19:38; OOB = Old Orchard Beach resolves to Loranger MS); its printed Yarmouth 85 counts a fifth scorer 'Sebastian Martinez' (team place 19) who has no result row (list stops at place 50), Cape Elizabeth 22 and Maine Coast 35 reproduce. EDIT made: the girls race was labelled '5k Run CC' (times 14:22 ...); renamed '2 Mile Run CC' like the boys race of the same meet - Hadley Mahoney 14:22 here is 13:45 for 2 Mile in 2018 and Maeve Woodruff 15:10 is 15:00 for 2 Mile on 9/19/2017, so these are 2-mile marks. ORCHESTRATOR 2026-10-28: girls page 548627 fetched and cached; it prints 'GIRLS 2 MILE RUN' (the rename is right) and all 41 girls rows (name, time) are on it.",
+  "date": "2026-10-28",
+  "parse_sha": "69598580607c31e8",
+  "source_sha": "1a8fcc0aa80bb8a6"
+ },
+ "backend/data/parsed_results/2017/XC/ms-smaa-relays-2017.json": {
+  "verdict": "fixed",
+  "by": "sonnet audit (second read, 2026-10-28)",
+  "notes": "PARSER PATTERN: RaceTab team lines with '-' places / under seven runners dropped, and the JV boys block missing: added boys Deering 74, Marshwood 250, Cheverus 286; girls Deering 117, Cheverus 154, Windham 194, Thornton 302, Sanford 398; JV boys Falmouth 15 (places 1-5). All 261 rows match the source; printed scores equal the sums of the runners' printed Pts (finish-order recount differs, ties). NOTE: the four 15-row Freshman and JV races duplicate sub5 smaarelays.pdf (surnames only, gender 'Mixed': 10-12 of 15 match each); the varsity races (112 and 89 rows) are held only here.",
+  "date": "2026-10-28",
+  "parse_sha": "61ae3321b4628b50",
+  "source_sha": "957bd99581ac917f"
  },
  "backend/data/parsed_results/2017/XC/ms-wmc-york-oob-traip-2017.json": {
   "verdict": "confirmed",
@@ -10238,6 +10470,14 @@
   "date": "2026-10-24",
   "parse_sha": "639af00349bcd5f4",
   "source_sha": "138365a6129ce84f"
+ },
+ "backend/data/parsed_results/2018/XC/ms-freeport-falcon-4k-xc-challenge-2018.json": {
+  "verdict": "fixed",
+  "by": "sonnet audit (second read, 2026-10-28)",
+  "notes": "PARSER PATTERN (backend/milesplit.py main, 'one race printed in two files: keep the fuller list'): races of one gender that share the label (varsity and JV, Open and Varsity, Junior and Senior, 6th and 7th/8th grade) collapse to the fuller list and the other race's team block attaches to the survivor; the label needs the page's division (JV / Open / Junior / Senior / grade) as a suffix. Falcon 4k 8/23/2018: MileSplit files 'Open Boys' 44, 'Open Girls' 21, 'Varsity Boys' 21 (p.599900), 'Varsity Girls' 19 (p.599901); the Varsity team scores are printed under the Varsity pages only. The parse kept the Open lists and attached the Varsity scores to them. Edited the ms- file: four races ('4k Run CC Open' and '4k Run CC' = varsity), 105 rows matched, blocks on the varsity races reproduce by place sum (boys Greely 21, Freeport 49, Yarmouth 60; girls Yarmouth 34, Greely 43, Freeport 51; team places filled). PARSER PATTERN 2: block team names printed upper case ('GREELY') are not matched to runners' schools in xc_team_places, so team_place stayed unfilled.",
+  "date": "2026-10-28",
+  "parse_sha": "2f0fd09f0a94e8ab",
+  "source_sha": "c0029cedf1bfa963"
  },
  "backend/data/parsed_results/2018/XC/mtblueboys_august31.json": {
   "verdict": "source-error",
@@ -11479,6 +11719,14 @@
   "parse_sha": "57810cb724824c2b",
   "source_sha": "58ec2e8cb9b15a74"
  },
+ "backend/data/parsed_results/2020/XC/ms-wmc-nya-freeport-2020.json": {
+  "verdict": "source-error",
+  "by": "sonnet audit (second read, 2026-10-28)",
+  "notes": "All 35 rows (19 boys, 16 girls) match the source (name, school, grade, time). Printed scores: boys Freeport 26 and NYA 33 reproduce (seven runners per team displace); girls Freeport 16 reproduces but NYA 43 does not: places 5, 10, 11, 15, 16 give 47 by the same rule (43 only if six per team displace, which breaks the boys). Source lines: 'Team Scores  1  16  Freeport / 2  43  NYA' (girls). Team places filled for the boys.",
+  "date": "2026-10-28",
+  "parse_sha": "fbbdc7714d4b7c3a",
+  "source_sha": "a0adb9b25d8c4b76"
+ },
  "backend/data/parsed_results/2020/XC/tfmm6results1colcourier1-2.json": {
   "verdict": "confirmed",
   "by": "sonnet audit (second read, 2026-10-24)",
@@ -12663,6 +12911,14 @@
   "parse_sha": "13fa05b4651a0306",
   "source_sha": "6106dc7b5b1b472d"
  },
+ "backend/data/parsed_results/2023/XC/ms-traip-academy-2023.json": {
+  "verdict": "fixed",
+  "by": "sonnet audit (second read, 2026-10-28)",
+  "notes": "Two sources for one meet: p.972494 (Hy-Tek finals with Yr, girls 28 / boys 48, and the printed team scores) and p.973379 (Seed and Finals columns with Points: girls 29 / boys 48). All Finals agree except Will Gear (16:40.14 in 972494, hand-rounded 16:40.00 in 973379; 16:40.14 and grade 12 now stored) and Ella Oshetski (Freeport, 21:09.24, place 5; only in 973379). Grades from 972494 filled for 27 girls and the boys (blank where '--' printed or no grade: Oshetski, Annora Ferris, Jake Woodman). Printed scores: boys York 30, Freeport 40, Greely 56, Wells 101 reproduce; girls Greely 31, Freeport 34, Wells 59 reproduce only from the 972494 list without Oshetski (with her: 32, 29, 63), so the girls totals are stale against the later results and are kept as printed.",
+  "date": "2026-10-28",
+  "parse_sha": "49d3c3e87ddf1387",
+  "source_sha": "337d37db46290c94"
+ },
  "backend/data/parsed_results/2023/XC/nexcboys2023.txt.json": {
   "verdict": "confirmed",
   "by": "sonnet audit (second read, 2026-10-24)",
@@ -12894,6 +13150,14 @@
   "date": "2026-10-24",
   "parse_sha": "c168a013ad76cd53",
   "source_sha": "17e6641922647045"
+ },
+ "backend/data/parsed_results/2024/XC/ms-smmsac-extravaganza-2024.json": {
+  "verdict": "fixed",
+  "by": "sonnet audit (second read, 2026-10-28)",
+  "notes": "PARSER PATTERN (backend/milesplit.py main, 'one race printed in two files: keep the fuller list'): races of one gender that share the label (varsity and JV, Open and Varsity, Junior and Senior, 6th and 7th/8th grade) collapse to the fuller list and the other race's team block attaches to the survivor; the label needs the page's division (JV / Open / Junior / Senior / grade) as a suffix. SMMSAC Extravaganza 9/19/2024: one page prints four '1 Mile Run' races: 6th grade boys 51 and girls 57, then 7th/8th grade boys 74 and girls 75 (257 rows). The parse kept only the fuller (7th/8th) race of each gender. PARSER PATTERN 2: the page prints the two girls team blocks in reverse order of the races (the first girls block Saco 71 ... Sanford 152 is the 7th/8th race, Sanford having 8 runners there; the second, York 42 ... Massabesic 119, is the 6th grade), so order-matching attaches them wrongly and xc_team_places fails; match by roster. Edited the ms- file: four races ('1 Mile Run CC 6th Grade' / '7th & 8th Grade'), blocks matched, all four reproduce (seven runners displace; team places filled). All 257 rows match name, grade, school, time; the 7th/8th girls race lists three runners with year 6, as printed.",
+  "date": "2026-10-28",
+  "parse_sha": "260ffb5bf8e9fe4e",
+  "source_sha": "c7000e841ba67386"
  },
  "backend/data/parsed_results/2024/XC/red-riot-girls-jv.txt.json": {
   "verdict": "confirmed",
