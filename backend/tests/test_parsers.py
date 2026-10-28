@@ -1390,6 +1390,15 @@ Event 3  Boys Discus Throw
 """
 
 
+def test_xc_relay_leg_with_no_distance_is_not_a_5k():
+    """A relay meet's legs printed with no distance stay distance-unknown:
+    a 9:31 leg is not a 5K PR. A plain high-school race still defaults to 5K."""
+    from backend.event_canon import canonical_event
+    assert canonical_event('Run CC', 'Girls', season='XC', level='hs', relay=True) == ('Girls', 'Cross Country')
+    assert canonical_event('2.03 Mile Run CC', 'Girls', season='XC', relay=True) == ('Girls', '2.03 Mile Cross Country')
+    assert canonical_event('Run CC', 'Girls', season='XC', level='hs') == ('Girls', '5K Cross Country')
+
+
 def test_track_audit_fixes_parser():
     """A medley relay is a relay; a row printed one column left keeps the
     first letter of its name; XFOUL is a foul, not the seed mark; the

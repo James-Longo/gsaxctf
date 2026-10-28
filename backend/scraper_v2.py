@@ -2708,7 +2708,7 @@ class Sub5ScraperV2:
                     # Canonicalize: one spelling per event, corrected gender,
                     # junk/out-of-scope labels dropped (see event_canon.py)
                     canon = canonical_event(event_name, gender or 'Boys', season=season,
-                                            level=meet_level)
+                                            level=meet_level, relay=season == 'XC' and 'relay' in low)
                     if canon is None:
                         SYNC_DROPS[(meet_key, 'event out of scope / unreadable')] += len(results_list)
                         SYNC_DROP_WHAT[('event', season, str(event_name)[:60])] += len(results_list)
