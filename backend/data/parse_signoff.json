@@ -307,6 +307,13 @@
   "by": "sonnet audit (score mismatch, 2026-10-23) (audit: source-error)",
   "evidence": "Four races (boys varsity 50, girls varsity 43, JV boys 42, JV girls 34 rows), all rows match the source in order. Printed team totals contradict the sheet's own rows. Boys varsity: JB printed 26 but its five scorers are places 4,6,7,10,21; even removing every non-scoring team's runner ahead of them (MAC #3, ORN #8) the ranks are 3,5,6,8,18 = 40 at best, so 26 is impossible; the other five (SU 62, OT 70, CEN 93, PCHS 126, MATT 144) are within a few points of 63/68/86/132/144 under the best rule but not reproducible, and Bucksport (6 finishers, 134) is omitted from the printed scores though complete. Girls varsity: JB 35, OT 39, MDI 99, SU 110, GSA 114 reproduce exactly; Bucksport printed 138 but places 13,29,31,35,40 -> 11,26,27,30,34 = 128 (138 only if the 4 Mattanawcook runners are left displacing, which would break OT/MDI/SU/GSA). JV boys: MDI 15 and Shead 70 reproduce (7-per-team cap), OT printed 53 vs 8+9+11+12+15 = 55. JV girls: JB 22 reproduces, Machias printed 49 vs 3,6,11,12,16 = 48, PCHS printed 67 vs 5+10+13+14+15 = 57. School findings: (1) boys varsity place 17 'Victor Yaques - SUN - 17:43' parsed '?' -> SUN is SUM = Sumner (me-hs-sumner): Sumner is scored as 'SU', and Victor Jacques of Sumner appears in 2003 pvc/festival files; (2) place 35 'Andrew Brunton - UM - 19:07' parsed col-umaine (a college in a high-school meet) -> Sumner (me-hs-sumner): Andrew Brunton '9 Sumner 19:06.9' in another 2003 file with the same time; (3) JV boys place 42 'Blain Davis - 37:59' has no school (parsed '') -> evidence points to Mattanawcook (Blaine Davis, Mattanawcook, 38:55.1 in another 2003 file; M.A. in 2004), but the line itself prints none. Also source oddity: JV boys place 10 'Kyle BUCKSk' (looks like a find/replace on 'Black')."
  },
+ "backend/data/parsed_results/2003/XC/central03.json": {
+  "parse_sha": "27b629b2fafd1b13",
+  "source_sha": "18ffec3ccefb3085",
+  "date": "2026-10-28",
+  "by": "second read (fixed): override written from the source",
+  "evidence": "reader compared every row with the source; no printed team scores, or scores verified"
+ },
  "backend/data/parsed_results/2003/XC/central03girls.json": {
   "parse_sha": "6b58351426aedf5c",
   "source_sha": "d96abd1b33c5bc87",
@@ -1210,6 +1217,20 @@
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
  },
+ "backend/data/parsed_results/2004/XC/Results-F1.json": {
+  "parse_sha": "c4c6f2aa79107f40",
+  "source_sha": "c0cf2e748f029e1c",
+  "date": "2026-10-28",
+  "by": "second read (fixed): override written from the source",
+  "evidence": "reader compared every row with the source; no printed team scores, or scores verified"
+ },
+ "backend/data/parsed_results/2004/XC/Results-F2.json": {
+  "parse_sha": "1f36c71dfda4641d",
+  "source_sha": "c332cd57f38d369b",
+  "date": "2026-10-28",
+  "by": "second read (fixed): override written from the source",
+  "evidence": "reader compared every row with the source; no printed team scores, or scores verified"
+ },
  "backend/data/parsed_results/2004/XC/bangor8sept04b.json": {
   "parse_sha": "71eb66ae88220d83",
   "source_sha": "9d542fba8f5d9bfd",
@@ -1378,12 +1399,26 @@
   "by": "sonnet audit (score mismatch, 2026-10-23) (audit: source-error)",
   "evidence": "All 33 rows match the source (vertical table Place/Time/School/Name; names re-ordered/cased; '21:01 *' on Brunton is printed but meaning unstated). Incomplete teams (Lee 4 finishers, Hermon 3, BC 2) drop out, leaving Foxcroft, Sumner, Schenck. From the sheet's own rows: Foxcroft places 2,3,6,11,20 -> team places 2,3,5,9,12 = 31 (printed 29); Sumner 1,9,10,12,21 -> 1,7,8,10,13 = 39 (printed 44); Schenck 5,8,13,22,27 -> 4,6,11,14,19 = 54 (printed 51). The totals sum alike (124) but are distributed differently. Brute force: all three printed totals reproduce exactly (29/44/51) only if one Sumner runner, either #9 Kelsey Osborne or #10 Kelsey Linscott, is left out of team scoring (or belongs to a non-scoring team); nothing on the sheet says which or why, so the printed team scores contradict the sheet's own rows. School finding: 'BC' parsed '?' -> it is Bangor Christian (me-hs-bangor-christian): Casey McGill is listed as 'FR Bangor Christian' in the same season's pvc04jvg.txt.htm; BC (Tanisha Vadois, Casey McGill) are non-scoring 2-runner team here."
  },
+ "backend/data/parsed_results/2004/XC/chandler04.json": {
+  "parse_sha": "b7d1e53c4074cae4",
+  "source_sha": "65b7822564cb92b8",
+  "date": "2026-10-28",
+  "by": "second read (fixed): override written from the source",
+  "evidence": "reader compared every row with the source; no printed team scores, or scores verified"
+ },
  "backend/data/parsed_results/2004/XC/cheverus15oct04b.json": {
   "parse_sha": "6ce0c3ff53815297",
   "source_sha": "d1b63093be8462bc",
   "date": "2026-10-28",
   "by": "second read (fixed) 2026-10-23..28: override written from the source; printed team scores kept as printed",
   "evidence": "reader compared every row with the source; the printed team totals do not reproduce from the sheet's own places (source arithmetic), as the audit and override notes record"
+ },
+ "backend/data/parsed_results/2004/XC/cheverus15oct04g.json": {
+  "parse_sha": "2278ef2255b97dee",
+  "source_sha": "cb31d88ba457f5a6",
+  "date": "2026-10-28",
+  "by": "second read (fixed): override written from the source",
+  "evidence": "reader compared every row with the source; no printed team scores, or scores verified"
  },
  "backend/data/parsed_results/2004/XC/cheverus1oct04b.json": {
   "parse_sha": "40d989e7ea7b466a",
@@ -1686,12 +1721,26 @@
   "by": "sonnet audit (second read, 2026-10-28) (audit: confirmed)",
   "evidence": "Hy-Tek heat sheet, all rows (place, name, school, time) match the source; each heat is its own race with places within the heat (Race n of 8 of the Rene's Run girls heats; the page's KVAC/Auburn Middle School header is template text, sub5 index lists Rene's Run at Lawrence 9/11/2004, date comes from the index). No team scores printed. Source spellings kept (e.g. Kim Enos, Becca Irwin match the festival)."
  },
+ "backend/data/parsed_results/2004/XC/girls6.json": {
+  "parse_sha": "f439517f5dd63d75",
+  "source_sha": "5aac47ac4768f58a",
+  "date": "2026-10-28",
+  "by": "second read (fixed): override written from the source",
+  "evidence": "reader compared every row with the source; no printed team scores, or scores verified"
+ },
  "backend/data/parsed_results/2004/XC/girls7.json": {
   "parse_sha": "0e7fb16966638bd0",
   "source_sha": "8da4bf20caf70947",
   "date": "2026-10-28",
   "by": "sonnet audit (second read, 2026-10-28) (audit: confirmed)",
   "evidence": "Hy-Tek heat sheet, all rows (place, name, school, time) match the source; each heat is its own race with places within the heat (Race n of 8 of the Rene's Run girls heats; the page's KVAC/Auburn Middle School header is template text, sub5 index lists Rene's Run at Lawrence 9/11/2004, date comes from the index). No team scores printed. Source spellings kept (e.g. Kim Enos, Becca Irwin match the festival)."
+ },
+ "backend/data/parsed_results/2004/XC/girlsjv.json": {
+  "parse_sha": "6cefc1882a623073",
+  "source_sha": "153ca687fe38207a",
+  "date": "2026-10-28",
+  "by": "second read (fixed): override written from the source",
+  "evidence": "reader compared every row with the source; no printed team scores, or scores verified"
  },
  "backend/data/parsed_results/2004/XC/girlsstatecombined04.txt.json": {
   "parse_sha": "a719ab9f2fb0eefa",
@@ -1763,6 +1812,13 @@
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
  },
+ "backend/data/parsed_results/2004/XC/leavitt17sept04boys.json": {
+  "parse_sha": "84050a84992dde8d",
+  "source_sha": "57ca268d52d97e9d",
+  "date": "2026-10-28",
+  "by": "second read (fixed): override written from the source",
+  "evidence": "reader compared every row with the source; no printed team scores, or scores verified"
+ },
  "backend/data/parsed_results/2004/XC/leavitt17sept04boyscores.json": {
   "parse_sha": "666b958c6a3b4fb7",
   "source_sha": "edee8517a4dba347",
@@ -1770,12 +1826,33 @@
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
  },
+ "backend/data/parsed_results/2004/XC/leavitt17sept04girls.json": {
+  "parse_sha": "53e9fcb3aa1630ee",
+  "source_sha": "c95d996b7503d742",
+  "date": "2026-10-28",
+  "by": "second read (fixed): override written from the source",
+  "evidence": "reader compared every row with the source; no printed team scores, or scores verified"
+ },
  "backend/data/parsed_results/2004/XC/leavitt17sept04girlscores.json": {
   "parse_sha": "14e50a05f177f031",
   "source_sha": "3dd9d2500e074776",
   "date": "2026-10-25",
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
+ },
+ "backend/data/parsed_results/2004/XC/leavitt24sept04boys.json": {
+  "parse_sha": "243d7d278ff42918",
+  "source_sha": "742018f6e2f01178",
+  "date": "2026-10-28",
+  "by": "second read (fixed): override written from the source",
+  "evidence": "reader compared every row with the source; no printed team scores, or scores verified"
+ },
+ "backend/data/parsed_results/2004/XC/leavitt24sept04girls.json": {
+  "parse_sha": "8831e241ca77d6a2",
+  "source_sha": "cdc44e88cd1d520e",
+  "date": "2026-10-28",
+  "by": "second read (fixed): override written from the source",
+  "evidence": "reader compared every row with the source; no printed team scores, or scores verified"
  },
  "backend/data/parsed_results/2004/XC/leavitt24sept04scores.json": {
   "parse_sha": "8a456ddaba580737",
@@ -1798,12 +1875,47 @@
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
  },
+ "backend/data/parsed_results/2004/XC/lynxinvite04jv.txt.json": {
+  "parse_sha": "6d0ccdb4da3396b2",
+  "source_sha": "ed39ae3c16e972de",
+  "date": "2026-10-28",
+  "by": "second read (fixed): override written from the source",
+  "evidence": "reader compared every row with the source; no printed team scores, or scores verified"
+ },
+ "backend/data/parsed_results/2004/XC/maranacook30sept04msb.json": {
+  "parse_sha": "66608a35dbca1279",
+  "source_sha": "6e68c993ebd94500",
+  "date": "2026-10-28",
+  "by": "second read (fixed): override written from the source",
+  "evidence": "reader compared every row with the source; no printed team scores, or scores verified"
+ },
+ "backend/data/parsed_results/2004/XC/maranacook30sept04msg.json": {
+  "parse_sha": "c32c8c940358386a",
+  "source_sha": "d326090953a9e589",
+  "date": "2026-10-28",
+  "by": "second read (fixed): override written from the source",
+  "evidence": "reader compared every row with the source; no printed team scores, or scores verified"
+ },
  "backend/data/parsed_results/2004/XC/maranacook30sept04msscores.json": {
   "parse_sha": "860a99ca951e418d",
   "source_sha": "f0767a48de41876a",
   "date": "2026-10-25",
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
+ },
+ "backend/data/parsed_results/2004/XC/maranacook3sept04.json": {
+  "parse_sha": "3bdb05c99567f7b1",
+  "source_sha": "43b3b3e8195d6ab7",
+  "date": "2026-10-28",
+  "by": "second read (fixed): override written from the source",
+  "evidence": "reader compared every row with the source; no printed team scores, or scores verified"
+ },
+ "backend/data/parsed_results/2004/XC/maranacook3sept04boys.json": {
+  "parse_sha": "f936b1135d8f1c84",
+  "source_sha": "8c07150c391a9098",
+  "date": "2026-10-28",
+  "by": "second read (fixed): override written from the source",
+  "evidence": "reader compared every row with the source; no printed team scores, or scores verified"
  },
  "backend/data/parsed_results/2004/XC/maranacook3sept04girlscores.json": {
   "parse_sha": "01800af7c07bdb0f",
@@ -1910,12 +2022,33 @@
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
  },
+ "backend/data/parsed_results/2004/XC/mtbluerelays04b.json": {
+  "parse_sha": "f2782000f2f4ce1a",
+  "source_sha": "bfa005ce3d9de59c",
+  "date": "2026-10-28",
+  "by": "second read (fixed): override written from the source",
+  "evidence": "reader compared every row with the source; no printed team scores, or scores verified"
+ },
  "backend/data/parsed_results/2004/XC/mtbluerelays04g.json": {
   "parse_sha": "6b89a3118f01303a",
   "source_sha": "f196b9349ed44d68",
   "date": "2026-10-28",
   "by": "sonnet audit (second read, 2026-10-28) (audit: confirmed)",
   "evidence": "All 114 rows (place, name, school, mark) agree with the source, the 2.03 Mile event was already set in the existing override (leg 2.03 mi, orchestrator note); 'A/B/C/D/NS' team letters dropped (fine); no team scores printed. Date October 8, 2004 from the index."
+ },
+ "backend/data/parsed_results/2004/XC/oxfordhills1oct04b.json": {
+  "parse_sha": "0ab034a0d2a8b048",
+  "source_sha": "9125f284bc8f8184",
+  "date": "2026-10-28",
+  "by": "second read (fixed): override written from the source",
+  "evidence": "reader compared every row with the source; no printed team scores, or scores verified"
+ },
+ "backend/data/parsed_results/2004/XC/oxfordhills1oct04g.json": {
+  "parse_sha": "3eb876c23266d3aa",
+  "source_sha": "e91bdb76f6852492",
+  "date": "2026-10-28",
+  "by": "second read (fixed): override written from the source",
+  "evidence": "reader compared every row with the source; no printed team scores, or scores verified"
  },
  "backend/data/parsed_results/2004/XC/oxfordhills1oct04scores.json": {
   "parse_sha": "e4febf44f07631fc",
@@ -2946,6 +3079,13 @@
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
  },
+ "backend/data/parsed_results/2005/XC/edwardlittle9_16B.json": {
+  "parse_sha": "680d77aa83eb8a99",
+  "source_sha": "07d77fbd2cb63f33",
+  "date": "2026-10-28",
+  "by": "second read (fixed): override written from the source",
+  "evidence": "reader compared every row with the source; no printed team scores, or scores verified"
+ },
  "backend/data/parsed_results/2005/XC/edwardlittle9_16G.json": {
   "parse_sha": "e2f3753e0fa12f26",
   "source_sha": "09ce45eba7fee66b",
@@ -3198,6 +3338,13 @@
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
  },
+ "backend/data/parsed_results/2005/XC/lynxinvitationalJV.json": {
+  "parse_sha": "144ac75b8c5d1f0f",
+  "source_sha": "3127eacf892c1c9b",
+  "date": "2026-10-28",
+  "by": "second read (fixed): override written from the source",
+  "evidence": "reader compared every row with the source; no printed team scores, or scores verified"
+ },
  "backend/data/parsed_results/2005/XC/maranacook9_2B.txt.json": {
   "parse_sha": "6b27fbad4aaf7ece",
   "source_sha": "0b5851927c122b57",
@@ -3288,6 +3435,20 @@
   "date": "2026-10-27",
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
+ },
+ "backend/data/parsed_results/2005/XC/mtbluerelaysB.json": {
+  "parse_sha": "26e6eb6089f65de5",
+  "source_sha": "a54d3d549c7668ca",
+  "date": "2026-10-28",
+  "by": "second read (fixed): override written from the source",
+  "evidence": "reader compared every row with the source; no printed team scores, or scores verified"
+ },
+ "backend/data/parsed_results/2005/XC/mtbluerelaysG.json": {
+  "parse_sha": "a9098e0b484f7c9a",
+  "source_sha": "90a2b6ed530dc4ba",
+  "date": "2026-10-28",
+  "by": "second read (fixed): override written from the source",
+  "evidence": "reader compared every row with the source; no printed team scores, or scores verified"
  },
  "backend/data/parsed_results/2005/XC/mvcmidseasonB.txt.json": {
   "parse_sha": "749489ee04a5cd54",
@@ -3492,6 +3653,13 @@
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
  },
+ "backend/data/parsed_results/2005/XC/smaarelaystop15.json": {
+  "parse_sha": "ad627404809e7ff0",
+  "source_sha": "ccbc0189c3ddb880",
+  "date": "2026-10-28",
+  "by": "second read (fixed): override written from the source",
+  "evidence": "reader compared every row with the source; no printed team scores, or scores verified"
+ },
  "backend/data/parsed_results/2005/XC/smaasecondsevenboys.json": {
   "parse_sha": "ffcba7b8aecd293b",
   "source_sha": "3f1ece750998de08",
@@ -3505,6 +3673,13 @@
   "date": "2026-10-27",
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
+ },
+ "backend/data/parsed_results/2005/XC/southportland9_30B.json": {
+  "parse_sha": "152a49d4ea9ccfb4",
+  "source_sha": "8edd08136c692e2f",
+  "date": "2026-10-28",
+  "by": "second read (fixed): override written from the source",
+  "evidence": "reader compared every row with the source; no printed team scores, or scores verified"
  },
  "backend/data/parsed_results/2005/XC/southportland9_30G.json": {
   "parse_sha": "5e89b29d3fb4d7df",
@@ -3547,6 +3722,13 @@
   "date": "2026-10-25",
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
+ },
+ "backend/data/parsed_results/2005/XC/watervillejvboys.json": {
+  "parse_sha": "478e267cf6448500",
+  "source_sha": "7efc1e2a86915bbc",
+  "date": "2026-10-28",
+  "by": "second read (fixed): override written from the source",
+  "evidence": "reader compared every row with the source; no printed team scores, or scores verified"
  },
  "backend/data/parsed_results/2005/XC/watervillejvgirls.json": {
   "parse_sha": "bfe5da52569489dc",
@@ -4549,6 +4731,20 @@
   "by": "sonnet audit (second read, 2026-10-26) (audit: confirmed)",
   "evidence": "36 rows match (2.76 miles, Blue Hill, Sept 19 2006; GSA/Hampden/Ellsworth/Bucksport/Searsport). No team scores printed."
  },
+ "backend/data/parsed_results/2006/XC/JVRESULTS.txt.json": {
+  "parse_sha": "27c3048fbc7e40f9",
+  "source_sha": "e12c75d660b1dd4e",
+  "date": "2026-10-28",
+  "by": "second read (fixed): override written from the source",
+  "evidence": "reader compared every row with the source; no printed team scores, or scores verified"
+ },
+ "backend/data/parsed_results/2006/XC/MDI%20Individual%20relay%20results.json": {
+  "parse_sha": "1985459469afdc34",
+  "source_sha": "1c4298cf2476c538",
+  "date": "2026-10-28",
+  "by": "second read (fixed): override written from the source",
+  "evidence": "reader compared every row with the source; no printed team scores, or scores verified"
+ },
  "backend/data/parsed_results/2006/XC/MVC06boys.txt.json": {
   "parse_sha": "2211e99a530f4444",
   "source_sha": "1b15c207f4afbf8d",
@@ -4668,6 +4864,13 @@
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
  },
+ "backend/data/parsed_results/2006/XC/camdenhills10_6girls.json": {
+  "parse_sha": "5ea5080e633addfd",
+  "source_sha": "edbbb7166047045a",
+  "date": "2026-10-28",
+  "by": "second read (fixed): override written from the source",
+  "evidence": "reader compared every row with the source; no printed team scores, or scores verified"
+ },
  "backend/data/parsed_results/2006/XC/capeelizabeth10_6.json": {
   "parse_sha": "93c2e7956988c623",
   "source_sha": "039dadab89ed6f8f",
@@ -4716,6 +4919,13 @@
   "date": "2026-10-26",
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
+ },
+ "backend/data/parsed_results/2006/XC/chandlerrelays.json": {
+  "parse_sha": "25128f091f3a24d7",
+  "source_sha": "6f0c33edcc420251",
+  "date": "2026-10-28",
+  "by": "second read (fixed): override written from the source",
+  "evidence": "reader compared every row with the source; no printed team scores, or scores verified"
  },
  "backend/data/parsed_results/2006/XC/cheverus9_8boys.json": {
   "parse_sha": "0a98ac41a6d3322f",
@@ -4828,6 +5038,13 @@
   "date": "2026-10-27",
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
+ },
+ "backend/data/parsed_results/2006/XC/deeringgirls10_6.json": {
+  "parse_sha": "22509819652c43b3",
+  "source_sha": "5fb3a76ae6428f65",
+  "date": "2026-10-28",
+  "by": "second read (fixed): override written from the source",
+  "evidence": "reader compared every row with the source; no printed team scores, or scores verified"
  },
  "backend/data/parsed_results/2006/XC/eastboyscombined.txt.json": {
   "parse_sha": "9f7591a0f4d63ac9",
@@ -4990,6 +5207,13 @@
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
  },
+ "backend/data/parsed_results/2006/XC/greaterportlandmschamps.json": {
+  "parse_sha": "42f348f0fa740d2a",
+  "source_sha": "ddbd141d519cff47",
+  "date": "2026-10-28",
+  "by": "second read (fixed): override written from the source",
+  "evidence": "reader compared every row with the source; no printed team scores, or scores verified"
+ },
  "backend/data/parsed_results/2006/XC/halldale9_13.json": {
   "parse_sha": "aed77cb8f9262bf5",
   "source_sha": "c9e009e4bb559f56",
@@ -5101,6 +5325,13 @@
   "date": "2026-10-23",
   "by": "sonnet audit (score mismatch, 2026-10-23) (audit: source-error)",
   "evidence": "Parse matches both races (80 boys, 66 girls; girls 'StD' = St D same school). Rule: only a team's first 7 finishers take places (teams with 5+). Girls reproduce all 7: McAuley 34, NYA 43, Lake Region 83, Poland 123, Gray-NG 136, St Dominic 138, Hermon 149 = printed. Boys reproduce 6 of 7: Poland 47, Lake Region 68, Windham 70, Gray-NG 80, St Dominic 99, Hermon 163 = printed; North Yarmouth Acad. printed 171 but rows give places 18,20,46,60,62 -> ranks 18,20,42,46,47 = 173. Two-point addition slip in the printed boys total. Checker rule lacking: first-7-per-team displacement."
+ },
+ "backend/data/parsed_results/2006/XC/laliberty06.txt.json": {
+  "parse_sha": "4697e3f38ef0f15a",
+  "source_sha": "31b0accd4ca02bbe",
+  "date": "2026-10-28",
+  "by": "second read (fixed): override written from the source",
+  "evidence": "reader compared every row with the source; no printed team scores, or scores verified"
  },
  "backend/data/parsed_results/2006/XC/lawrence9_8boys.json": {
   "parse_sha": "d18cf2002e9e8829",
@@ -5452,6 +5683,13 @@
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
  },
+ "backend/data/parsed_results/2006/XC/poland9_8.json": {
+  "parse_sha": "e2ce83d262053b94",
+  "source_sha": "eb13e4131064d11d",
+  "date": "2026-10-28",
+  "by": "second read (fixed): override written from the source",
+  "evidence": "reader compared every row with the source; no printed team scores, or scores verified"
+ },
  "backend/data/parsed_results/2006/XC/presqueisle9_13boys.json": {
   "parse_sha": "07615b455864debe",
   "source_sha": "c7dea538522a4cbd",
@@ -5627,12 +5865,54 @@
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
  },
+ "backend/data/parsed_results/2006/XC/smaarelaysindividual.json": {
+  "parse_sha": "9f1d04769a01a4db",
+  "source_sha": "ae128a0ac88ff032",
+  "date": "2026-10-28",
+  "by": "second read (fixed): override written from the source",
+  "evidence": "reader compared every row with the source; no printed team scores, or scores verified"
+ },
+ "backend/data/parsed_results/2006/XC/smaasecond7boys.json": {
+  "parse_sha": "7a14cc98cd11ff42",
+  "source_sha": "f294e07168bfed70",
+  "date": "2026-10-28",
+  "by": "second read (fixed): override written from the source",
+  "evidence": "reader compared every row with the source; no printed team scores, or scores verified"
+ },
+ "backend/data/parsed_results/2006/XC/smaasecond7girls.json": {
+  "parse_sha": "5dae085dbb8e6504",
+  "source_sha": "648873e57610a4bf",
+  "date": "2026-10-28",
+  "by": "second read (fixed): override written from the source",
+  "evidence": "reader compared every row with the source; no printed team scores, or scores verified"
+ },
+ "backend/data/parsed_results/2006/XC/smacrelaysboys.json": {
+  "parse_sha": "90c1a4a48173fe24",
+  "source_sha": "9753fd795b089aa6",
+  "date": "2026-10-28",
+  "by": "second read (fixed): override written from the source",
+  "evidence": "reader compared every row with the source; no printed team scores, or scores verified"
+ },
+ "backend/data/parsed_results/2006/XC/smacrelaysgirls.json": {
+  "parse_sha": "ccf387775da75da0",
+  "source_sha": "02fb106bbc33b165",
+  "date": "2026-10-28",
+  "by": "second read (fixed): override written from the source",
+  "evidence": "reader compared every row with the source; no printed team scores, or scores verified"
+ },
  "backend/data/parsed_results/2006/XC/southportlandboys10_13.json": {
   "parse_sha": "6b424c3facab5c43",
   "source_sha": "10408d38faf59bdb",
   "date": "2026-10-28",
   "by": "second read (fixed) 2026-10-23..28: override written from the source; printed team scores kept as printed",
   "evidence": "reader compared every row with the source; the printed team totals do not reproduce from the sheet's own places (source arithmetic), as the audit and override notes record"
+ },
+ "backend/data/parsed_results/2006/XC/southportlandgirls10_13.json": {
+  "parse_sha": "10d02692664ad2e9",
+  "source_sha": "5baebfb3a2ab865c",
+  "date": "2026-10-28",
+  "by": "second read (fixed): override written from the source",
+  "evidence": "reader compared every row with the source; no printed team scores, or scores verified"
  },
  "backend/data/parsed_results/2006/XC/spboys9_7.json": {
   "parse_sha": "6e05084e9de082b6",
@@ -5843,6 +6123,13 @@
   "date": "2026-10-27",
   "by": "sonnet audit (second read, 2026-10-27) (audit: confirmed)",
   "evidence": "37 rows agree (Mahoney J 10:03 ... Johnson 16:11); all me-ms-* entries."
+ },
+ "backend/data/parsed_results/2006/XC/yorkcountymssrboy.json": {
+  "parse_sha": "41c99d1a8c2c6ea6",
+  "source_sha": "1d52050d5b236f6e",
+  "date": "2026-10-28",
+  "by": "second read (fixed): override written from the source",
+  "evidence": "reader compared every row with the source; no printed team scores, or scores verified"
  },
  "backend/data/parsed_results/2006/XC/yorkcountymssrgirl.json": {
   "parse_sha": "0f986010de0cddec",
@@ -6551,6 +6838,13 @@
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
  },
+ "backend/data/parsed_results/2007/XC/BJHS_X-C_Oct3-07-Boys.json": {
+  "parse_sha": "1633e27e331ef515",
+  "source_sha": "3dbc3e20a2def4f9",
+  "date": "2026-10-28",
+  "by": "second read (fixed): override written from the source",
+  "evidence": "reader compared every row with the source; no printed team scores, or scores verified"
+ },
  "backend/data/parsed_results/2007/XC/BJHS_X-C_Oct3-07-Girls.json": {
   "parse_sha": "a3453705fea3fa40",
   "source_sha": "6875252eb2e3b85e",
@@ -6774,6 +7068,20 @@
   "date": "2026-10-23",
   "by": "sonnet audit (score mismatch, 2026-10-23) (audit: source-error)",
   "evidence": "Parse matches the 41 numbered rows; four trailing names without place or time (Zack Foster CAR, Chase Dunn CAR, Chris Gaskell Lime, Chris Toothaker Lime) are not finishers and are not in the parse. Printed: Caribou 19, Presque Isle 38, Fort Kent 99, Limestone 93. With 7 runners per team taking places: Caribou 1+3+4+5+6=19, PI 2+7+8+9+12=38, Fort Kent 13+20+21+22+23=99 match; Limestone's finishers (15,21,24,28,38,39,41) give 14+16+18+19+24=91, printed 93 (cap 5 gives 74, no cap 126). The three that fix the rule reproduce exactly, Limestone is 2 off. Source total error."
+ },
+ "backend/data/parsed_results/2007/XC/caribougirls9_5.json": {
+  "parse_sha": "7638f83cb58c9bc7",
+  "source_sha": "7d8d650a65ca771c",
+  "date": "2026-10-28",
+  "by": "second read (fixed): override written from the source",
+  "evidence": "reader compared every row with the source; no printed team scores, or scores verified"
+ },
+ "backend/data/parsed_results/2007/XC/central9_4.json": {
+  "parse_sha": "e7b804c79d3283e8",
+  "source_sha": "6e1afec30c4f71ba",
+  "date": "2026-10-28",
+  "by": "second read (fixed): override written from the source",
+  "evidence": "reader compared every row with the source; no printed team scores, or scores verified"
  },
  "backend/data/parsed_results/2007/XC/cheverusboy10_5.txt.json": {
   "parse_sha": "98ea3b9dddd769a0",
@@ -7216,6 +7524,13 @@
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
  },
+ "backend/data/parsed_results/2007/XC/madison10_3.json": {
+  "parse_sha": "7b0265fc93ef7cd2",
+  "source_sha": "ece641af47a76fcf",
+  "date": "2026-10-28",
+  "by": "second read (fixed): override written from the source",
+  "evidence": "reader compared every row with the source; no printed team scores, or scores verified"
+ },
  "backend/data/parsed_results/2007/XC/maran-boys-10-11.json": {
   "parse_sha": "eb5526258aea8eed",
   "source_sha": "4c2ecdc1d50d466e",
@@ -7278,6 +7593,13 @@
   "date": "2026-10-16",
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
+ },
+ "backend/data/parsed_results/2007/XC/mdirelaysindividual.json": {
+  "parse_sha": "59a884939c79a71b",
+  "source_sha": "209477ad4c7cb80f",
+  "date": "2026-10-28",
+  "by": "second read (fixed): override written from the source",
+  "evidence": "reader compared every row with the source; no printed team scores, or scores verified"
  },
  "backend/data/parsed_results/2007/XC/medomakboys9_21.json": {
   "parse_sha": "4e09b3570091357d",
@@ -7348,6 +7670,20 @@
   "date": "2026-10-28",
   "by": "second read (fixed) 2026-10-23..28: override written from the source; printed team scores kept as printed",
   "evidence": "reader compared every row with the source; the printed team totals do not reproduce from the sheet's own places (source arithmetic), as the audit and override notes record"
+ },
+ "backend/data/parsed_results/2007/XC/mtbluerelaysboysindividual.json": {
+  "parse_sha": "760beff969d13227",
+  "source_sha": "882751c5c17f570c",
+  "date": "2026-10-28",
+  "by": "second read (fixed): override written from the source",
+  "evidence": "reader compared every row with the source; no printed team scores, or scores verified"
+ },
+ "backend/data/parsed_results/2007/XC/mtbluerelaysgirlindividuals.json": {
+  "parse_sha": "971c3301af584449",
+  "source_sha": "ec536874143a1fb7",
+  "date": "2026-10-28",
+  "by": "second read (fixed): override written from the source",
+  "evidence": "reader compared every row with the source; no printed team scores, or scores verified"
  },
  "backend/data/parsed_results/2007/XC/newenglandboys.txt.json": {
   "parse_sha": "3ec6bd8804b12657",
@@ -7600,6 +7936,48 @@
   "date": "2026-10-28",
   "by": "sonnet audit (second read, 2026-10-28) (audit: confirmed)",
   "evidence": "All 31 rows match the sheet (SMAA middle-school junior boys, Oct 24 2007, no distance); schools already resolve to the middle schools (York, Marsh, Kit = Shapleigh, Wells, TA = Thornton MS, Saco, Bid), as in the junior-girls override."
+ },
+ "backend/data/parsed_results/2007/XC/smaamiddlejuniorgirls10_24.json": {
+  "parse_sha": "ef63f7617491b865",
+  "source_sha": "5c831574894bc7e7",
+  "date": "2026-10-28",
+  "by": "second read (fixed): override written from the source",
+  "evidence": "reader compared every row with the source; no printed team scores, or scores verified"
+ },
+ "backend/data/parsed_results/2007/XC/smaamiddlerelaysboys.json": {
+  "parse_sha": "5758fdca5f4618a4",
+  "source_sha": "7655b4cc76a26564",
+  "date": "2026-10-28",
+  "by": "second read (fixed): override written from the source",
+  "evidence": "reader compared every row with the source; no printed team scores, or scores verified"
+ },
+ "backend/data/parsed_results/2007/XC/smaamiddlerelaysgirls.json": {
+  "parse_sha": "4cc5c2542eceac5d",
+  "source_sha": "7992b1f9d6e1a6bf",
+  "date": "2026-10-28",
+  "by": "second read (fixed): override written from the source",
+  "evidence": "reader compared every row with the source; no printed team scores, or scores verified"
+ },
+ "backend/data/parsed_results/2007/XC/smaamiddleseniorboys10_24.json": {
+  "parse_sha": "eb477f8a9ce0a447",
+  "source_sha": "a1cee7361eb2b974",
+  "date": "2026-10-28",
+  "by": "second read (fixed): override written from the source",
+  "evidence": "reader compared every row with the source; no printed team scores, or scores verified"
+ },
+ "backend/data/parsed_results/2007/XC/smaamiddleseniorgirls10_24.json": {
+  "parse_sha": "36f69c5727f52ee2",
+  "source_sha": "af0d3cd69f0b6cfb",
+  "date": "2026-10-28",
+  "by": "second read (fixed): override written from the source",
+  "evidence": "reader compared every row with the source; no printed team scores, or scores verified"
+ },
+ "backend/data/parsed_results/2007/XC/smaarelays.json": {
+  "parse_sha": "8a4d284b3553ea19",
+  "source_sha": "f934a52a14d6054b",
+  "date": "2026-10-28",
+  "by": "second read (fixed): override written from the source",
+  "evidence": "reader compared every row with the source; no printed team scores, or scores verified"
  },
  "backend/data/parsed_results/2007/XC/southportlandboys9_14.json": {
   "parse_sha": "245b7868493db041",
@@ -8917,6 +9295,13 @@
   "by": "second read (fixed) 2026-10-23..28: override written from the source; printed team scores kept as printed",
   "evidence": "reader compared every row with the source; the printed team totals do not reproduce from the sheet's own places (source arithmetic), as the audit and override notes record"
  },
+ "backend/data/parsed_results/2008/XC/caribouinviteboys.json": {
+  "parse_sha": "2829708d1e12d28b",
+  "source_sha": "8080d073c762cba6",
+  "date": "2026-10-28",
+  "by": "second read (fixed): override written from the source",
+  "evidence": "reader compared every row with the source; no printed team scores, or scores verified"
+ },
  "backend/data/parsed_results/2008/XC/caribouinviteboysjv.json": {
   "parse_sha": "8f8c28b1701e1f74",
   "source_sha": "60c0667653af0cd9",
@@ -9344,6 +9729,13 @@
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
  },
+ "backend/data/parsed_results/2008/XC/lalibeteresultsbyteam.json": {
+  "parse_sha": "bfdca4d64a76e698",
+  "source_sha": "8f99ab1d330a036f",
+  "date": "2026-10-28",
+  "by": "second read (fixed): override written from the source",
+  "evidence": "reader compared every row with the source; no printed team scores, or scores verified"
+ },
  "backend/data/parsed_results/2008/XC/leeinviteboys.json": {
   "parse_sha": "f66c37ec825636dc",
   "source_sha": "4292216ca20909d9",
@@ -9428,6 +9820,13 @@
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
  },
+ "backend/data/parsed_results/2008/XC/massabesicboys_oct18.json": {
+  "parse_sha": "73520e72d436c1a3",
+  "source_sha": "2890b592d46f0a47",
+  "date": "2026-10-28",
+  "by": "second read (fixed): override written from the source",
+  "evidence": "reader compared every row with the source; no printed team scores, or scores verified"
+ },
  "backend/data/parsed_results/2008/XC/massabesicgirls9_19.json": {
   "parse_sha": "96dfb74f95a11552",
   "source_sha": "f7f88e29b576d680",
@@ -9477,6 +9876,13 @@
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
  },
+ "backend/data/parsed_results/2008/XC/mdirelays.json": {
+  "parse_sha": "6d816ff9310a90f3",
+  "source_sha": "ea36498d7338d808",
+  "date": "2026-10-28",
+  "by": "second read (fixed): override written from the source",
+  "evidence": "reader compared every row with the source; no printed team scores, or scores verified"
+ },
  "backend/data/parsed_results/2008/XC/medomakboys9_19.json": {
   "parse_sha": "3d884b42be620921",
   "source_sha": "fdd13b64d4ea7d56",
@@ -9504,6 +9910,13 @@
   "date": "2026-10-18",
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
+ },
+ "backend/data/parsed_results/2008/XC/ms-camden-hills-invitational-2008.json": {
+  "parse_sha": "1dc6fd7687e9b01d",
+  "source_sha": "3594078daa94a84d",
+  "date": "2026-10-28",
+  "by": "second read (fixed): override written from the source",
+  "evidence": "reader compared every row with the source; no printed team scores, or scores verified"
  },
  "backend/data/parsed_results/2008/XC/ms-eastern-maine-class-a-regional-2008.json": {
   "parse_sha": "e197a672e796592c",
@@ -9771,6 +10184,27 @@
   "by": "sonnet audit (score mismatch, 2026-10-23) (audit: source-error)",
   "evidence": "Parse matches the source (55 boys, 37 girls, codes B=Bangor S=Skowhegan EA=Erskine Win=Winslow Wtvl=Waterville). Boys: 43/59/63/81/113 reproduce with every finisher taking a place (Bangor 3+4+8+13+15, Erskine 1+10+11+16+21, Winslow 5+7+12+19+20, Skowhegan 6+9+14+23+29, Waterville 2+25+26+27+33). Girls printed 'Bangor-21; Winslow - 50; Erskine Academy-53; Skowhegan NS; Waterville - NS': Waterville (Jacobs 4, Williams 6, King 12) and Skowhegan (22, 31, 36) have 3 finishers each so they are NS and out; then Bangor 1+2+3+5+8=19 (printed 21), Winslow 6+7+9+11+16=49 (printed 50), Erskine 4+10+12+13+14=53 (matches). I tried every subset of the six NS runners kept in the field: none gives Bangor 21 and Winslow 50 together. Printed girls totals contradict the sheet's own rows (+2 and +1)."
  },
+ "backend/data/parsed_results/2008/XC/smaasecond7boys_oct20.json": {
+  "parse_sha": "3e34ae21fe0fc59b",
+  "source_sha": "7bb78d6b44e60714",
+  "date": "2026-10-28",
+  "by": "second read (fixed): override written from the source",
+  "evidence": "reader compared every row with the source; no printed team scores, or scores verified"
+ },
+ "backend/data/parsed_results/2008/XC/smaasecond7girls_oct20.json": {
+  "parse_sha": "7a6ada4d242412ec",
+  "source_sha": "0ad5eb560564c277",
+  "date": "2026-10-28",
+  "by": "second read (fixed): override written from the source",
+  "evidence": "reader compared every row with the source; no printed team scores, or scores verified"
+ },
+ "backend/data/parsed_results/2008/XC/smaateams.json": {
+  "parse_sha": "19e32ec876a46e6e",
+  "source_sha": "f6c038447f15ce73",
+  "date": "2026-10-28",
+  "by": "second read (fixed): override written from the source",
+  "evidence": "reader compared every row with the source; no printed team scores, or scores verified"
+ },
  "backend/data/parsed_results/2008/XC/smmsaajuniorboys.json": {
   "parse_sha": "d3a3a0cac55c056c",
   "source_sha": "8ff36112f10279d3",
@@ -9784,6 +10218,20 @@
   "date": "2026-10-28",
   "by": "sonnet audit (second read, 2026-10-28) (audit: confirmed)",
   "evidence": "All 40 rows match the sheet (place, name, school, time as printed, e.g. 'Caaolum. Kaley'); schools resolve to the middle schools (Kittery = Shapleigh MS, Marsh, York, Kenn, Bidd, Saco, Wells) as in the senior files of the SMMSAA York County Festival (Oct 23 2008). No distance or team scores printed."
+ },
+ "backend/data/parsed_results/2008/XC/smmsaaseniorboys.json": {
+  "parse_sha": "7f1db19744671cfa",
+  "source_sha": "8f47bc2f99d75794",
+  "date": "2026-10-28",
+  "by": "second read (fixed): override written from the source",
+  "evidence": "reader compared every row with the source; no printed team scores, or scores verified"
+ },
+ "backend/data/parsed_results/2008/XC/smmsaaseniorgirls.json": {
+  "parse_sha": "bb7b5b568a91b468",
+  "source_sha": "03c778006f067522",
+  "date": "2026-10-28",
+  "by": "second read (fixed): override written from the source",
+  "evidence": "reader compared every row with the source; no printed team scores, or scores verified"
  },
  "backend/data/parsed_results/2008/XC/southportland_oct10.json": {
   "parse_sha": "76732635df566a7c",
@@ -9903,6 +10351,20 @@
   "date": "2026-10-16",
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
+ },
+ "backend/data/parsed_results/2008/XC/winslowboys9_5.json": {
+  "parse_sha": "09d65708bc5a4e5f",
+  "source_sha": "f778475d372f8b66",
+  "date": "2026-10-28",
+  "by": "second read (fixed): override written from the source",
+  "evidence": "reader compared every row with the source; no printed team scores, or scores verified"
+ },
+ "backend/data/parsed_results/2008/XC/winslowgirls9_5.json": {
+  "parse_sha": "265b01c04b2c1d9c",
+  "source_sha": "dfd95dd3ce6d3380",
+  "date": "2026-10-28",
+  "by": "second read (fixed): override written from the source",
+  "evidence": "reader compared every row with the source; no printed team scores, or scores verified"
  },
  "backend/data/parsed_results/2008/XC/winslowscores9_5.json": {
   "parse_sha": "aa745f47d4398160",
@@ -11101,12 +11563,26 @@
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
  },
+ "backend/data/parsed_results/2009/XC/chandlerrelays.json": {
+  "parse_sha": "6b1f22a0dd364aac",
+  "source_sha": "89ca231e5f1456b8",
+  "date": "2026-10-28",
+  "by": "second read (fixed): override written from the source",
+  "evidence": "reader compared every row with the source; no printed team scores, or scores verified"
+ },
  "backend/data/parsed_results/2009/XC/cheverusboys_oct16.json": {
   "parse_sha": "1156466423b19d42",
   "source_sha": "b9d27372c0faf175",
   "date": "2026-10-28",
   "by": "sonnet audit (second read, 2026-10-28) (audit: source-error)",
   "evidence": "Override rows (62) match the PDF (first and last names, one-letter codes C/D/P/S; typo marks 18;32, 20\"06, '22:28, 23\"43 read). Printed: Cheverus 23, South Portland 44, Deering 75, Portland 123. Cheverus and South Portland reproduce; Deering 75 = the sheet's own Score column (8+10+16+20+21) but my displacement count gives 77, and Portland 123 equals the sum of six Score-column entries (7+18+19+24+25+30) instead of five (should be 93): the sheet's Score column is inconsistent. Kept as printed."
+ },
+ "backend/data/parsed_results/2009/XC/cheverusboys_oct9.json": {
+  "parse_sha": "c8b629004e1c919c",
+  "source_sha": "39171c025ab0d740",
+  "date": "2026-10-28",
+  "by": "second read (fixed): override written from the source",
+  "evidence": "reader compared every row with the source; no printed team scores, or scores verified"
  },
  "backend/data/parsed_results/2009/XC/cheverusgirls_oct16.json": {
   "parse_sha": "680b67dbff82aa07",
@@ -11248,6 +11724,20 @@
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
  },
+ "backend/data/parsed_results/2009/XC/focboyssections.json": {
+  "parse_sha": "8d2dba8aa35be04f",
+  "source_sha": "9bfb1dcc3756a911",
+  "date": "2026-10-28",
+  "by": "second read (fixed): override written from the source",
+  "evidence": "reader compared every row with the source; no printed team scores, or scores verified"
+ },
+ "backend/data/parsed_results/2009/XC/focgirlsheats.json": {
+  "parse_sha": "31fe8711b3dc2c0c",
+  "source_sha": "a685e4231073eb23",
+  "date": "2026-10-28",
+  "by": "second read (fixed): override written from the source",
+  "evidence": "reader compared every row with the source; no printed team scores, or scores verified"
+ },
  "backend/data/parsed_results/2009/XC/focgirlsoverall.txt.json": {
   "parse_sha": "d6e4e7f6372dc38d",
   "source_sha": "2514c87c4382572b",
@@ -11268,6 +11758,27 @@
   "date": "2026-10-16",
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
+ },
+ "backend/data/parsed_results/2009/XC/freeportboys_oct2.json": {
+  "parse_sha": "de28279daa28d212",
+  "source_sha": "ce4cdb3b8a9e3eab",
+  "date": "2026-10-28",
+  "by": "second read (fixed): override written from the source",
+  "evidence": "reader compared every row with the source; no printed team scores, or scores verified"
+ },
+ "backend/data/parsed_results/2009/XC/freeportboys_sept4.json": {
+  "parse_sha": "03b89713f0a4f8b3",
+  "source_sha": "8b9e541293bfaeab",
+  "date": "2026-10-28",
+  "by": "second read (fixed): override written from the source",
+  "evidence": "reader compared every row with the source; no printed team scores, or scores verified"
+ },
+ "backend/data/parsed_results/2009/XC/freeportgirls_oct2.json": {
+  "parse_sha": "484305fac08b0275",
+  "source_sha": "ee02fea47e2ecb42",
+  "date": "2026-10-28",
+  "by": "second read (fixed): override written from the source",
+  "evidence": "reader compared every row with the source; no printed team scores, or scores verified"
  },
  "backend/data/parsed_results/2009/XC/freeportgirls_sept4.json": {
   "parse_sha": "c309e90390afc06a",
@@ -11324,6 +11835,13 @@
   "date": "2026-10-25",
   "by": "sonnet audit (second read, 2026-10-25) (audit: source-error)",
   "evidence": "All 114 places present (1-114). With Waynflete (W, 15 finishers, not in the score list) not placing, FA+F=Fryeburg, N=NYA: Greely 26, York 52 (7+8+9+11+17), Fryeburg 68 (1+4+13+18+32) reproduce. Printed NYA 108 vs rows 107 (15,20,21,22,29) and Cape 162 vs 169 (ranks 26,31,34,37,41): printed NYA 108, rows give 107; printed Cape 162, rows give 169. convention: non-scoring team (Waynflete) runners removed from the place count; the last two teams' printed totals do not follow from the listed places. Codes in this meet: FA and F = Fryeburg, N = NYA, CE = Cape Elizabeth, G = Greely, Y = York, W = Waynflete (stored correctly). (cause b/c)"
+ },
+ "backend/data/parsed_results/2009/XC/greelyboys_sept11.json": {
+  "parse_sha": "1f1fe6c2ad1410a4",
+  "source_sha": "94dab673bb90be73",
+  "date": "2026-10-28",
+  "by": "second read (fixed): override written from the source",
+  "evidence": "reader compared every row with the source; no printed team scores, or scores verified"
  },
  "backend/data/parsed_results/2009/XC/greelygirls_oct2.json": {
   "parse_sha": "dff3f9af27443f90",
@@ -11541,6 +12059,13 @@
   "date": "2026-10-26",
   "by": "sonnet audit (second read, 2026-10-26) (audit: confirmed)",
   "evidence": "Transcription override (172 rows, '2.03 Mile Run CC') matches the source's 172 lines place for place; no DNFs. Date from index (Oct 9, 2009); no team scores in this file (separate mbrboysteams)."
+ },
+ "backend/data/parsed_results/2009/XC/mbrgirls.txt.json": {
+  "parse_sha": "8a9bf8eae94eedc3",
+  "source_sha": "fe69abd0a9cda9a7",
+  "date": "2026-10-28",
+  "by": "second read (fixed): override written from the source",
+  "evidence": "reader compared every row with the source; no printed team scores, or scores verified"
  },
  "backend/data/parsed_results/2009/XC/medomakboys_sept18.json": {
   "parse_sha": "9780127fd4c34e2d",
@@ -12270,6 +12795,13 @@
   "by": "sonnet audit (score mismatch, 2026-10-23) (audit: source-error)",
   "evidence": "Parse matches the 68 rows (two-column layout read correctly). Scarborough 34 (1,2,6,8,17) and South Portland 35 (3,4,5,7,16) reproduce when Gorham and Deering (3 finishers each, 'ns') are removed. Windham printed 70 but its scorers are 9,12,13,14,21=69 (raw 9,12,14,15,24 minus Gorham 13,16,23 ahead of it) under every cap from 5 to 12 (68 to 69), never 70. Thornton printed 100 vs 102 (11,15,19,27,30; cap 7 gives 97, cap 8 gives 99, cap 9 gives 101). Marshwood printed 127 vs 141 (10,18,33,34,46; cap 7 gives 122, cap 8 gives 128). No single cap gives all three printed totals. The printed W/TA/M totals are not derivable from the sheet's own rows."
  },
+ "backend/data/parsed_results/2009/XC/smaarelaysscores.json": {
+  "parse_sha": "45a13d14ccaa87b6",
+  "source_sha": "62f1f6313310077d",
+  "date": "2026-10-28",
+  "by": "second read (fixed): override written from the source",
+  "evidence": "reader compared every row with the source; no printed team scores, or scores verified"
+ },
  "backend/data/parsed_results/2009/XC/southportlandboys_sept25.json": {
   "parse_sha": "8bd50810444846b8",
   "source_sha": "5e974a76fdc3c93d",
@@ -12606,12 +13138,26 @@
   "by": "sonnet audit (second read, 2026-10-26) (audit: confirmed)",
   "evidence": "All 34 timed rows match the source (place 2-35, name, school code, time) and every code resolves to the legend printed beside the results: B/Bi Biddeford MS, Ke Middle School of the Kennebunks, Ki Shapleigh School of Kittery, Md Marshwood MS, Ma Massabesic MS, N Noble MS, Sa Saco MS, Sf Sanford MS, TA Thornton Academy MS, W Wells Junior High, Y York MS (parse ids me-ms-*). Place 1 'Goodenough, Bryan Md' has no time in the source: the time cell holds '27' with the note 'competing schools' (a stray count in the legend), so the row has no mark and is correctly absent. Place 24 (14:20) is listed before place 25 (14:19), source order. No team scores printed."
  },
+ "backend/data/parsed_results/2009/XC/yorkcountymsboys7th8th.json": {
+  "parse_sha": "1b105ac0555e581f",
+  "source_sha": "3dd1f497ca5b4c73",
+  "date": "2026-10-28",
+  "by": "second read (fixed): override written from the source",
+  "evidence": "reader compared every row with the source; no printed team scores, or scores verified"
+ },
  "backend/data/parsed_results/2009/XC/yorkcountymsgirls6th.json": {
   "parse_sha": "34bd0aef7f10486d",
   "source_sha": "395d51b4efccdba4",
   "date": "2026-10-26",
   "by": "sonnet audit (second read, 2026-10-26) (audit: confirmed)",
   "evidence": "Override (36 rows) matches the source row for row incl. '1138' read as 11:38 (row 6 Stevens, Hannah, Ki), TA = Thornton Academy Middle School, Ki Shapleigh MS; 28:01 Brooks printed. No team scores printed; date from index (Oct 21, 2009)."
+ },
+ "backend/data/parsed_results/2009/XC/yorkcountymsgirls7th8th.json": {
+  "parse_sha": "0f24ba40aeabac72",
+  "source_sha": "d276beb9f6fb4786",
+  "date": "2026-10-28",
+  "by": "second read (fixed): override written from the source",
+  "evidence": "reader compared every row with the source; no printed team scores, or scores verified"
  },
  "backend/data/parsed_results/2010/Indoor/ScoresWMC1.json": {
   "parse_sha": "5f49233c4472197a",
@@ -13341,6 +13887,13 @@
   "by": "auto re-check 2026-10-25: changed by a deliberate re-parse; team scores still verified exactly, every school identified, no flags",
   "evidence": "meet_ledger confidence fields after the 2026-10-25 rebuild"
  },
+ "backend/data/parsed_results/2010/XC/Bucksport_JV_2010.txt.json": {
+  "parse_sha": "b0d9b3ee6bc88dcb",
+  "source_sha": "f3c463c0e1bd3806",
+  "date": "2026-10-28",
+  "by": "second read (fixed): override written from the source",
+  "evidence": "reader compared every row with the source; no printed team scores, or scores verified"
+ },
  "backend/data/parsed_results/2010/XC/Bucksport_Varsity_Boys_2010.txt.json": {
   "parse_sha": "816e7fca98e01469",
   "source_sha": "5e01c88e3d5f59b5",
@@ -13789,6 +14342,13 @@
   "by": "second read (fixed) 2026-10-23..28: override written from the source; printed team scores kept as printed",
   "evidence": "reader compared every row with the source; the printed team totals do not reproduce from the sheet's own places (source arithmetic), as the audit and override notes record"
  },
+ "backend/data/parsed_results/2010/XC/falmouthtimes_aug27.json": {
+  "parse_sha": "a00a51f25582b576",
+  "source_sha": "973fd45bfe3b61ab",
+  "date": "2026-10-28",
+  "by": "second read (fixed): override written from the source",
+  "evidence": "reader compared every row with the source; no printed team scores, or scores verified"
+ },
  "backend/data/parsed_results/2010/XC/focboys.txt.json": {
   "parse_sha": "63cd665bf3f111f3",
   "source_sha": "d0a22bb942506dff",
@@ -13935,6 +14495,13 @@
   "date": "2026-10-21",
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
+ },
+ "backend/data/parsed_results/2010/XC/lalibertejuniorresults.json": {
+  "parse_sha": "36decb3730e032d7",
+  "source_sha": "efc00fa016b78c7b",
+  "date": "2026-10-28",
+  "by": "second read (fixed): override written from the source",
+  "evidence": "reader compared every row with the source; no printed team scores, or scores verified"
  },
  "backend/data/parsed_results/2010/XC/lawrenceboys_sept10.txt.json": {
   "parse_sha": "0d236a3685de804a",
@@ -14573,6 +15140,13 @@
   "by": "sonnet audit (second read, 2026-10-26) (audit: confirmed)",
   "evidence": "All 165 rows match the source (place, name, school, time) and the override carries the 2.03 Mile event. Printed schools \"Mt. Blue Coach\" (125 Brian Kelly 15:04), \"Mt. Blue Teachers\" (127 Bogar, 132 Hodum, 154 Ryder) and \"Coach Stanton, Lawrence\" (82) are non-student finishers in the relay, left as printed."
  },
+ "backend/data/parsed_results/2010/XC/mtbluerelaysgirls.json": {
+  "parse_sha": "9cb4c77fc11190bc",
+  "source_sha": "06cc249fe35b9bd9",
+  "date": "2026-10-28",
+  "by": "second read (fixed): override written from the source",
+  "evidence": "reader compared every row with the source; no printed team scores, or scores verified"
+ },
  "backend/data/parsed_results/2010/XC/nequalifiersboys.txt.json": {
   "parse_sha": "6d6839437087283a",
   "source_sha": "16f8e11c4a3fcc90",
@@ -14747,6 +15321,13 @@
   "date": "2026-10-26",
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
+ },
+ "backend/data/parsed_results/2010/XC/sanfordboysjv_sept11.json": {
+  "parse_sha": "b76fc936e477f670",
+  "source_sha": "708e10cacceed618",
+  "date": "2026-10-28",
+  "by": "second read (fixed): override written from the source",
+  "evidence": "reader compared every row with the source; no printed team scores, or scores verified"
  },
  "backend/data/parsed_results/2010/XC/sanfordgirls_sept11.json": {
   "parse_sha": "3066569395a93f7f",
@@ -15063,6 +15644,13 @@
   "by": "sonnet audit (second read, 2026-10-25) (audit: source-error)",
   "evidence": "convention: division-scored sheet against a combined race. The sheet prints 'Division I Results' and 'Division II Results' with places renumbered within each division (Division II winners score 1,2,3...), while the paired wmcvgirls.json holds one combined all-teams race with overall places, so places cannot reproduce the printed totals. The sheet's own rows add up to its printed totals (e.g. Cape Elizabeth 3+4+6+7+14=34; Yarmouth 2+3+6+9+10=30)."
  },
+ "backend/data/parsed_results/2010/XC/wmregionalscores.json": {
+  "parse_sha": "32d9171bc9d944e6",
+  "source_sha": "19968b466e51a14b",
+  "date": "2026-10-28",
+  "by": "second read (fixed): override written from the source",
+  "evidence": "reader compared every row with the source; no printed team scores, or scores verified"
+ },
  "backend/data/parsed_results/2010/XC/wolverineinvite.json": {
   "parse_sha": "cdb237155aaa204e",
   "source_sha": "5e52a234e62ddcf5",
@@ -15097,6 +15685,27 @@
   "date": "2026-10-26",
   "by": "sonnet audit (second read, 2026-10-26) (audit: confirmed)",
   "evidence": "SMMSAC Cross Country Festival, Fort Foster, 2436 m, October 20, 2010, Boys Junior Division: 36 timed rows agree (times printed as 1013 etc. read 10:13). Row 37 \"Miler, Will  Y\" has no time and no DNF so it has no mark to keep. One school code is open: \"McLead, Ryan  A\" (place 17) stays unresolved; \"A\" appears only in the junior divisions (here and two girls, McGoo(n) Brianna/Baileigh), those runners later race for Sanford High School (athletes.json.gz: Ryan McLeod, Baileigh McGoon), so A is probably Alfred (a Sanford-tuition town) but the catalog has no Alfred school, so it stays \"?\"."
+ },
+ "backend/data/parsed_results/2010/XC/yorkmsxc%20results%202010%20MS%20boys%20senior.json": {
+  "parse_sha": "2b3affa81f2357ac",
+  "source_sha": "94fbfd0d8cec6d05",
+  "date": "2026-10-28",
+  "by": "second read (fixed): override written from the source",
+  "evidence": "reader compared every row with the source; no printed team scores, or scores verified"
+ },
+ "backend/data/parsed_results/2010/XC/yorkmsxc%20results%202010%20MS%20girls%20junior.json": {
+  "parse_sha": "5efb88666257b380",
+  "source_sha": "e479b1dd9c2b250c",
+  "date": "2026-10-28",
+  "by": "second read (fixed): override written from the source",
+  "evidence": "reader compared every row with the source; no printed team scores, or scores verified"
+ },
+ "backend/data/parsed_results/2010/XC/yorkmsxc%20results%202010%20MS%20girls%20senior.json": {
+  "parse_sha": "9716ba53517a7f1a",
+  "source_sha": "f56c406734719920",
+  "date": "2026-10-28",
+  "by": "second read (fixed): override written from the source",
+  "evidence": "reader compared every row with the source; no printed team scores, or scores verified"
  },
  "backend/data/parsed_results/2011/Indoor/ResultsSMAABOYSMEET4_jan8.json": {
   "parse_sha": "637d998aca177946",
@@ -15923,6 +16532,13 @@
   "date": "2026-10-19",
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
+ },
+ "backend/data/parsed_results/2011/XC/Busline%20JV.json": {
+  "parse_sha": "e3b4d935e65f3ce4",
+  "source_sha": "6a1e80462af57fb2",
+  "date": "2026-10-28",
+  "by": "second read (fixed): override written from the source",
+  "evidence": "reader compared every row with the source; no printed team scores, or scores verified"
  },
  "backend/data/parsed_results/2011/XC/Busline%20boys.txt.json": {
   "parse_sha": "6766de1e74ef91e0",
@@ -17408,12 +18024,26 @@
   "by": "sonnet audit (second read, 2026-10-26) (audit: confirmed)",
   "evidence": "Existing override (185 rows) compared place by place with the source: names, schools and times all match. Places 186-190 (Belanger, Colby, Dickey, Flores-Chiu, Luke) print NT (no time) and stay out as rows without a mark. Event 2.03 Mile as settled earlier."
  },
+ "backend/data/parsed_results/2011/XC/mtblueboys_sept2.json": {
+  "parse_sha": "c9bb0416f0449be6",
+  "source_sha": "7e792b04e0c707d8",
+  "date": "2026-10-28",
+  "by": "second read (fixed): override written from the source",
+  "evidence": "reader compared every row with the source; no printed team scores, or scores verified"
+ },
  "backend/data/parsed_results/2011/XC/mtbluegirls_oct7.json": {
   "parse_sha": "82c5e95f1d67ee16",
   "source_sha": "5c3bbd16dd4e28d1",
   "date": "2026-10-26",
   "by": "sonnet audit (second read, 2026-10-26) (audit: confirmed)",
   "evidence": "Existing override (152 rows) compared place by place with the source: names, schools and times all match. Places 153-159 (Chase, Heikkinen, Li, Smith, Stevens, LaPlante, Reynolds) print NT and stay out as rows without a mark."
+ },
+ "backend/data/parsed_results/2011/XC/mtbluegirls_sept2.json": {
+  "parse_sha": "cd198643a6589dd4",
+  "source_sha": "472f1672f6aaf484",
+  "date": "2026-10-28",
+  "by": "second read (fixed): override written from the source",
+  "evidence": "reader compared every row with the source; no printed team scores, or scores verified"
  },
  "backend/data/parsed_results/2011/XC/ne%20hs%20xc%20boys%20tresults.json": {
   "parse_sha": "377e61e08925a9f1",
@@ -17695,6 +18325,20 @@
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
  },
+ "backend/data/parsed_results/2011/XC/smaainvitational_oct24.json": {
+  "parse_sha": "0f898675d1366abd",
+  "source_sha": "9f48690b31c47b2b",
+  "date": "2026-10-28",
+  "by": "second read (fixed): override written from the source",
+  "evidence": "reader compared every row with the source; no printed team scores, or scores verified"
+ },
+ "backend/data/parsed_results/2011/XC/smaainvitegirls_oct25.json": {
+  "parse_sha": "c25c925835eaa47d",
+  "source_sha": "06e55bbd7ab37791",
+  "date": "2026-10-28",
+  "by": "second read (fixed): override written from the source",
+  "evidence": "reader compared every row with the source; no printed team scores, or scores verified"
+ },
  "backend/data/parsed_results/2011/XC/smaajvboys.txt.json": {
   "parse_sha": "c039ae9558adad59",
   "source_sha": "58e479abf4668a78",
@@ -17715,6 +18359,13 @@
   "date": "2026-10-16",
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
+ },
+ "backend/data/parsed_results/2011/XC/spboys_sept28.json": {
+  "parse_sha": "70187d730e032ac0",
+  "source_sha": "d25ededc537a0c70",
+  "date": "2026-10-28",
+  "by": "second read (fixed): override written from the source",
+  "evidence": "reader compared every row with the source; no printed team scores, or scores verified"
  },
  "backend/data/parsed_results/2011/XC/spgirls_sept28.json": {
   "parse_sha": "1d1647a3b35ed451",
@@ -19039,6 +19690,27 @@
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
  },
+ "backend/data/parsed_results/2012/XC/2012%20Mt.%20Blue%20Relays%20Boy's%20Individual%20Results-1.json": {
+  "parse_sha": "79fdee4d38410911",
+  "source_sha": "3717216f39162501",
+  "date": "2026-10-28",
+  "by": "second read (fixed): override written from the source",
+  "evidence": "reader compared every row with the source; no printed team scores, or scores verified"
+ },
+ "backend/data/parsed_results/2012/XC/2012%20Mt.%20Blue%20Relays%20Girl's%20Individual%20Results-1.json": {
+  "parse_sha": "922556e33ecaf2ff",
+  "source_sha": "987d7a57c861a57b",
+  "date": "2026-10-28",
+  "by": "second read (fixed): override written from the source",
+  "evidence": "reader compared every row with the source; no printed team scores, or scores verified"
+ },
+ "backend/data/parsed_results/2012/XC/2012%20smaa%20xc%20relays%20team%20scores.json": {
+  "parse_sha": "3127d56ed518cca6",
+  "source_sha": "0624d1592ba20089",
+  "date": "2026-10-28",
+  "by": "second read (fixed): override written from the source",
+  "evidence": "reader compared every row with the source; no printed team scores, or scores verified"
+ },
  "backend/data/parsed_results/2012/XC/6boysl1.json": {
   "parse_sha": "60dd7d02a8d0a17c",
   "source_sha": "710fb313da92694c",
@@ -19115,6 +19787,13 @@
   "date": "2026-10-21",
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
+ },
+ "backend/data/parsed_results/2012/XC/Busline%20JV.txt.json": {
+  "parse_sha": "a8b44ce50f4210c5",
+  "source_sha": "a2d00235ef36f1b4",
+  "date": "2026-10-28",
+  "by": "second read (fixed): override written from the source",
+  "evidence": "reader compared every row with the source; no printed team scores, or scores verified"
  },
  "backend/data/parsed_results/2012/XC/Busline%20boys.txt.json": {
   "parse_sha": "a29bc7a64862fa89",
@@ -19242,6 +19921,13 @@
   "by": "sonnet audit (second read, 2026-10-25) (audit: confirmed)",
   "evidence": "Greely 10/5/2012 girls team score list: Greely 43, Yarmouth 48, Falmouth 53, Cape Elizabeth 72 match the sheet and reproduce from the listed places. No individual rows in this file."
  },
+ "backend/data/parsed_results/2012/XC/GreelyGirls_oct5.txt.json": {
+  "parse_sha": "43a9f72eef9112c6",
+  "source_sha": "18814ba7466a76c9",
+  "date": "2026-10-28",
+  "by": "second read (fixed): override written from the source",
+  "evidence": "reader compared every row with the source; no printed team scores, or scores verified"
+ },
  "backend/data/parsed_results/2012/XC/KVAC%20JV%20boys%20results.txt.json": {
   "parse_sha": "59f4814b4cf1887d",
   "source_sha": "f6d73c35c6434a3f",
@@ -19339,6 +20025,13 @@
   "date": "2026-10-24",
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
+ },
+ "backend/data/parsed_results/2012/XC/New%20England%20HS%20XC%20girls%20results.txt.json": {
+  "parse_sha": "38a2802e27bf1e9d",
+  "source_sha": "a765e5b48169f4b3",
+  "date": "2026-10-28",
+  "by": "second read (fixed): override written from the source",
+  "evidence": "reader compared every row with the source; no printed team scores, or scores verified"
  },
  "backend/data/parsed_results/2012/XC/OHBoysOverall_sept21.json": {
   "parse_sha": "d9fe0bcb7f508bad",
@@ -19451,6 +20144,20 @@
   "date": "2026-10-28",
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
+ },
+ "backend/data/parsed_results/2012/XC/SLJuniorVresults.json": {
+  "parse_sha": "04a27d9cd963b87f",
+  "source_sha": "cf3250c95053c705",
+  "date": "2026-10-28",
+  "by": "second read (fixed): override written from the source",
+  "evidence": "reader compared every row with the source; no printed team scores, or scores verified"
+ },
+ "backend/data/parsed_results/2012/XC/SLVarsityresults.json": {
+  "parse_sha": "68086f4a86e64151",
+  "source_sha": "85dc1b423ff57b4f",
+  "date": "2026-10-28",
+  "by": "second read (fixed): override written from the source",
+  "evidence": "reader compared every row with the source; no printed team scores, or scores verified"
  },
  "backend/data/parsed_results/2012/XC/Second_Seven_Results_2012.json": {
   "parse_sha": "40c01eedaa560a85",
@@ -20894,6 +21601,13 @@
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
  },
+ "backend/data/parsed_results/2012/XC/pvc_girls_varsity_overall_ind_2012.json": {
+  "parse_sha": "6ab1b38ae5d825a1",
+  "source_sha": "4d4e304a9b6f21d6",
+  "date": "2026-10-28",
+  "by": "second read (fixed): override written from the source",
+  "evidence": "reader compared every row with the source; no printed team scores, or scores verified"
+ },
  "backend/data/parsed_results/2012/XC/pvc_girls_varsity_team_scores_2012.json": {
   "parse_sha": "645e920350c140e1",
   "source_sha": "15af4dd1964120dd",
@@ -22098,6 +22812,20 @@
   "by": "sonnet audit (second read, 2026-10-25) (audit: confirmed)",
   "evidence": "Girls 1.6 Mile, 93 rows match row by row incl. team places; 7 team scores match (Holbrook 48, Center Drive 57, Hermon 92, Bangor Christian 96, Wagner 139, Glenburn 156, Caravel 215). Middle-school entries me-ms-*."
  },
+ "backend/data/parsed_results/2013/XC/Panther%20Pre%20Season%202%20Miler.json": {
+  "parse_sha": "4255ae0132b875bd",
+  "source_sha": "252f0c3dda7dc5a3",
+  "date": "2026-10-28",
+  "by": "second read (fixed): override written from the source",
+  "evidence": "reader compared every row with the source; no printed team scores, or scores verified"
+ },
+ "backend/data/parsed_results/2013/XC/Results%20Presque%20Isle%20invite%209-14-2013.json": {
+  "parse_sha": "029c2f6c4f1f1b18",
+  "source_sha": "ceb25f2d203190de",
+  "date": "2026-10-28",
+  "by": "second read (fixed): override written from the source",
+  "evidence": "reader compared every row with the source; no printed team scores, or scores verified"
+ },
  "backend/data/parsed_results/2013/XC/Telstar%20HS%20XC%20race%209-11-13.json": {
   "parse_sha": "6a70483b2f1b25fc",
   "source_sha": "c41d0895beae873b",
@@ -22153,6 +22881,20 @@
   "date": "2026-10-25",
   "by": "sonnet audit (second read, 2026-10-25) (audit: confirmed)",
   "evidence": "52 girls rows match the source (50 finishers + Amanda Reed and Taylor Roy DNF); team scores Hampden 31, Bangor 54, Waterville 70, Brewer 76 match; points column = team place."
+ },
+ "backend/data/parsed_results/2013/XC/boothbayboys_sept18.json": {
+  "parse_sha": "1fcccddfe561886c",
+  "source_sha": "449fa46150b1e7cc",
+  "date": "2026-10-28",
+  "by": "second read (fixed): override written from the source",
+  "evidence": "reader compared every row with the source; no printed team scores, or scores verified"
+ },
+ "backend/data/parsed_results/2013/XC/boothbaygirls_sept18.json": {
+  "parse_sha": "5b9d09e40503b258",
+  "source_sha": "731be16ebea2057f",
+  "date": "2026-10-28",
+  "by": "second read (fixed): override written from the source",
+  "evidence": "reader compared every row with the source; no printed team scores, or scores verified"
  },
  "backend/data/parsed_results/2013/XC/boys_jv_old_town_xc_2013.json": {
   "parse_sha": "1efc8f37d347150a",
@@ -22454,6 +23196,13 @@
   "date": "2026-10-28",
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
+ },
+ "backend/data/parsed_results/2013/XC/lalibertejv.json": {
+  "parse_sha": "63ef14a9a3266f3d",
+  "source_sha": "2cbf13b11c770779",
+  "date": "2026-10-28",
+  "by": "second read (fixed): override written from the source",
+  "evidence": "reader compared every row with the source; no printed team scores, or scores verified"
  },
  "backend/data/parsed_results/2013/XC/lalibertevarsity.json": {
   "parse_sha": "d54eaa0a42bb2130",
@@ -23120,6 +23869,20 @@
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
  },
+ "backend/data/parsed_results/2013/XC/mvcpreviewboys_sept25.json": {
+  "parse_sha": "8f4fd124fa76979e",
+  "source_sha": "3fe901ee00869199",
+  "date": "2026-10-28",
+  "by": "second read (fixed): override written from the source",
+  "evidence": "reader compared every row with the source; no printed team scores, or scores verified"
+ },
+ "backend/data/parsed_results/2013/XC/mvcpreviewgirls_sept25.json": {
+  "parse_sha": "1f847e2796427ab9",
+  "source_sha": "bf66752068467d68",
+  "date": "2026-10-28",
+  "by": "second read (fixed): override written from the source",
+  "evidence": "reader compared every row with the source; no printed team scores, or scores verified"
+ },
  "backend/data/parsed_results/2013/XC/nobleboys_sept27.json": {
   "parse_sha": "62e1f2534b19f269",
   "source_sha": "d0a06515da674e17",
@@ -23210,6 +23973,13 @@
   "date": "2026-10-28",
   "by": "second read (fixed) 2026-10-23..28: override written from the source; printed team scores kept as printed",
   "evidence": "reader compared every row with the source; the printed team totals do not reproduce from the sheet's own places (source arithmetic), as the audit and override notes record"
+ },
+ "backend/data/parsed_results/2013/XC/scarborouighboys1_sept20.json": {
+  "parse_sha": "4ab944309ffa64de",
+  "source_sha": "23da9bfcdd0f2cc9",
+  "date": "2026-10-28",
+  "by": "second read (fixed): override written from the source",
+  "evidence": "reader compared every row with the source; no printed team scores, or scores verified"
  },
  "backend/data/parsed_results/2013/XC/smaarelays.json": {
   "parse_sha": "3e8371686e2be8e4",
@@ -23777,6 +24547,13 @@
   "date": "2026-10-25",
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
+ },
+ "backend/data/parsed_results/2014/XC/girlsstatecombined.json": {
+  "parse_sha": "e18c557c7e4051d7",
+  "source_sha": "6c3be04d753a096b",
+  "date": "2026-10-28",
+  "by": "second read (fixed): override written from the source",
+  "evidence": "reader compared every row with the source; no printed team scores, or scores verified"
  },
  "backend/data/parsed_results/2014/XC/lincoln-girls-comp.json": {
   "parse_sha": "c1ccb6027f1fdc4a",
@@ -24464,6 +25241,13 @@
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
  },
+ "backend/data/parsed_results/2014/XC/ms-wmc-championship-2014.json": {
+  "parse_sha": "84bea658bc3bf192",
+  "source_sha": "e0a5e6decfa2ac8d",
+  "date": "2026-10-28",
+  "by": "second read (fixed): override written from the source",
+  "evidence": "reader compared every row with the source; no printed team scores, or scores verified"
+ },
  "backend/data/parsed_results/2014/XC/ms-wmc-falmouth-freeport-sacopee-cape-elizabeth-2014.json": {
   "parse_sha": "2db7c29b717580aa",
   "source_sha": "1234ca3207df7673",
@@ -24954,6 +25738,13 @@
   "by": "sonnet audit (second read, 2026-10-24) (audit: source-error)",
   "evidence": "Oceanside Meet at Medomak Valley 9/04/15: 22 boys and 16 girls rows match (name, school code BR/MV/O, time, place). The printed team scores do not reproduce for boys: 'Boothbay Region 26, Medomak Valley 39, Oceanside 67' vs the sheet's places MV 1+5+6+14+15 = 41 and Oceanside 7+13+17+18+19 = 74 (BR 2+3+4+8+9 = 26 ok); girls 22/49/49 reproduce. PARSER PATTERN (note): the 'Boys results: Team N, Team N' summary line is not read as team scores (score=no_rankings); date 9/04/15 is in the title."
  },
+ "backend/data/parsed_results/2015/XC/2015-Pre-Season-results-.json": {
+  "parse_sha": "9ddf1a754aad0748",
+  "source_sha": "d8132b70ed2e0a60",
+  "date": "2026-10-28",
+  "by": "second read (fixed): override written from the source",
+  "evidence": "reader compared every row with the source; no printed team scores, or scores verified"
+ },
  "backend/data/parsed_results/2015/XC/2015-alc-boys-combined.json": {
   "parse_sha": "e68b002f0a81f05f",
   "source_sha": "378ff24a88c26456",
@@ -24995,6 +25786,13 @@
   "date": "2026-10-16",
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
+ },
+ "backend/data/parsed_results/2015/XC/2015-hawk-relay-results.json": {
+  "parse_sha": "50f5fc1748ac3017",
+  "source_sha": "7601dc3712eb1798",
+  "date": "2026-10-28",
+  "by": "second read (fixed): override written from the source",
+  "evidence": "reader compared every row with the source; no printed team scores, or scores verified"
  },
  "backend/data/parsed_results/2015/XC/2015-pihs-invite-jv-boys.json": {
   "parse_sha": "a82b264cb7872391",
@@ -25283,12 +26081,26 @@
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
  },
+ "backend/data/parsed_results/2015/XC/GorhamXCboysMeet10_16_15.json": {
+  "parse_sha": "4b4080758298e12e",
+  "source_sha": "d48b958ee1ab2e0a",
+  "date": "2026-10-28",
+  "by": "second read (fixed): override written from the source",
+  "evidence": "reader compared every row with the source; no printed team scores, or scores verified"
+ },
  "backend/data/parsed_results/2015/XC/GorhamXCboysMeetSept11th.json": {
   "parse_sha": "c55cb04b8df08584",
   "source_sha": "ce9623506db49586",
   "date": "2026-10-25",
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
+ },
+ "backend/data/parsed_results/2015/XC/GorhamXCgirlsMeet10_16_15.json": {
+  "parse_sha": "888b2641b5bc7cfa",
+  "source_sha": "4be41315abe6d3df",
+  "date": "2026-10-28",
+  "by": "second read (fixed): override written from the source",
+  "evidence": "reader compared every row with the source; no printed team scores, or scores verified"
  },
  "backend/data/parsed_results/2015/XC/GorhamXCgirlsMeetSept11th.json": {
   "parse_sha": "50c150ed1540644d",
@@ -25485,6 +26297,20 @@
   "date": "2026-10-16",
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
+ },
+ "backend/data/parsed_results/2015/XC/Mt.-Blue-Relays-Boys-Spreadsheet.json": {
+  "parse_sha": "02a541a47c6c107b",
+  "source_sha": "148426d8d8db82cb",
+  "date": "2026-10-28",
+  "by": "second read (fixed): override written from the source",
+  "evidence": "reader compared every row with the source; no printed team scores, or scores verified"
+ },
+ "backend/data/parsed_results/2015/XC/Mt.-Blue-Relays-Girls-Spreadsheet.json": {
+  "parse_sha": "4f23426866574c1a",
+  "source_sha": "d3ec4fd9652a9a80",
+  "date": "2026-10-28",
+  "by": "second read (fixed): override written from the source",
+  "evidence": "reader compared every row with the source; no printed team scores, or scores verified"
  },
  "backend/data/parsed_results/2015/XC/OHBoysResults.json": {
   "parse_sha": "ac93f5d23812c317",
@@ -26549,6 +27375,20 @@
   "date": "2026-10-16",
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
+ },
+ "backend/data/parsed_results/2015/XC/overall_boys_ind_pvc_results_10.17.15.json": {
+  "parse_sha": "f3962b75764654a0",
+  "source_sha": "bc19b2e369585776",
+  "date": "2026-10-28",
+  "by": "second read (fixed): override written from the source",
+  "evidence": "reader compared every row with the source; no printed team scores, or scores verified"
+ },
+ "backend/data/parsed_results/2015/XC/overall_girls_ind_pvc_results_10.17.15.json": {
+  "parse_sha": "44c72ea0d2499803",
+  "source_sha": "c945f871367256cc",
+  "date": "2026-10-28",
+  "by": "second read (fixed): override written from the source",
+  "evidence": "reader compared every row with the source; no printed team scores, or scores verified"
  },
  "backend/data/parsed_results/2015/XC/pendale-boys-jv.txt.json": {
   "parse_sha": "a9a4c0d211c16fe5",
@@ -27985,6 +28825,13 @@
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
  },
+ "backend/data/parsed_results/2016/XC/2016-Pre-Season-results-.json": {
+  "parse_sha": "a72369a77bb570c9",
+  "source_sha": "86b0c9f6aae05d40",
+  "date": "2026-10-28",
+  "by": "second read (fixed): override written from the source",
+  "evidence": "reader compared every row with the source; no printed team scores, or scores verified"
+ },
  "backend/data/parsed_results/2016/XC/2016-alhs-xc-boys-results.json": {
   "parse_sha": "905982f7dbe30d19",
   "source_sha": "f9dbd51cfec15af3",
@@ -28348,6 +29195,13 @@
   "date": "2026-10-16",
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
+ },
+ "backend/data/parsed_results/2016/XC/Lee-Invitational-2016-Boys-JV.json": {
+  "parse_sha": "f2a89297b970765c",
+  "source_sha": "51ecae5b0882306c",
+  "date": "2026-10-28",
+  "by": "second read (fixed): override written from the source",
+  "evidence": "reader compared every row with the source; no printed team scores, or scores verified"
  },
  "backend/data/parsed_results/2016/XC/Lee-Invitational-2016-Varsity-Boys-Results.json": {
   "parse_sha": "b7fe31a84f4a0bf6",
@@ -29728,6 +30582,13 @@
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
  },
+ "backend/data/parsed_results/2016/XC/relays-results-setup.json": {
+  "parse_sha": "c34585f024bd9255",
+  "source_sha": "052c48d04614c090",
+  "date": "2026-10-28",
+  "by": "second read (fixed): override written from the source",
+  "evidence": "reader compared every row with the source; no printed team scores, or scores verified"
+ },
  "backend/data/parsed_results/2016/XC/skowheganboys_sept2.txt.json": {
   "parse_sha": "2eef2c9dc0804c28",
   "source_sha": "c037f1d920600c68",
@@ -30932,6 +31793,13 @@
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
  },
+ "backend/data/parsed_results/2017/XC/2017-panther-2-miler-results.txt.json": {
+  "parse_sha": "d54c116be461b2ef",
+  "source_sha": "ccbfc8822692b0ba",
+  "date": "2026-10-28",
+  "by": "second read (fixed): override written from the source",
+  "evidence": "reader compared every row with the source; no printed team scores, or scores verified"
+ },
  "backend/data/parsed_results/2017/XC/20170909_Bucksport-invitation_results_JV-boys.txt.json": {
   "parse_sha": "b61c3d9244b7eac3",
   "source_sha": "1f9bd9018f662569",
@@ -31289,12 +32157,26 @@
   "by": "re-check 2026-10-28: changed after sign-off only by deliberate fixes",
   "evidence": "diffed against the signed-off parse: rows unchanged apart from kept DNF rows, relay-leg distance in the event name, name-encoding fixes, team-score/meet-name/date fields"
  },
+ "backend/data/parsed_results/2017/XC/NYA-Meet-results-17.09.01-Boys-Individual.txt.json": {
+  "parse_sha": "7d0d00847b1b23d9",
+  "source_sha": "248500b9c0190b20",
+  "date": "2026-10-28",
+  "by": "second read (fixed): override written from the source",
+  "evidence": "reader compared every row with the source; no printed team scores, or scores verified"
+ },
  "backend/data/parsed_results/2017/XC/NYA-Meet-results-17.09.01-Boys-Team.txt.json": {
   "parse_sha": "33f95d437365a17a",
   "source_sha": "f548a24e58d7f824",
   "date": "2026-10-25",
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
+ },
+ "backend/data/parsed_results/2017/XC/NYA-Meet-results-17.09.01-Girls.txt.json": {
+  "parse_sha": "4520d963e895f259",
+  "source_sha": "69e745ab2b5bc023",
+  "date": "2026-10-28",
+  "by": "second read (fixed): override written from the source",
+  "evidence": "reader compared every row with the source; no printed team scores, or scores verified"
  },
  "backend/data/parsed_results/2017/XC/OH-Boys-Championship-results.json": {
   "parse_sha": "ace69f8ecafd69d2",
@@ -31730,6 +32612,13 @@
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
  },
+ "backend/data/parsed_results/2017/XC/corrected-westbrook-hs-girls-xc-17.txt.json": {
+  "parse_sha": "aa0645d08c31ba2b",
+  "source_sha": "6bc89cd536bd9fc1",
+  "date": "2026-10-28",
+  "by": "second read (fixed): override written from the source",
+  "evidence": "reader compared every row with the source; no printed team scores, or scores verified"
+ },
  "backend/data/parsed_results/2017/XC/deering-boys-17.txt.json": {
   "parse_sha": "67ebc15a798e6f2e",
   "source_sha": "7dafa8618a6a0e7a",
@@ -31806,6 +32695,13 @@
   "date": "2026-10-24",
   "by": "sonnet audit (second read, 2026-10-24) (audit: confirmed)",
   "evidence": "Hy-Tek '2017 Maine XC Festival of Champions - 9/30/2017', Event 2 Boys 5k, 'Results - Men': all 933 timed finishers plus 8 DNFs (Scarborough Schuler/Derrick/Hanson/Osborn, Greely Wilson, Gould Plummer, Ellsworth Frost, Belfast Blow) = 941 rows match place, name, class, school, time and Points. Schools resolve correctly: Lincoln High School -> oos-auto-ri-lincoln (RI; scored separately from Lincoln Academy 11th/7th), Canton -> CT, Concord/Hanover/Nashua North NH, Classical/Hope/Cumberland/East Greenwich/Burrillville RI, Harwood Union VT, Charlottetown/Colonel Gray PEI, JH Gillis/King's Edgehill NS. Team Scores list (62+ teams, e.g. Concord 58, East Greenwich 123, Nashua North 139, Falmouth 156) is the parse's."
+ },
+ "backend/data/parsed_results/2017/XC/focboyssections2017.json": {
+  "parse_sha": "9b9abe689be2f43c",
+  "source_sha": "eb8ed5804c9e4c7f",
+  "date": "2026-10-28",
+  "by": "second read (fixed): override written from the source",
+  "evidence": "reader compared every row with the source; no printed team scores, or scores verified"
  },
  "backend/data/parsed_results/2017/XC/focgirls2017.txt.json": {
   "parse_sha": "1e9e79d4e5be7c91",
@@ -32528,6 +33424,13 @@
   "by": "sonnet audit (second read, 2026-10-24) (audit: confirmed)",
   "evidence": "Middle School Meet at Thornton (TAMS), boys: 47 parsed rows = the 47 named source rows (place/name/letter/time agree). Source place 39 has no name (only 'M 13:40'), so it cannot become a runner and is rightly absent (place 39 skipped, 40 follows). Letters N/M/W/T = Noble/Marshwood/Wells/TAMS (score list: Marshwood 33, Wells 47, Noble 57, TAMS NS); ids right. Printed Marshwood 33 and Wells 47 reproduce from the rows (TAMS not scored); Noble 57 does not (rows give 47), a sheet inconsistency, not carried in the parse. 'White. Cooper' printed so."
  },
+ "backend/data/parsed_results/2017/XC/thorntonmsgirls_oct12.json": {
+  "parse_sha": "513919fb60e447c4",
+  "source_sha": "c52f297f6424faa2",
+  "date": "2026-10-28",
+  "by": "second read (fixed): override written from the source",
+  "evidence": "reader compared every row with the source; no printed team scores, or scores verified"
+ },
  "backend/data/parsed_results/2017/XC/updated_pvc_boys_class-b_champ_results_10.14.17.json": {
   "parse_sha": "269f3b6780a0a43d",
   "source_sha": "57c8cc3eb2d3baab",
@@ -32744,6 +33647,27 @@
   "date": "2026-10-24",
   "by": "sonnet audit (second read, 2026-10-24) (audit: confirmed)",
   "evidence": "York County MS XC Festival (Oct 19, 2017, Noble), 6th-grade boys race: 52 source rows = 52 parsed (51 boys + place 42 Ava Prescott, Massabesic, printed 'F' so she is a Girls row from the boys file). Place/name/school/time all agree; trailing commas on Noble names ('Maddox Jordan,') are printed so and stripped by the name cleaner; place 14 has a blank grade (parse shows MS). Schools resolve to me-ms-*. No scores printed."
+ },
+ "backend/data/parsed_results/2017/XC/ycc-6th-girls-17.txt.json": {
+  "parse_sha": "2922c25ce7e08898",
+  "source_sha": "84342faea6243096",
+  "date": "2026-10-28",
+  "by": "second read (fixed): override written from the source",
+  "evidence": "reader compared every row with the source; no printed team scores, or scores verified"
+ },
+ "backend/data/parsed_results/2017/XC/ycc-78th-boys-17.txt.json": {
+  "parse_sha": "656a5eac19fab808",
+  "source_sha": "e73e1bafaf186440",
+  "date": "2026-10-28",
+  "by": "second read (fixed): override written from the source",
+  "evidence": "reader compared every row with the source; no printed team scores, or scores verified"
+ },
+ "backend/data/parsed_results/2017/XC/ycc-78th-girls-17.txt.json": {
+  "parse_sha": "aab62748e946c755",
+  "source_sha": "cbdfd25a0e55de29",
+  "date": "2026-10-28",
+  "by": "second read (fixed): override written from the source",
+  "evidence": "reader compared every row with the source; no printed team scores, or scores verified"
  },
  "backend/data/parsed_results/2018/Indoor/2018-01-27-mti-USM_Open_III_Results.json": {
   "parse_sha": "eb77d8cfd69ef5c2",
@@ -33844,12 +34768,26 @@
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
  },
+ "backend/data/parsed_results/2018/XC/20180921_Seacoast_boys_results.txt.json": {
+  "parse_sha": "0bdfb8f961a91700",
+  "source_sha": "336b0bdbc6193eac",
+  "date": "2026-10-28",
+  "by": "second read (fixed): override written from the source",
+  "evidence": "reader compared every row with the source; no printed team scores, or scores verified"
+ },
  "backend/data/parsed_results/2018/XC/20180921_Seacoast_boys_team-scores.txt.json": {
   "parse_sha": "ed29a0ab6c3879bf",
   "source_sha": "f06d4837c21dfb76",
   "date": "2026-10-24",
   "by": "sonnet audit (second read, 2026-10-24) (audit: confirmed)",
   "evidence": "Scores-only file ('BOYS TEAM SCORE' block, no runner rows). Parse = the six printed scores: George Stevens 22 (1+2+3+4+12), Calais 64, Lee 74, Bucksport 101, Machias 118, Searsport 157; each reproduces from the results sheet's TmPl column. Date 2018-09-21 right."
+ },
+ "backend/data/parsed_results/2018/XC/20180921_Seacoast_girls_results.txt.json": {
+  "parse_sha": "0907abfc48b82bf9",
+  "source_sha": "62c2c643210c0fa0",
+  "date": "2026-10-28",
+  "by": "second read (fixed): override written from the source",
+  "evidence": "reader compared every row with the source; no printed team scores, or scores verified"
  },
  "backend/data/parsed_results/2018/XC/20180921_Seacoast_girls_team-scores.txt.json": {
   "parse_sha": "ffa9818bd211addf",
@@ -34019,6 +34957,13 @@
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
  },
+ "backend/data/parsed_results/2018/XC/Brogan-Invitational-2018-Results-1.json": {
+  "parse_sha": "81f87f3ac7fa036b",
+  "source_sha": "7d05ea63b5effefa",
+  "date": "2026-10-28",
+  "by": "second read (fixed): override written from the source",
+  "evidence": "reader compared every row with the source; no printed team scores, or scores verified"
+ },
  "backend/data/parsed_results/2018/XC/Cony-Homecoming-2018-Boys-results.json": {
   "parse_sha": "0f460deac0faab46",
   "source_sha": "4189c6c110da3236",
@@ -34054,12 +34999,33 @@
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
  },
+ "backend/data/parsed_results/2018/XC/EXTRAV-78TH-BOYS.txt.json": {
+  "parse_sha": "0a718aa429e3bf52",
+  "source_sha": "1546426810fd8d06",
+  "date": "2026-10-28",
+  "by": "second read (fixed): override written from the source",
+  "evidence": "reader compared every row with the source; no printed team scores, or scores verified"
+ },
+ "backend/data/parsed_results/2018/XC/EXTRAV-78TH-GIRLS.txt.json": {
+  "parse_sha": "b4ea77c34992e9fa",
+  "source_sha": "0a20aeeae0ff8bf7",
+  "date": "2026-10-28",
+  "by": "second read (fixed): override written from the source",
+  "evidence": "reader compared every row with the source; no printed team scores, or scores verified"
+ },
  "backend/data/parsed_results/2018/XC/EXTRAV-BOYS-6TH.txt.json": {
   "parse_sha": "78ec1461735e56cc",
   "source_sha": "73c5e409ac7bda8d",
   "date": "2026-10-16",
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
+ },
+ "backend/data/parsed_results/2018/XC/EXTRAV-GIRLS-6TH.txt.json": {
+  "parse_sha": "6ca961d0ed80c79d",
+  "source_sha": "7b86b61415d1d392",
+  "date": "2026-10-28",
+  "by": "second read (fixed): override written from the source",
+  "evidence": "reader compared every row with the source; no printed team scores, or scores verified"
  },
  "backend/data/parsed_results/2018/XC/GRAY1.json": {
   "parse_sha": "6c4486fd9b2c0783",
@@ -34397,12 +35363,54 @@
   "by": "sonnet audit (second read, 2026-10-28) (audit: confirmed)",
   "evidence": "Quabacook Relays (Hy-Tek sheet printed 8/17/2018, 'Mixed 2.6 Mile Run CC # 2 Runner'; sub5 index date September 8, 2018 governs): 10 women + 8 men, places and names only, NO times printed, so the rows carry no mark (a transcription override would drop them, and none is needed). All 18 rows match (place, name, school); the glued gender+class prefixes (WSR, WFR, WSO, WJR, MSR, ...) now resolve to Cape Elizabeth, Mt. Ararat, Mt. Blue, Edward Little, York, Brunswick, Lewiston, Cony, Morse, Leavitt (existing prefix stripping). The Year column (class) is not kept as grade for this file, which has no effect since there is no mark."
  },
+ "backend/data/parsed_results/2018/XC/Results-R-7.json": {
+  "parse_sha": "6550ef1fc186bdf8",
+  "source_sha": "a093cc08462cc48a",
+  "date": "2026-10-28",
+  "by": "second read (fixed): override written from the source",
+  "evidence": "reader compared every row with the source; no printed team scores, or scores verified"
+ },
  "backend/data/parsed_results/2018/XC/Results-R-8.json": {
   "parse_sha": "070229f42eb51087",
   "source_sha": "5bd67817517180ac",
   "date": "2026-10-16",
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
+ },
+ "backend/data/parsed_results/2018/XC/Results-Race-1.json": {
+  "parse_sha": "305b6f7e14866274",
+  "source_sha": "66c3fcd2527c68fd",
+  "date": "2026-10-28",
+  "by": "second read (fixed): override written from the source",
+  "evidence": "reader compared every row with the source; no printed team scores, or scores verified"
+ },
+ "backend/data/parsed_results/2018/XC/Results-Race-2.json": {
+  "parse_sha": "476afd9c6b91a9e7",
+  "source_sha": "e92df423f5a86119",
+  "date": "2026-10-28",
+  "by": "second read (fixed): override written from the source",
+  "evidence": "reader compared every row with the source; no printed team scores, or scores verified"
+ },
+ "backend/data/parsed_results/2018/XC/Results-Race-3.json": {
+  "parse_sha": "14ef5b0eebe1a8bc",
+  "source_sha": "a8e3627f0604cf37",
+  "date": "2026-10-28",
+  "by": "second read (fixed): override written from the source",
+  "evidence": "reader compared every row with the source; no printed team scores, or scores verified"
+ },
+ "backend/data/parsed_results/2018/XC/Results-Race-4.json": {
+  "parse_sha": "a1091fc1b0b7b829",
+  "source_sha": "166b4bfa3656881b",
+  "date": "2026-10-28",
+  "by": "second read (fixed): override written from the source",
+  "evidence": "reader compared every row with the source; no printed team scores, or scores verified"
+ },
+ "backend/data/parsed_results/2018/XC/Results-Race-5.json": {
+  "parse_sha": "da23057f63a4e6df",
+  "source_sha": "e3f668da2f817035",
+  "date": "2026-10-28",
+  "by": "second read (fixed): override written from the source",
+  "evidence": "reader compared every row with the source; no printed team scores, or scores verified"
  },
  "backend/data/parsed_results/2018/XC/Results-Race-9.json": {
   "parse_sha": "22c47ec25e2dcc25",
@@ -34557,6 +35565,34 @@
   "date": "2026-10-16",
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
+ },
+ "backend/data/parsed_results/2018/XC/YORK-COUNTY-6TH-GIRLS.txt.json": {
+  "parse_sha": "55f491aa72be7187",
+  "source_sha": "4b286136e399bfc0",
+  "date": "2026-10-28",
+  "by": "second read (fixed): override written from the source",
+  "evidence": "reader compared every row with the source; no printed team scores, or scores verified"
+ },
+ "backend/data/parsed_results/2018/XC/YORK-COUNTY-6TH-boys.txt.json": {
+  "parse_sha": "d6f89a07afe36eeb",
+  "source_sha": "3ca7895e09c645f5",
+  "date": "2026-10-28",
+  "by": "second read (fixed): override written from the source",
+  "evidence": "reader compared every row with the source; no printed team scores, or scores verified"
+ },
+ "backend/data/parsed_results/2018/XC/YORK-COUNTY-78TH-BOYS.txt.json": {
+  "parse_sha": "1520605e318265d7",
+  "source_sha": "180058a74cdc94ef",
+  "date": "2026-10-28",
+  "by": "second read (fixed): override written from the source",
+  "evidence": "reader compared every row with the source; no printed team scores, or scores verified"
+ },
+ "backend/data/parsed_results/2018/XC/YORK-COUNTY-78TH-GIRLS.txt.json": {
+  "parse_sha": "2548ddd80bcb1e5e",
+  "source_sha": "455859d48e253dd4",
+  "date": "2026-10-28",
+  "by": "second read (fixed): override written from the source",
+  "evidence": "reader compared every row with the source; no printed team scores, or scores verified"
  },
  "backend/data/parsed_results/2018/XC/airline-boys.txt.json": {
   "parse_sha": "2f8a1c37c6716d75",
@@ -34775,6 +35811,20 @@
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
  },
+ "backend/data/parsed_results/2018/XC/caribou-invitational-varsity-boys-results.json": {
+  "parse_sha": "2ff89fc5df69864a",
+  "source_sha": "75374d9b9e0d3d96",
+  "date": "2026-10-28",
+  "by": "second read (fixed): override written from the source",
+  "evidence": "reader compared every row with the source; no printed team scores, or scores verified"
+ },
+ "backend/data/parsed_results/2018/XC/caribou-invitational-varsity-girls-results.json": {
+  "parse_sha": "6d6ade28ca7c8622",
+  "source_sha": "a3132ffe89388afe",
+  "date": "2026-10-28",
+  "by": "second read (fixed): override written from the source",
+  "evidence": "reader compared every row with the source; no printed team scores, or scores verified"
+ },
  "backend/data/parsed_results/2018/XC/cariboumsboys_oct3.json": {
   "parse_sha": "e7c1ea4ade73b98d",
   "source_sha": "1aab03b5f258fd86",
@@ -34963,6 +36013,13 @@
   "date": "2026-10-16",
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
+ },
+ "backend/data/parsed_results/2018/XC/falmouth_august24.json": {
+  "parse_sha": "186495384b8ce32e",
+  "source_sha": "9a9680e870e6befc",
+  "date": "2026-10-28",
+  "by": "second read (fixed): override written from the source",
+  "evidence": "reader compared every row with the source; no printed team scores, or scores verified"
  },
  "backend/data/parsed_results/2018/XC/foc18boysoverall.txt.json": {
   "parse_sha": "d1d5574a4e5719ec",
@@ -35356,6 +36413,20 @@
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
  },
+ "backend/data/parsed_results/2018/XC/mtbluerelaysboys.json": {
+  "parse_sha": "9df532da72eb264d",
+  "source_sha": "9edc4120402a6ef6",
+  "date": "2026-10-28",
+  "by": "second read (fixed): override written from the source",
+  "evidence": "reader compared every row with the source; no printed team scores, or scores verified"
+ },
+ "backend/data/parsed_results/2018/XC/mtbluerelaysgirls.json": {
+  "parse_sha": "f902f7ff6f187e25",
+  "source_sha": "276f0f3922d61207",
+  "date": "2026-10-28",
+  "by": "second read (fixed): override written from the source",
+  "evidence": "reader compared every row with the source; no printed team scores, or scores verified"
+ },
  "backend/data/parsed_results/2018/XC/orrington-boys.txt.json": {
   "parse_sha": "59bed2c9152605ac",
   "source_sha": "f85a629663a29734",
@@ -35691,6 +36762,13 @@
   "date": "2026-10-16",
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
+ },
+ "backend/data/parsed_results/2018/XC/wells-prelim-boys.txt.json": {
+  "parse_sha": "11156b7bd5231505",
+  "source_sha": "02833b3a179a93c6",
+  "date": "2026-10-28",
+  "by": "second read (fixed): override written from the source",
+  "evidence": "reader compared every row with the source; no printed team scores, or scores verified"
  },
  "backend/data/parsed_results/2018/XC/wells-prelim-girls.txt.json": {
   "parse_sha": "b35fda4fe99c9eac",
@@ -36595,6 +37673,13 @@
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
  },
+ "backend/data/parsed_results/2019/XC/102119FMSXCBoysOverall.txt.json": {
+  "parse_sha": "ff023cfdbf7c5256",
+  "source_sha": "2226d61f6dc43e80",
+  "date": "2026-10-28",
+  "by": "second read (fixed): override written from the source",
+  "evidence": "reader compared every row with the source; no printed team scores, or scores verified"
+ },
  "backend/data/parsed_results/2019/XC/102119FMSXCGirlsOverall.txt.json": {
   "parse_sha": "0414ffd8ceb84c16",
   "source_sha": "9bee07b36114ba62",
@@ -37127,6 +38212,13 @@
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
  },
+ "backend/data/parsed_results/2019/XC/OH927OV.json": {
+  "parse_sha": "0ab1db26c02cbffb",
+  "source_sha": "1f8c2348b49d4513",
+  "date": "2026-10-28",
+  "by": "second read (fixed): override written from the source",
+  "evidence": "reader compared every row with the source; no printed team scores, or scores verified"
+ },
  "backend/data/parsed_results/2019/XC/Panther-2-Miler.json": {
   "parse_sha": "78d8b77699bd6777",
   "source_sha": "f9daf99d3a2e505c",
@@ -37217,6 +38309,20 @@
   "date": "2026-10-24",
   "by": "sonnet audit (second read, 2026-10-24) (audit: confirmed)",
   "evidence": "2019 Maine XC Festival of Champions girls, three sections (Unseeded 271, Freshman, Seeded) = 631 source rows; all 631 parse rows compared by script on place, name, year, school string, finals time: zero differences. Place numbers restart per section as printed and the sections are merged into one 'Girls 5k Run CC' event (house convention for FOC section files, as in Resultsfocboysections_2019). No DNF rows, no team scores printed. Out-of-state teams resolved: Colonel Gray (PEI), Harwood Union (VT), King's Edgehill and JH Gillis (NS), Burrillville/Woonsocket/Central Falls/Cumberland (RI); no '?'."
+ },
+ "backend/data/parsed_results/2019/XC/SMAA-Relays-Boys-Individual-Results-Sheet1.json": {
+  "parse_sha": "3387d9e71265cd07",
+  "source_sha": "0bef465558e19e15",
+  "date": "2026-10-28",
+  "by": "second read (fixed): override written from the source",
+  "evidence": "reader compared every row with the source; no printed team scores, or scores verified"
+ },
+ "backend/data/parsed_results/2019/XC/SMAA-Relays-Girls-Individual-Results-Sheet1.json": {
+  "parse_sha": "f852d2b595cb392b",
+  "source_sha": "9be8de8e20a9dc23",
+  "date": "2026-10-28",
+  "by": "second read (fixed): override written from the source",
+  "evidence": "reader compared every row with the source; no printed team scores, or scores verified"
  },
  "backend/data/parsed_results/2019/XC/SP-BOYS-19-V.txt.json": {
   "parse_sha": "7003a101cb50104a",
@@ -37918,6 +39024,13 @@
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
  },
+ "backend/data/parsed_results/2019/XC/kvacwheelchair.txt.json": {
+  "parse_sha": "59cd0d3094133345",
+  "source_sha": "32cf28b898f1b4a9",
+  "date": "2026-10-28",
+  "by": "second read (fixed): override written from the source",
+  "evidence": "reader compared every row with the source; no printed team scores, or scores verified"
+ },
  "backend/data/parsed_results/2019/XC/la-boys.txt.json": {
   "parse_sha": "1baa64c40d470837",
   "source_sha": "56a7eaa4e4cc5f32",
@@ -38303,6 +39416,62 @@
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
  },
+ "backend/data/parsed_results/2019/XC/q-relay-5.json": {
+  "parse_sha": "11a71ad03de62d7c",
+  "source_sha": "8ca75901c967dd7e",
+  "date": "2026-10-28",
+  "by": "second read (fixed): override written from the source",
+  "evidence": "reader compared every row with the source; no printed team scores, or scores verified"
+ },
+ "backend/data/parsed_results/2019/XC/q-relay-8-jv.json": {
+  "parse_sha": "64a61d8e6a7ba3aa",
+  "source_sha": "ae2bd9f7bab6ce44",
+  "date": "2026-10-28",
+  "by": "second read (fixed): override written from the source",
+  "evidence": "reader compared every row with the source; no printed team scores, or scores verified"
+ },
+ "backend/data/parsed_results/2019/XC/q-relays-1.json": {
+  "parse_sha": "1550e272636a1f46",
+  "source_sha": "958e7c6d5fe31192",
+  "date": "2026-10-28",
+  "by": "second read (fixed): override written from the source",
+  "evidence": "reader compared every row with the source; no printed team scores, or scores verified"
+ },
+ "backend/data/parsed_results/2019/XC/q-relays-2-runner-with-times.json": {
+  "parse_sha": "e3bf7892afe65d15",
+  "source_sha": "af141a4e14afcf03",
+  "date": "2026-10-28",
+  "by": "second read (fixed): override written from the source",
+  "evidence": "reader compared every row with the source; no printed team scores, or scores verified"
+ },
+ "backend/data/parsed_results/2019/XC/q-relays-3-runner-with-times.json": {
+  "parse_sha": "26829097f605d68f",
+  "source_sha": "d85ea135548cb79b",
+  "date": "2026-10-28",
+  "by": "second read (fixed): override written from the source",
+  "evidence": "reader compared every row with the source; no printed team scores, or scores verified"
+ },
+ "backend/data/parsed_results/2019/XC/q-relays-4.json": {
+  "parse_sha": "f438047a37bf9006",
+  "source_sha": "3227ee43ddecabce",
+  "date": "2026-10-28",
+  "by": "second read (fixed): override written from the source",
+  "evidence": "reader compared every row with the source; no printed team scores, or scores verified"
+ },
+ "backend/data/parsed_results/2019/XC/q-relays-6.json": {
+  "parse_sha": "b255858bb3824167",
+  "source_sha": "dfa78b18d794bd99",
+  "date": "2026-10-28",
+  "by": "second read (fixed): override written from the source",
+  "evidence": "reader compared every row with the source; no printed team scores, or scores verified"
+ },
+ "backend/data/parsed_results/2019/XC/q-relays-r-7.json": {
+  "parse_sha": "33007c19492ac9e3",
+  "source_sha": "9ca6381b9b6a7ea2",
+  "date": "2026-10-28",
+  "by": "second read (fixed): override written from the source",
+  "evidence": "reader compared every row with the source; no printed team scores, or scores verified"
+ },
  "backend/data/parsed_results/2019/XC/ressults-with-scores-boys.json": {
   "parse_sha": "f75f921346974748",
   "source_sha": "66fa6dd27a462cfc",
@@ -38484,6 +39653,13 @@
   "date": "2026-10-19",
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
+ },
+ "backend/data/parsed_results/2019/XC/wheelchairstates2019.txt.json": {
+  "parse_sha": "38c034c990c90705",
+  "source_sha": "2f7db44c045f63ab",
+  "date": "2026-10-28",
+  "by": "second read (fixed): override written from the source",
+  "evidence": "reader compared every row with the source; no printed team scores, or scores verified"
  },
  "backend/data/parsed_results/2019/XC/york-county-6th-boys.txt.json": {
   "parse_sha": "63a50955c7d3f06e",
@@ -39464,6 +40640,13 @@
   "date": "2026-10-24",
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
+ },
+ "backend/data/parsed_results/2020/XC/SMAA-XC-Week-2-Deering-@-SP.json": {
+  "parse_sha": "61900b5954895fc7",
+  "source_sha": "14d6014779bd5151",
+  "date": "2026-10-28",
+  "by": "second read (fixed): override written from the source",
+  "evidence": "reader compared every row with the source; no printed team scores, or scores verified"
  },
  "backend/data/parsed_results/2020/XC/Spruce-Mountain-10-14-20.json": {
   "parse_sha": "0fadf365f3ea9ce4",
@@ -40907,6 +42090,20 @@
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
  },
+ "backend/data/parsed_results/2021/XC/2021-Mt.-Blue-Relays-Boys-Results.xlsx-Sheet2.json": {
+  "parse_sha": "82cfba24f743c8a7",
+  "source_sha": "bffbaaeb82c92e36",
+  "date": "2026-10-28",
+  "by": "second read (fixed): override written from the source",
+  "evidence": "reader compared every row with the source; no printed team scores, or scores verified"
+ },
+ "backend/data/parsed_results/2021/XC/2021-Mt.-Blue-Relays-Girls-Results-Girls-Results-from-Mt.-Blue-Relays.json": {
+  "parse_sha": "eabb232adaa5f34d",
+  "source_sha": "e160f68dc53a7764",
+  "date": "2026-10-28",
+  "by": "second read (fixed): override written from the source",
+  "evidence": "reader compared every row with the source; no printed team scores, or scores verified"
+ },
  "backend/data/parsed_results/2021/XC/2021-alms-xc-championship-boys-results.json": {
   "parse_sha": "feefbb2f09e84d34",
   "source_sha": "ea9c9c3b79e9993c",
@@ -41068,12 +42265,26 @@
   "by": "sonnet audit (second read, 2026-10-24) (audit: confirmed)",
   "evidence": "All 29 boys rows match the source (place, name, grade, school, time; the stray 'Y-diaeresis' after EL names and the wrapped 'THADDEUS / EDDYBLOUIN', 'ARVERAGUS / EDDYBLOUIN' names read correctly). Schools: LINCOLN ACADEMY, MT ARARAT, EDWARD LITTLE, LEWISTON (Lewiston has 3 finishers, no score). Printed team scores 'LINCOLN ACADEMY 32, MT ARARAT 41, EDWARD LITTLE 55' are in the parse and re-add (LA 2+6+7+8+9, MA 1+3+10+11+16, EL 4+5+14+15+17 as team places)."
  },
+ "backend/data/parsed_results/2021/XC/EL-SECOND-7-JV-10-28-21-BOYS.json": {
+  "parse_sha": "6e7366ebaea52c7d",
+  "source_sha": "33f1abc77e55523a",
+  "date": "2026-10-28",
+  "by": "second read (fixed): override written from the source",
+  "evidence": "reader compared every row with the source; no printed team scores, or scores verified"
+ },
  "backend/data/parsed_results/2021/XC/EL-SECOND-7-JV-10-28-21-GIRLS-TEAM.json": {
   "parse_sha": "e9a975e390a1d7bb",
   "source_sha": "61045fd6a7268876",
   "date": "2026-10-24",
   "by": "sonnet audit (second read, 2026-10-24) (audit: confirmed)",
   "evidence": "All 16 girls rows match (Wedderburn place 1 has no grade in the source; Langlois EL place 2; LA 3-8,10-13; Mt Ararat Beede 9; Lewiston 1,14,15,16). Printed team score 'LINCOLN ACADEMY 15' is in the parse (only team with 5); the blank '0' team line is page furniture and not read as a runner."
+ },
+ "backend/data/parsed_results/2021/XC/EL-SECOND-7-JV-10-28-21-GIRLS.json": {
+  "parse_sha": "1924ae4825e4b159",
+  "source_sha": "654240ce2c775eed",
+  "date": "2026-10-28",
+  "by": "second read (fixed): override written from the source",
+  "evidence": "reader compared every row with the source; no printed team scores, or scores verified"
  },
  "backend/data/parsed_results/2021/XC/Falmouth-HS-Boys-Results-2021.txt.json": {
   "parse_sha": "e84f2922767dec79",
@@ -41929,6 +43140,34 @@
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
  },
+ "backend/data/parsed_results/2021/XC/gpc-78th-xc-21-boys.txt.json": {
+  "parse_sha": "0561555bd6286bfa",
+  "source_sha": "e05966fdcdc272ed",
+  "date": "2026-10-28",
+  "by": "second read (fixed): override written from the source",
+  "evidence": "reader compared every row with the source; no printed team scores, or scores verified"
+ },
+ "backend/data/parsed_results/2021/XC/gpc-78th-xc-21-girls.txt.json": {
+  "parse_sha": "59a0f4f550c5642a",
+  "source_sha": "adf92bcd37d3671a",
+  "date": "2026-10-28",
+  "by": "second read (fixed): override written from the source",
+  "evidence": "reader compared every row with the source; no printed team scores, or scores verified"
+ },
+ "backend/data/parsed_results/2021/XC/gpc-xc-6th-boys-21.txt.json": {
+  "parse_sha": "3ade09e5ff0252f7",
+  "source_sha": "bacc79b919d5ee43",
+  "date": "2026-10-28",
+  "by": "second read (fixed): override written from the source",
+  "evidence": "reader compared every row with the source; no printed team scores, or scores verified"
+ },
+ "backend/data/parsed_results/2021/XC/gpc-xc-6th-girls.txt.json": {
+  "parse_sha": "664c7dbfeab2200d",
+  "source_sha": "a3ee03646561aaab",
+  "date": "2026-10-28",
+  "by": "second read (fixed): override written from the source",
+  "evidence": "reader compared every row with the source; no printed team scores, or scores verified"
+ },
  "backend/data/parsed_results/2021/XC/greely-boys-21.txt.json": {
   "parse_sha": "babb31429a128cdd",
   "source_sha": "9cc829f9a1037862",
@@ -42376,6 +43615,20 @@
   "date": "2026-10-16",
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
+ },
+ "backend/data/parsed_results/2021/XC/panther-grade-awards-boys.txt.json": {
+  "parse_sha": "f696a87fd3dc4a19",
+  "source_sha": "daed20f3377e7528",
+  "date": "2026-10-28",
+  "by": "second read (fixed): override written from the source",
+  "evidence": "reader compared every row with the source; no printed team scores, or scores verified"
+ },
+ "backend/data/parsed_results/2021/XC/panther-grade-awards-girls.txt.json": {
+  "parse_sha": "364aa96496dbb37f",
+  "source_sha": "8e4eea6b4712c00f",
+  "date": "2026-10-28",
+  "by": "second read (fixed): override written from the source",
+  "evidence": "reader compared every row with the source; no printed team scores, or scores verified"
  },
  "backend/data/parsed_results/2021/XC/pendales-boys-jv.txt.json": {
   "parse_sha": "806da956342c4ca6",
@@ -43553,6 +44806,13 @@
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
  },
+ "backend/data/parsed_results/2022/XC/Brunswick-HS-9-2-22boys.json": {
+  "parse_sha": "7f7c72ca5ce9004b",
+  "source_sha": "e4c28d457ec6ce3d",
+  "date": "2026-10-28",
+  "by": "second read (fixed): override written from the source",
+  "evidence": "reader compared every row with the source; no printed team scores, or scores verified"
+ },
  "backend/data/parsed_results/2022/XC/Brunswick-HS-9-2-22girls-team.json": {
   "parse_sha": "115489cd30b87448",
   "source_sha": "a0e4f215e12ee636",
@@ -43615,6 +44875,13 @@
   "date": "2026-10-25",
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
+ },
+ "backend/data/parsed_results/2022/XC/Falmouth-Middle-School-Girls-Results.json": {
+  "parse_sha": "57cb6d218d6a821c",
+  "source_sha": "6a71276b37af4aa2",
+  "date": "2026-10-28",
+  "by": "second read (fixed): override written from the source",
+  "evidence": "reader compared every row with the source; no printed team scores, or scores verified"
  },
  "backend/data/parsed_results/2022/XC/Falmouth-Middle-School-Girls-Team.json": {
   "parse_sha": "d5f0e69bfd3b8e34",
@@ -44260,12 +45527,33 @@
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
  },
+ "backend/data/parsed_results/2022/XC/gpc-boys-6th-xc-22.txt.json": {
+  "parse_sha": "abf317dadcd6fd15",
+  "source_sha": "61f2a34dc4a729ce",
+  "date": "2026-10-28",
+  "by": "second read (fixed): override written from the source",
+  "evidence": "reader compared every row with the source; no printed team scores, or scores verified"
+ },
  "backend/data/parsed_results/2022/XC/gpc-boys-xc-78th-22-1.txt.json": {
   "parse_sha": "04a6162c17aa5225",
   "source_sha": "9dc01a4265244af0",
   "date": "2026-10-28",
   "by": "sonnet audit (second read, 2026-10-28) (audit: confirmed)",
   "evidence": "7th-8th grade boys 1.5 miles, Bonny Eagle MS, Oct 20 2022 (Southern Maine Middle School XC Festival). All 108 rows match (place, name, grade, school, time; the 6 glued 'FRIENDS SCHOOL OF PORTLAND11:28' marks included; blank grade -> MS marker for KING, MEMORIAL, MAHONEY; U+FFFD after St Brigid's names dropped). Schools are the me-ms entries (Scarborough, Gorham, Falmouth, Westbrook, Oxford Hills, Auburn, Lewiston, Windham, Bonny Eagle, Lyman Moore, Friends School of Portland, King, Memorial (South Portland), Mahoney, Lincoln, St Brigid's). No team scores printed. Date null in the file; the sub5 index gives October 20, 2022 (printed in the header)."
+ },
+ "backend/data/parsed_results/2022/XC/gpc-girls-6th-xc-22.txt.json": {
+  "parse_sha": "ce07ebb58380cd36",
+  "source_sha": "09df6a8f9953186e",
+  "date": "2026-10-28",
+  "by": "second read (fixed): override written from the source",
+  "evidence": "reader compared every row with the source; no printed team scores, or scores verified"
+ },
+ "backend/data/parsed_results/2022/XC/gpc-xc-78th-girls-22.txt.json": {
+  "parse_sha": "6b0b5544be84e2ca",
+  "source_sha": "68f7612ed7e31712",
+  "date": "2026-10-28",
+  "by": "second read (fixed): override written from the source",
+  "evidence": "reader compared every row with the source; no printed team scores, or scores verified"
  },
  "backend/data/parsed_results/2022/XC/greely-boys-22.txt.json": {
   "parse_sha": "d903e15330d00def",
@@ -44666,6 +45954,13 @@
   "by": "sonnet audit (second read, 2026-10-24) (audit: confirmed)",
   "evidence": "27 rows, all in the source (places 1-27, names, schools, grades, marks agree; Brey McCamish grade '--' left blank). Schools Mt. Blue/Spruce Mountain/Cony/Gardiner match the sub5 index name 'Mt. Blue, Cony, Gardiner, Spruce Mountain'. No team scores or date printed (none in the parse)."
  },
+ "backend/data/parsed_results/2022/XC/mtbluegirls_sept2.json": {
+  "parse_sha": "94f35bbb3197476a",
+  "source_sha": "9a3448af56b4dd9e",
+  "date": "2026-10-28",
+  "by": "second read (fixed): override written from the source",
+  "evidence": "reader compared every row with the source; no printed team scores, or scores verified"
+ },
  "backend/data/parsed_results/2022/XC/panther-boys.txt.json": {
   "parse_sha": "bc4c5ca8bba93287",
   "source_sha": "88c91ef0ae513632",
@@ -44679,6 +45974,20 @@
   "date": "2026-10-16",
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
+ },
+ "backend/data/parsed_results/2022/XC/panther-grades-boys.txt.json": {
+  "parse_sha": "d78b1e67ce45a11e",
+  "source_sha": "d27a0c39b615313c",
+  "date": "2026-10-28",
+  "by": "second read (fixed): override written from the source",
+  "evidence": "reader compared every row with the source; no printed team scores, or scores verified"
+ },
+ "backend/data/parsed_results/2022/XC/panther-grades-girls.txt.json": {
+  "parse_sha": "9dbb8ab1abbff4e3",
+  "source_sha": "209528d036e840e1",
+  "date": "2026-10-28",
+  "by": "second read (fixed): override written from the source",
+  "evidence": "reader compared every row with the source; no printed team scores, or scores verified"
  },
  "backend/data/parsed_results/2022/XC/pvc-boys-jv.txt.json": {
   "parse_sha": "90c75612fe5af4cc",
@@ -44728,6 +46037,13 @@
   "date": "2026-10-28",
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
+ },
+ "backend/data/parsed_results/2022/XC/quabacookgirls.json": {
+  "parse_sha": "27769aec58295294",
+  "source_sha": "fb6caea4173ff0f4",
+  "date": "2026-10-28",
+  "by": "second read (fixed): override written from the source",
+  "evidence": "reader compared every row with the source; no printed team scores, or scores verified"
  },
  "backend/data/parsed_results/2022/XC/race-8-update.json": {
   "parse_sha": "b648baed0e8383ec",
@@ -47661,6 +48977,13 @@
   "date": "2026-10-16",
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
+ },
+ "backend/data/parsed_results/2023/XC/thorntongirls8sept2023.json": {
+  "parse_sha": "391e99a941886cad",
+  "source_sha": "5bcbb557261a2180",
+  "date": "2026-10-28",
+  "by": "second read (fixed): override written from the source",
+  "evidence": "reader compared every row with the source; no printed team scores, or scores verified"
  },
  "backend/data/parsed_results/2023/XC/troy-howard-boys.txt.json": {
   "parse_sha": "29e6f44000edaa7a",
@@ -51911,6 +53234,13 @@
   "by": "sonnet audit 2026-10-21 (audit: confirmed)",
   "evidence": "Boys 55 and girls 59 rows match source (tie 51/51 kept, \"Heatley Grover\" last name, bib column dropped). \"Valley\" -> me-hs-valley is the Bingham 6-12 school (Mt Blue/Somerset-area meet with Skowhegan, Winslow, Waterville; only Valley in the Maine catalog besides me-ms-valley-rivers); acceptable. Team scores not parsed (no_rankings)."
  },
+ "backend/data/parsed_results/2025/XC/ms-mt-blue-relays-2025.json": {
+  "parse_sha": "5881019a3e12a09a",
+  "source_sha": "a8c3a86e1bc78c62",
+  "date": "2026-10-28",
+  "by": "second read (fixed): override written from the source",
+  "evidence": "reader compared every row with the source; no printed team scores, or scores verified"
+ },
  "backend/data/parsed_results/2025/XC/ms-noble-kennebunk-massabesic-wells-biddeford-thornton-2025.json": {
   "parse_sha": "298ad04e11e318ea",
   "source_sha": "1b0ac191e56ac5b9",
@@ -51966,6 +53296,13 @@
   "date": "2026-10-18",
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
+ },
+ "backend/data/parsed_results/2025/XC/ms-presque-isle-high-school-xc-invitational-2025.json": {
+  "parse_sha": "06453428ee452f67",
+  "source_sha": "74f1c18341bfae79",
+  "date": "2026-10-28",
+  "by": "second read (fixed): override written from the source",
+  "evidence": "reader compared every row with the source; no printed team scores, or scores verified"
  },
  "backend/data/parsed_results/2025/XC/ms-saco-middle-school-2025.json": {
   "parse_sha": "9e98db434204c812",
@@ -52085,6 +53422,13 @@
   "date": "2026-10-19",
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
+ },
+ "backend/data/parsed_results/2025/XC/ms-weston-woods-and-waters-2025.json": {
+  "parse_sha": "308feae40f6a3fb9",
+  "source_sha": "1a3661dfb5343b9e",
+  "date": "2026-10-28",
+  "by": "second read (fixed): override written from the source",
+  "evidence": "reader compared every row with the source; no printed team scores, or scores verified"
  },
  "backend/data/parsed_results/2025/XC/ms-windham-auburn-oxford-hills-smcwestbrook-2025.json": {
   "parse_sha": "87b1d6d75a85fe5b",
