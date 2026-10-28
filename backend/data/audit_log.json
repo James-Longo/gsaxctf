@@ -39,6 +39,22 @@
   "parse_sha": "3a186835a95d2bd9",
   "source_sha": "f7b61364b169c614"
  },
+ "backend/data/parsed_results/2004/XC/Results-F1.json": {
+  "verdict": "fixed",
+  "by": "sonnet audit (second read, 2026-10-28)",
+  "notes": "Laliberte Invitational 8/27/2004 varsity, one combined 5k race of 179 (Girls marked '-- F' after the name). Parse split it by name guess into Girls 67 / Boys 86 / Mixed 26, names kept ' -- F' and Cony 'V,' column. Override: Girls 81 / Boys 98, genders from the F mark (74) plus 7 unmarked girls settled from other races (Doherty, Letourneau, Hutchinson, O'Jala, Harmon Roxy, Sargent Rebecc, Willits), Mixed rows resolved, names cleaned, combined_race kept, team_place (Points column) unchanged, date 2004-08-27 printed.",
+  "date": "2026-10-28",
+  "parse_sha": "ce72ce3e2cbbd652",
+  "source_sha": "c0cf2e748f029e1c"
+ },
+ "backend/data/parsed_results/2004/XC/Results-F2.json": {
+  "verdict": "fixed",
+  "by": "sonnet audit (second read, 2026-10-28)",
+  "notes": "Laliberte Invitational 8/27/2004 JV, one combined 5k race of 109. Parse had a 'Mixed' race of 15; override: Girls 51 / Boys 56, genders from names/other races and Points sequences, 'Phantom, 1' and 'Phantom, 2' (Lewiston scoring placeholders) left out, ' -- F' and Cony 'JV,' stripped from names, combined_race and Points kept, date 2004-08-27.",
+  "date": "2026-10-28",
+  "parse_sha": "5751c47585f5484b",
+  "source_sha": "c332cd57f38d369b"
+ },
  "backend/data/parsed_results/2004/XC/bangor8sept04b.json": {
   "verdict": "source-error",
   "by": "sonnet audit (score mismatch, 2026-10-23)",
@@ -46,6 +62,86 @@
   "date": "2026-10-23",
   "parse_sha": "71eb66ae88220d83",
   "source_sha": "9d542fba8f5d9bfd"
+ },
+ "backend/data/parsed_results/2004/XC/boy1.json": {
+  "verdict": "confirmed",
+  "by": "sonnet audit (second read, 2026-10-28)",
+  "notes": "Hy-Tek 5k CC race (Boys 5k Dash CC RACE 1): every row matches place, name, school, time (script-checked name/school/time/place, no row missing or extra); school ids correct. File header says 'KVAC LEAGUE MEE # 1 - 9/3/2004, Auburn MS' (Hy-Tek template carry-over) but the sub5 index calls the meet Rene's Run @ Lawrence, Sept 11, 2004 (web_date_mapping), which overrides the file date. No team scores printed in this file.",
+  "date": "2026-10-28",
+  "parse_sha": "c914ce54e2cc3aa7",
+  "source_sha": "37e11f7d7b00cae8"
+ },
+ "backend/data/parsed_results/2004/XC/boys2.json": {
+  "verdict": "confirmed",
+  "by": "sonnet audit (second read, 2026-10-28)",
+  "notes": "Hy-Tek 5k CC race (Boys 5k Dash CC RACE 2): every row matches place, name, school, time (script-checked name/school/time/place, no row missing or extra); school ids correct. File header says 'KVAC LEAGUE MEE # 1 - 9/3/2004, Auburn MS' (Hy-Tek template carry-over) but the sub5 index calls the meet Rene's Run @ Lawrence, Sept 11, 2004 (web_date_mapping), which overrides the file date. No team scores printed in this file.",
+  "date": "2026-10-28",
+  "parse_sha": "b43d72b54b57f5b3",
+  "source_sha": "12dd9acbe90306a3"
+ },
+ "backend/data/parsed_results/2004/XC/boys3.json": {
+  "verdict": "confirmed",
+  "by": "sonnet audit (second read, 2026-10-28)",
+  "notes": "Hy-Tek 5k CC race (Boys 5k Dash CC RACE 3): every row matches place, name, school, time (script-checked name/school/time/place, no row missing or extra); school ids correct. File header says 'KVAC LEAGUE MEE # 1 - 9/3/2004, Auburn MS' (Hy-Tek template carry-over) but the sub5 index calls the meet Rene's Run @ Lawrence, Sept 11, 2004 (web_date_mapping), which overrides the file date. No team scores printed in this file.",
+  "date": "2026-10-28",
+  "parse_sha": "605cab38ef9fbebe",
+  "source_sha": "f9e7a5f65f49b123"
+ },
+ "backend/data/parsed_results/2004/XC/boys4.json": {
+  "verdict": "confirmed",
+  "by": "sonnet audit (second read, 2026-10-28)",
+  "notes": "Hy-Tek 5k CC race (Boys 5k Dash CC RACE 4): every row matches place, name, school, time (script-checked name/school/time/place, no row missing or extra); school ids correct. File header says 'KVAC LEAGUE MEE # 1 - 9/3/2004, Auburn MS' (Hy-Tek template carry-over) but the sub5 index calls the meet Rene's Run @ Lawrence, Sept 11, 2004 (web_date_mapping), which overrides the file date. No team scores printed in this file.",
+  "date": "2026-10-28",
+  "parse_sha": "1277a68d29daa9fc",
+  "source_sha": "864cbabaaa526407"
+ },
+ "backend/data/parsed_results/2004/XC/boys5.json": {
+  "verdict": "confirmed",
+  "by": "sonnet audit (second read, 2026-10-28)",
+  "notes": "Hy-Tek 5k CC race (Boys 5k Dash CC RACE 5): every row matches place, name, school, time (script-checked name/school/time/place, no row missing or extra); school ids correct. File header says 'KVAC LEAGUE MEE # 1 - 9/3/2004, Auburn MS' (Hy-Tek template carry-over) but the sub5 index calls the meet Rene's Run @ Lawrence, Sept 11, 2004 (web_date_mapping), which overrides the file date. No team scores printed in this file.",
+  "date": "2026-10-28",
+  "parse_sha": "b5e8911953788a8e",
+  "source_sha": "b19f7e8a52ecd4e1"
+ },
+ "backend/data/parsed_results/2004/XC/boys6.json": {
+  "verdict": "confirmed",
+  "by": "sonnet audit (second read, 2026-10-28)",
+  "notes": "Hy-Tek 5k CC race (Boys 5k Dash CC RACE 6): every row matches place, name, school, time (script-checked name/school/time/place, no row missing or extra); school ids correct. File header says 'KVAC LEAGUE MEE # 1 - 9/3/2004, Auburn MS' (Hy-Tek template carry-over) but the sub5 index calls the meet Rene's Run @ Lawrence, Sept 11, 2004 (web_date_mapping), which overrides the file date. No team scores printed in this file.",
+  "date": "2026-10-28",
+  "parse_sha": "054ca5e8d23e454f",
+  "source_sha": "12f0d9e9c1891e70"
+ },
+ "backend/data/parsed_results/2004/XC/boys7.json": {
+  "verdict": "confirmed",
+  "by": "sonnet audit (second read, 2026-10-28)",
+  "notes": "Hy-Tek 5k CC race (Boys 5k Dash CC RACE 7): every row matches place, name, school, time (script-checked name/school/time/place, no row missing or extra); school ids correct. File header says 'KVAC LEAGUE MEE # 1 - 9/3/2004, Auburn MS' (Hy-Tek template carry-over) but the sub5 index calls the meet Rene's Run @ Lawrence, Sept 11, 2004 (web_date_mapping), which overrides the file date. No team scores printed in this file.",
+  "date": "2026-10-28",
+  "parse_sha": "e9aa568cecaad471",
+  "source_sha": "a3377a9f97be1f11"
+ },
+ "backend/data/parsed_results/2004/XC/boysjv.json": {
+  "verdict": "confirmed",
+  "by": "sonnet audit (second read, 2026-10-28)",
+  "notes": "Hy-Tek Boys 5k Dash CC RACE 9 (JV): 97 rows all match place, name, school, time (script-checked; incl. 'Brubaker, ?' kept). School ids correct. Header 'KVAC ... 9/3/2004' is template carry-over; sub5 index: Rene's Run @ Lawrence, Sept 11, 2004.",
+  "date": "2026-10-28",
+  "parse_sha": "b894a9df9c6821ba",
+  "source_sha": "83dc9729b7f136ff"
+ },
+ "backend/data/parsed_results/2004/XC/cape7oct04b.txt.json": {
+  "verdict": "fixed",
+  "by": "sonnet audit (second read, 2026-10-28)",
+  "notes": "30 rows agree; title 'Falmouth 28, Cape Elizabeth 31, Yarmouth 76, Waynefleet 113' (team scores) was not read into team_rankings: added (F 1+2+6+7+12=28 and CE 3+4+5+9+10=31 verify; Yarmouth printed 76 vs listed places 86 = source quirk). Codes F, CE, Y, W = Falmouth, Cape Elizabeth, Yarmouth, Waynflete (title 'Waynefleet'). Date from index (Oct 7, 2004).",
+  "date": "2026-10-28",
+  "parse_sha": "7d38892bd23d93c9",
+  "source_sha": "d86041b436c2760b"
+ },
+ "backend/data/parsed_results/2004/XC/cape7oct04g.txt.json": {
+  "verdict": "fixed",
+  "by": "sonnet audit (second read, 2026-10-28)",
+  "notes": "25 rows agree but the parse labelled the race Boys; it is the girls' race (file name g; E. Moody-Roberts, Egan, Slacks are CE girls; winner 17:39 vs boys 16:29). Override sets Girls and adds the title's team scores (CE 22, Falmouth 45, Yarmouth 55; Waynflete NS). CE 1+2+5+6+8=22 and F 3+7+9+11+15=45 verify; Yarmouth printed 55 vs places 65 = source quirk.",
+  "date": "2026-10-28",
+  "parse_sha": "fa35e215bb9ba71c",
+  "source_sha": "89eefb4831f44625"
  },
  "backend/data/parsed_results/2004/XC/caribou1sept04.json": {
   "verdict": "source-error",
@@ -71,6 +167,22 @@
   "parse_sha": "5267d4a1053c34fb",
   "source_sha": "300080d1d455cf4a"
  },
+ "backend/data/parsed_results/2004/XC/chandler04.json": {
+  "verdict": "fixed",
+  "by": "sonnet audit (second read, 2026-10-28)",
+  "notes": "Chandler Relays 9/1/2004 at Twin Brook: girls 28 and boys 27 rows agree except two boys rows: 'Bartlett, Mike Lake'/school 'Reg' (place 1) and 'Floster Lake'/'Reg' (place 6) = Lake Region (two-word school split across the name column). Fixed in override; date 2004-09-01 printed. Team results are combined times (not points) and are listed in notes only. PARSER PATTERN: XCListParser 'Name School Time' lines where the school is two words ('Lake Reg') - last word swallowed by the school column.",
+  "date": "2026-10-28",
+  "parse_sha": "27d5a267cfc78682",
+  "source_sha": "65b7822564cb92b8"
+ },
+ "backend/data/parsed_results/2004/XC/cheverus15oct04b.json": {
+  "verdict": "fixed",
+  "by": "sonnet audit (second read, 2026-10-28)",
+  "notes": "Portland, Deering, South Portland at Cheverus - Boys, Oct 15 2004: 31 rows agree; team scores printed in the sheet's last columns (Portland 36, Deering 38, Cheverus 78, South Portland 79) and the date (October 15, 2004) were not read; added in override with codes expanded (P, D, SP, C).",
+  "date": "2026-10-28",
+  "parse_sha": "93ba4d6ee7a8bbdf",
+  "source_sha": "d1b63093be8462bc"
+ },
  "backend/data/parsed_results/2004/XC/cheverus15oct04g.json": {
   "verdict": "fixed",
   "by": "sonnet audit (second read, 2026-10-26)",
@@ -78,6 +190,174 @@
   "date": "2026-10-26",
   "parse_sha": "2278ef2255b97dee",
   "source_sha": "cb31d88ba457f5a6"
+ },
+ "backend/data/parsed_results/2004/XC/cheverus1oct04b.json": {
+  "verdict": "fixed",
+  "by": "sonnet audit (second read, 2026-10-28)",
+  "notes": "Thornton Academy, Marshwood, Windham at Cheverus - Boys, Oct 1 2004: 28 rows agree ('16;27' read 16:27); team scores in last columns (TA 25, Cheverus 36, Marshwood 82, Windham 102) and the date were not read; added. Codes TA, C=Cheverus, M=Marshwood, W=Windham.",
+  "date": "2026-10-28",
+  "parse_sha": "cecd9f5801d66340",
+  "source_sha": "cf95660618284ce2"
+ },
+ "backend/data/parsed_results/2004/XC/cheverus1oct04g.json": {
+  "verdict": "fixed",
+  "by": "sonnet audit (second read, 2026-10-28)",
+  "notes": "Girls, Oct 1 2004: 28 rows agree; source row 15 (Johnson, Kimberly, W, mark '25:1') has a truncated mark, left out (cannot be read for sure; between 25:01 and 25:26); '25;26' read 25:26. Team scores added (TA 28, Cheverus 44, Windham 51; Marshwood ns; TA 28 verifies once non-scoring Marshwood runners are removed), date 2004-10-01.",
+  "date": "2026-10-28",
+  "parse_sha": "42faf81e5e846b8a",
+  "source_sha": "0f1a7f1edf2b2f65"
+ },
+ "backend/data/parsed_results/2004/XC/fk8sept04b.json": {
+  "verdict": "fixed",
+  "by": "sonnet audit (second read, 2026-10-28)",
+  "notes": "2026-10-28 second read a27: Copy of the parse (all 38 rows match the source place, name, school code and time) plus the printed team results block, which the parse dropped: Madawaska 33, Presque Isle 39, Fort Kent 55, Limestone/MSSM 101. The first three reproduce from the rows (Mad 2+4+7+8+12, PI 3+5+6+10+15, FK 1+9+11+13+21); Limestone's printed 101 is 105 from its five rows (14, 16, 20, 27, 28), a source discrepancy. School codes expanded: FK Fort Kent, Mad Madawaska, PI Presque Isle, Lim Limestone/MSSM (the title lists these four). '? Burbee' is printed so (first name unreadable). Distance 2.8 Miles from the page. Date from the sub5 index (September 8, 2004; the page footer also says 9/8/2004).",
+  "date": "2026-10-28",
+  "parse_sha": "8f1b7163beb0c10c",
+  "source_sha": "87f255b6b61552a6"
+ },
+ "backend/data/parsed_results/2004/XC/fk8sept04g.json": {
+  "verdict": "fixed",
+  "by": "sonnet audit (second read, 2026-10-28)",
+  "notes": "2026-10-28 second read a27: Copy of the parse (all 27 rows match the source) plus the printed team results block the parse dropped: Presque Isle 26, Limestone/MSSM 35, Fort Kent 65, Madawaska 'ns' (not scoring: three finishers, places 3, 12, 25; no score, so not listed). All three scores reproduce from the rows (with non-scoring Madawaska removed: PI 1+2+3+9+11 = 26, Limestone 4+5+6+8+12 = 35, Fort Kent 7+10+15+16+17 = 65). Distance 2.8 Miles. Date from the sub5 index (September 8, 2004).",
+  "date": "2026-10-28",
+  "parse_sha": "34814d3a0b5664c5",
+  "source_sha": "96a9d9f5fdf87da1"
+ },
+ "backend/data/parsed_results/2004/XC/fortfairfieldboys25august04.json": {
+  "verdict": "fixed",
+  "by": "sonnet audit (second read, 2026-10-28)",
+  "notes": "2026-10-28 second read a27: Copy of the parse (all 26 rows match the source) with two changes: event named '3.1 Mile Run CC' (the page heading says 'Distance: 3.1 miles'; the parse had a bare 'Run CC') and the printed team results added: Madawaska 24, Fort Kent 31, Limstone/MSSM [sic] 77 (Madawaska and Fort Kent reproduce from the rows; Limestone's printed 77 is 84 from its five rows 11, 12, 18, 21, 22, a source discrepancy). School codes expanded as in the title 'Fort Kent, Madawaska, Limestone/MSSM at Fort Fairfield'. Date from the sub5 index (August 25, 2004; printed 'Aug. 25, 2004').",
+  "date": "2026-10-28",
+  "parse_sha": "c26f5a12f4a0096c",
+  "source_sha": "a14d8a66838826b9"
+ },
+ "backend/data/parsed_results/2004/XC/fortfairfieldgirls25august04.json": {
+  "verdict": "fixed",
+  "by": "sonnet audit (second read, 2026-10-28)",
+  "notes": "2026-10-28 second read a27: Copy of the parse (all 19 rows match the source) with two changes: event named '3.1 Mile Run CC' (page: 'Distance: 3.1 miles') and the printed team results added: Limestone/MSSM 19, Fort Kent 37; Fort Farifield [sic] 'ns' and Madawaska 'ns' (fewer than five finishers) carry no score and are not listed. Both scores reproduce from the rows. FF = Fort Fairfield (the title and the second subtitle line list Fort Farifield; Hilary McNamee FF). Date from the sub5 index (August 25, 2004).",
+  "date": "2026-10-28",
+  "parse_sha": "304adc9fdfa95437",
+  "source_sha": "b5d4fd6bbf915e40"
+ },
+ "backend/data/parsed_results/2004/XC/girl1.json": {
+  "verdict": "confirmed",
+  "by": "sonnet audit (second read, 2026-10-28)",
+  "notes": "Hy-Tek heat sheet, all rows (place, name, school, time) match the source; each heat is its own race with places within the heat (Race n of 8 of the Rene's Run girls heats; the page's KVAC/Auburn Middle School header is template text, sub5 index lists Rene's Run at Lawrence 9/11/2004, date comes from the index). No team scores printed. Source spellings kept (e.g. Kim Enos, Becca Irwin match the festival).",
+  "date": "2026-10-28",
+  "parse_sha": "90cdc67a76368aea",
+  "source_sha": "c3d72603559722ba"
+ },
+ "backend/data/parsed_results/2004/XC/girls2.json": {
+  "verdict": "confirmed",
+  "by": "sonnet audit (second read, 2026-10-28)",
+  "notes": "Hy-Tek heat sheet, all rows (place, name, school, time) match the source; each heat is its own race with places within the heat (Race n of 8 of the Rene's Run girls heats; the page's KVAC/Auburn Middle School header is template text, sub5 index lists Rene's Run at Lawrence 9/11/2004, date comes from the index). No team scores printed. Source spellings kept (e.g. Kim Enos, Becca Irwin match the festival).",
+  "date": "2026-10-28",
+  "parse_sha": "00326795c4540007",
+  "source_sha": "fa0747d7eb0e430d"
+ },
+ "backend/data/parsed_results/2004/XC/girls3.json": {
+  "verdict": "confirmed",
+  "by": "sonnet audit (second read, 2026-10-28)",
+  "notes": "Hy-Tek heat sheet, all rows (place, name, school, time) match the source; each heat is its own race with places within the heat (Race n of 8 of the Rene's Run girls heats; the page's KVAC/Auburn Middle School header is template text, sub5 index lists Rene's Run at Lawrence 9/11/2004, date comes from the index). No team scores printed. Source spellings kept (e.g. Kim Enos, Becca Irwin match the festival).",
+  "date": "2026-10-28",
+  "parse_sha": "3453e4431b9c19b4",
+  "source_sha": "fae25babc86bb8ba"
+ },
+ "backend/data/parsed_results/2004/XC/girls4.json": {
+  "verdict": "confirmed",
+  "by": "sonnet audit (second read, 2026-10-28)",
+  "notes": "Hy-Tek heat sheet, all rows (place, name, school, time) match the source; each heat is its own race with places within the heat (Race n of 8 of the Rene's Run girls heats; the page's KVAC/Auburn Middle School header is template text, sub5 index lists Rene's Run at Lawrence 9/11/2004, date comes from the index). No team scores printed. Source spellings kept (e.g. Kim Enos, Becca Irwin match the festival).",
+  "date": "2026-10-28",
+  "parse_sha": "1f047cebfa708741",
+  "source_sha": "e015b42323a8aeba"
+ },
+ "backend/data/parsed_results/2004/XC/girls5.json": {
+  "verdict": "confirmed",
+  "by": "sonnet audit (second read, 2026-10-28)",
+  "notes": "Hy-Tek heat sheet, all rows (place, name, school, time) match the source; each heat is its own race with places within the heat (Race n of 8 of the Rene's Run girls heats; the page's KVAC/Auburn Middle School header is template text, sub5 index lists Rene's Run at Lawrence 9/11/2004, date comes from the index). No team scores printed. Source spellings kept (e.g. Kim Enos, Becca Irwin match the festival).",
+  "date": "2026-10-28",
+  "parse_sha": "1f265aec87d4f7e9",
+  "source_sha": "3264abb6d6c27077"
+ },
+ "backend/data/parsed_results/2004/XC/girls6.json": {
+  "verdict": "fixed",
+  "by": "sonnet audit (second read, 2026-10-28)",
+  "notes": "2026-10-28 second read a27: Copy of the parse (all 14 rows match) with two name repairs: place 1 'Gaaewsky, Lyvia' -> 'Gaewsky, Lyvia' (Maranacook; Emily Gaewsky of the same school is in race 5 and the festival, and Lyvia Gaewsky is in other 2004-2006 XC results); place 3 'Clare, Franco' -> 'Franco, Clare' (printed surname and first name swapped; Clare Franco, Brunswick, is in the 10/2/2004 Festival and the KVAC results). Race 6 of 8 of the Hy-Tek heats; the page header (KVAC LEAGUE MEE # 1 - 9/3/2004, Auburn Middle School) is template text left in the Hy-Tek file; sub5 lists these files as Rene's Run at Lawrence, September 11, 2004, and the date comes from the index.",
+  "date": "2026-10-28",
+  "parse_sha": "564cf82593dca045",
+  "source_sha": "5aac47ac4768f58a"
+ },
+ "backend/data/parsed_results/2004/XC/girls7.json": {
+  "verdict": "confirmed",
+  "by": "sonnet audit (second read, 2026-10-28)",
+  "notes": "Hy-Tek heat sheet, all rows (place, name, school, time) match the source; each heat is its own race with places within the heat (Race n of 8 of the Rene's Run girls heats; the page's KVAC/Auburn Middle School header is template text, sub5 index lists Rene's Run at Lawrence 9/11/2004, date comes from the index). No team scores printed. Source spellings kept (e.g. Kim Enos, Becca Irwin match the festival).",
+  "date": "2026-10-28",
+  "parse_sha": "0e7fb16966638bd0",
+  "source_sha": "8da4bf20caf70947"
+ },
+ "backend/data/parsed_results/2004/XC/girlsjv.json": {
+  "verdict": "fixed",
+  "by": "sonnet audit (second read, 2026-10-28)",
+  "notes": "2026-10-28 second read a27: Copy of the parse (all 75 rows match the source: place, name, school, time) with five printed-name typos repaired from the same season's results: 'Kleinschmidet, Stephanie' -> Kleinschmidt (Bangor; 10/2/2004 Festival), 'Ricahrdson, Sara' -> Richardson (Erskine; Sara Richardson Erskine XC), 'Scribner, Gabrdielle' -> Gabrielle (Belfast), 'Jean, Kiely' -> Kiley (Monmouth; Festival 'Kiley Jean'), 'Ratty, Katherine' -> Rattey (Brunswick; Festival 'Katherine Rattey'). This is Race 8 (the JV race) of the Hy-Tek heats whose siblings are girl1, girls2-7; the page header (KVAC LEAGUE MEE # 1 - 9/3/2004, Auburn Middle School) is template text; sub5 lists the files as Rene's Run at Lawrence, September 11, 2004, and the date comes from the index.",
+  "date": "2026-10-28",
+  "parse_sha": "2cb8ad76748b32d1",
+  "source_sha": "153ca687fe38207a"
+ },
+ "backend/data/parsed_results/2004/XC/hancock04bjv.json": {
+  "verdict": "fixed",
+  "by": "sonnet audit (second read, 2026-10-28)",
+  "notes": "2026-10-28 second read a27: Copy of the parse (all 12 rows match the source) plus the printed team score the parse dropped: 'Team Score: 1. MDI 27' (MDI places 1, 5, 6, 7, 8 = 27, reproduces; only MDI has five runners). Codes MDI Mount Desert Island, ELL Ellsworth, GSA George Stevens Academy, SUM Sumner (the Hancock County schools; Sara Flynn 'GSA' = George Stevens at the 10/2/2004 Festival). Meet date October 8th 2004 comes from the sub5 index. No distance printed (bare Run CC).",
+  "date": "2026-10-28",
+  "parse_sha": "611845a2f756a447",
+  "source_sha": "1b3269d3a60ca9f2"
+ },
+ "backend/data/parsed_results/2004/XC/hancock04gjv.json": {
+  "verdict": "fixed",
+  "by": "sonnet audit (second read, 2026-10-28)",
+  "notes": "2026-10-28 second read a27: Copy of the parse (all 10 rows match the source) plus the printed team score the parse dropped: 'Team Score: 1. MDI 25' (MDI places 1, 3, 6, 7, 8 = 25, reproduces). Codes as in the boys sheet. Meet date October 8th 2004 comes from the sub5 index. No distance printed.",
+  "date": "2026-10-28",
+  "parse_sha": "21bf5a386c02f4f3",
+  "source_sha": "b3f791642d8b1a5a"
+ },
+ "backend/data/parsed_results/2004/XC/kennebunk15oct04b.json": {
+  "verdict": "fixed",
+  "by": "sonnet audit (second read, 2026-10-28)",
+  "notes": "2026-10-28 second read a27: Copy of the parse (the 50 rows with a time all match the source; place 51 'J.Welch K' has no time printed and is left out) plus the printed team results the parse dropped: Kennebunk 25, Bonny Eagle 61, Biddeford 62, TA 77. Only Kennebunk reproduces (1+4+5+6+9 = 25); the others do not (Bonny Eagle 7+8+12+14+25 = 66, Biddeford has four runners, TA 3+19+20+23+27 = 92): source discrepancy, scores kept as printed. Source order oddity kept as printed: place 27 Boutet TA 21:50 sits before 28 Babirak 21:21 (likely 21:20 or similar typo, not certain). Codes from the title 'Biddeford, Bonny Eagle, Thornton Academy at Kennebunk': K Kennebunk, B Biddeford, BE Bonny Eagle, TA Thornton Academy. Date October 15, 2004 (index).",
+  "date": "2026-10-28",
+  "parse_sha": "8063e4073e793a83",
+  "source_sha": "1ce453a7fb92b3a9"
+ },
+ "backend/data/parsed_results/2004/XC/kennebunk15oct04g.json": {
+  "verdict": "fixed",
+  "by": "sonnet audit (second read, 2026-10-28)",
+  "notes": "2026-10-28 second read a27: Copy of the parse with one school changed and the printed team results added. (1) Place 45 'LeBlanc  L  31:21': 'L' is not any team in the title (Biddeford, Bonny Eagle, Thornton Academy at Kennebunk) and sits next to K on the keyboard; the SMAA JV championship three days later (smaajvg04, 10/18/2004) has Julie LeBlanc, K = Kennebunk, 32:02, the only girl LeBlanc in Kennebunk's 2004 results. L set to Kennebunk (per-meet code rule). (2) Team results: Kennebunk 24, BE 48, Biddeford 67, TA 104; Kennebunk reproduces (1+2+6+7+8); the other three do not reproduce from the rows (source discrepancy; scores kept as printed). (3) Source place 23 is a row with no name ('23 / B / 24:39'): left out, no athlete to record. Parse otherwise matches all other 45 rows. Date October 15, 2004 (index).",
+  "date": "2026-10-28",
+  "parse_sha": "47e22bc6e837b6cf",
+  "source_sha": "a27ffe72bc3c1ef8"
+ },
+ "backend/data/parsed_results/2004/XC/leavitt17sept04boys.json": {
+  "verdict": "fixed",
+  "by": "sonnet audit (second read, 2026-10-28)",
+  "notes": "2026-10-28 second read a27: The page's 'Per/Mile. Ave.' column implies a 3.2 mile course: every printed pace equals time / 3.2 (all rows, e.g. 18:30 -> 5:47, 37:07 -> 11:36), not time / 3.107 (5K would give 5:57 for 18:30). Event renamed '3.2 Mile Run CC' (the parse had a bare 'Run CC'). All 64 rows otherwise match the source (place, name, team, time). The Scorer column is the team-scoring order; the team scores are on leavitt17sept04boyscores (separate score sheet), so no team block here. Date September 17, 2004 (index).",
+  "date": "2026-10-28",
+  "parse_sha": "aa59822745b58a1e",
+  "source_sha": "57ca268d52d97e9d"
+ },
+ "backend/data/parsed_results/2004/XC/leavitt17sept04girls.json": {
+  "verdict": "fixed",
+  "by": "sonnet audit (second read, 2026-10-28)",
+  "notes": "2026-10-28 second read a27: The page's 'Per/Mile. Ave.' column implies a 3.2 mile course: every printed pace equals time / 3.2 (all rows, e.g. 18:30 -> 5:47, 37:07 -> 11:36), not time / 3.107 (5K would give 5:57 for 18:30). Event renamed '3.2 Mile Run CC' (the parse had a bare 'Run CC'). All 64 rows otherwise match the source. Team scores are on leavitt17sept04girlscores (separate score sheet). Date September 17, 2004 (index).",
+  "date": "2026-10-28",
+  "parse_sha": "ddf3cefe77ec7f93",
+  "source_sha": "c95d996b7503d742"
+ },
+ "backend/data/parsed_results/2004/XC/leavitt24sept04boys.json": {
+  "verdict": "fixed",
+  "by": "sonnet audit (second read, 2026-10-28)",
+  "notes": "2026-10-28 second read a27: The page's 'Per/Mile. Ave.' column implies a 3.2 mile course: every printed pace equals time / 3.2 (all rows, e.g. 18:30 -> 5:47, 37:07 -> 11:36), not time / 3.107 (5K would give 5:57 for 18:30). Event renamed '3.2 Mile Run CC' (the parse had a bare 'Run CC'). All 30 rows otherwise match the source (the header row lost the 'Place' cell; places 1-30 run in order). Team scores are on leavitt24sept04scores (separate score sheet). Date September 24, 2004 (index).",
+  "date": "2026-10-28",
+  "parse_sha": "198e33ec86e57682",
+  "source_sha": "742018f6e2f01178"
  },
  "backend/data/parsed_results/2004/XC/lynxinvite04jv.txt.json": {
   "verdict": "fixed",
@@ -407,6 +687,14 @@
   "parse_sha": "0f32d0d5c7efca6e",
   "source_sha": "4e61188c9b0895a1"
  },
+ "backend/data/parsed_results/2005/XC/scarinvitemiddleB.json": {
+  "verdict": "confirmed",
+  "by": "sonnet audit (second read, 2026-10-28)",
+  "notes": "Scarborough XC Invitational middle-school boys 2 mile (Event 2): all 214 rows match name, school, time, points column (script-checked and read); team scores 14 teams match (Gorham 62, Falmouth 75, Scarboro MS 84 ... Molly Ockett 394). 'Robbinston' (place 1, Davis TY) stays '?': no catalog entry, no evidence (unresolved is correct). Middle-school ids correct (Yarmouth MS -> me-ms-harrison).",
+  "date": "2026-10-28",
+  "parse_sha": "33c5eba07cae33dd",
+  "source_sha": "eb2e1fd3f72b1917"
+ },
  "backend/data/parsed_results/2005/XC/smaarelaystop15.json": {
   "verdict": "fixed",
   "by": "sonnet audit (second read, 2026-10-27)",
@@ -478,6 +766,14 @@
   "date": "2026-10-27",
   "parse_sha": "bfe5da52569489dc",
   "source_sha": "677d78f19eca61fd"
+ },
+ "backend/data/parsed_results/2005/XC/windham9_16boys.json": {
+  "verdict": "fixed",
+  "by": "sonnet audit (second read, 2026-10-28)",
+  "notes": "Existing transcription (24 rows, schools from the 4th spreadsheet column TA/Ch/Wi) agrees with the source; added the team scores the sheet prints in its last columns (Cheverus 28, TA 31, Windham 78 = place sums 2+4+6+7+9, 1+3+5+10+12, 8+21+22+23+24). Date null (none printed; index supplies).",
+  "date": "2026-10-28",
+  "parse_sha": "006e020e2d5655de",
+  "source_sha": "f28d514b46d91761"
  },
  "backend/data/parsed_results/2005/XC/windham9_16girls.json": {
   "verdict": "fixed",

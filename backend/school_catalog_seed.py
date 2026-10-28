@@ -1717,6 +1717,17 @@ FILE_RULES = [
     (['Mar'], 'XC', (2005, 2005), r'^yorkMS(jb|jg|sb|sg)$', 'me-ms-marshwood'),
     (['Mass'], 'XC', (2005, 2005), r'^yorkMS(jb|jg|sb|sg)$', 'me-ms-massabesic'),
     (['Nhc'], 'XC', (2005, 2005), r'^eagleclassic(boys|girls)$', 'me-hs-north-haven'),
+    # 2026-10-28 second read batch 27 (2004)
+    (['CE'], 'XC', (2004, 2004), r'^cape7oct04[bg]\.txt$', 'me-hs-cape-elizabeth'),
+    (['P'], 'XC', (2004, 2004), r'^cheverus15oct04[bg]$', 'me-hs-portland'),
+    (['D'], 'XC', (2004, 2004), r'^cheverus15oct04[bg]$', 'me-hs-deering'),
+    (['SP'], 'XC', (2004, 2004), r'^cheverus15oct04[bg]$', 'me-hs-south-portland'),
+    (['C'], 'XC', (2004, 2004), r'^cheverus15oct04[bg]$', 'me-hs-cheverus'),
+    (['TA'], 'XC', (2004, 2004), r'^cheverus1oct04[bg]$', 'me-hs-thornton'),
+    (['C'], 'XC', (2004, 2004), r'^cheverus1oct04[bg]$', 'me-hs-cheverus'),
+    (['M'], 'XC', (2004, 2004), r'^cheverus1oct04[bg]$', 'me-hs-marshwood'),
+    (['W'], 'XC', (2004, 2004), r'^cheverus1oct04[bg]$', 'me-hs-windham'),
+    (['L'], 'XC', (2004, 2004), r'^kennebunk15oct04g$', 'me-hs-kennebunk'),
     # 2026-10-24 unresolved-school review, batch 2
     (['F'], 'XC', (2004, 2004), r'^cape7oct04[bg]\.txt$', 'me-hs-falmouth'),   # Title lists Falmouth; only F team
     (['Y'], 'XC', (2004, 2004), r'^cape7oct04[bg]\.txt$', 'me-hs-yarmouth'),   # Title lists Yarmouth; only Y team
