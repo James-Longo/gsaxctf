@@ -1,14 +1,14 @@
 {
 "_meta": {
 "methods_by_rows": {
-"exact/alias": 1719287,
-"code": 255497,
+"exact/alias": 1719313,
+"code": 255480,
 "truncation": 119264,
 "athlete-continuity": 51584,
 "mascot": 28413,
 "bare name + level context": 25524,
 "unresolved": 17789,
-"manual (file rule)": 15206,
+"manual (file rule)": 15200,
 "co-op label": 12521,
 "state-tagged (auto entry)": 10609,
 "spelling (fuzzy)": 3482,
@@ -2400,26 +2400,6 @@
 "method": "exact",
 "how": "exact/alias"
 },
-"TA": {
-"rows": 4505,
-"seasons": {
-"Indoor": 2039,
-"Outdoor": 1621,
-"XC": 845
-},
-"years": [
-2004,
-2022
-],
-"id": "me-hs-thornton",
-"method": "code",
-"by_id": {
-"me-hs-thornton": 4460,
-"me-ms-thornton": 45
-},
-"context_dependent": true,
-"how": "code"
-},
 "Lewiston High School": {
 "rows": 4489,
 "seasons": {
@@ -2434,6 +2414,26 @@
 "id": "me-hs-lewiston",
 "method": "exact",
 "how": "exact/alias"
+},
+"TA": {
+"rows": 4488,
+"seasons": {
+"Indoor": 2039,
+"Outdoor": 1621,
+"XC": 828
+},
+"years": [
+2004,
+2022
+],
+"id": "me-hs-thornton",
+"method": "code",
+"by_id": {
+"me-hs-thornton": 4443,
+"me-ms-thornton": 45
+},
+"context_dependent": true,
+"how": "code"
 },
 "Sanford High School": {
 "rows": 4481,
@@ -2994,11 +2994,11 @@
 "how": "code"
 },
 "Foxcroft Academy": {
-"rows": 3605,
+"rows": 3614,
 "seasons": {
 "Indoor": 363,
 "Outdoor": 1642,
-"XC": 1600
+"XC": 1609
 },
 "years": [
 2003,
@@ -20521,6 +20521,19 @@
 "method": "truncation+athletes",
 "how": "truncation"
 },
+"Thornton Academy Middle School": {
+"rows": 147,
+"seasons": {
+"XC": 147
+},
+"years": [
+2007,
+2021
+],
+"id": "me-ms-thornton",
+"method": "exact",
+"how": "exact/alias"
+},
 "Granite": {
 "rows": 147,
 "seasons": {
@@ -21609,19 +21622,6 @@
 "id": "me-hs-portland",
 "method": "truncation",
 "how": "truncation"
-},
-"Thornton Academy Middle School": {
-"rows": 130,
-"seasons": {
-"XC": 130
-},
-"years": [
-2007,
-2021
-],
-"id": "me-ms-thornton",
-"method": "exact",
-"how": "exact/alias"
 },
 "Sanford Track": {
 "rows": 130,
@@ -32607,6 +32607,23 @@
 "unresolved_rows": 2,
 "how": "exact/alias"
 },
+"HALE DALE": {
+"rows": 50,
+"seasons": {
+"XC": 50
+},
+"years": [
+2020,
+2021
+],
+"id": "me-hs-hall-dale",
+"method": "athlete-continuity",
+"by_id": {
+"me-hs-hall-dale": 50
+},
+"context_dependent": true,
+"how": "athlete-continuity"
+},
 "Kennebunk HIGH School": {
 "rows": 50,
 "seasons": {
@@ -33467,23 +33484,6 @@
 "method": "exact",
 "how": "exact/alias"
 },
-"HALE DALE": {
-"rows": 47,
-"seasons": {
-"XC": 47
-},
-"years": [
-2020,
-2021
-],
-"id": "me-hs-hall-dale",
-"method": "athlete-continuity",
-"by_id": {
-"me-hs-hall-dale": 47
-},
-"context_dependent": true,
-"how": "athlete-continuity"
-},
 "Msoh": {
 "rows": 47,
 "seasons": {
@@ -34259,32 +34259,6 @@
 "id": "me-hs-edward-little",
 "method": "code+season-words",
 "how": "code"
-},
-"Dover": {
-"rows": 44,
-"seasons": {
-"Outdoor": 16,
-"XC": 28
-},
-"years": [
-2012,
-2026
-],
-"id": "me-hs-foxcroft",
-"method": "athlete-continuity (overrode exact)",
-"by_id": {
-"me-hs-foxcroft": 28,
-"oos-auto-nh-dover": 16
-},
-"context_dependent": true,
-"by_season": {
-"Outdoor": "oos-auto-nh-dover",
-"XC": "me-hs-foxcroft"
-},
-"flags": [
-"athletes contradict name match (oos-auto-nh-dover -> me-hs-foxcroft, 19/19)"
-],
-"how": "athlete-continuity"
 },
 "Somerville": {
 "rows": 44,
@@ -37934,6 +37908,32 @@
 "id": "me-hs-calvary-chapel",
 "method": "fuzzy+athletes",
 "how": "spelling (fuzzy)"
+},
+"Dover": {
+"rows": 35,
+"seasons": {
+"Outdoor": 16,
+"XC": 19
+},
+"years": [
+2012,
+2026
+],
+"id": "me-hs-foxcroft",
+"method": "athlete-continuity (overrode exact)",
+"by_id": {
+"me-hs-foxcroft": 19,
+"oos-auto-nh-dover": 16
+},
+"context_dependent": true,
+"by_season": {
+"Outdoor": "oos-auto-nh-dover",
+"XC": "me-hs-foxcroft"
+},
+"flags": [
+"athletes contradict name match (oos-auto-nh-dover -> me-hs-foxcroft, 19/19)"
+],
+"how": "athlete-continuity"
 },
 "La Salle": {
 "rows": 35,
@@ -218334,14 +218334,12 @@
 "2019/XC/thorntonmsboys_oct9": {
 "B": "me-ms-biddeford",
 "M": "me-ms-marshwood",
-"Ma": "me-ms-massabesic",
-"TA": "me-hs-thornton"
+"Ma": "me-ms-massabesic"
 },
 "2019/XC/thorntonmsgirls_oct9": {
 "B": "me-ms-biddeford",
 "M": "me-ms-marshwood",
-"Ma": "me-ms-massabesic",
-"TA": "me-hs-thornton"
+"Ma": "me-ms-massabesic"
 },
 "2019/XC/traip-boys": {
 "York": "me-hs-york"
@@ -219245,8 +219243,7 @@
 "Wiscasset": "me-hs-wiscasset"
 },
 "2020/XC/Girls-Results-Lee-Academy-Cross-Country-Meet-10_8_20-Sheet1-1": {
-"Central": "me-hs-central",
-"Dover": "me-hs-foxcroft"
+"Central": "me-hs-central"
 },
 "2020/XC/Girls-Results-October-1-2020-@-Winthrop-1": {
 "MAD": "me-hs-madison",
@@ -233501,7 +233498,6 @@
 "Elm Street School": "me-ms-elm-street",
 "Enfield": "oos-auto-ct-enfield",
 "Epping": null,
-"ErBelLeav NS": "me-hs-erskine",
 "Erskine Academy": "me-hs-erskine",
 "Essex HS": null,
 "Essex High School": "oos-vt-essex-high-school",
@@ -233995,13 +233991,7 @@
 }
 },
 "LisbonSt Dominic": "coop-lisbon-st-dom",
-"Litchfield": {
-"id": "oos-auto-ct-litchfield",
-"held": {
-"oos-auto-ct-litchfield": 56,
-"me-ms-carrie-ricker": 10
-}
-},
+"Litchfield": "oos-auto-ct-litchfield",
 "Littleton MA": "oos-auto-ma-littleton",
 "Littleton NH": "oos-auto-nh-littleton",
 "LittletonMA": null,
@@ -234109,7 +234099,6 @@
 "basis": "name only (no joined rows)"
 },
 "Masury": null,
-"Matt Academy": "me-hs-mattanawcook",
 "Mattanawcook Academy": "me-hs-mattanawcook",
 "Mattanawcook Junior High School": "me-ms-mattanawcook",
 "MattanawcookLeePenobscot Valley": "me-hs-mattanawcook",

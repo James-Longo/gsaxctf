@@ -1733,6 +1733,8 @@ FILE_RULES = [
     (['Matt. Acad.'], 'XC', (2004, 2004), r'^ells04.*$', 'me-hs-mattanawcook'),
     (['Ma-Jv1'], 'XC', (2004, 2004), r'^(girls|boys)-mvc$', 'me-hs-monmouth'),
     (['PVHS'], 'XC', (2003, 2003), r'^pvc', 'me-hs-penobscot-valley'),
+    # 2026-10-28 leftover check batch 29
+    (['TA'], 'XC', (2019, 2019), r'^thorntonms(boys|girls)_oct9$', 'me-ms-thornton'),
     # 2026-10-24 unresolved-school review, batch 2
     (['F'], 'XC', (2004, 2004), r'^cape7oct04[bg]\.txt$', 'me-hs-falmouth'),   # Title lists Falmouth; only F team
     (['Y'], 'XC', (2004, 2004), r'^cape7oct04[bg]\.txt$', 'me-hs-yarmouth'),   # Title lists Yarmouth; only Y team
