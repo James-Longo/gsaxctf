@@ -1,21 +1,21 @@
 {
 "_meta": {
 "methods_by_rows": {
-"exact/alias": 1721692,
-"code": 254845,
+"exact/alias": 1721491,
+"code": 254838,
 "truncation": 119223,
-"athlete-continuity": 51310,
+"athlete-continuity": 51274,
 "mascot": 28413,
 "bare name + level context": 25540,
-"unresolved": 17737,
-"manual (file rule)": 15266,
+"unresolved": 17734,
+"manual (file rule)": 15533,
 "co-op label": 12482,
-"state-tagged (auto entry)": 10627,
+"state-tagged (auto entry)": 10629,
 "spelling (fuzzy)": 3452,
 "file-expansion": 2785,
 "debris-salvage": 1767,
 "debris": 1036,
-"ambiguous": 968,
+"ambiguous": 929,
 "company": 728,
 "later-hs": 636,
 "blank": 184,
@@ -23,15 +23,15 @@
 },
 "methods_by_strings": {
 "exact/alias": 4100,
-"unresolved": 2171,
+"unresolved": 2170,
 "state-tagged (auto entry)": 1569,
 "debris-salvage": 913,
 "code": 760,
 "debris": 716,
 "truncation": 529,
-"athlete-continuity": 466,
+"athlete-continuity": 464,
 "spelling (fuzzy)": 286,
-"manual (file rule)": 160,
+"manual (file rule)": 163,
 "co-op label": 75,
 "bare name + level context": 74,
 "mascot": 42,
@@ -584,11 +584,11 @@
 "how": "exact/alias"
 },
 "Central": {
-"rows": 15336,
+"rows": 15333,
 "seasons": {
 "Outdoor": 10182,
 "XC": 682,
-"Indoor": 4472
+"Indoor": 4469
 },
 "years": [
 2003,
@@ -597,7 +597,7 @@
 "id": "me-hs-central",
 "method": "exact",
 "by_id": {
-"me-hs-central": 13803,
+"me-hs-central": 13800,
 "me-ms-central": 1533
 },
 "context_dependent": true,
@@ -1445,14 +1445,16 @@
 "id": "me-hs-cape-elizabeth",
 "method": "exact",
 "by_id": {
-"me-hs-cape-elizabeth": 7280,
-"me-ms-cape-elizabeth": 100
+"me-hs-cape-elizabeth": 7104,
+"me-ms-cape-elizabeth": 276
 },
 "context_dependent": true,
 "flags": [
 "athletes contradict name match (me-hs-cape-elizabeth -> me-ms-cape-elizabeth, 16/19)",
 "athletes contradict name match (me-hs-cape-elizabeth -> me-ms-cape-elizabeth, 20/21)",
-"athletes contradict name match (me-hs-cape-elizabeth -> me-ms-cape-elizabeth, 4/5)"
+"athletes contradict name match (me-hs-cape-elizabeth -> me-ms-cape-elizabeth, 4/5)",
+"athletes contradict name match (me-hs-cape-elizabeth -> me-ms-cape-elizabeth, 46/47)",
+"athletes disagree with file rule (me-ms-cape-elizabeth -> me-hs-cape-elizabeth, 38/46)"
 ],
 "how": "exact/alias"
 },
@@ -2289,7 +2291,6 @@
 },
 "flags": [
 "athletes contradict name match (me-ms-cape-elizabeth -> me-hs-cape-elizabeth, 5/5)",
-"athletes contradict name match (me-ms-cape-elizabeth -> me-hs-cape-elizabeth, 8/8)",
 "athletes contradict name match (me-ms-cape-elizabeth -> me-hs-cape-elizabeth, 9/9)"
 ],
 "how": "exact/alias"
@@ -4073,9 +4074,9 @@
 "id": "me-hs-nya",
 "method": "exact",
 "by_id": {
-"me-hs-nya": 2744,
-"me-ms-nya": 10,
-"coop-nya-maine-coast-waldorf": 7
+"me-hs-nya": 2739,
+"coop-nya-maine-coast-waldorf": 12,
+"me-ms-nya": 10
 },
 "context_dependent": true,
 "by_level": {
@@ -8803,6 +8804,11 @@
 ],
 "id": "me-hs-sumner",
 "method": "exact",
+"by_id": {
+"me-hs-sumner": 820,
+"coop-it-sumner-narraguagus": 1
+},
+"context_dependent": true,
 "how": "exact/alias"
 },
 "BELF": {
@@ -9281,34 +9287,6 @@
 "method": "truncation+athletes",
 "how": "truncation"
 },
-"Unknown": {
-"rows": 721,
-"seasons": {
-"Outdoor": 661,
-"XC": 24,
-"Indoor": 36
-},
-"years": [
-2003,
-2026
-],
-"id": "x-unknown",
-"method": "exact",
-"by_id": {
-"x-unknown": 650,
-"me-hs-lincoln-academy": 46,
-"me-hs-presque-isle": 25
-},
-"context_dependent": true,
-"flags": [
-"athletes contradict name match (x-unknown -> me-hs-caribou, 2/2)",
-"athletes contradict name match (x-unknown -> me-hs-caribou, 6/6)",
-"athletes contradict name match (x-unknown -> me-hs-greely, 7/8)",
-"athletes contradict name match (x-unknown -> me-hs-houlton, 2/2)",
-"athletes contradict name match (x-unknown -> me-hs-lincoln-academy, 24/33)"
-],
-"how": "exact/alias"
-},
 "Deering High Sch": {
 "rows": 719,
 "seasons": {
@@ -9366,6 +9344,34 @@
 "method": "code",
 "how": "code"
 },
+"Unknown": {
+"rows": 703,
+"seasons": {
+"Outdoor": 661,
+"XC": 24,
+"Indoor": 18
+},
+"years": [
+2003,
+2026
+],
+"id": "x-unknown",
+"method": "exact",
+"by_id": {
+"x-unknown": 632,
+"me-hs-lincoln-academy": 46,
+"me-hs-presque-isle": 25
+},
+"context_dependent": true,
+"flags": [
+"athletes contradict name match (x-unknown -> me-hs-caribou, 2/2)",
+"athletes contradict name match (x-unknown -> me-hs-caribou, 6/6)",
+"athletes contradict name match (x-unknown -> me-hs-greely, 7/8)",
+"athletes contradict name match (x-unknown -> me-hs-houlton, 2/2)",
+"athletes contradict name match (x-unknown -> me-hs-lincoln-academy, 24/33)"
+],
+"how": "exact/alias"
+},
 "SACO": {
 "rows": 702,
 "seasons": {
@@ -9393,8 +9399,8 @@
 "id": "me-ms-biddeford",
 "method": "athlete-continuity (name suggested me-hs-biddeford)",
 "by_id": {
-"me-ms-biddeford": 403,
-"me-hs-biddeford": 295
+"me-ms-biddeford": 409,
+"me-hs-biddeford": 289
 },
 "context_dependent": true,
 "by_season": {
@@ -12329,8 +12335,8 @@
 "id": "me-hs-yarmouth",
 "method": "code",
 "by_id": {
-"me-hs-yarmouth": 250,
-"me-ms-harrison": 160
+"me-hs-yarmouth": 249,
+"me-ms-harrison": 161
 },
 "context_dependent": true,
 "by_season": {
@@ -12339,7 +12345,7 @@
 "Indoor": "me-ms-harrison"
 },
 "flags": [
-"athletes contradict name match (me-hs-yarmouth -> me-ms-harrison, 11/11)"
+"athletes contradict name match (me-hs-yarmouth -> me-ms-harrison, 12/12)"
 ],
 "how": "code"
 },
@@ -14101,14 +14107,14 @@
 2026
 ],
 "id": "oos-auto-nh-portsmouth",
-"method": "ambiguous-name+athletes",
+"method": "manual (file rule)",
 "by_id": {
-"None": 153,
-"oos-auto-nh-portsmouth": 142,
+"oos-auto-nh-portsmouth": 181,
+"None": 114,
 "oos-auto-ri-portsmouth": 26
 },
 "context_dependent": true,
-"unresolved_rows": 153,
+"unresolved_rows": 114,
 "by_season": {
 "Indoor": "oos-auto-nh-portsmouth",
 "XC": "oos-auto-ri-portsmouth"
@@ -14117,7 +14123,7 @@
 "file expansion: None -> oos-auto-nh-portsmouth",
 "file expansion: None -> oos-auto-ri-portsmouth"
 ],
-"how": "athlete-continuity"
+"how": "manual (file rule)"
 },
 "King MS": {
 "rows": 321,
@@ -16227,18 +16233,13 @@
 2006,
 2023
 ],
-"id": "col-usm",
-"method": "athlete-continuity",
+"id": "me-ms-southern-maine-catholic",
+"method": "manual (file rule)",
 "by_id": {
-"col-usm": 186,
-"me-ms-southern-maine-catholic": 64
+"me-ms-southern-maine-catholic": 250
 },
 "context_dependent": true,
-"by_season": {
-"XC": "me-ms-southern-maine-catholic",
-"Indoor": "col-usm"
-},
-"how": "athlete-continuity"
+"how": "manual (file rule)"
 },
 "Brunswick HS": {
 "rows": 248,
@@ -16738,8 +16739,7 @@
 "id": "me-ms-southern-maine-catholic",
 "method": "exact",
 "flags": [
-"athletes contradict name match (me-ms-southern-maine-catholic -> col-usm, 3/5)",
-"athletes contradict name match (me-ms-southern-maine-catholic -> col-usm, 5/6)"
+"athletes contradict name match (me-ms-southern-maine-catholic -> col-usm, 3/5)"
 ],
 "how": "exact/alias"
 },
@@ -46281,7 +46281,7 @@
 "context_dependent": true,
 "flags": [
 "athletes contradict name match (oos-ct-staples-high-school -> oos-auto-ct-unattached, 2/2)",
-"company: oos-auto-ct-unattached (1.40) -> oos-ct-staples-high-school (81.06)"
+"company: oos-auto-ct-unattached (1.40) -> oos-ct-staples-high-school (81.00)"
 ],
 "how": "exact/alias"
 },
@@ -54003,6 +54003,20 @@
 ],
 "how": "exact/alias"
 },
+"Hillhouse-CT": {
+"rows": 15,
+"seasons": {
+"Indoor": 14,
+"Outdoor": 1
+},
+"years": [
+2023,
+2025
+],
+"id": "oos-ct-hillhouse-high-school",
+"method": "exact+state-tail",
+"how": "exact/alias"
+},
 "St Johnsbury-VT 'A'": {
 "rows": 15,
 "seasons": {
@@ -55857,20 +55871,6 @@
 "id": "col-umf",
 "method": "athlete-continuity",
 "how": "athlete-continuity"
-},
-"Hillhouse-CT": {
-"rows": 14,
-"seasons": {
-"Indoor": 13,
-"Outdoor": 1
-},
-"years": [
-2023,
-2025
-],
-"id": "oos-ct-hillhouse-high-school",
-"method": "exact+state-tail",
-"how": "exact/alias"
 },
 "Day Mountain School": {
 "rows": 14,
@@ -61329,6 +61329,19 @@
 "method": "exact+state-tail",
 "how": "exact/alias"
 },
+"Manchester Central": {
+"rows": 11,
+"seasons": {
+"Indoor": 11
+},
+"years": [
+2023,
+2025
+],
+"id": "oos-nh-manchester-central-high-school",
+"method": "exact",
+"how": "exact/alias"
+},
 "Middleboro-MA": {
 "rows": 11,
 "seasons": {
@@ -63855,19 +63868,6 @@
 "id": "col-eastern-nazarene",
 "method": "truncation",
 "how": "truncation"
-},
-"Manchester Central": {
-"rows": 10,
-"seasons": {
-"Indoor": 10
-},
-"years": [
-2024,
-2025
-],
-"id": "oos-nh-manchester-central-high-school",
-"method": "exact",
-"how": "exact/alias"
 },
 "LaSalle Academy-RI 'A'": {
 "rows": 10,
@@ -71909,9 +71909,6 @@
 ],
 "id": "me-ms-st-brigid",
 "method": "exact",
-"flags": [
-"athletes contradict name match (me-ms-st-brigid -> col-usm, 3/4)"
-],
 "how": "exact/alias"
 },
 "Cranston West Hs-Ri": {
@@ -75690,9 +75687,6 @@
 ],
 "id": "me-ms-st-brigid",
 "method": "exact",
-"flags": [
-"athletes contradict name match (me-ms-st-brigid -> col-usm, 3/4)"
-],
 "how": "exact/alias"
 },
 "Woodland JH": {
@@ -81060,6 +81054,19 @@
 "id": "oos-ma-andover-high-school",
 "method": "exact+state-tail",
 "how": "exact/alias"
+},
+"Central Hs-Ri": {
+"rows": 5,
+"seasons": {
+"Indoor": 5
+},
+"years": [
+2023,
+2024
+],
+"id": "oos-auto-ri-central",
+"method": "exact+state-tail",
+"how": "state-tagged (auto entry)"
 },
 "Gilford-NH": {
 "rows": 5,
@@ -91774,10 +91781,13 @@
 "method": "manual (file rule)",
 "by_id": {
 "oos-ri-east-greenwich-high-school": 2,
-"None": 1
+"oos-auto-ri-exeter-w-gr": 1
 },
 "context_dependent": true,
-"unresolved_rows": 1,
+"by_season": {
+"XC": "oos-ri-east-greenwich-high-school",
+"Indoor": "oos-auto-ri-exeter-w-gr"
+},
 "how": "manual (file rule)"
 },
 "59-Bellmoren": {
@@ -95965,19 +95975,6 @@
 2025
 ],
 "id": "oos-auto-ri-scituate",
-"method": "exact+state-tail",
-"how": "state-tagged (auto entry)"
-},
-"Central Hs-Ri": {
-"rows": 3,
-"seasons": {
-"Indoor": 3
-},
-"years": [
-2024,
-2024
-],
-"id": "oos-auto-ri-central",
 "method": "exact+state-tail",
 "how": "state-tagged (auto entry)"
 },
@@ -110242,9 +110239,13 @@
 2023,
 2023
 ],
-"id": null,
-"method": "unresolved",
-"how": "unresolved"
+"id": "oos-auto-ri-north-smithfield",
+"method": "manual (file rule)",
+"by_id": {
+"oos-auto-ri-north-smithfield": 2
+},
+"context_dependent": true,
+"how": "manual (file rule)"
 },
 "Central Catholic-MA": {
 "rows": 2,
@@ -163635,7 +163636,8 @@
 "Ellsworth": "me-hs-ellsworth",
 "MDI": "me-hs-mdi",
 "Searsport": "me-hs-searsport",
-"Sumner": "me-hs-sumner"
+"Sumner": "me-hs-sumner",
+"Sumner Memorial High School": "me-hs-sumner"
 },
 "2003/Outdoor/fox16may03": {
 "Central": "me-hs-central",
@@ -164066,6 +164068,7 @@
 "North Haven Community School": "me-hs-north-haven",
 "North Yarmouth Academy": "me-hs-nya",
 "Searsport District High School": "me-hs-searsport",
+"Sumner Memorial High School": "me-hs-sumner",
 "Thornton Academy": "me-hs-thornton",
 "Waynflete School": "me-hs-waynflete"
 },
@@ -164478,7 +164481,8 @@
 },
 "2004/Indoor/3B04": {
 "Orono": "me-hs-orono",
-"Sumner": "me-hs-sumner"
+"Sumner": "me-hs-sumner",
+"Sumner Memorial High School": "me-hs-sumner"
 },
 "2004/Indoor/3C04": {
 "Bucksport": "me-hs-bucksport",
@@ -165222,6 +165226,7 @@
 "Mattanawcook Academy": "me-hs-mattanawcook",
 "Messalonskee High School": "me-hs-messalonskee",
 "North Yarmouth Academy": "me-hs-nya",
+"Sumner Memorial High School": "me-hs-sumner",
 "Thornton Academy": "me-hs-thornton",
 "Waynflete School": "me-hs-waynflete"
 },
@@ -166207,6 +166212,7 @@
 "North Yarmouth Academy": "me-hs-nya",
 "Searsport District High School": "me-hs-searsport",
 "St. Dominic Academy": "me-hs-st-dominic",
+"Sumner Memorial High School": "me-hs-sumner",
 "Thornton Academy": "me-hs-thornton",
 "Waynflete School": "me-hs-waynflete"
 },
@@ -166542,11 +166548,13 @@
 },
 "2005/Indoor/2c12_28_04b": {
 "Brewer": "me-hs-brewer",
-"Sumner": "me-hs-sumner"
+"Sumner": "me-hs-sumner",
+"Sumner Memorial High School": "me-hs-sumner"
 },
 "2005/Indoor/2c12_28_04g": {
 "Brewer": "me-hs-brewer",
-"Sumner": "me-hs-sumner"
+"Sumner": "me-hs-sumner",
+"Sumner Memorial High School": "me-hs-sumner"
 },
 "2005/Indoor/3AB": {
 "Brewer": "me-hs-brewer",
@@ -166668,7 +166676,8 @@
 "Mattanawcook Academy": "me-hs-mattanawcook",
 "Old Town": "me-hs-old-town",
 "Orono": "me-hs-orono",
-"Sumner": "me-hs-sumner"
+"Sumner": "me-hs-sumner",
+"Sumner Memorial High School": "me-hs-sumner"
 },
 "2005/Indoor/blackbeargirls": {
 "Brewer": "me-hs-brewer",
@@ -166680,7 +166689,8 @@
 "Mattanawcook Academy": "me-hs-mattanawcook",
 "Old Town": "me-hs-old-town",
 "Orono": "me-hs-orono",
-"Sumner": "me-hs-sumner"
+"Sumner": "me-hs-sumner",
+"Sumner Memorial High School": "me-hs-sumner"
 },
 "2005/Indoor/classaboys": {
 "Biddeford": "me-hs-biddeford",
@@ -169235,6 +169245,7 @@
 "Old Town": "me-hs-old-town",
 "Orono": "me-hs-orono",
 "Sumner": "me-hs-sumner",
+"Sumner Memorial High School": "me-hs-sumner",
 "Unknown": "x-unknown"
 },
 "2006/Indoor/blackbeardinividualfieldboys": {
@@ -169258,7 +169269,8 @@
 "Mattanawcook Academy": "me-hs-mattanawcook",
 "Old Town": "me-hs-old-town",
 "Orono": "me-hs-orono",
-"Sumner": "me-hs-sumner"
+"Sumner": "me-hs-sumner",
+"Sumner Memorial High School": "me-hs-sumner"
 },
 "2006/Indoor/blackbearindifidualfieldgirls": {
 "Brewer": "me-hs-brewer",
@@ -171388,6 +171400,7 @@
 "Messalonskee High School": "me-hs-messalonskee",
 "North Yarmouth Academy": "me-hs-nya",
 "St. Dominic Academy": "me-hs-st-dominic",
+"Sumner Memorial High School": "me-hs-sumner",
 "Thornton Academy": "me-hs-thornton"
 },
 "2006/XC/mtararat9_15boys": {
@@ -171593,7 +171606,8 @@
 "WINH": "me-ms-windham"
 },
 "2006/XC/seacoastinvitationalboys": {
-"Searsport District High School": "me-hs-searsport"
+"Searsport District High School": "me-hs-searsport",
+"Sumner Memorial High School": "me-hs-sumner"
 },
 "2006/XC/seacoastinvitationalgirls": {
 "Searsport District High School": "me-hs-searsport"
@@ -171863,7 +171877,8 @@
 "Mt. Desert": "me-hs-mdi",
 "Old Town": "me-hs-old-town",
 "Orono": "me-hs-orono",
-"Sumner": "me-hs-sumner"
+"Sumner": "me-hs-sumner",
+"Sumner Memorial High School": "me-hs-sumner"
 },
 "2007/Indoor/blackbearboysFE": {
 "Brewer": "me-hs-brewer",
@@ -171887,7 +171902,8 @@
 "Old Town": "me-hs-old-town",
 "Orono": "me-hs-orono",
 "Searsport": "me-hs-searsport",
-"Sumner": "me-hs-sumner"
+"Sumner": "me-hs-sumner",
+"Sumner Memorial High School": "me-hs-sumner"
 },
 "2007/Indoor/blackbeargirlsFE": {
 "Brewer": "me-hs-brewer",
@@ -172019,6 +172035,7 @@
 "Poland": "me-hs-poland",
 "Rockland": "me-hs-rockland",
 "Sumner": "me-hs-sumner",
+"Sumner Memorial High School": "me-hs-sumner",
 "Waterville": "me-hs-waterville",
 "Wells": "me-hs-wells",
 "Winslow": "me-hs-winslow",
@@ -173376,7 +173393,8 @@
 "Piscataquis Comm": "me-hs-piscataquis",
 "Presque Isle": "me-hs-presque-isle",
 "Searsport": "me-hs-searsport",
-"Sumner": "me-hs-sumner"
+"Sumner": "me-hs-sumner",
+"Sumner Memorial High School": "me-hs-sumner"
 },
 "2007/Outdoor/pvcjvgirls": {
 "Bangor Christian": "me-hs-bangor-christian",
@@ -173396,7 +173414,8 @@
 "PCHS": "me-hs-piscataquis",
 "Presque Isle": "me-hs-presque-isle",
 "Searsport": "me-hs-searsport",
-"Sumner": "me-hs-sumner"
+"Sumner": "me-hs-sumner",
+"Sumner Memorial High School": "me-hs-sumner"
 },
 "2007/Outdoor/pvclargeboys": {
 "Brewer": "me-hs-brewer",
@@ -174473,7 +174492,8 @@
 "Thornton Academy": "me-hs-thornton"
 },
 "2007/XC/mdirelaysindividual": {
-"Mattanawcook Academy": "me-hs-mattanawcook"
+"Mattanawcook Academy": "me-hs-mattanawcook",
+"Sumner Memorial High School": "me-hs-sumner"
 },
 "2007/XC/medomakboys9_21": {
 "Islesboro Central School": "me-hs-islesboro",
@@ -174493,6 +174513,7 @@
 "Monmouth Academy": "me-hs-monmouth",
 "North Yarmouth Academy": "me-hs-nya",
 "St. Dominic Academy": "me-hs-st-dominic",
+"Sumner Memorial High School": "me-hs-sumner",
 "Thornton Academy": "me-hs-thornton",
 "Waynflete School": "me-hs-waynflete"
 },
@@ -175285,7 +175306,8 @@
 "Mt. Desert": "me-hs-mdi",
 "Old Town": "me-hs-old-town",
 "Orono": "me-hs-orono",
-"Sumner": "me-hs-sumner"
+"Sumner": "me-hs-sumner",
+"Sumner Memorial High School": "me-hs-sumner"
 },
 "2008/Indoor/boys_emitl_2a_12.27.07": {
 "Brewer": "me-hs-brewer",
@@ -175430,6 +175452,7 @@
 "Orono": "me-hs-orono",
 "Poland": "me-hs-poland",
 "Sumner": "me-hs-sumner",
+"Sumner Memorial High School": "me-hs-sumner",
 "Waterville": "me-hs-waterville",
 "Wells": "me-hs-wells",
 "Winslow": "me-hs-winslow",
@@ -175564,7 +175587,8 @@
 "Orono": "me-hs-orono",
 "PCHS": "me-hs-piscataquis",
 "Searsport": "me-hs-searsport",
-"Sumner": "me-hs-sumner"
+"Sumner": "me-hs-sumner",
+"Sumner Memorial High School": "me-hs-sumner"
 },
 "2008/Indoor/girls_emitl_2a_12.27.07": {
 "Brewer": "me-hs-brewer",
@@ -178221,7 +178245,8 @@
 "St. Dominic Academy": "me-hs-st-dominic"
 },
 "2008/XC/ms-hancock-county-championship-2008": {
-"Searsport": "me-hs-searsport"
+"Searsport": "me-hs-searsport",
+"Sumner Memorial High School": "me-hs-sumner"
 },
 "2008/XC/ms-lake-region-invitational-2008": {
 "North Yarmouth Academy": "me-hs-nya",
@@ -178918,7 +178943,8 @@
 "Mattanawcook": "me-hs-mattanawcook",
 "Mt. View": "me-hs-mt-view",
 "Orono": "me-hs-orono",
-"Sumner": "me-hs-sumner"
+"Sumner": "me-hs-sumner",
+"Sumner Memorial High School": "me-hs-sumner"
 },
 "2009/Indoor/emitl_boys_2c_12.29.08": {
 "Brewer": "me-hs-brewer",
@@ -179356,6 +179382,7 @@
 "Poland": "me-hs-poland",
 "Rockland": "me-hs-rockland",
 "Sumner": "me-hs-sumner",
+"Sumner Memorial High School": "me-hs-sumner",
 "Waterville": "me-hs-waterville",
 "Wells": "me-hs-wells",
 "Winslow": "me-hs-winslow",
@@ -179914,7 +179941,8 @@
 "2009/Outdoor/ellsworthboys_may12": {
 "Brewer": "me-hs-brewer",
 "Ellsworth": "me-hs-ellsworth",
-"Sumner": "me-hs-sumner"
+"Sumner": "me-hs-sumner",
+"Sumner Memorial High School": "me-hs-sumner"
 },
 "2009/Outdoor/ellsworthgirls_may1": {
 "Bucksport": "me-hs-bucksport",
@@ -179926,7 +179954,8 @@
 "2009/Outdoor/ellsworthgirls_may12": {
 "Brewer": "me-hs-brewer",
 "Ellsworth": "me-hs-ellsworth",
-"Sumner": "me-hs-sumner"
+"Sumner": "me-hs-sumner",
+"Sumner Memorial High School": "me-hs-sumner"
 },
 "2009/Outdoor/falmouth_may1": {
 "Falmouth": "me-hs-falmouth",
@@ -180074,7 +180103,8 @@
 },
 "2009/Outdoor/hampdenboys_may8": {
 "Old Town": "me-hs-old-town",
-"PCHS": "me-hs-piscataquis"
+"PCHS": "me-hs-piscataquis",
+"Sumner Memorial High School": "me-hs-sumner"
 },
 "2009/Outdoor/hampdengirls_april24": {
 "Bucksport": "me-hs-bucksport",
@@ -180087,7 +180117,8 @@
 },
 "2009/Outdoor/hampdengirls_may8": {
 "Old Town": "me-hs-old-town",
-"PCHS": "me-hs-piscataquis"
+"PCHS": "me-hs-piscataquis",
+"Sumner Memorial High School": "me-hs-sumner"
 },
 "2009/Outdoor/hampdenmiddleschoolboys_may21": {
 "Bangor Christian": "me-ms-bangor-christian",
@@ -180102,14 +180133,16 @@
 "Ellsworth": "me-hs-ellsworth",
 "MDI": "me-hs-mdi",
 "Searsport": "me-hs-searsport",
-"Sumner": "me-hs-sumner"
+"Sumner": "me-hs-sumner",
+"Sumner Memorial High School": "me-hs-sumner"
 },
 "2009/Outdoor/hancockcountygirls": {
 "Bucksport": "me-hs-bucksport",
 "Ellsworth": "me-hs-ellsworth",
 "MDI": "me-hs-mdi",
 "Searsport": "me-hs-searsport",
-"Sumner": "me-hs-sumner"
+"Sumner": "me-hs-sumner",
+"Sumner Memorial High School": "me-hs-sumner"
 },
 "2009/Outdoor/kennebunkboys_may18": {
 "K": null,
@@ -180315,6 +180348,7 @@
 "2009/Outdoor/ne-interscholastic-outdoor-2009": {
 "Mattanawcook Academy": "me-hs-mattanawcook",
 "North Yarmouth Academy": "me-hs-nya",
+"Sumner Memorial High School": "me-hs-sumner",
 "Thornton Academy": "me-hs-thornton"
 },
 "2009/Outdoor/nobleboys_may13": {
@@ -180435,7 +180469,8 @@
 "Mattanawcook": "me-hs-mattanawcook",
 "Mattanawcook Academy": "me-hs-mattanawcook",
 "ORONO": "me-hs-orono",
-"Old Town": "me-hs-old-town"
+"Old Town": "me-hs-old-town",
+"Sumner Memorial High School": "me-hs-sumner"
 },
 "2009/Outdoor/pvcfroshgirls": {
 "BCS": "me-hs-bangor-christian",
@@ -180466,7 +180501,8 @@
 "PCHS": "me-hs-piscataquis",
 "Presque Isle": "me-hs-presque-isle",
 "Searsport": "me-hs-searsport",
-"Sumner": "me-hs-sumner"
+"Sumner": "me-hs-sumner",
+"Sumner Memorial High School": "me-hs-sumner"
 },
 "2009/Outdoor/pvcjvgirls": {
 "BCS": "me-hs-bangor-christian",
@@ -180485,7 +180521,8 @@
 "PCHS": "me-hs-piscataquis",
 "Presque Isle": "me-hs-presque-isle",
 "Searsport": "me-hs-searsport",
-"Sumner": "me-hs-sumner"
+"Sumner": "me-hs-sumner",
+"Sumner Memorial High School": "me-hs-sumner"
 },
 "2009/Outdoor/pvclsb": {
 "Brewer": "me-hs-brewer",
@@ -181385,7 +181422,8 @@
 },
 "2009/XC/lynxinvite": {
 "Bangor Christian Schools": "me-hs-bangor-christian",
-"Mattanawcook Academy": "me-hs-mattanawcook"
+"Mattanawcook Academy": "me-hs-mattanawcook",
+"Sumner Memorial High School": "me-hs-sumner"
 },
 "2009/XC/maranacookboys_sept4": {
 "Camden": "me-hs-camden-hills",
@@ -181491,6 +181529,7 @@
 "North Yarmouth Academy": "me-hs-nya",
 "Searsport District High School": "me-hs-searsport",
 "St. Dominic Academy": "me-hs-st-dominic",
+"Sumner Memorial High School": "me-hs-sumner",
 "Thornton Academy": "me-hs-thornton",
 "Waynflete School": "me-hs-waynflete"
 },
@@ -181569,7 +181608,8 @@
 },
 "2009/XC/pvcboysvarsity.txt": {
 "Bangor Christian Schools": "me-hs-bangor-christian",
-"Mattanawcook Academy": "me-hs-mattanawcook"
+"Mattanawcook Academy": "me-hs-mattanawcook",
+"Sumner Memorial High School": "me-hs-sumner"
 },
 "2009/XC/pvcgirlsjv.txt": {
 "Bangor Christian": "me-hs-bangor-christian",
@@ -182142,7 +182182,8 @@
 "Mattanawcook Academy": "me-hs-mattanawcook",
 "Old Town": "me-hs-old-town",
 "Orono": "me-hs-orono",
-"Sumner": "me-hs-sumner"
+"Sumner": "me-hs-sumner",
+"Sumner Memorial High School": "me-hs-sumner"
 },
 "2010/Indoor/bb_relays_field_events_boys_1.16.10": {
 "Brewer": "me-hs-brewer",
@@ -182177,7 +182218,8 @@
 "Mattanawcook Academy": "me-hs-mattanawcook",
 "Old Town": "me-hs-old-town",
 "Orono": "me-hs-orono",
-"Sumner": "me-hs-sumner"
+"Sumner": "me-hs-sumner",
+"Sumner Memorial High School": "me-hs-sumner"
 },
 "2010/Indoor/bowdoinboysfield": {
 "Brunswick": "me-hs-brunswick",
@@ -182270,6 +182312,7 @@
 "Orono": "me-hs-orono",
 "Poland": "me-hs-poland",
 "Rockland": "me-hs-rockland",
+"Sumner Memorial High School": "me-hs-sumner",
 "Waterville": "me-hs-waterville",
 "Wells": "me-hs-wells",
 "Winslow": "me-hs-winslow",
@@ -182293,6 +182336,7 @@
 "Old Town": "me-hs-old-town",
 "Orono": "me-hs-orono",
 "Poland": "me-hs-poland",
+"Sumner Memorial High School": "me-hs-sumner",
 "Waterville": "me-hs-waterville",
 "Wells": "me-hs-wells",
 "Winslow": "me-hs-winslow",
@@ -182523,14 +182567,16 @@
 "Mattanawcook": "me-hs-mattanawcook",
 "Orono": "me-hs-orono",
 "Rockland": "me-hs-rockland",
-"Sumner": "me-hs-sumner"
+"Sumner": "me-hs-sumner",
+"Sumner Memorial High School": "me-hs-sumner"
 },
 "2010/Indoor/meet_1b_girls_results": {
 "MDI": "me-hs-mdi",
 "Mattanawcook": "me-hs-mattanawcook",
 "Orono": "me-hs-orono",
 "Rockland": "me-hs-rockland",
-"Sumner": "me-hs-sumner"
+"Sumner": "me-hs-sumner",
+"Sumner Memorial High School": "me-hs-sumner"
 },
 "2010/Indoor/meet_2a_boys_results%20_12.30.09": {
 "Bucksport": "me-hs-bucksport",
@@ -182546,13 +182592,15 @@
 "Central": "me-hs-central",
 "Hermon": "me-hs-hermon",
 "Mattanawcook": "me-hs-mattanawcook",
-"Sumner": "me-hs-sumner"
+"Sumner": "me-hs-sumner",
+"Sumner Memorial High School": "me-hs-sumner"
 },
 "2010/Indoor/meet_2b_girls_results_12.30.09": {
 "Central": "me-hs-central",
 "Hermon": "me-hs-hermon",
 "Mattanawcook": "me-hs-mattanawcook",
-"Sumner": "me-hs-sumner"
+"Sumner": "me-hs-sumner",
+"Sumner Memorial High School": "me-hs-sumner"
 },
 "2010/Indoor/meet_3a_boys_2.9.10": {
 "Bucksport": "me-hs-bucksport",
@@ -182572,12 +182620,14 @@
 "Central": "me-hs-central",
 "Mattanawcook": "me-hs-mattanawcook",
 "Mattanawcook Academy": "me-hs-mattanawcook",
-"Sumner": "me-hs-sumner"
+"Sumner": "me-hs-sumner",
+"Sumner Memorial High School": "me-hs-sumner"
 },
 "2010/Indoor/meet_3b_girls_1.9.10": {
 "Central": "me-hs-central",
 "Mattanawcook": "me-hs-mattanawcook",
-"Sumner": "me-hs-sumner"
+"Sumner": "me-hs-sumner",
+"Sumner Memorial High School": "me-hs-sumner"
 },
 "2010/Indoor/meet_3c_boys_results_1.8.10": {
 "Brewer": "me-hs-brewer",
@@ -182596,14 +182646,16 @@
 "Central": "me-hs-central",
 "Hermon": "me-hs-hermon",
 "Orono": "me-hs-orono",
-"Sumner": "me-hs-sumner"
+"Sumner": "me-hs-sumner",
+"Sumner Memorial High School": "me-hs-sumner"
 },
 "2010/Indoor/meet_5a_girls_1.23.10": {
 "Brewer": "me-hs-brewer",
 "Central": "me-hs-central",
 "Hermon": "me-hs-hermon",
 "Orono": "me-hs-orono",
-"Sumner": "me-hs-sumner"
+"Sumner": "me-hs-sumner",
+"Sumner Memorial High School": "me-hs-sumner"
 },
 "2010/Indoor/meet_5b_boys_1.23.10": {
 "Bucksport": "me-hs-bucksport",
@@ -183429,23 +183481,27 @@
 "Brewer": "me-hs-brewer",
 "Ellsworth": "me-hs-ellsworth",
 "Orono": "me-hs-orono",
-"Sumner": "me-hs-sumner"
+"Sumner": "me-hs-sumner",
+"Sumner Memorial High School": "me-hs-sumner"
 },
 "2010/Outdoor/ellsworthboys_may11": {
 "Ellsworth": "me-hs-ellsworth",
 "MDI": "me-hs-mdi",
-"Sumner": "me-hs-sumner"
+"Sumner": "me-hs-sumner",
+"Sumner Memorial High School": "me-hs-sumner"
 },
 "2010/Outdoor/ellsworthgirls_april30": {
 "Brewer": "me-hs-brewer",
 "Ellsworth": "me-hs-ellsworth",
 "Orono": "me-hs-orono",
-"Sumner": "me-hs-sumner"
+"Sumner": "me-hs-sumner",
+"Sumner Memorial High School": "me-hs-sumner"
 },
 "2010/Outdoor/ellsworthgirls_may11": {
 "Ellsworth": "me-hs-ellsworth",
 "MDI": "me-hs-mdi",
-"Sumner": "me-hs-sumner"
+"Sumner": "me-hs-sumner",
+"Sumner Memorial High School": "me-hs-sumner"
 },
 "2010/Outdoor/ellsworthmiddleboys_may10": {
 "BangorChristian": "me-ms-bangor-christian",
@@ -183582,13 +183638,15 @@
 "ELLS": "me-hs-ellsworth",
 "Mount": null,
 "Mount Desert": "me-hs-mdi",
-"Searsport": "me-hs-searsport"
+"Searsport": "me-hs-searsport",
+"Sumner Memorial High School": "me-hs-sumner"
 },
 "2010/Outdoor/hancockcountygirls": {
 "ELLS": "me-hs-ellsworth",
 "Mount": null,
 "Mount Desert": "me-hs-mdi",
-"Searsport": "me-hs-searsport"
+"Searsport": "me-hs-searsport",
+"Sumner Memorial High School": "me-hs-sumner"
 },
 "2010/Outdoor/hebron_april24": {
 "E": null,
@@ -183871,7 +183929,8 @@
 "PCHS": "me-hs-piscataquis",
 "Presque Isle": "me-hs-presque-isle",
 "Searsport": "me-hs-searsport",
-"Sumner": "me-hs-sumner"
+"Sumner": "me-hs-sumner",
+"Sumner Memorial High School": "me-hs-sumner"
 },
 "2010/Outdoor/pvcjvgirls": {
 "Brewer": "me-hs-brewer",
@@ -185049,11 +185108,15 @@
 },
 "2010/XC/ms-bucksport-golden-bucks-invitational-2010": {
 "Mattanawcook Academy": "me-hs-mattanawcook",
-"PVHS": "me-hs-penobscot-valley"
+"PVHS": "me-hs-penobscot-valley",
+"Sumner Memorial High School": "me-hs-sumner"
 },
 "2010/XC/ms-camden-hills-invitational-2010": {
 "Lincoln Academy": "me-hs-lincoln-academy",
 "North Haven Community School": "me-hs-north-haven"
+},
+"2010/XC/ms-hancock-county-championship-2010": {
+"Sumner Memorial High School": "me-hs-sumner"
 },
 "2010/XC/ms-kvac-bangor-waterville-mci-messalonskee-skowhegan-2010": {
 "Messalonskee High School": "me-hs-messalonskee"
@@ -185880,7 +185943,8 @@
 "Brewer": "me-hs-brewer",
 "Central": "me-hs-central",
 "HER": "me-hs-hermon",
-"Orono": "me-hs-orono"
+"Orono": "me-hs-orono",
+"Sumner Memorial High School": "me-hs-sumner"
 },
 "2011/Indoor/boys_meet_4b_1.22.11": {
 "Ellsworth": "me-hs-ellsworth",
@@ -185942,6 +186006,7 @@
 "Poland": "me-hs-poland",
 "Rockland": "me-hs-rockland",
 "Sumner": "me-hs-sumner",
+"Sumner Memorial High School": "me-hs-sumner",
 "Waterville": "me-hs-waterville",
 "Wells": "me-hs-wells",
 "Winslow": "me-hs-winslow",
@@ -185968,6 +186033,7 @@
 "Orono": "me-hs-orono",
 "Poland": "me-hs-poland",
 "Rockland": "me-hs-rockland",
+"Sumner Memorial High School": "me-hs-sumner",
 "Waterville": "me-hs-waterville",
 "Wells": "me-hs-wells",
 "Winslow": "me-hs-winslow",
@@ -186128,7 +186194,8 @@
 "Brewer": "me-hs-brewer",
 "Central": "me-hs-central",
 "HER": "me-hs-hermon",
-"Orono": "me-hs-orono"
+"Orono": "me-hs-orono",
+"Sumner Memorial High School": "me-hs-sumner"
 },
 "2011/Indoor/girls_meet_4b_1.22.11": {
 "Ellsworth": "me-hs-ellsworth",
@@ -186992,7 +187059,8 @@
 "Hermon": "me-hs-hermon",
 "Mattanawcook": "me-hs-mattanawcook",
 "Mattanawcook Academy": "me-hs-mattanawcook",
-"Sumner": "me-hs-sumner"
+"Sumner": "me-hs-sumner",
+"Sumner Memorial High School": "me-hs-sumner"
 },
 "2011/Outdoor/ellsworthgirls_may13": {
 "Bangor Christian": "me-hs-bangor-christian",
@@ -187119,7 +187187,8 @@
 "Ellsworth": "me-hs-ellsworth",
 "MDI": "me-hs-mdi",
 "Searsport": "me-hs-searsport",
-"Sumner": "me-hs-sumner"
+"Sumner": "me-hs-sumner",
+"Sumner Memorial High School": "me-hs-sumner"
 },
 "2011/Outdoor/hancockcountygirls": {
 "Bucksport": "me-hs-bucksport",
@@ -187284,14 +187353,16 @@
 "Old Town": "me-hs-old-town",
 "Orono": "me-hs-orono",
 "Presque Isle": "me-hs-presque-isle",
-"Sumner": "me-hs-sumner"
+"Sumner": "me-hs-sumner",
+"Sumner Memorial High School": "me-hs-sumner"
 },
 "2011/Outdoor/mdiboys_may6": {
 "Brewer": "me-hs-brewer",
 "HER": "me-hs-hermon",
 "MDI": "me-hs-mdi",
 "Old Town": "me-hs-old-town",
-"Searsport": "me-hs-searsport"
+"Searsport": "me-hs-searsport",
+"Sumner Memorial High School": "me-hs-sumner"
 },
 "2011/Outdoor/mdigirls_may6": {
 "Brewer": "me-hs-brewer",
@@ -187387,6 +187458,7 @@
 "Messalonskee High School": "me-hs-messalonskee",
 "Monmouth Academy": "me-hs-monmouth",
 "North Yarmouth Academy": "me-hs-nya",
+"Sumner Memorial High School": "me-hs-sumner",
 "Thornton Academy": "me-hs-thornton"
 },
 "2011/Outdoor/nobleboys)april27": {
@@ -187724,7 +187796,8 @@
 "Old Town": "me-hs-old-town",
 "Orono": "me-hs-orono",
 "Presque Isle": "me-hs-presque-isle",
-"Sumner": "me-hs-sumner"
+"Sumner": "me-hs-sumner",
+"Sumner Memorial High School": "me-hs-sumner"
 },
 "2011/Outdoor/watervilleMS_may11": {
 "Messalonskee": "me-ms-messalonskee",
@@ -188731,6 +188804,9 @@
 },
 "2011/XC/morsegirls_sept29": {
 "MTA": "me-hs-mt-ararat"
+},
+"2011/XC/ms-hancock-county-championship-2011": {
+"Sumner Memorial High School": "me-hs-sumner"
 },
 "2011/XC/ms-kvac-lewiston-cony-edward-little-2011": {
 "Cony High School": "me-hs-cony"
@@ -189754,6 +189830,7 @@
 "Poland": "me-hs-poland",
 "Sacopee Valley": "me-hs-sacopee",
 "Sumner": "me-hs-sumner",
+"Sumner Memorial High School": "me-hs-sumner",
 "Waterville": "me-hs-waterville",
 "Wells": "me-hs-wells",
 "Winslow": "me-hs-winslow",
@@ -189782,6 +189859,7 @@
 "Old Town": "me-hs-old-town",
 "Orono": "me-hs-orono",
 "Poland": "me-hs-poland",
+"Sumner Memorial High School": "me-hs-sumner",
 "Waterville": "me-hs-waterville",
 "Wells": "me-hs-wells",
 "Winslow": "me-hs-winslow",
@@ -190450,7 +190528,8 @@
 "Central": "me-hs-central",
 "Ellsworth": "me-hs-ellsworth",
 "MDI": "me-hs-mdi",
-"Sumner": "me-hs-sumner"
+"Sumner": "me-hs-sumner",
+"Sumner Memorial High School": "me-hs-sumner"
 },
 "2012/Outdoor/boys_field_events_mdi_relays_2012": {
 "Brewer": "me-hs-brewer",
@@ -190499,7 +190578,8 @@
 "PCHS": "me-hs-piscataquis",
 "Presque Isle": "me-hs-presque-isle",
 "Searsport": "me-hs-searsport",
-"Sumner": "me-hs-sumner"
+"Sumner": "me-hs-sumner",
+"Sumner Memorial High School": "me-hs-sumner"
 },
 "2012/Outdoor/boys_pvc_small_school_results_5.26.12": {
 "Bangor Christian": "me-hs-bangor-christian",
@@ -191178,7 +191258,8 @@
 "Mount Desert": "me-hs-mdi",
 "Orono": "me-hs-orono",
 "Searsport": "me-hs-searsport",
-"Sumner": "me-hs-sumner"
+"Sumner": "me-hs-sumner",
+"Sumner Memorial High School": "me-hs-sumner"
 },
 "2012/Outdoor/mdigirls_may7": {
 "Brewer": "me-hs-brewer",
@@ -192665,7 +192746,8 @@
 },
 "2012/XC/leeinvietboysboysvarsity": {
 "Bangor Christian Schools": "me-hs-bangor-christian",
-"Mattanawcook Academy": "me-hs-mattanawcook"
+"Mattanawcook Academy": "me-hs-mattanawcook",
+"Sumner Memorial High School": "me-hs-sumner"
 },
 "2012/XC/leeinviteboysjv": {
 "Central": "me-hs-central",
@@ -192771,6 +192853,9 @@
 "2012/XC/ms-gray-new-gloucester-ms-meet-2012": {
 "GNG": "me-ms-gray-ng"
 },
+"2012/XC/ms-hancock-county-championship-2012": {
+"Sumner Memorial High School": "me-hs-sumner"
+},
 "2012/XC/ms-kvac-lewiston-cony-edward-little-2012": {
 "Cony High School": "me-hs-cony"
 },
@@ -192783,6 +192868,9 @@
 },
 "2012/XC/ms-maisad-cross-country-championship-meet-2012": {
 "Hebron Academy": "me-hs-hebron"
+},
+"2012/XC/ms-mdi-relays-2012": {
+"Sumner Memorial High School": "me-hs-sumner"
 },
 "2012/XC/ms-mvc-madison-dirigo-carrabec-st-doms-telstar-2012": {
 "Carrebec": "me-hs-carrabec",
@@ -192798,6 +192886,9 @@
 "2012/XC/ms-parker-pruett-middle-school-xc-meet-2012": {
 "Blue Hill": "me-ms-blue-hill",
 "Ellsworth": "me-ms-ellsworth"
+},
+"2012/XC/ms-seacoast-invitational-2012": {
+"Sumner Memorial High School": "me-hs-sumner"
 },
 "2012/XC/ms-smaa-noble-portland-ta-bonny-eagle-2012": {
 "Thornton Academy": "me-hs-thornton"
@@ -193667,6 +193758,7 @@
 "Orono": "me-hs-orono",
 "Sacopee Valley": "me-hs-sacopee",
 "Sumner": "me-hs-sumner",
+"Sumner Memorial High School": "me-hs-sumner",
 "Waterville": "me-hs-waterville",
 "Wells": "me-hs-wells",
 "Winslow": "me-hs-winslow",
@@ -196396,6 +196488,9 @@
 "GREE": "me-ms-greely",
 "MERR": "me-ms-maine-coast-waldorf"
 },
+"2013/XC/ms-hancock-county-championship-2013": {
+"Sumner Memorial High School": "me-hs-sumner"
+},
 "2013/XC/ms-kvac-gardiner-mci-erskine-2013": {
 "Lincoln Academy": "me-hs-lincoln-academy"
 },
@@ -196472,6 +196567,9 @@
 "Scarborough": "me-ms-scarborough",
 "Waynflete": "me-ms-waynflete",
 "Yarmouth": "me-ms-harrison"
+},
+"2013/XC/ms-seacoast-invitational-2013": {
+"Sumner Memorial High School": "me-hs-sumner"
 },
 "2013/XC/ms-smaa-cheverus-massabesic-thornton-gorham-2013": {
 "Thornton Academy": "me-hs-thornton"
@@ -197074,6 +197172,7 @@
 "Poland": "me-hs-poland",
 "Sacopee Valley": "me-hs-sacopee",
 "Sumner": "me-hs-sumner",
+"Sumner Memorial High School": "me-hs-sumner",
 "Waterville": "me-hs-waterville",
 "Wells": "me-hs-wells",
 "Winslow": "me-hs-winslow",
@@ -197109,6 +197208,9 @@
 "Winthrop": "me-hs-winthrop",
 "Yarmouth": "me-hs-yarmouth",
 "York": "me-hs-york"
+},
+"2014/Indoor/ne-usatf-indoor-2014": {
+"Sumner Memorial High School": "me-hs-sumner"
 },
 "2014/Indoor/pvcemitl_boys_champ_meet_2.8.14": {
 "Brewer": "me-hs-brewer",
@@ -197431,6 +197533,9 @@
 "North Haven Community School": "me-hs-north-haven",
 "Oceanside High School": "me-hs-oceanside"
 },
+"2014/Outdoor/ms-hancock-cty-meet-buc-ell-gsa-mdi-sum-2014": {
+"Sumner Memorial High School": "me-hs-sumner"
+},
 "2014/Outdoor/ms-kvac-brunswick-maranacook-lisbon-oxford-hills-2014": {
 "St. Dominic Academy": "me-hs-st-dominic"
 },
@@ -197496,6 +197601,7 @@
 "North Yarmouth Academy": "me-hs-nya",
 "Searsport District High School": "me-hs-searsport",
 "St. Dominic Academy": "me-hs-st-dominic",
+"Sumner Memorial High School": "me-hs-sumner",
 "Waynflete School": "me-hs-waynflete"
 },
 "2014/Outdoor/ms-mvc-boothbay-hall-dale-monmouth-wiscasset-2014": {
@@ -197536,7 +197642,8 @@
 "Mattanawcook Academy": "me-hs-mattanawcook"
 },
 "2014/Outdoor/ms-pvc-cal-ell-pen-sum-wa-nar-srpt-bucksport-2014": {
-"Searsport District High School": "me-hs-searsport"
+"Searsport District High School": "me-hs-searsport",
+"Sumner Memorial High School": "me-hs-sumner"
 },
 "2014/Outdoor/ms-pvc-car-ftk-ffd-lim-wsbn-presque-isle-2014": {
 "Limestone/MSSM": "coop-limestone-mssm"
@@ -197550,11 +197657,16 @@
 "2014/Outdoor/ms-pvc-cent-ftk-jb-oro-pi-ffd-lim-wsbn-caribou-2014": {
 "Limestone/MSSM": "coop-limestone-mssm"
 },
+"2014/Outdoor/ms-pvc-ell-gsa-sum-wa-nar-mdi-2014": {
+"Sumner Memorial High School": "me-hs-sumner"
+},
 "2014/Outdoor/ms-pvc-gsa-jb-sprt-sum-wa-mdi-2014": {
-"Searsport District High School": "me-hs-searsport"
+"Searsport District High School": "me-hs-searsport",
+"Sumner Memorial High School": "me-hs-sumner"
 },
 "2014/Outdoor/ms-pvc-hampden-sum-ff-penq-gsa-bc-pi-mdi-orono-brewer-2014": {
-"Bangor Christian School": "me-hs-bangor-christian"
+"Bangor Christian School": "me-hs-bangor-christian",
+"Sumner Memorial High School": "me-hs-sumner"
 },
 "2014/Outdoor/ms-scarborough-relays-2014": {
 "Thornton Academy": "me-hs-thornton"
@@ -197627,6 +197739,7 @@
 "Monmouth Academy": "me-hs-monmouth",
 "North Yarmouth Academy": "me-hs-nya",
 "Oceanside High School": "me-hs-oceanside",
+"Sumner Memorial High School": "me-hs-sumner",
 "Thornton Academy": "me-hs-thornton"
 },
 "2014/XC/KVAC-Class-A-girls-varsity": {
@@ -198090,7 +198203,8 @@
 },
 "2014/XC/ms-bucksport-invitational-2014": {
 "Mattanawcook Academy": "me-hs-mattanawcook",
-"Searsport District High School": "me-hs-searsport"
+"Searsport District High School": "me-hs-searsport",
+"Sumner Memorial High School": "me-hs-sumner"
 },
 "2014/XC/ms-camden-hills-invitational-2014": {
 "Lincoln Academy": "me-hs-lincoln-academy",
@@ -198116,7 +198230,8 @@
 },
 "2014/XC/ms-ellsworth-invitational-2014": {
 "Bangor Christian Schools": "me-hs-bangor-christian",
-"Mattanawcook Academy": "me-hs-mattanawcook"
+"Mattanawcook Academy": "me-hs-mattanawcook",
+"Sumner Memorial High School": "me-hs-sumner"
 },
 "2014/XC/ms-falmouth-ms-xc-meet-1-2014": {
 "Fal": "me-hs-falmouth"
@@ -198139,6 +198254,9 @@
 },
 "2014/XC/ms-hall-dale-ms-xc-meet-2014": {
 "Winthrop": "me-ms-winthrop"
+},
+"2014/XC/ms-hancock-county-championship-2014": {
+"Sumner Memorial High School": "me-hs-sumner"
 },
 "2014/XC/ms-kents-hill-academy-cross-country-meet-2014": {
 "Hebron Academy": "me-hs-hebron"
@@ -198277,7 +198395,8 @@
 "Bangor Christian Schools": "me-hs-bangor-christian"
 },
 "2014/XC/ms-pvc-buc-ell-sear-sum-wa-george-stevens-academy-2014": {
-"Searsport District High School": "me-hs-searsport"
+"Searsport District High School": "me-hs-searsport",
+"Sumner Memorial High School": "me-hs-sumner"
 },
 "2014/XC/ms-pvc-cal-mat-mdi-ot-brewer-orono-2014": {
 "Mattanawcook Academy": "me-hs-mattanawcook"
@@ -198287,7 +198406,8 @@
 },
 "2014/XC/ms-pvc-xc-championship-2014-jv": {
 "Bangor Christian Schools": "me-hs-bangor-christian",
-"Searsport District High School": "me-hs-searsport"
+"Searsport District High School": "me-hs-searsport",
+"Sumner Memorial High School": "me-hs-sumner"
 },
 "2014/XC/ms-scarborough-middle-school-invitational-2014": {
 "CAPE": "me-hs-cape-elizabeth",
@@ -198297,7 +198417,8 @@
 "Westbrook": "me-ms-westbrook"
 },
 "2014/XC/ms-seacoast-invitational-2014": {
-"Searsport District High School": "me-hs-searsport"
+"Searsport District High School": "me-hs-searsport",
+"Sumner Memorial High School": "me-hs-sumner"
 },
 "2014/XC/ms-sectional-xc-invitational-2014": {
 "Bangor Christian Schools": "me-hs-bangor-christian",
@@ -198694,6 +198815,9 @@
 "Hermon": "me-hs-hermon",
 "Mattanawcook": "me-hs-mattanawcook",
 "Old Town": "me-hs-old-town"
+},
+"2015/Indoor/ne-usatf-indoor-2015": {
+"Sumner Memorial High School": "me-hs-sumner"
 },
 "2015/Indoor/redone_boys_emitl_meet_4a_results.1.17.15": {
 "Brewer": "me-hs-brewer",
@@ -199227,7 +199351,8 @@
 },
 "2015/Outdoor/ms-pvc-cal-mat-sear-ells-sumner-bucksport-2015": {
 "Mattanawcook Academy": "me-hs-mattanawcook",
-"Searsport District High School": "me-hs-searsport"
+"Searsport District High School": "me-hs-searsport",
+"Sumner Memorial High School": "me-hs-sumner"
 },
 "2015/Outdoor/ms-pvc-calcendexherjboropchspensrptnar-2015": {
 "Searsport": "me-hs-searsport"
@@ -201565,6 +201690,7 @@
 "2016/Indoor/ne-usatf-indoor-2016": {
 "Monmouth Academy": "me-hs-monmouth",
 "Searsport District High School": "me-hs-searsport",
+"Sumner Memorial High School": "me-hs-sumner",
 "Unattached": "x-unattached"
 },
 "2016/Indoor/pvcemitl_boys_meet_1a_12.19.15": {
@@ -204837,7 +204963,8 @@
 "Thornton Academy": "me-hs-thornton"
 },
 "2016/XC/ms-buc-di-s-ell-gsa-mdi-sum-wa-seasport-2016": {
-"Searsport District High School": "me-hs-searsport"
+"Searsport District High School": "me-hs-searsport",
+"Sumner Memorial High School": "me-hs-sumner"
 },
 "2016/XC/ms-great-salt-bay-xc-meet-2-2016": {
 "Oceanside": "me-ms-oceanside",
@@ -210176,7 +210303,8 @@
 "Mattanawcook": "me-hs-mattanawcook",
 "Mattanawcook Academy": "me-hs-mattanawcook",
 "Searsport": "me-hs-searsport",
-"Sumner": "me-hs-sumner"
+"Sumner": "me-hs-sumner",
+"Sumner Memorial High School": "me-hs-sumner"
 },
 "2018/Outdoor/Bucksport-girls": {
 "Bangor Christian": "me-hs-bangor-christian",
@@ -210185,7 +210313,8 @@
 "Mattanawcook": "me-hs-mattanawcook",
 "Mattanawcook Academy": "me-hs-mattanawcook",
 "Searsport": "me-hs-searsport",
-"Sumner": "me-hs-sumner"
+"Sumner": "me-hs-sumner",
+"Sumner Memorial High School": "me-hs-sumner"
 },
 "2018/Outdoor/Busline-boys": {
 "Boothbay": "me-ms-boothbay",
@@ -210366,7 +210495,8 @@
 "2018/Outdoor/Ellsworth-girls": {
 "Central": "me-hs-central",
 "Ellsworth": "me-hs-ellsworth",
-"Searsport": "me-hs-searsport"
+"Searsport": "me-hs-searsport",
+"Sumner Memorial High School": "me-hs-sumner"
 },
 "2018/Outdoor/Ellsworth-girls-corrected": {
 "Caribou": "me-hs-caribou",
@@ -210478,7 +210608,8 @@
 },
 "2018/Outdoor/MDI-boys": {
 "Central": "me-hs-central",
-"MDI": "me-hs-mdi"
+"MDI": "me-hs-mdi",
+"Sumner Memorial High School": "me-hs-sumner"
 },
 "2018/Outdoor/MDI-boys-1": {
 "Fort Kent": "me-hs-fort-kent",
@@ -210490,7 +210621,8 @@
 },
 "2018/Outdoor/MDI-girls-1": {
 "Central": "me-hs-central",
-"MDI": "me-hs-mdi"
+"MDI": "me-hs-mdi",
+"Sumner Memorial High School": "me-hs-sumner"
 },
 "2018/Outdoor/MDI-girls-2": {
 "Fort Kent": "me-hs-fort-kent",
@@ -211530,7 +211662,8 @@
 "Orono": "me-hs-orono",
 "PCHS": "me-hs-piscataquis",
 "Presque Isle": "me-hs-presque-isle",
-"Searsport": "me-hs-searsport"
+"Searsport": "me-hs-searsport",
+"Sumner Memorial High School": "me-hs-sumner"
 },
 "2018/Outdoor/pvcjvgirls": {
 "Bangor Christian": "me-hs-bangor-christian",
@@ -213222,6 +213355,9 @@
 "North Haven School": "me-hs-north-haven",
 "Waterville": "me-hs-waterville"
 },
+"2018/XC/ms-dac-championship-2018": {
+"Sumner Memorial High School": "me-hs-sumner"
+},
 "2018/XC/ms-durham-community-school-xc-meet-2018": {
 "Freeport": "me-ms-freeport",
 "GNG": "me-ms-gray-ng",
@@ -214206,7 +214342,8 @@
 "Central": "me-hs-central",
 "Mattanawcook": "me-hs-mattanawcook",
 "Mattanawcook Academy": "me-hs-mattanawcook",
-"PCHS": "me-hs-piscataquis"
+"PCHS": "me-hs-piscataquis",
+"Sumner Memorial High School": "me-hs-sumner"
 },
 "2019/Indoor/emitl5c": {
 "BRW": "me-hs-brewer",
@@ -214231,7 +214368,8 @@
 "2019/Indoor/emitl7a": {
 "Central": "me-hs-central",
 "Ellsworth": "me-hs-ellsworth",
-"MDI": "me-hs-mdi"
+"MDI": "me-hs-mdi",
+"Sumner Memorial High School": "me-hs-sumner"
 },
 "2019/Indoor/emitl7b": {
 "BRW": "me-hs-brewer",
@@ -214254,7 +214392,8 @@
 "Mattanawcook": "me-hs-mattanawcook",
 "Old Town": "me-hs-old-town",
 "Orono": "me-hs-orono",
-"Sumner": "me-hs-sumner"
+"Sumner": "me-hs-sumner",
+"Sumner Memorial High School": "me-hs-sumner"
 },
 "2019/Indoor/emitlrelaysfieldevents": {
 "BRW": "me-hs-brewer",
@@ -214400,7 +214539,8 @@
 "Ellsworth": "me-hs-ellsworth",
 "Mattanawcook": "me-hs-mattanawcook",
 "Mattanawcook Academy": "me-hs-mattanawcook",
-"Sumner": "me-hs-sumner"
+"Sumner": "me-hs-sumner",
+"Sumner Memorial High School": "me-hs-sumner"
 },
 "2019/Outdoor/Bucksport-boys-1": {
 "Bucksport": "me-hs-bucksport",
@@ -214497,13 +214637,15 @@
 "Hermon": "me-hs-hermon",
 "Mount Desert": "me-hs-mdi",
 "PCHS": "me-hs-piscataquis",
-"Sumner": "me-hs-sumner"
+"Sumner": "me-hs-sumner",
+"Sumner Memorial High School": "me-hs-sumner"
 },
 "2019/Outdoor/Ellsworth-boys-1": {
 "Bangor Christian": "me-hs-bangor-christian",
 "Bangor Christian Schools": "me-hs-bangor-christian",
 "Ellsworth": "me-hs-ellsworth",
-"Sumner": "me-hs-sumner"
+"Sumner": "me-hs-sumner",
+"Sumner Memorial High School": "me-hs-sumner"
 },
 "2019/Outdoor/Ellsworth-girls": {
 "Bangor Christian": "me-hs-bangor-christian",
@@ -214513,12 +214655,14 @@
 "Hermon": "me-hs-hermon",
 "Mount Desert": "me-hs-mdi",
 "PCHS": "me-hs-piscataquis",
-"Sumner": "me-hs-sumner"
+"Sumner": "me-hs-sumner",
+"Sumner Memorial High School": "me-hs-sumner"
 },
 "2019/Outdoor/Ellsworth-girls-1": {
 "Bangor Christian": "me-hs-bangor-christian",
 "Ellsworth": "me-hs-ellsworth",
-"Sumner": "me-hs-sumner"
+"Sumner": "me-hs-sumner",
+"Sumner Memorial High School": "me-hs-sumner"
 },
 "2019/Outdoor/Frosh-boys": {
 "Bangor Christian": "me-hs-bangor-christian",
@@ -214576,13 +214720,15 @@
 "Bucksport": "me-hs-bucksport",
 "Ellsworth": "me-hs-ellsworth",
 "Mount Desert": "me-hs-mdi",
-"Sumner": "me-hs-sumner"
+"Sumner": "me-hs-sumner",
+"Sumner Memorial High School": "me-hs-sumner"
 },
 "2019/Outdoor/Hancock-Championship-Girls": {
 "Bucksport": "me-hs-bucksport",
 "Ellsworth": "me-hs-ellsworth",
 "Mount Desert": "me-hs-mdi",
-"Sumner": "me-hs-sumner"
+"Sumner": "me-hs-sumner",
+"Sumner Memorial High School": "me-hs-sumner"
 },
 "2019/Outdoor/KVAC-Class-B-Results": {
 "CONY": "me-hs-cony",
@@ -214630,7 +214776,8 @@
 "2019/Outdoor/MDI-boys": {
 "Central": "me-hs-central",
 "Mount Desert": "me-hs-mdi",
-"Old Town": "me-hs-old-town"
+"Old Town": "me-hs-old-town",
+"Sumner Memorial High School": "me-hs-sumner"
 },
 "2019/Outdoor/MDI-boys-1": {
 "Bucksport": "me-hs-bucksport",
@@ -214641,7 +214788,8 @@
 "2019/Outdoor/MDI-girls": {
 "Central": "me-hs-central",
 "Mount Desert": "me-hs-mdi",
-"Old Town": "me-hs-old-town"
+"Old Town": "me-hs-old-town",
+"Sumner Memorial High School": "me-hs-sumner"
 },
 "2019/Outdoor/MDI-girls-1": {
 "Bucksport": "me-hs-bucksport",
@@ -214895,7 +215043,8 @@
 "Orono": "me-hs-orono",
 "PCHS": "me-hs-piscataquis",
 "Searsport": "me-hs-searsport",
-"Sumner": "me-hs-sumner"
+"Sumner": "me-hs-sumner",
+"Sumner Memorial High School": "me-hs-sumner"
 },
 "2019/Outdoor/PVC-Small-School-girls": {
 "Bangor Christian": "me-hs-bangor-christian",
@@ -214906,7 +215055,8 @@
 "Mattanawcook Academy": "me-hs-mattanawcook",
 "Orono": "me-hs-orono",
 "PCHS": "me-hs-piscataquis",
-"Sumner": "me-hs-sumner"
+"Sumner": "me-hs-sumner",
+"Sumner Memorial High School": "me-hs-sumner"
 },
 "2019/Outdoor/Penmen-Relays-Mens-Results": {
 "Unattached": "x-unattached"
@@ -215539,6 +215689,7 @@
 "Searsport": "me-hs-searsport",
 "Spruce Mountain": "me-hs-spruce-mountain",
 "Sumner": "me-hs-sumner",
+"Sumner Memorial High School": "me-hs-sumner",
 "Telstar": "me-hs-telstar",
 "Wells": "me-hs-wells",
 "Winthrop": "me-hs-winthrop",
@@ -215687,6 +215838,7 @@
 "Seacoast": "me-hs-seacoast-christian",
 "Spruce Mountain": "me-hs-spruce-mountain",
 "Sumner": "me-hs-sumner",
+"Sumner Memorial High School": "me-hs-sumner",
 "Telstar": "me-hs-telstar",
 "Wells": "me-hs-wells",
 "Winthrop": "me-hs-winthrop",
@@ -215746,7 +215898,8 @@
 "PCHS": "me-hs-piscataquis",
 "Presque Isle": "me-hs-presque-isle",
 "Searsport": "me-hs-searsport",
-"Sumner": "me-hs-sumner"
+"Sumner": "me-hs-sumner",
+"Sumner Memorial High School": "me-hs-sumner"
 },
 "2019/Outdoor/pvcjvgirls": {
 "Bangor Christian": "me-hs-bangor-christian",
@@ -215763,7 +215916,8 @@
 "PCHS": "me-hs-piscataquis",
 "Presque Isle": "me-hs-presque-isle",
 "Searsport": "me-hs-searsport",
-"Sumner": "me-hs-sumner"
+"Sumner": "me-hs-sumner",
+"Sumner Memorial High School": "me-hs-sumner"
 },
 "2019/Outdoor/pvclargeboys-1": {
 "Brewer": "me-hs-brewer",
@@ -218271,7 +218425,8 @@
 "Bucksport": "me-hs-bucksport",
 "Ellsworth": "me-hs-ellsworth",
 "PCHS": "me-hs-piscataquis",
-"Sumner": "me-hs-sumner"
+"Sumner": "me-hs-sumner",
+"Sumner Memorial High School": "me-hs-sumner"
 },
 "2020/Indoor/emitl5c17jan2020": {
 "BRW": "me-hs-brewer",
@@ -218283,7 +218438,8 @@
 "HER": "me-hs-hermon",
 "Old Town": "me-hs-old-town",
 "Orono": "me-hs-orono",
-"PCHS": "me-hs-piscataquis"
+"PCHS": "me-hs-piscataquis",
+"Sumner Memorial High School": "me-hs-sumner"
 },
 "2020/Indoor/emitl6b25jan2020": {
 "BRW": "me-hs-brewer",
@@ -219388,7 +219544,8 @@
 "2021/Outdoor/Bucksport-5-14-21": {
 "Bucksport": "me-hs-bucksport",
 "Searsport": "me-hs-searsport",
-"Sumner": "me-hs-sumner"
+"Sumner": "me-hs-sumner",
+"Sumner Memorial High School": "me-hs-sumner"
 },
 "2021/Outdoor/Bucksport-5-7-21": {
 "Bucksport": "me-hs-bucksport",
@@ -219531,6 +219688,7 @@
 "Searsport": "me-hs-searsport",
 "Spruce Mountain": "me-hs-spruce-mountain",
 "Sumner": "me-hs-sumner",
+"Sumner Memorial High School": "me-hs-sumner",
 "Telstar": "me-hs-telstar",
 "Wells": "me-hs-wells",
 "Winslow": "me-hs-winslow",
@@ -219574,7 +219732,8 @@
 },
 "2021/Outdoor/Ellsworth-5-20-21": {
 "Ellsworth": "me-hs-ellsworth",
-"Sumner": "me-hs-sumner"
+"Sumner": "me-hs-sumner",
+"Sumner Memorial High School": "me-hs-sumner"
 },
 "2021/Outdoor/Erskine-5-1": {
 "Camden Hills": "me-hs-camden-hills"
@@ -219619,7 +219778,8 @@
 },
 "2021/Outdoor/MDI-with-pv": {
 "Mount Desert": "me-hs-mdi",
-"Sumner": "me-hs-sumner"
+"Sumner": "me-hs-sumner",
+"Sumner Memorial High School": "me-hs-sumner"
 },
 "2021/Outdoor/Medomak-5-19-21": {
 "Camden Hills": "me-hs-camden-hills",
@@ -220179,7 +220339,8 @@
 },
 "2021/Outdoor/ellsworth30april2021": {
 "Ellsworth": "me-hs-ellsworth",
-"Sumner": "me-hs-sumner"
+"Sumner": "me-hs-sumner",
+"Sumner Memorial High School": "me-hs-sumner"
 },
 "2021/Outdoor/ellsworth_ms_meet_results_5.12.21": {
 "Blue Hill": "me-ms-blue-hill",
@@ -220195,7 +220356,8 @@
 "Brewer": "me-hs-brewer",
 "Central": "me-hs-central",
 "Ellsworth": "me-hs-ellsworth",
-"Sumner": "me-hs-sumner"
+"Sumner": "me-hs-sumner",
+"Sumner Memorial High School": "me-hs-sumner"
 },
 "2021/Outdoor/ellsworthgirls6may2021": {
 "Brewer": "me-hs-brewer",
@@ -220305,7 +220467,8 @@
 "Mount Desert": "me-hs-mdi",
 "Old Town": "me-hs-old-town",
 "Orono": "me-hs-orono",
-"Sumner": "me-hs-sumner"
+"Sumner": "me-hs-sumner",
+"Sumner Memorial High School": "me-hs-sumner"
 },
 "2021/Outdoor/pvcjv2": {
 "Bangor Christian": "me-hs-bangor-christian",
@@ -220338,7 +220501,8 @@
 "Orono": "me-hs-orono",
 "PCHS": "me-hs-piscataquis",
 "Searsport": "me-hs-searsport",
-"Sumner": "me-hs-sumner"
+"Sumner": "me-hs-sumner",
+"Sumner Memorial High School": "me-hs-sumner"
 },
 "2021/Outdoor/pvcsmallschoolgirls2021": {
 "Bangor Christian": "me-hs-bangor-christian",
@@ -222167,7 +222331,8 @@
 "Mount Desert": "me-hs-mdi",
 "Old Town": "me-hs-old-town",
 "Orono": "me-hs-orono",
-"Sumner": "me-hs-sumner"
+"Sumner": "me-hs-sumner",
+"Sumner Memorial High School": "me-hs-sumner"
 },
 "2022/Indoor/Results-1AB": {
 "Bangor Christian": "me-hs-bangor-christian",
@@ -222188,7 +222353,8 @@
 "Hermon": "me-hs-hermon",
 "Mount Desert": "me-hs-mdi",
 "Orono": "me-hs-orono",
-"Sumner": "me-hs-sumner"
+"Sumner": "me-hs-sumner",
+"Sumner Memorial High School": "me-hs-sumner"
 },
 "2022/Indoor/Results-6C": {
 "Brewer": "me-hs-brewer",
@@ -222205,7 +222371,8 @@
 "Mount Desert": "me-hs-mdi",
 "Old Town": "me-hs-old-town",
 "Orono": "me-hs-orono",
-"Sumner": "me-hs-sumner"
+"Sumner": "me-hs-sumner",
+"Sumner Memorial High School": "me-hs-sumner"
 },
 "2022/Indoor/Results-meet-1": {
 "BIDD": "me-hs-biddeford",
@@ -222572,6 +222739,7 @@
 "Orono": "me-hs-orono",
 "Poland": "me-hs-poland",
 "Sumner": "me-hs-sumner",
+"Sumner Memorial High School": "me-hs-sumner",
 "Waterville": "me-hs-waterville",
 "Wells": "me-hs-wells",
 "Winslow": "me-hs-winslow",
@@ -222619,7 +222787,8 @@
 "Mount Desert": "me-hs-mdi",
 "Old Town": "me-hs-old-town",
 "Orono": "me-hs-orono",
-"Sumner": "me-hs-sumner"
+"Sumner": "me-hs-sumner",
+"Sumner Memorial High School": "me-hs-sumner"
 },
 "2022/Indoor/emitllarge2022": {
 "BRW": "me-hs-brewer",
@@ -222633,7 +222802,8 @@
 "Bucksport": "me-hs-bucksport",
 "Central": "me-hs-central",
 "Orono": "me-hs-orono",
-"Sumner": "me-hs-sumner"
+"Sumner": "me-hs-sumner",
+"Sumner Memorial High School": "me-hs-sumner"
 },
 "2022/Indoor/kvac-meet-3b": {
 "Lawrence": "me-hs-lawrence",
@@ -222727,11 +222897,13 @@
 "Mattanawcook": "me-ms-mattanawcook"
 },
 "2022/Outdoor/Bucksport-results": {
-"Sumner Memor": "me-hs-sumner"
+"Sumner Memor": "me-hs-sumner",
+"Sumner Memorial High School": "me-hs-sumner"
 },
 "2022/Outdoor/Bucksport-results-1": {
 "Deer Isle St": "me-hs-deer-isle",
-"Sumner Memor": "me-hs-sumner"
+"Sumner Memor": "me-hs-sumner",
+"Sumner Memorial High School": "me-hs-sumner"
 },
 "2022/Outdoor/Busline-results": {
 "Boothbay": "me-ms-boothbay",
@@ -222793,7 +222965,8 @@
 "Sacopee Vall": "me-hs-sacopee",
 "Seacoast Chr": "me-hs-seacoast-christian",
 "Spruce Mount": "me-hs-spruce-mountain",
-"Sumner Memor": "me-hs-sumner"
+"Sumner Memor": "me-hs-sumner",
+"Sumner Memorial High School": "me-hs-sumner"
 },
 "2022/Outdoor/Complete-Results-PVC-Regular-Season-Track-Meet-2-1": {
 "Mattanawcook": "me-hs-mattanawcook",
@@ -222816,7 +222989,8 @@
 "Bangor Chris": "me-hs-bangor-christian",
 "Deer Isle St": "me-hs-deer-isle",
 "Piscataquis": "me-hs-piscataquis",
-"Sumner Memor": "me-hs-sumner"
+"Sumner Memor": "me-hs-sumner",
+"Sumner Memorial High School": "me-hs-sumner"
 },
 "2022/Outdoor/GNG-51322": {
 "Gray New Glo": "me-hs-gray-ng",
@@ -222847,10 +223021,12 @@
 "Bangor Chris": "me-ms-bangor-christian"
 },
 "2022/Outdoor/MDI-Results": {
-"Sumner Memor": "me-hs-sumner"
+"Sumner Memor": "me-hs-sumner",
+"Sumner Memorial High School": "me-hs-sumner"
 },
 "2022/Outdoor/MDI-boys": {
-"Sumner Memor": "me-hs-sumner"
+"Sumner Memor": "me-hs-sumner",
+"Sumner Memorial High School": "me-hs-sumner"
 },
 "2022/Outdoor/MDI-girls": {
 "Deer Isle": "me-hs-deer-isle",
@@ -222923,7 +223099,8 @@
 "Mattanawcook": "me-hs-mattanawcook",
 "Mattanawcook Academy": "me-hs-mattanawcook",
 "Piscataquis": "me-hs-piscataquis",
-"Sumner Memor": "me-hs-sumner"
+"Sumner Memor": "me-hs-sumner",
+"Sumner Memorial High School": "me-hs-sumner"
 },
 "2022/Outdoor/Portland-5322-Results-1": {
 "Bonny Eagle": "me-hs-bonny-eagle"
@@ -223124,7 +223301,8 @@
 },
 "2022/Outdoor/ellsworth30april2022": {
 "Deer Isle St": "me-hs-deer-isle",
-"Sumner Memor": "me-hs-sumner"
+"Sumner Memor": "me-hs-sumner",
+"Sumner Memorial High School": "me-hs-sumner"
 },
 "2022/Outdoor/girls_morse_meet_5.11.22": {
 "Oxford Hills": "me-hs-oxford-hills"
@@ -223213,7 +223391,8 @@
 "Mattanawcook": "me-hs-mattanawcook",
 "Piscataquis": "me-hs-piscataquis",
 "Presque Isle": "me-hs-presque-isle",
-"Sumner Memor": "me-hs-sumner"
+"Sumner Memor": "me-hs-sumner",
+"Sumner Memorial High School": "me-hs-sumner"
 },
 "2022/Outdoor/pvclarge28may2022": {
 "Presque Isle": "me-hs-presque-isle"
@@ -224282,6 +224461,9 @@
 "2022/XC/ms-cony-xc-meet-2022": {
 "Cony High School": "me-hs-cony"
 },
+"2022/XC/ms-downeast-athletic-conference-championship-2022": {
+"Sumner Memorial High School": "me-hs-sumner"
+},
 "2022/XC/ms-freeport-ms-xc-meet-2022": {
 "Freeport": "me-ms-freeport"
 },
@@ -224318,7 +224500,8 @@
 "2022/XC/ms-red-riot-challenge-invitational-2022": {
 "Bangor Christian Schools": "me-hs-bangor-christian",
 "Deer Isle St": "me-hs-deer-isle",
-"Mattanawcook Academy": "me-hs-mattanawcook"
+"Mattanawcook Academy": "me-hs-mattanawcook",
+"Sumner Memorial High School": "me-hs-sumner"
 },
 "2022/XC/ms-shapleigh-middle-school-xc-meet-2022": {
 "Kennebunk": "me-ms-kennebunk"
@@ -224475,17 +224658,16 @@
 "Lake Region": "me-hs-lake-region"
 },
 "2023/Indoor/2023-New-England-Indoor-Track-Results": {
-"Central": "me-hs-central",
-"EWG": null,
+"EWG": "oos-auto-ri-exeter-w-gr",
 "Framingham-MA 'A'": "oos-ma-framingham-high-school",
 "Fryeburg": "me-hs-fryeburg",
 "Lincoln": "oos-auto-ri-lincoln",
 "Mt. Desert": "me-hs-mdi",
+"N Smithfield": "oos-auto-ri-north-smithfield",
 "Sacred Heart": "col-sacred-heart",
 "Saint John's": "oos-vt-st-johnsbury-academy",
 "Springfield": "oos-auto-vt-springfield",
 "Thornton Academy": "me-hs-thornton",
-"Unknown": "x-unknown",
 "Woodstock Ac": "oos-auto-ct-woodstock-ac"
 },
 "2023/Indoor/Class-B-Boys-results-1": {
@@ -224500,7 +224682,8 @@
 "Medomak Vall": "me-hs-medomak",
 "North Yarmou": "me-hs-nya",
 "Sacopee Vall": "me-hs-sacopee",
-"Sumner Memor": "me-hs-sumner"
+"Sumner Memor": "me-hs-sumner",
+"Sumner Memorial High School": "me-hs-sumner"
 },
 "2023/Indoor/Class-B-Girls-results-1": {
 "Bangor Chris": "me-hs-bangor-christian",
@@ -224513,7 +224696,8 @@
 "Lincoln Academy": "me-hs-lincoln-academy",
 "North Yarmouth Academy": "me-hs-nya",
 "Sacopee Vall": "me-hs-sacopee",
-"Sumner Memor": "me-hs-sumner"
+"Sumner Memor": "me-hs-sumner",
+"Sumner Memorial High School": "me-hs-sumner"
 },
 "2023/Indoor/EMITL-Meet-3A": {
 "Brewer": "me-hs-brewer",
@@ -224527,7 +224711,8 @@
 "Mt. Desert": "me-hs-mdi",
 "Old Town": "me-hs-old-town",
 "Orono": "me-hs-orono",
-"Sumner": "me-hs-sumner"
+"Sumner": "me-hs-sumner",
+"Sumner Memorial High School": "me-hs-sumner"
 },
 "2023/Indoor/EMITL-Meet-6A": {
 "Bangor Chris": "me-hs-bangor-christian"
@@ -224565,7 +224750,8 @@
 "Southern Mai": "col-usm"
 },
 "2023/Indoor/Meet-6B": {
-"Sumner Memor": "me-hs-sumner"
+"Sumner Memor": "me-hs-sumner",
+"Sumner Memorial High School": "me-hs-sumner"
 },
 "2023/Indoor/Results-2": {
 "South Portla": "me-hs-south-portland"
@@ -224604,13 +224790,13 @@
 "South Portla": "me-hs-south-portland"
 },
 "2023/Indoor/Results-wk-3-meet-2": {
-"BIDD": "me-hs-biddeford",
+"BIDD": "me-ms-biddeford",
 "FAL": "me-ms-falmouth",
 "Falmouth": "me-ms-falmouth",
 "GRE": "me-ms-greely",
 "SCAR": "me-ms-scarborough",
 "Scarborough": "me-ms-scarborough",
-"YAR": "me-hs-yarmouth"
+"YAR": "me-ms-harrison"
 },
 "2023/Indoor/Results-wk-4-meet-2": {
 "FAL": "me-ms-falmouth",
@@ -224620,12 +224806,12 @@
 "Yarmouth": "me-ms-harrison"
 },
 "2023/Indoor/Results-wk-4-meet-3": {
-"BIDD": "me-hs-biddeford",
-"CAPE": "me-hs-cape-elizabeth",
+"BIDD": "me-ms-biddeford",
+"CAPE": "me-ms-cape-elizabeth",
 "Cape Elizabeth": "me-ms-cape-elizabeth",
 "FREE": "me-ms-freeport",
 "SCAR": "me-ms-scarborough",
-"SMC": "col-usm",
+"SMC": "me-ms-southern-maine-catholic",
 "Scarborough": "me-ms-scarborough"
 },
 "2023/Indoor/ResultsKVACMeet5C": {
@@ -224650,7 +224836,7 @@
 "Thornton Academy": "me-hs-thornton"
 },
 "2023/Indoor/ResultsWK-3-MEET-1": {
-"SMC": "col-usm",
+"SMC": "me-ms-southern-maine-catholic",
 "THOR": "me-ms-thornton",
 "YAR": "me-ms-harrison",
 "Yarmouth": "me-ms-harrison"
@@ -224672,7 +224858,8 @@
 },
 "2023/Indoor/Resultsemitl2b11jan2023": {
 "Bangor Chris": "me-hs-bangor-christian",
-"Sumner Memor": "me-hs-sumner"
+"Sumner Memor": "me-hs-sumner",
+"Sumner Memorial High School": "me-hs-sumner"
 },
 "2023/Indoor/Resultsmeet-2": {
 "South Portla": "me-hs-south-portland"
@@ -224697,7 +224884,7 @@
 "2023/Indoor/Resultssmmsac-festival": {
 "BIDD": "me-ms-biddeford",
 "Biddeford": "me-ms-biddeford",
-"CAPE": "me-hs-cape-elizabeth",
+"CAPE": "me-ms-cape-elizabeth",
 "Cape Elizabeth": "me-ms-cape-elizabeth",
 "FAL": "me-ms-falmouth",
 "FREE": "me-ms-freeport",
@@ -224706,7 +224893,7 @@
 "NOBLE": "me-ms-noble",
 "Noble": "me-ms-noble",
 "SCAR": "me-ms-scarborough",
-"SMC": "col-usm",
+"SMC": "me-ms-southern-maine-catholic",
 "Scarborough": "me-ms-scarborough",
 "THOR": "me-ms-thornton",
 "YAR": "me-ms-harrison",
@@ -224772,13 +224959,15 @@
 "Bangor Chris": "me-hs-bangor-christian"
 },
 "2023/Indoor/emitl4b7jan2023": {
-"Sumner Memor": "me-hs-sumner"
+"Sumner Memor": "me-hs-sumner",
+"Sumner Memorial High School": "me-hs-sumner"
 },
 "2023/Indoor/emitl5b21jan2023": {
 "Bangor Chris": "me-hs-bangor-christian"
 },
 "2023/Indoor/emitl5c21jan2023": {
-"Sumner Memor": "me-hs-sumner"
+"Sumner Memor": "me-hs-sumner",
+"Sumner Memorial High School": "me-hs-sumner"
 },
 "2023/Indoor/emitl7ab": {
 "Bangor Chris": "me-hs-bangor-christian",
@@ -225002,7 +225191,8 @@
 "Sacopee Vall": "me-hs-sacopee",
 "Seacoast Chr": "me-hs-seacoast-christian",
 "Spruce Mount": "me-hs-spruce-mountain",
-"Sumner Memor": "me-hs-sumner"
+"Sumner Memor": "me-hs-sumner",
+"Sumner Memorial High School": "me-hs-sumner"
 },
 "2023/Outdoor/Class-c-girls-results": {
 "Bangor Chris": "me-hs-bangor-christian",
@@ -225025,22 +225215,27 @@
 "Sacopee Vall": "me-hs-sacopee",
 "Seacoast Chr": "me-hs-seacoast-christian",
 "Spruce Mount": "me-hs-spruce-mountain",
-"Sumner Memor": "me-hs-sumner"
+"Sumner Memor": "me-hs-sumner",
+"Sumner Memorial High School": "me-hs-sumner"
 },
 "2023/Outdoor/EAResults": {
 "Medomak Vall": "me-hs-medomak"
 },
 "2023/Outdoor/Ellsworth-Girls-results": {
-"Sumner Memor": "me-hs-sumner"
+"Sumner Memor": "me-hs-sumner",
+"Sumner Memorial High School": "me-hs-sumner"
 },
 "2023/Outdoor/Ellsworth-HS-boys-results": {
-"Sumner Memor": "me-hs-sumner"
+"Sumner Memor": "me-hs-sumner",
+"Sumner Memorial High School": "me-hs-sumner"
 },
 "2023/Outdoor/Ellsworth-HS-girls-results": {
-"Sumner Memor": "me-hs-sumner"
+"Sumner Memor": "me-hs-sumner",
+"Sumner Memorial High School": "me-hs-sumner"
 },
 "2023/Outdoor/Ellsworth-boys-results": {
-"Sumner Memor": "me-hs-sumner"
+"Sumner Memor": "me-hs-sumner",
+"Sumner Memorial High School": "me-hs-sumner"
 },
 "2023/Outdoor/Falmouth-boys-results": {
 "Bonny Eagle": "me-hs-bonny-eagle"
@@ -225094,10 +225289,12 @@
 "Bangor Chris": "me-ms-bangor-christian"
 },
 "2023/Outdoor/MDI-boys": {
-"Sumner Memor": "me-hs-sumner"
+"Sumner Memor": "me-hs-sumner",
+"Sumner Memorial High School": "me-hs-sumner"
 },
 "2023/Outdoor/MDI-girls": {
-"Sumner Memor": "me-hs-sumner"
+"Sumner Memor": "me-hs-sumner",
+"Sumner Memorial High School": "me-hs-sumner"
 },
 "2023/Outdoor/Medomak-boys": {
 "Camden Hills": "me-hs-camden-hills",
@@ -225214,7 +225411,8 @@
 "Mattanawcook": "me-hs-mattanawcook",
 "Piscataquis": "me-hs-piscataquis",
 "Presque Isle": "me-hs-presque-isle",
-"Sumner Memor": "me-hs-sumner"
+"Sumner Memor": "me-hs-sumner",
+"Sumner Memorial High School": "me-hs-sumner"
 },
 "2023/Outdoor/PVC-JV-boys": {
 "Bangor Chris": "me-hs-bangor-christian",
@@ -225503,7 +225701,8 @@
 },
 "2023/Outdoor/bucksporta13pril2023": {
 "Penobscot Ch": "me-hs-penobscot-christian",
-"Sumner Memor": "me-hs-sumner"
+"Sumner Memor": "me-hs-sumner",
+"Sumner Memorial High School": "me-hs-sumner"
 },
 "2023/Outdoor/classaboys3june2023": {
 "Bonny Eagle": "me-hs-bonny-eagle",
@@ -225526,7 +225725,8 @@
 "South Portla": "me-hs-south-portland"
 },
 "2023/Outdoor/hampden12may2023": {
-"Sumner Memor": "me-hs-sumner"
+"Sumner Memor": "me-hs-sumner",
+"Sumner Memorial High School": "me-hs-sumner"
 },
 "2023/Outdoor/hampden5may2023-1": {
 "Bangor Chris": "me-hs-bangor-christian",
@@ -225648,7 +225848,8 @@
 "Bangor Chris": "me-hs-bangor-christian",
 "Mattanawcook": "me-hs-mattanawcook",
 "Piscataquis": "me-hs-piscataquis",
-"Sumner Memor": "me-hs-sumner"
+"Sumner Memor": "me-hs-sumner",
+"Sumner Memorial High School": "me-hs-sumner"
 },
 "2023/Outdoor/pvcsmallgirls2023": {
 "Bangor Chris": "me-hs-bangor-christian",
@@ -225656,7 +225857,8 @@
 "Mattanawcook": "me-hs-mattanawcook",
 "Mattanawcook Academy": "me-hs-mattanawcook",
 "Piscataquis": "me-hs-piscataquis",
-"Sumner Memor": "me-hs-sumner"
+"Sumner Memor": "me-hs-sumner",
+"Sumner Memorial High School": "me-hs-sumner"
 },
 "2023/Outdoor/results_2023_04_15": {
 "Seacoast Chr": "me-hs-seacoast-christian"
@@ -226515,6 +226717,9 @@
 "Medomak Vall": "me-hs-medomak",
 "Messalonskee": "me-hs-messalonskee"
 },
+"2023/XC/ms-calais-invitational-2023": {
+"Sumner Memorial High School": "me-hs-sumner"
+},
 "2023/XC/ms-ccc-opener-at-lake-region-2023": {
 "Gray New Gloucester": "me-ms-gray-ng",
 "Lake Region": "me-ms-lake-region",
@@ -226522,6 +226727,9 @@
 },
 "2023/XC/ms-dan-dors-invitational-2023": {
 "St. Dominic Academy": "me-hs-st-dominic"
+},
+"2023/XC/ms-downeast-athletic-conference-championship-2023": {
+"Sumner Memorial High School": "me-hs-sumner"
 },
 "2023/XC/ms-falmouth-ms-xc-2023": {
 "Falmouth": "me-ms-falmouth",
@@ -226559,6 +226767,9 @@
 "2023/XC/ms-narraguagus-high-school-meet-2023": {
 "NHS": "me-hs-narraguagus",
 "WA": "me-hs-washington-academy"
+},
+"2023/XC/ms-seacoast-invitational-2023": {
+"Sumner Memorial High School": "me-hs-sumner"
 },
 "2023/XC/ms-smaa-2nd-seven-2023": {
 "Thornton Academy": "me-hs-thornton"
@@ -226844,7 +227055,8 @@
 "Lincoln Academy": "me-hs-lincoln-academy",
 "Medomak Vall": "me-hs-medomak",
 "North Yarmouth Academy": "me-hs-nya",
-"Sumner Memor": "me-hs-sumner"
+"Sumner Memor": "me-hs-sumner",
+"Sumner Memorial High School": "me-hs-sumner"
 },
 "2024/Indoor/Class-B-girls-results": {
 "Bangor Chris": "me-hs-bangor-christian",
@@ -226860,7 +227072,8 @@
 "North Yarmouth Academy": "me-hs-nya",
 "Oceanside High School": "me-hs-oceanside",
 "Piscataquis": "me-hs-piscataquis",
-"Sumner Memor": "me-hs-sumner"
+"Sumner Memor": "me-hs-sumner",
+"Sumner Memorial High School": "me-hs-sumner"
 },
 "2024/Indoor/KVAC-Meet-1A.txt": {
 "Lincoln Academy": "me-hs-lincoln-academy",
@@ -226998,7 +227211,7 @@
 "Gray New Glo": "me-hs-gray-ng",
 "Lake Region": "me-hs-lake-region",
 "North Yarmou": "coop-nya-maine-coast-waldorf",
-"North Yarmouth Academy": "me-hs-nya"
+"North Yarmouth Academy": "coop-nya-maine-coast-waldorf"
 },
 "2024/Indoor/ResultsWMC1": {
 "Cape Elizabe": "me-hs-cape-elizabeth",
@@ -227009,7 +227222,7 @@
 "Buckfield": "me-hs-buckfield",
 "Islesboro Ce": "me-hs-islesboro",
 "North Yarmou": "coop-nya-maine-coast-waldorf",
-"North Yarmouth Academy": "me-hs-nya"
+"North Yarmouth Academy": "coop-nya-maine-coast-waldorf"
 },
 "2024/Indoor/ResultsWMC2-1": {
 "Cape Elizabe": "me-hs-cape-elizabeth",
@@ -227025,7 +227238,7 @@
 "Lake Region": "me-hs-lake-region",
 "Mountain Valley": "me-hs-mountain-valley",
 "North Yarmou": "coop-nya-maine-coast-waldorf",
-"North Yarmouth Academy": "me-hs-nya"
+"North Yarmouth Academy": "coop-nya-maine-coast-waldorf"
 },
 "2024/Indoor/Resultsmeet-2": {
 "Thornton Academy": "me-hs-thornton"
@@ -227069,45 +227282,52 @@
 "2024/Indoor/emitl1b2024": {
 "Bangor Chris": "me-hs-bangor-christian",
 "Piscataquis": "me-hs-piscataquis",
-"Sumner Memor": "me-hs-sumner"
+"Sumner Memor": "me-hs-sumner",
+"Sumner Memorial High School": "me-hs-sumner"
 },
 "2024/Indoor/emitl2a2024": {
 "Bangor Chris": "me-hs-bangor-christian",
 "Piscataquis": "me-hs-piscataquis"
 },
 "2024/Indoor/emitl2b2024": {
-"Sumner Memor": "coop-it-sumner-narraguagus"
+"Sumner Memor": "coop-it-sumner-narraguagus",
+"Sumner Memorial High School": "me-hs-sumner"
 },
 "2024/Indoor/emitl3a_29dec2023": {
 "Piscataquis": "me-hs-piscataquis"
 },
 "2024/Indoor/emitl3b_29dec2023": {
 "Bangor Christian": "me-hs-bangor-christian",
-"Sumner Memor": "coop-it-sumner-narraguagus"
+"Sumner Memor": "coop-it-sumner-narraguagus",
+"Sumner Memorial High School": "me-hs-sumner"
 },
 "2024/Indoor/emitl4b15jan2024": {
 "Bangor Chris": "me-hs-bangor-christian",
 "Piscataquis": "me-hs-piscataquis",
-"Sumner Memor": "me-hs-sumner"
+"Sumner Memor": "me-hs-sumner",
+"Sumner Memorial High School": "me-hs-sumner"
 },
 "2024/Indoor/emitl5a27jan2024": {
 "Bangor Chris": "me-hs-bangor-christian",
 "Piscataquis": "me-hs-piscataquis"
 },
 "2024/Indoor/emitl5b27jan2024": {
-"Sumner Memor": "coop-it-sumner-narraguagus"
+"Sumner Memor": "coop-it-sumner-narraguagus",
+"Sumner Memorial High School": "coop-it-sumner-narraguagus"
 },
 "2024/Indoor/emitl6a2feb2024": {
 "Bangor Chris": "me-hs-bangor-christian",
 "Piscataquis": "me-hs-piscataquis"
 },
 "2024/Indoor/emitl6b3feb2024": {
-"Sumner Memor": "coop-it-sumner-narraguagus"
+"Sumner Memor": "coop-it-sumner-narraguagus",
+"Sumner Memorial High School": "me-hs-sumner"
 },
 "2024/Indoor/emitlchamps8feb2024": {
 "Bangor Chris": "me-hs-bangor-christian",
 "Piscataquis": "me-hs-piscataquis",
-"Sumner Memor": "coop-it-sumner-narraguagus"
+"Sumner Memor": "coop-it-sumner-narraguagus",
+"Sumner Memorial High School": "me-hs-sumner"
 },
 "2024/Indoor/usmrelays2023": {
 "Bonny Eagle": "me-hs-bonny-eagle",
@@ -227115,12 +227335,11 @@
 "Gray New Glo": "me-hs-gray-ng",
 "Islesboro Ce": "me-hs-islesboro",
 "Lake Region": "me-hs-lake-region",
-"Portsmouth": null,
+"Portsmouth": "oos-auto-nh-portsmouth",
 "Scarborough": "me-hs-scarborough",
 "Skowhegan Ar": "me-hs-skowhegan",
 "South Portla": "me-hs-south-portland",
-"Unattached": "x-unattached",
-"Unknown": "x-unknown"
+"Unattached": "x-unattached"
 },
 "2024/Outdoor/2024-Lincoln-County-Scrimmage-Meet": {
 "Lincoln Academy": "me-hs-lincoln-academy"
@@ -227156,7 +227375,8 @@
 "Bangor Chris": "me-hs-bangor-christian",
 "Bangor Christian": "me-hs-bangor-christian",
 "Searsport": "me-hs-searsport",
-"Sumner Memor": "me-hs-sumner"
+"Sumner Memor": "me-hs-sumner",
+"Sumner Memorial High School": "me-hs-sumner"
 },
 "2024/Outdoor/Boys-Results-Lincoln-2024": {
 "": null,
@@ -227194,7 +227414,8 @@
 "Sacopee Vall": "me-hs-sacopee",
 "Seacoast Chr": "me-hs-seacoast-christian",
 "Spruce Mount": "me-hs-spruce-mountain",
-"Sumner Memor": "me-hs-sumner"
+"Sumner Memor": "me-hs-sumner",
+"Sumner Memorial High School": "me-hs-sumner"
 },
 "2024/Outdoor/Class-c-girls-results": {
 "Bangor Chris": "me-hs-bangor-christian",
@@ -227214,7 +227435,8 @@
 "Sacopee Vall": "me-hs-sacopee",
 "Seacoast Chr": "me-hs-seacoast-christian",
 "Spruce Mount": "me-hs-spruce-mountain",
-"Sumner Memor": "me-hs-sumner"
+"Sumner Memor": "me-hs-sumner",
+"Sumner Memorial High School": "me-hs-sumner"
 },
 "2024/Outdoor/Deering-HS-5124": {
 "Bonny Eagle": "me-hs-bonny-eagle"
@@ -227253,17 +227475,20 @@
 "Mattanawcook": "me-hs-mattanawcook",
 "Piscataquis": "me-hs-piscataquis",
 "Presque Isle": "me-hs-presque-isle",
-"Sumner Memor": "me-hs-sumner"
+"Sumner Memor": "me-hs-sumner",
+"Sumner Memorial High School": "me-hs-sumner"
 },
 "2024/Outdoor/Leonard-MS": {
 "Mattanawcook": "me-ms-mattanawcook",
 "Penobscot Ch": "me-ms-penobscot-christian"
 },
 "2024/Outdoor/MDI-Boys-1": {
-"Sumner Memor": "me-hs-sumner"
+"Sumner Memor": "me-hs-sumner",
+"Sumner Memorial High School": "me-hs-sumner"
 },
 "2024/Outdoor/MDI-girls": {
-"Sumner Memor": "me-hs-sumner"
+"Sumner Memor": "me-hs-sumner",
+"Sumner Memorial High School": "me-hs-sumner"
 },
 "2024/Outdoor/Medomak-1": {
 "Camden Hills": "me-hs-camden-hills",
@@ -227292,7 +227517,8 @@
 },
 "2024/Outdoor/Orono": {
 "Penobscot Ch": "me-hs-penobscot-christian",
-"Sumner Memor": "me-hs-sumner"
+"Sumner Memor": "me-hs-sumner",
+"Sumner Memorial High School": "me-hs-sumner"
 },
 "2024/Outdoor/Orono-1": {
 "Mattanawcook": "me-hs-mattanawcook",
@@ -227558,11 +227784,13 @@
 },
 "2024/Outdoor/bucksportboys10may2024": {
 "Penobscot Ch": "me-hs-penobscot-christian",
-"Sumner Memor": "me-hs-sumner"
+"Sumner Memor": "me-hs-sumner",
+"Sumner Memorial High School": "me-hs-sumner"
 },
 "2024/Outdoor/bucksportgirls10may2024": {
 "Penobscot Ch": "me-hs-penobscot-christian",
-"Sumner Memor": "me-hs-sumner"
+"Sumner Memor": "me-hs-sumner",
+"Sumner Memorial High School": "me-hs-sumner"
 },
 "2024/Outdoor/bucksportms7may2024": {
 "Penobscot Ch": "me-ms-penobscot-christian"
@@ -227631,11 +227859,13 @@
 },
 "2024/Outdoor/mdi17may2024": {
 "Islesboro Ce": "me-hs-islesboro",
-"Sumner Memor": "me-hs-sumner"
+"Sumner Memor": "me-hs-sumner",
+"Sumner Memorial High School": "me-hs-sumner"
 },
 "2024/Outdoor/mdigirls17may2024": {
 "Islesboro Ce": "me-hs-islesboro",
-"Sumner Memor": "me-hs-sumner"
+"Sumner Memor": "me-hs-sumner",
+"Sumner Memorial High School": "me-hs-sumner"
 },
 "2024/Outdoor/mdims30april2024-1": {
 "Bangor Chris": "me-ms-bangor-christian"
@@ -227679,6 +227909,7 @@
 "Cony High School": "me-hs-cony",
 "Lincoln Academy": "me-hs-lincoln-academy",
 "North Yarmouth Academy": "me-hs-nya",
+"Sumner Memorial High School": "me-hs-sumner",
 "Thornton Academy": "me-hs-thornton"
 },
 "2024/Outdoor/nokomis1may2024": {
@@ -227711,7 +227942,8 @@
 "Mattanawcook": "me-hs-mattanawcook",
 "Piscataquis": "me-hs-piscataquis",
 "Presque Isle": "me-hs-presque-isle",
-"Sumner Memor": "me-hs-sumner"
+"Sumner Memor": "me-hs-sumner",
+"Sumner Memorial High School": "me-hs-sumner"
 },
 "2024/Outdoor/pvcfroshgirls28may2024": {
 "Bangor Chris": "me-hs-bangor-christian",
@@ -227733,7 +227965,8 @@
 "Mattanawcook": "me-hs-mattanawcook",
 "Mattanawcook Academy": "me-hs-mattanawcook",
 "Searsport": "me-hs-searsport",
-"Sumner Memor": "me-hs-sumner"
+"Sumner Memor": "me-hs-sumner",
+"Sumner Memorial High School": "me-hs-sumner"
 },
 "2024/Outdoor/pvcsmgirl28may2024": {
 "Bangor Chris": "me-hs-bangor-christian",
@@ -227743,7 +227976,8 @@
 "Mattanawcook Academy": "me-hs-mattanawcook",
 "Piscataquis": "me-hs-piscataquis",
 "Searsport": "me-hs-searsport",
-"Sumner Memor": "me-hs-sumner"
+"Sumner Memor": "me-hs-sumner",
+"Sumner Memorial High School": "me-hs-sumner"
 },
 "2024/Outdoor/scar-5824-results": {
 "Scarborough": "me-hs-scarborough"
@@ -228666,6 +228900,9 @@
 "2024/XC/ms-dan-dors-xc-invitational-2024": {
 "Waynflete School": "me-hs-waynflete"
 },
+"2024/XC/ms-downeast-athletic-conference-championship-2024": {
+"Sumner Memorial High School": "me-hs-sumner"
+},
 "2024/XC/ms-freeport-falcon-4k-xc-challenge-2024": {
 "FREE": "me-hs-freeport",
 "SDA": "me-hs-st-dominic",
@@ -228702,7 +228939,8 @@
 "Seacoast Christian": "me-ms-seacoast-christian"
 },
 "2024/XC/ms-seacoast-invitational-2024": {
-"Searsport District High School": "me-hs-searsport"
+"Searsport District High School": "me-hs-searsport",
+"Sumner Memorial High School": "me-hs-sumner"
 },
 "2024/XC/ms-smaa-relays-2024": {
 "Thornton Academy": "me-hs-thornton"
@@ -228911,7 +229149,8 @@
 "North Yarmou": "me-hs-nya",
 "North Yarmouth Academy": "me-hs-nya",
 "Presque Isle": "me-hs-presque-isle",
-"Sumner Memor": "me-hs-narraguagus"
+"Sumner Memor": "me-hs-narraguagus",
+"Sumner Memorial High School": "me-hs-sumner"
 },
 "2025/Indoor/Class-B-girls-results": {
 "Bangor Chris": "me-hs-bangor-christian",
@@ -228936,7 +229175,8 @@
 "2025/Indoor/EMITL-Small-school-boys": {
 "Bangor Chris": "me-hs-bangor-christian",
 "Piscataquis": "me-hs-piscataquis",
-"Sumner Memor": "coop-it-sumner-narraguagus"
+"Sumner Memor": "coop-it-sumner-narraguagus",
+"Sumner Memorial High School": "me-hs-sumner"
 },
 "2025/Indoor/EMITL-Small-school-girls": {
 "Bangor Chris": "me-hs-bangor-christian",
@@ -229143,7 +229383,8 @@
 "2025/Indoor/emitl3bboys28dec2024": {
 "Piscataquis": "me-hs-piscataquis",
 "Presque Isle": "me-hs-presque-isle",
-"Sumner Memor": "me-hs-sumner"
+"Sumner Memor": "me-hs-sumner",
+"Sumner Memorial High School": "me-hs-sumner"
 },
 "2025/Indoor/emitl3bgirls28dec2024": {
 "Piscataquis": "me-hs-piscataquis",
@@ -229153,7 +229394,8 @@
 "2025/Indoor/emitl4b11jan2024boys": {
 "Piscataquis": "me-hs-piscataquis",
 "Presque Isle": "me-hs-presque-isle",
-"Sumner Memor": "coop-it-sumner-narraguagus"
+"Sumner Memor": "coop-it-sumner-narraguagus",
+"Sumner Memorial High School": "me-hs-sumner"
 },
 "2025/Indoor/emitl4b11jan2024girls": {
 "Piscataquis": "me-hs-piscataquis",
@@ -229167,10 +229409,12 @@
 },
 "2025/Indoor/emitl5b25jan2025": {
 "Presque Isle": "me-hs-presque-isle",
-"Sumner Memor": "coop-it-sumner-narraguagus"
+"Sumner Memor": "coop-it-sumner-narraguagus",
+"Sumner Memorial High School": "me-hs-sumner"
 },
 "2025/Indoor/emitl6a1feb2025": {
-"Sumner Memor": "coop-it-sumner-narraguagus"
+"Sumner Memor": "coop-it-sumner-narraguagus",
+"Sumner Memorial High School": "me-hs-sumner"
 },
 "2025/Indoor/emitl6b1feb2025": {
 "Bangor Chris": "me-hs-bangor-christian",
@@ -229358,7 +229602,8 @@
 "Mattanawcook": "me-hs-mattanawcook",
 "Piscataquis": "me-hs-piscataquis",
 "Presque Isle": "me-hs-presque-isle",
-"Sumner Memor": "me-hs-sumner"
+"Sumner Memor": "me-hs-sumner",
+"Sumner Memorial High School": "me-hs-sumner"
 },
 "2025/Outdoor/JV-girls-results": {
 "Bangor Chris": "me-hs-bangor-christian",
@@ -229503,7 +229748,8 @@
 },
 "2025/Outdoor/bangorgirls9may2025": {
 "Mattanawcook": "me-hs-mattanawcook",
-"Sumner Memor": "me-hs-sumner"
+"Sumner Memor": "me-hs-sumner",
+"Sumner Memorial High School": "me-hs-sumner"
 },
 "2025/Outdoor/bathms29may2025": {
 "Gray New Glo": "me-ms-gray-ng",
@@ -229512,7 +229758,8 @@
 "2025/Outdoor/bngorboys9may2025": {
 "Mattanawcook": "me-hs-mattanawcook",
 "Mattanawcook Academy": "me-hs-mattanawcook",
-"Sumner Memor": "me-hs-sumner"
+"Sumner Memor": "me-hs-sumner",
+"Sumner Memorial High School": "me-hs-sumner"
 },
 "2025/Outdoor/brewerboys12may2025-1": {
 "Searsport District High School": "me-hs-searsport"
@@ -229530,7 +229777,8 @@
 "Bangor Chris": "me-hs-bangor-christian",
 "Bangor Christian": "me-hs-bangor-christian",
 "Searsport District High School": "me-hs-searsport",
-"Sumner Memor": "me-hs-sumner"
+"Sumner Memor": "me-hs-sumner",
+"Sumner Memorial High School": "me-hs-sumner"
 },
 "2025/Outdoor/bucksport19may2025": {
 "Bangor Chris": "me-ms-bangor-christian",
@@ -229542,19 +229790,22 @@
 },
 "2025/Outdoor/bucksportboys22may2025-1": {
 "Islesboro Ce": "me-hs-islesboro",
-"Sumner Memor": "me-hs-sumner"
+"Sumner Memor": "me-hs-sumner",
+"Sumner Memorial High School": "me-hs-sumner"
 },
 "2025/Outdoor/bucksportgirls17may2025": {
 "Bangor Chris": "me-hs-bangor-christian",
 "Bangor Christian": "me-hs-bangor-christian",
-"Sumner Memor": "me-hs-sumner"
+"Sumner Memor": "me-hs-sumner",
+"Sumner Memorial High School": "me-hs-sumner"
 },
 "2025/Outdoor/bucksportgirls1may2025": {
 "Islesboro Ce": "me-hs-islesboro",
 "Presque Isle": "me-hs-presque-isle"
 },
 "2025/Outdoor/bucksportgirls22may2025": {
-"Sumner Memor": "me-hs-sumner"
+"Sumner Memor": "me-hs-sumner",
+"Sumner Memorial High School": "me-hs-sumner"
 },
 "2025/Outdoor/camdenmiddle14may2025": {
 "Islesboro Ce": "me-ms-islesboro",
@@ -229582,7 +229833,8 @@
 "Seacoast Chr": "me-hs-seacoast-christian",
 "Seacoast Christian": "me-hs-seacoast-christian",
 "Spruce Mount": "me-hs-spruce-mountain",
-"Sumner Memor": "me-hs-sumner"
+"Sumner Memor": "me-hs-sumner",
+"Sumner Memorial High School": "me-hs-sumner"
 },
 "2025/Outdoor/classcstategirla10june2025": {
 "Bangor Chris": "me-hs-bangor-christian",
@@ -229621,11 +229873,13 @@
 },
 "2025/Outdoor/hermonboys15may2025": {
 "Piscataquis": "me-hs-piscataquis",
-"Sumner Memor": "me-hs-sumner"
+"Sumner Memor": "me-hs-sumner",
+"Sumner Memorial High School": "me-hs-sumner"
 },
 "2025/Outdoor/hermongirls15may2025": {
 "Piscataquis": "me-hs-piscataquis",
-"Sumner Memor": "me-hs-sumner"
+"Sumner Memor": "me-hs-sumner",
+"Sumner Memorial High School": "me-hs-sumner"
 },
 "2025/Outdoor/mdiboys16may2025": {
 "Bangor Chris": "me-hs-bangor-christian",
@@ -229798,7 +230052,8 @@
 "Mattanawcook": "me-hs-mattanawcook",
 "Mattanawcook Academy": "me-hs-mattanawcook",
 "Piscataquis": "me-hs-piscataquis",
-"Sumner Memor": "me-hs-sumner"
+"Sumner Memor": "me-hs-sumner",
+"Sumner Memorial High School": "me-hs-sumner"
 },
 "2025/Outdoor/pvcsmallgirls3june202": {
 "Bangor Chris": "me-hs-bangor-christian",
@@ -229806,7 +230061,8 @@
 "Houlton/Hodg": "coop-houlton-hodgdon",
 "Mattanawcook": "me-hs-mattanawcook",
 "Piscataquis": "me-hs-piscataquis",
-"Sumner Memor": "me-hs-sumner"
+"Sumner Memor": "me-hs-sumner",
+"Sumner Memorial High School": "me-hs-sumner"
 },
 "2025/XC/10-1-25-Dirigo-Middle-Boys": {
 "Dirigo": "me-ms-dirigo",
@@ -230691,7 +230947,8 @@
 "Thornton Academy": "me-hs-thornton"
 },
 "2025/XC/ms-downeast-athletic-conference-championship-2025": {
-"NHS": "me-hs-narraguagus"
+"NHS": "me-hs-narraguagus",
+"Sumner Memorial High School": "me-hs-sumner"
 },
 "2025/XC/ms-east-west-conference-xc-championship-meet-2025": {
 "North Haven Community School": "me-hs-north-haven"
@@ -230738,7 +230995,8 @@
 "Thornton Academy": "me-hs-thornton"
 },
 "2025/XC/ms-seacoast-invitational-2025": {
-"Searsport District High School": "me-hs-searsport"
+"Searsport District High School": "me-hs-searsport",
+"Sumner Memorial High School": "me-hs-sumner"
 },
 "2025/XC/ms-second-seven-sanford-2025": {
 "Thornton Academy": "me-hs-thornton"
@@ -231500,7 +231758,8 @@
 },
 "2026/Outdoor/Bucksport-results": {
 "Deer Isle St": "me-hs-deer-isle",
-"Sumner Memor": "me-hs-sumner"
+"Sumner Memor": "me-hs-sumner",
+"Sumner Memorial High School": "me-hs-sumner"
 },
 "2026/Outdoor/Busline-results": {
 "Islesboro Ce": "me-ms-islesboro",
@@ -231747,7 +232006,8 @@
 "Deer Isle St": "me-hs-deer-isle",
 "Mattanawcook": "me-hs-mattanawcook",
 "Mattanawcook Academy": "me-hs-mattanawcook",
-"Sumner Memor": "me-hs-sumner"
+"Sumner Memor": "me-hs-sumner",
+"Sumner Memorial High School": "me-hs-sumner"
 },
 "2026/Outdoor/Old-Town-results": {
 "Maine School": "col-umaine",
@@ -231826,7 +232086,8 @@
 "Fort Kent": "me-hs-fort-kent",
 "Mattanawcook": "me-hs-mattanawcook",
 "Piscataquis": "me-hs-piscataquis",
-"Sumner Memor": "me-hs-sumner"
+"Sumner Memor": "me-hs-sumner",
+"Sumner Memorial High School": "me-hs-sumner"
 },
 "2026/Outdoor/WMC-girls-results": {
 "Cape Elizabe": "me-hs-cape-elizabeth",
@@ -232267,11 +232528,15 @@
 "North Haven Community School": "me-hs-north-haven"
 },
 "2026/XC/ms-bucksport-invitational-2026": {
-"Bangor Christian Schools": "me-hs-bangor-christian"
+"Bangor Christian Schools": "me-hs-bangor-christian",
+"Sumner Memorial High School": "me-hs-sumner"
 },
 "2026/XC/ms-busline-championship-xc-meet-2026": {
 "Islesboro Central School": "me-ms-islesboro",
 "North Haven Community School": "me-ms-north-haven"
+},
+"2026/XC/ms-calais-invitational-2026": {
+"Sumner Memorial High School": "me-hs-sumner"
 },
 "2026/XC/ms-camden-hills-xc-meet-2026": {
 "Lincoln Academy": "me-hs-lincoln-academy"
@@ -232294,7 +232559,8 @@
 "North Haven Community School": "me-hs-north-haven"
 },
 "2026/XC/ms-ellsworth-invitational-2026": {
-"Bangor Christian Schools": "me-hs-bangor-christian"
+"Bangor Christian Schools": "me-hs-bangor-christian",
+"Sumner Memorial High School": "me-hs-sumner"
 },
 "2026/XC/ms-freeport-falcon-4k-xc-challenge-2026": {
 "Unattached": "x-unattached",
@@ -232366,7 +232632,8 @@
 "Oceanside High School": "me-hs-oceanside"
 },
 "2026/XC/ms-northern-maine-class-c-regional-xc-championship-2026": {
-"Bangor Christian Schools": "me-hs-bangor-christian"
+"Bangor Christian Schools": "me-hs-bangor-christian",
+"Sumner Memorial High School": "me-hs-sumner"
 },
 "2026/XC/ms-nya-mcw-traip-greely-gng-york-yarmouth-2026": {
 "North Yarmouth Academy": "me-hs-nya"
@@ -232383,11 +232650,13 @@
 },
 "2026/XC/ms-pvc-xc-championship-2026": {
 "Bangor Christian Schools": "me-hs-bangor-christian",
-"Searsport District High School": "me-hs-searsport"
+"Searsport District High School": "me-hs-searsport",
+"Sumner Memorial High School": "me-hs-sumner"
 },
 "2026/XC/ms-red-riot-challenge-invitational-2026": {
 "Bangor Christian Schools": "me-hs-bangor-christian",
-"Searsport District High School": "me-hs-searsport"
+"Searsport District High School": "me-hs-searsport",
+"Sumner Memorial High School": "me-hs-sumner"
 },
 "2026/XC/ms-richmond-hs-xc-meet-2026": {
 "Lisbon/Oak Hill": "me-hs-lisbon",
@@ -232513,13 +232782,7 @@
 "Ansonia": null,
 "Appleton Village School": "me-ms-appleton",
 "Apponequet": "oos-auto-ma-apponequet",
-"ApponequetMA": {
-"id": "oos-auto-ma-apponequet",
-"held": {
-"oos-auto-ma-apponequet": 1,
-"None": 1
-}
-},
+"ApponequetMA": null,
 "Apponoquet": "oos-auto-ma-apponoquet",
 "Arlington Catholic High School": "oos-ma-arlington-catholic-high-school",
 "Ashland District School": "me-hs-ashland",
@@ -232572,10 +232835,6 @@
 "Bellingham": "oos-auto-ma-bellingham",
 "Bellows Falls Union High School": "oos-vt-bellows-falls-union-high-school",
 "Bellows Free Academy": "oos-vt-bellows-free-academy",
-"Bellows Free Academy St AV": {
-"id": null,
-"basis": "name only (no joined rows)"
-},
 "Bellows Free Academy St Alb": {
 "id": null,
 "basis": "name only (no joined rows)"
@@ -232776,10 +233035,6 @@
 "id": "oos-auto-ma-catholic",
 "basis": "name only (no joined rows)"
 },
-"Catholic MemorialMAm A": {
-"id": null,
-"basis": "name only (no joined rows)"
-},
 "Cave Hill School": "me-ms-cave-hill",
 "Center Drive School": "me-ms-center-drive",
 "Central": "oos-auto-ri-central",
@@ -232926,13 +233181,7 @@
 "DenYarmouth": "oos-auto-ma-den-yarmouth",
 "Dennis Yart": "oos-auto-ma-dennis-yart",
 "DennisYarm": "oos-auto-ma-dennis-yarm",
-"DennisYarmo": {
-"id": "oos-auto-ma-dennis-yarm",
-"held": {
-"None": 5,
-"oos-auto-ma-dennis-yarm": 2
-}
-},
+"DennisYarmo": null,
 "Derby": "oos-auto-ct-derby",
 "DerbyCT": null,
 "Dexter Regional High School": "me-hs-dexter",
@@ -232977,7 +233226,7 @@
 "EO Smith High School": "oos-ct-e-o-smith-high-school",
 "EProvidence": "oos-auto-ri-e-providence",
 "EVESON LIS": null,
-"EWG": null,
+"EWG": "oos-auto-ri-exeter-w-gr",
 "EX fort kent WISDOM": {
 "id": null,
 "basis": "name only (no joined rows)"
@@ -233081,6 +233330,7 @@
 },
 "Foxborough": "oos-auto-ma-foxborough",
 "Foxcroft Academy": "me-hs-foxcroft",
+"Framingham High School": "oos-ma-framingham-high-school",
 "Framingham S": null,
 "Frank H Harrison Middle School": "me-ms-harrison",
 "Franklin": "oos-auto-ma-franklin",
@@ -233638,10 +233888,6 @@
 "basis": "name only (no joined rows)"
 },
 "Mercy": "oos-auto-ct-mercy",
-"Mercy Ct A": {
-"id": null,
-"basis": "name only (no joined rows)"
-},
 "Merrimack": "oos-auto-nh-merrimack",
 "Merrimack V": "oos-auto-nh-merrimack-v",
 "Merrimack Va": "oos-auto-nh-merrimack-va",
@@ -233696,7 +233942,6 @@
 "Morgan": "oos-auto-ct-morgan",
 "Morse High School": "me-hs-morse",
 "Moses Brown School": "oos-ri-moses-brown-school",
-"Moses BrownRIr A": "oos-ri-moses-brown-school",
 "Moultonboro": "oos-auto-nh-moultonboro",
 "Moultonborough": "oos-auto-nh-moultonborough",
 "Mount Anthony Union High School": "oos-vt-mount-anthony-union-high-school",
@@ -233755,7 +234000,13 @@
 "N Attleboro": "oos-auto-ma-n-attleboro",
 "N Middle": null,
 "N Quincy": "oos-auto-ma-n-quincy",
-"N Smithfield": null,
+"N Smithfield": {
+"id": "oos-auto-ri-north-smithfield",
+"held": {
+"None": 9,
+"oos-auto-ri-north-smithfield": 2
+}
+},
 "N WATSON": null,
 "NDHingham": "oos-auto-ma-n-d-hingham",
 "NH Thunder": null,
@@ -233789,7 +234040,6 @@
 "Newburyport": "oos-auto-ma-newburyport",
 "Newfound": "oos-auto-nh-newfound",
 "Newington": "oos-auto-ct-newington",
-"NewingtonCTc": "oos-auto-ct-newington",
 "Newmarket": "oos-auto-nh-newmarket",
 "Newport": "oos-auto-nh-newport",
 "Newton North High School": "oos-ma-newton-north-high-school",
@@ -233887,13 +234137,7 @@
 "Old Lyme HS": "oos-auto-ct-old-lyme",
 "Old Orchard Beach High School": "me-hs-old-orchard",
 "Old Roch": "oos-auto-ma-old-roch",
-"Old Rocheste": {
-"id": "oos-auto-ma-old-rocheste",
-"held": {
-"oos-auto-ma-old-rocheste": 7,
-"oos-auto-ma-old-rochester": 1
-}
-},
+"Old Rocheste": "oos-auto-ma-old-rocheste",
 "Old Rochester Regional": "oos-auto-ma-old-rochester",
 "Old Saybrk": "oos-auto-ct-old-saybrk",
 "Old Saybrook": "oos-auto-ct-old-saybrook",
@@ -233962,7 +234206,6 @@
 "Penobscot Valley High School": "me-hs-penobscot-valley",
 "Penquis Valley High School": "me-hs-penquis",
 "Pentucket": "oos-auto-ma-pentucket",
-"PentucketMA A": "oos-auto-ma-pentucket",
 "Peoples Academy": "oos-auto-vt-peoples",
 "Perkins G": {
 "id": null,
@@ -234014,8 +234257,8 @@
 "Portsmouth HS": {
 "id": "oos-auto-nh-portsmouth",
 "held": {
-"None": 136,
-"oos-auto-nh-portsmouth": 16
+"None": 97,
+"oos-auto-nh-portsmouth": 39
 }
 },
 "Portsmouth NH": "oos-auto-nh-portsmouth",
@@ -234447,6 +234690,7 @@
 "Waynflete School": "me-hs-waynflete",
 "Waynflete School middle grades": "me-ms-waynflete",
 "Weaver": null,
+"Wellesley High School": "oos-ma-wellesley-high-school",
 "WellesleyMA": null,
 "Wells High School": "me-hs-wells",
 "Wells Junior High School": "me-ms-wells",
@@ -234460,6 +234704,7 @@
 "Westerly HS": null,
 "Westerly High School": "oos-ri-westerly-high-school",
 "Westfield HS": null,
+"Westfield High School": "oos-ma-westfield-high-school",
 "Westford AC": "oos-auto-ma-westford-ac",
 "Westford Aca": "oos-auto-ma-westford-aca",
 "Westford Academy": "oos-auto-ma-westford",
@@ -234526,27 +234771,14 @@
 "Woolwich Central School": "me-ms-woolwich",
 "Woonsocket HS": null,
 "Woonsocket High School": "oos-ri-woonsocket-high-school",
-"Worcester Academy": {
-"id": "oos-auto-ma-worcester-technical",
-"held": {
-"None": 64,
-"oos-auto-ma-worcester-technical": 3
-}
-},
+"Worcester Academy": null,
 "Worcester Tec": "oos-auto-ma-worcester-tec",
-"Worcester Technical": {
-"id": "oos-auto-ma-worcester-technical",
-"basis": "name only (no joined rows)"
-},
+"Worcester Technical": "oos-auto-ma-worcester-technical",
 "Xaverian Brothers": "oos-auto-ma-xaverian-brothers",
 "Xaverian CT": "oos-auto-ct-xaverian",
 "Xaverian High School": null,
 "Xaverian MA": "oos-auto-ma-xaverian",
 "Xavier": "oos-auto-ct-xavier",
-"Xavier Ct A": {
-"id": null,
-"basis": "name only (no joined rows)"
-},
 "Y armouth": {
 "id": null,
 "basis": "name only (no joined rows)"
@@ -252159,20 +252391,6 @@
 "years": [
 2022,
 2022
-],
-"id": null,
-"method": "unresolved",
-"how": "unresolved"
-},
-{
-"raw": "N Smithfield",
-"rows": 2,
-"seasons": {
-"Indoor": 2
-},
-"years": [
-2023,
-2023
 ],
 "id": null,
 "method": "unresolved",

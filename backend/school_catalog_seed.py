@@ -1782,6 +1782,20 @@ FILE_RULES = [
     (['Apponequet R'], 'Indoor', (2024, 2024), r'^2024neindoor$', 'oos-auto-ma-apponequet'),
     (['Old Rocheste'], 'Indoor', (2024, 2024), r'^2024neindoor$', 'oos-auto-ma-old-rochester'),
     (['Woodstock Ac'], 'Indoor', (2024, 2024), r'^2024neindoor$', 'oos-auto-ct-woodstock'),
+    # 2026-10-29 Indoor second read t6 (2023-2024)
+    (['North Yarmouth Academy'], 'Indoor', (2024, 2024), r'^ResultsWMC$', 'coop-nya-maine-coast-waldorf'),
+    (['North Yarmouth Academy'], 'Indoor', (2024, 2024), r'^ResultsWMC2$', 'coop-nya-maine-coast-waldorf'),
+    (['North Yarmouth Academy'], 'Indoor', (2024, 2024), r'^Resultsmeet-1-3$', 'coop-nya-maine-coast-waldorf'),
+    (['Sumner Memorial High School'], 'Indoor', (2024, 2024), r'^emitl5b27jan2024$', 'coop-it-sumner-narraguagus'),
+    (['Portsmouth'], 'Indoor', (2024, 2024), r'^usmrelays2023$', 'oos-auto-nh-portsmouth'),
+    (['N Smithfield'], 'Indoor', (2023, 2023), r'^2023-New-England-Indoor-Track-Results$', 'oos-auto-ri-north-smithfield'),
+    (['EWG'], 'Indoor', (2023, 2023), r'^2023-New-England-Indoor-Track-Results$', 'oos-auto-ri-exeter-w-gr'),
+    (['YAR'], 'Indoor', (2023, 2023), r'^Results-wk-3-meet-2$', 'me-ms-harrison'),
+    (['BIDD'], 'Indoor', (2023, 2023), r'^Results-wk-3-meet-2$', 'me-ms-biddeford'),
+    (['CAPE'], 'Indoor', (2023, 2023), r'^Results-wk-4-meet-3$', 'me-ms-cape-elizabeth'),
+    (['SMC'], 'Indoor', (2023, 2023), r'^Results-wk-4-meet-3$', 'me-ms-southern-maine-catholic'),
+    (['BIDD'], 'Indoor', (2023, 2023), r'^Results-wk-4-meet-3$', 'me-ms-biddeford'),
+    (['SMC'], 'Indoor', (2023, 2023), r'^ResultsWK-3-MEET-1$', 'me-ms-southern-maine-catholic'),
     # 2026-10-24 unresolved-school review, batch 2
     (['F'], 'XC', (2004, 2004), r'^cape7oct04[bg]\.txt$', 'me-hs-falmouth'),   # Title lists Falmouth; only F team
     (['Y'], 'XC', (2004, 2004), r'^cape7oct04[bg]\.txt$', 'me-hs-yarmouth'),   # Title lists Yarmouth; only Y team
