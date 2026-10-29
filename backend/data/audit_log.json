@@ -3247,6 +3247,14 @@
   "parse_sha": "570137a92e734338",
   "source_sha": "ea36498d7338d808"
  },
+ "backend/data/parsed_results/2008/XC/ms-bonny-eagle-smaa-xc-meet-2-2008.json": {
+  "verdict": "fixed",
+  "by": "sonnet audit (second read, 2026-10-28)",
+  "notes": "Rows match pages 74068 (boys 14) and 74070 (girls 14; page added to urls). Trailing commas of surname-only names dropped. Printed team scores stored: boys Bonny Eagle 21, Deering 35; girls Bonny Eagle 15, Deering 45; all reproduce as the sum of the first five scorers. Not a sub5 duplicate (sub5 bonnyeagle*9_12 is the Sept 12 meet).",
+  "date": "2026-10-28",
+  "parse_sha": "4a63537d4eb3cd73",
+  "source_sha": "7c7c0f2c62edf031"
+ },
  "backend/data/parsed_results/2008/XC/ms-camden-hills-invitational-2008.json": {
   "verdict": "fixed",
   "by": "sonnet audit (second read, 2026-10-26)",
@@ -3254,6 +3262,102 @@
   "date": "2026-10-26",
   "parse_sha": "d899e3aff2f8f006",
   "source_sha": "a9c49d284f55c5de"
+ },
+ "backend/data/parsed_results/2008/XC/ms-edward-little-kvac-xc-meet-2008.json": {
+  "verdict": "fixed",
+  "by": "sonnet audit (second read, 2026-10-28)",
+  "notes": "Rows match pages 71623 (boys 28) and 71621 (girls 28; page added to urls). Source errors kept as printed: boys place 5 Cassidy (Brunswick) 18:15 is out of order (6th Gammon 18:04, 7th 18:14) and place 8 Merrill is printed \"1815\" (stored 18:15, team place 8 as the team page counts). Girls marks printed \"24:03:00\" stored as 24:03; trailing commas dropped. Printed team scores stored: boys Lewiston 25, Morse 62, Brunswick 67, Edward Little 73; girls Brunswick 31, Edward Little 47, Lewiston 48 (Morse NTS), all reproduce.",
+  "date": "2026-10-28",
+  "parse_sha": "f06bf415c7eff1cb",
+  "source_sha": "b58d049e2d7d550b"
+ },
+ "backend/data/parsed_results/2008/XC/ms-fryeburg-wmc-xc-meet-2-2008.json": {
+  "verdict": "fixed",
+  "by": "sonnet audit (second read, 2026-10-28)",
+  "notes": "Rows match pages 73704 (boys 48) and 73702 (girls 42; page added to urls); sub5 holds only unreadable scans (fryeburg*9_19part*) for this date, so this is the only copy. Printed team scores stored: boys Greely 17, Fryeburg 48, St. Dom's 82, Lake Region 100; girls Fryeburg 26, Greely 29, St. Dom's 89, Lake Region 98. PATTERN/SOURCE: the results page Points column splits \"St. Dom's\" and \"St. Doms\" into two teams so it undercounts St. Dominic and shifts later teams; team_place recomputed as rank among each full team's first seven finishers, which reproduces every printed scorer column and total on both team pages. Source spellings kept (Johnosn, Swelker, Foomier).",
+  "date": "2026-10-28",
+  "parse_sha": "6ce918e728b8e8a2",
+  "source_sha": "adee335c48cea74d"
+ },
+ "backend/data/parsed_results/2008/XC/ms-gng-wmc-xc-meet-2-2008.json": {
+  "verdict": "fixed",
+  "by": "sonnet audit (second read, 2026-10-28)",
+  "notes": "Rows match pages 75077 (boys 21) and 75078 (girls 21; page added to urls). School \"LakeRegion\" (glued) -> Lake Region High School; glued initials split (S.Woodbury -> S. Woodbury, B. Woodbury, E. Hurd); trailing commas dropped. No team-score pages exist for this meet, none stored. MileSplit lists the meet as 2008-09-26 and the header prints 09/29/2008 (kept as before; the sub5 date index overrides).",
+  "date": "2026-10-28",
+  "parse_sha": "7a640ff350cc7642",
+  "source_sha": "72cad850076ee40b"
+ },
+ "backend/data/parsed_results/2008/XC/ms-gng-wmc-xc-meet-2008.json": {
+  "verdict": "fixed",
+  "by": "sonnet audit (second read, 2026-10-28)",
+  "notes": "Rows match pages 71294 (boys 21) and 71619 (girls 28; page added to urls). Girls marks printed \"24:34:00\" (mm:ss plus \":00\") stored as 24:34 instead of 24:34.00. Trailing commas of surname-only names dropped. Printed team scores stored: boys Freeport 24, St. Doms 31 (GNG, Lake Region NTS); girls Freeport 15, Lake Region 50 (GNG, St. Doms NTS), all reproduce. Source spellings kept (Pflugrrot, Richardon). PATTERN: Hy-Tek marks \"mm:ss:00\" on a girls page.",
+  "date": "2026-10-28",
+  "parse_sha": "9f12061f9666966f",
+  "source_sha": "bdf27235f38aed9b"
+ },
+ "backend/data/parsed_results/2008/XC/ms-hancock-county-championship-2008.json": {
+  "verdict": "fixed",
+  "by": "sonnet audit (second read, 2026-10-28)",
+  "notes": "Rows match all four result pages: 76404 varsity boys 17, 76411 varsity girls 26, 76414 JV boys 20, 76416 JV girls 16 (3 pages added to urls). Abbreviated schools expanded in the ms file (Ells -> Ellsworth, Bucks -> Bucksport, Sears -> Searsport; same catalog ids). Printed team scores stored: varsity boys Ellsworth 24, MDI 37, GSA 66; varsity girls Ellsworth 27, MDI 33, GSA 70; JV boys Ellsworth 15 (only team); JV girls MDI 15 (only team); all reproduce as the sum of the first five scorers.",
+  "date": "2026-10-28",
+  "parse_sha": "6ab51fe8b09e83af",
+  "source_sha": "7d2566dea8695a2e"
+ },
+ "backend/data/parsed_results/2008/XC/ms-kennebunk-smaa-xc-meet-2008.json": {
+  "verdict": "fixed",
+  "by": "sonnet audit (second read, 2026-10-28)",
+  "notes": "Boys 14 rows match page 72067 (place, surname, team, time; first names not printed). Trailing commas of surname-only names dropped in the ms file. The boys page has no team-score table. Girls page 71965 (20 rows) is the same race as sub5 kennebunkgirls9_12 (identical 20 times): held by sub5, not added; girls team page 71966 (Scarborough 31, McAuley 48, Kennebunk 53) likewise belongs to that copy.",
+  "date": "2026-10-28",
+  "parse_sha": "02db9ab146178638",
+  "source_sha": "9124fa3006447923"
+ },
+ "backend/data/parsed_results/2008/XC/ms-lake-region-invitational-2008.json": {
+  "verdict": "fixed",
+  "by": "sonnet audit (second read, 2026-10-28)",
+  "notes": "Rows match pages 70767 (boys 68) and 70769 (girls 63; page added to urls). Fixed in the ms file: girls place 18 school \"2011 Gng\" (Year glued to team) -> Gray-New Gloucester High School; placeholder \"-\" first names dropped (\"- Webster\" -> \"Webster\"); printed team scores stored (boys Windham 53, Fryeburg 63, NYA 84, Lake Region 99, St. Doms 103, Poland 142, GNG 163; girls Fryeburg 37, McAuley 38, Windham 58, Poland 98, NYA 131, Lake Region 168), all reproduce as best 5 of scorer places; source prints Windham girls rank 2 (tie label with McAuley) stored as 3. PATTERN: MileSplit Hy-Tek \"Year Team\" column can glue a class year onto the team (\"2011 GNG\").",
+  "date": "2026-10-28",
+  "parse_sha": "a62b3247ed068012",
+  "source_sha": "a27ebe72833ae544"
+ },
+ "backend/data/parsed_results/2008/XC/ms-pendale-invitational-2008.json": {
+  "verdict": "fixed",
+  "by": "sonnet audit (second read, 2026-10-28)",
+  "notes": "ms- file edited directly (no override). Every cached page of the meet read against the file. All 6 pages (boys 41, girls 39, JV boys 12, JV girls 17 rows) match place/name/time/Pts. Fixes: school 'PVHS' (3 rows, was unresolved) -> Penobscot Valley High School for Caleb Raymond (orono_boys_xc_9.19.08: Penobscot Valley HS) and Kristy Bryer (athlete Kristi Bryer, Penobscot Valley), Presque Isle High School for Jaylee Fox (JV girls; ~14 other 2008-09 results all Presque Isle; sheet label PVHS is an error). Team scores stored: boys Caribou 23, Hermon 84, John Bapst 84 (Hermon ahead on 6th runner), Orono 89, Old Town 110, Mattanawcook 113; girls John Bapst 39, Presque Isle 52, Caribou 63, Old Town 79, Orono 140; all reproduce; remaining teams NTS. Source urls list all pages.",
+  "date": "2026-10-28",
+  "parse_sha": "892cb4797c21d82f",
+  "source_sha": "919c6850900c268f"
+ },
+ "backend/data/parsed_results/2008/XC/ms-sanford-smaa-xc-meet-2008.json": {
+  "verdict": "fixed",
+  "by": "sonnet audit (second read, 2026-10-28)",
+  "notes": "ms- file edited directly (no override). Every cached page of the meet read against the file. Boys 15 rows match (page 74176; the meet has no girls page). Team table (74177) stored: Windham 23, Sanford 33 (both reproduce; printed rank 1 for both, typo, stored 1 and 2; Biddeford NTS). Source urls list both pages. 9 first names settled from other 2008 races.",
+  "date": "2026-10-28",
+  "parse_sha": "f3f76c1456e65888",
+  "source_sha": "6e3d9b9eb914daa6"
+ },
+ "backend/data/parsed_results/2008/XC/ms-westbrook-smaa-xc-meet-2-2008.json": {
+  "verdict": "fixed",
+  "by": "sonnet audit (second read, 2026-10-28)",
+  "notes": "ms- file edited directly (no override). Every cached page of the meet read against the file. Boys 28 + girls 21 rows match (pages 76875, 76849). Source urls list all 4 pages; team scores stored (girls Kennebunk 27, Cheverus 30; boys Cheverus 15, Kennebunk 54, Sanford 55; all reproduce). Trailing commas cleaned, 'A Barrett' -> 'A. Barrett', 39 first names settled from other 2008 races (Johnson, Gaudreau left as surnames: Louis/Lewis, Jake/Jacob conflict).",
+  "date": "2026-10-28",
+  "parse_sha": "0d3ca0424e1d4da6",
+  "source_sha": "c07f0e3bd8f8ef83"
+ },
+ "backend/data/parsed_results/2008/XC/ms-westbrook-smaa-xc-meet-2008.json": {
+  "verdict": "fixed",
+  "by": "sonnet audit (second read, 2026-10-28)",
+  "notes": "ms- file edited directly (no override). Every cached page of the meet read against the file. Boys 12 + girls 24 rows match (pages 73642, 73649). Source urls now list all 4 pages; team scores stored from pages 73650/73651 (girls McAuley 15; boys Westbrook 15; both reproduce; Noble/Westbrook NTS). Trailing-comma surname cells cleaned; 26 first names settled from the runners' other 2008 races (same surname/school/sex), listed in the file notes.",
+  "date": "2026-10-28",
+  "parse_sha": "42408f7a68a6497e",
+  "source_sha": "a6483640a304b2f7"
+ },
+ "backend/data/parsed_results/2008/XC/ms-wiscasset-mvc-xc-meet-2008.json": {
+  "verdict": "fixed",
+  "by": "sonnet audit (second read, 2026-10-28)",
+  "notes": "ms- file edited directly (no override). Every cached page of the meet read against the file. Boys 31 and girls 11 rows match (pages 74102, 74104). Fixes: 'Isleboro' (boys, 3 runners) -> Islesboro Central School (girls race/team table spell Islesboro); source urls list all 4 pages; boys team scores stored (Boothbay 25, Winthrop 37, Wiscasset 66, all reproduce; Islesboro boys NTS); girls teams all NTS so none. Surname-only/trailing-comma names normalised (no first names in the source; none settled from other races).",
+  "date": "2026-10-28",
+  "parse_sha": "20a0af20a011c5a2",
+  "source_sha": "b0b174f80aaefaf8"
  },
  "backend/data/parsed_results/2008/XC/mvc9_10.json": {
   "verdict": "fixed",
@@ -5489,11 +5593,11 @@
  },
  "backend/data/parsed_results/2011/XC/ms-mvc-h-d-st-doms-mad-telstar-carrabec-2011.json": {
   "verdict": "source-error",
-  "by": "orchestrator (MileSplit second read, 2026-10-28)",
-  "notes": "Rows match the cached pages; the boys page omits place 22 (a Dirigo scorer), so Dirigo 98 does not reproduce; all other printed team totals reproduce.",
+  "by": "sonnet audit (second read, 2026-10-28)",
+  "notes": "Both pages (166035 boys 56 rows, 166037 girls 24 rows) match row by row incl. Pts as team place; 'Valley' = Valley HS. Source errors kept: boys page prints a blank line at place 22 (a Dirigo scorer, Dirigo's printed 98 = 10+19+22+23+24 cannot be rebuilt from rows); girls place 24 Natalie Bolduc (Dirigo) printed 20:35.00 with Pts 22, out of time order. All printed team scores reproduce from team places (boys Telstar 30, Hall-Dale 50, Madison 56, Dirigo 98, Carrabec 146, St. Doms 175, Valley 177; girls St. Doms 28, Madison 29).",
   "date": "2026-10-28",
   "parse_sha": "7019d731cd25a56e",
-  "source_sha": "08d6ec26fe2739cd"
+  "source_sha": "38ba3a3bad71d7a8"
  },
  "backend/data/parsed_results/2011/XC/ms-mvc-h-d-st-doms-tel-win-monmouth-2011.json": {
   "verdict": "fixed",

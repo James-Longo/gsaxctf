@@ -1,9 +1,9 @@
 {
 "_meta": {
 "methods_by_rows": {
-"exact/alias": 1721770,
-"code": 254880,
-"truncation": 119250,
+"exact/alias": 1721813,
+"code": 254848,
+"truncation": 119242,
 "athlete-continuity": 51368,
 "mascot": 28413,
 "bare name + level context": 25514,
@@ -15,7 +15,7 @@
 "file-expansion": 2785,
 "debris-salvage": 1767,
 "debris": 1042,
-"ambiguous": 993,
+"ambiguous": 990,
 "company": 725,
 "later-hs": 636,
 "blank": 184,
@@ -26,9 +26,9 @@
 "unresolved": 2190,
 "state-tagged (auto entry)": 1568,
 "debris-salvage": 913,
-"code": 761,
+"code": 760,
 "debris": 722,
-"truncation": 539,
+"truncation": 538,
 "athlete-continuity": 466,
 "spelling (fuzzy)": 288,
 "manual (file rule)": 144,
@@ -39,7 +39,7 @@
 "file-expansion": 13,
 "later-hs": 3
 },
-"distinct_strings": 11926,
+"distinct_strings": 11924,
 "note": "'raw' keys are whitespace-collapsed school strings exactly as printed. 'overrides' are per-file answers (year/season/file-stem) that differ from the string's global id."
 },
 "raw": {
@@ -3496,10 +3496,10 @@
 "how": "truncation"
 },
 "Searsport": {
-"rows": 3165,
+"rows": 3169,
 "seasons": {
 "Outdoor": 2460,
-"XC": 644,
+"XC": 648,
 "Indoor": 61
 },
 "years": [
@@ -3509,7 +3509,7 @@
 "id": "me-hs-searsport",
 "method": "exact",
 "by_id": {
-"me-hs-searsport": 2952,
+"me-hs-searsport": 2956,
 "me-ms-searsport": 213
 },
 "context_dependent": true,
@@ -4185,6 +4185,21 @@
 ],
 "how": "exact/alias"
 },
+"Presque Isle High School": {
+"rows": 2617,
+"seasons": {
+"Outdoor": 2146,
+"XC": 429,
+"Indoor": 42
+},
+"years": [
+2003,
+2026
+],
+"id": "me-hs-presque-isle",
+"method": "exact",
+"how": "exact/alias"
+},
 "Cohen": {
 "rows": 2617,
 "seasons": {
@@ -4196,21 +4211,6 @@
 2019
 ],
 "id": "me-ms-cohen",
-"method": "exact",
-"how": "exact/alias"
-},
-"Presque Isle High School": {
-"rows": 2616,
-"seasons": {
-"Outdoor": 2146,
-"XC": 428,
-"Indoor": 42
-},
-"years": [
-2003,
-2026
-],
-"id": "me-hs-presque-isle",
 "method": "exact",
 "how": "exact/alias"
 },
@@ -5038,11 +5038,11 @@
 "how": "exact/alias"
 },
 "Lake Region High School": {
-"rows": 2110,
+"rows": 2112,
 "seasons": {
 "Indoor": 248,
 "Outdoor": 759,
-"XC": 1103
+"XC": 1105
 },
 "years": [
 2003,
@@ -5083,9 +5083,9 @@
 "how": "exact/alias"
 },
 "Gray-New Gloucester High School": {
-"rows": 2105,
+"rows": 2106,
 "seasons": {
-"XC": 1139,
+"XC": 1140,
 "Outdoor": 966
 },
 "years": [
@@ -5224,11 +5224,11 @@
 "how": "code"
 },
 "Ellsworth High School": {
-"rows": 1958,
+"rows": 1989,
 "seasons": {
 "Indoor": 303,
 "Outdoor": 1201,
-"XC": 454
+"XC": 485
 },
 "years": [
 2003,
@@ -5986,6 +5986,21 @@
 "method": "exact",
 "how": "exact/alias"
 },
+"Bucksport High School": {
+"rows": 1527,
+"seasons": {
+"Indoor": 252,
+"Outdoor": 1032,
+"XC": 243
+},
+"years": [
+2003,
+2026
+],
+"id": "me-hs-bucksport",
+"method": "exact",
+"how": "exact/alias"
+},
 "Cheverus Hig": {
 "rows": 1526,
 "seasons": {
@@ -5998,21 +6013,6 @@
 2025
 ],
 "id": "me-hs-cheverus",
-"method": "exact",
-"how": "exact/alias"
-},
-"Bucksport High School": {
-"rows": 1523,
-"seasons": {
-"Indoor": 252,
-"Outdoor": 1032,
-"XC": 239
-},
-"years": [
-2003,
-2026
-],
-"id": "me-hs-bucksport",
 "method": "exact",
 "how": "exact/alias"
 },
@@ -10264,34 +10264,6 @@
 "method": "exact",
 "how": "exact/alias"
 },
-"Bucks": {
-"rows": 597,
-"seasons": {
-"XC": 15,
-"Outdoor": 582
-},
-"years": [
-2003,
-2021
-],
-"id": "me-ms-bucksport",
-"method": "truncation+athletes",
-"by_id": {
-"me-ms-bucksport": 370,
-"me-hs-buckfield": 212,
-"me-hs-bucksport": 15
-},
-"context_dependent": true,
-"by_level": {
-"hs": "me-hs-bucksport",
-"ms": "me-ms-bucksport"
-},
-"by_season": {
-"XC": "me-hs-bucksport",
-"Outdoor": "me-ms-bucksport"
-},
-"how": "truncation"
-},
 "Nokomis High School": {
 "rows": 595,
 "seasons": {
@@ -10306,6 +10278,34 @@
 "id": "me-hs-nokomis",
 "method": "exact",
 "how": "exact/alias"
+},
+"Bucks": {
+"rows": 593,
+"seasons": {
+"XC": 11,
+"Outdoor": 582
+},
+"years": [
+2003,
+2021
+],
+"id": "me-ms-bucksport",
+"method": "truncation+athletes",
+"by_id": {
+"me-ms-bucksport": 370,
+"me-hs-buckfield": 212,
+"me-hs-bucksport": 11
+},
+"context_dependent": true,
+"by_level": {
+"hs": "me-hs-bucksport",
+"ms": "me-ms-bucksport"
+},
+"by_season": {
+"XC": "me-hs-bucksport",
+"Outdoor": "me-ms-bucksport"
+},
+"how": "truncation"
 },
 "PIMS": {
 "rows": 590,
@@ -13004,21 +13004,6 @@
 "method": "code",
 "how": "code"
 },
-"Ells": {
-"rows": 368,
-"seasons": {
-"Indoor": 53,
-"Outdoor": 284,
-"XC": 31
-},
-"years": [
-2003,
-2009
-],
-"id": "me-hs-ellsworth",
-"method": "code",
-"how": "code"
-},
 "GRE": {
 "rows": 366,
 "seasons": {
@@ -13681,6 +13666,20 @@
 "id": "me-ms-beech-hill",
 "method": "exact",
 "how": "exact/alias"
+},
+"Ells": {
+"rows": 337,
+"seasons": {
+"Indoor": 53,
+"Outdoor": 284
+},
+"years": [
+2003,
+2009
+],
+"id": "me-hs-ellsworth",
+"method": "code",
+"how": "code"
 },
 "Mount Abram High School": {
 "rows": 337,
@@ -19739,27 +19738,6 @@
 "method": "exact",
 "how": "exact/alias"
 },
-"PVHS": {
-"rows": 159,
-"seasons": {
-"Outdoor": 83,
-"XC": 48,
-"Indoor": 28
-},
-"years": [
-2003,
-2018
-],
-"id": "me-hs-penobscot-valley",
-"method": "code+athletes",
-"by_id": {
-"me-hs-penobscot-valley": 156,
-"None": 3
-},
-"context_dependent": true,
-"unresolved_rows": 3,
-"how": "code"
-},
 "Matt": {
 "rows": 159,
 "seasons": {
@@ -19969,6 +19947,25 @@
 "id": "me-ms-union-122",
 "method": "exact",
 "how": "exact/alias"
+},
+"PVHS": {
+"rows": 156,
+"seasons": {
+"Outdoor": 83,
+"XC": 45,
+"Indoor": 28
+},
+"years": [
+2003,
+2018
+],
+"id": "me-hs-penobscot-valley",
+"method": "code+athletes",
+"by_id": {
+"me-hs-penobscot-valley": 156
+},
+"context_dependent": true,
+"how": "code"
 },
 "Caribou High Sch": {
 "rows": 156,
@@ -21937,29 +21934,6 @@
 "unresolved_rows": 14,
 "how": "athlete-continuity"
 },
-"Isleboro": {
-"rows": 125,
-"seasons": {
-"Outdoor": 85,
-"XC": 40
-},
-"years": [
-2006,
-2017
-],
-"id": "me-hs-islesboro",
-"method": "exact",
-"by_id": {
-"me-hs-islesboro": 96,
-"me-ms-islesboro": 29
-},
-"context_dependent": true,
-"by_level": {
-"hs": "me-hs-islesboro",
-"ms": "me-ms-islesboro"
-},
-"how": "exact/alias"
-},
 "St. Dominic Regional High Scho": {
 "rows": 125,
 "seasons": {
@@ -22125,6 +22099,29 @@
 ],
 "id": "me-ms-appleton",
 "method": "exact",
+"how": "exact/alias"
+},
+"Isleboro": {
+"rows": 122,
+"seasons": {
+"Outdoor": 85,
+"XC": 37
+},
+"years": [
+2006,
+2017
+],
+"id": "me-hs-islesboro",
+"method": "exact",
+"by_id": {
+"me-hs-islesboro": 93,
+"me-ms-islesboro": 29
+},
+"context_dependent": true,
+"by_level": {
+"hs": "me-hs-islesboro",
+"ms": "me-ms-islesboro"
+},
 "how": "exact/alias"
 },
 "Whittier Middle School": {
@@ -25307,6 +25304,33 @@
 "method": "exact+deglue",
 "how": "exact/alias"
 },
+"Islesboro Central School": {
+"rows": 91,
+"seasons": {
+"XC": 38,
+"Outdoor": 53
+},
+"years": [
+2007,
+2026
+],
+"id": "me-ms-islesboro",
+"method": "exact+middle-grades",
+"by_id": {
+"me-ms-islesboro": 55,
+"me-hs-islesboro": 36
+},
+"context_dependent": true,
+"by_level": {
+"hs": "me-hs-islesboro",
+"ms": "me-ms-islesboro"
+},
+"by_season": {
+"XC": "me-hs-islesboro",
+"Outdoor": "me-ms-islesboro"
+},
+"how": "exact/alias"
+},
 "01-Unatt Maine": {
 "rows": 91,
 "seasons": {
@@ -25685,29 +25709,6 @@
 ],
 "id": "me-hs-telstar",
 "method": "exact",
-"how": "exact/alias"
-},
-"Islesboro Central School": {
-"rows": 88,
-"seasons": {
-"XC": 35,
-"Outdoor": 53
-},
-"years": [
-2007,
-2026
-],
-"id": "me-ms-islesboro",
-"method": "exact+middle-grades",
-"by_id": {
-"me-ms-islesboro": 55,
-"me-hs-islesboro": 33
-},
-"context_dependent": true,
-"by_level": {
-"hs": "me-hs-islesboro",
-"ms": "me-ms-islesboro"
-},
 "how": "exact/alias"
 },
 "Amherst TC": {
@@ -39863,19 +39864,6 @@
 "method": "exact",
 "how": "exact/alias"
 },
-"LakeRegion": {
-"rows": 31,
-"seasons": {
-"XC": 31
-},
-"years": [
-2008,
-2010
-],
-"id": "me-hs-lake-region",
-"method": "exact+deglue",
-"how": "exact/alias"
-},
 "Freeport High": {
 "rows": 31,
 "seasons": {
@@ -41059,6 +41047,19 @@
 },
 "context_dependent": true,
 "how": "truncation"
+},
+"LakeRegion": {
+"rows": 29,
+"seasons": {
+"XC": 29
+},
+"years": [
+2010,
+2010
+],
+"id": "me-hs-lake-region",
+"method": "exact+deglue",
+"how": "exact/alias"
 },
 "BRUNSWICK": {
 "rows": 29,
@@ -57370,6 +57371,23 @@
 "context_dependent": true,
 "how": "athlete-continuity"
 },
+"Penobscot Valley High School": {
+"rows": 12,
+"seasons": {
+"XC": 10,
+"Outdoor": 2
+},
+"years": [
+2003,
+2018
+],
+"id": "me-hs-penobscot-valley",
+"method": "exact",
+"flags": [
+"athletes contradict name match (me-hs-penobscot-valley -> me-hs-piscataquis, 2/2)"
+],
+"how": "exact/alias"
+},
 "Averill ParkRR": {
 "rows": 12,
 "seasons": {
@@ -61496,23 +61514,6 @@
 "id": "me-hs-mattanawcook",
 "method": "code",
 "how": "code"
-},
-"Penobscot Valley High School": {
-"rows": 10,
-"seasons": {
-"XC": 8,
-"Outdoor": 2
-},
-"years": [
-2003,
-2018
-],
-"id": "me-hs-penobscot-valley",
-"method": "exact",
-"flags": [
-"athletes contradict name match (me-hs-penobscot-valley -> me-hs-piscataquis, 2/2)"
-],
-"how": "exact/alias"
 },
 "Westbrook Blue Blazes": {
 "rows": 10,
@@ -82787,19 +82788,6 @@
 "id": "me-hs-ar-gould",
 "method": "exact",
 "how": "exact/alias"
-},
-"Sears": {
-"rows": 4,
-"seasons": {
-"XC": 4
-},
-"years": [
-2008,
-2008
-],
-"id": "me-hs-searsport",
-"method": "truncation+athletes",
-"how": "truncation"
 },
 "C-Schenck": {
 "rows": 4,
@@ -122840,19 +122828,6 @@
 "id": "coop-fox-islands",
 "method": "truncation",
 "how": "co-op label"
-},
-"2011 Gng": {
-"rows": 1,
-"seasons": {
-"XC": 1
-},
-"years": [
-2008,
-2008
-],
-"id": "me-hs-gray-ng",
-"method": "code+lead-num",
-"how": "code"
 },
 "Merricone ag": {
 "rows": 1,
@@ -178237,7 +178212,7 @@
 "St. Dominic Academy": "me-hs-st-dominic"
 },
 "2008/XC/ms-hancock-county-championship-2008": {
-"Bucks": "me-hs-bucksport"
+"Searsport": "me-hs-searsport"
 },
 "2008/XC/ms-lake-region-invitational-2008": {
 "North Yarmouth Academy": "me-hs-nya",
@@ -178249,8 +178224,7 @@
 "Monmouth Academy": "me-hs-monmouth"
 },
 "2008/XC/ms-pendale-invitational-2008": {
-"Mattanawcook Academy": "me-hs-mattanawcook",
-"PVHS": null
+"Mattanawcook Academy": "me-hs-mattanawcook"
 },
 "2008/XC/ms-poland-wmc-xc-meet-2008": {
 "North Yarmouth Academy": "me-hs-nya"
@@ -178262,7 +178236,6 @@
 "Thornton Academy": "me-hs-thornton"
 },
 "2008/XC/ms-wiscasset-mvc-xc-meet-2008": {
-"Isleboro": "me-hs-islesboro",
 "Islesboro Central School": "me-hs-islesboro"
 },
 "2008/XC/ms-yarmouth-wmc-xc-meet-2008": {
@@ -233232,7 +233205,6 @@
 "Madison Junior High School": "me-ms-madison",
 "MadisonAthens combined MS team": "me-ms-madison-athens",
 "MadisonCarrabec": null,
-"Madsion": "me-hs-madison",
 "Mahar Reg": "oos-auto-ma-mahar",
 "Mahar Region": "oos-auto-ma-mahar-region",
 "Mahoney Middle School": "me-ms-mahoney",
@@ -233604,7 +233576,6 @@
 "basis": "name only (no joined rows)"
 },
 "P I": null,
-"PAT": "me-hs-gray-ng",
 "PEE": {
 "id": null,
 "basis": "name only (no joined rows)"
