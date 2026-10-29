@@ -70,16 +70,21 @@ class Teams:
         # Hy-Tek team accounts: "YORK HIGH SCHOOL OUTDOOR 2", "Gorham High
         # School indoor", "Winslow high school track", "Cheverus Stags"
         raw = re.sub(r'(?i)\b(?:outdoor|indoor|itrack|otrack|track(?:\s*(?:&|and)\s*field)?|t\s*&\s*f|'
-                     r'xc|girls|boys|men|women)\b|\b\d{1,4}\s*$', ' ', raw or '').strip(' -')
+                     r'xc|girls|boys|men|women)\b', ' ', raw or '').strip(' -')
         k = (raw, gender)
         if k not in self.cache:
             u = None
-            try:
-                u = self.sc.store_unit(raw, year=self.year, season=self.season, gender=gender,
-                                       meet_name=self.stem)
-            except Exception:  # noqa: BLE001
-                u = None
-            self.cache[k] = u or ('raw:' + _key(raw))
+            # a number can be the name ("Union 122") or an account suffix ("... OUTDOOR 2"):
+            # the whole string first, then without the number
+            for cand in dict.fromkeys([raw, re.sub(r'\b\d{1,4}\s*$', '', raw).strip(' -')]):
+                try:
+                    u = self.sc.store_unit(cand, year=self.year, season=self.season, gender=gender,
+                                           meet_name=self.stem)
+                except Exception:  # noqa: BLE001
+                    u = None
+                if u:
+                    break
+            self.cache[k] = u or ('raw:' + _key(re.sub(r'\b\d{1,4}\s*$', '', raw).strip(' -')))
         return self.cache[k]
 
     def members(self, uid):
