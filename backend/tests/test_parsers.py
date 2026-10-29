@@ -2896,3 +2896,14 @@ if __name__ == '__main__':
                 traceback.print_exc()
                 print('FAIL', name, e)
     sys.exit(1 if failed else 0)
+
+
+def test_team_rankings_rank_ten_and_up():
+    """Hy-Tek prints two teams per line: "10) Old Town" is rank 10, not a
+    split inside the number (it was stored as rank 0)."""
+    from backend.parser import Sub5ColumnParser
+    lines = ["Men - Team Rankings - 17 Events Scored", "=" * 60,
+             "    9) Hermon High School 13       10) Old Town High School        4",
+             "   21) Bangor High School 2        22) Lewiston High School 1.5", ""]
+    teams = Sub5ColumnParser.parse_team_rankings(lines, 0)[0]['teams']
+    assert [t['rank'] for t in teams] == [9, 10, 21, 22], teams

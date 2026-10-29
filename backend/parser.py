@@ -1119,7 +1119,7 @@ class Sub5ColumnParser:
             # can have decimals (e.g. "247.33").
             # Strategy: split the line at "N) " boundaries to isolate
             # individual entries, then extract rank, team, and score.
-            entries = re.split(r'(?=\d+\)\s)', stripped)
+            entries = re.split(r'(?<!\d)(?=\d+\)\s)', stripped)   # not inside '10) '
             for entry in entries:
                 entry = entry.strip()
                 if not entry:
