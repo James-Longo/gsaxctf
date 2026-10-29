@@ -58,7 +58,7 @@ def load_file_venues():
 
 
 def resolve(year, stem, index_map, file_venues):
-    for ext in ('.htm', '.html', '.pdf', ''):
+    for ext in ('.htm', '.html', '.pdf', '.txt', ''):
         entry = index_map.get(f'{year}/XC/{stem}{ext}')
         if entry and entry.get('venue'):
             return entry['venue'], 'index-venue'
@@ -67,7 +67,7 @@ def resolve(year, stem, index_map, file_venues):
         return fv, 'file-venue'
     # A meet name is only usable when it names the host ("... at Scarborough");
     # otherwise it is a label, not a place, and must not become a course.
-    for ext in ('.htm', '.html', '.pdf', ''):
+    for ext in ('.htm', '.html', '.pdf', '.txt', ''):
         entry = index_map.get(f'{year}/XC/{stem}{ext}')
         if entry and entry.get('meet'):
             m = re.search(r'\bat\s+([A-Z][\w.\'-]*(?:\s+[A-Z][\w.\'-]*){0,3})',

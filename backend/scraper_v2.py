@@ -2591,8 +2591,10 @@ class Sub5ScraperV2:
                 # The filename stem is the last resort and names no place at
                 # all for generic slugs like "Results-F1-3".
                 idx_meta = {}
+                # (.txt: files recovered from the Internet Archive keep their
+                # own name, without the .htm the downloader appends)
                 for _cand in (filename, meet_name + ".htm", meet_name + ".html",
-                              meet_name + ".pdf"):
+                              meet_name + ".pdf", meet_name + ".txt"):
                     idx_meta = self.web_meet_mapping.get(f"{year}/{season}/{_cand}") or {}
                     if idx_meta:
                         break

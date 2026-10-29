@@ -176,9 +176,15 @@ VENUE_SUFFIX = re.compile(
     r'(senior|junior)?\s*high\s*school|middle\s*school|grade\s*school|'
     r'high|hs|jhs|jr\s*high|ms|elementary|school|'
     r'invitational|invite|ac|acad|'
-    r'recreation\s*area|rec\s*area|golf\s*course|'
+    r'recreation\s*area|rec\s*area|recreation\s*center|golf\s*course|'
     r'community\s*park|park|farm|field|fields|course|trails?'
     r')\b\s*$', re.I)
+
+# MileSplit names most courses "<school> XC course" ("Mt. Ararat XC course",
+# "Narraguagus CC Course"). A middle-school course keeps its tag ("Lincoln MS
+# XC course" is in Portland, not at Lincoln Academy): whether a school's
+# middle-school loop is its high-school course is not something a name says.
+XC_SUFFIX = re.compile(r'(?<!\bms)(?<!\bjh)(?<!middle school)\s+(xc|cc)$', re.I)
 
 # Irregular forms that no structural rule reaches: initialisms, typos, and
 # venues whose common name shares no tokens with its formal one. These map
@@ -193,6 +199,11 @@ KEY_FIXUPS = {
     'umpi': 'um presque isle',
     'sjc': 'st josephs',
     'st joseph': 'st josephs',
+    'st joes': 'st josephs',
+    'st doms': 'st dominics',
+    'carrebec': 'carrabec',
+    'catherine mcauley': 'mcauley',
+    'north yarmouth': 'nya',
     'linconville': 'lincolnville',
     'mattanawcook acadely': 'mattanawcook',
     'van cortland': 'van cortlandt',
@@ -346,6 +357,7 @@ def _venue_key(name):
     while prev != k:            # "Mt. Blue State Park" -> "mt blue"
         prev = k
         k = VENUE_SUFFIX.sub('', k).strip()
+        k = XC_SUFFIX.sub('', k).strip()
     return k
 
 
@@ -466,11 +478,13 @@ def build_canonical_names(raw_names):
     CANONICAL_NAME.clear()
     for k, variants in groups.items():
         # the fullest spelling, but not one carrying a town after a comma, a
-        # meet word or a middle-school tag when a plain one exists
-        # ("Kennebunk" over "Kennebunk Middle School", "Saxl Park" over
-        # "Saxl Park, Bangor", "Ellsworth" over "Ellsworth Invitational")
+        # meet word, a middle-school tag or MileSplit's "XC course" when a
+        # plain one exists ("Kennebunk" over "Kennebunk Middle School", "Saxl
+        # Park" over "Saxl Park, Bangor", "Ellsworth" over "Ellsworth
+        # Invitational", "Mt. Ararat" over "Mt. Ararat XC course")
         def debris(v):
-            return bool(re.search(r',|\binvit|\bmiddle\s*school\b|\bms\b', v, re.I))
+            return bool(re.search(r',|\binvit|\bmiddle\s*school\b|\bms\b|\b(xc|cc)\b',
+                                  v, re.I))
         # ties go to the properly capitalized spelling ("Saxl Park")
         CANONICAL_NAME[k] = max(variants, key=lambda v: (not debris(v), len(v),
                                                          sum(ch.isupper() for ch in v), v))
