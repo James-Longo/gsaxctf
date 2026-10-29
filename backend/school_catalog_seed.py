@@ -1758,6 +1758,9 @@ FILE_RULES = [
     (['Mattanawcook/Penobscot'], 'Outdoor', (2024, 2024), r'^Class-[Cc]-(boys|girls)-results$', 'coop-mattanawcook-penobscot'),
     (['Limestone/MS'], 'Outdoor', (2024, 2024), r'^Class-C-boys-results$', 'coop-limestone-mssm'),
     (['North Haven', 'North Haven Community School'], 'Outdoor', (2024, 2024), r'^Camden-Rockport-MS$', 'me-ms-north-haven'),   # middle-school meet: NHCS middle grades
+    # 2026-10-29 Outdoor second read t4 (2024)
+    (['Southern Mai'], 'Outdoor', (2024, 2024), r'^ResultsFALM-MS$', 'me-ms-southern-maine-catholic'),
+    (['North Yarmouth Academy'], 'Outdoor', (2024, 2024), r'^ResultsSV$', 'coop-nya-maine-coast-waldorf'),
     # 2026-10-24 unresolved-school review, batch 2
     (['F'], 'XC', (2004, 2004), r'^cape7oct04[bg]\.txt$', 'me-hs-falmouth'),   # Title lists Falmouth; only F team
     (['Y'], 'XC', (2004, 2004), r'^cape7oct04[bg]\.txt$', 'me-hs-yarmouth'),   # Title lists Yarmouth; only Y team
