@@ -49965,6 +49965,13 @@
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
  },
+ "backend/data/parsed_results/2024/Indoor/2024neindoor.json": {
+  "parse_sha": "f4f1d124ddceb680",
+  "source_sha": "4c416ed4fe1b1283",
+  "date": "2026-10-29",
+  "by": "Indoor second read 2026-10-29 (t5, 2024-2025): read against the source",
+  "evidence": "reader compared every row with the source; fixes by override, school rule or index fix"
+ },
  "backend/data/parsed_results/2024/Indoor/5b.json": {
   "parse_sha": "6cc8210e89cd9019",
   "source_sha": "6c0fe08adf177ba1",
@@ -49986,12 +49993,131 @@
   "by": "re-check 2026-10-28: re-parsed only for the team-rank fix (ranks 10+ were stored as 0-9)",
   "evidence": "scratch re-parse compared with the signed parse: result rows identical, only team_rankings ranks changed"
  },
+ "backend/data/parsed_results/2024/Indoor/Class-B-girls-results.json": {
+  "parse_sha": "ea90be5645bd8d88",
+  "source_sha": "5afd3f2d621f18bd",
+  "date": "2026-10-29",
+  "by": "sonnet audit (second read, 2026-10-29) (audit: confirmed)",
+  "evidence": "2024 Class B Indoor State Meet (Girls), Bates 2/19/2024, Hy-Tek: 16 events incl. separate Prelims/Finals events for 55m, hurdles; 19+19+8+30+8+15+14+17+19+14+25+18+21+20+15+15 rows compared with the source by script (place, name, grade, school, mark, printed points, relay legs, exhibition Poland 4x800 'X12:52.81'): no differences (the only script flags were prelim rows, which print H# not points). Printed team scores (63/53/47/41/36.25/34/... 30 teams) equal the parse and the ledger says verified. Schools: 'Sumner Memor' = me-hs-sumner as printed (no co-op label in this file), 'Boothbay/Wis' = coop-boothbay-wiscasset, 'George Steve' / 'George Stevens Academy /' = me-hs-gsa (combined label is GSA by James's rule). 'high: never signed off' warning = this review."
+ },
+ "backend/data/parsed_results/2024/Indoor/KVAC-Meet-1A.txt.json": {
+  "parse_sha": "e53c9f6c291704c8",
+  "source_sha": "6f3e5c000bea4ca1",
+  "date": "2026-10-29",
+  "by": "auto: team scores verified exactly, all schools identified, no flags",
+  "evidence": ""
+ },
+ "backend/data/parsed_results/2024/Indoor/KVAC-Meet-1B.txt.json": {
+  "parse_sha": "02593413e9ea6034",
+  "source_sha": "7888aa362cc0c700",
+  "date": "2026-10-29",
+  "by": "auto: team scores verified exactly, all schools identified, no flags",
+  "evidence": ""
+ },
+ "backend/data/parsed_results/2024/Indoor/KVAC-Meet-3B.txt.json": {
+  "parse_sha": "4c7b749d6e9df831",
+  "source_sha": "4115bc502df8d114",
+  "date": "2026-10-29",
+  "by": "auto: team scores verified exactly, all schools identified, no flags",
+  "evidence": ""
+ },
+ "backend/data/parsed_results/2024/Indoor/KVAC-Meet-3C.txt.json": {
+  "parse_sha": "ea9aabd7c7e7904b",
+  "source_sha": "a5e75e764a0d2dd8",
+  "date": "2026-10-29",
+  "by": "auto: team scores verified exactly, all schools identified, no flags",
+  "evidence": ""
+ },
+ "backend/data/parsed_results/2024/Indoor/Results-1.json": {
+  "parse_sha": "21b12d2bdacb6586",
+  "source_sha": "ca00ab6e4e4f8d09",
+  "date": "2026-10-29",
+  "by": "sonnet audit (second read, 2026-10-29) (audit: confirmed)",
+  "evidence": "Hy-Tek text (ColumnStrategyParser) checked row by row with a script against the source text (event/gender via header, place, name, school string, mark, printed Points column, relay school, exhibition 'X' rows, NH/FOUL rows kept): no differences; no printed team scores in the file (no_rankings), the ledger 'never read by a reviewer' warning is simply this review. SMAA quad/dual meet of 12/16/2023 (Biddeford-Kennebunk-Portland-Sanford); file header date 12/16/2023 = index (Meet Manager print stamps 12/17 or 12/20 are setup/print dates). Index gives all four 12/16 files the one combined link text; ordering Meet 1-4 follows the link order."
+ },
+ "backend/data/parsed_results/2024/Indoor/Results-2.json": {
+  "parse_sha": "4e928b40c09b0c95",
+  "source_sha": "ec87702e5e50eae6",
+  "date": "2026-10-29",
+  "by": "sonnet audit (second read, 2026-10-29) (audit: confirmed)",
+  "evidence": "Hy-Tek text (ColumnStrategyParser) checked row by row with a script against the source text (event/gender via header, place, name, school string, mark, printed Points column, relay school, exhibition 'X' rows, NH/FOUL rows kept): no differences; no printed team scores in the file (no_rankings), the ledger 'never read by a reviewer' warning is simply this review. SMAA quad/dual meet of 12/16/2023 (Gorham-Noble-South Portland-Westbrook); file header date 12/16/2023 = index (Meet Manager print stamps 12/17 or 12/20 are setup/print dates). Index gives all four 12/16 files the one combined link text; ordering Meet 1-4 follows the link order."
+ },
+ "backend/data/parsed_results/2024/Indoor/Results-3.json": {
+  "parse_sha": "cfb30fc9b0480b12",
+  "source_sha": "50d42fea4a296e6e",
+  "date": "2026-10-29",
+  "by": "sonnet audit (second read, 2026-10-29) (audit: confirmed)",
+  "evidence": "Hy-Tek text (ColumnStrategyParser) checked row by row with a script against the source text (event/gender via header, place, name, school string, mark, printed Points column, relay school, exhibition 'X' rows, NH/FOUL rows kept): no differences; no printed team scores in the file (no_rankings), the ledger 'never read by a reviewer' warning is simply this review. SMAA quad/dual meet of 12/16/2023 (Cheverus-Marshwood-Scarborough-Thornton); file header date 12/16/2023 = index (Meet Manager print stamps 12/17 or 12/20 are setup/print dates). Index gives all four 12/16 files the one combined link text; ordering Meet 1-4 follows the link order."
+ },
+ "backend/data/parsed_results/2024/Indoor/Results-meet-2.json": {
+  "parse_sha": "5d21fd19802c9555",
+  "source_sha": "390212b1fb5e375b",
+  "date": "2026-10-29",
+  "by": "sonnet audit (second read, 2026-10-29) (audit: confirmed)",
+  "evidence": "Hy-Tek text (ColumnStrategyParser) checked row by row with a script against the source text (event/gender via header, place, name, school string, mark, printed Points column, relay school, exhibition 'X' rows, NH/FOUL rows kept): no differences; no printed team scores in the file (no_rankings), the ledger 'never read by a reviewer' warning is simply this review. SMAA Week 3 Meet 2 (Biddeford/Deering/Gorham/Marshwood at USM), 1/9/2024; one winner per division per event (the file lists only top places), events 19 (no entries) absent in source and parse; 'Bergquist-Guimond, Natha' truncated in source; 'Vail, Noah' in a Girls 200 as printed."
+ },
+ "backend/data/parsed_results/2024/Indoor/Results-meet-3.json": {
+  "parse_sha": "1e2805dd209e8b09",
+  "source_sha": "cd40609f17a93913",
+  "date": "2026-10-29",
+  "by": "sonnet audit (second read, 2026-10-29) (audit: confirmed)",
+  "evidence": "Hy-Tek text (ColumnStrategyParser) checked row by row with a script against the source text (event/gender via header, place, name, school string, mark, printed Points column, relay school, exhibition 'X' rows, NH/FOUL rows kept): no differences; no printed team scores in the file (no_rankings), the ledger 'never read by a reviewer' warning is simply this review. SMAA Week 2 Meet 3 (Bonny Eagle-Falmouth-Marshwood-South Portland), 1/4/2024 = index."
+ },
+ "backend/data/parsed_results/2024/Indoor/Results-meet-4.json": {
+  "parse_sha": "5e6f6b344deffc75",
+  "source_sha": "970f8869516274a6",
+  "date": "2026-10-29",
+  "by": "sonnet audit (second read, 2026-10-29) (audit: confirmed)",
+  "evidence": "Hy-Tek text (ColumnStrategyParser) checked row by row with a script against the source text (event/gender via header, place, name, school string, mark, printed Points column, relay school, exhibition 'X' rows, NH/FOUL rows kept): no differences; no printed team scores in the file (no_rankings), the ledger 'never read by a reviewer' warning is simply this review. SMAA quad/dual meet of 12/16/2023 (Bonny Eagle-Falmouth-Deering-Windham); file header date 12/16/2023 = index (Meet Manager print stamps 12/17 or 12/20 are setup/print dates). Index gives all four 12/16 files the one combined link text; ordering Meet 1-4 follows the link order."
+ },
  "backend/data/parsed_results/2024/Indoor/Results.json": {
   "parse_sha": "39c2dce54ff2e0f4",
   "source_sha": "df9dd5d002953ec8",
   "date": "2026-10-16",
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
+ },
+ "backend/data/parsed_results/2024/Indoor/Results1-1.json": {
+  "parse_sha": "12dba24d1e24518d",
+  "source_sha": "fad58a74dba31892",
+  "date": "2026-10-29",
+  "by": "sonnet audit (second read, 2026-10-29) (audit: confirmed)",
+  "evidence": "Hy-Tek text (ColumnStrategyParser) checked row by row with a script against the source text (event/gender via header, place, name, school string, mark, printed Points column, relay school, exhibition 'X' rows, NH/FOUL rows kept): no differences; no printed team scores in the file (no_rankings), the ledger 'never read by a reviewer' warning is simply this review. SMAA Week 4 Meet 1 (Marshwood-Portland-Westbrook-Windham), 1/13/2024. Printed Team Rankings (Junior/Senior/Open divisions by sex) equal the parse; ledger verified. Index meet name is the shared 'SMAA Week 4 - Meet 1..4' link text; the file's own title is distinct."
+ },
+ "backend/data/parsed_results/2024/Indoor/Results1.json": {
+  "parse_sha": "e5c15c1cd9e1f9ab",
+  "source_sha": "d78d24a6148cc400",
+  "date": "2026-10-29",
+  "by": "sonnet audit (second read, 2026-10-29) (audit: confirmed)",
+  "evidence": "Hy-Tek text (ColumnStrategyParser) checked row by row with a script against the source text (event/gender via header, place, name, school string, mark, printed Points column, relay school, exhibition 'X' rows, NH/FOUL rows kept): no differences; no printed team scores in the file (no_rankings), the ledger 'never read by a reviewer' warning is simply this review. WMC Week 2 Meet 1, 1/12/2024 (Poland-Fryeburg-Wells-St Dominic-Lisbon-Winthrop-Freeport-Cape Elizabeth-Gray-NG). The index gives this file the SMAA Week 4 text; the file is the WMC meet (title 'WMC WEEK 2 MEET 1 - 1/12/2024'), index date Jan 12 is right."
+ },
+ "backend/data/parsed_results/2024/Indoor/Results2-1.json": {
+  "parse_sha": "8167ceb1f5685ce3",
+  "source_sha": "d955206346257432",
+  "date": "2026-10-29",
+  "by": "sonnet audit (second read, 2026-10-29) (audit: confirmed)",
+  "evidence": "Hy-Tek text (ColumnStrategyParser) checked row by row with a script against the source text (event/gender via header, place, name, school string, mark, printed Points column, relay school, exhibition 'X' rows, NH/FOUL rows kept): no differences; no printed team scores in the file (no_rankings), the ledger 'never read by a reviewer' warning is simply this review. SMAA Week 4 Meet 2 (Cheverus-Bonny Eagle-Gorham-Massabesic), 1/13/2024. Printed Team Rankings (Junior/Senior/Open divisions by sex) equal the parse; ledger verified. Index meet name is the shared 'SMAA Week 4 - Meet 1..4' link text; the file's own title is distinct."
+ },
+ "backend/data/parsed_results/2024/Indoor/Results2.json": {
+  "parse_sha": "0abc99403882bcfb",
+  "source_sha": "0ae6dfe12047c444",
+  "date": "2026-10-29",
+  "by": "Indoor second read 2026-10-29 (t5, 2024-2025): read against the source",
+  "evidence": "reader compared every row with the source; fixes by override, school rule or index fix"
+ },
+ "backend/data/parsed_results/2024/Indoor/Results3.json": {
+  "parse_sha": "066bf40d056c4368",
+  "source_sha": "7eaddc813e26430c",
+  "date": "2026-10-29",
+  "by": "sonnet audit (second read, 2026-10-29) (audit: confirmed)",
+  "evidence": "Hy-Tek text (ColumnStrategyParser) checked row by row with a script against the source text (event/gender via header, place, name, school string, mark, printed Points column, relay school, exhibition 'X' rows, NH/FOUL rows kept): no differences; no printed team scores in the file (no_rankings), the ledger 'never read by a reviewer' warning is simply this review. SMAA Week 4 Meet 3 (Deering-Falmouth-Noble-Thornton), 1/13/2024. Event 56 'Mixed 1600 Meter Race Walk' (M/W column) is split into Girls (places 5,6 as printed) and Boys (1-4) race-walk events by the parser: fine; lower-case guest schools 'bonny eagle', 'south portland', 'scarboro', 'Gorham' resolve right. Printed Team Rankings (Junior/Senior/Open divisions by sex) equal the parse; ledger verified. Index meet name is the shared 'SMAA Week 4 - Meet 1..4' link text; the file's own title is distinct."
+ },
+ "backend/data/parsed_results/2024/Indoor/Results4.json": {
+  "parse_sha": "f928c028cac27d78",
+  "source_sha": "179c9243ac244216",
+  "date": "2026-10-29",
+  "by": "sonnet audit (second read, 2026-10-29) (audit: confirmed)",
+  "evidence": "Hy-Tek text (ColumnStrategyParser) checked row by row with a script against the source text (event/gender via header, place, name, school string, mark, printed Points column, relay school, exhibition 'X' rows, NH/FOUL rows kept): no differences; no printed team scores in the file (no_rankings), the ledger 'never read by a reviewer' warning is simply this review. SMAA Week 4 Meet 4 (Biddeford-Kennebunk-Sanford-Scarborough-South Portland), 1/13/2024. Team name 'South Portland High Schoo' (Men Open) is truncated in the source and in team_rankings. Printed Team Rankings (Junior/Senior/Open divisions by sex) equal the parse; ledger verified. Index meet name is the shared 'SMAA Week 4 - Meet 1..4' link text; the file's own title is distinct."
  },
  "backend/data/parsed_results/2024/Indoor/ResultsKVAC1C.json": {
   "parse_sha": "701380fbffcfa1fe",
@@ -53087,6 +53213,13 @@
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
  },
+ "backend/data/parsed_results/2025/Indoor/KVAC-Class-A-Results.json": {
+  "parse_sha": "941e7e1be93a8f15",
+  "source_sha": "37fea92458a1b9e9",
+  "date": "2026-10-29",
+  "by": "sonnet audit (second read, 2026-10-29) (audit: confirmed)",
+  "evidence": "Ledger warning (transcribed/verified, not signed off) cleared: KVAC Class A Championships 2/10/2025 (Hy-Tek), 31 races incl. prelims+finals. All 382 result rows (names, grades, schools, marks, places, finals points, relay legs and leg splits, Q/q/C/R/J flags dropped from marks with the original kept in warnings) match; the two Official Team Rankings blocks (Women: Brunswick 162.5, Mt. Ararat 132.5, Lewiston 85 ... ; Men: Lewiston 198, Brunswick 92 ...) equal the printed ones. Heat-number columns on non-final events are not points (checked). Status rows (DNF, DNS) kept as before. Marks flagged as outliers (Ryker Paradis shot 63-01.00) are printed in the source. Date 2/10/2025 = index. Schools: Lewiston Hig, Brunswick Hi, Mt. Ararat H, Edward Littl, Messalonskee, Skowhegan Ar, Oxford Hills, Camden Hills all resolve to their me-hs- entries."
+ },
  "backend/data/parsed_results/2025/Indoor/KVAC-Class-B-Results.json": {
   "parse_sha": "baf0acb715d084a0",
   "source_sha": "6f4ea72f87ae1d84",
@@ -53177,6 +53310,83 @@
   "date": "2026-10-16",
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
+ },
+ "backend/data/parsed_results/2025/Indoor/Results1.json": {
+  "parse_sha": "197492f8b938c90f",
+  "source_sha": "93c87424c643a9a8",
+  "date": "2026-10-29",
+  "by": "Indoor second read 2026-10-29 (t5, 2024-2025): read against the source",
+  "evidence": "reader compared every row with the source; fixes by override, school rule or index fix"
+ },
+ "backend/data/parsed_results/2025/Indoor/Results2.json": {
+  "parse_sha": "be11dcefff4893f0",
+  "source_sha": "cc9d5691a09084f1",
+  "date": "2026-10-29",
+  "by": "sonnet audit (second read, 2026-10-29) (audit: confirmed)",
+  "evidence": "SMAA WK 5 MEET 2 (2/1/2025), teams BIDDEFORD-BONNY EAGLE-THORNTON-WESTBROOK. Hy-Tek, compared every row of every race (event, gender, place, name, school, mark; heat/H# columns and tie-break thousandths not stored) with a script over the source text: all rows agree (place, name, school, mark) in every race; school strings (e.g. 'Thornton Aca', 'Noble High S', 'South Portla') resolve to the title's teams; 'FS' (false start) rows kept as before; 'X' B-relay marks stay exhibition. Ledger warning 'unverified' resolved by this read. Tie-break thousandths (e.g. 8.374 next to 8.38) correctly not used. gender-bleed flag: no name occurs in both genders inside this file (checked), so it is an athlete-identity merge, not a parse error. Date = index (2/1/2025)."
+ },
+ "backend/data/parsed_results/2025/Indoor/Results3.json": {
+  "parse_sha": "bbd24c1eea4e1ce8",
+  "source_sha": "b1b3fbd18c3d843b",
+  "date": "2026-10-29",
+  "by": "sonnet audit (second read, 2026-10-29) (audit: confirmed)",
+  "evidence": "SMAA WK 5 MEET 3 (2/1/2025), teams KENNEBUNK-MARSHWOOD-MASSABESIC-NOBLE-SANFORD. Hy-Tek, compared every row of every race (event, gender, place, name, school, mark; heat/H# columns and tie-break thousandths not stored) with a script over the source text: all rows agree (place, name, school, mark) in every race; school strings (e.g. 'Thornton Aca', 'Noble High S', 'South Portla') resolve to the title's teams; 'FS' (false start) rows kept as before; 'X' B-relay marks stay exhibition. Ledger warning 'unverified' resolved by this read. Tie-break thousandths (e.g. 8.374 next to 8.38) correctly not used. gender-bleed flag: no name occurs in both genders inside this file (checked), so it is an athlete-identity merge, not a parse error. Date = index (2/1/2025)."
+ },
+ "backend/data/parsed_results/2025/Indoor/Results4.json": {
+  "parse_sha": "007131193f4041c0",
+  "source_sha": "0ca9088a2ddef033",
+  "date": "2026-10-29",
+  "by": "sonnet audit (second read, 2026-10-29) (audit: confirmed)",
+  "evidence": "SMAA WK 5 MEET 4 (2/1/2025), teams CHEVERUS-DEERING-PORTLAND-SO PORTLAND. Hy-Tek, compared every row of every race (event, gender, place, name, school, mark; heat/H# columns and tie-break thousandths not stored) with a script over the source text: all rows agree (place, name, school, mark) in every race; school strings (e.g. 'Thornton Aca', 'Noble High S', 'South Portla') resolve to the title's teams; 'FS' (false start) rows kept as before; 'X' B-relay marks stay exhibition. Ledger warning 'unverified' resolved by this read. Tie-break thousandths (e.g. 8.374 next to 8.38) correctly not used. gender-bleed flag: no name occurs in both genders inside this file (checked), so it is an athlete-identity merge, not a parse error. Date = index (2/1/2025)."
+ },
+ "backend/data/parsed_results/2025/Indoor/ResultsSMAA-1.json": {
+  "parse_sha": "74690cd79a8e0da5",
+  "source_sha": "283fa3091e342ee2",
+  "date": "2026-10-29",
+  "by": "sonnet audit (second read, 2026-10-29) (audit: confirmed)",
+  "evidence": "SMAA WK 4 MEET 1 (1/18/2025), teams BIDDEFORD-KENNEBUNK-SANFORD-SCARBOROUGH-SO PORTLAND. Hy-Tek, compared every row of every race (event, gender, place, name, school, mark; heat/H# columns and tie-break thousandths not stored) with a script over the source text: all 635 rows in 53 races agree (incl. Sprint Medley relays, 'XDQ' B relay and FS rows as the parse has them); schools resolve to the five title teams. Date = index. gender-bleed flag: no name in both genders in this file."
+ },
+ "backend/data/parsed_results/2025/Indoor/ResultsSMAA1.json": {
+  "parse_sha": "b7e2209a4a46e59b",
+  "source_sha": "0fb2a5baf7851fa8",
+  "date": "2026-10-29",
+  "by": "sonnet audit (second read, 2026-10-29) (audit: confirmed)",
+  "evidence": "SMAA WK 1 MEET 1 (12/21/2024), teams BONNY EAGLE-DEERING-KENNEBUNK-WINDHAM. Hy-Tek, compared every row of every race (event, gender, place, name, school, mark; heat/H# columns and tie-break thousandths not stored) with a script over the source text: all 411 rows in 51 races agree; relay tables with 'Section N' lines parse without junk rows; schools resolve to the four teams. Date = index (12/21/2024)."
+ },
+ "backend/data/parsed_results/2025/Indoor/ResultsSMAA2.json": {
+  "parse_sha": "3144f09018ee9361",
+  "source_sha": "f55d957e59a956f2",
+  "date": "2026-10-29",
+  "by": "Indoor second read 2026-10-29 (t5, 2024-2025): read against the source",
+  "evidence": "reader compared every row with the source; fixes by override, school rule or index fix"
+ },
+ "backend/data/parsed_results/2025/Indoor/ResultsSMAA3.json": {
+  "parse_sha": "74ef83bbd79e1f6f",
+  "source_sha": "f86940eb320051ae",
+  "date": "2026-10-29",
+  "by": "sonnet audit (second read, 2026-10-29) (audit: confirmed)",
+  "evidence": "SMAA WK 1 MEET 3 (12/21/2024), teams GORHAM-NOBLE-SO PORTLAND-WESTBROOK. Hy-Tek, compared every row of every race (event, gender, place, name, school, mark; heat/H# columns and tie-break thousandths not stored) with a script over the source text: all 568 rows in 52 races agree; 'Section' lines before relay rows produce no junk here; 'XDQ' B relays and FS rows as the parse has them. Date = index."
+ },
+ "backend/data/parsed_results/2025/Indoor/ResultsSMAA4.json": {
+  "parse_sha": "0b18700fa5a6f1a8",
+  "source_sha": "141c32958f21eb50",
+  "date": "2026-10-29",
+  "by": "sonnet audit (second read, 2026-10-29) (audit: confirmed)",
+  "evidence": "SMAA WK 4 MEET 4 (1/18/2025), teams DEERING-FALMOUTH-NOBLE-THORNTON. Hy-Tek, compared every row of every race (event, gender, place, name, school, mark; heat/H# columns and tie-break thousandths not stored) with a script over the source text: all 431 rows in 53 races agree; schools resolve to the four title teams. DATE CONFLICT: the header prints 'SMAA WK 4 MEET 4 - 1/18/2025' and Hy-Tek stamp 1/19/2025; the sub5 index says 12/21/2024 (Week 1). The file is the Week 4 Meet 4 (the matching ScoresSMAA4.htm prints 'SMAA WK 4 MEET 4 - 1/18/2025', while the Week 1 scores files are ScoresSMAA1-3 'WK 1 MEET n - 12/21/2024'); the index is wrong, the file is right. date_fix given."
+ },
+ "backend/data/parsed_results/2025/Indoor/USM-boys.json": {
+  "parse_sha": "f8405b15ae68900e",
+  "source_sha": "ec22dd283808af4c",
+  "date": "2026-10-29",
+  "by": "Indoor second read 2026-10-29 (t5, 2024-2025): read against the source",
+  "evidence": "reader compared every row with the source; fixes by override, school rule or index fix"
+ },
+ "backend/data/parsed_results/2025/Indoor/USM-girls.json": {
+  "parse_sha": "06db849ced7c5e8d",
+  "source_sha": "953cf9747a700edf",
+  "date": "2026-10-29",
+  "by": "Indoor second read 2026-10-29 (t5, 2024-2025): read against the source",
+  "evidence": "reader compared every row with the source; fixes by override, school rule or index fix"
  },
  "backend/data/parsed_results/2025/Indoor/classaboysindoor2025-1.json": {
   "parse_sha": "f5944ec860fb1cb4",
@@ -53290,6 +53500,13 @@
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
  },
+ "backend/data/parsed_results/2025/Indoor/emitl5a25jan2025.json": {
+  "parse_sha": "884495cb79ee835c",
+  "source_sha": "6aacc2e77b26e9d4",
+  "date": "2026-10-29",
+  "by": "sonnet audit (second read, 2026-10-29) (audit: confirmed)",
+  "evidence": "Ledger warning (transcribed/verified, not signed off) cleared: PVC-Eastern Maine Indoor Track League Meet 5A, 1/25/2025 (Hy-Tek, prelims and finals, New Balance Field House, UMaine). All 483 rows in 32 races agree (place, name, grade, school, mark, finals points); Official Team Rankings equal the printed ones (Women: Old Town 85, Bucksport 84, John Bapst 68, Central 46, Hermon 42, Orono 40, Piscataquis 20, Bangor Christian 17, Houlton/GHCA 10, Foxcroft 6; Men: Orono 95, John Bapst 70, Hermon 67, Old Town 65, Foxcroft 38, Bucksport 27, Central 26, Penquis Valley 20, Bangor Christian 15). Schools resolve (Houlton/GHCA = coop-houlton-ghca). FS row kept as before. Outlier flag (Wingard shot 31-06.00) is the printed mark. Date = index."
+ },
  "backend/data/parsed_results/2025/Indoor/emitl5b25jan2025.json": {
   "parse_sha": "476fa7776ca565af",
   "source_sha": "aec021c7a0cab222",
@@ -53310,6 +53527,48 @@
   "date": "2026-10-16",
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
+ },
+ "backend/data/parsed_results/2025/Indoor/meet-1-results.json": {
+  "parse_sha": "d407ebcba8e2b4ee",
+  "source_sha": "4bf54b76cd6515af",
+  "date": "2026-10-29",
+  "by": "Indoor second read 2026-10-29 (t5, 2024-2025): read against the source",
+  "evidence": "reader compared every row with the source; fixes by override, school rule or index fix"
+ },
+ "backend/data/parsed_results/2025/Indoor/meet-2-results.json": {
+  "parse_sha": "6020a1a39eb6ad93",
+  "source_sha": "16d10e46dcde542b",
+  "date": "2026-10-29",
+  "by": "Indoor second read 2026-10-29 (t5, 2024-2025): read against the source",
+  "evidence": "reader compared every row with the source; fixes by override, school rule or index fix"
+ },
+ "backend/data/parsed_results/2025/Indoor/meet-3.json": {
+  "parse_sha": "5e32001436ed2a3c",
+  "source_sha": "1756eb9bb943a4b5",
+  "date": "2026-10-29",
+  "by": "Indoor second read 2026-10-29 (t5, 2024-2025): read against the source",
+  "evidence": "reader compared every row with the source; fixes by override, school rule or index fix"
+ },
+ "backend/data/parsed_results/2025/Indoor/meet-4.json": {
+  "parse_sha": "f7589dad74829d16",
+  "source_sha": "27c8f02a89074413",
+  "date": "2026-10-29",
+  "by": "Indoor second read 2026-10-29 (t5, 2024-2025): read against the source",
+  "evidence": "reader compared every row with the source; fixes by override, school rule or index fix"
+ },
+ "backend/data/parsed_results/2025/Indoor/neresults2025.json": {
+  "parse_sha": "0de0d144568a4436",
+  "source_sha": "3e47d70ba32858f2",
+  "date": "2026-10-29",
+  "by": "Indoor second read 2026-10-29 (t5, 2024-2025): read against the source",
+  "evidence": "reader compared every row with the source; fixes by override, school rule or index fix"
+ },
+ "backend/data/parsed_results/2025/Indoor/smaa-champ.json": {
+  "parse_sha": "86bbbc531feb3a27",
+  "source_sha": "ee1243666e97f6c3",
+  "date": "2026-10-29",
+  "by": "Indoor second read 2026-10-29 (t5, 2024-2025): read against the source",
+  "evidence": "reader compared every row with the source; fixes by override, school rule or index fix"
  },
  "backend/data/parsed_results/2025/Outdoor/2025-alms-tf-meet-1.json": {
   "parse_sha": "1021f1f0f79b842f",

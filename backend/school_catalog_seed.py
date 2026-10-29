@@ -1330,6 +1330,9 @@ _OOS_SIMPLE = [
     ('NS', "King's-Edgehill School", ["King's Edgehill", "King's-Edgehill", 'Kings Edgehill']),
     ('NB', 'Fredericton High School', ['Fredericton High School', 'Fredericton']),
     ('NB', 'Woodstock High School', ['Woodstock High School']),
+    ('MA', 'Wellesley High School', ['Wellesley High School']),     # New England HS meets print 'Wellesley-MA' (not Wellesley College)
+    ('MA', 'Westfield High School', ['Westfield High School']),
+    ('MA', 'Framingham High School', ['Framingham High School']),
 ]
 
 
@@ -1761,6 +1764,24 @@ FILE_RULES = [
     # 2026-10-29 Outdoor second read t4 (2024)
     (['Southern Mai'], 'Outdoor', (2024, 2024), r'^ResultsFALM-MS$', 'me-ms-southern-maine-catholic'),
     (['North Yarmouth Academy'], 'Outdoor', (2024, 2024), r'^ResultsSV$', 'coop-nya-maine-coast-waldorf'),
+    (['Wellesley-MA', 'Wellesley'], 'Indoor', (2025, 2025), r'^neresults2025$', 'oos-ma-wellesley-high-school'),   # New England HS championship: a high-school team, not the college
+    (['Westfield-MA', 'Westfield'], 'Indoor', (2025, 2025), r'^neresults2025$', 'oos-ma-westfield-high-school'),
+    (['Framingham-MA', "Framingham-MA 'A'", 'Framingham'], 'Indoor', (2025, 2025), r'^neresults2025$', 'oos-ma-framingham-high-school'),
+    # 2026-10-29 Indoor second read t5 (2024-2025)
+    (['Portsmouth'], 'Indoor', (2025, 2025), r'^USM-girls$', 'oos-auto-nh-portsmouth'),
+    (["Xavier (Ct) 'A'"], 'Indoor', (2025, 2025), r'^neresults2025$', 'oos-auto-ct-xavier'),
+    (["Mercy (Ct) 'A'"], 'Indoor', (2025, 2025), r'^neresults2025$', 'oos-auto-ct-mercy'),
+    (["Catholic Memorial-MAm 'A'"], 'Indoor', (2025, 2025), r'^neresults2025$', 'oos-auto-ma-catholic-mem'),
+    (['Dennis-Yarmo'], 'Indoor', (2024, 2024), r'^2024neindoor$', 'oos-auto-ma-dennis-yarm'),
+    (['Moses Brown-RIr', "Moses Brown-RIr 'A'"], 'Indoor', (2024, 2024), r'^2024neindoor$', 'oos-ri-moses-brown-school'),
+    (['Worcester Te'], 'Indoor', (2024, 2024), r'^2024neindoor$', 'oos-auto-ma-worcester-technical'),
+    (['Pentucket Re'], 'Indoor', (2024, 2024), r'^2024neindoor$', 'oos-auto-ma-pentucket'),
+    (['Newington-CTc'], 'Indoor', (2024, 2024), r'^2024neindoor$', 'oos-auto-ct-newington'),
+    (['Greater Lowe'], 'Indoor', (2024, 2024), r'^2024neindoor$', 'oos-auto-ma-g-lowell'),
+    (['Bellows Free Academy - St. A-V'], 'Indoor', (2024, 2024), r'^2024neindoor$', 'oos-vt-bellows-free-academy'),
+    (['Apponequet R'], 'Indoor', (2024, 2024), r'^2024neindoor$', 'oos-auto-ma-apponequet'),
+    (['Old Rocheste'], 'Indoor', (2024, 2024), r'^2024neindoor$', 'oos-auto-ma-old-rochester'),
+    (['Woodstock Ac'], 'Indoor', (2024, 2024), r'^2024neindoor$', 'oos-auto-ct-woodstock'),
     # 2026-10-24 unresolved-school review, batch 2
     (['F'], 'XC', (2004, 2004), r'^cape7oct04[bg]\.txt$', 'me-hs-falmouth'),   # Title lists Falmouth; only F team
     (['Y'], 'XC', (2004, 2004), r'^cape7oct04[bg]\.txt$', 'me-hs-yarmouth'),   # Title lists Yarmouth; only Y team
