@@ -14719,6 +14719,302 @@
   "parse_sha": "120c410cc66e4f2d",
   "source_sha": "eae43d24f067b2ca"
  },
+ "backend/data/parsed_results/2025/Outdoor/Results-1.json": {
+  "verdict": "confirmed",
+  "by": "sonnet audit (second read, 2026-10-29)",
+  "notes": "Hy-Tek 'SANFORD - 4/30/2025' (Sanford, Deering, Bonny Eagle, Thornton). 38 events, 532 rows checked against the source: place, name, school, mark all agree; schools Sanford High/Deering High/Bonny Eagle/Thornton Aca resolve correctly. No points column in the file, so the printed team scores (Women: Sanford 80, Deering 57, Bonny Eagle 56, Thornton 52; Men: Bonny Eagle 91, Thornton 84, Deering 79, Sanford 26) are stored as printed but cannot be reproduced from the rows: the totals fit 6-4-3-2-1 individual + 5-3 relay point pools (men 280 = 16x16 + 3x8) yet per-team differences up to 6 remain (checker best fit 6-4-3-2-1, total off 22). Rows equal the source, so the sheet's own scoring (ties/limits) is what disagrees. web_meet_mapping lists this file name as 'Gorham, South Portland, Sanford, Westbrook' but the file content is the Sanford meet; parse follows the content. Checked every event and row against the source (place, name, school, mark, relay legs, 'x' exhibition marks); the parse has the same events in the same order with equal row counts.",
+  "date": "2026-10-29",
+  "parse_sha": "ce0a96820e854f52",
+  "source_sha": "24c8b50c2ad719e3"
+ },
+ "backend/data/parsed_results/2025/Outdoor/Results-2.json": {
+  "verdict": "confirmed",
+  "by": "sonnet audit (second read, 2026-10-29)",
+  "notes": "Hy-Tek 'NOBLE - 5/1/2025' (Noble, South Portland, Windham). 38 events, 694 rows checked: all agree, schools resolve (Noble High S, South Portla, Windham High). Printed scores stored as printed (Women: SP 81, Windham 75, Noble 44; Men: SP 114, Noble 44, Windham 42; no points column). They do not reproduce from the rows: the totals fit individual 5-3-2-1 + relay 5-3 (men 200 = 16x11 + 3x8) but Noble/Windham/SP differ by 8/6/2 under every table the checker tries (best '5-3-2-1/3/relay 5-3', total off 16): the sheet's own scoring, not a parse error. web_meet_mapping lists the file name as the Yarmouth/Freeport/Greely/York meet; the content is the Noble meet, parse follows the content. Checked every event and row against the source (place, name, school, mark, relay legs, 'x' exhibition marks); the parse has the same events in the same order with equal row counts.",
+  "date": "2026-10-29",
+  "parse_sha": "4ea226202f0aa218",
+  "source_sha": "51d7fe1ff5b5c494"
+ },
+ "backend/data/parsed_results/2025/Outdoor/Results-3.json": {
+  "verdict": "confirmed",
+  "by": "sonnet audit (second read, 2026-10-29)",
+  "notes": "Hy-Tek 'Marathon Sports Elite Meet - 5/17/2025' at St. Joseph's College of Maine; 38 events, 853 rows checked: all agree. Printed points per row sum to the printed team scores for all 55 team-blocks (checker: verified, 'printed'). The 6 'implausible' flags are marks the source prints (Swartzentruber discus 84-07, Parker discus 109-10 and 113-10 elsewhere, DeLoacth discus 98-00, Abdirahaman SP 38-04.75, Fuller SP 36-07.75); real marks, kept. Emily Bishop (Unattached) has year '13' in the source, stored with a blank grade (a non-grade): harmless. 'q' qualifier suffixes and J (jump-off) are stripped into warnings as designed. web_meet_mapping labels this file 'Telstar, Mt. Abram, Mt. Valley, Buckfield, Dirigo' but the file content (and ledger) is the Marathon Sports Elite Meet; mapping is stale for this file name. Checked every event and row against the source (place, name, school, mark, relay legs, 'x' exhibition marks); the parse has the same events in the same order with equal row counts.",
+  "date": "2026-10-29",
+  "parse_sha": "d90b04112d6e08ff",
+  "source_sha": "c17d65243b50417a"
+ },
+ "backend/data/parsed_results/2025/Outdoor/Results-Boys-may.05.25.json": {
+  "verdict": "confirmed",
+  "by": "sonnet audit (second read, 2026-10-29)",
+  "notes": "PVC Regular Season Meet #2 at Foxcroft Academy 5/5/2025 (Foxcroft, Dexter, Bangor Christian, Central, Washburn). 18 boys events, 210 rows: all agree (checker: printed points reproduce all 5 boys' team scores; the girls block printed in this file is also stored). Two outlier flags are printed marks (Turgeon javelin 79-11, Tycheatvisoth SP 38-06.25). 'Central High' = Central High School (Corinth), 'Dexter Regio' = Dexter. Checked every event and row against the source (place, name, school, mark, relay legs, 'x' exhibition marks); the parse has the same events in the same order with equal row counts.",
+  "date": "2026-10-29",
+  "parse_sha": "1c080c8d9c460b6f",
+  "source_sha": "d54f269fdf3fc102"
+ },
+ "backend/data/parsed_results/2025/Outdoor/Results.json": {
+  "verdict": "confirmed",
+  "by": "sonnet audit (second read, 2026-10-29)",
+  "notes": "Hy-Tek 'BIDDEFORD - 4/17/2025' (Biddeford, Deering, Marshwood). 38 events, 417 rows: all agree. Printed team scores stored as printed. Checker 'verified_close': girls Marshwood 65.5 (computed 66.5) and Biddeford 59.5 (computed 58.5) are one point apart, a single point moved between the two teams that no row error explains (the girls high jump has a 2nd-place tie Ridlon (Biddeford) / Smith (Marshwood) 4-08.00); the sheet's own tie/scoring handling, rows equal the source. Checked every event and row against the source (place, name, school, mark, relay legs, 'x' exhibition marks); the parse has the same events in the same order with equal row counts.",
+  "date": "2026-10-29",
+  "parse_sha": "0a3ab5db6fb02060",
+  "source_sha": "2740cc363ed0d93d"
+ },
+ "backend/data/parsed_results/2025/Outdoor/SAHSResults.json": {
+  "verdict": "confirmed",
+  "by": "sonnet audit (second read, 2026-10-29)",
+  "notes": "Hy-Tek 'Skowhegan Area High School Home Meet - 5/8/2025' (Skowhegan, Leavitt, Morse, Messalonskee, Mt. View); 38 events, 688 rows: all agree. The file prints no team scores (they are in SAHSScores.htm), so 'no_rankings'. The 3 'implausible' flags are printed marks (Goodwin discus 90-10, Hovencamp discus 105-07, Pontillo javelin 58-01). 'Mt. View' = Mountain View High School (me-hs-mt-view), correct. Meet name in the parse is the header's second line 'Skowhegan Track' (parser takes header line 2 as the name when it is not 'at ...'); cosmetic. Checked every event and row against the source (place, name, school, mark, relay legs, 'x' exhibition marks); the parse has the same events in the same order with equal row counts.",
+  "date": "2026-10-29",
+  "parse_sha": "3ca2361ff8c1d0e9",
+  "source_sha": "6095e83eef978fab"
+ },
+ "backend/data/parsed_results/2025/Outdoor/WMC-boys-1.json": {
+  "verdict": "fixed",
+  "by": "sonnet audit (second read, 2026-10-29)",
+  "notes": "2025 Western Maine Conference Championships, Lake Region, 5/31/2025. Events (42, two Divisions per event) and 554 rows agree with the source row by row. Fixed in the override: (1) team scores - the source prints 'Division 1' and 'Division 2' blocks; the parse merged them into one list and read the two division header lines as teams named 'Division' (scores 2.0 and 1.0); now one block per division with the printed ranks/scores (reproduce exactly, checker 'verified'); (2) meet name = '2025 Western Maine Conference Championships' (parse used the second header line 'Lake Region High School'; parser pattern: a header line 2 without 'at' is taken as the meet name), venue Lake Region High School. School rule: in this meet 'North Yarmou' (truncated, individual rows) resolved to coop-nya-maine-coast-waldorf (catalog athlete-continuity for Outdoor) but the relay rows 'North Yarmouth Academy' to me-hs-nya; the team scores print 'North Yarmouth Academy' (one team), so the full name is mapped to the same id as the truncated form (same athletes at the Class C state meet are 'North Yarmou'). 35 'q'/'R' suffixes are meet qualifier/record flags, kept as warnings. Outlier flags (Drozdowski javelin 120-08, Lyons discus 98-01) are printed marks.",
+  "date": "2026-10-29",
+  "parse_sha": "949be8c26baa1907",
+  "source_sha": "e3fa3180a2640c9c"
+ },
+ "backend/data/parsed_results/2025/Outdoor/WMC-girls-1.json": {
+  "verdict": "fixed",
+  "by": "sonnet audit (second read, 2026-10-29)",
+  "notes": "2025 Western Maine Conference Championships, Lake Region, 5/31/2025. 42 events and 504 rows agree with the source row by row. Fixed in the override: team scores - the source prints 'Divisoin 1' (sic) and 'Division 2' blocks; the parse merged them and read the header lines as teams named 'Division'/'Divisoin' (2.0, 1.0); now one block per division with printed scores (verified exactly); Lake Region's printed rank '15)' (Division 1, 8th of 8) stored as 8; meet name/venue as for the boys file (see its notes; parser pattern: header line 2 without 'at' taken as the meet name). School rule: 'North Yarmouth Academy' (relay rows) -> same id as the truncated 'North Yarmou' (catalog: coop-nya-maine-coast-waldorf). Outlier flag (Mears long jump 7-03.00) is the printed mark.",
+  "date": "2026-10-29",
+  "parse_sha": "2a3c01425709f274",
+  "source_sha": "6d7e0832fb76bb9a"
+ },
+ "backend/data/parsed_results/2025/Outdoor/Waterville-JH-results.json": {
+  "verdict": "confirmed",
+  "by": "sonnet audit (second read, 2026-10-29)",
+  "notes": "Waterville Jr. High School meet 5/21/2025 (Waterville, Messalonskee, Mt. Blue, Mt. View, Skowhegan, Winslow, Lawrence, Madison, Warsaw, Carrabec JHs); 32 events, 807 rows: all agree; all schools resolve to me-ms-* entries (middle schools). Printed points reproduce all 20 team scores (checker 'verified'). The 4 'implausible' flags are printed marks (Pillsbury javelin 111-00, Barker discus 70-00, Toole javelin 69-06 ...). Events are not split by grade here. Checked every event and row against the source (place, name, school, mark, relay legs, 'x' exhibition marks); the parse has the same events in the same order with equal row counts.",
+  "date": "2026-10-29",
+  "parse_sha": "770eb98bf06cef63",
+  "source_sha": "e67a058c931bb4f1"
+ },
+ "backend/data/parsed_results/2025/Outdoor/Westbrook-MS51225-results.json": {
+  "verdict": "fixed",
+  "by": "sonnet audit (second read, 2026-10-29)",
+  "notes": "Westbrook MS meet 5/12/2025. 63 events (8th/7th/6th grade divisions of each event, kept as separate events in source order) and 535 rows agree with the source. Warning 'team scores do not add up' is explained by one school: 46 rows with the raw 'Southern Mai' (cut 'Southern Maine Catholic', the printed team in the score blocks 'Southern Maine Catholic 19/20/26/11/16/14') resolve to col-usm (University of Southern Maine); the catalog itself flags 'athletes contradict name match (col-usm -> me-ms-southern-maine-catholic)'. Rule needed: 'Southern Mai' -> me-ms-southern-maine-catholic for this file; with the rule the checker fit goes from off-by-64 to off 2 (South Portland Middle 202.5 vs 204.5, Southern Maine Catholic 65 vs 67, a tie/sheet effect). PARSER PATTERN (all grade-divided middle-school Hy-Tek files): the grade suffix ('8th grade', '5th/6th grade') is dropped from the event name except on the first event / the hurdles ('80 Meter Hurdles 8th grade'), and the six printed team blocks (Women/Men x 6th/7th/8th) keep no grade label; no row is lost or merged.",
+  "date": "2026-10-29",
+  "parse_sha": "1708cf48afdfe823",
+  "source_sha": "2446d21e4b6e0dcb"
+ },
+ "backend/data/parsed_results/2025/Outdoor/WinsResults.json": {
+  "verdict": "confirmed",
+  "by": "sonnet audit (second read, 2026-10-29)",
+  "notes": "Hy-Tek 'Winslow High School Home Meet - 5/7/2025' (Winslow, Brunswick, MCI, Waterville, Cony); 38 events, 559 rows: all agree; 4 relay entries flagged 'x' (exhibition) in the source are stored with exhibition=True. Team scores are in WinsScores.htm, so no rankings here. Outlier flag (Kieran Walker discus 58-06) is a printed mark. Schools resolve (Maine Centra = Maine Central Institute, Waterville H = Waterville High School). Parse meet name 'Winslow Track' is the header's second line (cosmetic).",
+  "date": "2026-10-29",
+  "parse_sha": "73a37e80d7f1c6dd",
+  "source_sha": "54f5cfe2ff5af162"
+ },
+ "backend/data/parsed_results/2025/Outdoor/bangorboys17may2025.json": {
+  "verdict": "fixed",
+  "by": "sonnet audit (second read, 2026-10-29)",
+  "notes": "Bangor Meet #3 at Cameron Stadium 5/17/2025 (Bangor, Caribou, Ellsworth, Fort Fairfield, Fort Kent, Limestone/MSSM, Presque Isle). 19 events, 405 rows agree with the source; printed points reproduce the 7 team scores (checker verified). School fix: 30 individual rows read 'Limestone/MS' (the cut of 'Limestone/MSSM') resolve to me-ms-limestone (Limestone Middle School) while the 3 relay rows 'Limestone/MSSM' resolve to coop-limestone-mssm; the team score line prints 'Limestone/MSSM' (15), a high-school meet, and the catalog flags 'athletes contradict name match (me-ms-limestone -> coop-limestone-mssm)'. Rule: 'Limestone/MS' -> coop-limestone-mssm for this file. The 3 'implausible' flags (Weeks discus 103-01, Randolph discus 54-02, Hunter discus 85-03) are printed marks; the one relay 'x' exhibition (Presque Isle B) is stored as such.",
+  "date": "2026-10-29",
+  "parse_sha": "e7882760e5b73b55",
+  "source_sha": "b3a9438e93e848f1"
+ },
+ "backend/data/parsed_results/2025/Outdoor/bangorgirls17may2025.json": {
+  "verdict": "fixed",
+  "by": "sonnet audit (second read, 2026-10-29)",
+  "notes": "Bangor Meet #3 at Cameron Stadium 5/17/2025, girls. 19 events, 272 rows agree with the source; printed points reproduce the 7 team scores. School fix: 18 individual rows 'Limestone/MS' (cut of 'Limestone/MSSM', the printed team 'Limestone/MSSM 9') resolve to me-ms-limestone while the relay 'Limestone/MSSM' resolves to coop-limestone-mssm; rule 'Limestone/MS' -> coop-limestone-mssm (see the boys file, same rule covers both). Exhibition relay (Presque Isle) stored as 'x'; Kacie Marston discus 78-00 flag is a printed mark.",
+  "date": "2026-10-29",
+  "parse_sha": "b3d66cd842834b22",
+  "source_sha": "0d172e69cb39ef45"
+ },
+ "backend/data/parsed_results/2025/Outdoor/bathms29may2025.json": {
+  "verdict": "confirmed",
+  "by": "sonnet audit (second read, 2026-10-29)",
+  "notes": "Bath MS Meet #2 5/29/2025 at McMann Stadium (Bath, Freeport, Gray-New Gloucester, Greely, Lake Region, Tripp middle schools); 24 events, 572 rows: all agree; every school resolves to its me-ms-* entry (Tripp Middle = Tripp Middle School Lisbon/me-ms-tripp, Lake Region = Lake Region MS). Printed points reproduce the 12 team scores (verified). Parse meet name is the header's second line 'McMann Stadium' (title 'Bath MS Meet #2'); cosmetic. Checked every event and row against the source (place, name, school, mark, relay legs, 'x' exhibition marks); the parse has the same events in the same order with equal row counts.",
+  "date": "2026-10-29",
+  "parse_sha": "eb47e49ec5e9958a",
+  "source_sha": "cccf8bce9220da52"
+ },
+ "backend/data/parsed_results/2025/Outdoor/brewerboys12may2025-1.json": {
+  "verdict": "confirmed",
+  "by": "sonnet audit (second read, 2026-10-29)",
+  "notes": "Brewer Meet #2 at Brewer Community School 5/12/2025 (Brewer, Orono, John Bapst, Searsport, Narraguagus, Bucksport, Foxcroft); 19 events, 308 rows: all agree; printed points reproduce the 7 team scores. Relay 'x' exhibition entry stored; Zimmerman javelin 100-00 flag is a printed mark. Schools (Searsport Di = Searsport District High School) resolve. Checked every event and row against the source (place, name, school, mark, relay legs, 'x' exhibition marks); the parse has the same events in the same order with equal row counts.",
+  "date": "2026-10-29",
+  "parse_sha": "39ddd458e8fc6b5f",
+  "source_sha": "5f541e3eb536b2ae"
+ },
+ "backend/data/parsed_results/2025/Outdoor/brewerboys24april2025.json": {
+  "verdict": "confirmed",
+  "by": "sonnet audit (second read, 2026-10-29)",
+  "notes": "Brewer Week 1 at Brewer Community School 4/24/2025 (Brewer, Bangor, Hampden, Orono, Washington Academy, Dexter, Piscataquis); 19 events, 382 rows: all agree; the 7 'x' (exhibition B/C relay teams) are stored with exhibition=True and relay splits kept; printed points reproduce the 6 team scores. Macneil discus 84-03 flag is a printed mark. Checked every event and row against the source (place, name, school, mark, relay legs, 'x' exhibition marks); the parse has the same events in the same order with equal row counts.",
+  "date": "2026-10-29",
+  "parse_sha": "c006f4ada1cf90b5",
+  "source_sha": "8df093538b555d16"
+ },
+ "backend/data/parsed_results/2025/Outdoor/brewerms7may2025.json": {
+  "verdict": "confirmed",
+  "by": "sonnet audit (second read, 2026-10-29)",
+  "notes": "Eastern Maine Middle School Track League, Brewer Community School meet #2, 5/7/2025; 47 events, 678 rows: all agree; schools are the me-ms-* entries (Brewer CS, Hermon, Indian Island, Mattanawcook JH, Orono, Veazie, William S Cohen). No team scores printed ('no_rankings'). The 5 'implausible' flags are printed marks (Slate discus 101-05, J. Slate discus 75-02, Meyers discus 75-10, T. Slate SP 32-01, Robertson 200m 33.38). Grades are marked 'MS' by the parser (no Year column printed). PARSER PATTERN: the grade-division suffix ('5th/6th grade', '7th/8th grade') survives only on the first event ('Girls 50 Meter Dash 5th/6th grade'); the later 5/6 and 7/8 events appear as repeated plain events (e.g. two 'Girls 100 Meter Dash'), in source order, nothing merged or lost.",
+  "date": "2026-10-29",
+  "parse_sha": "0a488972eaf3bfd2",
+  "source_sha": "4052ca3c0e9e3d59"
+ },
+ "backend/data/parsed_results/2025/Outdoor/bucksport19may2025.json": {
+  "verdict": "confirmed",
+  "by": "sonnet audit (second read, 2026-10-29)",
+  "notes": "Eastern Maine Middle School Track League, Bucksport MS meet #2, 5/19/2025; 48 events, 655 rows: all agree; schools are me-ms-* entries (Bangor Christian MS, Blue Hill, Bucksport, Central MS, Glenburn, Nokomis, Penobscot Christian, Cohen). No team scores printed. The 3 'implausible' flags are printed marks (Sorenson discus 60-04, Nicholson discus 59-08 ...). Same grade-suffix parser pattern as brewerms7may2025 (5th/6th vs 7th/8th events repeated, suffix kept only on the first event); no rows lost.",
+  "date": "2026-10-29",
+  "parse_sha": "d9854b3c43fcfe45",
+  "source_sha": "4281091928664d1e"
+ },
+ "backend/data/parsed_results/2025/Outdoor/bucksportgirls22may2025.json": {
+  "verdict": "confirmed",
+  "by": "sonnet audit (second read, 2026-10-29)",
+  "notes": "Bucksport Meet #3 at Bucksport High School 5/22/2025, girls (Bucksport, MDI, Sumner, George Stevens Academy / Blue Hill, Ellsworth); 19 events, 236 rows: all agree; printed points reproduce the 4 team scores; 3 exhibition relay teams (MDI B/C) stored as 'x'. Skoletsky javelin flag is a printed mark. 'George Stevens Academy / Blue' = George Stevens Academy (me-hs-gsa), correct. Checked every event and row against the source (place, name, school, mark, relay legs, 'x' exhibition marks); the parse has the same events in the same order with equal row counts.",
+  "date": "2026-10-29",
+  "parse_sha": "c99bab6ab4d264c3",
+  "source_sha": "92b1d986cf3cd623"
+ },
+ "backend/data/parsed_results/2025/Outdoor/bucksportms13may2025.json": {
+  "verdict": "confirmed",
+  "by": "sonnet audit (second read, 2026-10-29)",
+  "notes": "Checked every event/row of the parse against the source (47 events, 463 rows): event, gender, place/ties, name, raw school, grade, mark, DQ/NH/ND status rows and relay legs all agree; no extra or missing rows. Ledger warning ('N results flagged as implausible') = athlete-outlier flags on real marks printed in the source (throws/sprints by middle schoolers or good/bad days), kept as printed; the gender-bleed flag comes from the athlete-identity layer (same-surname siblings of both sexes at one school), no athlete is in both genders in the parse. Middle-school meet: 5th/6th and 7th/8th grade divisions are separate events in file order (first '50 Meter Dash 5th/6th grade' keeps its suffix in the parse: known pattern, event_canon strips it); no team scores printed (no_rankings is correct). Parse meet_name is the Hy-Tek second header line, not the title (known pattern, harmless to rows).",
+  "date": "2026-10-29",
+  "parse_sha": "6133bd5ebd7cb4d4",
+  "source_sha": "7a29cfbcc6384a36"
+ },
+ "backend/data/parsed_results/2025/Outdoor/classcstateboya10june2025-2.json": {
+  "verdict": "confirmed",
+  "by": "sonnet audit (second read, 2026-10-29)",
+  "notes": "Checked every event/row of the parse against the source (21 events, 416 rows): event, gender, place/ties, name, raw school, grade, mark, DQ/NH/ND status rows and relay legs all agree; no extra or missing rows. Ledger warning ('N results flagged as implausible') = athlete-outlier flags on real marks printed in the source (throws/sprints by middle schoolers or good/bad days), kept as printed; the gender-bleed flag comes from the athlete-identity layer (same-surname siblings of both sexes at one school), no athlete is in both genders in the parse. Preliminaries and finals are separate events (prelim 'q' marks stripped); printed team scores match exactly (all ranks/ties/decimals). Parse meet_name 'Sponsored by Maine Principals' Association' is the second header line, not the title '2025 State Class C Track & Field Championship' (known pattern, same in other state meets). 'Nolan Circo (H' is a name truncated in the source.",
+  "date": "2026-10-29",
+  "parse_sha": "9db7b35724efa131",
+  "source_sha": "797a4456f5b7902c"
+ },
+ "backend/data/parsed_results/2025/Outdoor/classcstategirla10june2025.json": {
+  "verdict": "confirmed",
+  "by": "sonnet audit (second read, 2026-10-29)",
+  "notes": "Checked every event/row of the parse against the source (21 events, 438 rows): event, gender, place/ties, name, raw school, grade, mark, DQ/NH/ND status rows and relay legs all agree; no extra or missing rows. Ledger warning ('transcribed/verified but never signed off by a reader') only means no reader had signed off; nothing wrong found. Preliminaries and finals are separate events (prelim 'q' marks stripped); printed team scores match exactly (all ranks/ties/decimals). Parse meet_name 'Sponsored by Maine Principals' Association' is the second header line, not the title '2025 State Class C Track & Field Championship' (known pattern, same in other state meets). 'Nolan Circo (H' is a name truncated in the source.",
+  "date": "2026-10-29",
+  "parse_sha": "a32bc89dcf50f5c0",
+  "source_sha": "55571e554aaf7022"
+ },
+ "backend/data/parsed_results/2025/Outdoor/elboys24may2025.json": {
+  "verdict": "confirmed",
+  "by": "sonnet audit (second read, 2026-10-29)",
+  "notes": "Checked every event/row of the parse against the source (18 events, 368 rows): event, gender, place/ties, name, raw school, grade, mark, DQ/NH/ND status rows and relay legs all agree; no extra or missing rows. Ledger warning ('transcribed/verified but never signed off by a reader') only means no reader had signed off; nothing wrong found. Printed team scores match the parse exactly (score=verified).",
+  "date": "2026-10-29",
+  "parse_sha": "2f50b84c00f13bc5",
+  "source_sha": "7bb29bfa7ededf6b"
+ },
+ "backend/data/parsed_results/2025/Outdoor/ellsworthboys8may2025.json": {
+  "verdict": "confirmed",
+  "by": "sonnet audit (second read, 2026-10-29)",
+  "notes": "Checked every event/row of the parse against the source (18 events, 131 rows): event, gender, place/ties, name, raw school, grade, mark, DQ/NH/ND status rows and relay legs all agree; no extra or missing rows. Ledger warning ('transcribed/verified but never signed off by a reader') only means no reader had signed off; nothing wrong found. Printed team scores match the parse exactly (score=verified).",
+  "date": "2026-10-29",
+  "parse_sha": "a5328095b855640d",
+  "source_sha": "d5b65d5322fe5c13"
+ },
+ "backend/data/parsed_results/2025/Outdoor/hampdenboys16may2025.json": {
+  "verdict": "confirmed",
+  "by": "sonnet audit (second read, 2026-10-29)",
+  "notes": "Checked every event/row of the parse against the source (19 events, 283 rows): event, gender, place/ties, name, raw school, grade, mark, DQ/NH/ND status rows and relay legs all agree; no extra or missing rows. Ledger warning ('N results flagged as implausible') = athlete-outlier flags on real marks printed in the source (throws/sprints by middle schoolers or good/bad days), kept as printed; the gender-bleed flag comes from the athlete-identity layer (same-surname siblings of both sexes at one school), no athlete is in both genders in the parse. Printed team scores match the parse exactly (score=verified).",
+  "date": "2026-10-29",
+  "parse_sha": "a394c9e5771e599c",
+  "source_sha": "cb6c3890cbff94d3"
+ },
+ "backend/data/parsed_results/2025/Outdoor/hampdengirls16may2025.json": {
+  "verdict": "confirmed",
+  "by": "sonnet audit (second read, 2026-10-29)",
+  "notes": "Checked every event/row of the parse against the source (19 events, 260 rows): event, gender, place/ties, name, raw school, grade, mark, DQ/NH/ND status rows and relay legs all agree; no extra or missing rows. Ledger warning ('transcribed/verified but never signed off by a reader') only means no reader had signed off; nothing wrong found. Printed team scores match the parse exactly (score=verified).",
+  "date": "2026-10-29",
+  "parse_sha": "9df486a424b6533e",
+  "source_sha": "d873dc77b2fcb149"
+ },
+ "backend/data/parsed_results/2025/Outdoor/hampdenms12may2025.json": {
+  "verdict": "confirmed",
+  "by": "sonnet audit (second read, 2026-10-29)",
+  "notes": "Checked every event/row of the parse against the source (47 events, 811 rows): event, gender, place/ties, name, raw school, grade, mark, DQ/NH/ND status rows and relay legs all agree; no extra or missing rows. Ledger warning ('N results flagged as implausible') = athlete-outlier flags on real marks printed in the source (throws/sprints by middle schoolers or good/bad days), kept as printed; the gender-bleed flag comes from the athlete-identity layer (same-surname siblings of both sexes at one school), no athlete is in both genders in the parse. Middle-school meet: 5th/6th and 7th/8th grade divisions are separate events in file order (first '50 Meter Dash 5th/6th grade' keeps its suffix in the parse: known pattern, event_canon strips it); no team scores printed (no_rankings is correct). Parse meet_name is the Hy-Tek second header line, not the title (known pattern, harmless to rows).",
+  "date": "2026-10-29",
+  "parse_sha": "e7f8ff8554979fd4",
+  "source_sha": "aedefa6035e4eb3a"
+ },
+ "backend/data/parsed_results/2025/Outdoor/hampdenms5may2025.json": {
+  "verdict": "confirmed",
+  "by": "sonnet audit (second read, 2026-10-29)",
+  "notes": "Checked every event/row of the parse against the source (48 events, 728 rows): event, gender, place/ties, name, raw school, grade, mark, DQ/NH/ND status rows and relay legs all agree; no extra or missing rows. Ledger warning ('N results flagged as implausible') = athlete-outlier flags on real marks printed in the source (throws/sprints by middle schoolers or good/bad days), kept as printed; the gender-bleed flag comes from the athlete-identity layer (same-surname siblings of both sexes at one school), no athlete is in both genders in the parse. Middle-school meet: 5th/6th and 7th/8th grade divisions are separate events in file order (first '50 Meter Dash 5th/6th grade' keeps its suffix in the parse: known pattern, event_canon strips it); no team scores printed (no_rankings is correct). Parse meet_name is the Hy-Tek second header line, not the title (known pattern, harmless to rows).",
+  "date": "2026-10-29",
+  "parse_sha": "8c5fa0da372d0290",
+  "source_sha": "54760f025c16d6bc"
+ },
+ "backend/data/parsed_results/2025/Outdoor/hermonboys15may2025.json": {
+  "verdict": "confirmed",
+  "by": "sonnet audit (second read, 2026-10-29)",
+  "notes": "Checked every event/row of the parse against the source (19 events, 202 rows): event, gender, place/ties, name, raw school, grade, mark, DQ/NH/ND status rows and relay legs all agree; no extra or missing rows. Ledger warning ('transcribed/verified but never signed off by a reader') only means no reader had signed off; nothing wrong found. Printed team scores match the parse exactly (score=verified).",
+  "date": "2026-10-29",
+  "parse_sha": "d95eff24c37631bc",
+  "source_sha": "072287c29c570ae3"
+ },
+ "backend/data/parsed_results/2025/Outdoor/hermongirls15may2025.json": {
+  "verdict": "confirmed",
+  "by": "sonnet audit (second read, 2026-10-29)",
+  "notes": "Checked every event/row of the parse against the source (17 events, 177 rows): event, gender, place/ties, name, raw school, grade, mark, DQ/NH/ND status rows and relay legs all agree; no extra or missing rows. Ledger warning ('transcribed/verified but never signed off by a reader') only means no reader had signed off; nothing wrong found. Printed team scores match the parse exactly (score=verified).",
+  "date": "2026-10-29",
+  "parse_sha": "2116f429bf32c893",
+  "source_sha": "2a0fee6ef8440a8a"
+ },
+ "backend/data/parsed_results/2025/Outdoor/hermonms20may2025.json": {
+  "verdict": "confirmed",
+  "by": "sonnet audit (second read, 2026-10-29)",
+  "notes": "Checked every event/row of the parse against the source (46 events, 682 rows): event, gender, place/ties, name, raw school, grade, mark, DQ/NH/ND status rows and relay legs all agree; no extra or missing rows. Ledger warning ('N results flagged as implausible') = athlete-outlier flags on real marks printed in the source (throws/sprints by middle schoolers or good/bad days), kept as printed; the gender-bleed flag comes from the athlete-identity layer (same-surname siblings of both sexes at one school), no athlete is in both genders in the parse. Middle-school meet: 5th/6th and 7th/8th grade divisions are separate events in file order (first '50 Meter Dash 5th/6th grade' keeps its suffix in the parse: known pattern, event_canon strips it); no team scores printed (no_rankings is correct). Parse meet_name is the Hy-Tek second header line, not the title (known pattern, harmless to rows).",
+  "date": "2026-10-29",
+  "parse_sha": "b9b24739e5c079fa",
+  "source_sha": "f5dbdd68499b282f"
+ },
+ "backend/data/parsed_results/2025/Outdoor/medomakms21may2025.json": {
+  "verdict": "confirmed",
+  "by": "sonnet audit (second read, 2026-10-29)",
+  "notes": "Checked every event/row of the parse against the source (30 events, 536 rows): event, gender, place/ties, name, raw school, grade, mark, DQ/NH/ND status rows and relay legs all agree; no extra or missing rows. Ledger warning ('N results flagged as implausible') = athlete-outlier flags on real marks printed in the source (throws/sprints by middle schoolers or good/bad days), kept as printed; the gender-bleed flag comes from the athlete-identity layer (same-surname siblings of both sexes at one school), no athlete is in both genders in the parse. Middle-school meet: 5th/6th and 7th/8th grade divisions are separate events in file order (first '50 Meter Dash 5th/6th grade' keeps its suffix in the parse: known pattern, event_canon strips it); no team scores printed (no_rankings is correct). Parse meet_name is the Hy-Tek second header line, not the title (known pattern, harmless to rows). Team scores (girls, boys) match the printed lists. North Haven Community School maps to me-hs-north-haven (no me-ms entry exists; same as 2024/2026 Medomak MS files); Islesboro -> me-ms-islesboro.",
+  "date": "2026-10-29",
+  "parse_sha": "1973b41ed2907107",
+  "source_sha": "0a9d92416ab66e83"
+ },
+ "backend/data/parsed_results/2025/Outdoor/medomakms29april2025.json": {
+  "verdict": "confirmed",
+  "by": "sonnet audit (second read, 2026-10-29)",
+  "notes": "Checked every event/row of the parse against the source (29 events, 311 rows): event, gender, place/ties, name, raw school, grade, mark, DQ/NH/ND status rows and relay legs all agree; no extra or missing rows. Ledger warning ('N results flagged as implausible') = athlete-outlier flags on real marks printed in the source (throws/sprints by middle schoolers or good/bad days), kept as printed; the gender-bleed flag comes from the athlete-identity layer (same-surname siblings of both sexes at one school), no athlete is in both genders in the parse. Middle-school meet: 5th/6th and 7th/8th grade divisions are separate events in file order (first '50 Meter Dash 5th/6th grade' keeps its suffix in the parse: known pattern, event_canon strips it); no team scores printed (no_rankings is correct). Parse meet_name is the Hy-Tek second header line, not the title (known pattern, harmless to rows). Team scores (girls, boys) match the printed lists. North Haven Community School maps to me-hs-north-haven (no me-ms entry exists; same as 2024/2026 Medomak MS files); Islesboro -> me-ms-islesboro.",
+  "date": "2026-10-29",
+  "parse_sha": "2fa12aaf56980a6d",
+  "source_sha": "33ff298ab08cfd65"
+ },
+ "backend/data/parsed_results/2025/Outdoor/messalonskeeboys14may2025.json": {
+  "verdict": "confirmed",
+  "by": "sonnet audit (second read, 2026-10-29)",
+  "notes": "Checked every event/row of the parse against the source (19 events, 272 rows): event, gender, place/ties, name, raw school, grade, mark, DQ/NH/ND status rows and relay legs all agree; no extra or missing rows. Ledger warning ('transcribed/verified but never signed off by a reader') only means no reader had signed off; nothing wrong found. Printed team scores match the parse exactly (score=verified).",
+  "date": "2026-10-29",
+  "parse_sha": "3ecd4de9323d06c8",
+  "source_sha": "3e9911343c3e26e8"
+ },
+ "backend/data/parsed_results/2025/Outdoor/messalonskeegirls14may2025.json": {
+  "verdict": "confirmed",
+  "by": "sonnet audit (second read, 2026-10-29)",
+  "notes": "Checked every event/row of the parse against the source (19 events, 249 rows): event, gender, place/ties, name, raw school, grade, mark, DQ/NH/ND status rows and relay legs all agree; no extra or missing rows. Ledger warning ('transcribed/verified but never signed off by a reader') only means no reader had signed off; nothing wrong found. Printed team scores match the parse exactly (score=verified).",
+  "date": "2026-10-29",
+  "parse_sha": "92aad51b3672a3bb",
+  "source_sha": "52355cbf1c110e05"
+ },
+ "backend/data/parsed_results/2025/Outdoor/messoboys24april2025.json": {
+  "verdict": "confirmed",
+  "by": "sonnet audit (second read, 2026-10-29)",
+  "notes": "Checked every event/row of the parse against the source (19 events, 272 rows): event, gender, place/ties, name, raw school, grade, mark, DQ/NH/ND status rows and relay legs all agree; no extra or missing rows. Ledger warning ('transcribed/verified but never signed off by a reader') only means no reader had signed off; nothing wrong found. Printed team scores match the parse exactly (score=verified).",
+  "date": "2026-10-29",
+  "parse_sha": "43cf4e7008a8338e",
+  "source_sha": "0fd0f23865badde5"
+ },
+ "backend/data/parsed_results/2025/Outdoor/messogirls24april2025.json": {
+  "verdict": "confirmed",
+  "by": "sonnet audit (second read, 2026-10-29)",
+  "notes": "Checked every event/row of the parse against the source (19 events, 251 rows): event, gender, place/ties, name, raw school, grade, mark, DQ/NH/ND status rows and relay legs all agree; no extra or missing rows. Ledger warning ('transcribed/verified but never signed off by a reader') only means no reader had signed off; nothing wrong found. Printed team scores match the parse exactly (score=verified).",
+  "date": "2026-10-29",
+  "parse_sha": "beba7a751309f2c9",
+  "source_sha": "1f91c6562c285007"
+ },
  "backend/data/parsed_results/2025/XC/10-1-25-Dirigo-Middle-Girls.json": {
   "verdict": "confirmed",
   "by": "sonnet audit (second read, 2026-10-24)",

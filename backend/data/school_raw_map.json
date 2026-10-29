@@ -1,15 +1,15 @@
 {
 "_meta": {
 "methods_by_rows": {
-"exact/alias": 1721807,
+"exact/alias": 1721709,
 "code": 254845,
 "truncation": 119243,
-"athlete-continuity": 51369,
+"athlete-continuity": 51310,
 "mascot": 28413,
 "bare name + level context": 25514,
 "unresolved": 17760,
-"manual (file rule)": 15071,
-"co-op label": 12423,
+"manual (file rule)": 15169,
+"co-op label": 12482,
 "state-tagged (auto entry)": 10609,
 "spelling (fuzzy)": 3454,
 "file-expansion": 2785,
@@ -3374,9 +3374,11 @@
 ],
 "id": "col-usm",
 "method": "exact",
-"flags": [
-"athletes contradict name match (col-usm -> me-ms-southern-maine-catholic, 5/6)"
-],
+"by_id": {
+"col-usm": 3176,
+"me-ms-southern-maine-catholic": 46
+},
+"context_dependent": true,
 "how": "exact/alias"
 },
 "Central High": {
@@ -4067,8 +4069,9 @@
 "id": "me-hs-nya",
 "method": "exact",
 "by_id": {
-"me-hs-nya": 2751,
-"me-ms-nya": 10
+"me-hs-nya": 2747,
+"me-ms-nya": 10,
+"coop-nya-maine-coast-waldorf": 4
 },
 "context_dependent": true,
 "by_level": {
@@ -4792,12 +4795,11 @@
 "id": "coop-limestone-mssm",
 "method": "exact",
 "by_id": {
-"coop-limestone-mssm": 2093,
-"me-ms-limestone": 157
+"coop-limestone-mssm": 2152,
+"me-ms-limestone": 98
 },
 "context_dependent": true,
 "flags": [
-"athletes contradict name match (coop-limestone-mssm -> me-ms-limestone, 16/20)",
 "athletes contradict name match (coop-limestone-mssm -> me-ms-limestone, 17/23)",
 "athletes contradict name match (coop-limestone-mssm -> me-ms-limestone, 8/10)"
 ],
@@ -13655,12 +13657,17 @@
 ],
 "id": "me-ms-limestone",
 "method": "exact",
+"by_id": {
+"me-ms-limestone": 290,
+"coop-limestone-mssm": 48
+},
+"context_dependent": true,
 "flags": [
 "athletes contradict name match (me-ms-limestone -> coop-limestone-mssm, 15/22)",
-"athletes contradict name match (me-ms-limestone -> coop-limestone-mssm, 2/7)",
 "athletes contradict name match (me-ms-limestone -> coop-limestone-mssm, 29/31)",
 "athletes contradict name match (me-ms-limestone -> coop-limestone-mssm, 3/3)",
-"athletes contradict name match (me-ms-limestone -> coop-limestone-mssm, 4/11)"
+"athletes contradict name match (me-ms-limestone -> coop-limestone-mssm, 4/11)",
+"athletes contradict name match (me-ms-limestone -> coop-limestone-mssm, 4/12)"
 ],
 "how": "exact/alias"
 },
@@ -176311,21 +176318,25 @@
 "2008/Outdoor/caribouboys_may10": {
 "Brewer": "me-hs-brewer",
 "Caribou": "me-hs-caribou",
+"Limestone/MS": "me-ms-limestone",
 "Limestone/MSSM": "coop-limestone-mssm",
 "Old Town": "me-hs-old-town"
 },
 "2008/Outdoor/caribouboys_may13": {
 "Caribou": "me-hs-caribou",
+"Limestone/MS": "me-ms-limestone",
 "Limestone/MSSM": "coop-limestone-mssm"
 },
 "2008/Outdoor/caribougirls_may10": {
 "Brewer": "me-hs-brewer",
 "Caribou": "me-hs-caribou",
+"Limestone/MS": "me-ms-limestone",
 "Limestone/MSSM": "coop-limestone-mssm",
 "Old Town": "me-hs-old-town"
 },
 "2008/Outdoor/caribougirls_may13": {
-"Caribou": "me-hs-caribou"
+"Caribou": "me-hs-caribou",
+"Limestone/MS": "me-ms-limestone"
 },
 "2008/Outdoor/centralmainefrosh": {
 "Bonny Eagle": "me-hs-bonny-eagle",
@@ -179509,11 +179520,13 @@
 },
 "2009/Outdoor/ACresults%20boys": {
 "Caribou": "me-hs-caribou",
-"Fort Kent": "me-hs-fort-kent"
+"Fort Kent": "me-hs-fort-kent",
+"Limestone/MS": "me-ms-limestone"
 },
 "2009/Outdoor/ACresults%20girls": {
 "Caribou": "me-hs-caribou",
-"Fort Kent": "me-hs-fort-kent"
+"Fort Kent": "me-hs-fort-kent",
+"Limestone/MS": "me-ms-limestone"
 },
 "2009/Outdoor/Boys_Bangor_May_8_2009": {
 "Bangor Chr": "me-hs-bangor-christian",
@@ -182876,9 +182889,11 @@
 "Unattached": "x-unattached"
 },
 "2010/Indoor/usminvitemen": {
+"Southern Mai": "col-usm",
 "Unattached": "x-unattached"
 },
 "2010/Indoor/usminvitewomen": {
+"Southern Mai": "col-usm",
 "Springfield": "col-springfield"
 },
 "2010/Indoor/usmrelays": {
@@ -201531,6 +201546,9 @@
 "Yarmouth": "me-hs-yarmouth",
 "York": "me-hs-york"
 },
+"2016/Indoor/menscollegestate16": {
+"Southern Mai": "col-usm"
+},
 "2016/Indoor/ne-usatf-indoor-2016": {
 "Monmouth Academy": "me-hs-monmouth",
 "Searsport District High School": "me-hs-searsport",
@@ -201828,6 +201846,9 @@
 "Mount Desert": "me-ms-mdi-elementary",
 "Orono": "me-ms-orono",
 "Piscataquis": "me-ms-piscataquis"
+},
+"2016/Outdoor/Aloha-Relays": {
+"Southern Mai": "col-usm"
 },
 "2016/Outdoor/Belfast-boys-1": {
 "Camden Hills": "me-hs-camden-hills",
@@ -205031,6 +205052,7 @@
 "Westbrook": "me-hs-westbrook"
 },
 "2017/Indoor/170107@USM2": {
+"Southern Mai": "col-usm",
 "Unattached": "col-usm"
 },
 "2017/Indoor/Colby-Meet-3": {
@@ -205046,6 +205068,7 @@
 "Winslow": "me-hs-winslow"
 },
 "2017/Indoor/MTI-Alliance-Results": {
+"Southern Mai": "col-usm",
 "Unknown": "x-unknown"
 },
 "2017/Indoor/Results": {
@@ -205341,6 +205364,7 @@
 },
 "2017/Indoor/USM-Open-III-Results-ALL": {
 "Dirigo": "me-hs-dirigo",
+"Southern Mai": "col-usm",
 "Unattached": "col-usm"
 },
 "2017/Indoor/bowdoin28january2017": {
@@ -207798,6 +207822,7 @@
 "CC Rhode Isl": "col-ccri",
 "Naval Academ": "col-navy",
 "Salisbury": "col-salisbury",
+"Southern Mai": "col-usm",
 "Springfield": "col-springfield",
 "Trinity": "col-trinity"
 },
@@ -209159,14 +209184,23 @@
 "Winslow": "me-hs-winslow"
 },
 "2018/Indoor/2018-01-06_USM_Open_II": {
+"Southern Mai": "col-usm",
 "Unattached": "x-unattached"
 },
 "2018/Indoor/2018-01-27-mti-USM_Open_III_Results": {
+"Southern Mai": "col-usm",
 "Unattached": "x-unattached"
 },
 "2018/Indoor/2018-01-27-wti-USM-Open_III_Results": {
 "Dirigo": "me-hs-dirigo",
+"Southern Mai": "col-usm",
 "Unattached": "x-unattached"
+},
+"2018/Indoor/2018-Alliance-Results-All": {
+"Southern Mai": "col-usm"
+},
+"2018/Indoor/2018-LEC-Results-All": {
+"Southern Mai": "col-usm"
 },
 "2018/Indoor/2018-USATF-ME-Indoor-Championship": {
 "Patriot Pole": "me-hs-thornton",
@@ -209177,6 +209211,12 @@
 "Unattached,Old Town": "me-ms-leonard",
 "Unattached,Orono, M": "me-ms-orono",
 "Unattached,Saco, ME": "x-unattached"
+},
+"2018/Indoor/Bowdoin-2-men": {
+"Southern Mai": "col-usm"
+},
+"2018/Indoor/Bowdoin-2-women": {
+"Southern Mai": "col-usm"
 },
 "2018/Indoor/EMITL1ABOYS_16DEC2017": {
 "Bangor Chr": "me-hs-bangor-christian",
@@ -210035,6 +210075,9 @@
 "Nokomis": "me-ms-nokomis",
 "Piscataquis": "me-ms-piscataquis"
 },
+"2018/Outdoor/Aloha-relays": {
+"Southern Mai": "col-usm"
+},
 "2018/Outdoor/Bangor-boys-2": {
 "Bucksport": "me-hs-bucksport",
 "Deer Isle": "me-hs-deer-isle",
@@ -210067,6 +210110,12 @@
 "North Haven": "me-hs-north-haven",
 "Oceanside": "me-hs-oceanside",
 "Oceanside High School": "me-hs-oceanside"
+},
+"2018/Outdoor/Bowdoin-Invitational-men": {
+"Southern Mai": "col-usm"
+},
+"2018/Outdoor/Bowdoin-Invitational-women": {
+"Southern Mai": "col-usm"
 },
 "2018/Outdoor/Boys-results": {
 "Boothbay": "me-hs-boothbay",
@@ -210457,6 +210506,9 @@
 "Medomak": "me-ms-medomak",
 "North Haven": "me-hs-north-haven",
 "Wiscasset": "me-ms-wiscasset"
+},
+"2018/Outdoor/Mens-State-meet-reults": {
+"Southern Mai": "col-usm"
 },
 "2018/Outdoor/Morse-boys": {
 "Lewiston": "me-hs-lewiston",
@@ -213575,19 +213627,31 @@
 "Unattached": "x-unattached"
 },
 "2019/Indoor/2019-01-05-mti-USM-Open-II": {
+"Southern Mai": "col-usm",
 "Unattached": "x-unattached"
 },
 "2019/Indoor/2019-01-05-wti-usm-open-II": {
 "Dirigo": "me-hs-dirigo",
+"Southern Mai": "col-usm",
 "Unattached": "x-unattached"
+},
+"2019/Indoor/2019-01-12-Poyau-Mens-Results": {
+"Southern Mai": "col-usm"
+},
+"2019/Indoor/2019-01-12-Poyau-Womens-Results": {
+"Southern Mai": "col-usm"
 },
 "2019/Indoor/2019-01-26_USM_Open_III_Results": {
 "CC Rhode Isl": "col-ccri",
 "Patriot Pole": null,
+"Southern Mai": "col-usm",
 "Unattached": "x-unattached"
 },
 "2019/Indoor/2019-02-09-wti-Gordon-Kelly-Invitational": {
 "Trinity": "col-trinity"
+},
+"2019/Indoor/2019-Maine-Womens-State-meet": {
+"Southern Mai": "col-usm"
 },
 "2019/Indoor/2019-USM-Relays-1": {
 "Biddeford": "me-hs-biddeford",
@@ -213649,6 +213713,9 @@
 },
 "2019/Indoor/Kids-meet-5": {
 "Unattached": "x-unattached"
+},
+"2019/Indoor/Maine-Quad-meet-results": {
+"Southern Mai": "col-usm"
 },
 "2019/Indoor/Meet-@-Bow-12-28Results": {
 "LA": "me-hs-lincoln-academy",
@@ -214177,7 +214244,14 @@
 "T": "me-ms-telstar"
 },
 "2019/Outdoor/2019-04-06-mto-Yellowjacket-Invitational": {
+"Southern Mai": "col-usm",
 "Springfield": "col-springfield"
+},
+"2019/Outdoor/2019-04-27-Alliance-Men-Results": {
+"Southern Mai": "col-usm"
+},
+"2019/Outdoor/2019-04-27-Alliance-Women-Results": {
+"Southern Mai": "col-usm"
 },
 "2019/Outdoor/2019-alms-tf-championship-results": {
 "Caribou": "me-ms-caribou",
@@ -217654,10 +217728,12 @@
 "OHS": "me-hs-oceanside"
 },
 "2020/Indoor/2019-12-14-mti-USM-Open-I": {
+"Southern Mai": "col-usm",
 "Unattached": "x-unattached"
 },
 "2020/Indoor/2019-12-14-wti-USM-Open-I": {
 "Dirigo": "me-hs-dirigo",
+"Southern Mai": "col-usm",
 "Unattached": "x-unattached"
 },
 "2020/Indoor/BOW-meet-on-12-21Results": {
@@ -218009,10 +218085,12 @@
 "MTA": "me-hs-mt-ararat"
 },
 "2020/Indoor/USM-Invite-2020-01-25-Results": {
+"Southern Mai": "col-usm",
 "Unattached": "x-unattached"
 },
 "2020/Indoor/bowdoinmen18jan2020": {
-"Maine-Fort K": "me-hs-fort-kent"
+"Maine-Fort K": "me-hs-fort-kent",
+"Southern Mai": "col-usm"
 },
 "2020/Indoor/bowdoinmen25jan2020": {
 "Farmington": "col-umf",
@@ -218020,6 +218098,7 @@
 },
 "2020/Indoor/bowdoinwomen18jan2020": {
 "Maine-Fort K": "me-hs-fort-kent",
+"Southern Mai": "col-usm",
 "Unattached": "x-unattached"
 },
 "2020/Indoor/bowdoinwomen25jan2020": {
@@ -218231,6 +218310,12 @@
 "Messalonskee High School": "me-hs-messalonskee",
 "Mt. Ararat": "me-hs-mt-ararat",
 "Oxford Hills": "me-hs-oxford-hills"
+},
+"2020/Indoor/mainecollege8feb2020": {
+"Southern Mai": "col-usm"
+},
+"2020/Indoor/mainecollegewomen8feb2020": {
+"Southern Mai": "col-usm"
 },
 "2020/Indoor/men_umaine_invitational_trackmeet_2.8.20": {
 "Fort Kent": "col-umfk",
@@ -219009,6 +219094,7 @@
 "YHS": "me-hs-yarmouth"
 },
 "2021/Indoor/2021-02-26-and-27-Final-Results": {
+"Southern Mai": "col-usm",
 "Unattached": "x-unattached"
 },
 "2021/Indoor/2021-sp-results": {
@@ -219123,7 +219209,23 @@
 },
 "2021/Outdoor/2021-03-27_mto-wto_results": {
 "Maine-Fort K": "col-umfk",
+"Southern Mai": "col-usm",
 "Unknown": "x-unknown"
+},
+"2021/Outdoor/2021-04-10-usm-st-joes-results": {
+"Southern Mai": "col-usm"
+},
+"2021/Outdoor/2021-04-23-mto-eastern-conn-results": {
+"Southern Mai": "col-usm"
+},
+"2021/Outdoor/2021-04-23-wto-eastern-conn-results": {
+"Southern Mai": "col-usm"
+},
+"2021/Outdoor/2021-05-01-wto-LEC-results": {
+"Southern Mai": "col-usm"
+},
+"2021/Outdoor/2021-05-02-mto-LEC-results": {
+"Southern Mai": "col-usm"
 },
 "2021/Outdoor/2021-GNG-Last-Chance-Throws-Meet-Results": {
 "GNG": "me-hs-gray-ng",
@@ -221980,6 +222082,7 @@
 "Oxford Hills": "me-hs-oxford-hills"
 },
 "2022/Indoor/NED3Women": {
+"Southern Mai": "col-usm",
 "Springfield": "col-springfield",
 "Trinity": "col-trinity"
 },
@@ -222598,6 +222701,7 @@
 "Islesboro Central School": "me-ms-islesboro"
 },
 "2022/Outdoor/Caribou-results": {
+"Limestone/MS": "me-ms-limestone",
 "Limestone/MSSM": "coop-limestone-mssm",
 "Presque Isle": "me-hs-presque-isle"
 },
@@ -222895,12 +222999,14 @@
 "2022/Outdoor/Resultsoldrown23april2022": {
 "Bangor Chris": "me-hs-bangor-christian",
 "Bangor Christian": "me-hs-bangor-christian",
+"Limestone/MS": "me-ms-limestone",
 "Limestone/MSSM": "coop-limestone-mssm",
 "Mattanawcook": "me-hs-mattanawcook",
 "Mattanawcook Academy": "me-hs-mattanawcook",
 "Presque Isle": "me-hs-presque-isle"
 },
 "2022/Outdoor/Resultsptrwomen": {
+"Southern Mai": "col-usm",
 "Unknown": "x-unknown"
 },
 "2022/Outdoor/Resultstelstar": {
@@ -222977,10 +223083,12 @@
 },
 "2022/Outdoor/monksmen16april2022": {
 "Maine-Fort K": "col-umfk",
+"Southern Mai": "col-usm",
 "Unattached": "x-unattached"
 },
 "2022/Outdoor/monkswomen16april2022": {
-"Maine-Fort K": "col-umfk"
+"Maine-Fort K": "col-umfk",
+"Southern Mai": "col-usm"
 },
 "2022/Outdoor/newengland22": {
 "Auburn": "oos-auto-ma-auburn",
@@ -224385,6 +224493,12 @@
 "Oceanside High School": "me-hs-oceanside",
 "Oxford Hills": "me-hs-oxford-hills"
 },
+"2023/Indoor/Maine-State-College-results-men": {
+"Southern Mai": "col-usm"
+},
+"2023/Indoor/Maine-State-College-results-women": {
+"Southern Mai": "col-usm"
+},
 "2023/Indoor/Meet-6B": {
 "Sumner Memor": "me-hs-sumner"
 },
@@ -224698,10 +224812,12 @@
 "Mattanawcook Academy": "me-hs-mattanawcook"
 },
 "2023/Outdoor/Bates-Quad-meet-mens-results": {
+"Southern Mai": "col-usm",
 "Unattached": "x-unattached",
 "Unknown": "x-unknown"
 },
 "2023/Outdoor/Bates-Quad-meet-womens-results": {
+"Southern Mai": "col-usm",
 "Unattached": "x-unattached"
 },
 "2023/Outdoor/Bath-MS-boys-results": {
@@ -224808,6 +224924,7 @@
 "Bangor Chris": "me-hs-bangor-christian",
 "Buckfield": "me-hs-buckfield",
 "Islesboro": "me-hs-islesboro",
+"Limestone/MS": "me-ms-limestone",
 "Madison Area": "me-hs-madison",
 "Maranacook C": "me-hs-maranacook",
 "Mattanawcook": "me-hs-mattanawcook",
@@ -224826,6 +224943,7 @@
 "Bangor Chris": "me-hs-bangor-christian",
 "Bangor Christian": "me-hs-bangor-christian",
 "Buckfield": "me-hs-buckfield",
+"Limestone/MS": "me-ms-limestone",
 "Madison Area": "me-hs-madison",
 "Maranacook C": "me-hs-maranacook",
 "Mattanawcook": "me-hs-mattanawcook",
@@ -225045,7 +225163,11 @@
 "Mattanawcook Academy": "me-hs-mattanawcook"
 },
 "2023/Outdoor/Pine-Tree-Classic-mens-results": {
+"Southern Mai": "col-usm",
 "Unattached": "x-unattached"
+},
+"2023/Outdoor/Pine-Tree-Classic-womens-results": {
+"Southern Mai": "col-usm"
 },
 "2023/Outdoor/Results-BOB-MORSE": {
 "Gray New Glo": "me-hs-gray-ng",
@@ -225077,6 +225199,9 @@
 "Messalonskee": "me-hs-messalonskee",
 "Messalonskee High School": "me-hs-messalonskee",
 "Skowhegan Ar": "me-hs-skowhegan"
+},
+"2023/Outdoor/ResultsFALM": {
+"Southern Mai": "col-usm"
 },
 "2023/Outdoor/ResultsFALM-MS": {
 "Oxford Hills": "me-ms-oxford-hills",
@@ -225140,6 +225265,9 @@
 "2023/Outdoor/ResultsSP": {
 "South Portla": "me-hs-south-portland"
 },
+"2023/Outdoor/ResultsSP-MS": {
+"Southern Mai": "col-usm"
+},
 "2023/Outdoor/ResultsSV": {
 "Lake Region": "me-hs-lake-region",
 "Sacopee Vall": "me-hs-sacopee"
@@ -225158,6 +225286,9 @@
 },
 "2023/Outdoor/ResultsTHORN": {
 "Thornton Academy": "me-hs-thornton"
+},
+"2023/Outdoor/ResultsWEST-MS": {
+"Southern Mai": "col-usm"
 },
 "2023/Outdoor/ResultsWJHM2": {
 "Messalonskee": "me-ms-messalonskee"
@@ -225281,6 +225412,7 @@
 "Bangor Chris": "me-ms-bangor-christian"
 },
 "2023/Outdoor/bangor22april2023": {
+"Limestone/MS": "me-ms-limestone",
 "Limestone/MSSM": "coop-limestone-mssm"
 },
 "2023/Outdoor/bangor29april2023-1": {
@@ -225341,6 +225473,7 @@
 "Messalonskee": "me-hs-messalonskee"
 },
 "2023/Outdoor/mdi29april2023": {
+"Limestone/MS": "me-ms-limestone",
 "Limestone/MSSM": "coop-limestone-mssm",
 "Presque Isle": "me-hs-presque-isle"
 },
@@ -226970,6 +227103,7 @@
 "Bangor Christian": "me-hs-bangor-christian",
 "Buckfield": "me-hs-buckfield",
 "Islesboro Ce": "me-hs-islesboro",
+"Limestone/MS": "me-ms-limestone",
 "Lisbon/Oak Hill": "coop-ot-lisbon-oak-hill",
 "Madison Area": "me-hs-madison",
 "Mountain Valley": "me-hs-mountain-valley",
@@ -227133,6 +227267,9 @@
 "Medomak Vall": "me-hs-medomak",
 "Oceanside High School": "me-hs-oceanside"
 },
+"2024/Outdoor/ResultsFALM-MS": {
+"Southern Mai": "col-usm"
+},
 "2024/Outdoor/ResultsFREEP": {
 "Cape Elizabe": "me-ms-cape-elizabeth",
 "Gray New Glo": "me-ms-gray-ng"
@@ -227244,7 +227381,8 @@
 },
 "2024/Outdoor/ResultsWINDHAM-1": {
 "Scarborough": "me-ms-scarborough",
-"South Portla": "me-ms-south-portland"
+"South Portla": "me-ms-south-portland",
+"Southern Mai": "col-usm"
 },
 "2024/Outdoor/ResultsWTVLHS2": {
 "Cony High Sc": "me-hs-cony",
@@ -227290,6 +227428,7 @@
 "2024/Outdoor/bangorboys11may2024": {
 "Bangor Chris": "me-hs-bangor-christian",
 "Bangor Christian": "me-hs-bangor-christian",
+"Limestone/MS": "me-ms-limestone",
 "Limestone/MSSM": "coop-limestone-mssm",
 "Presque Isle": "me-hs-presque-isle"
 },
@@ -227300,6 +227439,7 @@
 "2024/Outdoor/bangorgirls11may2024": {
 "Bangor Chris": "me-hs-bangor-christian",
 "Bangor Christian": "me-hs-bangor-christian",
+"Limestone/MS": "me-ms-limestone",
 "Presque Isle": "me-hs-presque-isle"
 },
 "2024/Outdoor/bangorgirls27april2024": {
@@ -228752,6 +228892,12 @@
 "Medomak Vall": "me-hs-medomak",
 "Oceanside High School": "me-hs-oceanside"
 },
+"2025/Indoor/Maine-College-State-meet-Men": {
+"Southern Mai": "col-usm"
+},
+"2025/Indoor/Maine-College-State-meet-women": {
+"Southern Mai": "col-usm"
+},
 "2025/Indoor/Results": {
 "Skowhegan Ar": "me-hs-skowhegan"
 },
@@ -228999,7 +229145,7 @@
 "2025/Outdoor/2025-pvc-tf-week-3-caribou-results": {
 "Bangor Christian": "me-hs-bangor-christian",
 "Houlton/Hodg": "coop-houlton-hodgdon",
-"Limestone/MSSM": "me-ms-limestone",
+"Limestone/MSSM": "coop-limestone-mssm",
 "Limestone/MSSM 'B'": "me-ms-limestone",
 "Presque Isle": "me-hs-presque-isle"
 },
@@ -229186,6 +229332,9 @@
 "2025/Outdoor/Orono-MS-results": {
 "Piscataquis": "me-ms-piscataquis"
 },
+"2025/Outdoor/Pine-Tree-Classic-results": {
+"Southern Mai": "col-usm"
+},
 "2025/Outdoor/Results-1": {
 "Bonny Eagle": "me-hs-bonny-eagle",
 "Thornton Academy": "me-hs-thornton"
@@ -229223,7 +229372,7 @@
 "Gray New Glo": "me-hs-gray-ng",
 "Lake Region": "me-hs-lake-region",
 "North Yarmou": "coop-nya-maine-coast-waldorf",
-"North Yarmouth Academy": "me-hs-nya",
+"North Yarmouth Academy": "coop-nya-maine-coast-waldorf",
 "Old Orchard": "me-hs-old-orchard",
 "Old Orchard Beach": "me-hs-old-orchard",
 "Sacopee Vall": "me-hs-sacopee"
@@ -229233,7 +229382,7 @@
 "Gray New Glo": "me-hs-gray-ng",
 "Lake Region": "me-hs-lake-region",
 "North Yarmou": "coop-nya-maine-coast-waldorf",
-"North Yarmouth Academy": "me-hs-nya",
+"North Yarmouth Academy": "coop-nya-maine-coast-waldorf",
 "Old Orchard": "me-hs-old-orchard",
 "Old Orchard Beach": "me-hs-old-orchard",
 "Sacopee Vall": "me-hs-sacopee"
@@ -229242,13 +229391,15 @@
 "Messalonskee": "me-ms-messalonskee"
 },
 "2025/Outdoor/Westbrook-MS51225-results": {
-"South Portla": "me-ms-south-portland"
+"South Portla": "me-ms-south-portland",
+"Southern Mai": "me-ms-southern-maine-catholic"
 },
 "2025/Outdoor/WinsResults": {
 "Cony High Sc": "me-hs-cony",
 "Cony High School": "me-hs-cony"
 },
 "2025/Outdoor/bangorboys17may2025": {
+"Limestone/MS": "coop-limestone-mssm",
 "Limestone/MSSM": "coop-limestone-mssm",
 "Presque Isle": "me-hs-presque-isle"
 },
@@ -229256,6 +229407,7 @@
 "Houlton/Hodg": "coop-houlton-hodgdon"
 },
 "2025/Outdoor/bangorgirls17may2025": {
+"Limestone/MS": "coop-limestone-mssm",
 "Limestone/MSSM": "coop-limestone-mssm",
 "Presque Isle": "me-hs-presque-isle"
 },
@@ -231507,6 +231659,12 @@
 "Bangor Chris": "me-hs-bangor-christian",
 "Bangor Christian": "me-hs-bangor-christian"
 },
+"2026/Outdoor/Pine-Tree-Mens-results": {
+"Southern Mai": "col-usm"
+},
+"2026/Outdoor/Pine-Tree-womens-results": {
+"Southern Mai": "col-usm"
+},
 "2026/Outdoor/Reeds-Brook-results": {
 "Bangor Chris": "me-ms-bangor-christian",
 "Piscataquis": "me-ms-piscataquis"
@@ -233005,7 +233163,6 @@
 "held": {
 "coop-houlton-ghca": 1991,
 "me-hs-houlton": 611,
-"coop-houlton-hodgdon": 309,
 "me-hs-greater-houlton-christian": 177
 }
 },
@@ -233190,7 +233347,13 @@
 "id": null,
 "basis": "name only (no joined rows)"
 },
-"Limestone Middle School": "me-ms-limestone",
+"Limestone Middle School": {
+"id": "me-ms-limestone",
+"held": {
+"me-ms-limestone": 401,
+"coop-limestone-mssm": 107
+}
+},
 "LimestoneMSSM": {
 "id": "coop-limestone-mssm",
 "held": {

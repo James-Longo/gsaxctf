@@ -1743,6 +1743,10 @@ FILE_RULES = [
     (['Houlton/Hodg'], 'Outdoor', (2025, 2025), r'^(2025-aroostook-league-tf-championship-results|2025-pvc-tf-week-3-caribou-results)$', 'coop-houlton-hodgdon'),
     (["Limestone/MSSM 'B'"], 'Outdoor', (2025, 2025), r'^2025-pvc-tf-week-3-caribou-results$', 'me-ms-limestone'),
     (['Houlton/Hodg'], 'Outdoor', (2025, 2025), r'^JV-(boys|girls)-results$', 'coop-houlton-hodgdon'),
+    # 2026-10-29 Outdoor second read t2 (2025)
+    (['North Yarmouth Academy'], 'Outdoor', (2025, 2025), r'^WMC-(boys|girls)-1$', 'coop-nya-maine-coast-waldorf'),
+    (['Southern Mai'], 'Outdoor', (2025, 2025), r'^Westbrook-MS51225-results$', 'me-ms-southern-maine-catholic'),
+    (['Limestone/MS'], 'Outdoor', (2025, 2025), r'^bangor(boys|girls)17may2025$', 'coop-limestone-mssm'),
     # 2026-10-24 unresolved-school review, batch 2
     (['F'], 'XC', (2004, 2004), r'^cape7oct04[bg]\.txt$', 'me-hs-falmouth'),   # Title lists Falmouth; only F team
     (['Y'], 'XC', (2004, 2004), r'^cape7oct04[bg]\.txt$', 'me-hs-yarmouth'),   # Title lists Yarmouth; only Y team
