@@ -512,7 +512,7 @@ COOPS = [
     dict(id='coop-houlton-ghca', label='Houlton/Greater Houlton', host='me-hs-houlton',
          members=['me-hs-houlton', 'me-hs-greater-houlton-christian'], seasons=['XC', 'Outdoor', 'Indoor'],
          genders=['Boys', 'Girls'], years=[2019, None],
-         labels=['Houlton/GHCA', 'Houlton/Hodg', 'Ghca / Houlton', 'Houlton High / GHCA', 'Houlton/Greater Houlton',
+         labels=['Houlton/GHCA', 'Ghca / Houlton', 'Houlton High / GHCA', 'Houlton/Greater Houlton',
                  'Houlton/Greater Houlton Christian', 'Houlton/Gr. Houlton CA', 'Houlton/Greater Houlton CA'],
          evidence=['MPA XC 2026-27 C North "Houlton/Greater Houlton"', 'MPA OT 2025-26 C "Houlton/Greater Houlton (B)"']),
     # North Haven + Vinalhaven cross-country team 'Fox Islands' / 'H. Haven/Vinal': printed only in XC
@@ -603,7 +603,8 @@ COOPS = [
     dict(id='coop-houlton-hodgdon', label='Houlton/Hodgdon(/GHCA)', host='me-hs-houlton',
          members=['me-hs-houlton', 'me-hs-hodgdon', 'me-hs-greater-houlton-christian'], seasons=['Indoor', 'Outdoor'],
          genders=['Boys', 'Girls'], years=[None, None],
-         labels=['Houlton/Hodg', 'Houlton/Hodgdon', 'Houlton/Hodgdon/GHCA', 'Hltn/GHCA/Hdgdn'], evidence=['observed label only']),
+         labels=['Houlton/Hodg', 'Houlton/Hodgdon', 'Houlton/Hodgdon/GHCA', 'Hltn/GHCA/Hdgdn'],   # 'Houlton/Hodg' is this co-op cut at 12 characters (the same sheets print 'Houlton/Hodgdon/GHCA' in full)
+         evidence=['observed label only']),
     dict(id='coop-boothbay-wiscasset-richmond', label='Boothbay/Wiscasset/Richmond', host='me-hs-boothbay',
          members=['me-hs-boothbay', 'me-hs-wiscasset', 'me-hs-richmond'], seasons=['Indoor', 'Outdoor'],
          genders=['Boys', 'Girls'], years=[None, None], labels=['Bthby/Wisc/Rchmd'], evidence=['observed label only']),
@@ -1737,6 +1738,11 @@ FILE_RULES = [
     (['TA'], 'XC', (2019, 2019), r'^thorntonms(boys|girls)_oct9$', 'me-ms-thornton'),
     # 2026-10-28 MileSplit second read batch 33
     (['SD'], 'XC', (2021, 2021), r'^ms-wmc-sd-wayn-yar-cape-elizabeth-2021$', 'me-hs-st-dominic'),
+    # 2026-10-28 Outdoor second read t1 (2025)
+    (["Woodland 'A'", "Woodland 'B'"], 'Outdoor', (2025, 2025), r'^(2025-alms-tf-meet-3-caribou|2025-aroostook-league-middle-school-tf-championship)$', 'me-ms-union-122'),
+    (['Houlton/Hodg'], 'Outdoor', (2025, 2025), r'^(2025-aroostook-league-tf-championship-results|2025-pvc-tf-week-3-caribou-results)$', 'coop-houlton-hodgdon'),
+    (["Limestone/MSSM 'B'"], 'Outdoor', (2025, 2025), r'^2025-pvc-tf-week-3-caribou-results$', 'me-ms-limestone'),
+    (['Houlton/Hodg'], 'Outdoor', (2025, 2025), r'^JV-(boys|girls)-results$', 'coop-houlton-hodgdon'),
     # 2026-10-24 unresolved-school review, batch 2
     (['F'], 'XC', (2004, 2004), r'^cape7oct04[bg]\.txt$', 'me-hs-falmouth'),   # Title lists Falmouth; only F team
     (['Y'], 'XC', (2004, 2004), r'^cape7oct04[bg]\.txt$', 'me-hs-yarmouth'),   # Title lists Yarmouth; only Y team

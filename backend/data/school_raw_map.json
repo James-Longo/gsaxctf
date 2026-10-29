@@ -1,29 +1,29 @@
 {
 "_meta": {
 "methods_by_rows": {
-"exact/alias": 1721813,
-"code": 254848,
-"truncation": 119242,
-"athlete-continuity": 51368,
+"exact/alias": 1721807,
+"code": 254845,
+"truncation": 119243,
+"athlete-continuity": 51369,
 "mascot": 28413,
 "bare name + level context": 25514,
-"unresolved": 17769,
-"manual (file rule)": 14950,
-"co-op label": 12534,
+"unresolved": 17760,
+"manual (file rule)": 15071,
+"co-op label": 12423,
 "state-tagged (auto entry)": 10609,
 "spelling (fuzzy)": 3454,
 "file-expansion": 2785,
 "debris-salvage": 1767,
 "debris": 1042,
 "ambiguous": 990,
-"company": 725,
+"company": 728,
 "later-hs": 636,
 "blank": 184,
 "co-op label -> host (co-op not active)": 183
 },
 "methods_by_strings": {
-"exact/alias": 4102,
-"unresolved": 2190,
+"exact/alias": 4101,
+"unresolved": 2188,
 "state-tagged (auto entry)": 1568,
 "debris-salvage": 913,
 "code": 760,
@@ -31,7 +31,7 @@
 "truncation": 538,
 "athlete-continuity": 466,
 "spelling (fuzzy)": 288,
-"manual (file rule)": 144,
+"manual (file rule)": 145,
 "co-op label": 75,
 "bare name + level context": 66,
 "mascot": 42,
@@ -39,7 +39,7 @@
 "file-expansion": 13,
 "later-hs": 3
 },
-"distinct_strings": 11924,
+"distinct_strings": 11922,
 "note": "'raw' keys are whitespace-collapsed school strings exactly as printed. 'overrides' are per-file answers (year/season/file-stem) that differ from the string's global id."
 },
 "raw": {
@@ -1004,9 +1004,9 @@
 "how": "exact/alias"
 },
 "Caribou High School": {
-"rows": 9798,
+"rows": 9799,
 "seasons": {
-"Outdoor": 5443,
+"Outdoor": 5444,
 "XC": 4355
 },
 "years": [
@@ -4186,9 +4186,9 @@
 "how": "exact/alias"
 },
 "Presque Isle High School": {
-"rows": 2617,
+"rows": 2618,
 "seasons": {
-"Outdoor": 2146,
+"Outdoor": 2147,
 "XC": 429,
 "Indoor": 42
 },
@@ -6995,9 +6995,9 @@
 "how": "exact/alias"
 },
 "Fort Kent Co": {
-"rows": 1267,
+"rows": 1268,
 "seasons": {
-"Outdoor": 1165,
+"Outdoor": 1166,
 "XC": 102
 },
 "years": [
@@ -9901,10 +9901,10 @@
 "how": "code"
 },
 "Woodland": {
-"rows": 643,
+"rows": 644,
 "seasons": {
 "XC": 268,
-"Outdoor": 375
+"Outdoor": 376
 },
 "years": [
 2003,
@@ -9915,7 +9915,7 @@
 "by_id": {
 "me-ms-woodland": 401,
 "me-hs-woodland": 150,
-"me-ms-union-122": 92
+"me-ms-union-122": 93
 },
 "context_dependent": true,
 "by_level": {
@@ -9924,8 +9924,7 @@
 },
 "flags": [
 "athletes contradict name match (me-ms-woodland -> me-ms-union-122, 7/17)",
-"athletes contradict name match (me-ms-woodland -> me-ms-union-122, 8/18)",
-"file expansion: me-ms-union-122 -> me-ms-woodland"
+"athletes contradict name match (me-ms-woodland -> me-ms-union-122, 8/18)"
 ],
 "how": "exact/alias"
 },
@@ -11068,8 +11067,19 @@
 2024,
 2025
 ],
-"id": "coop-houlton-ghca",
-"method": "ambiguous-name+athletes",
+"id": "coop-houlton-hodgdon",
+"method": "exact",
+"by_id": {
+"coop-houlton-hodgdon": 514
+},
+"context_dependent": true,
+"flags": [
+"athletes contradict name match (coop-houlton-hodgdon -> coop-houlton-ghca, 12/20)",
+"athletes contradict name match (coop-houlton-hodgdon -> coop-houlton-ghca, 4/5)",
+"athletes contradict name match (coop-houlton-hodgdon -> coop-houlton-ghca, 4/7)",
+"athletes contradict name match (coop-houlton-hodgdon -> coop-houlton-ghca, 5/6)",
+"athletes contradict name match (coop-houlton-hodgdon -> coop-houlton-ghca, 5/9)"
+],
 "how": "co-op label"
 },
 "Kents Hill School": {
@@ -23591,6 +23601,18 @@
 ],
 "id": "me-hs-skowhegan",
 "method": "code",
+"by_id": {
+"me-hs-skowhegan": 103,
+"me-hs-southern-aroostook": 3
+},
+"context_dependent": true,
+"by_season": {
+"Indoor": "me-hs-skowhegan",
+"Outdoor": "me-hs-southern-aroostook"
+},
+"flags": [
+"company: me-hs-skowhegan (0.21) -> me-hs-southern-aroostook (1.25)"
+],
 "how": "code"
 },
 "Highview Chr": {
@@ -35423,20 +35445,6 @@
 "method": "unresolved",
 "how": "unresolved"
 },
-"ion": {
-"rows": 41,
-"seasons": {
-"Outdoor": 36,
-"Indoor": 5
-},
-"years": [
-2005,
-2025
-],
-"id": null,
-"method": "unresolved",
-"how": "unresolved"
-},
 "Shipbuilders": {
 "rows": 41,
 "seasons": {
@@ -37693,6 +37701,20 @@
 "id": "me-hs-fryeburg",
 "method": "code",
 "how": "code"
+},
+"ion": {
+"rows": 35,
+"seasons": {
+"Outdoor": 30,
+"Indoor": 5
+},
+"years": [
+2005,
+2025
+],
+"id": null,
+"method": "unresolved",
+"how": "unresolved"
 },
 "MT. VIEW HIGH SC": {
 "rows": 35,
@@ -44880,9 +44902,6 @@
 ],
 "id": "coop-houlton-hodgdon",
 "method": "exact",
-"flags": [
-"athletes contradict name match (coop-houlton-hodgdon -> coop-houlton-ghca, 3/3)"
-],
 "how": "co-op label"
 },
 "Cheverus HIGH School": {
@@ -51953,6 +51972,19 @@
 "method": "exact",
 "how": "exact/alias"
 },
+"Presque Isle High School 'B'": {
+"rows": 16,
+"seasons": {
+"Outdoor": 16
+},
+"years": [
+2012,
+2026
+],
+"id": "me-hs-presque-isle",
+"method": "exact+season-words",
+"how": "exact/alias"
+},
 "Winthrop,Winthrop, ME": {
 "rows": 16,
 "seasons": {
@@ -53256,19 +53288,6 @@
 "method": "exact",
 "how": "exact/alias"
 },
-"Presque Isle High School 'B'": {
-"rows": 15,
-"seasons": {
-"Outdoor": 15
-},
-"years": [
-2012,
-2026
-],
-"id": "me-hs-presque-isle",
-"method": "exact+season-words",
-"how": "exact/alias"
-},
 "Cumberland- RI": {
 "rows": 15,
 "seasons": {
@@ -53988,7 +54007,7 @@
 "method": "exact",
 "flags": [
 "athletes contradict name match (coop-houlton-hodgdon -> coop-houlton-ghca, 3/3)",
-"athletes contradict name match (coop-houlton-hodgdon -> coop-houlton-ghca, 5/6)"
+"athletes contradict name match (coop-houlton-hodgdon -> coop-houlton-ghca, 4/6)"
 ],
 "how": "co-op label"
 },
@@ -55576,6 +55595,11 @@
 ],
 "id": "me-ms-woodland",
 "method": "exact+level-context+season-words",
+"by_id": {
+"me-ms-woodland": 8,
+"me-ms-union-122": 6
+},
+"context_dependent": true,
 "how": "exact/alias"
 },
 "HolHam Middle School": {
@@ -71008,6 +71032,11 @@
 ],
 "id": "coop-limestone-mssm",
 "method": "exact+season-words",
+"by_id": {
+"coop-limestone-mssm": 6,
+"me-ms-limestone": 1
+},
+"context_dependent": true,
 "how": "co-op label"
 },
 "Rice Mem., VT": {
@@ -87649,9 +87678,13 @@
 2025,
 2025
 ],
-"id": "me-ms-woodland",
-"method": "exact+level-context+season-words",
-"how": "exact/alias"
+"id": "me-ms-union-122",
+"method": "manual (file rule)",
+"by_id": {
+"me-ms-union-122": 4
+},
+"context_dependent": true,
+"how": "manual (file rule)"
 },
 "Marblehead": {
 "rows": 4,
@@ -110506,19 +110539,6 @@
 "method": "exact+state-tail",
 "how": "state-tagged (auto entry)"
 },
-"resque Isle High School": {
-"rows": 2,
-"seasons": {
-"Outdoor": 2
-},
-"years": [
-2023,
-2025
-],
-"id": null,
-"method": "unresolved",
-"how": "unresolved"
-},
 "Whitefield M": {
 "rows": 2,
 "seasons": {
@@ -111777,6 +111797,19 @@
 "id": "oos-auto-ct-torrington",
 "method": "exact+state-tail",
 "how": "state-tagged (auto entry)"
+},
+"Fort Kent Community High Schoo 'B'": {
+"rows": 2,
+"seasons": {
+"Outdoor": 2
+},
+"years": [
+2025,
+2026
+],
+"id": "me-hs-fort-kent",
+"method": "exact+season-words",
+"how": "exact/alias"
 },
 "Tantasqua Re": {
 "rows": 2,
@@ -158963,6 +158996,19 @@
 "method": "exact+state-tail",
 "how": "state-tagged (auto entry)"
 },
+"resque Isle High School": {
+"rows": 1,
+"seasons": {
+"Outdoor": 1
+},
+"years": [
+2023,
+2023
+],
+"id": null,
+"method": "unresolved",
+"how": "unresolved"
+},
 "aribou High School": {
 "rows": 1,
 "seasons": {
@@ -161896,32 +161942,6 @@
 "method": "unresolved",
 "how": "unresolved"
 },
-"resque Isle High School 'B'": {
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2025,
-2025
-],
-"id": null,
-"method": "unresolved",
-"how": "unresolved"
-},
-"ort Kent Community High Schoo 'B'": {
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2025,
-2025
-],
-"id": null,
-"method": "unresolved",
-"how": "unresolved"
-},
 "Blackstone V": {
 "rows": 1,
 "seasons": {
@@ -162811,19 +162831,6 @@
 2026
 ],
 "id": "me-hs-bucksport",
-"method": "exact+season-words",
-"how": "exact/alias"
-},
-"Fort Kent Community High Schoo 'B'": {
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2026,
-2026
-],
-"id": "me-hs-fort-kent",
 "method": "exact+season-words",
 "how": "exact/alias"
 },
@@ -182339,6 +182346,7 @@
 "Messalonskee High School": "me-hs-messalonskee",
 "Mt. Blue": "me-hs-mt-blue",
 "Mvhs": "me-hs-medomak",
+"Sahs": "me-hs-skowhegan",
 "WIN": "me-hs-winslow",
 "Winslow": "me-hs-winslow"
 },
@@ -182427,6 +182435,7 @@
 "2010/Indoor/kvac8": {
 "Lewiston": "me-hs-lewiston",
 "MTA": "me-hs-mt-ararat",
+"Sahs": "me-hs-skowhegan",
 "WIN": "me-hs-winslow",
 "WTVL": "me-hs-waterville",
 "Winslow": "me-hs-winslow"
@@ -182436,6 +182445,7 @@
 "Messalonskee": "me-hs-messalonskee",
 "Mt. Blue": "me-hs-mt-blue",
 "Mvhs": "me-hs-medomak",
+"Sahs": "me-hs-skowhegan",
 "WIN": "me-hs-winslow",
 "WTVL": "me-hs-waterville",
 "Winslow": "me-hs-winslow"
@@ -182481,6 +182491,7 @@
 "MTA": "me-hs-mt-ararat",
 "Messalonskee": "me-hs-messalonskee",
 "Mt. Blue": "me-hs-mt-blue",
+"Sahs": "me-hs-skowhegan",
 "WIN": "me-hs-winslow",
 "Winslow": "me-hs-winslow"
 },
@@ -205705,12 +205716,14 @@
 "2017/Outdoor/2017-aroostook-league-tf-championships-1": {
 "Fort Kent": "me-hs-fort-kent",
 "Limestone/MSSM": "coop-limestone-mssm",
+"Limestone/MSSM 'B'": "coop-limestone-mssm",
 "Presque Isle": "me-hs-presque-isle",
 "Unknown": "x-unknown"
 },
 "2017/Outdoor/2017-caribou-invite-may-13": {
 "Fort Kent": "me-hs-fort-kent",
 "Limestone/MSSM": "coop-limestone-mssm",
+"Limestone/MSSM 'B'": "coop-limestone-mssm",
 "Presque Isle": "me-hs-presque-isle"
 },
 "2017/Outdoor/2017-freshman-championship": {
@@ -209938,16 +209951,19 @@
 "2018/Outdoor/2018-alms-tf-1-results": {
 "Caribou": "me-ms-caribou",
 "Presque Isle": "me-ms-presque-isle",
-"Woodland": "me-ms-woodland"
+"Woodland": "me-ms-woodland",
+"Woodland 'A'": "me-ms-woodland"
 },
 "2018/Outdoor/2018-alms-tf-3-boys": {
 "Caribou": "me-ms-caribou",
-"Woodland": "me-ms-woodland"
+"Woodland": "me-ms-woodland",
+"Woodland 'A'": "me-ms-woodland"
 },
 "2018/Outdoor/2018-alms-tf-3-girls": {
 "Caribou": "me-ms-caribou",
 "Presque Isle": "me-ms-presque-isle",
-"Woodland": "me-ms-woodland"
+"Woodland": "me-ms-woodland",
+"Woodland 'A'": "me-ms-woodland"
 },
 "2018/Outdoor/2018-alms-tf-championship-boys-results": {
 "Caribou": "me-ms-caribou",
@@ -209956,11 +209972,13 @@
 "2018/Outdoor/2018-alms-tf-championship-girls-results": {
 "Caribou": "me-ms-caribou",
 "Presque Isle": "me-ms-presque-isle",
-"Woodland": "me-ms-woodland"
+"Woodland": "me-ms-woodland",
+"Woodland 'A'": "me-ms-woodland"
 },
 "2018/Outdoor/2018-alms-tf-meet-2-boys": {
 "Caribou": "me-ms-caribou",
-"Woodland": "me-ms-woodland"
+"Woodland": "me-ms-woodland",
+"Woodland 'A'": "me-ms-woodland"
 },
 "2018/Outdoor/2018-alms-tf-meet-2-girls": {
 "Caribou": "me-ms-caribou",
@@ -226897,15 +226915,18 @@
 "Lincoln Academy": "me-hs-lincoln-academy"
 },
 "2024/Outdoor/2024-aroostook-league-tf-championship-results": {
+"Houlton/Hodg": "coop-houlton-hodgdon",
 "Limestone/MSSM": "coop-limestone-mssm",
 "Presque Isle": "me-hs-presque-isle"
 },
 "2024/Outdoor/2024-pvc-tf-week-3-@-pi-boys-results-updated": {
+"Houlton/Hodg": "coop-houlton-hodgdon",
 "Mattanawcook": "me-hs-mattanawcook",
 "Mattanawcook Academy": "me-hs-mattanawcook",
 "Presque Isle": "me-hs-presque-isle"
 },
 "2024/Outdoor/2024-pvc-tf-week-3-@-pi-girls-results": {
+"Houlton/Hodg": "coop-houlton-hodgdon",
 "Mattanawcook": "me-hs-mattanawcook",
 "Mattanawcook Academy": "me-hs-mattanawcook",
 "Presque Isle": "me-hs-presque-isle"
@@ -227011,6 +227032,7 @@
 },
 "2024/Outdoor/JV-meet": {
 "Bangor Chris": "me-hs-bangor-christian",
+"Houlton/Hodg": "coop-houlton-hodgdon",
 "Mattanawcook": "me-hs-mattanawcook",
 "Piscataquis": "me-hs-piscataquis",
 "Presque Isle": "me-hs-presque-isle",
@@ -227449,10 +227471,12 @@
 "Skowhegan Ar": "me-ms-skowhegan"
 },
 "2024/Outdoor/oldtownboys19april2024-1": {
+"Houlton/Hodg": "coop-houlton-hodgdon",
 "Penobscot Ch": "me-hs-penobscot-christian",
 "Piscataquis": "me-hs-piscataquis"
 },
 "2024/Outdoor/oldtowngirls19april2024-1": {
+"Houlton/Hodg": "coop-houlton-hodgdon",
 "Penobscot Ch": "me-hs-penobscot-christian",
 "Piscataquis": "me-hs-piscataquis"
 },
@@ -227485,6 +227509,7 @@
 "2024/Outdoor/pvcsmboys24may2024": {
 "Bangor Chris": "me-hs-bangor-christian",
 "Bangor Christian": "me-hs-bangor-christian",
+"Houlton/Hodg": "coop-houlton-hodgdon",
 "Mattanawcook": "me-hs-mattanawcook",
 "Mattanawcook Academy": "me-hs-mattanawcook",
 "Searsport": "me-hs-searsport",
@@ -227493,6 +227518,7 @@
 "2024/Outdoor/pvcsmgirl28may2024": {
 "Bangor Chris": "me-hs-bangor-christian",
 "Bangor Christian": "me-hs-bangor-christian",
+"Houlton/Hodg": "coop-houlton-hodgdon",
 "Mattanawcook": "me-hs-mattanawcook",
 "Mattanawcook Academy": "me-hs-mattanawcook",
 "Piscataquis": "me-hs-piscataquis",
@@ -228957,17 +228983,24 @@
 "Greater Houlton Christian Acad": "me-ms-ghca"
 },
 "2025/Outdoor/2025-alms-tf-meet-3-caribou": {
-"Woodland": "me-ms-union-122"
+"Woodland": "me-ms-union-122",
+"Woodland 'A'": "me-ms-union-122",
+"Woodland 'B'": "me-ms-union-122"
 },
 "2025/Outdoor/2025-aroostook-league-middle-school-tf-championship": {
-"Woodland": "me-ms-union-122"
+"Woodland": "me-ms-union-122",
+"Woodland 'A'": "me-ms-union-122",
+"Woodland 'B'": "me-ms-union-122"
 },
 "2025/Outdoor/2025-aroostook-league-tf-championship-results": {
+"Houlton/Hodg": "coop-houlton-hodgdon",
 "Presque Isle": "me-hs-presque-isle"
 },
 "2025/Outdoor/2025-pvc-tf-week-3-caribou-results": {
 "Bangor Christian": "me-hs-bangor-christian",
+"Houlton/Hodg": "coop-houlton-hodgdon",
 "Limestone/MSSM": "me-ms-limestone",
+"Limestone/MSSM 'B'": "me-ms-limestone",
 "Presque Isle": "me-hs-presque-isle"
 },
 "2025/Outdoor/2025-westbrook-2miler-results.txt": {
@@ -229088,6 +229121,7 @@
 },
 "2025/Outdoor/JV-boys-results": {
 "Bangor Chris": "me-hs-bangor-christian",
+"Houlton/Hodg": "coop-houlton-hodgdon",
 "Mattanawcook": "me-hs-mattanawcook",
 "Piscataquis": "me-hs-piscataquis",
 "Presque Isle": "me-hs-presque-isle",
@@ -229095,6 +229129,7 @@
 },
 "2025/Outdoor/JV-girls-results": {
 "Bangor Chris": "me-hs-bangor-christian",
+"Houlton/Hodg": "coop-houlton-hodgdon",
 "Mattanawcook": "me-hs-mattanawcook",
 "Mattanawcook Academy": "me-hs-mattanawcook",
 "Piscataquis": "me-hs-piscataquis",
@@ -229217,9 +229252,15 @@
 "Limestone/MSSM": "coop-limestone-mssm",
 "Presque Isle": "me-hs-presque-isle"
 },
+"2025/Outdoor/bangorboys3may2025": {
+"Houlton/Hodg": "coop-houlton-hodgdon"
+},
 "2025/Outdoor/bangorgirls17may2025": {
 "Limestone/MSSM": "coop-limestone-mssm",
 "Presque Isle": "me-hs-presque-isle"
+},
+"2025/Outdoor/bangorgirls3may2025": {
+"Houlton/Hodg": "coop-houlton-hodgdon"
 },
 "2025/Outdoor/bangorgirls9may2025": {
 "Mattanawcook": "me-hs-mattanawcook",
@@ -229284,6 +229325,7 @@
 "Bangor Chris": "me-hs-bangor-christian",
 "Bangor Christian": "me-hs-bangor-christian",
 "Buckfield": "me-hs-buckfield",
+"Houlton/Hodg": "coop-houlton-hodgdon",
 "Islesboro Ce": "me-hs-islesboro",
 "Madison Area": "me-hs-madison",
 "Maranacook C": "me-hs-maranacook",
@@ -229305,6 +229347,7 @@
 "2025/Outdoor/classcstategirla10june2025": {
 "Bangor Chris": "me-hs-bangor-christian",
 "Buckfield": "me-hs-buckfield",
+"Houlton/Hodg": "coop-houlton-hodgdon",
 "Madison Area": "me-hs-madison",
 "Maranacook C": "me-hs-maranacook",
 "Mattanawcook": "me-hs-mattanawcook",
@@ -229453,6 +229496,7 @@
 "Piscataquis": "me-hs-piscataquis"
 },
 "2025/Outdoor/oldtownboys25april2025": {
+"Houlton/Hodg": "coop-houlton-hodgdon",
 "Mattanawcook": "me-hs-mattanawcook",
 "Mattanawcook Academy": "me-hs-mattanawcook",
 "Presque Isle": "me-hs-presque-isle"
@@ -229461,6 +229505,7 @@
 "Piscataquis": "me-hs-piscataquis"
 },
 "2025/Outdoor/oldtowngirls25april2025": {
+"Houlton/Hodg": "coop-houlton-hodgdon",
 "Mattanawcook": "me-hs-mattanawcook",
 "Mattanawcook Academy": "me-hs-mattanawcook",
 "Presque Isle": "me-hs-presque-isle"
@@ -229469,10 +229514,17 @@
 "Mattanawcook": "me-ms-mattanawcook",
 "Piscataquis": "me-ms-piscataquis"
 },
+"2025/Outdoor/oronoboys15may2025": {
+"Houlton/Hodg": "coop-houlton-hodgdon",
+"Sahs": "me-hs-southern-aroostook"
+},
 "2025/Outdoor/oronoboys2may2025": {
 "Mattanawcook": "me-hs-mattanawcook",
 "Mattanawcook Academy": "me-hs-mattanawcook",
 "Piscataquis": "me-hs-piscataquis"
+},
+"2025/Outdoor/oronogirls15may2025": {
+"Houlton/Hodg": "coop-houlton-hodgdon"
 },
 "2025/Outdoor/oronogirls2may2025": {
 "Mattanawcook": "me-hs-mattanawcook",
@@ -229495,6 +229547,7 @@
 "2025/Outdoor/pvcsmallboys3june202": {
 "Bangor Chris": "me-hs-bangor-christian",
 "Bangor Christian": "me-hs-bangor-christian",
+"Houlton/Hodg": "coop-houlton-hodgdon",
 "Mattanawcook": "me-hs-mattanawcook",
 "Mattanawcook Academy": "me-hs-mattanawcook",
 "Piscataquis": "me-hs-piscataquis",
@@ -229503,6 +229556,7 @@
 "2025/Outdoor/pvcsmallgirls3june202": {
 "Bangor Chris": "me-hs-bangor-christian",
 "Bangor Christian": "me-hs-bangor-christian",
+"Houlton/Hodg": "coop-houlton-hodgdon",
 "Mattanawcook": "me-hs-mattanawcook",
 "Piscataquis": "me-hs-piscataquis",
 "Sumner Memor": "me-hs-sumner"
@@ -232949,8 +233003,9 @@
 "HoultonGreater Houlton": {
 "id": "coop-houlton-ghca",
 "held": {
-"coop-houlton-ghca": 2500,
+"coop-houlton-ghca": 1991,
 "me-hs-houlton": 611,
+"coop-houlton-hodgdon": 309,
 "me-hs-greater-houlton-christian": 177
 }
 },
@@ -233692,7 +233747,6 @@
 "Reading Memorial High School": "oos-ma-reading-memorial-high-school",
 "Reeds Brook Middle School": "me-ms-reeds-brook",
 "Region": null,
-"Relay": null,
 "Rham": "oos-auto-ct-rham",
 "Rice Mem": "oos-auto-vt-rice-mem",
 "Rice Memoria": "oos-auto-vt-rice-memoria",
@@ -235583,21 +235637,6 @@
 "how": "unresolved"
 },
 {
-"raw": "ion",
-"rows": 41,
-"seasons": {
-"Outdoor": 36,
-"Indoor": 5
-},
-"years": [
-2005,
-2025
-],
-"id": null,
-"method": "unresolved",
-"how": "unresolved"
-},
-{
 "raw": "Greenwich Tra",
 "rows": 41,
 "seasons": {
@@ -235810,6 +235849,21 @@
 "years": [
 2009,
 2009
+],
+"id": null,
+"method": "unresolved",
+"how": "unresolved"
+},
+{
+"raw": "ion",
+"rows": 35,
+"seasons": {
+"Outdoor": 30,
+"Indoor": 5
+},
+"years": [
+2005,
+2025
 ],
 "id": null,
 "method": "unresolved",
@@ -251890,20 +251944,6 @@
 "years": [
 2023,
 2023
-],
-"id": null,
-"method": "unresolved",
-"how": "unresolved"
-},
-{
-"raw": "resque Isle High School",
-"rows": 2,
-"seasons": {
-"Outdoor": 2
-},
-"years": [
-2023,
-2025
 ],
 "id": null,
 "method": "unresolved",
@@ -274761,6 +274801,20 @@
 "how": "unresolved"
 },
 {
+"raw": "resque Isle High School",
+"rows": 1,
+"seasons": {
+"Outdoor": 1
+},
+"years": [
+2023,
+2023
+],
+"id": null,
+"method": "unresolved",
+"how": "unresolved"
+},
+{
 "raw": "aribou High School",
 "rows": 1,
 "seasons": {
@@ -275504,34 +275558,6 @@
 },
 {
 "raw": "Alex Searles",
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2025,
-2025
-],
-"id": null,
-"method": "unresolved",
-"how": "unresolved"
-},
-{
-"raw": "resque Isle High School 'B'",
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2025,
-2025
-],
-"id": null,
-"method": "unresolved",
-"how": "unresolved"
-},
-{
-"raw": "ort Kent Community High Schoo 'B'",
 "rows": 1,
 "seasons": {
 "Outdoor": 1
