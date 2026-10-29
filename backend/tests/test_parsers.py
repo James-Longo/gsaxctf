@@ -2931,3 +2931,15 @@ def test_transcription_keeps_track_row_fields():
     e = doc['events'][0]
     assert e['age_group'] == '7-8' and e['results'][0]['splits'] == ['2:30']
     assert e['results'][0]['exhibition'] is True and doc['host'] == 'Y'
+
+
+def test_team_rankings_block_with_one_team():
+    """A grade division scored by one team ("Women - 6th grade - Team
+    Rankings" / "1) Lyman Moore 69") is a printed score, not noise."""
+    from backend.parsers.teamscores import extract_team_scores
+    text = ("              Women - 6th grade - Team Rankings - 9 Events Scored\n" + "=" * 79 + "\n"
+            "    1) Lyman Moore                 69\n\n"
+            "              Women - 7th grade - Team Rankings - 11 Events Scored\n" + "=" * 79 + "\n"
+            "    1) Auburn Middle School        86        2) Lyman Moore                14\n\n")
+    got = sorted((b['division'], [(t['team'], t['score']) for t in b['teams']]) for b in extract_team_scores(text))
+    assert got[0] == ('6th grade', [('Lyman Moore', 69.0)]), got

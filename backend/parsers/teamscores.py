@@ -178,7 +178,10 @@ def extract_team_scores(text, file_gender=None):
             parts, i = _rows(lines, i + 1)
         for g, rows in parts:
             g = g or hg or file_gender
-            if not g or len(rows) < 2:
+            # (one team is a real block only under a Hy-Tek "Team Rankings" header:
+            # "Women - 6th grade - Team Rankings" with "1) Lyman Moore 69")
+            if not g or len(rows) < 2 and not (len(rows) == 1 and rows[0].get('rank') == 1
+                                                and re.search(r'(?i)team\s+rankings', line)):
                 continue
             teams = [r for r in rows if r['team'] and not re.match(r'(?i)totals?$|points$|place$', r['team'])]
             if any(r['score'] >= 1000 for r in teams):
