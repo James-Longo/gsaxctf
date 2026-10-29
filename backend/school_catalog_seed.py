@@ -777,6 +777,7 @@ ME_MS = [
     ('me-ms-wiscasset', 'Wiscasset Middle School', 'Wiscasset', None,
      ['Wiscasset Middle School', 'Wiscasset MS', 'Wiscasset Middle', 'Wiscasset Middle High School'], [], [], {}),
     ('me-ms-islesboro', 'Islesboro Central School (middle grades)', 'Islesboro', None, ['Islesboro MS'], ['ICS'], [], {}),
+    ('me-ms-north-haven', 'North Haven Community School (middle grades)', 'North Haven', None, ['North Haven MS'], [], [], {}),   # K-12 island school: its 6-8th graders in middle-school meets
     ('me-ms-rose-gaffney', 'Rose M. Gaffney School', 'Machias', None, ['Rose Gaffney School', 'Rose M. Gaffney School', 'Rose Gaffney'],
      [], [], {}),
     ('me-ms-mt-view', 'Mount View Middle School', 'Thorndike', None,
@@ -1747,6 +1748,16 @@ FILE_RULES = [
     (['North Yarmouth Academy'], 'Outdoor', (2025, 2025), r'^WMC-(boys|girls)-1$', 'coop-nya-maine-coast-waldorf'),
     (['Southern Mai'], 'Outdoor', (2025, 2025), r'^Westbrook-MS51225-results$', 'me-ms-southern-maine-catholic'),
     (['Limestone/MS'], 'Outdoor', (2025, 2025), r'^bangor(boys|girls)17may2025$', 'coop-limestone-mssm'),
+    # 2026-10-29 Outdoor second read t3 (2024-2025)
+    (['Windsor'], 'Outdoor', (2025, 2025), r'^neresults$', 'oos-auto-ct-windsor'),
+    (['Milford'], 'Outdoor', (2025, 2025), r'^neresults$', 'oos-auto-nh-milford'),
+    (['Woodland'], 'Outdoor', (2025, 2025), r'^neresults$', 'oos-auto-ct-woodland'),
+    (['North Haven'], 'Outdoor', (2025, 2025), r'^neresults$', 'oos-auto-ct-north-haven'),
+    (['Central (Pro'], 'Outdoor', (2025, 2025), r'^neresults$', 'oos-auto-ri-central-providence'),
+    (['Houlton/GHCA/Hodgdon'], 'Outdoor', (2024, 2024), r'^Class-[Cc]-(boys|girls)-results$', 'coop-houlton-hodgdon'),
+    (['Mattanawcook/Penobscot'], 'Outdoor', (2024, 2024), r'^Class-[Cc]-(boys|girls)-results$', 'coop-mattanawcook-penobscot'),
+    (['Limestone/MS'], 'Outdoor', (2024, 2024), r'^Class-C-boys-results$', 'coop-limestone-mssm'),
+    (['North Haven', 'North Haven Community School'], 'Outdoor', (2024, 2024), r'^Camden-Rockport-MS$', 'me-ms-north-haven'),   # middle-school meet: NHCS middle grades
     # 2026-10-24 unresolved-school review, batch 2
     (['F'], 'XC', (2004, 2004), r'^cape7oct04[bg]\.txt$', 'me-hs-falmouth'),   # Title lists Falmouth; only F team
     (['Y'], 'XC', (2004, 2004), r'^cape7oct04[bg]\.txt$', 'me-hs-yarmouth'),   # Title lists Yarmouth; only Y team
