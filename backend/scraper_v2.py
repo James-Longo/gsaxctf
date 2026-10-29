@@ -682,9 +682,13 @@ def load_transcription(input_path):
             else:
                 row['athlete'] = r.get('athlete') or ''
                 row['grade'] = r.get('grade') or ''
+            # (a track copy keeps what the parsers attach: splits, exhibition marks, warnings)
+            row.update({k: r[k] for k in ('splits', 'warnings', 'exhibition', 'relay_label', 'sex', 'unattached')
+                        if r.get(k) is not None})
             rows.append(row)
         events.append({'event': e['event'], 'gender': e.get('gender') or '',
-                       'is_relay': bool(e.get('is_relay')), 'results': rows})
+                       'is_relay': bool(e.get('is_relay')), 'results': rows,
+                       **{k: e[k] for k in ('age_group', 'mixed_race') if e.get(k) is not None}})
     blocks = d.get('team_rankings') or []
     if parts[-2] == 'XC':
         # (a reader's XC team scores often omit 'kind' and 'totals_only': the XC score
@@ -696,6 +700,7 @@ def load_transcription(input_path):
     return {'events': events, 'date': d.get('date'), 'meet_name': d.get('meet_name'),
             'venue': d.get('venue'), 'team_rankings': blocks,
             'parser': 'Transcribed',
+            **{k: d[k] for k in ('host', 'meet_level', 'team_rankings_source') if d.get(k) is not None},
             # (a race cut out of a combined ranking: the page's scores are not its own)
             **({'no_team_scores': True} if d.get('no_team_scores') else {})}
 

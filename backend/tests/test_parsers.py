@@ -2907,3 +2907,27 @@ def test_team_rankings_rank_ten_and_up():
              "   21) Bangor High School 2        22) Lewiston High School 1.5", ""]
     teams = Sub5ColumnParser.parse_team_rankings(lines, 0)[0]['teams']
     assert [t['rank'] for t in teams] == [9, 10, 21, 22], teams
+
+
+def test_transcription_keeps_track_row_fields():
+    """A track override keeps what the parsers attach to a row (splits,
+    exhibition marks, warnings) and an event's age group."""
+    import json
+    import tempfile
+    import backend.scraper_v2 as sv
+    old = sv.TRANSCRIBED
+    with tempfile.TemporaryDirectory() as d:
+        os.makedirs(os.path.join(d, '2025', 'Outdoor'))
+        with open(os.path.join(d, '2025', 'Outdoor', 'meet.json'), 'w') as f:
+            json.dump({'events': [{'event': '1600 Meter Run', 'gender': 'Boys', 'age_group': '7-8',
+                                   'results': [{'athlete': 'A B', 'school': 'X', 'result': '5:01.20', 'place': 1,
+                                                'splits': ['2:30'], 'exhibition': True}]}],
+                       'team_rankings': [], 'host': 'Y'}, f)
+        sv.TRANSCRIBED = d
+        try:
+            doc = sv.load_transcription('archive/2025/Outdoor/meet.pdf')
+        finally:
+            sv.TRANSCRIBED = old
+    e = doc['events'][0]
+    assert e['age_group'] == '7-8' and e['results'][0]['splits'] == ['2:30']
+    assert e['results'][0]['exhibition'] is True and doc['host'] == 'Y'
