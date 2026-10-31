@@ -44687,6 +44687,13 @@
   "by": "sonnet audit (second read, Indoor sec) (audit: confirmed)",
   "evidence": "Row-by-row script compare of the archive HTML (Hy-Tek text) against the parse: event/gender from each header, place, name, grade, school string, finals mark, relay school and printed legs, status rows (DNF/DQ/NH/SCR/FS), prelims vs finals sections: 59 sections / 342 rows, 0 differences. DATE/MEET: the file prints the stale template header 'PVC-Eastern Maine Indoor Track League - 1/14/2022 to 1/15/2022 / Meet 5AB' (identical to Results-1), but the results are a different meet: Results-1 and this file share only 13 of ~330 identical (event,athlete,mark) rows, and the teams differ (this file: Bucksport, MDI, Hermon, Orono, Central, GSA, John Bapst, Foxcroft, Sumner, Bangor Christian, Dexter). Index says 'EMITL Week 6 - Meet AB - Meet C', January 21-22, 2022 (Results-6C is Week 6 Friday 1/21; Results-7AB is Feb 5): the index is right and the file's header date/name is a stale copy, so the parse's own date 2022-01-14 and name 'Meet 5AB' must not be used; no date_fix needed (the index already holds the right meet). Four printed Team Rankings blocks equal the parse. Ledger 'team scores do not add up': same as Results-1: Meet A women and men are reproduced exactly by the rows (10-8-6-4-2-1; MDI 124, Bucksport 73, Orono 62, Central 46, GSA 42, Hermon 31; men Bucksport 101, MDI 94, Hermon 82, Orono 50, Central 37, GSA 25), Meet B is not (computed Foxcroft 121 vs printed 74, John Bapst 63 vs 33, Sumner 10 vs 8; men John Bapst 120 vs 79, Sumner 91 vs 47, Foxcroft 79 vs 52, Bangor Christian 20 vs 15, Dexter 10 vs 5): the sheet's Meet B scoring is not derivable from its rows. Parse equals source."
  },
+ "backend/data/parsed_results/2022/Indoor/Results-6C.json": {
+  "parse_sha": "e1b3b3b2e8c2fecc",
+  "source_sha": "b226eb214f95db28",
+  "date": "2026-10-31",
+  "by": "sonnet audit (second read, Indoor sec) (audit: confirmed)",
+  "evidence": "Ledger 'transcribed/verified but never signed off' resolved. PVC-Eastern Maine Indoor Track League Meet 6C - Friday, 1/21/2022, New Balance Field House, UMaine, Orono (index EMITL Week 6 - Meet AB - Meet C, January 21-22, 2022). Second read of the existing override (backend/data/transcribed/2022/Indoor/Results-6C.json; it fixes the Bangor Boys 4x800 relay legs to ['Quinn Tkacs','','',\"Patrick O'Brien\"] without grades, source '1) Quinn Tkacs JR 2) 3) 4) Patrick O'Brien JR'). Hy-Tek text compared row by row with scripts over the source (event, gender, place incl. ties and '--', name, school string, grade, mark with q/J/R/x flags, X/x exhibition marks, heat/points columns, relay school and printed legs, status rows, Preliminaries/Semi-Finals/Finals sections and their row types): 31 events / 310 rows (4 Preliminaries blocks typed Prelims, rest Finals), 9 relay rows with legs equal, 0 differences. The two printed Team Rankings blocks (Women 13 events: Bangor 125, Brewer 72, Ellsworth 33, Old Town 31, Hampden 4; Men 14 events: Brewer 96.5, Bangor 57.5, Ellsworth 50, Hampden 46, Old Town 37) equal the parse team_rankings. Checker 'verified_close' (8-6-4-2-1, one team off by 2: Brewer Boys 98.5 computed vs 96.5 printed) is explained: the Boys 4x200 4th place is \"Brewer High School 'B'\" (2:04.58, 2 pts under 8-6-4-2-1) and a second relay team does not score; the 'B' label is not carried by this parse (no consumer uses it). Schools Bangor, Brewer, Ellsworth, Old Town, Hampden -> me-hs correct."
+ },
  "backend/data/parsed_results/2022/Indoor/Results-7AB.json": {
   "parse_sha": "b4a8e1eb15eb7a5b",
   "source_sha": "4cc15e650ce9cbff",
@@ -44714,6 +44721,13 @@
   "date": "2026-10-31",
   "by": "sonnet audit (second read, Indoor sec) (audit: confirmed)",
   "evidence": "Row-by-row script compare of the archive HTML (Hy-Tek text) against the parse: event/gender from each header, place, name, grade, school string, finals mark, relay school and printed legs, status rows (DNF/DQ/NH/SCR/FS), prelims vs finals sections: 53 sections / 336 rows, 0 differences. 'SMAA Week 5 Meet 4 - 2/5/2022', Falm/Gorh/Scar/Wind, USM (index Feb 5). Six printed Team Rankings blocks equal the parse; the blocks also list Sanford High School (Misty Adams, Jake Doughty, Kyle Evans print 'Sanford' / grade '12'), so the 7 Sanford rows are a guest team -> me-hs-sanford, correct. 'Scarboro' -> me-hs-scarborough, Windham, Gorham, Falmouth correct. Year column printed as '12' for Adams is kept as the grade."
+ },
+ "backend/data/parsed_results/2022/Indoor/Results-wk-2-meet-1.json": {
+  "parse_sha": "aa10ce65833e06a9",
+  "source_sha": "8cc47bc1d3d3a703",
+  "date": "2026-10-31",
+  "by": "sonnet audit (second read, Indoor sec) (audit: confirmed)",
+  "evidence": "Ledger 'team scores do not add up' explained: checker artifact. SMMSITCL Week 2 meet 1, 3/12/2022, Portland Expo (CAPE-FALMOUTH-NOBLE-YARMOUTH; index Southern Maine Middle School League Week 2: Meet 1, March 12, same). Second read of the existing override (adds the Boys High Jump ' -- Parker, Camden HAR JNH' status row the parser drops). Hy-Tek text compared row by row with scripts over the source (event, gender, place incl. ties and '--', name, school string, grade, mark with q/J/R/x flags, X/x exhibition marks, heat/points columns, relay school and printed legs, status rows, Preliminaries/Semi-Finals/Finals sections and their row types): 50 events / 237 rows, 11 relay rows legs equal, 0 differences. The six printed Team Rankings blocks (Sr-8th / In-7th / Jr-6th x Women/Men) equal the parse team_rankings AND equal the printed Points column summed per division and school (script, 0 differences, relay spellings 'Falmouth'/'Cape' merged with 'FAL'/'CAPE'); the checker merges the three grade divisions (and the open events 1000 Yard, Mile, High Jump belong to no block) so it reports a mismatch. Schools: CAPE/Cape -> me-ms-cape-elizabeth (existing seed rule), FAL, Noble Middlesch, HAR (Harrison M.S.) -> me-ms-*. Event-name convention of the series kept: HS 'Junior/Senior/Open Division' (and WMC 'JR/SR/OPEN DIVISION') suffixes are dropped from event names and the divisions stay separate events in file order; MS league track events keep Sr-8th/In-7th/Jr-6th while Shot Put loses it (separate events, places restart)."
  },
  "backend/data/parsed_results/2022/Indoor/Results.json": {
   "parse_sha": "31713e5092fe2fab",
@@ -44771,6 +44785,13 @@
   "by": "auto re-check 2026-10-20: re-parsed after sign-off; team scores still verified exactly, all schools identified, no flags",
   "evidence": "same checks as the auto sign-off"
  },
+ "backend/data/parsed_results/2022/Indoor/ResultsMEET-1.json": {
+  "parse_sha": "4775ae1c3bb3829d",
+  "source_sha": "7dc5a5bcfd4381bf",
+  "date": "2026-10-31",
+  "by": "sonnet audit (second read, Indoor sec) (audit: confirmed)",
+  "evidence": "Ledger 'team scores do not add up' explained: checker artifact. SMMSITCL Week #1, CAPE-GREELY-FREEPORT/DURHAM-SACO, Portland Expo (title 3/4/2022, Hy-Tek print 3/5/2022; index Southern Maine Middle School League Week 1, March 5, 2022: one day, no date change). Hy-Tek text compared row by row with scripts over the source (event, gender, place incl. ties and '--', name, school string, grade, mark with q/J/R/x flags, X/x exhibition marks, heat/points columns, relay school and printed legs, status rows, Preliminaries/Semi-Finals/Finals sections and their row types): 51 events / 295 rows (4 Preliminaries + 4 Prelims|Finals sections), 0 differences. Six printed Team Rankings blocks equal the parse team_rankings and the printed Points column summed per division and school (0 differences; FRDU rows + 'Freeport/Durham' relay rows = the printed FREEPORT/DURHAM team, Women Sr-8th 25+6=31, Men In-7th 24); the checker scores across divisions, so it reports a mismatch. Schools: CAPE/Cape -> me-ms-cape-elizabeth (seed rule already in place), SACO, Greely, Scarborough (1 unscored guest) -> me-ms-*; FRDU stays on me-ms-freeport (those athletes are Freeport MS athletes in their other meets) while relays print 'Freeport/Durham' -> me-ms-durham-freeport (the combined RSU 5 team the sheet scores as one) - same decision as the earlier read, no rule. Event-name convention of the series kept: HS 'Junior/Senior/Open Division' (and WMC 'JR/SR/OPEN DIVISION') suffixes are dropped from event names and the divisions stay separate events in file order; MS league track events keep Sr-8th/In-7th/Jr-6th while Shot Put loses it (separate events, places restart)."
+ },
  "backend/data/parsed_results/2022/Indoor/ResultsMEET-2.json": {
   "parse_sha": "6d5b82ae24c3a720",
   "source_sha": "4773c3d651564372",
@@ -44813,12 +44834,159 @@
   "by": "sonnet audit (second read, Indoor sec) (audit: confirmed)",
   "evidence": "Row-by-row script compare of the archive HTML (Hy-Tek text) against the parse: event/gender from each header, place, name, grade, school string, finals mark, relay school and printed legs, status rows (DNF/DQ/NH/SCR/FS), prelims vs finals sections: 52 sections / 385 rows, 0 differences. 'Week 4 Meet 2 - 1/22/2022', Bidd/Scar/Kenn/SP, USM (index SMAA Week 4, January 22). Six printed Team Rankings blocks equal the parse. Two rows with status 'FS' (false start: Sophia Foy, Kennebunk, 55 Dash; Kyle Hartford, South Portland) kept as status 'FS', place null, as printed. Schools correct ('Scarboro' = Scarborough). Ledger 'never signed off' resolved."
  },
+ "backend/data/parsed_results/2022/Indoor/ResultsSMAA-3.json": {
+  "parse_sha": "b216e1d0900f70eb",
+  "source_sha": "3232486e65dfe29e",
+  "date": "2026-10-31",
+  "by": "sonnet audit (second read, Indoor sec) (audit: confirmed)",
+  "evidence": "Ledger 'transcribed/verified but never signed off' resolved. SMAA Indoor Track Week 4 MEET 3, 1/22/2022, USM, PORTLAND-WESTBROOK-WINDHAM-MARSHWOOD (index SMAA Week 4, January 22, same). Second read of the existing override (Girls 4x400 Westbrook 'A' relay legs without the grades 'SO'/'FR' that print on only two legs). Hy-Tek text compared row by row with scripts over the source (event, gender, place incl. ties and '--', name, school string, grade, mark with q/J/R/x flags, X/x exhibition marks, heat/points columns, relay school and printed legs, status rows, Preliminaries/Semi-Finals/Finals sections and their row types): 52 events / 259 rows, 19 relay rows legs equal, 0 differences. No team block in this file (no_rankings); the companion ScoresSMAA-3.htm 'Team Rankings - Through Event 52' equals the summed row points per sex and school (Female: Portland 107+12=119, Windham 101+18=119, Marshwood 55, Westbrook 48+4=52; Male: Windham 95+16=111, Portland 99+6=105, Westbrook 56+4=60, Marshwood 47; relay spellings 'Windham High'/'Portland High School' merged), 0 differences. Codes Windham, Portland, Westbrook, Marshwood -> me-hs correct. Event-name convention of the series kept: HS 'Junior/Senior/Open Division' (and WMC 'JR/SR/OPEN DIVISION') suffixes are dropped from event names and the divisions stay separate events in file order; MS league track events keep Sr-8th/In-7th/Jr-6th while Shot Put loses it (separate events, places restart)."
+ },
  "backend/data/parsed_results/2022/Indoor/ResultsSMAA-4.json": {
   "parse_sha": "18bcf89ef30ba8dc",
   "source_sha": "30fb8a050a594aa6",
   "date": "2026-10-31",
   "by": "sonnet audit (second read, Indoor sec) (audit: confirmed)",
   "evidence": "Row-by-row script compare of the archive HTML (Hy-Tek text) against the parse: event/gender from each header, place, name, grade, school string, finals mark, relay school and printed legs, status rows (DNF/DQ/NH/SCR/FS), prelims vs finals sections: 26 sections / 98 rows, 0 differences. 'SMAA Indoor Track Week 4 meet 4 - 1/22/2022', GORHAM-BONNY EAGLE-CHEVERUS-MASSABESIC, USM (index SMAA Week 4, January 22). No team rankings printed in this file. Codes: 'Scots' = Bonny Eagle, 'Massabesic High', Sanford (2 rows, guest team on the same Week 4 sheets) all correct."
+ },
+ "backend/data/parsed_results/2022/Indoor/ResultsSMMSAC-FESTIVAL.json": {
+  "parse_sha": "54c9c2f0437fc3e5",
+  "source_sha": "cbc4e471a9c51efd",
+  "date": "2026-10-31",
+  "by": "second read t8 (Sonnet reviewer, row-by-row vs source)",
+  "evidence": "verdicts in scratchpad t8_0*_verdicts.json; overrides re-parsed and rebuilt"
+ },
+ "backend/data/parsed_results/2022/Indoor/ResultsWMC-championship.json": {
+  "parse_sha": "0cd975ff9de60cf9",
+  "source_sha": "ca26bcf0dc33c269",
+  "date": "2026-10-31",
+  "by": "sonnet audit (second read, Indoor sec) (audit: confirmed)",
+  "evidence": "Ledger 'transcribed/verified but never signed off' resolved. WMC INDOOR TRACK CHAMPIONSHIP-2022, USM. Hy-Tek text compared row by row with scripts over the source (event, gender, place incl. ties and '--', name, school string, grade, mark with q/J/R/x flags, X/x exhibition marks, heat/points columns, relay school and printed legs, status rows, Preliminaries/Semi-Finals/Finals sections and their row types): 46 events / 566 rows (4 Preliminaries + 4 Prelims|Finals pairs), 33 relay rows legs equal, 0 differences. The six printed Team Rankings blocks (JR / OPEN / SR DIVISION x Women/Men) equal the parse team_rankings and the printed Points summed per division and school (codes YORK, Freeport HS, Yhs = Yarmouth, St. Dom's, POL, GNG, CAPE, NYA, Wells, GREE, Traip, Fait = Fryeburg, Lake Region; 0 differences). Schools -> me-hs correct (Waynflete: Bryan Stark-Chessa, 2 rows). DATE: the file title 'WMC INDOOR TRACK CHAMPIONSHIP-2022 - 2/11/2022', the Hy-Tek print stamp '2/11/2022 10:08 PM' and the companion ScoresWMC-1.htm (stamp and title 2/11/2022) all say Feb 11; the index says February 12, 2022 (the scores were printed the night of the meet, so the meet cannot be on the 12th). Event-name convention of the series kept: HS 'Junior/Senior/Open Division' (and WMC 'JR/SR/OPEN DIVISION') suffixes are dropped from event names and the divisions stay separate events in file order; MS league track events keep Sr-8th/In-7th/Jr-6th while Shot Put loses it (separate events, places restart)."
+ },
+ "backend/data/parsed_results/2022/Indoor/ResultsWMC.json": {
+  "parse_sha": "e10d25c08ce440a6",
+  "source_sha": "83ff9f9c4f551ce0",
+  "date": "2026-10-31",
+  "by": "sonnet audit (second read, Indoor sec) (audit: confirmed)",
+  "evidence": "Ledger 'transcribed/verified but never signed off' resolved. 'WMC WEEK 5 MEET 1 - 2/5/2022', ALL WMC TEAMS, Bowdoin (index WMC Week 5: Meet 1, February 5, 2022, same). Hy-Tek text compared row by row with scripts over the source (event, gender, place incl. ties and '--', name, school string, grade, mark with q/J/R/x flags, X/x exhibition marks, heat/points columns, relay school and printed legs, status rows, Preliminaries/Semi-Finals/Finals sections and their row types): 41 events / 535 rows (24 relay rows, legs equal; one X-marked exhibition mark equals the parse's exhibition flag), 0 differences. Six printed Team Rankings blocks (JR / OPEN / SR DIVISION x Women/Men) equal the parse team_rankings and the printed Points summed per division and school (0 differences; codes YORK/York, Freeport HS, Yhs = Yarmouth, GNG, St. Dom's, Wells, GREE, POL, CAPE, NYA, Lake Region, Traip). Schools -> me-hs correct (NYA -> me-hs-nya in 2022: no Maine Coast Waldorf co-op evidence in the 2022 sources). Event-name convention of the series kept: HS 'Junior/Senior/Open Division' (and WMC 'JR/SR/OPEN DIVISION') suffixes are dropped from event names and the divisions stay separate events in file order; MS league track events keep Sr-8th/In-7th/Jr-6th while Shot Put loses it (separate events, places restart)."
+ },
+ "backend/data/parsed_results/2022/Indoor/ResultsWMC1.json": {
+  "parse_sha": "61c2930a2cdc210a",
+  "source_sha": "83a845f5424549d1",
+  "date": "2026-10-31",
+  "by": "sonnet audit (second read, Indoor sec) (audit: confirmed)",
+  "evidence": "Ledger 'unverified: never read' resolved. 'WMC WEEK 2 - 1/14/2022', GNG-FREE-POL-FRYE-YARM-WELLS, USM (index WMC Week 2 - Meet 1 - Meet 2, January 14, 2022). Hy-Tek text compared row by row with scripts over the source (event, gender, place incl. ties and '--', name, school string, grade, mark with q/J/R/x flags, X/x exhibition marks, heat/points columns, relay school and printed legs, status rows, Preliminaries/Semi-Finals/Finals sections and their row types): 40 events / 255 rows (13 relay rows legs equal, 1 X-marked exhibition = parse), 0 differences. No team block in this file (no_rankings); the companion ScoresWMC1.htm equals the summed row points per sex and school (Female: Freeport 174+10=184, Yarmouth 89+8=97, Gray-NG 69, Poland 28+16=44, Wells 37, Fryeburg 26+4=30; Male: Poland 118+20=138, Freeport 101+8=109, Yarmouth 104, Gray-NG 69+18=87, Wells 62+6=68, Fryeburg 32+4=36; 0 differences). Codes Freeport HS, Yhs, POL, Wells, GNG, Fait (Fryeburg, printed FRYE in the scores) -> me-hs correct. Event-name convention of the series kept: HS 'Junior/Senior/Open Division' (and WMC 'JR/SR/OPEN DIVISION') suffixes are dropped from event names and the divisions stay separate events in file order; MS league track events keep Sr-8th/In-7th/Jr-6th while Shot Put loses it (separate events, places restart)."
+ },
+ "backend/data/parsed_results/2022/Indoor/ResultsWMC2.json": {
+  "parse_sha": "6876b7877d4c02c5",
+  "source_sha": "cbce321a61a6dfc7",
+  "date": "2026-10-31",
+  "by": "sonnet audit (second read, Indoor sec) (audit: confirmed)",
+  "evidence": "Ledger 'unverified: never read' resolved. 'WMC WEEK 2 - 1/14/2022', GREELY-CAPE-NYA-ST DOM-TRAIP, USM (index same as WMC1, January 14, 2022). Hy-Tek text compared row by row with scripts over the source (event, gender, place incl. ties and '--', name, school string, grade, mark with q/J/R/x flags, X/x exhibition marks, heat/points columns, relay school and printed legs, status rows, Preliminaries/Semi-Finals/Finals sections and their row types): 31 events / 151 rows (8 relay rows legs equal), 0 differences. No team block in this file; the companion ScoresWMC2.htm equals the summed row points per sex and school (Female: Cape 54, St Dominic 46+6=52, Traip 31, NYA 25+4=29; Male: Cape 98+16=114, St Dominic 55+10=65, NYA 16+2=18, Traip 15; 0 differences). Codes CAPE (Cape Elizabeth HS, a WMC high-school meet), St. Dom's, NYA, Traip -> me-hs correct. Event-name convention of the series kept: HS 'Junior/Senior/Open Division' (and WMC 'JR/SR/OPEN DIVISION') suffixes are dropped from event names and the divisions stay separate events in file order; MS league track events keep Sr-8th/In-7th/Jr-6th while Shot Put loses it (separate events, places restart)."
+ },
+ "backend/data/parsed_results/2022/Indoor/Resultsmeet-1.json": {
+  "parse_sha": "762debceda739841",
+  "source_sha": "33187928511da0ad",
+  "date": "2026-10-31",
+  "by": "sonnet audit (second read, Indoor sec) (audit: confirmed)",
+  "evidence": "Ledger 'transcribed/verified but never signed off' resolved. 'Week 3 Meet 1 - 1/12/2022', Chev/Falm/West, USM (index SMAA Week 3: Meet 1, January 12, 2022, same). Hy-Tek text compared row by row with scripts over the source (event, gender, place incl. ties and '--', name, school string, grade, mark with q/J/R/x flags, X/x exhibition marks, heat/points columns, relay school and printed legs, status rows, Preliminaries/Semi-Finals/Finals sections and their row types): 39 events / 147 rows (9 relay rows legs equal; the Bryan Stark-Chessa Waynflete row is an X exhibition mark 4:51.86, place --, equal to the parse), 0 differences. Six printed Team Rankings blocks (Junior / Senior / Open Division x Women/Men, e.g. Women Junior Falmouth 32, Cheverus 19, Westbrook 5) equal the parse team_rankings and the printed Points summed per division and school (0 differences). Schools Westbrook, Falmouth, Cheverus, Waynflete -> me-hs correct. Event-name convention of the series kept: HS 'Junior/Senior/Open Division' (and WMC 'JR/SR/OPEN DIVISION') suffixes are dropped from event names and the divisions stay separate events in file order; MS league track events keep Sr-8th/In-7th/Jr-6th while Shot Put loses it (separate events, places restart)."
+ },
+ "backend/data/parsed_results/2022/Indoor/Resultsmeet-2-1.json": {
+  "parse_sha": "2ad40137c103c63a",
+  "source_sha": "810ee6e845492925",
+  "date": "2026-10-31",
+  "by": "sonnet audit (second read, Indoor sec) (audit: confirmed)",
+  "evidence": "Ledger 'team scores do not add up' explained: checker artifact. 'WK 3 MT 2 FALMOUTH-SCARBORO-SACO-GREELY - 3/21/2022' (WEEK 3 MEET2), Portland Expo (index Southern Maine Middle School League Week 3: Meet 2 - Meet 3, March 21-22, 2022: consistent). Hy-Tek text compared row by row with scripts over the source (event, gender, place incl. ties and '--', name, school string, grade, mark with q/J/R/x flags, X/x exhibition marks, heat/points columns, relay school and printed legs, status rows, Preliminaries/Semi-Finals/Finals sections and their row types): 53 events / 333 rows, 0 differences. Six printed Team Rankings blocks (Sr-8th / In-7th / Jr-6th x Women/Men) equal the parse team_rankings and the printed Points column summed per division and school (0 differences, e.g. Women Jr-6th Falmouth vs Scarborough/Saco/Greely); the checker scores the three grade divisions together and the open events (1000 Yard, Mile, High Jump) belong to no block, so it reports a mismatch. Schools Falmouth, Scarborough (Scarborough Middle School), SACO/Saco, Greely -> me-ms-* correct. Event-name convention of the series kept: HS 'Junior/Senior/Open Division' (and WMC 'JR/SR/OPEN DIVISION') suffixes are dropped from event names and the divisions stay separate events in file order; MS league track events keep Sr-8th/In-7th/Jr-6th while Shot Put loses it (separate events, places restart)."
+ },
+ "backend/data/parsed_results/2022/Indoor/Resultsmeet-2.json": {
+  "parse_sha": "d0b650cda3608f16",
+  "source_sha": "6a60344db801726c",
+  "date": "2026-10-31",
+  "by": "second read t8 (Sonnet reviewer, row-by-row vs source)",
+  "evidence": "verdicts in scratchpad t8_0*_verdicts.json; overrides re-parsed and rebuilt"
+ },
+ "backend/data/parsed_results/2022/Indoor/Resultsmeet-3-1.json": {
+  "parse_sha": "6a58b1fd45d530cb",
+  "source_sha": "84438f3cf42c6803",
+  "date": "2026-10-31",
+  "by": "second read t8 (Sonnet reviewer, row-by-row vs source)",
+  "evidence": "verdicts in scratchpad t8_0*_verdicts.json; overrides re-parsed and rebuilt"
+ },
+ "backend/data/parsed_results/2022/Indoor/Resultsmeet-3.json": {
+  "parse_sha": "b122ab444b566c1a",
+  "source_sha": "aace35cfa058d4b2",
+  "date": "2026-10-31",
+  "by": "second read t8 (Sonnet reviewer, row-by-row vs source)",
+  "evidence": "verdicts in scratchpad t8_0*_verdicts.json; overrides re-parsed and rebuilt"
+ },
+ "backend/data/parsed_results/2022/Indoor/Resultsmeet-4.json": {
+  "parse_sha": "bd87595da2ed049b",
+  "source_sha": "1fec4d2ee8873ec4",
+  "date": "2026-10-31",
+  "by": "sonnet audit (second read, Indoor sec) (audit: confirmed)",
+  "evidence": "Ledger 'transcribed/verified but never signed off' resolved. 'SMAA Indoor Week 3 meet 4 - 1/13/2022', so. portland-thornton-windham, USM (index SMAA Week 3: Meet 3 / Meet 4, January 13, 2022, same). Hy-Tek text compared row by row with scripts over the source (event, gender, place incl. ties and '--', name, school string, grade, mark with q/J/R/x flags, X/x exhibition marks, heat/points columns, relay school and printed legs, status rows, Preliminaries/Semi-Finals/Finals sections and their row types): 52 events / 295 rows (19 relay rows legs equal, 1 X exhibition = parse), 0 differences. Six printed Team Rankings blocks (Junior / Senior / Open x Women/Men) equal the parse team_rankings and the printed Points per division and school once 'SP Red Riots' = South Portland High School (0 differences). Schools SP Red Riots -> me-hs-south-portland, Thornton, Windham -> me-hs correct. Event-name convention of the series kept: HS 'Junior/Senior/Open Division' (and WMC 'JR/SR/OPEN DIVISION') suffixes are dropped from event names and the divisions stay separate events in file order; MS league track events keep Sr-8th/In-7th/Jr-6th while Shot Put loses it (separate events, places restart)."
+ },
+ "backend/data/parsed_results/2022/Indoor/Resultsmeet1.json": {
+  "parse_sha": "9fbdd47ce7363640",
+  "source_sha": "68911b47d943666a",
+  "date": "2026-10-31",
+  "by": "sonnet audit (second read, Indoor sec) (audit: confirmed)",
+  "evidence": "Ledger 'transcribed/verified but never signed off' resolved. 'SMAA Indoor Track Week 2 Meet 1 - 12/18/2021', MASS-BE-DEER-KENN-WIND, USM (index SMAA Week 2: Meet 1, December 18, 2021, same). Hy-Tek text compared row by row with scripts over the source (event, gender, place incl. ties and '--', name, school string, grade, mark with q/J/R/x flags, X/x exhibition marks, heat/points columns, relay school and printed legs, status rows, Preliminaries/Semi-Finals/Finals sections and their row types): 52 events / 295 rows (24 relay rows legs equal), 0 differences. Six printed Team Rankings blocks equal the parse team_rankings and the printed Points per division and school once 'Scots' = Bonny Eagle High School (0 differences). Schools Scots -> me-hs-bonny-eagle, Windham, Kennebunk, Deering, MASS = Massabesic -> me-hs correct. Event-name convention of the series kept: HS 'Junior/Senior/Open Division' (and WMC 'JR/SR/OPEN DIVISION') suffixes are dropped from event names and the divisions stay separate events in file order; MS league track events keep Sr-8th/In-7th/Jr-6th while Shot Put loses it (separate events, places restart)."
+ },
+ "backend/data/parsed_results/2022/Indoor/Resultsmeet2.json": {
+  "parse_sha": "19a67486fa6ca358",
+  "source_sha": "5896fa92e7f30e91",
+  "date": "2026-10-31",
+  "by": "sonnet audit (second read, Indoor sec) (audit: confirmed)",
+  "evidence": "Ledger 'transcribed/verified but never signed off' resolved. 'SMAA Indoor Track Week 2 meet 2 - 12/18/2021', BIDD-FALM-PORT, USM (index same). Hy-Tek text compared row by row with scripts over the source (event, gender, place incl. ties and '--', name, school string, grade, mark with q/J/R/x flags, X/x exhibition marks, heat/points columns, relay school and printed legs, status rows, Preliminaries/Semi-Finals/Finals sections and their row types): 47 events / 201 rows (12 relay rows; these relays print no legs, parse has none), 0 differences. Six printed Team Rankings blocks equal the parse team_rankings and the printed Points per division and school (0 differences; Portland High School/Portland, Falmouth, Biddeford High S). Schools -> me-hs correct. Event-name convention of the series kept: HS 'Junior/Senior/Open Division' (and WMC 'JR/SR/OPEN DIVISION') suffixes are dropped from event names and the divisions stay separate events in file order; MS league track events keep Sr-8th/In-7th/Jr-6th while Shot Put loses it (separate events, places restart)."
+ },
+ "backend/data/parsed_results/2022/Indoor/Resultsmeet3-1.json": {
+  "parse_sha": "30b2f490c2b591b3",
+  "source_sha": "df3fb25f526514fe",
+  "date": "2026-10-31",
+  "by": "sonnet audit (second read, Indoor sec) (audit: confirmed)",
+  "evidence": "Ledger 'transcribed/verified but never signed off' resolved. 'Week 2 Meet 3 - 12/18/2021', Gorh/Noble/Sanf/SP/West, USM (title 12/18/2021, print 12/21/2021; index SMAA Week 2: Meet 3, December 18, 2021, same). Hy-Tek text compared row by row with scripts over the source (event, gender, place incl. ties and '--', name, school string, grade, mark with q/J/R/x flags, X/x exhibition marks, heat/points columns, relay school and printed legs, status rows, Preliminaries/Semi-Finals/Finals sections and their row types): 52 events / 464 rows (24 relay rows legs equal), 0 differences. Six printed Team Rankings blocks equal the parse team_rankings and the printed Points per division and school once 'SP Red Riots' = South Portland High School (0 differences). Schools SP Red Riots, Noble, Gorham, Westbrook, Sanford (Misty Adams, Jake Doughty) -> me-hs correct. Event-name convention of the series kept: HS 'Junior/Senior/Open Division' (and WMC 'JR/SR/OPEN DIVISION') suffixes are dropped from event names and the divisions stay separate events in file order; MS league track events keep Sr-8th/In-7th/Jr-6th while Shot Put loses it (separate events, places restart)."
+ },
+ "backend/data/parsed_results/2022/Indoor/Resultsmeet3.json": {
+  "parse_sha": "05675e9a23fcdcce",
+  "source_sha": "4213027e88bac94c",
+  "date": "2026-10-31",
+  "by": "sonnet audit (second read, Indoor sec) (audit: confirmed)",
+  "evidence": "Ledger 'transcribed/verified but never signed off' resolved. 'Week 1 Meet 3 - 12/14/2021', Bidd/Chev/Noble/Wind, USM (index SMAA Week 1: Meet 3, December 14, 2021, same). Hy-Tek text compared row by row with scripts over the source (event, gender, place incl. ties and '--', name, school string, grade, mark with q/J/R/x flags, X/x exhibition marks, heat/points columns, relay school and printed legs, status rows, Preliminaries/Semi-Finals/Finals sections and their row types): 50 events / 306 rows (15 relay rows legs equal; 2 X exhibition marks incl. Waynflete's Bryan Stark-Chessa 4:56.41 = parse exhibition), 0 differences. Six printed Team Rankings blocks equal the parse team_rankings and the printed Points per division and school once 'Bhs' = Biddeford High School (0 differences). Schools Noble, Bhs, Windham, Cheverus, Waynflete -> me-hs correct. Event-name convention of the series kept: HS 'Junior/Senior/Open Division' (and WMC 'JR/SR/OPEN DIVISION') suffixes are dropped from event names and the divisions stay separate events in file order; MS league track events keep Sr-8th/In-7th/Jr-6th while Shot Put loses it (separate events, places restart)."
+ },
+ "backend/data/parsed_results/2022/Indoor/Resultsmeet4-1.json": {
+  "parse_sha": "ab28a958fb97ec27",
+  "source_sha": "e4a0c03307d92777",
+  "date": "2026-10-31",
+  "by": "sonnet audit (second read, Indoor sec) (audit: confirmed)",
+  "evidence": "Row-by-row script compare of the archive HTML (Hy-Tek text) against the parse: event/gender/division from each header, place, name, school string, finals mark, relay school and printed legs, status rows, prelims vs finals sections, X-marked rows: 48 sections / 310 rows, 0 differences. 'Week 2 Meet 4 - 12/18/2021', Chev/Marsh/Scar/TA at USM (Hy-Tek; print stamp 12/21/2021; index December 18, 2021, no conflict). Waynflete's Bryan Stark-Chessa is an X (exhibition) entry in the Senior-Division 800 (X2:14.31) and Open 1 Mile (X4:56.76): both kept with exhibition set, place blank. The six printed Team Rankings blocks (Women/Men x Junior/Senior/Open) equal the parse, and the printed row Points summed per school reproduce every printed total (e.g. Women Open: Scarborough 32 = 16 'Scarboro' + 16 'Scarborough High School', Thornton 25 = 19 + 6, Cheverus 16 = 12 + 4); track_verify says verified (printed). Ledger 'transcribed/verified but never signed off' cleared by this read. Schools Scarboro, Thornton, Marshwood, Cheverus, Waynflete resolve to their me-hs entries. The sub5 link label is the combined 'SMAA Week 2: Meet 1 ... Meet 4' text, so the meet gets its own name."
+ },
+ "backend/data/parsed_results/2022/Indoor/Resultsmeet4.json": {
+  "parse_sha": "f6753b1e8da3b4e1",
+  "source_sha": "666c9c56410116f9",
+  "date": "2026-10-31",
+  "by": "sonnet audit (second read, Indoor sec) (audit: confirmed)",
+  "evidence": "Row-by-row script compare of the archive HTML (Hy-Tek text) against the parse (event/division, place, name, school, finals mark, relay legs, status rows): 50 sections / 278 rows, 0 differences. 'Week 1 Meet 4 - 12/14/2021', Deer/Scar/West at USM (print stamp 12/14/2021 11:39 PM; index December 14, 2021). Six printed Team Rankings blocks (Women/Men x Junior/Senior/Open) equal the parse; the printed row Points per school reproduce each total (Women Junior: Scarborough 60 = 55 'Scarboro' + 5 'Scarborough High School', Deering 15 = 12 + 3, Westbrook 10; Men Open: Scarborough 25 = 17 + 8, Westbrook 24 = 16 + 8, Deering 13 = 8 + 5); track_verify says verified (printed). Ledger 'never signed off' cleared by this read. Scarboro, Westbrook, Deering resolve to me-hs entries. Index label is the combined 'Week 1: Meet 3 ...; Meet 4 ...' text."
+ },
+ "backend/data/parsed_results/2022/Indoor/Resultswk-4-meet-1.json": {
+  "parse_sha": "2fb9073121295aaf",
+  "source_sha": "52dcb7b62f12e81d",
+  "date": "2026-10-31",
+  "by": "sonnet audit (second read, Indoor sec) (audit: confirmed)",
+  "evidence": "Row-by-row script compare of the archive HTML (Hy-Tek text) against the parse: 47 sections / 234 rows (Southern Maine Middle School League; In-7th / Jr-6th / Sr-8th divisions and open events, Prelims and Finals sections), 0 differences in event, gender, place, name, school string, mark. LEDGER WARNING 'team scores do not add up' EXPLAINED: the six printed Team Rankings blocks (Women/Men x Sr-8th / In-7th / Jr-6th) equal the parse and equal the printed row Points summed per division with school spellings merged (Women Jr-6th Biddeford 58 = 52 'BIDD' + 6 'Biddeford'; Men Sr-8th Saco 50 = 42 + 8; Men In-7th Saco 39 = 31 + 8). The checker's whole-meet total is larger only because events printed without a division (Girls/Boys High Jump, Shot Put, relays) also print Points (e.g. Noble Middle boys 32) but those points are not in any divisional total (Noble boys printed 50+55+25 = 130 vs 162 computed). Source scoring rule, not a parse error. HEADER MISMATCH: the Hy-Tek title says 'WK4 MT 2 FREEP/DURH-CAPE-SCARB-SMC-OOB - 3/25/2022 / WEEK 4 MEET2' but the rows are Biddeford, Noble Middle, Saco and Thornton Academy middle schools (none of the title's teams): the title was not renamed; Week 4 Meet 2 itself is Resultsmeet-3-1. File name and index say Meet 1; date 3/25/2022 = print stamp = index, so left as indexed (no date proof either way, none guessed). Schools BIDD, SACO, Noble Middle, Thornton Academy resolve to me-ms entries (middle-school league). Ledger 'never read' cleared."
+ },
+ "backend/data/parsed_results/2022/Indoor/Resultswmc-1.json": {
+  "parse_sha": "b8f693edb552a0d7",
+  "source_sha": "28e706b8f098914e",
+  "date": "2026-10-31",
+  "by": "sonnet audit (second read, Indoor sec) (audit: confirmed)",
+  "evidence": "Row-by-row script compare of the archive HTML (Hy-Tek text) against the parse: 42 sections / 625 rows, 0 differences (event/gender, place, name, grade, school string, finals mark, relay school and printed legs; the Points column per row equals the parse, 603 girls / 626 boys). 'WMC WEEK 3 - 1/21/2022' at USM (print stamp 1/21/2022; index 'WMC Week 3: Meet 2', January 21, 2022). No Team Rankings block is printed in the results file (Scoreswmc-1 holds them), so no scores to compare ('no_rankings'). Schools: YORK, Yhs = Yarmouth High School, Freeport HS, St. Dom's, Poland, GNG = Gray-New Gloucester, CAPE = Cape Elizabeth HS (WMC is a high-school league), NYA, GREE = Greely, Wells, Lake Region, Fait = Fryeburg Academy ('Fait' athletes Littlefield, Carbone, Kim run for the Fryeburg relay 'A' whose printed legs include Carbone, Enna), Traip: all resolve to me-hs entries already, no rule needed. 2022 NYA is the school alone (the NYA/Maine Coast Waldorf co-op appears in 2023). Flags: gender-bleed = same-named athletes of both sexes elsewhere in the store (none within the file); no change. Ledger 'never read' cleared."
+ },
+ "backend/data/parsed_results/2022/Indoor/Resultswmc.json": {
+  "parse_sha": "e74115092907f31a",
+  "source_sha": "4107124638aa21e9",
+  "date": "2026-10-31",
+  "by": "sonnet audit (second read, Indoor sec) (audit: confirmed)",
+  "evidence": "Row-by-row script compare of the archive HTML (Hy-Tek text) against the parse: 42 sections / 534 rows, 0 differences (event/gender, place, name, grade, school, finals mark, relay legs; Points column equals the parse: 591 girls / 609 boys). Header 'WMC WEEK 2 - 1/18/2022' (print stamp 1/18/2022 8:30 PM) at USM; index 'WMC Week 3: Meet 1', January 18, 2022 (date agrees). The header's Week 2 is stale: Week 2 was ResultsWMC1/ResultsWMC2 (WMC WEEK 2 - 1/14/2022), and the next export (Resultswmc-1) is WEEK 3 - 1/21; the index label Week 3 Meet 1 is kept. No Team Rankings in the results file ('no_rankings'). Schools as in Resultswmc-1 (Yhs = Yarmouth, Fait = Fryeburg Academy, GREE = Greely, NYA, Traip, GNG) all resolve right; outlier flag Tyler Robbins (Poland) boys shot 32-00.75 is the printed final (30-07.50 is his seed). Ledger 'never read' cleared."
  },
  "backend/data/parsed_results/2022/Indoor/SCORES1.json": {
   "parse_sha": "122f04b7a8c462e3",
@@ -45023,6 +45191,13 @@
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
  },
+ "backend/data/parsed_results/2022/Indoor/emitl3ab30dec2021.json": {
+  "parse_sha": "15dd71cf9c8318cf",
+  "source_sha": "51c1f86da2aaa4db",
+  "date": "2026-10-31",
+  "by": "sonnet audit (second read, Indoor sec) (audit: confirmed)",
+  "evidence": "Row-by-row script compare of the archive HTML (Hy-Tek text) against the parse: 63 sections / 666 rows, 0 differences (event, Meet A / Meet B, gender, place, name, grade, school string, finals mark, relay school and printed legs). PVC-Eastern Maine Indoor Track League 'Meet 3AB', New Balance Field House, UMaine, 12/30/2021 (index EMITL Meet 3AB, December 30, 2021). Four printed Team Rankings blocks (Women/Men x Meet A/Meet B) equal the parse exactly. Ledger score 'verified_close' EXPLAINED: the file prints no row points; table 10-8-6-4-2-1 reproduces every total except Men Meet A Hampden (printed 53, computed 57) and Sumner (printed 27, computed 25): Hampden's second relay (Boys 4x200 'B', 4th, 1:54.76) does not score (only a school's first relay scores) and Sumner moves from 5th (2) to 4th (4): 57-4 = 53, 25+2 = 27, exact. Same one-relay-per-school sheet rule as Results-1/5AB. Codes: BRW = Brewer, ELLS = Ellsworth, JB = John Bapst, BC = Bangor Christian (Women Meet A block prints 'Bangor Christian 2'); all resolve to me-hs entries already. Ledger 'transcribed/verified but never signed off' cleared by this read."
+ },
  "backend/data/parsed_results/2022/Indoor/emitllarge2022.json": {
   "parse_sha": "4532c15bb8662a25",
   "source_sha": "fbe2471f7b900172",
@@ -45034,6 +45209,69 @@
   "parse_sha": "c1c36d4954b95dd2",
   "source_sha": "d60e1d4205ed91e6",
   "date": "2026-10-16",
+  "by": "auto: team scores verified exactly, all schools identified, no flags",
+  "evidence": ""
+ },
+ "backend/data/parsed_results/2022/Indoor/kvac-meet-3b.json": {
+  "parse_sha": "d4d9c554605ebdf8",
+  "source_sha": "a636cce0d5d0f4b2",
+  "date": "2026-10-31",
+  "by": "second read t8 (Sonnet reviewer, row-by-row vs source)",
+  "evidence": "verdicts in scratchpad t8_0*_verdicts.json; overrides re-parsed and rebuilt"
+ },
+ "backend/data/parsed_results/2022/Indoor/kvac-meet-@-bowdoin-12-28-1-a.json": {
+  "parse_sha": "63da5dca3d697ac6",
+  "source_sha": "1eb4be8e98ebd73f",
+  "date": "2026-10-31",
+  "by": "second read t8 (Sonnet reviewer, row-by-row vs source)",
+  "evidence": "verdicts in scratchpad t8_0*_verdicts.json; overrides re-parsed and rebuilt"
+ },
+ "backend/data/parsed_results/2022/Indoor/kvac-meet-resuts-of-meet-12-23.json": {
+  "parse_sha": "a7c131a7123dbc39",
+  "source_sha": "3a5f623b3d30b00a",
+  "date": "2026-10-31",
+  "by": "second read t8 (Sonnet reviewer, row-by-row vs source)",
+  "evidence": "verdicts in scratchpad t8_0*_verdicts.json; overrides re-parsed and rebuilt"
+ },
+ "backend/data/parsed_results/2022/Indoor/kvac-ship-A-meet-2022.json": {
+  "parse_sha": "74b2469130b367d9",
+  "source_sha": "55a89f40d4f00b2a",
+  "date": "2026-10-31",
+  "by": "second read t8 (Sonnet reviewer, row-by-row vs source)",
+  "evidence": "verdicts in scratchpad t8_0*_verdicts.json; overrides re-parsed and rebuilt"
+ },
+ "backend/data/parsed_results/2022/Indoor/meet-1-b-results-with-scorespdf.json": {
+  "parse_sha": "f0fcbd056821b1d6",
+  "source_sha": "b4a94fc73d8730fa",
+  "date": "2026-10-31",
+  "by": "second read t8 (Sonnet reviewer, row-by-row vs source)",
+  "evidence": "verdicts in scratchpad t8_0*_verdicts.json; overrides re-parsed and rebuilt"
+ },
+ "backend/data/parsed_results/2022/Indoor/meet-@-bowdoin-12-11-21-1-c.json": {
+  "parse_sha": "2d8ab2bcf23cf67b",
+  "source_sha": "af17b6d89307fbc1",
+  "date": "2026-10-31",
+  "by": "second read t8 (Sonnet reviewer, row-by-row vs source)",
+  "evidence": "verdicts in scratchpad t8_0*_verdicts.json; overrides re-parsed and rebuilt"
+ },
+ "backend/data/parsed_results/2022/Indoor/meet-results-of-1-22-22-meetpdf.json": {
+  "parse_sha": "35b36ed8fd574606",
+  "source_sha": "fd5344f62ba8f2df",
+  "date": "2026-10-31",
+  "by": "second read t8 (Sonnet reviewer, row-by-row vs source)",
+  "evidence": "verdicts in scratchpad t8_0*_verdicts.json; overrides re-parsed and rebuilt"
+ },
+ "backend/data/parsed_results/2022/Indoor/ne-interscholastic-indoor-2022.json": {
+  "parse_sha": "4246677ed50339f6",
+  "source_sha": "e93819136a85b9d3",
+  "date": "2026-10-31",
+  "by": "second read t8 (Sonnet reviewer, row-by-row vs source)",
+  "evidence": "verdicts in scratchpad t8_0*_verdicts.json; overrides re-parsed and rebuilt"
+ },
+ "backend/data/parsed_results/2022/Indoor/results_01_06_2022.json": {
+  "parse_sha": "2057b55d7e7b98ee",
+  "source_sha": "ea1e12e2725aeb32",
+  "date": "2026-10-31",
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
  },
@@ -47486,6 +47724,13 @@
   "date": "2026-10-31",
   "by": "sonnet audit (second read, Indoor sec) (audit: confirmed)",
   "evidence": "Ledger 'unverified: never read' resolved by this read. SMAA Indoor Track Championship 2023, USM, 2/11/2023 (Hy-Tek; index February 11, 2023). Hy-Tek text compared row by row with scripts over the source (event, gender, place incl. ties and '--', name, school string, grade, mark with q/J/R/x flags, X/x B/C relay marks = exhibition, heat/points columns, relay school and printed legs, status rows; every school string against the parse): 62 events / 825 rows (Junior, Senior and Open divisions, prelims + finals; 10 relay events with 97 relay rows, legs equal), event sequence identical, no differences. No team block in the file; the companion smaa-scores.pdf (Male) and smaa-scores-girls.pdf (Female Team Scores) equal the sum of the row points per sex and school exactly (script, 0 differences, half points included: Gorham 59.5, Thornton 32.5). All 17 schools (South Portla, Scarborough, Portland Hig, Gorham High, Noble High S, Thornton Aca, Bonny Eagle, Windham High, Cheverus Hig, Falmouth Hig, Marshwood Hi, Biddeford Hi, Deering High, Kennebunk Hi, Westbrook Hi, Sanford High, Massabesic H) resolve to me-hs entries. Division suffix dropped from event names, 'Open Division' kept for 600 Yard Run / 1600 Sprint Medley (existing convention)."
+ },
+ "backend/data/parsed_results/2023/Indoor/Resultssmmsac-festival.json": {
+  "parse_sha": "d6b02637bf313f44",
+  "source_sha": "1075303a0c334b26",
+  "date": "2026-10-31",
+  "by": "sonnet audit (second read, Indoor sec) (audit: confirmed)",
+  "evidence": "Ledger '3 results flagged as implausible' cleared: the flags are real marks printed in the source (Closson, Ethan GRE Boys Shot Put SR '26-09.00', place 11; Crone, Landon LOR 45 Yard Hurdles INT prelim '7.70q', heat 2; the third is the gender-bleed athlete-merge check). SMMSAC Indoor Track Festival (middle schools), Portland Expo, 3/27/2023 (index March 27, 2023; Hy-Tek print stamp 4/1/2023). Second read of the existing transcription override (backend/data/transcribed/2023/Indoor/Resultssmmsac-festival.json, which adds the 55 Semi-Finals rows the parser drops): Hy-Tek text compared row by row with scripts over the source (event, gender, place incl. ties and '--', name, school string, grade, mark with q/J/R/x flags, X/x exhibition marks, heat/points columns, relay school and printed legs, status rows, Preliminaries/Semi-Finals/Finals sections and their row types): 66 events / 853 rows = 11 Preliminaries + 5 Semi-Finals (typed Prelims) + 50 Finals blocks, loaded document equals the source row for row, 0 differences; no orphan result lines. Codes SCAR, FAL, CAPE, BIDD, YAR, SMC, GRE, SACO, FREE, NOBLE, THOR, WHIT, LOR (relays print full names) all resolve to me-ms-* (YAR = me-ms-harrison, CAPE = me-ms-cape-elizabeth, same athletes as the other MS league files). No printed team scores. Parser pattern (already described by t7): Hy-Tek 'Semi-Finals' section dropped by ColumnStrategyParser for three-round races."
  },
  "backend/data/parsed_results/2023/Indoor/Resultswk-4-meet-1.json": {
   "parse_sha": "042fc67ee15d8c06",
