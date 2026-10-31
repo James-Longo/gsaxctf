@@ -2387,7 +2387,10 @@ class Sub5ScraperV2:
                     'performanceupdate', 'top10', 'records', 'photos', 'summeryouth',
                     'email-protection', 'entries', 'entry', 'psych', 'heat-sheet',
                     'heatsheet', 'startlist', 'start-list']
-            if any(x in h for x in junk):
+            hits = {x for x in junk if x in h}
+            # "Meet-1-Entries-and-Results-Girls-Results.pdf" (2026 Lincolnville
+            # MS) is a results file that also names the entries
+            if hits - {'entries', 'entry'} or (hits and 'result' not in h.split('/')[-1]):
                 return False
             keywords = ['result', 'emitl', 'pvc', 'states', 'class', 'champ', 'meet', 'inv', 'scores', 'relays', 'festival', 'open', 'youth', 'ms', 'jh', 'middle', 'junior', 'boys', 'girls', 'kvac', 'wmc', 'smaa', 'mvc', 'frosh', 'freshman', 'bangor', 'gsa', 'bucksport', 'ellsworth', 'mdi', 'orono', 'oldtown', 'brewer', 'falmouth']
             if any(x in h for x in keywords): return True

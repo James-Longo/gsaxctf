@@ -56,7 +56,14 @@ Work a season from its `missing` list, in the source order below.
   browser or plain requests. No crawling of whole sites, no parallel
   fetches, and stop for the day if the site slows or blocks you.
 - Never sign in, never work around the MileSplit Pro paywall, a captcha or
-  a bot block. Results that sit behind Pro are "not found".
+  a bot block.
+- A results file MileSplit marks Pro, or whose raw page has no text, is
+  usually still public: the formatted view
+  (`.../results/<file id>/formatted?type=formatted&event=<code>&gender=Boys`)
+  fills the full results and team scores in with a script, for any visitor.
+  Read it with the built-in browser, one race per page (James, 2026-10-31,
+  after six 2026 meets sat in the not-found list as "Pro only" or "no text").
+  Only results the page itself hides behind a Pro prompt are "not found".
 - A meet that exists only on MileSplit: transcribe the full results (every
   school, not only GSA) into
   `backend/data/parsed_results/<year>/<season>/ms-<slug>.json` in the parse

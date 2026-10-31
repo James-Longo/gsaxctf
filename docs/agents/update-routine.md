@@ -114,7 +114,14 @@ one season at a time):
    season in progress, then `python3 -m backend.meet_ledger build` and
    `missing <year> <season>`. Each missing high-school or middle-school meet
    is filled in the order of the procedure: sub5, the Internet Archive, the
-   host, MileSplit (or marked as one we hold, with `match`).
+   host, MileSplit (or marked as one we hold, with `match`). Re-check the
+   season's entries in `backend/data/missing_meets_not_found.txt` each run
+   (delete the meet's cached page in `backend/data/milesplit_cache` first):
+   results posted late fill them in. The 2026 WMC Championship, Cape
+   Elizabeth and Greely meets showed a single stray result line for weeks,
+   then their race files. An entry that says "Pro only" or "no text" is read
+   from MileSplit's formatted view in the built-in browser (missing-meets.md,
+   "MileSplit rules").
 2. *New school records*: every record-board change this run (a new best in
    an event for any team, `ui/src/records.js`) is checked against the
    meet's MileSplit page. A disagreement is settled by the procedure's
