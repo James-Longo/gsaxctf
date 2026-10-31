@@ -12023,6 +12023,158 @@
   "parse_sha": "554116178a1df506",
   "source_sha": "db21394270dbac70"
  },
+ "backend/data/parsed_results/2020/Indoor/1-9-USMResults.json": {
+  "verdict": "confirmed",
+  "by": "sonnet audit (second read, Indoor sec)",
+  "notes": "Hy-Tek KVAC meet, Mt. Ararat, Lewiston, Edward Little, Leavitt, Oxford Hills. All 329 rows (place, name, school, mark, event/gender, relays with finals times, exhibition x-rows, DNS/SCR/DNF) match the source. Warning 'team scores do not add up': only Leavitt boys is off (official 83, computed 110, delta 27): the three single-entrant wheelchair events (1 Mile Run, 800 Yard Run, Shot Put, all Jonathan Schomaker, Leavitt) score 1 point each in the printed totals, 3 points, not the 10 a place table gives (30-3 = 27); all other teams (Mt. Ararat 160, Lewiston 122, Edward Little 82, Oxford Hills 2; girls) equal. DATE CONFLICT: the title ('KVAC IDT Meet # 12 - 1/4/2020, Bowdoin College') is a stale Hy-Tek setup title; the file was exported 1/9/2020 11:16 PM, its teams (Lewiston, Edward Little, Oxford Hills) differ from the real Bowdoin 1/4/2020 meet (T2Results.htm: Mt. Ararat, MCI, Brunswick, Winslow, Leavitt, Morse, Cony, which carries the same stale title); the index (KVAC Week 6 Meet 1, 2020-01-09, USM) is right, no date_fix.",
+  "date": "2026-10-31",
+  "parse_sha": "2f18665bf163d61b",
+  "source_sha": "6c4a9ccff9ec50a7"
+ },
+ "backend/data/parsed_results/2020/Indoor/12-28-Bow-MeeetResults.json": {
+  "verdict": "fixed",
+  "by": "sonnet audit (second read, Indoor sec)",
+  "notes": "Hy-Tek KVAC Indoor Meet #2 12/28/2019 (title prints Colby College; index venue Bowdoin, date agrees). All 433 rows match the source (J-prefix jump-off marks, NH rows, relays with no legs printed, wheelchair events titled '1 MIle Wheelchair'). Warning 'team scores do not add up' is explained: only Leavitt boys is off (official 77, computed 104, delta 27) because the three single-entrant wheelchair events (Jonathan Schomaker, Leavitt: 1 Mile, 400, Shot Put) score 1 point each in the printed totals (3), not 10 each. 3 unresolved rows: 'CRHS' (Aiden Herbert JR: boys HJ 4th, LJ 6th, TJ 4th) = Camden Hills Regional High School (official team list prints 'Camden Regional High Scho' with 8 points; computed with CRHS as its own team the 8 points match). School rule in verdict.",
+  "date": "2026-10-31",
+  "parse_sha": "6554f2fff9304751",
+  "source_sha": "b8f98541f0f7f912"
+ },
+ "backend/data/parsed_results/2020/Indoor/BOW-meet-on-12-21Results.json": {
+  "verdict": "confirmed",
+  "by": "sonnet audit (second read, Indoor sec)",
+  "notes": "KVAC IDL #4 at Bowdoin 12/21/2019; HS teams only. Compared the parse with the source row by row (every place, name, school, mark, grade, relay leg, exhibition 'x' flag and printed points agree; no row missing or extra; events and genders match the headers). Ledger warning 'team scores do not add up' is explained by the source: Leavitt boys printed 107 vs 134 computed = +27, exactly the three wheelchair events (Schomaker, Leavitt: 400m, shot, 200m; one entrant each scores 1 point printed, 10 computed). Printed team lists (Women 6 teams, Men 6 teams) match the parse. 'x' B/C relay teams are exhibition. Event 29 is not in the source (numbering gap).",
+  "date": "2026-10-31",
+  "parse_sha": "e7307c66f0b3eb84",
+  "source_sha": "1e6bf5e3dffd4c8d"
+ },
+ "backend/data/parsed_results/2020/Indoor/Class-AResults.json": {
+  "verdict": "fixed",
+  "by": "sonnet audit (second read, Indoor sec)",
+  "notes": "KVAC Class A championships (index: 2/8/2020). DATE CONFLICT: the header prints 2/7/2015 (stale template from the 2015 championships); index 2020-02-08 is right: the same meet's Class B file prints 2/8/2020 and the teams are 2019-20 ('CONY 2019', Oxford Hills High School 2019 style names). No date_fix needed. Compared the parse with the source row by row (every place, name, school, mark, grade, relay leg, exhibition 'x' flag and printed points agree; no row missing or extra; events and genders match the headers). Only defect: school code CRHS (Camden Regional = Camden Hills Regional High School) left unresolved: Boys High Jump, 'Hebert, Aiden JR CRHS J5-06.00', and the Class A boys team list prints 'Camden Regional High Schoo 5' (tie for 3rd = (6+4)/2 = 5 points); Aiden Hebert (Indoor, primary team CRHS) and Camden Hills athletes (Miranda Dunton) run for Camden Hills elsewhere. Rule CRHS -> me-hs-camden-hills. Ledger warning 'team scores do not add up': this file prints the Class A AND the Class B team rankings (4 blocks), but holds only Class A results (Class B results are in Class-B-KVACResults); the 26 Class B teams compute 0 (e.g. Belfast boys official 91), the 14 Class A teams all agree. Not a parse error.",
+  "date": "2026-10-31",
+  "parse_sha": "0c5888cfeb7b260b",
+  "source_sha": "7970178d52bfd6f1"
+ },
+ "backend/data/parsed_results/2020/Indoor/Class-B-KVACResults.json": {
+  "verdict": "fixed",
+  "by": "sonnet audit (second read, Indoor sec)",
+  "notes": "KVAC Class B championships 2/8/2020 at Bowdoin (date matches the index). Compared the parse with the source row by row (every place, name, school, mark, grade, relay leg, exhibition 'x' flag and printed points agree; no row missing or extra; events and genders match the headers). One defect: Event 62 'Boys 400 Yard Dash Wheelchair CLASS B' kept the class suffix in its event name ('400 Yard Dash Wheelchair CLASS B'; the parser strips CLASS A/B from every other event, here left it on a wheelchair event). Override renames it '400 Yard Dash Wheelchair'; everything else copied unchanged. Ledger warning 'team scores do not add up': Leavitt boys printed 72 vs 99 computed = +27 = the three wheelchair events (Schomaker: mile, 400, shot; one entrant scores 1 point printed vs 10 computed); the other 25 team totals agree.",
+  "date": "2026-10-31",
+  "parse_sha": "13af5fd816a45067",
+  "source_sha": "e0c77b5420957d07"
+ },
+ "backend/data/parsed_results/2020/Indoor/KVAC-meet-3-boys.json": {
+  "verdict": "confirmed",
+  "by": "sonnet audit (second read, Indoor sec)",
+  "notes": "KVAC Indoor Meet #3 (boys), UMaine, 12/14/2019 (index Dec 14). Compared the parse with the source row by row (every place, name, school, mark, grade, relay leg, exhibition 'x' flag and printed points agree; no row missing or extra; events and genders match the headers). Relay legs and Points column match; 'X' (capital) relay teams are exhibition (incl. XDQ); Lewiston 'A' DQ is a scoring DQ. Printed Men team rankings (8 teams) match. Girls are in a separate file.",
+  "date": "2026-10-31",
+  "parse_sha": "ded28b3fff1a0b6c",
+  "source_sha": "509bdb73280e8a99"
+ },
+ "backend/data/parsed_results/2020/Indoor/Results-1.json": {
+  "verdict": "confirmed",
+  "by": "sonnet audit (second read, Indoor sec)",
+  "notes": "Scrimmage meet at USM (GNG, Freeport, Yarmouth, Poland), Hy-Tek. Compared the parse with the source row by row (every place, name, school, mark, grade, relay leg, exhibition 'x' flag and printed points agree; no row missing or extra; events and genders match the headers). No printed team scores. DATE: the title prints 12/18/2019 and Hy-Tek printed it 12/19/2019 03:44 PM, the index says Dec 19; a scrimmage cannot be printed complete at 3:44 PM the day it is run, so the meet was 12/18 (the index date looks like the print/post date; for the sibling scrimmage Results.htm title and index agree on 12/13).",
+  "date": "2026-10-31",
+  "parse_sha": "cdca6d82f966b22b",
+  "source_sha": "eda74b8cf120242b"
+ },
+ "backend/data/parsed_results/2020/Indoor/Results.json": {
+  "verdict": "confirmed",
+  "by": "sonnet audit (second read, Indoor sec)",
+  "notes": "Scrimmage meet 12/13/2019 at USM (South Portland, Scarborough, Biddeford); date matches the index. Compared the parse with the source row by row (every place, name, school, mark, grade, relay leg, exhibition 'x' flag and printed points agree; no row missing or extra; events and genders match the headers). Kaden Cadorette (BIDDT&F) is listed DNS in the girls 600 and 800 and ran 1:35.01 / 2:34.65 in the boys events: the source itself has the boy entered in girls events (DNS rows kept as printed). No printed team scores. Biddeford codes BIDDT&F / Biddeford Indoor T&F = Biddeford High School.",
+  "date": "2026-10-31",
+  "parse_sha": "1ac3b62caadacb4b",
+  "source_sha": "505bea8b5505690e"
+ },
+ "backend/data/parsed_results/2020/Indoor/Results2.json": {
+  "verdict": "fixed",
+  "by": "sonnet audit (second read, Indoor sec)",
+  "notes": "2019 New Year's Relays at USM 12/28/2019 (Hy-Tek, full print). All 887 parse rows matched against the source (prelim and final sections, relays, medleys, field 'Relay' events, pentathlon legs); events/genders match headers; 'Girls/Boys High Jump Relay' etc. are the individual field events of the Relays meet, correctly High Jump etc. Defect 1 (school): Hy-Tek team 'Boothbay Region Indoor' (relay row, 4x400 'A' 4:24.56, filed me-hs-boothbay) is the same team account as the abbreviation 'Brhsindr' (9 individual rows, filed coop-boothbay-wiscasset, active for Indoor from 2020); both must be the same school. Rule 'Boothbay Region Indoor' -> coop-boothbay-wiscasset (Boothbay/Wiscasset co-op in 2019-20 indoor). Parser pattern (all years, not fixable per file): the 'Girls/Boys Indoor Pentathlon' final-standing blocks (point totals 2183, 1905 ... girls 6 rows; 2759, 2604 ... boys 14 rows) are not in the parse (like every pentathlon file; leg blocks are kept as events named 'Indoor Pentathlon' with points, legs not distinguishable by name). Codes: Brhsindr/Boothbay Region Indoor, Gree = Greely, Saint Doms / Saint Domininc Track and Field = St. Dominic, Prhs Track = Poland, SP Red Riots = South Portland, Freeport High Sc / Yarmouth High Sc truncated names, Deering High = Deering (all already resolved).",
+  "date": "2026-10-31",
+  "parse_sha": "f1adaa311e450e76",
+  "source_sha": "cc820aac922ba856"
+ },
+ "backend/data/parsed_results/2020/Indoor/ResultsClassBBoys.json": {
+  "verdict": "fixed",
+  "by": "sonnet audit (second read, Indoor sec)",
+  "notes": "2020 Class B state meet (boys) at Bates 2/15/2020 (index Feb 15). Compared the parse with the source row by row (every place, name, school, mark, grade, relay leg, exhibition 'x' flag and printed points agree; no row missing or extra; events and genders match the headers). Defect: 'Saint Domininc High School' (misspelt in the source; 2 relay rows: 4x800 1st 8:30.02 and 4x200 26th 1:48.38, legs William Levasseur / Darien Davis / Hunter Burkhardt) left unresolved; the team list prints 'Saint Domininc High School 29' and the same athletes (Eli Morris, Hunter Burkhardt) run for 'Saint Doms' = St. Dominic Academy (Auburn) elsewhere. Rule -> me-hs-st-dominic. Wheelchair events (Schomaker) score 1 point printed (R = record suffix, kept out of the mark). Printed team list (30 teams, incl. ties at 18th) matches the parse.",
+  "date": "2026-10-31",
+  "parse_sha": "f514846a3fc89fe2",
+  "source_sha": "47ff7423e3ddb0e2"
+ },
+ "backend/data/parsed_results/2020/Indoor/ResultsClassBGirls.json": {
+  "verdict": "fixed",
+  "by": "sonnet audit (second read, Indoor sec)",
+  "notes": "2020 Class B state meet (girls) at Bates 2/15/2020. Compared the parse with the source row by row (every place, name, school, mark, grade, relay leg, exhibition 'x' flag and printed points agree; no row missing or extra; events and genders match the headers). Two school defects: (1) 'Saint Domininc High School' (1 relay row, 4x200 23rd 2:05.28; legs Sarah Brown, Grace Girardin...; team list 'Saint Domininc High School 4') unresolved -> me-hs-st-dominic (Grace Girardin runs for Saint Doms in Results2). (2) raw 'Lincoln' (Erica Johnson SO, 3 rows: 55H, 55 dash, triple jump 5th) was filed under oos-auto-ri-lincoln (a Rhode Island 'Lincoln'); in this Maine Class B meet the team list has 'Lincoln Academy 3' points (5th place triple jump = 3 pts) and no other Lincoln; Erica Johnson SO is 'LA' (Lincoln Academy) in the Dec 21 Bowdoin meet. Rule 'Lincoln' -> me-hs-lincoln-academy. Printed team list (25 teams) matches the parse.",
+  "date": "2026-10-31",
+  "parse_sha": "cde40ce315317764",
+  "source_sha": "0eb22df2dbfd8adb"
+ },
+ "backend/data/parsed_results/2020/Indoor/ResultsColby-Meet-2.json": {
+  "verdict": "confirmed",
+  "by": "sonnet audit (second read, Indoor sec)",
+  "notes": "Colby Meet 2, 1/3/2020 (index Jan 3; Hy-Tek stamp 1/4). Compared the parse with the source row by row (every place, name, school, mark, grade, relay leg, exhibition 'x' flag and printed points agree; no row missing or extra; events and genders match the headers). No printed team scores in this file (Scores file separate); Points column per row matches.",
+  "date": "2026-10-31",
+  "parse_sha": "a35214e64dcdfbd0",
+  "source_sha": "71f67daed07467ab"
+ },
+ "backend/data/parsed_results/2020/Indoor/ResultsColby-Meet-3.json": {
+  "verdict": "confirmed",
+  "by": "sonnet audit (second read, Indoor sec)",
+  "notes": "Colby Meet 3, 1/4/2020 (index Jan 4). Compared the parse with the source row by row (every place, name, school, mark, grade, relay leg, exhibition 'x' flag and printed points agree; no row missing or extra; events and genders match the headers). School CRHS already resolves to me-hs-camden-hills through this meet's school map (5 rows); consistent with the Colby 4 / Class A evidence. No printed team scores here.",
+  "date": "2026-10-31",
+  "parse_sha": "d12d1314e5578aed",
+  "source_sha": "054407aed52fb1f1"
+ },
+ "backend/data/parsed_results/2020/Indoor/ResultsColby-Meet-4.json": {
+  "verdict": "fixed",
+  "by": "sonnet audit (second read, Indoor sec)",
+  "notes": "Colby Meet 4, 1/11/2020 (index Jan 11). Compared the parse with the source row by row (every place, name, school, mark, grade, relay leg, exhibition 'x' flag and printed points agree; no row missing or extra; events and genders match the headers). Defect: school code CRHS (4 rows: Dunton, Miranda SR 800 2nd 2:29.80; Hebert, Aiden JR 55 dash 7th 7.48, high jump 2nd 5-04.00, long jump 4th 15-03.00) unresolved. CRHS = Camden Hills Regional High School: Miranda Dunton's other meets are Camden Hills Regional HS, Aiden Hebert's indoor team is CRHS = Camden Hills (Class A boys list 'Camden Regional High Schoo'), same midcoast teams in the meet (Oceanside, Medomak Valley), and Colby Meet 3 already maps CRHS to me-hs-camden-hills. Rule CRHS -> me-hs-camden-hills.",
+  "date": "2026-10-31",
+  "parse_sha": "ba28d944437d86b7",
+  "source_sha": "69bd90f0a4e95d5f"
+ },
+ "backend/data/parsed_results/2020/Indoor/ResultsColbyMeet1.json": {
+  "verdict": "confirmed",
+  "by": "sonnet audit (second read, Indoor sec)",
+  "notes": "Colby Meet 1, 12/13/2019 (index Dec 13; Hy-Tek stamp 12/14). Compared the parse with the source row by row (every place, name, school, mark, grade, relay leg, exhibition 'x' flag and printed points agree; no row missing or extra; events and genders match the headers). Wheelchair events (1 entrant) kept; no printed team scores here (Scores file separate).",
+  "date": "2026-10-31",
+  "parse_sha": "a8b725b8e5c48d48",
+  "source_sha": "756b6edb0a99a3f7"
+ },
+ "backend/data/parsed_results/2020/Indoor/ResultsMEET-2.json": {
+  "verdict": "fixed",
+  "by": "sonnet audit (second read, Indoor sec)",
+  "notes": "SMAA week 1 meet (Biddeford, Kennebunk, Marshwood, Massabesic, Noble), 12/21/2019 (index Dec 21). Compared the parse with the source row by row (every place, name, school, mark, grade, relay leg, exhibition 'x' flag and printed points agree; no row missing or extra; events and genders match the headers). Printed team scores (29 rows) match the parse. Defect (parser pattern): the Open Division 600 Yard Dash events keep the suffix, '600 Yard Dash Open Division' (girls 8 rows, boys 11), while Junior/Senior/Open Division is stripped from every other event and the Dec 13 scrimmage uses '600 Yard Dash'; the Division suffix survives on events outside the parser's standard-event list. Override renames both events '600 Yard Dash', everything else copied unchanged.",
+  "date": "2026-10-31",
+  "parse_sha": "718e18116ff8a56f",
+  "source_sha": "1d051582370d8f35"
+ },
+ "backend/data/parsed_results/2020/Indoor/ResultsMEET-3.json": {
+  "verdict": "fixed",
+  "by": "sonnet audit (second read, Indoor sec)",
+  "notes": "SMAA week 1 meet (Cheverus, Deering, Scarborough, Portland, South Portland), 12/21/2019 (index Dec 21). Compared the parse with the source row by row (every place, name, school, mark, grade, relay leg, exhibition 'x' flag and printed points agree; no row missing or extra; events and genders match the headers). Printed team scores (27 rows) match. Same defect as ResultsMEET-2: '600 Yard Dash Open Division' (girls 5 rows, boys 9) renamed '600 Yard Dash' by override (parser leaves the Division suffix on events outside its standard list); all else unchanged.",
+  "date": "2026-10-31",
+  "parse_sha": "4503a916f2aa0d4b",
+  "source_sha": "4e1490801fa0731b"
+ },
+ "backend/data/parsed_results/2020/Indoor/ResultsMEET1.json": {
+  "verdict": "fixed",
+  "by": "sonnet audit (second read, Indoor sec)",
+  "notes": "SMAA week 1 meet (Bonny Eagle, Falmouth, Gorham, Thornton, Westbrook, Windham, Sanford), 12/21/2019 (index Dec 21). Compared the parse with the source row by row (every place, name, school, mark, grade, relay leg, exhibition 'x' flag and printed points agree; no row missing or extra; events and genders match the headers). Printed team scores (39 rows) match the parse; the checker's 'verified_close' (girls Thornton 175.5 vs 173.5, Windham 119 vs 117, Westbrook 48 vs 46, Bonny Eagle and Falmouth 1 each, 8 points in all) is a scoring-rule difference in the Junior/Senior/Open division scoring, not a parse difference: every source row is in the parse. Same defect as ResultsMEET-2: '600 Yard Dash Open Division' (girls 11 rows, boys 10) renamed '600 Yard Dash' by override; all else unchanged. 'Scots' = Bonny Eagle.",
+  "date": "2026-10-31",
+  "parse_sha": "eb3a201bf0d22230",
+  "source_sha": "5fa308c59edbbf9e"
+ },
+ "backend/data/parsed_results/2020/Indoor/ResultsSMAA.json": {
+  "verdict": "fixed",
+  "by": "sonnet audit (second read, Indoor sec)",
+  "notes": "SMAA Southwestern Championship, 2/8/2020 (index Feb 8). Compared the parse with the source row by row (every place, name, school, mark, grade, relay leg, exhibition 'x' flag and printed points agree; no row missing or extra; events and genders match the headers). Printed team scores (82 rows) match; Prelims/Finals sections both kept. Same defect as the MEET files: '600 Yard Dash Open Division' (girls 12, boys 16 rows) renamed '600 Yard Dash' by override; all else unchanged. Flagged shot put 60-10.50 (Falmouth, Joshua Bradford) is printed in the source.",
+  "date": "2026-10-31",
+  "parse_sha": "95ce1a8abaa932a1",
+  "source_sha": "3d8086732488015a"
+ },
  "backend/data/parsed_results/2020/XC/2020-dhs-meet-2-girls.txt.json": {
   "verdict": "source-error",
   "by": "sonnet audit (score mismatch, 2026-10-23)",
@@ -12518,6 +12670,110 @@
   "date": "2026-10-24",
   "parse_sha": "037c1d25713dd091",
   "source_sha": "cb118e52d7f8e831"
+ },
+ "backend/data/parsed_results/2021/Indoor/210306-Falmouth-Scarborough-Gorham-indoor-meet.json": {
+  "verdict": "fixed",
+  "by": "sonnet audit (second read, Indoor sec)",
+  "notes": "Typed list 'March 6, 2021 Falmouth HS Mini-meet' (Falmouth, Gorham, Scarborough). All 72 rows' names/schools/marks equal the source. Fixed: every printed place was dropped by the parse (restored); 'Boys JR 55m Hurdles' + 'Boys SR 55m Hurdles' merged into Boys 55 Meter Hurdles with places by time (list places only within each group); 'Girls SR 55m Hurdles' -> Girls 55 Meter Hurdles; 'Girls Mile' -> 1 Mile Run; field marks '32-8' -> '32-08'. PARSER PATTERN (LooseListParser): drops the Place column of 'Place Name School Time' lists and keeps class labels in event names.",
+  "date": "2026-10-31",
+  "parse_sha": "da30048cb85f528f",
+  "source_sha": "dc6c2ad68dff0f14"
+ },
+ "backend/data/parsed_results/2021/Indoor/Resultsemitl2021feb7.json": {
+  "verdict": "confirmed",
+  "by": "sonnet audit (second read, Indoor sec)",
+  "notes": "Hy-Tek PVC-EMITL Week 2 distance 2/5/2021; every parse row (place, name, grade, school, mark) found in the source and every source row in the parse (89 rows, events Girls 800/1 Mile, Boys 800/1 Mile/2 Mile); school names resolve; ties/place gaps as printed; no printed team scores.",
+  "date": "2026-10-31",
+  "parse_sha": "f33b2afa27f478f6",
+  "source_sha": "1a25b9898a73e0eb"
+ },
+ "backend/data/parsed_results/2021/Indoor/Resultsemitlfield2021feb7.json": {
+  "verdict": "confirmed",
+  "by": "sonnet audit (second read, Indoor sec)",
+  "notes": "Hy-Tek PVC-EMITL Week 2 field events 2/4-2/5/2021 (J-prefix = jump-off marks, NH rows kept); every parse row (place, name, grade, school, mark) found in the source and every source row in the parse (90 rows, events Girls/Boys High Jump and Shot Put); school names resolve; ties/place gaps as printed; no printed team scores.",
+  "date": "2026-10-31",
+  "parse_sha": "45f4196b8e7df980",
+  "source_sha": "6241ffa6d2c92713"
+ },
+ "backend/data/parsed_results/2021/Indoor/Resultsfieldweek1.json": {
+  "verdict": "confirmed",
+  "by": "sonnet audit (second read, Indoor sec)",
+  "notes": "Hy-Tek PVC-EMITL Week 1 field events 1/28-1/30/2021; every parse row (place, name, grade, school, mark) found in the source and every source row in the parse (60 rows, events Girls/Boys High Jump and Shot Put); school names resolve; ties/place gaps as printed; no printed team scores.",
+  "date": "2026-10-31",
+  "parse_sha": "fdf39463e8da22b7",
+  "source_sha": "a602acb830c55a5d"
+ },
+ "backend/data/parsed_results/2021/Indoor/champ-field-results.json": {
+  "verdict": "fixed",
+  "by": "sonnet audit (second read, Indoor sec)",
+  "notes": "Hy-Tek EMITL 2021 Championship field events (events 19-26, two-column PDF). The stored parse is a legacy flat list (athlete_name/mark/rank) the pipeline reads as 0 rows ('no rows'); its 126 rows equal the source row for row, so they are written as a transcription in the parse format. 'Long Jump Standing Bro(ad)' and 'Triple Jump Five Strider' named Standing Broad Jump and Five Stride Jump (not long/triple jump marks). Also holds the rows of 2021-sp-results (duplicate). PARSER PATTERN: this Hy-Tek two-column PDF layout is parsed into the legacy flat row list with no events.",
+  "date": "2026-10-31",
+  "parse_sha": "fd65e1eabff1393b",
+  "source_sha": "b0b534f88cb10e8e"
+ },
+ "backend/data/parsed_results/2021/Indoor/covid-21-week-3-results.json": {
+  "verdict": "fixed",
+  "by": "sonnet audit (second read, Indoor sec)",
+  "notes": "Hy-Tek EMITL COVID Series Week 3 field events 2/11-2/13/2021. All 199 rows equal the source (place gaps and ties as printed). Fixed: 'Event 21/22 Long Jump Standing Bro(ad)' were named Long Jump and 'Event 23/24 Triple Jump Five Strider' Triple Jump (standing broad / five-stride jump marks mixed with long and triple jump); renamed Standing Broad Jump and Five Stride Jump. PARSER PATTERN: a Hy-Tek event title with a qualifier after the jump name ('Long Jump Standing Broad', 'Triple Jump Five Strider') loses the qualifier. The ledger flag is that implausible long/triple jump marks.",
+  "date": "2026-10-31",
+  "parse_sha": "f850fa7b289d04f0",
+  "source_sha": "10d5ce6ee41d2156"
+ },
+ "backend/data/parsed_results/2021/Indoor/emitldistance2020feb27.json": {
+  "verdict": "confirmed",
+  "by": "sonnet audit (second read, Indoor sec)",
+  "notes": "Hy-Tek EMITL Championship distance 2/27/2021 (file name says 2020, content is 2021); every parse row (place, name, grade, school, mark) found in the source and every source row in the parse (59 rows, events Girls/Boys 800 and 1 Mile); school names resolve; ties/place gaps as printed; no printed team scores.",
+  "date": "2026-10-31",
+  "parse_sha": "c98449ee34eecce1",
+  "source_sha": "8a27cc4c6790cece"
+ },
+ "backend/data/parsed_results/2021/Indoor/emitldistance28jan2021.json": {
+  "verdict": "confirmed",
+  "by": "sonnet audit (second read, Indoor sec)",
+  "notes": "Hy-Tek EMITL Week 1 distance 1/28/2021; every parse row (place, name, grade, school, mark) found in the source and every source row in the parse (76 rows, events Girls 800/1 Mile/2 Mile, Boys 800/1 Mile); school names resolve; ties/place gaps as printed; no printed team scores.",
+  "date": "2026-10-31",
+  "parse_sha": "b88402fb55570ae4",
+  "source_sha": "bbbb174548761c01"
+ },
+ "backend/data/parsed_results/2021/Indoor/emitldistance_feb20.json": {
+  "verdict": "confirmed",
+  "by": "sonnet audit (second read, Indoor sec)",
+  "notes": "Hy-Tek EMITL Week 3 distance 2/20/2021; every parse row (place, name, grade, school, mark) found in the source and every source row in the parse (71 rows, events Girls/Boys 800 and 1 Mile); school names resolve; ties/place gaps as printed; no printed team scores.",
+  "date": "2026-10-31",
+  "parse_sha": "4e7cdcfd2f21bd54",
+  "source_sha": "dadc0a8d410c3914"
+ },
+ "backend/data/parsed_results/2021/Indoor/emitlfield_week4.json": {
+  "verdict": "fixed",
+  "by": "sonnet audit (second read, Indoor sec)",
+  "notes": "Hy-Tek EMITL COVID Series Week 4 field events (two-column PDF). All 210 rows' names/marks equal the source. Fixed: (1) 'Long Jump Standing Bro(ad)' (events 21/22) named Long Jump and 'Triple Jump Five Strider' (23/24) named Triple Jump -> Standing Broad Jump, Five Stride Jump; (2) Girls five-stride places 6-28,30: school and grade swapped (school 'SO','FR','JR','SR' = the 24 unidentified rows); true schools ELLS, BRW, John Bapst, Bangor, Old Town, Central, Sumner restored with grades; (3) page-2 rows of boys standing broad (18-30) and boys five-stride (5-30) had the grade inside the athlete name ('Oscar Croce            FR'); split. PARSER PATTERN: narrow-column continuation pages of two-column Hy-Tek PDFs shift name/grade/school fields. School codes: BRW = Brewer, ELLS = Ellsworth (resolve already).",
+  "date": "2026-10-31",
+  "parse_sha": "d095d6205e9e930f",
+  "source_sha": "a78c87539f9aeba3"
+ },
+ "backend/data/parsed_results/2021/Indoor/falmouthfeb27.json": {
+  "verdict": "fixed",
+  "by": "sonnet audit (second read, Indoor sec)",
+  "notes": "Typed list (Falmouth, Scarborough, Thornton Academy). The parse put the Girls SP, Boys SP and Boys HJ sections (15 rows) into 'Boys 55 Meter Dash' (36 rows, 21 true), dropped all places and the DNF (Roberge) / NH (DePatsy) rows, and named the hurdles 'Boys JR/SR 55m Hurdles'. Rewritten: Boys 55 Meter Hurdles (JR+SR merged, places by time), Girls 55 Meter Hurdles, Girls/Boys 55 Meter Dash with places, Girls/Boys Shot Put, Boys High Jump with ties. Rows with no mark (Toby Martin, Kyle Posier) left out. PARSER PATTERN (LooseListParser): abbreviated headings 'Girls SP', 'Boys SP', 'Boys HJ' do not start new events; places and '--' status rows dropped.",
+  "date": "2026-10-31",
+  "parse_sha": "da506f1f280ce618",
+  "source_sha": "d1a01f187aaf0c13"
+ },
+ "backend/data/parsed_results/2021/Indoor/gorhamboys.json": {
+  "verdict": "fixed",
+  "by": "sonnet audit (second read, Indoor sec)",
+  "notes": "Google Sheets grid PDF of the Gorham-only 'GHS ITF Mini Meet' (Gorham Sports Center, Feb 10): the parse read 0 rows. Transcribed from the PDF word positions: 50 Yard Hurdles, 50 Yard Dash, Standing Broad Jump, Running Hop-Step, High Jump (25 rows); school = Gorham High School (GHS); no places printed. SMR relay-leg times, plank and the empty 2 Mile column are not event results and are left out (listed in override notes). PARSER PATTERN: Sheets grids (athlete rows x event columns) parse to 0 rows.",
+  "date": "2026-10-31",
+  "parse_sha": "a683096011db3975",
+  "source_sha": "c5d8465d4fc6d520"
+ },
+ "backend/data/parsed_results/2021/Indoor/gorhamgirls.json": {
+  "verdict": "fixed",
+  "by": "sonnet audit (second read, Indoor sec)",
+  "notes": "Google Sheets grid PDF of the Gorham-only 'GHS ITF Mini Meet - Girls Results Feb 10': the parse read 0 rows. Transcribed from the PDF word positions: 50 Yard Hurdles, 50 Yard Dash, Standing Broad Jump, Running Hop-Step, Shot Put, High Jump (21 rows); school = Gorham High School; no places printed; SMR leg, plank not event results (override notes). Same PARSER PATTERN as gorhamboys.",
+  "date": "2026-10-31",
+  "parse_sha": "a683096011db3975",
+  "source_sha": "7545f2800a9db4b4"
  },
  "backend/data/parsed_results/2021/XC/2021-Mt.-Blue-Relays-Boys-Results.xlsx-Sheet2.json": {
   "verdict": "fixed",
@@ -13446,6 +13702,14 @@
   "date": "2026-10-31",
   "parse_sha": "e234fc290b67688b",
   "source_sha": "ea1e12e2725aeb32"
+ },
+ "backend/data/parsed_results/2022/Indoor/usmnyinvite.json": {
+  "verdict": "fixed",
+  "by": "sonnet audit (second read, Indoor sec)",
+  "notes": "Hy-Tek 2021 USM New Year's Invitational 12/30/2021, no printed team scores. 668 rows (place, name, school, mark, prelim/final sections) equal the source, incl. NH rows and exhibition (X York Burke, x Portsmouth B and Scarborough B relays). Fixed: two relay rows kept grades on leg names that print them (Westbrook girls 4x400 'Haley Ball SO','Megan Garber FR'; Portland boys 4x800 'Ben Prestes SO','Nathan Blades SO'); PARSER PATTERN: relay leg block where only some legs print a grade leaves the suffix on those names. Warning '61 rows with an unidentified school': Portsmouth (56 rows) / Portsmouth High School (4 relay rows) = Portsmouth HS NH (oos-auto-nh-portsmouth): same athletes Lily Jenkins, Avery Timerman, Mariam Nada are 'Portsmouth NH' in other meets and every other out-of-state team here is NH. School rule in verdict. 'Pembroke' (1 row, Jimmy Valotto, boys SP 34-08.75) stays unresolved (Pembroke NH or MA, athlete in no other meet).",
+  "date": "2026-10-31",
+  "parse_sha": "6b4fd180b7ce512d",
+  "source_sha": "3c8810c72c22b102"
  },
  "backend/data/parsed_results/2022/XC/2022-Lee-Invitational-Boys-Race-Sheet1-1.json": {
   "verdict": "source-error",

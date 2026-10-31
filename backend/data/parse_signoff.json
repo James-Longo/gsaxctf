@@ -40298,12 +40298,145 @@
   "by": "sonnet audit (second read, 2026-10-24) (audit: confirmed)",
   "evidence": "All 67 rows match place, name, school, grade, time; middle-school ids for each town. No team scores printed."
  },
+ "backend/data/parsed_results/2020/Indoor/1-9-USMResults.json": {
+  "parse_sha": "2f18665bf163d61b",
+  "source_sha": "6c4a9ccff9ec50a7",
+  "date": "2026-10-31",
+  "by": "sonnet audit (second read, Indoor sec) (audit: confirmed)",
+  "evidence": "Hy-Tek KVAC meet, Mt. Ararat, Lewiston, Edward Little, Leavitt, Oxford Hills. All 329 rows (place, name, school, mark, event/gender, relays with finals times, exhibition x-rows, DNS/SCR/DNF) match the source. Warning 'team scores do not add up': only Leavitt boys is off (official 83, computed 110, delta 27): the three single-entrant wheelchair events (1 Mile Run, 800 Yard Run, Shot Put, all Jonathan Schomaker, Leavitt) score 1 point each in the printed totals, 3 points, not the 10 a place table gives (30-3 = 27); all other teams (Mt. Ararat 160, Lewiston 122, Edward Little 82, Oxford Hills 2; girls) equal. DATE CONFLICT: the title ('KVAC IDT Meet # 12 - 1/4/2020, Bowdoin College') is a stale Hy-Tek setup title; the file was exported 1/9/2020 11:16 PM, its teams (Lewiston, Edward Little, Oxford Hills) differ from the real Bowdoin 1/4/2020 meet (T2Results.htm: Mt. Ararat, MCI, Brunswick, Winslow, Leavitt, Morse, Cony, which carries the same stale title); the index (KVAC Week 6 Meet 1, 2020-01-09, USM) is right, no date_fix."
+ },
+ "backend/data/parsed_results/2020/Indoor/12-28-Bow-MeeetResults.json": {
+  "parse_sha": "6554f2fff9304751",
+  "source_sha": "b8f98541f0f7f912",
+  "date": "2026-10-31",
+  "by": "second read t9 (Sonnet reviewer, row-by-row vs source)",
+  "evidence": "verdicts in scratchpad t9_0*_verdicts.json; overrides re-parsed and rebuilt"
+ },
+ "backend/data/parsed_results/2020/Indoor/BOW-meet-on-12-21Results.json": {
+  "parse_sha": "e7307c66f0b3eb84",
+  "source_sha": "1e6bf5e3dffd4c8d",
+  "date": "2026-10-31",
+  "by": "sonnet audit (second read, Indoor sec) (audit: confirmed)",
+  "evidence": "KVAC IDL #4 at Bowdoin 12/21/2019; HS teams only. Compared the parse with the source row by row (every place, name, school, mark, grade, relay leg, exhibition 'x' flag and printed points agree; no row missing or extra; events and genders match the headers). Ledger warning 'team scores do not add up' is explained by the source: Leavitt boys printed 107 vs 134 computed = +27, exactly the three wheelchair events (Schomaker, Leavitt: 400m, shot, 200m; one entrant each scores 1 point printed, 10 computed). Printed team lists (Women 6 teams, Men 6 teams) match the parse. 'x' B/C relay teams are exhibition. Event 29 is not in the source (numbering gap)."
+ },
+ "backend/data/parsed_results/2020/Indoor/Class-AResults.json": {
+  "parse_sha": "0c5888cfeb7b260b",
+  "source_sha": "7970178d52bfd6f1",
+  "date": "2026-10-31",
+  "by": "second read t9 (Sonnet reviewer, row-by-row vs source)",
+  "evidence": "verdicts in scratchpad t9_0*_verdicts.json; overrides re-parsed and rebuilt"
+ },
+ "backend/data/parsed_results/2020/Indoor/Class-B-KVACResults.json": {
+  "parse_sha": "86308a3dc3f926b8",
+  "source_sha": "e0c77b5420957d07",
+  "date": "2026-10-31",
+  "by": "second read t9 (Sonnet reviewer, row-by-row vs source)",
+  "evidence": "verdicts in scratchpad t9_0*_verdicts.json; overrides re-parsed and rebuilt"
+ },
+ "backend/data/parsed_results/2020/Indoor/KVAC-meet-3-boys.json": {
+  "parse_sha": "ded28b3fff1a0b6c",
+  "source_sha": "509bdb73280e8a99",
+  "date": "2026-10-31",
+  "by": "sonnet audit (second read, Indoor sec) (audit: confirmed)",
+  "evidence": "KVAC Indoor Meet #3 (boys), UMaine, 12/14/2019 (index Dec 14). Compared the parse with the source row by row (every place, name, school, mark, grade, relay leg, exhibition 'x' flag and printed points agree; no row missing or extra; events and genders match the headers). Relay legs and Points column match; 'X' (capital) relay teams are exhibition (incl. XDQ); Lewiston 'A' DQ is a scoring DQ. Printed Men team rankings (8 teams) match. Girls are in a separate file."
+ },
  "backend/data/parsed_results/2020/Indoor/KVAC-meet-3-girls.json": {
   "parse_sha": "d81d3b70154bdb27",
   "source_sha": "d7eb8e516ac519ec",
   "date": "2026-10-28",
   "by": "re-check 2026-10-28: re-parsed only for the team-rank fix (ranks 10+ were stored as 0-9)",
   "evidence": "scratch re-parse compared with the signed parse: result rows identical, only team_rankings ranks changed"
+ },
+ "backend/data/parsed_results/2020/Indoor/Results-1.json": {
+  "parse_sha": "cdca6d82f966b22b",
+  "source_sha": "eda74b8cf120242b",
+  "date": "2026-10-31",
+  "by": "sonnet audit (second read, Indoor sec) (audit: confirmed)",
+  "evidence": "Scrimmage meet at USM (GNG, Freeport, Yarmouth, Poland), Hy-Tek. Compared the parse with the source row by row (every place, name, school, mark, grade, relay leg, exhibition 'x' flag and printed points agree; no row missing or extra; events and genders match the headers). No printed team scores. DATE: the title prints 12/18/2019 and Hy-Tek printed it 12/19/2019 03:44 PM, the index says Dec 19; a scrimmage cannot be printed complete at 3:44 PM the day it is run, so the meet was 12/18 (the index date looks like the print/post date; for the sibling scrimmage Results.htm title and index agree on 12/13)."
+ },
+ "backend/data/parsed_results/2020/Indoor/Results.json": {
+  "parse_sha": "1ac3b62caadacb4b",
+  "source_sha": "505bea8b5505690e",
+  "date": "2026-10-31",
+  "by": "sonnet audit (second read, Indoor sec) (audit: confirmed)",
+  "evidence": "Scrimmage meet 12/13/2019 at USM (South Portland, Scarborough, Biddeford); date matches the index. Compared the parse with the source row by row (every place, name, school, mark, grade, relay leg, exhibition 'x' flag and printed points agree; no row missing or extra; events and genders match the headers). Kaden Cadorette (BIDDT&F) is listed DNS in the girls 600 and 800 and ran 1:35.01 / 2:34.65 in the boys events: the source itself has the boy entered in girls events (DNS rows kept as printed). No printed team scores. Biddeford codes BIDDT&F / Biddeford Indoor T&F = Biddeford High School."
+ },
+ "backend/data/parsed_results/2020/Indoor/Results2.json": {
+  "parse_sha": "f1adaa311e450e76",
+  "source_sha": "cc820aac922ba856",
+  "date": "2026-10-31",
+  "by": "second read t9 (Sonnet reviewer, row-by-row vs source)",
+  "evidence": "verdicts in scratchpad t9_0*_verdicts.json; overrides re-parsed and rebuilt"
+ },
+ "backend/data/parsed_results/2020/Indoor/ResultsClassBBoys.json": {
+  "parse_sha": "f514846a3fc89fe2",
+  "source_sha": "47ff7423e3ddb0e2",
+  "date": "2026-10-31",
+  "by": "second read t9 (Sonnet reviewer, row-by-row vs source)",
+  "evidence": "verdicts in scratchpad t9_0*_verdicts.json; overrides re-parsed and rebuilt"
+ },
+ "backend/data/parsed_results/2020/Indoor/ResultsClassBGirls.json": {
+  "parse_sha": "cde40ce315317764",
+  "source_sha": "0eb22df2dbfd8adb",
+  "date": "2026-10-31",
+  "by": "auto: team scores verified exactly, all schools identified, no flags",
+  "evidence": ""
+ },
+ "backend/data/parsed_results/2020/Indoor/ResultsColby-Meet-2.json": {
+  "parse_sha": "a35214e64dcdfbd0",
+  "source_sha": "71f67daed07467ab",
+  "date": "2026-10-31",
+  "by": "sonnet audit (second read, Indoor sec) (audit: confirmed)",
+  "evidence": "Colby Meet 2, 1/3/2020 (index Jan 3; Hy-Tek stamp 1/4). Compared the parse with the source row by row (every place, name, school, mark, grade, relay leg, exhibition 'x' flag and printed points agree; no row missing or extra; events and genders match the headers). No printed team scores in this file (Scores file separate); Points column per row matches."
+ },
+ "backend/data/parsed_results/2020/Indoor/ResultsColby-Meet-3.json": {
+  "parse_sha": "d12d1314e5578aed",
+  "source_sha": "054407aed52fb1f1",
+  "date": "2026-10-31",
+  "by": "sonnet audit (second read, Indoor sec) (audit: confirmed)",
+  "evidence": "Colby Meet 3, 1/4/2020 (index Jan 4). Compared the parse with the source row by row (every place, name, school, mark, grade, relay leg, exhibition 'x' flag and printed points agree; no row missing or extra; events and genders match the headers). School CRHS already resolves to me-hs-camden-hills through this meet's school map (5 rows); consistent with the Colby 4 / Class A evidence. No printed team scores here."
+ },
+ "backend/data/parsed_results/2020/Indoor/ResultsColby-Meet-4.json": {
+  "parse_sha": "ba28d944437d86b7",
+  "source_sha": "69bd90f0a4e95d5f",
+  "date": "2026-10-31",
+  "by": "second read t9 (Sonnet reviewer, row-by-row vs source)",
+  "evidence": "verdicts in scratchpad t9_0*_verdicts.json; overrides re-parsed and rebuilt"
+ },
+ "backend/data/parsed_results/2020/Indoor/ResultsColbyMeet1.json": {
+  "parse_sha": "a8b725b8e5c48d48",
+  "source_sha": "756b6edb0a99a3f7",
+  "date": "2026-10-31",
+  "by": "sonnet audit (second read, Indoor sec) (audit: confirmed)",
+  "evidence": "Colby Meet 1, 12/13/2019 (index Dec 13; Hy-Tek stamp 12/14). Compared the parse with the source row by row (every place, name, school, mark, grade, relay leg, exhibition 'x' flag and printed points agree; no row missing or extra; events and genders match the headers). Wheelchair events (1 entrant) kept; no printed team scores here (Scores file separate)."
+ },
+ "backend/data/parsed_results/2020/Indoor/ResultsMEET-2.json": {
+  "parse_sha": "c05ec50663f396d9",
+  "source_sha": "1d051582370d8f35",
+  "date": "2026-10-31",
+  "by": "second read t9 (Sonnet reviewer, row-by-row vs source)",
+  "evidence": "verdicts in scratchpad t9_0*_verdicts.json; overrides re-parsed and rebuilt"
+ },
+ "backend/data/parsed_results/2020/Indoor/ResultsMEET-3.json": {
+  "parse_sha": "700568705ec01293",
+  "source_sha": "4e1490801fa0731b",
+  "date": "2026-10-31",
+  "by": "second read t9 (Sonnet reviewer, row-by-row vs source)",
+  "evidence": "verdicts in scratchpad t9_0*_verdicts.json; overrides re-parsed and rebuilt"
+ },
+ "backend/data/parsed_results/2020/Indoor/ResultsMEET1.json": {
+  "parse_sha": "5b528a11f57d5071",
+  "source_sha": "5fa308c59edbbf9e",
+  "date": "2026-10-31",
+  "by": "second read t9 (Sonnet reviewer, row-by-row vs source)",
+  "evidence": "verdicts in scratchpad t9_0*_verdicts.json; overrides re-parsed and rebuilt"
+ },
+ "backend/data/parsed_results/2020/Indoor/ResultsSMAA.json": {
+  "parse_sha": "cd62e282131577e7",
+  "source_sha": "3d8086732488015a",
+  "date": "2026-10-31",
+  "by": "second read t9 (Sonnet reviewer, row-by-row vs source)",
+  "evidence": "verdicts in scratchpad t9_0*_verdicts.json; overrides re-parsed and rebuilt"
  },
  "backend/data/parsed_results/2020/Indoor/ScoresColby-Meet-2.json": {
   "parse_sha": "b46d207660fbd58b",
@@ -42090,6 +42223,13 @@
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
  },
+ "backend/data/parsed_results/2021/Indoor/210306-Falmouth-Scarborough-Gorham-indoor-meet.json": {
+  "parse_sha": "4b7c61fa95edbb34",
+  "source_sha": "dc6c2ad68dff0f14",
+  "date": "2026-10-31",
+  "by": "second read t9 (Sonnet reviewer, row-by-row vs source)",
+  "evidence": "verdicts in scratchpad t9_0*_verdicts.json; overrides re-parsed and rebuilt"
+ },
  "backend/data/parsed_results/2021/Indoor/BHS-Morse-Meet-1-Indoor-2-26-21.json": {
   "parse_sha": "ca5105ababdd7d08",
   "source_sha": "e663408d4c2191e0",
@@ -42110,6 +42250,90 @@
   "date": "2026-10-19",
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
+ },
+ "backend/data/parsed_results/2021/Indoor/Resultsemitl2021feb7.json": {
+  "parse_sha": "f33b2afa27f478f6",
+  "source_sha": "1a25b9898a73e0eb",
+  "date": "2026-10-31",
+  "by": "sonnet audit (second read, Indoor sec) (audit: confirmed)",
+  "evidence": "Hy-Tek PVC-EMITL Week 2 distance 2/5/2021; every parse row (place, name, grade, school, mark) found in the source and every source row in the parse (89 rows, events Girls 800/1 Mile, Boys 800/1 Mile/2 Mile); school names resolve; ties/place gaps as printed; no printed team scores."
+ },
+ "backend/data/parsed_results/2021/Indoor/Resultsemitlfield2021feb7.json": {
+  "parse_sha": "45f4196b8e7df980",
+  "source_sha": "6241ffa6d2c92713",
+  "date": "2026-10-31",
+  "by": "sonnet audit (second read, Indoor sec) (audit: confirmed)",
+  "evidence": "Hy-Tek PVC-EMITL Week 2 field events 2/4-2/5/2021 (J-prefix = jump-off marks, NH rows kept); every parse row (place, name, grade, school, mark) found in the source and every source row in the parse (90 rows, events Girls/Boys High Jump and Shot Put); school names resolve; ties/place gaps as printed; no printed team scores."
+ },
+ "backend/data/parsed_results/2021/Indoor/Resultsfieldweek1.json": {
+  "parse_sha": "fdf39463e8da22b7",
+  "source_sha": "a602acb830c55a5d",
+  "date": "2026-10-31",
+  "by": "sonnet audit (second read, Indoor sec) (audit: confirmed)",
+  "evidence": "Hy-Tek PVC-EMITL Week 1 field events 1/28-1/30/2021; every parse row (place, name, grade, school, mark) found in the source and every source row in the parse (60 rows, events Girls/Boys High Jump and Shot Put); school names resolve; ties/place gaps as printed; no printed team scores."
+ },
+ "backend/data/parsed_results/2021/Indoor/champ-field-results.json": {
+  "parse_sha": "96de2d4d2169f5d8",
+  "source_sha": "b0b534f88cb10e8e",
+  "date": "2026-10-31",
+  "by": "second read t9 (Sonnet reviewer, row-by-row vs source)",
+  "evidence": "verdicts in scratchpad t9_0*_verdicts.json; overrides re-parsed and rebuilt"
+ },
+ "backend/data/parsed_results/2021/Indoor/covid-21-week-3-results.json": {
+  "parse_sha": "41aca2bb07484945",
+  "source_sha": "10d5ce6ee41d2156",
+  "date": "2026-10-31",
+  "by": "second read t9 (Sonnet reviewer, row-by-row vs source)",
+  "evidence": "verdicts in scratchpad t9_0*_verdicts.json; overrides re-parsed and rebuilt"
+ },
+ "backend/data/parsed_results/2021/Indoor/emitldistance2020feb27.json": {
+  "parse_sha": "c98449ee34eecce1",
+  "source_sha": "8a27cc4c6790cece",
+  "date": "2026-10-31",
+  "by": "sonnet audit (second read, Indoor sec) (audit: confirmed)",
+  "evidence": "Hy-Tek EMITL Championship distance 2/27/2021 (file name says 2020, content is 2021); every parse row (place, name, grade, school, mark) found in the source and every source row in the parse (59 rows, events Girls/Boys 800 and 1 Mile); school names resolve; ties/place gaps as printed; no printed team scores."
+ },
+ "backend/data/parsed_results/2021/Indoor/emitldistance28jan2021.json": {
+  "parse_sha": "b88402fb55570ae4",
+  "source_sha": "bbbb174548761c01",
+  "date": "2026-10-31",
+  "by": "sonnet audit (second read, Indoor sec) (audit: confirmed)",
+  "evidence": "Hy-Tek EMITL Week 1 distance 1/28/2021; every parse row (place, name, grade, school, mark) found in the source and every source row in the parse (76 rows, events Girls 800/1 Mile/2 Mile, Boys 800/1 Mile); school names resolve; ties/place gaps as printed; no printed team scores."
+ },
+ "backend/data/parsed_results/2021/Indoor/emitldistance_feb20.json": {
+  "parse_sha": "4e7cdcfd2f21bd54",
+  "source_sha": "dadc0a8d410c3914",
+  "date": "2026-10-31",
+  "by": "sonnet audit (second read, Indoor sec) (audit: confirmed)",
+  "evidence": "Hy-Tek EMITL Week 3 distance 2/20/2021; every parse row (place, name, grade, school, mark) found in the source and every source row in the parse (71 rows, events Girls/Boys 800 and 1 Mile); school names resolve; ties/place gaps as printed; no printed team scores."
+ },
+ "backend/data/parsed_results/2021/Indoor/emitlfield_week4.json": {
+  "parse_sha": "c08c269f14c8af21",
+  "source_sha": "a78c87539f9aeba3",
+  "date": "2026-10-31",
+  "by": "second read t9 (Sonnet reviewer, row-by-row vs source)",
+  "evidence": "verdicts in scratchpad t9_0*_verdicts.json; overrides re-parsed and rebuilt"
+ },
+ "backend/data/parsed_results/2021/Indoor/falmouthfeb27.json": {
+  "parse_sha": "11f7b4f07709f524",
+  "source_sha": "d1a01f187aaf0c13",
+  "date": "2026-10-31",
+  "by": "second read t9 (Sonnet reviewer, row-by-row vs source)",
+  "evidence": "verdicts in scratchpad t9_0*_verdicts.json; overrides re-parsed and rebuilt"
+ },
+ "backend/data/parsed_results/2021/Indoor/gorhamboys.json": {
+  "parse_sha": "9115d18927a4697b",
+  "source_sha": "c5d8465d4fc6d520",
+  "date": "2026-10-31",
+  "by": "second read t9 (Sonnet reviewer, row-by-row vs source)",
+  "evidence": "verdicts in scratchpad t9_0*_verdicts.json; overrides re-parsed and rebuilt"
+ },
+ "backend/data/parsed_results/2021/Indoor/gorhamgirls.json": {
+  "parse_sha": "276c7078a622c0e6",
+  "source_sha": "7545f2800a9db4b4",
+  "date": "2026-10-31",
+  "by": "second read t9 (Sonnet reviewer, row-by-row vs source)",
+  "evidence": "verdicts in scratchpad t9_0*_verdicts.json; overrides re-parsed and rebuilt"
  },
  "backend/data/parsed_results/2021/Outdoor/2021-04-23-wto-eastern-conn-results.json": {
   "parse_sha": "a034adcef2753e91",
@@ -45281,6 +45505,13 @@
   "date": "2026-10-16",
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
+ },
+ "backend/data/parsed_results/2022/Indoor/usmnyinvite.json": {
+  "parse_sha": "3f4b11687174b031",
+  "source_sha": "3c8810c72c22b102",
+  "date": "2026-10-31",
+  "by": "second read t9 (Sonnet reviewer, row-by-row vs source)",
+  "evidence": "verdicts in scratchpad t9_0*_verdicts.json; overrides re-parsed and rebuilt"
  },
  "backend/data/parsed_results/2022/Outdoor/2022-alhs-tf-championship-boys-results.json": {
   "parse_sha": "68cc2a9a2b624aaa",

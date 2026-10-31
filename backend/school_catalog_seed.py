@@ -1808,6 +1808,14 @@ FILE_RULES = [
     (['CAPE', 'Cape'], 'Indoor', (2022, 2022), r'^Resultsmeet-3-1$', 'me-ms-cape-elizabeth'),
     (['CAPE', 'Cape'], 'Indoor', (2022, 2022), r'^Resultsmeet-3$', 'me-ms-cape-elizabeth'),
     (['CAPE', 'Cape'], 'Indoor', (2022, 2022), r'^(Resultswk-4-meet-2|Resultsmeet-3-1)$', 'me-ms-cape-elizabeth'),
+    # Indoor second read t9
+    (['Portsmouth', 'Portsmouth High School'], 'Indoor', (2022, 2022), r'^usmnyinvite$', 'oos-auto-nh-portsmouth'),
+    (['CRHS'], 'Indoor', (2020, 2020), r'^12-28-Bow-MeeetResults$', 'me-hs-camden-hills'),
+    (['CRHS'], 'Indoor', (2020, 2020), r'^Class-AResults$', 'me-hs-camden-hills'),
+    (['Boothbay Region Indoor'], 'Indoor', (2020, 2020), r'^Results2$', 'coop-boothbay-wiscasset'),
+    (['Saint Domininc High School'], 'Indoor', (2020, 2020), r'^ResultsClassB(Boys|Girls)$', 'me-hs-st-dominic'),
+    (['Lincoln'], 'Indoor', (2020, 2020), r'^ResultsClassBGirls$', 'me-hs-lincoln-academy'),
+    (['CRHS'], 'Indoor', (2020, 2020), r'^ResultsColby-Meet-4$', 'me-hs-camden-hills'),
     # 2026-10-24 unresolved-school review, batch 2
     (['F'], 'XC', (2004, 2004), r'^cape7oct04[bg]\.txt$', 'me-hs-falmouth'),   # Title lists Falmouth; only F team
     (['Y'], 'XC', (2004, 2004), r'^cape7oct04[bg]\.txt$', 'me-hs-yarmouth'),   # Title lists Yarmouth; only Y team
