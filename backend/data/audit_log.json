@@ -4666,7 +4666,7 @@
  "backend/data/parsed_results/2010/XC/greelyboys_sept10.json": {
   "verdict": "fixed",
   "by": "sonnet audit (second read, 2026-10-26)",
-  "notes": "Names printed 'Last First' in two columns were kept as 'Johnston Sam' (no comma), splitting runners from their other spellings (e.g. athletes 'Douty Reid' vs 'Reid Douty'); 'O’ShauhnessyHenry' glued. Override writes 'Last, First'. Team scores unread: Cape 33, York 43, Greely 44. Source: Warnquist Tom 20:15 out of time order (kept).",
+  "notes": "Names printed 'Last First' in two columns were kept as 'Johnston Sam' (no comma), splitting runners from their other spellings (e.g. athletes 'Douty Reid' vs 'Reid Douty'); 'O\u2019ShauhnessyHenry' glued. Override writes 'Last, First'. Team scores unread: Cape 33, York 43, Greely 44. Source: Warnquist Tom 20:15 out of time order (kept).",
   "date": "2026-10-26",
   "parse_sha": "5b89157744448900",
   "source_sha": "615f2def01c73ffa"
@@ -7826,7 +7826,7 @@
  "backend/data/parsed_results/2013/XC/southportland_sept20.json": {
   "verdict": "fixed",
   "by": "sonnet audit (score mismatch, 2026-10-23)",
-  "notes": "Rows match the source for both races (Girls 55, Boys 55 incl. Donahue SP and Langlois M from the page-2/4 overflow). Parser (HeaderTableParser, layout: two result blocks side by side plus a right-hand 'Team Scores' column printed as '1st – Bonny Eagle   32' with the ordinal suffix 'nd/rd/th' on its own line, followed by 'Girls Team Scoring Bonny Eagle 2-3-8-9-10-(17-26)  32' lines): (1) Team scores are mis-read: Girls parse gives '1. Massabesic 43; 2. South Portland 61; 3. Deering 93; 4. Deering 93' (Bonny Eagle 32 missing, Deering duplicated), Boys gets none. Should be Girls: Bonny Eagle 32, Massabesic 43, South Portland 61, Deering 93; Boys: Massabesic 36, Deering 44, South Portland 46, Bonny Eagle 116 (the scoring lines give the place lists, e.g. 'Massabesic 2-5-6-8-15-(17-18) 36'). (2) The Score column of the right result block picks up neighbouring text: Girls Donahue tp=60, Nostrom tp=2, Leach tp=3, Aboud tp=4; Boys Langlois tp=60, Landry tp=3 ('60' is the empty next-row place number; 2/3/4 are the ordinal lines). Those cells are blank in the source. (3) Girls event has no distance while Boys is '2.71 Mile Run CC' (title says 2.71 miles for both). Check after fix: with only 7 runners per team taking team places (the sheet's parenthesised places), all eight totals reproduce from the rows: Girls BE 2+3+8+9+10=32, M 5+6+7+12+13=43, SP 1+4+15+18+23=61, D 11+19+20+21+22=93; Boys M 2+5+6+8+15=36, D 1+3+7+14+19=44, SP 4+9+10+11+12=46, BE 21+22+23+24+26=116.",
+  "notes": "Rows match the source for both races (Girls 55, Boys 55 incl. Donahue SP and Langlois M from the page-2/4 overflow). Parser (HeaderTableParser, layout: two result blocks side by side plus a right-hand 'Team Scores' column printed as '1st \u2013 Bonny Eagle   32' with the ordinal suffix 'nd/rd/th' on its own line, followed by 'Girls Team Scoring Bonny Eagle 2-3-8-9-10-(17-26)  32' lines): (1) Team scores are mis-read: Girls parse gives '1. Massabesic 43; 2. South Portland 61; 3. Deering 93; 4. Deering 93' (Bonny Eagle 32 missing, Deering duplicated), Boys gets none. Should be Girls: Bonny Eagle 32, Massabesic 43, South Portland 61, Deering 93; Boys: Massabesic 36, Deering 44, South Portland 46, Bonny Eagle 116 (the scoring lines give the place lists, e.g. 'Massabesic 2-5-6-8-15-(17-18) 36'). (2) The Score column of the right result block picks up neighbouring text: Girls Donahue tp=60, Nostrom tp=2, Leach tp=3, Aboud tp=4; Boys Langlois tp=60, Landry tp=3 ('60' is the empty next-row place number; 2/3/4 are the ordinal lines). Those cells are blank in the source. (3) Girls event has no distance while Boys is '2.71 Mile Run CC' (title says 2.71 miles for both). Check after fix: with only 7 runners per team taking team places (the sheet's parenthesised places), all eight totals reproduce from the rows: Girls BE 2+3+8+9+10=32, M 5+6+7+12+13=43, SP 1+4+15+18+23=61, D 11+19+20+21+22=93; Boys M 2+5+6+8+15=36, D 1+3+7+14+19=44, SP 4+9+10+11+12=46, BE 21+22+23+24+26=116.",
   "date": "2026-10-23",
   "parse_sha": "fe11bac01806eda0",
   "source_sha": "3e13e03bb7d7e454"
@@ -8146,7 +8146,7 @@
  "backend/data/parsed_results/2014/XC/class-c-boys-w.json": {
   "verdict": "confirmed",
   "by": "sonnet audit (second read, 2026-10-25)",
-  "notes": "Every row checked against the page in order: 88 finishers + 2 non-finishers (Palmer Evan DNF, Anan Nick DQ, Richmond), places, names, grades, times and schools agree; 11 team scores agree (Boothay Region 51, Merriconeag Waldorf 51 ... Carrabec 296). Damaged characters in names ('Diego�Villamarin') normalised. Parser quirk, harmless: on the DNF/DQ rows the class code stays glued to the school ('SO Richmond', 'JR Richmond') and the grade is dropped; the school still resolves to me-hs-richmond.",
+  "notes": "Every row checked against the page in order: 88 finishers + 2 non-finishers (Palmer Evan DNF, Anan Nick DQ, Richmond), places, names, grades, times and schools agree; 11 team scores agree (Boothay Region 51, Merriconeag Waldorf 51 ... Carrabec 296). Damaged characters in names ('Diego\ufffdVillamarin') normalised. Parser quirk, harmless: on the DNF/DQ rows the class code stays glued to the school ('SO Richmond', 'JR Richmond') and the grade is dropped; the school still resolves to me-hs-richmond.",
   "date": "2026-10-25",
   "parse_sha": "5f6b2f0bf29ed20f",
   "source_sha": "fb54d7372196353b"
@@ -8290,7 +8290,7 @@
  "backend/data/parsed_results/2014/XC/ms-kvac-belfast-erskine-cony-morse-camden-hills-winslow-2014.json": {
   "verdict": "fixed",
   "by": "sonnet audit (second read, 2026-10-28)",
-  "notes": "Edited the ms file. All 93 boys (316202) and 59 girls (316204) rows compared with the pages. Fixed: Adam O'Connor mojibake (Oâ€™Connor in the cached page); Ben Willertz has no class so TmPl 40 had been read as his school -> Morse High School; Jakob French grade FR restored (time printed 24.03.05, a source typo, kept as 24:03.05). TmPl column stored as team_place on 93 rows (no team-score table printed on either page).",
+  "notes": "Edited the ms file. All 93 boys (316202) and 59 girls (316204) rows compared with the pages. Fixed: Adam O'Connor mojibake (O\u00e2\u20ac\u2122Connor in the cached page); Ben Willertz has no class so TmPl 40 had been read as his school -> Morse High School; Jakob French grade FR restored (time printed 24.03.05, a source typo, kept as 24:03.05). TmPl column stored as team_place on 93 rows (no team-score table printed on either page).",
   "date": "2026-10-28",
   "parse_sha": "76dfd6226377b190",
   "source_sha": "c5ec58daaea28fce"
@@ -9354,7 +9354,7 @@
  "backend/data/parsed_results/2016/XC/BrunswickJHBoysResults.json": {
   "verdict": "fixed",
   "by": "sonnet audit (second read, 2026-10-24)",
-  "notes": "Override written: all rows, times, grades, PTS and team scores match the PDF; only change is name order for Oxford Hills rows printed surname-first: 'VANDERWOOD GRAY' -> 'Gray Vanderwood'. Source quirk: stray 'Æ'/'Ê' glyph after some first names (dropped by the parse); 'MCKENZIÆ' = first name truncated ('McKenzi'). Parser pattern: XCRunParser keeps 'LAST FIRST' as printed when the roster entry was typed surname-first (cannot be detected from the sheet alone).",
+  "notes": "Override written: all rows, times, grades, PTS and team scores match the PDF; only change is name order for Oxford Hills rows printed surname-first: 'VANDERWOOD GRAY' -> 'Gray Vanderwood'. Source quirk: stray '\u00c6'/'\u00ca' glyph after some first names (dropped by the parse); 'MCKENZI\u00c6' = first name truncated ('McKenzi'). Parser pattern: XCRunParser keeps 'LAST FIRST' as printed when the roster entry was typed surname-first (cannot be detected from the sheet alone).",
   "date": "2026-10-24",
   "parse_sha": "26088c081648a40b",
   "source_sha": "f8b4b6b68cb1ab1e"
@@ -9362,7 +9362,7 @@
  "backend/data/parsed_results/2016/XC/BrunswickJHGirlsResults.json": {
   "verdict": "fixed",
   "by": "sonnet audit (second read, 2026-10-24)",
-  "notes": "Override written: all rows, times, grades, PTS and team scores match the PDF; only change is name order for Oxford Hills rows printed surname-first: 'MARTEL-BIXBY JADE' -> 'Jade Martel-Bixby'; 'HAGGERTY TAYLOR' -> 'Taylor Haggerty'. Source quirk: stray 'Æ'/'Ê' glyph after some first names (dropped by the parse); 'MCKENZIÆ' = first name truncated ('McKenzi'). Parser pattern: XCRunParser keeps 'LAST FIRST' as printed when the roster entry was typed surname-first (cannot be detected from the sheet alone).",
+  "notes": "Override written: all rows, times, grades, PTS and team scores match the PDF; only change is name order for Oxford Hills rows printed surname-first: 'MARTEL-BIXBY JADE' -> 'Jade Martel-Bixby'; 'HAGGERTY TAYLOR' -> 'Taylor Haggerty'. Source quirk: stray '\u00c6'/'\u00ca' glyph after some first names (dropped by the parse); 'MCKENZI\u00c6' = first name truncated ('McKenzi'). Parser pattern: XCRunParser keeps 'LAST FIRST' as printed when the roster entry was typed surname-first (cannot be detected from the sheet alone).",
   "date": "2026-10-24",
   "parse_sha": "23ecd319de8929f9",
   "source_sha": "b83b3c5ff8ffbe54"
@@ -10490,7 +10490,7 @@
  "backend/data/parsed_results/2018/XC/10-04-18-Brunswick-JH-Boys-Results.json": {
   "verdict": "confirmed",
   "by": "sonnet audit (second read, 2026-10-24)",
-  "notes": "All 41 rows match the two-column PDF (place, name, team, time); stray 'Ê' in YASINÊ/BENÊ is dropped (Yasin Hassan, Ben Bondit). Printed team scores Brunswick 32, Lewiston 44, Auburn 52 match. Brunswick Junior High teams map to the me-ms ids.",
+  "notes": "All 41 rows match the two-column PDF (place, name, team, time); stray '\u00ca' in YASIN\u00ca/BEN\u00ca is dropped (Yasin Hassan, Ben Bondit). Printed team scores Brunswick 32, Lewiston 44, Auburn 52 match. Brunswick Junior High teams map to the me-ms ids.",
   "date": "2026-10-24",
   "parse_sha": "5f82cdd842a447b6",
   "source_sha": "2dbdb48d75320ff9"
@@ -10634,7 +10634,7 @@
  "backend/data/parsed_results/2018/XC/Boys-Results-9-19-18.json": {
   "verdict": "confirmed",
   "by": "sonnet audit (second read, 2026-10-24)",
-  "notes": "All 75 rows match the two-column PDF (place, name, team, time); stray 'Ê' on 'BRANDON SMITHÊ' dropped. Boothbay-Wiscass -> coop-boothbay-wiscasset, Spruce Mt -> Spruce Mountain, Hall-Dale, Carrabec, Oak Hill all fine. Printed scores Lisbon 59, Boothbay-Wiscasset 67, Dirigo 81, Hall-Dale 91, Monmouth 128, Madison 131, Winthrop 136, Oak Hill 211 match.",
+  "notes": "All 75 rows match the two-column PDF (place, name, team, time); stray '\u00ca' on 'BRANDON SMITH\u00ca' dropped. Boothbay-Wiscass -> coop-boothbay-wiscasset, Spruce Mt -> Spruce Mountain, Hall-Dale, Carrabec, Oak Hill all fine. Printed scores Lisbon 59, Boothbay-Wiscasset 67, Dirigo 81, Hall-Dale 91, Monmouth 128, Madison 131, Winthrop 136, Oak Hill 211 match.",
   "date": "2026-10-24",
   "parse_sha": "fe1f27caf64082d8",
   "source_sha": "a8a525586786cc40"
@@ -10690,7 +10690,7 @@
  "backend/data/parsed_results/2018/XC/Girls-Results-8-31-18.json": {
   "verdict": "confirmed",
   "by": "sonnet audit (second read, 2026-10-24)",
-  "notes": "All 50 rows match (place, name, grade, team, time; grade 0 -> '-' for Monmouth). Printed scores Maranacook 21, Oxford Hills 63, Monmouth 72, Waterville 83, Winthrop 115 match. Stray 'Ê' on 'ASHLEY CHILDSÊ' dropped.",
+  "notes": "All 50 rows match (place, name, grade, team, time; grade 0 -> '-' for Monmouth). Printed scores Maranacook 21, Oxford Hills 63, Monmouth 72, Waterville 83, Winthrop 115 match. Stray '\u00ca' on 'ASHLEY CHILDS\u00ca' dropped.",
   "date": "2026-10-24",
   "parse_sha": "7691cf33e8bf352e",
   "source_sha": "2437047ae752f22e"
@@ -11282,7 +11282,7 @@
  "backend/data/parsed_results/2019/XC/10-15-19-Winthrop-MS-Boys.json": {
   "verdict": "confirmed",
   "by": "sonnet audit (second read, 2026-10-24)",
-  "notes": "Winthrop MS boys, 10/15/2019: all 36 rows, grades, times and PTS match (e.g. Maranacook 6+9+10+11+17=53, Winthrop 4+14+15+18+19=70, Richmond 18, Gardiner 80); Windsor/Hall Dale non-scoring; stray 'Ê' in GAVINÊ dropped; Richmond has no printed grade ('MS' marker). 1.8 mi inferred from pace (11:14 at 6:14/mi), not printed.",
+  "notes": "Winthrop MS boys, 10/15/2019: all 36 rows, grades, times and PTS match (e.g. Maranacook 6+9+10+11+17=53, Winthrop 4+14+15+18+19=70, Richmond 18, Gardiner 80); Windsor/Hall Dale non-scoring; stray '\u00ca' in GAVIN\u00ca dropped; Richmond has no printed grade ('MS' marker). 1.8 mi inferred from pace (11:14 at 6:14/mi), not printed.",
   "date": "2026-10-24",
   "parse_sha": "b9e01a68c34f3408",
   "source_sha": "2d06bf6bcfdd8979"
@@ -11290,7 +11290,7 @@
  "backend/data/parsed_results/2019/XC/10-15-19-Winthrop-MS-Girls.json": {
   "verdict": "confirmed",
   "by": "sonnet audit (second read, 2026-10-24)",
-  "notes": "Winthrop MS girls, 10/15/2019: all 44 finishers + 2 DNF match (SARAÊ TRUE read Sara True, stray Ê); PTS reproduce Maranacook 31, Windsor 44, Winthrop 78, Gardiner 87.",
+  "notes": "Winthrop MS girls, 10/15/2019: all 44 finishers + 2 DNF match (SARA\u00ca TRUE read Sara True, stray \u00ca); PTS reproduce Maranacook 31, Windsor 44, Winthrop 78, Gardiner 87.",
   "date": "2026-10-24",
   "parse_sha": "50d577b5be25097f",
   "source_sha": "f7a39409441fd7ce"
@@ -11506,7 +11506,7 @@
  "backend/data/parsed_results/2019/XC/Dirigo-Girls-Results-10-9-19.json": {
   "verdict": "confirmed",
   "by": "sonnet audit (second read, 2026-10-24)",
-  "notes": "Dirigo girls, 10/9/2019: all 17 finishers match; only Hall Dale scores (PTS 1-5 = 15), as printed. Large time jump after place 4 (23:06 -> 30:37) is in the source. Stray 'Ê' in SAVANNAHÊ dropped.",
+  "notes": "Dirigo girls, 10/9/2019: all 17 finishers match; only Hall Dale scores (PTS 1-5 = 15), as printed. Large time jump after place 4 (23:06 -> 30:37) is in the source. Stray '\u00ca' in SAVANNAH\u00ca dropped.",
   "date": "2026-10-24",
   "parse_sha": "0f6ef42059c6eb11",
   "source_sha": "aa44a18a24e4fc8c"
@@ -11594,7 +11594,7 @@
  "backend/data/parsed_results/2019/XC/Maranacoook-Girls-Results.json": {
   "verdict": "confirmed",
   "by": "sonnet audit (second read, 2026-10-24)",
-  "notes": "All 68 finishers plus the DNF (Caroline Welch) match the xcrun sheet by place, name, grade, school, time; 'ASHLEYE CHILDS' (stray Ê) read as Ashley Childs; Monmouth rows have no grade as printed. Team scores match: 'MARANACOOK 52, WATERVILLE 83, MONMOUTH 88, WINTHROP 98, LINCOLN ACADEMY 107, OXFORD HILLS 127, LEAVITT 134, HALL DALE 222' (Hall Dale 22+45+50+52+53=222).",
+  "notes": "All 68 finishers plus the DNF (Caroline Welch) match the xcrun sheet by place, name, grade, school, time; 'ASHLEYE CHILDS' (stray \u00ca) read as Ashley Childs; Monmouth rows have no grade as printed. Team scores match: 'MARANACOOK 52, WATERVILLE 83, MONMOUTH 88, WINTHROP 98, LINCOLN ACADEMY 107, OXFORD HILLS 127, LEAVITT 134, HALL DALE 222' (Hall Dale 22+45+50+52+53=222).",
   "date": "2026-10-24",
   "parse_sha": "b0bdc0b45c55afb8",
   "source_sha": "928343698bd5c8fa"
@@ -12218,7 +12218,7 @@
  "backend/data/parsed_results/2020/XC/MARANACOOK11-04-20-BOYS-TEAM.json": {
   "verdict": "source-error",
   "by": "sonnet audit (second read, 2026-10-24)",
-  "notes": "All 32 rows (team-pages sheet: only the per-team lists, places 1-32) match; stray 'Ÿ' on Michael Tamborini dropped correctly (the name wraps over two lines). The sheet's printed team score lines do not reproduce from its own rows: header lists Maranacook scorers 5,10,11,13,15 (=54) and EL 9,12,14,16,17 (=68) but the team pages put Maranacook at 5,11,12,15,17 (=60) and EL at 10,14,16,21,22 (=83); Brunswick 1,2,3,4,6=16 is consistent. Parse keeps the sheet's 16/54/68.",
+  "notes": "All 32 rows (team-pages sheet: only the per-team lists, places 1-32) match; stray '\u0178' on Michael Tamborini dropped correctly (the name wraps over two lines). The sheet's printed team score lines do not reproduce from its own rows: header lists Maranacook scorers 5,10,11,13,15 (=54) and EL 9,12,14,16,17 (=68) but the team pages put Maranacook at 5,11,12,15,17 (=60) and EL at 10,14,16,21,22 (=83); Brunswick 1,2,3,4,6=16 is consistent. Parse keeps the sheet's 16/54/68.",
   "date": "2026-10-24",
   "parse_sha": "c4ccafdd9095320a",
   "source_sha": "83f10fc6f5f78ab9"
@@ -12618,7 +12618,7 @@
  "backend/data/parsed_results/2021/XC/EL-SECOND-7-JV-10-28-21-BOYS.json": {
   "verdict": "fixed",
   "by": "sonnet audit (second read, 2026-10-24)",
-  "notes": "29 rows match except a stray glyph: 'CLAY TRAFTONŸ', 'OWEN WINSLOWŸ', 'DRU HYNDMANŸ', 'COOPER DUNNŸ', 'DECLAN HOWEŸ', 'KAI THISTLEŸ', 'JOE LEBLANCŸ' kept the 'Ÿ' in the parsed name. Override strips it (7 names). PARSER PATTERN: XCRunParser should drop a trailing 'Ÿ' on names (like the 'Ê' fix in 9c2db772e).",
+  "notes": "29 rows match except a stray glyph: 'CLAY TRAFTON\u0178', 'OWEN WINSLOW\u0178', 'DRU HYNDMAN\u0178', 'COOPER DUNN\u0178', 'DECLAN HOWE\u0178', 'KAI THISTLE\u0178', 'JOE LEBLANC\u0178' kept the '\u0178' in the parsed name. Override strips it (7 names). PARSER PATTERN: XCRunParser should drop a trailing '\u0178' on names (like the '\u00ca' fix in 9c2db772e).",
   "date": "2026-10-24",
   "parse_sha": "8b3bb42964ceeae0",
   "source_sha": "33f1abc77e55523a"
@@ -12634,7 +12634,7 @@
  "backend/data/parsed_results/2021/XC/EL-SECOND-7-JV-10-28-21-GIRLS.json": {
   "verdict": "fixed",
   "by": "sonnet audit (second read, 2026-10-24)",
-  "notes": "16 rows match except 'KAELYN LANGLOISŸ' kept the stray 'Ÿ' in the name. Override strips it. PARSER PATTERN: XCRunParser trailing 'Ÿ' glyph on names.",
+  "notes": "16 rows match except 'KAELYN LANGLOIS\u0178' kept the stray '\u0178' in the name. Override strips it. PARSER PATTERN: XCRunParser trailing '\u0178' glyph on names.",
   "date": "2026-10-24",
   "parse_sha": "256b343abfc02ae7",
   "source_sha": "654240ce2c775eed"
@@ -12690,7 +12690,7 @@
  "backend/data/parsed_results/2021/XC/MVC-Results-2021.json": {
   "verdict": "confirmed",
   "by": "sonnet audit (second read, 2026-10-24)",
-  "notes": "XCRun, 33 girls + 60 boys, all rows match (place, name, grade, team, time, team place). Team scores match (girls Monmouth 29, Boothbay/Wiscasset 32, Spruce Mt 64; boys Boothbay/Wiscasset 48, Monmouth 54, Winthrop 62, Lisbon 82, Mt Abram 115, Madison 145). Stray 'Æ' glyphs on names (JULIAÆ WELLS) already stripped. Source prints some names Last First without comma (THERRIAULT ABBIGAIL, SPAULDING MEGAN, SUPRENANT ROBERT, all Dirigo); parse keeps them as printed.",
+  "notes": "XCRun, 33 girls + 60 boys, all rows match (place, name, grade, team, time, team place). Team scores match (girls Monmouth 29, Boothbay/Wiscasset 32, Spruce Mt 64; boys Boothbay/Wiscasset 48, Monmouth 54, Winthrop 62, Lisbon 82, Mt Abram 115, Madison 145). Stray '\u00c6' glyphs on names (JULIA\u00c6 WELLS) already stripped. Source prints some names Last First without comma (THERRIAULT ABBIGAIL, SPAULDING MEGAN, SUPRENANT ROBERT, all Dirigo); parse keeps them as printed.",
   "date": "2026-10-24",
   "parse_sha": "864071e9c80015f6",
   "source_sha": "08460c02490034a4"
@@ -12762,7 +12762,7 @@
  "backend/data/parsed_results/2021/XC/Winthrop-Results-9-17-21.json": {
   "verdict": "confirmed",
   "by": "sonnet audit (second read, 2026-10-24)",
-  "notes": "XCRun, 14 girls + 29 boys; all rows match (place, name, grade, team, time, team place); team scores match (girls Monmouth 15; boys Monmouth 37, Lisbon 47, Mt Abram 66, Oak Hill 74). Stray 'Ê' glyphs already stripped.",
+  "notes": "XCRun, 14 girls + 29 boys; all rows match (place, name, grade, team, time, team place); team scores match (girls Monmouth 15; boys Monmouth 37, Lisbon 47, Mt Abram 66, Oak Hill 74). Stray '\u00ca' glyphs already stripped.",
   "date": "2026-10-24",
   "parse_sha": "db63f6728feb0630",
   "source_sha": "53565a2b5aa30e09"
@@ -13038,6 +13038,174 @@
   "date": "2026-10-24",
   "parse_sha": "6c6c6e9b123116e0",
   "source_sha": "f5b46f83f5b8da4f"
+ },
+ "backend/data/parsed_results/2022/Indoor/12-18-meet-at-bow.json": {
+  "verdict": "confirmed",
+  "by": "sonnet audit (second read, Indoor sec)",
+  "notes": "Ledger warning 'team scores do not add up' explained: one team off, Leavitt Boys (printed 73, checker 94 under 8-6-4-2-1). The source prints no points; the checker scores the three Boys Wheelchair events (Johnathan Schomaker, Leavitt, 1st in 1 Mile Run, 800 and Shot Put Wheelchair, scored 8 each = 24); 94 - 24 + 3 = 73, i.e. each single-entrant wheelchair event scored 1 point. All other teams (Women MCI 65, Cony 61, Messalonskee 46, Waterville 39, Leavitt 37; Men Messalonskee 69, Cony 66, Waterville 49, MCI 19) reproduce. So the parse equals the source and the checker needs a wheelchair-scores-1-point rule. KVAC Indoor Meet (MCI, Cony, Messalonskee, Leavitt, Waterville), Bowdoin College, Hy-Tek two-column PDF read per column (pdftotext -x crops). Compared 30 events: every row with a mark (187 rows: place, bib name, school, mark; legs are not printed for relays) equals the parse; the 16 status-only rows (SCR 7, DQ 3, FOUL 2, NH 2, DNF 1, FS 1) are not in the parse, as the parser does for this PDF layout. No Event 1 is printed. Team Rankings blocks equal the parse's team_rankings. Schools Waterville, MCI, Messalonskee, Leavitt, Cony Rams / Cony H.S. all -> the right me-hs entries. DATE: the title prints 'KVAC Indoor Meet # 4 - 12/16/21 - 12/16/2021' (4th meet of the Dec 16 KVAC meet, = index 'KVAC Meet 2D' next to the Dec 16 files 12-16-meet-p1..p4 = Meet 2B); the index's Dec 18 is only the print stamp (Hy-Tek 1:58 PM 12/18/2021) and the file name.",
+  "date": "2026-10-31",
+  "parse_sha": "62ff8f94ead09b16",
+  "source_sha": "7dd3efba59a87892"
+ },
+ "backend/data/parsed_results/2022/Indoor/12-28-1-b-results.json": {
+  "verdict": "confirmed",
+  "by": "sonnet audit (second read, Indoor sec)",
+  "notes": "Ledger warning 'team scores do not add up' explained: one team off, Leavitt Boys (printed 59, checker 74 under 6-4-3-2-1). The source prints no points; the checker scores the three Boys Wheelchair events (Jonathan Schomaker, Leavitt: Shot Put 20-00.00, 1 Mile Run 8:50.56, 200 Meter Dash 59.08, each 1st = 6) as 18 points; 74 - 18 + 3 = 59, i.e. each single-entrant wheelchair event scores 1 point (the 55 and 400 Wheelchair events are SCR). All other teams reproduce (Women Lewiston 91, Leavitt 31, Skowhegan 26, Erskine 20; Men Lewiston 87.5, Skowhegan 26, Erskine 15.5; ties split). So the parse equals the source and the checker needs a wheelchair-scores-1-point rule. KVAC Indoor Meet 1-B (Meet # 2), Bowdoin College, 12/28/2021 (Lewiston, Skowhegan, Leavitt, Erskine), Hy-Tek two-column PDF read per column. Compared 30 events: every row with a mark (170 rows) equals the parse; 12 status-only rows (SCR 4, NH 3, DNF 2, FS 2, FOUL 1) are not in the parse, as the parser does for this PDF layout (Event 15 Girls 2 Mile Run is not printed). Relay legs not printed. Team Rankings blocks equal the parse's team_rankings. Schools Lewiston / Lewiston High School, Skowhegan, Leavitt, Erskine -> the right me-hs entries. DATE: title 'KVAC Indoor Meet - 1 - B on 12/28 - 12/28/2021'; the stored 12/29 is the print stamp (Hy-Tek 2:01 PM 12/29/2021).",
+  "date": "2026-10-31",
+  "parse_sha": "6f90cef52fd4c1ba",
+  "source_sha": "810d65b6fe3c7125"
+ },
+ "backend/data/parsed_results/2022/Indoor/Results-1.json": {
+  "verdict": "confirmed",
+  "by": "sonnet audit (second read, Indoor sec)",
+  "notes": "Row-by-row script compare of the archive HTML (Hy-Tek text) against the parse: event/gender from each header, place, name, grade, school string, finals mark, relay school and printed legs, status rows (DNF/DQ/NH/SCR/FS), prelims vs finals sections: 62 sections / 683 rows, 0 differences. PVC-Eastern Maine Indoor Track League 'Meet 5AB', New Balance Field House, UMaine, 1/14-1/15/2022 (index 'EMITL 5AB', January 14-15, no conflict). Four printed Team Rankings blocks (Women/Men x Meet A/Meet B) equal the parse exactly. Ledger warning 'team scores do not add up' is explained by the sheet: Meet A (women and men) is reproduced exactly by the rows with 10-8-6-4-2-1 and only the first relay team per school scoring (e.g. Women A MDI 91, Ellsworth 74, Orono 51+10=61, John Bapst 49+10=59; the 'B' relay scores nothing), but Meet B is not: computed Bangor 193 vs printed 167, Brewer 102 vs 86, Old Town 57 vs 52, Bucksport 31 vs 27, Central 15 vs 10 (men: Brewer 128 vs 107, Old Town 108 vs 92, Bangor 101 vs 87, Bucksport 52 vs 47); no event subset or table/limit explains it. The rows equal the source and the printed blocks equal the parse, so the discrepancy is in the sheet's own scoring of Meet B, not the parse. Codes: ELLS=Ellsworth, BRW=Brewer, JB=John Bapst, BC=Bangor Christian (men's block prints 'Bangor Christian 1'), all me-hs-* already. Relay blank legs kept blank as printed. Meet A/Meet B events are separate entries under one event name (existing convention).",
+  "date": "2026-10-31",
+  "parse_sha": "4bf55f63cbfd4472",
+  "source_sha": "86cff0c340861e60"
+ },
+ "backend/data/parsed_results/2022/Indoor/Results-6AB.json": {
+  "verdict": "confirmed",
+  "by": "sonnet audit (second read, Indoor sec)",
+  "notes": "Row-by-row script compare of the archive HTML (Hy-Tek text) against the parse: event/gender from each header, place, name, grade, school string, finals mark, relay school and printed legs, status rows (DNF/DQ/NH/SCR/FS), prelims vs finals sections: 59 sections / 342 rows, 0 differences. DATE/MEET: the file prints the stale template header 'PVC-Eastern Maine Indoor Track League - 1/14/2022 to 1/15/2022 / Meet 5AB' (identical to Results-1), but the results are a different meet: Results-1 and this file share only 13 of ~330 identical (event,athlete,mark) rows, and the teams differ (this file: Bucksport, MDI, Hermon, Orono, Central, GSA, John Bapst, Foxcroft, Sumner, Bangor Christian, Dexter). Index says 'EMITL Week 6 - Meet AB - Meet C', January 21-22, 2022 (Results-6C is Week 6 Friday 1/21; Results-7AB is Feb 5): the index is right and the file's header date/name is a stale copy, so the parse's own date 2022-01-14 and name 'Meet 5AB' must not be used; no date_fix needed (the index already holds the right meet). Four printed Team Rankings blocks equal the parse. Ledger 'team scores do not add up': same as Results-1: Meet A women and men are reproduced exactly by the rows (10-8-6-4-2-1; MDI 124, Bucksport 73, Orono 62, Central 46, GSA 42, Hermon 31; men Bucksport 101, MDI 94, Hermon 82, Orono 50, Central 37, GSA 25), Meet B is not (computed Foxcroft 121 vs printed 74, John Bapst 63 vs 33, Sumner 10 vs 8; men John Bapst 120 vs 79, Sumner 91 vs 47, Foxcroft 79 vs 52, Bangor Christian 20 vs 15, Dexter 10 vs 5): the sheet's Meet B scoring is not derivable from its rows. Parse equals source.",
+  "date": "2026-10-31",
+  "parse_sha": "6cbf1b542fdde8a1",
+  "source_sha": "749cb005c7b670ca"
+ },
+ "backend/data/parsed_results/2022/Indoor/Results-6C.json": {
+  "verdict": "fixed",
+  "by": "sonnet audit (second read, Indoor sec)",
+  "notes": "Row-by-row script compare of the archive HTML (Hy-Tek text) against the parse: event/gender from each header, place, name, grade, school string, finals mark, relay school and printed legs, status rows (DNF/DQ/NH/SCR/FS), prelims vs finals sections: 31 sections / 310 rows; all rows agree except one relay. 'Meet 6C - Friday', 1/21/2022, UMaine (index EMITL Week 6, January 21-22: consistent). Two printed Team Rankings blocks equal the parse; ledger score is verified_close. FIX (override): Boys 4x800 Meter Relay, Bangor High School (3rd, 11:31.94): source legs '1) Quinn Tkacs JR  2)  3)  4) Patrick O'Brien JR'; the parse kept the grade on the printed names ('Quinn Tkacs JR', \"Patrick O'Brien JR\"). Override writes ['Quinn Tkacs','','',\"Patrick O'Brien\"]. PARSER PATTERN: a relay leg block with blank legs ('2)' with no name) leaves the grade suffix attached to the printed names. All other rows copied with every field.",
+  "date": "2026-10-31",
+  "parse_sha": "caeb499d32f73096",
+  "source_sha": "b226eb214f95db28"
+ },
+ "backend/data/parsed_results/2022/Indoor/Results-meet-1.json": {
+  "verdict": "confirmed",
+  "by": "sonnet audit (second read, Indoor sec)",
+  "notes": "Row-by-row script compare of the archive HTML (Hy-Tek text) against the parse: event/gender from each header, place, name, grade, school string, finals mark, relay school and printed legs, status rows (DNF/DQ/NH/SCR/FS), prelims vs finals sections: 48 sections / 326 rows, 0 differences. 'SMAA Week 5 meet 1 - 2/5/2022', BIDDEFORD-BONNY EAGLE-THORNTON-WESTBROOK-MASSABESIC, USM (index Feb 5, same). Six printed Team Rankings blocks (Women/Men x Junior/Senior/Open Division) equal the parse (e.g. Women Junior Thornton 50, Bonny Eagle 33, Biddeford 15, Westbrook 14, Massabesic 1). Codes: 'Scots' = Bonny Eagle (title and rankings list Bonny Eagle High School; Scots is its nickname) -> me-hs-bonny-eagle, BIDD = Biddeford, 'Massabesic High', all correct. 'XDQ' (exhibition DQ, Boys 55 Meter Hurdles, Joshua Prescott/Scots) kept as DQ, place null. 'Junior Division'/'Senior Division' suffix dropped, 'Open Division' kept on the 600 Yard Dash: existing convention (separate entries per division). 55 Yard Hurdles QUALIFIER kept as a 1-row '55 Yard Hurdles' event.",
+  "date": "2026-10-31",
+  "parse_sha": "dc08309fee5fee7f",
+  "source_sha": "873bd4194cffefc2"
+ },
+ "backend/data/parsed_results/2022/Indoor/Results-meet-2.json": {
+  "verdict": "confirmed",
+  "by": "sonnet audit (second read, Indoor sec)",
+  "notes": "Row-by-row script compare of the archive HTML (Hy-Tek text) against the parse: event/gender from each header, place, name, grade, school string, finals mark, relay school and printed legs, status rows (DNF/DQ/NH/SCR/FS), prelims vs finals sections: 51 sections / 265 rows, 0 differences. 'SMAA Week 5 meet 2 - 2/5/2022', KENNEBUNK-MARSHWOOD-NOBLE, USM (index Feb 5). Six printed Team Rankings blocks equal the parse. Schools Noble, Kennebunk, Marshwood -> me-hs-*, correct. Division suffixes as in the other SMAA files.",
+  "date": "2026-10-31",
+  "parse_sha": "a53cedbc7a131d51",
+  "source_sha": "6fe3e46a15d2a59a"
+ },
+ "backend/data/parsed_results/2022/Indoor/Results-meet-4.json": {
+  "verdict": "confirmed",
+  "by": "sonnet audit (second read, Indoor sec)",
+  "notes": "Row-by-row script compare of the archive HTML (Hy-Tek text) against the parse: event/gender from each header, place, name, grade, school string, finals mark, relay school and printed legs, status rows (DNF/DQ/NH/SCR/FS), prelims vs finals sections: 53 sections / 336 rows, 0 differences. 'SMAA Week 5 Meet 4 - 2/5/2022', Falm/Gorh/Scar/Wind, USM (index Feb 5). Six printed Team Rankings blocks equal the parse; the blocks also list Sanford High School (Misty Adams, Jake Doughty, Kyle Evans print 'Sanford' / grade '12'), so the 7 Sanford rows are a guest team -> me-hs-sanford, correct. 'Scarboro' -> me-hs-scarborough, Windham, Gorham, Falmouth correct. Year column printed as '12' for Adams is kept as the grade.",
+  "date": "2026-10-31",
+  "parse_sha": "69ed4ee4f9d7920c",
+  "source_sha": "9a1586d4575798d0"
+ },
+ "backend/data/parsed_results/2022/Indoor/Results-wk-2-meet-1.json": {
+  "verdict": "fixed",
+  "by": "sonnet audit (second read, Indoor sec)",
+  "notes": "Row-by-row script compare of the archive HTML (Hy-Tek text) against the parse: event/gender from each header, place, name, grade, school string, finals mark, relay school and printed legs, status rows (DNF/DQ/NH/SCR/FS), prelims vs finals sections: 50 sections / 237 source rows vs 236 parse rows. 'SMMSITCL Week 2 meet 1 - 3/12/2022', CAPE-FALMOUTH-NOBLE-YARMOUTH, Portland Exposition Building (index 'Southern Maine Middle School League Week 2: Meet 1', March 12, same). One dropped row: Boys High Jump ' -- Parker, Camden  HAR  JNH' (parse has 3 NH rows, source 4). Override adds it as status NH, place null, in printed order ('J' is the Hy-Tek tie flag in front of the status). PARSER PATTERN: status mark 'JNH' is not recognised and the row is dropped. SCHOOL RULE: 'CAPE'/'Cape' (46 rows) resolve to me-hs-cape-elizabeth but this is a middle-school league meet; they are Cape Elizabeth Middle School (me-ms-cape-elizabeth): the meet title and team-score list print 'CAPE' next to FALMOUTH, NOBLE MIDDLE SCHOOL and HARRISON M.S.; same rule as the 2023 Results-wk-4-meet-3 file rule for 'CAPE'. Other codes already me-ms-* (FAL, Noble Middlesch, HAR = Harrison). Ledger 'team scores do not add up': the six printed Team Rankings blocks (Sr-8th / In-7th / Jr-6th x Girls/Boys) equal the parse and are reproduced EXACTLY from the printed Points column per division once the relay school strings are merged with the individual ones (e.g. Girls Sr-8th Falmouth 27+6=33, Cape 19+4=23, Harrison 12, Noble 6; Boys Jr-6th Falmouth 80+6=86, Noble 24); the checker fails because it scores across divisions and the relay rows spell the school 'Falmouth'/'Cape' while individuals print 'FAL'/'CAPE'; the open events (1000 Yard, Mile, High Jump) are not in any block. Field events lose the Sr-8th/In-7th/Jr-6th suffix in the event name (Shot Put) while track events keep it: existing convention, no data lost.",
+  "date": "2026-10-31",
+  "parse_sha": "3f16fb385a80f3b0",
+  "source_sha": "8cc47bc1d3d3a703"
+ },
+ "backend/data/parsed_results/2022/Indoor/Results1.json": {
+  "verdict": "confirmed",
+  "by": "sonnet audit (second read, Indoor sec)",
+  "notes": "Row-by-row script compare of the archive HTML (Hy-Tek text) against the parse: event/gender from each header, place, name, grade, school string, finals mark, relay school and printed legs, status rows (DNF/DQ/NH/SCR/FS), prelims vs finals sections: 52 sections / 357 rows, 0 differences (the bib column '#  21' before names is dropped, as expected). 'SMAA Indoor Track Week 1 - 12/13/2021', BONNY EAGLE-FALMOUTH-MARSHWOOD-SO PORTLAND-MASSABESIC, USM (index December 13, 2021). Six printed Team Rankings blocks equal the parse. Codes: 'SP Red Riots' = South Portland, 'Scots' = Bonny Eagle, 'Massabesic High', all correct. Ledger 'never signed off' resolved by this read.",
+  "date": "2026-10-31",
+  "parse_sha": "6d427e578564bafd",
+  "source_sha": "612b564798016ada"
+ },
+ "backend/data/parsed_results/2022/Indoor/Results2.json": {
+  "verdict": "confirmed",
+  "by": "sonnet audit (second read, Indoor sec)",
+  "notes": "Row-by-row script compare of the archive HTML (Hy-Tek text) against the parse: event/gender from each header, place, name, grade, school string, finals mark, relay school and printed legs, status rows (DNF/DQ/NH/SCR/FS), prelims vs finals sections: 52 sections / 322 rows, 0 differences (bib column dropped). 'SMAA Indoor Track Week 1 meet 2 - 12/13/2021', GORHAM-KENN-PORT-THORNTON, USM (index December 13, 2021). Six printed Team Rankings blocks equal the parse; Sanford High School is a guest team in the rankings (Misty Adams, Jake Doughty, Kyle Evans), me-hs-sanford correct. Ledger 'never signed off' resolved.",
+  "date": "2026-10-31",
+  "parse_sha": "f55c171de0576bb0",
+  "source_sha": "84c6db1e90032505"
+ },
+ "backend/data/parsed_results/2022/Indoor/ResultsBOYS-CHAMP.json": {
+  "verdict": "confirmed",
+  "by": "sonnet audit (second read, Indoor sec)",
+  "notes": "Row-by-row script compare of the archive HTML (Hy-Tek text) against the parse: event/gender from each header, place, name, grade, school string, finals mark, relay school and printed legs, status rows (DNF/DQ/NH/SCR/FS), prelims vs finals sections: 31 sections / 391 rows, 0 differences. 'SMAA Indoor Track Championship Meet - 2/12/2022', USM, boys only (the girls' file is separate); no team rankings printed in this file (the Scores file is separate), so none stored. Codes: 'SCAR' = Scarborough, 'Bhs' = Biddeford (SMAA, appears with Biddeford High School in the same file), 'MASS' = Massabesic, 'Scots' = Bonny Eagle, all correct. QAQC flag Nicholas Connolly (SCAR) Boys Shot Put 56-03.50: printed as '54-03.00 seed, 56-03.50 finals, 10 pts' (real mark, kept). Division suffix handling as other SMAA files.",
+  "date": "2026-10-31",
+  "parse_sha": "1a6a4b3b56a88186",
+  "source_sha": "d68abbe7ff9b0004"
+ },
+ "backend/data/parsed_results/2022/Indoor/ResultsKVAC-Meet-5B.json": {
+  "verdict": "confirmed",
+  "by": "sonnet audit (second read, Indoor sec)",
+  "notes": "Row-by-row script compare of the archive HTML (Hy-Tek text) against the parse: event/gender from each header, place, name, grade, school string, finals mark, relay school and printed legs, status rows (DNF/DQ/NH/SCR/FS), prelims vs finals sections: 28 sections / 341 rows, 0 differences. 'KVAC Meet 5B - 1/21/2022', USM (index 'KVAC Week 5 Meet B', January 21). Two printed Team Rankings blocks (Women, Men) equal the parse. School codes: 'OHS' resolved to me-hs-oceanside is right: the rankings list Oceanside High School (30 / 7 pts) and no Oxford Hills, and OHS athletes (Novicka, Protheroe) score the points; 'MVHS' = Medomak Valley High School (rankings 6 / 9 pts), 'BRUN' = Brunswick. No change needed. Ledger 'never signed off' resolved.",
+  "date": "2026-10-31",
+  "parse_sha": "d1413412d5743c6f",
+  "source_sha": "558a7c3449821bbc"
+ },
+ "backend/data/parsed_results/2022/Indoor/ResultsMEET-1.json": {
+  "verdict": "fixed",
+  "by": "sonnet audit (second read, Indoor sec)",
+  "notes": "Row-by-row script compare of the archive HTML (Hy-Tek text) against the parse: event/gender from each header, place, name, grade, school string, finals mark, relay school and printed legs, status rows (DNF/DQ/NH/SCR/FS), prelims vs finals sections: 51 sections / 295 rows, 0 differences in rows. 'SMMSITCL Week #1 - 3/4/2022' (Hy-Tek print 3/5), CAPE-GREELY-FREEPORT/DURHAM-SACO, Portland Exposition Building; index 'Southern Maine Middle School League Week 1', March 5, 2022 (title prints 3/4, within tolerance; no date change). SCHOOL RULE: 'CAPE'/'Cape' (85 rows) resolve to me-hs-cape-elizabeth but are Cape Elizabeth Middle School (league of middle schools: Greely, Saco, Freeport/Durham MS; team list prints 'CAPE'): -> me-ms-cape-elizabeth. FRDU is left on me-ms-freeport (Lilah Hall, Lizalyn Boudreau, Amy Luo are Freeport Middle School athletes in their other Indoor/Outdoor meets) while the relay rows print 'Freeport/Durham' -> me-ms-durham-freeport (the combined RSU 5 team the sheet scores as one team 'FREEPORT/DURHAM'); no rule added so athlete identity stays with their Freeport MS ids. 'Scarborough' (Kai Edgerley, 1 row, unscored guest) -> me-ms-scarborough correct. Six printed Team Rankings blocks (Sr-8th/In-7th/Jr-6th x Women/Men) equal the parse. Ledger 'team scores do not add up' is a checker artifact: the printed Points column summed per division reproduces every printed block exactly once relay spellings are merged (Women Sr-8th Cape 28+4=32, Freeport/Durham 25+6=31, Greely 28, Saco 6; Men In-7th Saco 24, Freeport/Durham 24, Greely 23, Cape 19+4=23); open events (1000 Yard, Mile, High Jump) belong to no block. Field events lose the division suffix in the event name (Shot Put), track events keep it: existing convention.",
+  "date": "2026-10-31",
+  "parse_sha": "4775ae1c3bb3829d",
+  "source_sha": "7dc5a5bcfd4381bf"
+ },
+ "backend/data/parsed_results/2022/Indoor/ResultsMEET-2.json": {
+  "verdict": "confirmed",
+  "by": "sonnet audit (second read, Indoor sec)",
+  "notes": "Row-by-row script compare of the archive HTML (Hy-Tek text) against the parse: event/gender from each header, place, name, grade, school string, finals mark, relay school and printed legs, status rows (DNF/DQ/NH/SCR/FS), prelims vs finals sections: 48 sections / 175 rows, 0 differences. 'SMMSITCL Week #1 - 3/4/2022' (print 3/5), SCARBORO -YARMOUTH-NOBLE-THORNTON, Portland Exposition Building (index March 5, 2022; title prints 3/4, within tolerance). Middle schools: Scarborough, 'Noble Middle Sch', 'Thorton' (typo for Thornton Academy; relay rows print 'Thorton Academy Middle School') all resolve to me-ms-scarborough / me-ms-noble / me-ms-thornton, correct. Six printed Team Rankings blocks equal the parse. Ledger 'team scores do not add up' is a checker artifact: the printed Points column summed per division (Sr-8th/In-7th/Jr-6th) reproduces all six printed blocks exactly once the relay school spelling is merged (e.g. Women Sr-8th Scarborough 31+4=35, Thorton 12+6=18, Noble 6; Men In-7th Scarborough 48+6=54, Noble 21, Thorton 7+4=11). Division suffix kept on track events, dropped on field events (existing convention).",
+  "date": "2026-10-31",
+  "parse_sha": "6d5b82ae24c3a720",
+  "source_sha": "4773c3d651564372"
+ },
+ "backend/data/parsed_results/2022/Indoor/ResultsMEET-3.json": {
+  "verdict": "confirmed",
+  "by": "sonnet audit (second read, Indoor sec)",
+  "notes": "Row-by-row script compare of the archive HTML (Hy-Tek text) against the parse: event/gender from each header, place, name, grade, school string, finals mark, relay school and printed legs, status rows (DNF/DQ/NH/SCR/FS), prelims vs finals sections: 61 sections / 316 rows, 0 differences. 'SMMSITCL Week #1 - 3/4/2022' (print 3/5), FALMOUTH-BIDDEFORD-ST JAMES/SMC, Portland Exposition Building (index March 5, 2022; within tolerance). Middle-school codes all me-ms-*: FAL Falmouth, BIDD Biddeford MS, SMSJ = Southern Maine Catholic/St James combined team (printed 'Southern ME Catholic/St Ja' in the rankings) -> me-ms-southern-maine-catholic, POL = Poland (Whittier MS) -> me-ms-whittier, Saco. Six printed Team Rankings blocks equal the parse. Ledger 'team scores do not add up' is a checker artifact: per-division printed Points reproduce all six blocks exactly after merging relay spellings (e.g. Women Jr-6th Biddeford 51+6=57, Falmouth 37+4=41, SMSJ 18; Men Sr-8th Falmouth 45+6=51, SMSJ 25, Biddeford 15+4=19, Poland 10, Saco 2).",
+  "date": "2026-10-31",
+  "parse_sha": "0d84e4b53b1ffe2e",
+  "source_sha": "d734d684a1a1d2f8"
+ },
+ "backend/data/parsed_results/2022/Indoor/ResultsMeet1A.json": {
+  "verdict": "confirmed",
+  "by": "sonnet audit (second read, Indoor sec)",
+  "notes": "Row-by-row script compare of the archive HTML (Hy-Tek text) against the parse: event/gender from each header, place, name, grade, school string, finals mark, relay school and printed legs, status rows (DNF/DQ/NH/SCR/FS), prelims vs finals sections: 31 sections / 270 rows, 0 differences. 'Meet 1A - 12/10/2021', USM (index 'KVAC Meet 1A', December 10, 2021). No team rankings printed in this file (separate Scores file). Codes: 'Elhs Indoor' = Edward Little, 'Oxford Indoor TF' = Oxford Hills, 'Cony Rams', 'MOR' = Morse, 'Leavitt', 'Lewiston' (these are the meet's six teams), all me-hs-* correct.",
+  "date": "2026-10-31",
+  "parse_sha": "95c778c017f47dca",
+  "source_sha": "37b509b88863ad5a"
+ },
+ "backend/data/parsed_results/2022/Indoor/ResultsSMAA-1.json": {
+  "verdict": "confirmed",
+  "by": "sonnet audit (second read, Indoor sec)",
+  "notes": "Row-by-row script compare of the archive HTML (Hy-Tek text) against the parse: event/gender from each header, place, name, grade, school string, finals mark, relay school and printed legs, status rows (DNF/DQ/NH/SCR/FS), prelims vs finals sections: 52 sections / 304 rows, 0 differences. 'Week 4 Meet 1 - 1/22/2022', Deer/Falm/Noble/TA, USM (index SMAA Week 4, January 22). Six printed Team Rankings blocks equal the parse (Women Junior Noble 79, Thornton 29, Falmouth 19, Deering 14 ...). Schools Noble, Thornton, Falmouth, Deering correct. Ledger 'never signed off' resolved.",
+  "date": "2026-10-31",
+  "parse_sha": "6ca7fc9aae7d50dc",
+  "source_sha": "dd0d9d707befe744"
+ },
+ "backend/data/parsed_results/2022/Indoor/ResultsSMAA-2.json": {
+  "verdict": "confirmed",
+  "by": "sonnet audit (second read, Indoor sec)",
+  "notes": "Row-by-row script compare of the archive HTML (Hy-Tek text) against the parse: event/gender from each header, place, name, grade, school string, finals mark, relay school and printed legs, status rows (DNF/DQ/NH/SCR/FS), prelims vs finals sections: 52 sections / 385 rows, 0 differences. 'Week 4 Meet 2 - 1/22/2022', Bidd/Scar/Kenn/SP, USM (index SMAA Week 4, January 22). Six printed Team Rankings blocks equal the parse. Two rows with status 'FS' (false start: Sophia Foy, Kennebunk, 55 Dash; Kyle Hartford, South Portland) kept as status 'FS', place null, as printed. Schools correct ('Scarboro' = Scarborough). Ledger 'never signed off' resolved.",
+  "date": "2026-10-31",
+  "parse_sha": "dfaa02c3c76c018d",
+  "source_sha": "a00ea6e8b6f2d825"
+ },
+ "backend/data/parsed_results/2022/Indoor/ResultsSMAA-3.json": {
+  "verdict": "fixed",
+  "by": "sonnet audit (second read, Indoor sec)",
+  "notes": "Row-by-row script compare of the archive HTML (Hy-Tek text) against the parse: event/gender from each header, place, name, grade, school string, finals mark, relay school and printed legs, status rows (DNF/DQ/NH/SCR/FS), prelims vs finals sections: 52 sections / 259 rows; all rows agree except one relay. 'SMAA Indoor Track Week 4 MEET 3 - 1/22/2022', PORTLAND-WESTBROOK-WINDHAM-MARSHWOOD, USM (index SMAA Week 4, January 22). No team rankings in this file. FIX (override): Girls 4x400 Meter Relay, Westbrook High School 'A' (2nd, 4:59.32): source legs '1) Whitney Davenport  2) Alexis Karantza  3) Haley Ball SO  4) Megan Garber FR' (first two legs without grade); the parse kept the grade on legs 3-4 ('Haley Ball SO', 'Megan Garber FR'). Override: all four without grades. PARSER PATTERN: relay legs where only some names print a grade keep the grade suffix on those names. Portland 'A' relay rows print no legs (kept empty). Codes Windham/Portland/Westbrook/Marshwood correct.",
+  "date": "2026-10-31",
+  "parse_sha": "7f05716ea1577521",
+  "source_sha": "3232486e65dfe29e"
+ },
+ "backend/data/parsed_results/2022/Indoor/ResultsSMAA-4.json": {
+  "verdict": "confirmed",
+  "by": "sonnet audit (second read, Indoor sec)",
+  "notes": "Row-by-row script compare of the archive HTML (Hy-Tek text) against the parse: event/gender from each header, place, name, grade, school string, finals mark, relay school and printed legs, status rows (DNF/DQ/NH/SCR/FS), prelims vs finals sections: 26 sections / 98 rows, 0 differences. 'SMAA Indoor Track Week 4 meet 4 - 1/22/2022', GORHAM-BONNY EAGLE-CHEVERUS-MASSABESIC, USM (index SMAA Week 4, January 22). No team rankings printed in this file. Codes: 'Scots' = Bonny Eagle, 'Massabesic High', Sanford (2 rows, guest team on the same Week 4 sheets) all correct.",
+  "date": "2026-10-31",
+  "parse_sha": "18bcf89ef30ba8dc",
+  "source_sha": "30fb8a050a594aa6"
  },
  "backend/data/parsed_results/2022/XC/2022-Lee-Invitational-Boys-Race-Sheet1-1.json": {
   "verdict": "source-error",
@@ -13719,6 +13887,134 @@
   "parse_sha": "13e8b5cdc4e20290",
   "source_sha": "9e824a43c844feab"
  },
+ "backend/data/parsed_results/2023/Indoor/ResultsWMC2-1.json": {
+  "verdict": "confirmed",
+  "by": "sonnet audit (second read, Indoor sec)",
+  "notes": "Ledger 'unverified: never read' resolved by this read. WMC Week 3 Meet 2, USM, 1/24/2023 (Hy-Tek title 'WMC WEEK 3 MEET 2 - 1/24/2023', York-GNG-Freeport-Fryeburg-Yarmouth-Traip). Hy-Tek text compared row by row with scripts over the source (event, gender, place incl. ties and '--', name, school string, grade, mark with q/J/R/x flags, X/x B/C relay marks = exhibition, heat/points columns, relay school and printed legs, status rows; every school string against the parse): 37 events / 249 rows, event sequence identical, no differences (3 relays, legs equal; field marks with J flag, e.g. 'J4-08.00', stored without the flag as everywhere). Team scores: ScoresWMC2-1.htm 'Team Rankings - Through Event 42' (5 teams per sex) equals the sum of the row points per sex and school (script, 0 differences). Schools Yarmouth Hig, Freeport Hig, Gray New Glo, Traip Academ, Fryeburg Aca -> me-hs entries (Gray New Glo = me-hs-gray-ng). No printed team block in this file (no_rankings). Division suffixes 'JR DIVISION'/'SR DIVISION' dropped from event names as in the series convention (separate events per division in file order). Date = index (scoped key 2023/Indoor/ResultsWMC2-1.htm, 1/24/2023; the unscoped key shows a 2024 file's date); index meet text is the combined link label.",
+  "date": "2026-10-31",
+  "parse_sha": "5c6748810c320ade",
+  "source_sha": "d7ab6f91c4db77e2"
+ },
+ "backend/data/parsed_results/2023/Indoor/ResultsWMC2.json": {
+  "verdict": "confirmed",
+  "by": "sonnet audit (second read, Indoor sec)",
+  "notes": "Ledger 'unverified: never read' resolved by this read. WMC meet at USM, 1/6/2023 (Hy-Tek title 'WMC WEEK 4 MEET 2 - 1/6/2023', print stamp 1/6/2023 09:13 PM; teams York-Cape-Gray-Freeport-Lake Region-Traip-Mt Valley-Boothbay). Hy-Tek text compared row by row with scripts over the source (event, gender, place incl. ties and '--', name, school string, grade, mark with q/J/R/x flags, X/x B/C relay marks = exhibition, heat/points columns, relay school and printed legs, status rows; every school string against the parse): 42 events / 408 rows (17 relays rows), event sequence identical, no differences (J-flagged jump marks e.g. 'J5-06.00' stored without the flag; seed column ignored). ScoresWMC2.htm 'Team Rankings - Through Event 42' (8 teams per sex) equals the summed row points per sex and school (0 differences). Schools York High Sc, Freeport Hig, Traip Academ, Gray New Glo, Lake Region, Cape Elizabe, Boothbay/Wis (-> coop-boothbay-wiscasset), Mountain Val resolve correctly. Date: the title says 'WEEK 4' but the date and print stamp are 1/6/2023 and the index (scoped key) pairs it with WMC Week 1 (Meet 1 on 1/6/2023 is ScoresWMC1: 'WMC WEEK 1 MEET 1 - 1/6/2023'); week 4 was 1/27, so 'WEEK 4' is a typo in the title; date unchanged.",
+  "date": "2026-10-31",
+  "parse_sha": "25002b002fcb4d7f",
+  "source_sha": "c87f431857697cd0"
+ },
+ "backend/data/parsed_results/2023/Indoor/Resultsmeet-1.json": {
+  "verdict": "confirmed",
+  "by": "sonnet audit (second read, Indoor sec)",
+  "notes": "Ledger 'unverified: never read' resolved by this read. SMAA Indoor Track Week 5 MEET 1, USM, 2023-01-21 (Kennebunk-Marshwood-Massabesic-Noble-Sanford; Hy-Tek title 'SMAA Indoor Track Week 5 MEET 1'; scoped index date equals it). Hy-Tek text compared row by row with scripts over the source (event, gender, place incl. ties and '--', name, school string, grade, mark with q/J/R/x flags, X/x B/C relay marks = exhibition, heat/points columns, relay school and printed legs, status rows; every school string against the parse): 52 events / 337 rows (8 relay events), event sequence identical, no differences; 2 X-marked B/C relay or unattached marks = exhibition in the parse as printed. The file prints no team block, but the companion tfmm6teamscoresmeet-1.pdf (Female/Male Team Scores) equals the sum of the row points per sex and school in this parse exactly (script, 0 differences, half points included), which also confirms places, schools and points. Schools Noble/Marshwood/Massabesic/Kennebunk/Sanford/Portland/South Portland/Deering/Cheverus/Windham/Gorham/Falmouth/Scarborough/Thornton/Bonny Eagle/Biddeford/Westbrook (12-character Hy-Tek strings and full relay names) all resolve to their me-hs entries. 'Junior/Senior Division' dropped from event names, 'Open Division' kept for 600 Yard Run (existing convention). The ledger gender-bleed flag, if shown, is an athlete-identity merge, not a parse error (no name occurs in both sexes).",
+  "date": "2026-10-31",
+  "parse_sha": "17ce55014d5531bd",
+  "source_sha": "602cdf484a1d3059"
+ },
+ "backend/data/parsed_results/2023/Indoor/Resultsmeet-2.json": {
+  "verdict": "confirmed",
+  "by": "sonnet audit (second read, Indoor sec)",
+  "notes": "Ledger 'unverified: never read' resolved by this read. SMAA Indoor Track Week 5 MEET 2, USM, 2023-01-21 (Cheverus-Deering-Portland-South Portland; Hy-Tek title 'SMAA Indoor Track Week 5 MEET 2'; scoped index date equals it). Hy-Tek text compared row by row with scripts over the source (event, gender, place incl. ties and '--', name, school string, grade, mark with q/J/R/x flags, X/x B/C relay marks = exhibition, heat/points columns, relay school and printed legs, status rows; every school string against the parse): 52 events / 480 rows (8 relay events), event sequence identical, no differences; 6 X-marked B/C relay or unattached marks = exhibition in the parse as printed. The file prints no team block, but the companion tfmm6teamscores-meet-2-1.pdf (Female/Male Team Scores) equals the sum of the row points per sex and school in this parse exactly (script, 0 differences, half points included), which also confirms places, schools and points. Schools Noble/Marshwood/Massabesic/Kennebunk/Sanford/Portland/South Portland/Deering/Cheverus/Windham/Gorham/Falmouth/Scarborough/Thornton/Bonny Eagle/Biddeford/Westbrook (12-character Hy-Tek strings and full relay names) all resolve to their me-hs entries. 'Junior/Senior Division' dropped from event names, 'Open Division' kept for 600 Yard Run (existing convention). The ledger gender-bleed flag, if shown, is an athlete-identity merge, not a parse error (no name occurs in both sexes).",
+  "date": "2026-10-31",
+  "parse_sha": "86dbf9b9d5a84ac7",
+  "source_sha": "479f6406dd68c356"
+ },
+ "backend/data/parsed_results/2023/Indoor/Resultsmeet-3-1.json": {
+  "verdict": "confirmed",
+  "by": "sonnet audit (second read, Indoor sec)",
+  "notes": "Ledger 'unverified: never read' resolved by this read. SMAA Indoor Track Week 5 MEET 3, USM, 2023-01-21 (Windham-Falmouth-Scarborough-Gorham; Hy-Tek title 'SMAA Indoor Track Week 5 MEET 3'; scoped index date equals it). Hy-Tek text compared row by row with scripts over the source (event, gender, place incl. ties and '--', name, school string, grade, mark with q/J/R/x flags, X/x B/C relay marks = exhibition, heat/points columns, relay school and printed legs, status rows; every school string against the parse): 52 events / 421 rows (8 relay events), event sequence identical, no differences; 0 X-marked B/C relay or unattached marks = exhibition in the parse as printed. The file prints no team block, but the companion tfmm6teamscoresmeet-3.pdf (Female/Male Team Scores) equals the sum of the row points per sex and school in this parse exactly (script, 0 differences, half points included), which also confirms places, schools and points. Schools Noble/Marshwood/Massabesic/Kennebunk/Sanford/Portland/South Portland/Deering/Cheverus/Windham/Gorham/Falmouth/Scarborough/Thornton/Bonny Eagle/Biddeford/Westbrook (12-character Hy-Tek strings and full relay names) all resolve to their me-hs entries. 'Junior/Senior Division' dropped from event names, 'Open Division' kept for 600 Yard Run (existing convention). The ledger gender-bleed flag, if shown, is an athlete-identity merge, not a parse error (no name occurs in both sexes).",
+  "date": "2026-10-31",
+  "parse_sha": "6761eceae4c2cffc",
+  "source_sha": "fe2d93eac26843ee"
+ },
+ "backend/data/parsed_results/2023/Indoor/Resultsmeet-3.json": {
+  "verdict": "confirmed",
+  "by": "sonnet audit (second read, Indoor sec)",
+  "notes": "Ledger 'unverified: never read' resolved by this read. SMAA Indoor Track Week 3 MEET 3, USM, 2023-01-05 (Massabesic-South Portland-Thornton-Windham; Hy-Tek title 'SMAA Indoor Track Week 3 MEET 3'; scoped index date equals it). Hy-Tek text compared row by row with scripts over the source (event, gender, place incl. ties and '--', name, school string, grade, mark with q/J/R/x flags, X/x B/C relay marks = exhibition, heat/points columns, relay school and printed legs, status rows; every school string against the parse): 53 events / 492 rows (8 relay events), event sequence identical, no differences; 7 X-marked B/C relay or unattached marks = exhibition in the parse as printed. The file prints no team block, but the companion Scoresmeet-3.htm (Female/Male Team Scores) equals the sum of the row points per sex and school in this parse exactly (script, 0 differences, half points included), which also confirms places, schools and points. Schools Noble/Marshwood/Massabesic/Kennebunk/Sanford/Portland/South Portland/Deering/Cheverus/Windham/Gorham/Falmouth/Scarborough/Thornton/Bonny Eagle/Biddeford/Westbrook (12-character Hy-Tek strings and full relay names) all resolve to their me-hs entries. 'Junior/Senior Division' dropped from event names, 'Open Division' kept for 600 Yard Run (existing convention). The ledger gender-bleed flag, if shown, is an athlete-identity merge, not a parse error (no name occurs in both sexes).",
+  "date": "2026-10-31",
+  "parse_sha": "d7ba0ec4ed27695d",
+  "source_sha": "2e5fca33362d2da6"
+ },
+ "backend/data/parsed_results/2023/Indoor/Resultsmeet-4-1.json": {
+  "verdict": "confirmed",
+  "by": "sonnet audit (second read, Indoor sec)",
+  "notes": "Ledger 'unverified: never read' resolved by this read. SMAA Indoor Track Week 5 MEET 4, USM, 2023-01-21 (Biddeford-Bonny Eagle-Thornton-Westbrook; Hy-Tek title 'SMAA Indoor Track Week 5 MEET 4'; scoped index date equals it). Hy-Tek text compared row by row with scripts over the source (event, gender, place incl. ties and '--', name, school string, grade, mark with q/J/R/x flags, X/x B/C relay marks = exhibition, heat/points columns, relay school and printed legs, status rows; every school string against the parse): 49 events / 304 rows (7 relay events), event sequence identical, no differences; 1 X-marked B/C relay or unattached marks = exhibition in the parse as printed. The file prints no team block, but the companion tfmm6teamscoresmeet-4.pdf (Female/Male Team Scores) equals the sum of the row points per sex and school in this parse exactly (script, 0 differences, half points included), which also confirms places, schools and points. Schools Noble/Marshwood/Massabesic/Kennebunk/Sanford/Portland/South Portland/Deering/Cheverus/Windham/Gorham/Falmouth/Scarborough/Thornton/Bonny Eagle/Biddeford/Westbrook (12-character Hy-Tek strings and full relay names) all resolve to their me-hs entries. 'Junior/Senior Division' dropped from event names, 'Open Division' kept for 600 Yard Run (existing convention). The ledger gender-bleed flag, if shown, is an athlete-identity merge, not a parse error (no name occurs in both sexes).",
+  "date": "2026-10-31",
+  "parse_sha": "efc3a1f669efc421",
+  "source_sha": "2772394d8deb0b23"
+ },
+ "backend/data/parsed_results/2023/Indoor/Resultsmeet-4.json": {
+  "verdict": "confirmed",
+  "by": "sonnet audit (second read, Indoor sec)",
+  "notes": "Ledger 'unverified: never read' resolved by this read. SMAA Indoor Track Week 3 MEET 4, USM, 2023-01-05 (Cheverus-Falmouth-Kennebunk-Sanford-Westbrook; Hy-Tek title 'SMAA Indoor Track Week 3 MEET 4'; scoped index date equals it). Hy-Tek text compared row by row with scripts over the source (event, gender, place incl. ties and '--', name, school string, grade, mark with q/J/R/x flags, X/x B/C relay marks = exhibition, heat/points columns, relay school and printed legs, status rows; every school string against the parse): 47 events / 249 rows (8 relay events), event sequence identical, no differences; 0 X-marked B/C relay or unattached marks = exhibition in the parse as printed. The file prints no team block, but the companion Scoresmeet-4.htm (Female/Male Team Scores) equals the sum of the row points per sex and school in this parse exactly (script, 0 differences, half points included), which also confirms places, schools and points. Schools Noble/Marshwood/Massabesic/Kennebunk/Sanford/Portland/South Portland/Deering/Cheverus/Windham/Gorham/Falmouth/Scarborough/Thornton/Bonny Eagle/Biddeford/Westbrook (12-character Hy-Tek strings and full relay names) all resolve to their me-hs entries. 'Junior/Senior Division' dropped from event names, 'Open Division' kept for 600 Yard Run (existing convention). The ledger gender-bleed flag, if shown, is an athlete-identity merge, not a parse error (no name occurs in both sexes).",
+  "date": "2026-10-31",
+  "parse_sha": "e03a20b8b20b903f",
+  "source_sha": "c1409550ed903b33"
+ },
+ "backend/data/parsed_results/2023/Indoor/Resultssmaa-hampc.json": {
+  "verdict": "confirmed",
+  "by": "sonnet audit (second read, Indoor sec)",
+  "notes": "Ledger 'unverified: never read' resolved by this read. SMAA Indoor Track Championship 2023, USM, 2/11/2023 (Hy-Tek; index February 11, 2023). Hy-Tek text compared row by row with scripts over the source (event, gender, place incl. ties and '--', name, school string, grade, mark with q/J/R/x flags, X/x B/C relay marks = exhibition, heat/points columns, relay school and printed legs, status rows; every school string against the parse): 62 events / 825 rows (Junior, Senior and Open divisions, prelims + finals; 10 relay events with 97 relay rows, legs equal), event sequence identical, no differences. No team block in the file; the companion smaa-scores.pdf (Male) and smaa-scores-girls.pdf (Female Team Scores) equal the sum of the row points per sex and school exactly (script, 0 differences, half points included: Gorham 59.5, Thornton 32.5). All 17 schools (South Portla, Scarborough, Portland Hig, Gorham High, Noble High S, Thornton Aca, Bonny Eagle, Windham High, Cheverus Hig, Falmouth Hig, Marshwood Hi, Biddeford Hi, Deering High, Kennebunk Hi, Westbrook Hi, Sanford High, Massabesic H) resolve to me-hs entries. Division suffix dropped from event names, 'Open Division' kept for 600 Yard Run / 1600 Sprint Medley (existing convention).",
+  "date": "2026-10-31",
+  "parse_sha": "7187c131567365d6",
+  "source_sha": "1a2bb41b41335029"
+ },
+ "backend/data/parsed_results/2023/Indoor/Resultssmmsac-festival.json": {
+  "verdict": "fixed",
+  "by": "sonnet audit (second read, Indoor sec)",
+  "notes": "Ledger warning '3 results flagged as implausible' cleared by this read: the flags are real marks printed in the source: Ethan Closson (Greely MS) Boys Shot Put SR '26-09.00' (place 11), Landon Crone (Loranger MS) Boys 45 Yard Hurdles INT prelim '7.70q' (place 5, heat 2); the third flag is the gender-bleed athlete-merge check (no name occurs in both sexes in this file). SMMSAC Indoor Track Festival (middle schools), Portland Expo, 3/27/2023 (index March 27, 2023). Hy-Tek text compared row by row with scripts over the source (event, gender, place incl. ties and '--', name, school string, grade, mark with q/J/R/x flags, X/x B/C relay marks = exhibition, heat/points columns, relay school and printed legs, status rows; every school string against the parse): 798 of 853 source rows agree. FIX: the 55 rows of the 'Semi-Finals' sections (five 40 Yard Dash races: Girls JR 10, INT 10, SR 10; Boys INT 14, SR 11; header 'Name Year School Semis H#', e.g. '2 Chang, Anna CAPE J6.30q 2') were dropped by the parser; override adds them as separate events after each Prelims event (type Prelims = non-final round, as qaqc/track_verify use only Finals when present), all other 798 rows copied unchanged. With the override the loaded document equals the source row for row (853 rows, order, places, points, relay legs; script, 0 differences). PARSER PATTERN: Hy-Tek 'Semi-Finals' section dropped by ColumnStrategyParser (file 2023/Indoor Resultssmmsac-festival, 40 Yard Dash races; any three-round race). Status rows (SCR 2, NT 10, DQ 7, NH 2) kept as the parse has them. Schools: printed codes SCAR, FAL, CAPE, BIDD, YAR, SMC, GRE, SACO, NOBLE, FREE, THOR, WHIT, LOR resolve to me-ms-* (YAR = Yarmouth = me-ms-harrison, SMC = Southern Maine Catholic MS, BIDD = me-ms-biddeford; relay rows print the full names). No printed team scores.",
+  "date": "2026-10-31",
+  "parse_sha": "1fdf488066853959",
+  "source_sha": "1075303a0c334b26"
+ },
+ "backend/data/parsed_results/2023/Indoor/Resultswk-4-meet-1.json": {
+  "verdict": "confirmed",
+  "by": "sonnet audit (second read, Indoor sec)",
+  "notes": "Ledger 'unverified: never read' resolved by this read. SMMSAC Indoor Track (middle schools) week 4 meet 1, Biddeford-Saco-Thornton-Noble, 3/24/2023 (index March 24, 2023). Hy-Tek text compared row by row with scripts over the source (event, gender, place incl. ties and '--', name, school string, grade, mark with q/J/R/x flags, X/x B/C relay marks = exhibition, heat/points columns, relay school and printed legs, status rows; every school string against the parse): 48 events / 216 rows (4 relay events, legs equal), event sequence identical, no differences (yard-dash and JR/INT/SR/OPEN division event names kept as printed; Shot Put INT -> 'Shot Put'). The companion tfmm6teamscoreswk-4-meet-1.pdf prints Female Biddeford 110.5, Noble 71, Thornton Academy MS 50, Saco Middle School 42.5 and Male Biddeford 113.5, Saco MS 77, Noble 71.5, Thornton MS 50; these equal the sum of the row points (codes BIDD/NOBLE/THOR/SACO plus the relay rows printed with the full names), 0 differences. Codes BIDD, SACO, NOBLE, THOR resolve to me-ms-biddeford/saco/noble/thornton (middle-school meet; relays print 'Biddeford', 'Saco Middle School', 'Noble', 'Thornton Academy MS').",
+  "date": "2026-10-31",
+  "parse_sha": "042fc67ee15d8c06",
+  "source_sha": "193acd4e27a4fd68"
+ },
+ "backend/data/parsed_results/2023/Indoor/Resultswmc.json": {
+  "verdict": "confirmed",
+  "by": "sonnet audit (second read, Indoor sec)",
+  "notes": "Ledger 'unverified: never read' resolved by this read. WMC Indoor Track Championship, USM, 2/10/2023 (index February 10, 2023). Hy-Tek text compared row by row with scripts over the source (event, gender, place incl. ties and '--', name, school string, grade, mark with q/J/R/x flags, X/x B/C relay marks = exhibition, heat/points columns, relay school and printed legs, status rows; every school string against the parse): 50 events / 665 rows (6 relay events, legs equal), event sequence identical, no differences. wmc-scores.pdf (Female/Male Team Scores, 14 teams each: Freeport 145, Greely 120, York 112 ...; York 131, Freeport 71 ...) equals the sum of the row points per sex and school (0 differences). Schools resolve to me-hs entries except North Yarmouth: the individual rows print 'North Yarmou' (-> coop-nya-maine-coast-waldorf) while the 3 relay row(s) print 'North Yarmouth Academy' (-> me-hs-nya) in the same meet and the printed team scores list one 'North Yarmouth Academy' (Female 11, Male 5); SCHOOL RULE below, same decision as the 2024 NYA files (ResultsWMC, ResultsWMC2, Resultsmeet-1-3). Other schools York High Sc, Freeport Hig, Greely High, Yarmouth Hig, Gray New Glo, Poland Regio, St. Dominic, Cape Elizabe, Traip Academ, Sacopee Vall, Lake Region, Wells High S, Fryeburg Aca resolve to me-hs entries.",
+  "date": "2026-10-31",
+  "parse_sha": "729c71c1d967967d",
+  "source_sha": "101a0f40462e0350"
+ },
+ "backend/data/parsed_results/2023/Indoor/Resultswmc1.json": {
+  "verdict": "confirmed",
+  "by": "sonnet audit (second read, Indoor sec)",
+  "notes": "Ledger 'unverified: never read' resolved by this read. WMC Week 3 Meet 1, USM, 1/24/2023 (Hy-Tek title 'WMC WEEK 3 MEET 1 - 1/24/2023', teams Poland-Wells-Cape-Greely-Lake Region-NYA-St Doms-Mt Valley-Boothbay-Sacopee; index date equals it). Hy-Tek text compared row by row with scripts over the source (event, gender, place incl. ties and '--', name, school string, grade, mark with q/J/R/x flags, X/x B/C relay marks = exhibition, heat/points columns, relay school and printed legs, status rows; every school string against the parse): 41 events / 341 rows (5 relay events), event sequence identical, no differences. ScoresWMC1-1.htm 'Team Rankings - Through Event 42' (9 teams per sex) equals the sum of the row points per sex and school (0 differences). Schools resolve to me-hs entries except North Yarmouth: the individual rows print 'North Yarmou' (-> coop-nya-maine-coast-waldorf) while the 2 relay row(s) print 'North Yarmouth Academy' (-> me-hs-nya) in the same meet and the printed team scores list one 'North Yarmouth Academy' (NYA); SCHOOL RULE below, same decision as the 2024 NYA files (ResultsWMC, ResultsWMC2, Resultsmeet-1-3). Boothbay/Wis(ca) -> coop-boothbay-wiscasset (individual and relay strings agree). Other schools Greely High, St. Dominic, Cape Elizabe, Poland Regio, Lake Region, Sacopee Vall, Mountain Val resolve to me-hs entries.",
+  "date": "2026-10-31",
+  "parse_sha": "b4ae2db2d2943366",
+  "source_sha": "782644cabca8d5d1"
+ },
+ "backend/data/parsed_results/2023/Indoor/Resultswmc2.json": {
+  "verdict": "confirmed",
+  "by": "sonnet audit (second read, Indoor sec)",
+  "notes": "Ledger 'unverified: never read' resolved by this read. WMC Week 5 Meet 2, USM, 2/3/2023 (Hy-Tek title 'WMC WEEK 5 MEET 2 - 2/3/2023', index date equals it). Hy-Tek text compared row by row with scripts over the source (event, gender, place incl. ties and '--', name, school string, grade, mark with q/J/R/x flags, X/x B/C relay marks = exhibition, heat/points columns, relay school and printed legs, status rows; every school string against the parse): 42 events / 440 rows (6 relay events; 3 X-marked B relays = exhibition, as printed), event sequence identical, no differences. Scoreswmc2.htm 'Team Rankings - Through Event 42' (Female 9 teams, Male 8 teams) equals the sum of the row points per sex and school (0 differences). Schools resolve to me-hs entries except North Yarmouth: the individual rows print 'North Yarmou' (-> coop-nya-maine-coast-waldorf) while the 3 relay row(s) print 'North Yarmouth Academy' (-> me-hs-nya) in the same meet and the printed team scores list one 'North Yarmouth Academy' (NYA); SCHOOL RULE below, same decision as the 2024 NYA files (ResultsWMC, ResultsWMC2, Resultsmeet-1-3). Boothbay/Wis -> coop-boothbay-wiscasset. Other schools York High Sc, Yarmouth Hig, Greely High, Poland Regio, Traip Academ, Mountain Val, Wells High S resolve to me-hs entries.",
+  "date": "2026-10-31",
+  "parse_sha": "3f7bf555eb8e99c1",
+  "source_sha": "2d5cca28bfbe667a"
+ },
+ "backend/data/parsed_results/2023/Indoor/USM-Invitational-results.json": {
+  "verdict": "confirmed",
+  "by": "sonnet audit (second read, Indoor sec)",
+  "notes": "Ledger 'unverified: never read' resolved by this read. 2022 USM New Year's Invitational, USM, 12/30/2022 (Hy-Tek title; index December 30, 2022; Maine and NH teams). Hy-Tek text compared row by row with scripts over the source (event, gender, place incl. ties and '--', name, school string, grade, mark with q/J/R/x flags, X/x B/C relay marks = exhibition, heat/points columns, relay school and printed legs, status rows; every school string against the parse): 44 events / 1026 rows (6 relay events, 37 relay rows, legs equal; 8 X-marked B/C relays and unattached marks = exhibition, as printed; grades from the Year column equal for all 989 matched individual rows, 0 differences), event sequence identical apart from the pentathlon block. Metric field marks of the Indoor Pentathlon legs ('1.55m', '8.97m') are stored without the 'm'. PARSER PATTERN (known, as in 2024/2025 USM files): the Indoor Pentathlon legs (55 Meter Hurdles, High Jump, Long Jump, Shot Put, 800/1000 Meter Dash) are stored as five events named 'Girls/Boys Indoor Pentathlon' with their leg points, and the final 'Girls/Boys Indoor Pentathlon' total-points tables (16 rows, e.g. '1 Anneliese Collin 10 Portland Hig 2634') are not stored; nothing else is missing or extra. No team scores printed. Schools: Maine teams (South Portla, Scarborough, Bonny Eagle, Gorham High, Westbrook Hi, Freeport Hig, Yarmouth Hig, Greely High, St. Dominic, Kennebunk Hi, Thornton Aca, Cheverus Hig, Boothbay/Wis -> coop-boothbay-wiscasset, Marshwood Hi, Massabesic H, Wells High S, Skowhegan Ar, Windham High, Portland Hig, Falmouth Hig, Noble High S, Lake Region, Biddeford Hi, York High Sc, Brunswick Hi, Mountain Val, Sanford High) resolve to me-hs; out-of-state Portsmouth, Merrimack, Newport, Mascoma Vall, Kearsarge resolve to oos-(auto-)nh entries (NH invitational teams; Maddox Lovely 'Newport' appears only with the NH group). The ledger gender-bleed flag, if any, is an athlete-identity merge (no name in both sexes).",
+  "date": "2026-10-31",
+  "parse_sha": "b1d40124551659ef",
+  "source_sha": "dbb2ad3c5007f2ad"
+ },
+ "backend/data/parsed_results/2023/Indoor/kvac-1b-results.json": {
+  "verdict": "confirmed",
+  "by": "sonnet audit (second read, Indoor sec)",
+  "notes": "Ledger 'transcribed/verified but never signed off' cleared by this read (verified_close -> the checker says verified, printed points). KVAC Indoor Track Meet 1B, Costello Athletic Complex at USM, 12/19/2022 (Hy-Tek; index December 19, 2022 'KVAC Meet 1B'). Hy-Tek text compared row by row with scripts over the source (event, gender, place incl. ties and '--', name, school string, grade, mark with q/J/R/x flags, X/x B/C relay marks = exhibition, heat/points columns, relay school and printed legs, status rows; every school string against the parse): 28 events / 251 rows (4 relay events, legs with grades equal; 3 B/C relays marked exhibition 'x' as printed), event sequence identical, 0 differences; grades from the Year column equal for all individual rows. Team Rankings blocks equal the parse's team_rankings and the summed row points (Women: Leavitt Area 104, Morse 91, Edward Little 70, Lawrence 61, Messalonskee 48, Oxford Hills 41; Men: Edward Little 124, Leavitt Area 98, Messalonskee 82, Morse 59, Oxford Hills 37; 0 differences). Schools Leavitt Area, Edward Littl, Messalonskee, Oxford Hills, Morse High S, Lawrence Hig and the full relay names resolve to their me-hs entries. Status rows (NH etc.) as the parse has them. The ledger gender-bleed flag is an athlete-identity merge (no name in both sexes in this file).",
+  "date": "2026-10-31",
+  "parse_sha": "1ee9ecc4f39ff1e4",
+  "source_sha": "7340bc43a48c53d5"
+ },
  "backend/data/parsed_results/2023/XC/10-11-23-Oxford-Hills-MS.json": {
   "verdict": "confirmed",
   "by": "sonnet audit (second read, 2026-10-24)",
@@ -13730,7 +14026,7 @@
  "backend/data/parsed_results/2023/XC/10-12-2023-Boothbay-MS.json": {
   "verdict": "confirmed",
   "by": "sonnet audit (second read, 2026-10-24)",
-  "notes": "Girls 54, boys 32 rows match COMPETITORS; 'LINCOLNÊ LEBOURDAIS' read as Lincoln Lebourdais (Woolwich). Schools Appleton, Boothbay, GSB -> me-ms-great-salt-bay, Medomak, St. George, Wiscasset, Woolwich. Team scores girls Boothbay 36, Medomak 66, Appleton 74, GSB 78, Woolwich 98; boys GSB 57, Woolwich 63, Boothbay 64, Appleton 66, Medomak 87 match. Printed grades 4 (Appleton) show as MS.",
+  "notes": "Girls 54, boys 32 rows match COMPETITORS; 'LINCOLN\u00ca LEBOURDAIS' read as Lincoln Lebourdais (Woolwich). Schools Appleton, Boothbay, GSB -> me-ms-great-salt-bay, Medomak, St. George, Wiscasset, Woolwich. Team scores girls Boothbay 36, Medomak 66, Appleton 74, GSB 78, Woolwich 98; boys GSB 57, Woolwich 63, Boothbay 64, Appleton 66, Medomak 87 match. Printed grades 4 (Appleton) show as MS.",
   "date": "2026-10-24",
   "parse_sha": "87fdacbf4aca46b9",
   "source_sha": "964840f9deafb65e"
@@ -14170,7 +14466,7 @@
  "backend/data/parsed_results/2023/XC/ms-western-maine-conference-invitational-2023.json": {
   "verdict": "fixed",
   "by": "sonnet audit (second read, 2026-10-28)",
-  "notes": "Both pages (976371 boys 171, 976333 girls 130) match place/TmPl/school/time except sheet artifacts, fixed in the ms- file: \"234. Michael Clarke\" (bib glued to the name, TmPl 41 missing) -> Michael Clarke, team_place 41; \"Isabelï¿½ Macht\" -> Isabel Macht; Teo Steverlynck- -> Teo Steverlynck-Horne; Julian Lampson-LaP -> Julian Lamson-LaPlume; Barbara Stumpf Art -> Barbara Stumpf Artero; ROWON HOLMES -> Rowen Holmes. No team totals printed.",
+  "notes": "Both pages (976371 boys 171, 976333 girls 130) match place/TmPl/school/time except sheet artifacts, fixed in the ms- file: \"234. Michael Clarke\" (bib glued to the name, TmPl 41 missing) -> Michael Clarke, team_place 41; \"Isabel\u00ef\u00bf\u00bd Macht\" -> Isabel Macht; Teo Steverlynck- -> Teo Steverlynck-Horne; Julian Lampson-LaP -> Julian Lamson-LaPlume; Barbara Stumpf Art -> Barbara Stumpf Artero; ROWON HOLMES -> Rowen Holmes. No team totals printed.",
   "date": "2026-10-28",
   "parse_sha": "68d25728c012f925",
   "source_sha": "afb87d7a2ba4118c"
@@ -15042,7 +15338,7 @@
  "backend/data/parsed_results/2024/XC/10-11-24-Lisbon-HS.json": {
   "verdict": "confirmed",
   "by": "sonnet audit (second read, 2026-10-24)",
-  "notes": "Girls 26 rows (incl DNF Annie Whitney) and boys 46 rows match '26/46 COMPETITORS'; names (Maddie Orchard/Andreasen with stray Æ glyph fixed), schools (Boothbay-Wiscasset coop, Richmond, Forest Hills, Oak Hill, Winthrop, Lisbon) and times match. Team scores girls Boothbay-Wiscasset 21, Richmond 50, Forest Hills 51; boys Lisbon 41, B-W 54, Richmond 60, Winthrop 70 match.",
+  "notes": "Girls 26 rows (incl DNF Annie Whitney) and boys 46 rows match '26/46 COMPETITORS'; names (Maddie Orchard/Andreasen with stray \u00c6 glyph fixed), schools (Boothbay-Wiscasset coop, Richmond, Forest Hills, Oak Hill, Winthrop, Lisbon) and times match. Team scores girls Boothbay-Wiscasset 21, Richmond 50, Forest Hills 51; boys Lisbon 41, B-W 54, Richmond 60, Winthrop 70 match.",
   "date": "2026-10-24",
   "parse_sha": "21442971cb0ba02b",
   "source_sha": "60de1222d819e721"
@@ -16266,7 +16562,7 @@
  "backend/data/parsed_results/2025/XC/10-10-25-Lisbon-HS-Boys.json": {
   "verdict": "confirmed",
   "by": "sonnet audit (second read, 2026-10-24)",
-  "notes": "55 rows = '55 COMPETITORS' incl. DNF Isaiah McDonough; all places, names, grades, times match; 'KINGSTONÊ LAVALLEE' read as Kingston Lavallee; Draek Poissonnier has no grade printed. Teams Winthrop 31, Lisbon 39, Boothbay/Wiscasset 63 (coop), Richmond 93 match.",
+  "notes": "55 rows = '55 COMPETITORS' incl. DNF Isaiah McDonough; all places, names, grades, times match; 'KINGSTON\u00ca LAVALLEE' read as Kingston Lavallee; Draek Poissonnier has no grade printed. Teams Winthrop 31, Lisbon 39, Boothbay/Wiscasset 63 (coop), Richmond 93 match.",
   "date": "2026-10-24",
   "parse_sha": "5eb49eeb770b81e2",
   "source_sha": "bfdd21cd5bd6911a"
@@ -17282,7 +17578,7 @@
  "backend/data/parsed_results/2026/Outdoor/hampden15may2026.json": {
   "verdict": "confirmed",
   "by": "2026-10-26 sonnet audit (routine)",
-  "notes": "Machine-compared every parse row with the source text (name, mark, place, grade, event heading/order, relay members, per-event row counts): 567 rows, 38 events; all places/grades/marks match; relay B/C teams ('x' exhibition marks like x56.70) stored with the mark; team scores verified vs 'Women/Men - Team Rankings'. Implausible flags are printed marks. 'Loire O’roak' apostrophe is correct here.",
+  "notes": "Machine-compared every parse row with the source text (name, mark, place, grade, event heading/order, relay members, per-event row counts): 567 rows, 38 events; all places/grades/marks match; relay B/C teams ('x' exhibition marks like x56.70) stored with the mark; team scores verified vs 'Women/Men - Team Rankings'. Implausible flags are printed marks. 'Loire O\u2019roak' apostrophe is correct here.",
   "date": "2026-10-26",
   "parse_sha": "08c1b1398d9532a4",
   "source_sha": "b122986e0e2615f4"
@@ -17314,7 +17610,7 @@
  "backend/data/parsed_results/2026/Outdoor/pvcjv27may2026.json": {
   "verdict": "fixed",
   "by": "2026-10-26 sonnet audit (routine)",
-  "notes": "Machine-compared every parse row with the source text (name, mark, place, grade, event heading/order, relay members, per-event row counts): all 661 rows, 38 events, relays, places match the source. Three defects fixed in the override backend/data/transcribed/2026/Outdoor/pvcjv27may2026.json (a copy of the parse with only these changes): (1) the file prints no date ('2026  PVC JV Championship Meet at Hampden Academy'), parse date 'Unknown Date'; set to 2026-05-27 from the file name pvcjv27may2026; (2) the source file has a garbled apostrophe in 'Loire O�€™roak' (src lines 40, 108, 226 '2) Loire O?roak 9'); written 'Loire O’roak' as in hampden15may2026 (individual rows 100 m 15.46 and 200 m 32.94, relay member in the Girls 4x100 59.26); (3) the garbled name shifted the columns so the two individual rows had grade '-' ; grade 9 restored (source prints 9). No other row changed. School strings map to the right ids (Houlton/GHCA->coop-houlton-ghca, Foxcroft Aca, Sumner Memor, etc.). 10 implausible flags are printed marks; JV meet so slow marks expected. [applied 2026-10-26: school rules in school_catalog_seed (2026-10-26 routine block), continuation-page parser fix, or transcription override, as listed; parser patterns not yet fixed are in the routine report]",
+  "notes": "Machine-compared every parse row with the source text (name, mark, place, grade, event heading/order, relay members, per-event row counts): all 661 rows, 38 events, relays, places match the source. Three defects fixed in the override backend/data/transcribed/2026/Outdoor/pvcjv27may2026.json (a copy of the parse with only these changes): (1) the file prints no date ('2026  PVC JV Championship Meet at Hampden Academy'), parse date 'Unknown Date'; set to 2026-05-27 from the file name pvcjv27may2026; (2) the source file has a garbled apostrophe in 'Loire O\ufffd\u20ac\u2122roak' (src lines 40, 108, 226 '2) Loire O?roak 9'); written 'Loire O\u2019roak' as in hampden15may2026 (individual rows 100 m 15.46 and 200 m 32.94, relay member in the Girls 4x100 59.26); (3) the garbled name shifted the columns so the two individual rows had grade '-' ; grade 9 restored (source prints 9). No other row changed. School strings map to the right ids (Houlton/GHCA->coop-houlton-ghca, Foxcroft Aca, Sumner Memor, etc.). 10 implausible flags are printed marks; JV meet so slow marks expected. [applied 2026-10-26: school rules in school_catalog_seed (2026-10-26 routine block), continuation-page parser fix, or transcription override, as listed; parser patterns not yet fixed are in the routine report]",
   "date": "2026-10-26",
   "parse_sha": "e96d4e44c1ad08e0",
   "source_sha": "95629a203267de37"
@@ -17939,6 +18235,990 @@
   "notes": "Three Dirigo-indexed high school meets (2019 boys/girls, 2024) have header 'Mt. Blue State Park, Weld,': corrected to Mt. Blue State Park. Dirigo's own course: Dixfield MS meets and 2026 'Dirigo XC Course'.",
   "date": "2026-10-29"
  },
+ "xc_course/distinct/Auburn Middle School | Edward Little XC course": {
+  "verdict": "distinct",
+  "by": "sonnet course review (batch c0, 2026-10-29)",
+  "notes": "Kept apart by header pending a factor comparison after rebuild: headers name Auburn Middle School for KVAC Second Seven/EL meets (2004-07, 2020-21, 2024) and 'Edward Little XC Course' for MileSplit/Lewiston 2024 meets. Auburn MS has its own home course (behind the school). If the rebuilt factors agree within 3.8% they may be one trail system.",
+  "date": "2026-10-29"
+ },
+ "xc_course/distinct/BMHI | John Bapst": {
+  "verdict": "distinct",
+  "by": "sonnet course review (batch c0, 2026-10-29)",
+  "notes": "BMHI hosted the PVC championship 2003-2006 (headers 'at BMHI'); John Bapst's own home meet 9/19/2006 is 'at John Bapst', 2.77 mi (factor 0.925 vs BMHI 1.005).",
+  "date": "2026-10-29"
+ },
+ "xc_course/distinct/Bangor High School | Saxl Park": {
+  "verdict": "distinct",
+  "by": "sonnet course review (batch c0, 2026-10-29)",
+  "notes": "Saxl Park is the Bangor city park used for the PVC championships (index 'Saxl Park, Bangor' 2007-2010, headers say only 'Bangor'); Bangor HS home meets have their own course (labels 2.5-3.1 mi/5k, header 'Bangor HS'). Factors 1.037 vs 1.009 (2.8% apart) and no header ties them; PVC championship is not Bangor HS's home.",
+  "date": "2026-10-29"
+ },
+ "xc_course/distinct/Calais HS XC | Machias XC Course | Narraguagus CC Course": {
+  "verdict": "distinct",
+  "by": "sonnet course review (batch c0, 2026-10-29)",
+  "notes": "Different towns' home courses; pairs came only from visiting teams in common (factor-only).",
+  "date": "2026-10-29"
+ },
+ "xc_course/distinct/Colby College | Quarry Road": {
+  "verdict": "distinct",
+  "by": "sonnet course review (batch c0, 2026-10-29)",
+  "notes": "Colby College (Mayflower Hill campus; also the 2019 State of Maine college meet 'Host: Colby College') is not the Quarry Road trails in Waterville; one 2014 race, header 'Colby College', factor 1.066 vs 1.076 is not evidence.",
+  "date": "2026-10-29"
+ },
+ "xc_course/distinct/Cony High School (Augusta) | UMA (Augusta)": {
+  "verdict": "distinct",
+  "by": "sonnet course review (batch c0, 2026-10-29)",
+  "notes": "Cony-hosted meets (KVAC championship 10/17/2015, Cony Homecoming 2019) print only 'Augusta' in the header; sub5 index says Cony HS. UMA's course is the MVC championship site (headers 'UMA Course'). Factors 1.046 vs 1.024. Headers do not tie them; kept Cony.",
+  "date": "2026-10-29"
+ },
+ "xc_course/distinct/Falmouth | Cape Elizabeth | Kittery | MDI XC course | Merriconeag XC course | Naples": {
+  "verdict": "distinct",
+  "by": "sonnet course review (batch c0, 2026-10-29)",
+  "notes": "Each is a different school's home course; pairs came only from visiting schools in common (factor-only).",
+  "date": "2026-10-29"
+ },
+ "xc_course/distinct/Fort Fairfield | Fort Kent": {
+  "verdict": "distinct",
+  "by": "sonnet course review (batch c0, 2026-10-29)",
+  "notes": "Different towns ~90 miles apart: 2004 Fort Fairfield meet (header 'at Fort Fairfield', 3.1 miles) vs Fort Kent home meets; shared teams only show visiting schools.",
+  "date": "2026-10-29"
+ },
+ "xc_course/distinct/Fort Kent | Washburn | Limestone | Lonesome Pine Trails | MSSM": {
+  "verdict": "distinct",
+  "by": "sonnet course review (batch c0, 2026-10-29)",
+  "notes": "Different towns' home courses; pairs came only from visiting teams in common (factor-only).",
+  "date": "2026-10-29"
+ },
+ "xc_course/distinct/Freeport | Kittery": {
+  "verdict": "distinct",
+  "by": "sonnet course review (batch c1, 2026-10-29)",
+  "notes": "Different towns/schools with no shared header or host evidence; factor agreement alone (3.8% rule) is not proof, so kept apart.",
+  "date": "2026-10-29"
+ },
+ "xc_course/distinct/Freeport | Merriconeag XC course": {
+  "verdict": "distinct",
+  "by": "sonnet course review (batch c1, 2026-10-29)",
+  "notes": "Different towns/schools with no shared header or host evidence; factor agreement alone (3.8% rule) is not proof, so kept apart.",
+  "date": "2026-10-29"
+ },
+ "xc_course/distinct/Freeport | Yarmouth": {
+  "verdict": "distinct",
+  "by": "sonnet course review (batch c1, 2026-10-29)",
+  "notes": "Different towns/schools with no shared header or host evidence; factor agreement alone (3.8% rule) is not proof, so kept apart.",
+  "date": "2026-10-29"
+ },
+ "xc_course/distinct/Fryeburg | Kittery": {
+  "verdict": "distinct",
+  "by": "sonnet course review (batch c1, 2026-10-29)",
+  "notes": "Different towns/schools with no shared header or host evidence; factor agreement alone (3.8% rule) is not proof, so kept apart.",
+  "date": "2026-10-29"
+ },
+ "xc_course/distinct/Fryeburg | MDI XC course": {
+  "verdict": "distinct",
+  "by": "sonnet course review (batch c1, 2026-10-29)",
+  "notes": "Different towns/schools with no shared header or host evidence; factor agreement alone (3.8% rule) is not proof, so kept apart.",
+  "date": "2026-10-29"
+ },
+ "xc_course/distinct/Fryeburg | Sacopee Valley": {
+  "verdict": "distinct",
+  "by": "sonnet course review (batch c1, 2026-10-29)",
+  "notes": "Different towns/schools with no shared header or host evidence; factor agreement alone (3.8% rule) is not proof, so kept apart.",
+  "date": "2026-10-29"
+ },
+ "xc_course/distinct/Fryeburg | Yarmouth": {
+  "verdict": "distinct",
+  "by": "sonnet course review (batch c1, 2026-10-29)",
+  "notes": "Different towns/schools with no shared header or host evidence; factor agreement alone (3.8% rule) is not proof, so kept apart.",
+  "date": "2026-10-29"
+ },
+ "xc_course/distinct/GSA (Blue Hill) | MDI XC course": {
+  "verdict": "distinct",
+  "by": "sonnet course review (batch c1, 2026-10-29)",
+  "notes": "Different towns/schools with no shared header or host evidence; factor agreement alone (3.8% rule) is not proof, so kept apart.",
+  "date": "2026-10-29"
+ },
+ "xc_course/distinct/GSA (Blue Hill) | Orono High School": {
+  "verdict": "distinct",
+  "by": "sonnet course review (batch c1, 2026-10-29)",
+  "notes": "Different towns/schools with no shared header or host evidence; factor agreement alone (3.8% rule) is not proof, so kept apart.",
+  "date": "2026-10-29"
+ },
+ "xc_course/distinct/GSA (Blue Hill) | Sumner": {
+  "verdict": "distinct",
+  "by": "sonnet course review (batch c1, 2026-10-29)",
+  "notes": "Different towns/schools with no shared header or host evidence; factor agreement alone (3.8% rule) is not proof, so kept apart.",
+  "date": "2026-10-29"
+ },
+ "xc_course/distinct/Gorham Middle School XC Course | McAuley (Portland)": {
+  "verdict": "distinct",
+  "by": "sonnet course review (batch c1, 2026-10-29)",
+  "notes": "Different towns/schools with no shared header or host evidence; factor agreement alone (3.8% rule) is not proof, so kept apart.",
+  "date": "2026-10-29"
+ },
+ "xc_course/distinct/Gorham Middle School XC Course | Scarborough Athletic Complex": {
+  "verdict": "distinct",
+  "by": "sonnet course review (batch c1, 2026-10-29)",
+  "notes": "Different towns/schools with no shared header or host evidence; factor agreement alone (3.8% rule) is not proof, so kept apart.",
+  "date": "2026-10-29"
+ },
+ "xc_course/distinct/Gorham Middle School XC Course | Smiling Hill Farm": {
+  "verdict": "distinct",
+  "by": "sonnet course review (batch c1, 2026-10-29)",
+  "notes": "Different towns/schools with no shared header or host evidence; factor agreement alone (3.8% rule) is not proof, so kept apart.",
+  "date": "2026-10-29"
+ },
+ "xc_course/distinct/Gorham XC course @ Narragansett | South Portland": {
+  "verdict": "distinct",
+  "by": "sonnet course review (batch c1, 2026-10-29)",
+  "notes": "Different towns/schools with no shared header or host evidence; factor agreement alone (3.8% rule) is not proof, so kept apart.",
+  "date": "2026-10-29"
+ },
+ "xc_course/distinct/Gorham XC course @ Narragansett | Thornton Academy": {
+  "verdict": "distinct",
+  "by": "sonnet course review (batch c1, 2026-10-29)",
+  "notes": "Different towns/schools with no shared header or host evidence; factor agreement alone (3.8% rule) is not proof, so kept apart.",
+  "date": "2026-10-29"
+ },
+ "xc_course/distinct/Gray New Gloucester MS XC Course | Merriconeag XC course": {
+  "verdict": "distinct",
+  "by": "sonnet course review (batch c1, 2026-10-29)",
+  "notes": "Different towns/schools with no shared header or host evidence; factor agreement alone (3.8% rule) is not proof, so kept apart.",
+  "date": "2026-10-29"
+ },
+ "xc_course/distinct/Gray New Gloucester MS XC Course | Oxford Hills": {
+  "verdict": "distinct",
+  "by": "sonnet course review (batch c1, 2026-10-29)",
+  "notes": "Different towns/schools with no shared header or host evidence; factor agreement alone (3.8% rule) is not proof, so kept apart.",
+  "date": "2026-10-29"
+ },
+ "xc_course/distinct/Gray-New Gloucester | Lost Valley": {
+  "verdict": "distinct",
+  "by": "sonnet course review (batch c1, 2026-10-29)",
+  "notes": "Different places: the file header disagrees with the sub5 index for this meet (corrected in venue_corrections); the two venues are separate courses.",
+  "date": "2026-10-29"
+ },
+ "xc_course/distinct/Greely | Kittery": {
+  "verdict": "distinct",
+  "by": "sonnet course review (batch c1, 2026-10-29)",
+  "notes": "Different towns/schools with no shared header or host evidence; factor agreement alone (3.8% rule) is not proof, so kept apart.",
+  "date": "2026-10-29"
+ },
+ "xc_course/distinct/Gull Crest Field XC Course | Kittery": {
+  "verdict": "distinct",
+  "by": "sonnet course review (batch c1, 2026-10-29)",
+  "notes": "Different towns/schools with no shared header or host evidence; factor agreement alone (3.8% rule) is not proof, so kept apart.",
+  "date": "2026-10-29"
+ },
+ "xc_course/distinct/Gull Crest Field XC Course | Naples": {
+  "verdict": "distinct",
+  "by": "sonnet course review (batch c1, 2026-10-29)",
+  "notes": "Different towns/schools with no shared header or host evidence; factor agreement alone (3.8% rule) is not proof, so kept apart.",
+  "date": "2026-10-29"
+ },
+ "xc_course/distinct/Gull Crest Field XC Course | Sacopee Valley": {
+  "verdict": "distinct",
+  "by": "sonnet course review (batch c1, 2026-10-29)",
+  "notes": "Different towns/schools with no shared header or host evidence; factor agreement alone (3.8% rule) is not proof, so kept apart.",
+  "date": "2026-10-29"
+ },
+ "xc_course/distinct/Gull Crest Field XC Course | Yarmouth": {
+  "verdict": "distinct",
+  "by": "sonnet course review (batch c1, 2026-10-29)",
+  "notes": "Different towns/schools with no shared header or host evidence; factor agreement alone (3.8% rule) is not proof, so kept apart.",
+  "date": "2026-10-29"
+ },
+ "xc_course/distinct/Hall-Dale | Mount Abram": {
+  "verdict": "distinct",
+  "by": "sonnet course review (batch c1, 2026-10-29)",
+  "notes": "Different towns/schools with no shared header or host evidence; factor agreement alone (3.8% rule) is not proof, so kept apart.",
+  "date": "2026-10-29"
+ },
+ "xc_course/distinct/Hampden | Hermon High School": {
+  "verdict": "distinct",
+  "by": "sonnet course review (batch c1, 2026-10-29)",
+  "notes": "Different towns/schools with no shared header or host evidence; factor agreement alone (3.8% rule) is not proof, so kept apart.",
+  "date": "2026-10-29"
+ },
+ "xc_course/distinct/Hampden | John Bapst": {
+  "verdict": "distinct",
+  "by": "sonnet course review (batch c1, 2026-10-29)",
+  "notes": "Different towns/schools with no shared header or host evidence; factor agreement alone (3.8% rule) is not proof, so kept apart.",
+  "date": "2026-10-29"
+ },
+ "xc_course/distinct/Hampden | Schenck": {
+  "verdict": "distinct",
+  "by": "sonnet course review (batch c1, 2026-10-29)",
+  "notes": "Different towns/schools with no shared header or host evidence; factor agreement alone (3.8% rule) is not proof, so kept apart.",
+  "date": "2026-10-29"
+ },
+ "xc_course/distinct/Hampden | Skowhegan": {
+  "verdict": "distinct",
+  "by": "sonnet course review (batch c1, 2026-10-29)",
+  "notes": "Different towns/schools with no shared header or host evidence; factor agreement alone (3.8% rule) is not proof, so kept apart.",
+  "date": "2026-10-29"
+ },
+ "xc_course/distinct/Hermon High School | MCI": {
+  "verdict": "distinct",
+  "by": "sonnet course review (batch c1, 2026-10-29)",
+  "notes": "Different towns/schools with no shared header or host evidence; factor agreement alone (3.8% rule) is not proof, so kept apart.",
+  "date": "2026-10-29"
+ },
+ "xc_course/distinct/Hermon High School | MDI XC course": {
+  "verdict": "distinct",
+  "by": "sonnet course review (batch c1, 2026-10-29)",
+  "notes": "Different towns/schools with no shared header or host evidence; factor agreement alone (3.8% rule) is not proof, so kept apart.",
+  "date": "2026-10-29"
+ },
+ "xc_course/distinct/Hermon High School | MSSM": {
+  "verdict": "distinct",
+  "by": "sonnet course review (batch c1, 2026-10-29)",
+  "notes": "Different towns/schools with no shared header or host evidence; factor agreement alone (3.8% rule) is not proof, so kept apart.",
+  "date": "2026-10-29"
+ },
+ "xc_course/distinct/Hermon High School | Saxl Park": {
+  "verdict": "distinct",
+  "by": "sonnet course review (batch c1, 2026-10-29)",
+  "notes": "Different towns/schools with no shared header or host evidence; factor agreement alone (3.8% rule) is not proof, so kept apart.",
+  "date": "2026-10-29"
+ },
+ "xc_course/distinct/Houlton | Limestone": {
+  "verdict": "distinct",
+  "by": "sonnet course review (batch c1, 2026-10-29)",
+  "notes": "Different towns/schools with no shared header or host evidence; factor agreement alone (3.8% rule) is not proof, so kept apart.",
+  "date": "2026-10-29"
+ },
+ "xc_course/distinct/Houlton | Lonesome Pine Trails": {
+  "verdict": "distinct",
+  "by": "sonnet course review (batch c1, 2026-10-29)",
+  "notes": "Different towns/schools with no shared header or host evidence; factor agreement alone (3.8% rule) is not proof, so kept apart.",
+  "date": "2026-10-29"
+ },
+ "xc_course/distinct/Houlton | MDI XC course": {
+  "verdict": "distinct",
+  "by": "sonnet course review (batch c1, 2026-10-29)",
+  "notes": "Different towns/schools with no shared header or host evidence; factor agreement alone (3.8% rule) is not proof, so kept apart.",
+  "date": "2026-10-29"
+ },
+ "xc_course/distinct/Houlton | MSSM": {
+  "verdict": "distinct",
+  "by": "sonnet course review (batch c1, 2026-10-29)",
+  "notes": "Different towns/schools with no shared header or host evidence; factor agreement alone (3.8% rule) is not proof, so kept apart.",
+  "date": "2026-10-29"
+ },
+ "xc_course/distinct/Hyde School (Bath) | Mt. Ararat": {
+  "verdict": "distinct",
+  "by": "sonnet course review (batch c1, 2026-10-29)",
+  "notes": "Bath and Topsham are different towns and the hosts differ; the only link is similar factors.",
+  "date": "2026-10-29"
+ },
+ "xc_course/distinct/John Bapst | MCI": {
+  "verdict": "distinct",
+  "by": "sonnet course review (batch c1, 2026-10-29)",
+  "notes": "Different towns/schools with no shared header or host evidence; factor agreement alone (3.8% rule) is not proof, so kept apart.",
+  "date": "2026-10-29"
+ },
+ "xc_course/distinct/John Bapst | Mt. Blue": {
+  "verdict": "distinct",
+  "by": "sonnet course review (batch c1, 2026-10-29)",
+  "notes": "Different towns/schools with no shared header or host evidence; factor agreement alone (3.8% rule) is not proof, so kept apart.",
+  "date": "2026-10-29"
+ },
+ "xc_course/distinct/John Bapst | Old Town High School": {
+  "verdict": "distinct",
+  "by": "sonnet course review (batch c1, 2026-10-29)",
+  "notes": "Different towns/schools with no shared header or host evidence; factor agreement alone (3.8% rule) is not proof, so kept apart.",
+  "date": "2026-10-29"
+ },
+ "xc_course/distinct/John Bapst | Quarry Road": {
+  "verdict": "distinct",
+  "by": "sonnet course review (batch c1, 2026-10-29)",
+  "notes": "Different towns/schools with no shared header or host evidence; factor agreement alone (3.8% rule) is not proof, so kept apart.",
+  "date": "2026-10-29"
+ },
+ "xc_course/distinct/John Bapst | Schenck": {
+  "verdict": "distinct",
+  "by": "sonnet course review (batch c1, 2026-10-29)",
+  "notes": "Different towns/schools with no shared header or host evidence; factor agreement alone (3.8% rule) is not proof, so kept apart.",
+  "date": "2026-10-29"
+ },
+ "xc_course/distinct/John Bapst | Skowhegan": {
+  "verdict": "distinct",
+  "by": "sonnet course review (batch c1, 2026-10-29)",
+  "notes": "Different towns/schools with no shared header or host evidence; factor agreement alone (3.8% rule) is not proof, so kept apart.",
+  "date": "2026-10-29"
+ },
+ "xc_course/distinct/John Bapst | Waterville": {
+  "verdict": "distinct",
+  "by": "sonnet course review (batch c1, 2026-10-29)",
+  "notes": "Different towns/schools with no shared header or host evidence; factor agreement alone (3.8% rule) is not proof, so kept apart.",
+  "date": "2026-10-29"
+ },
+ "xc_course/distinct/Kennebunk | Kittery": {
+  "verdict": "distinct",
+  "by": "sonnet course review (batch c1, 2026-10-29)",
+  "notes": "Different towns/schools with no shared header or host evidence; factor agreement alone (3.8% rule) is not proof, so kept apart.",
+  "date": "2026-10-29"
+ },
+ "xc_course/distinct/Kennebunk | MDI XC course": {
+  "verdict": "distinct",
+  "by": "sonnet course review (batch c1, 2026-10-29)",
+  "notes": "Different towns/schools with no shared header or host evidence; factor agreement alone (3.8% rule) is not proof, so kept apart.",
+  "date": "2026-10-29"
+ },
+ "xc_course/distinct/Kennebunk | Maine Girls' Academy": {
+  "verdict": "distinct",
+  "by": "sonnet course review (batch c1, 2026-10-29)",
+  "notes": "Different towns/schools with no shared header or host evidence; factor agreement alone (3.8% rule) is not proof, so kept apart.",
+  "date": "2026-10-29"
+ },
+ "xc_course/distinct/Kennebunk | Sacopee Valley": {
+  "verdict": "distinct",
+  "by": "sonnet course review (batch c1, 2026-10-29)",
+  "notes": "Different towns/schools with no shared header or host evidence; factor agreement alone (3.8% rule) is not proof, so kept apart.",
+  "date": "2026-10-29"
+ },
+ "xc_course/distinct/Kennebunk | Thornton Academy": {
+  "verdict": "distinct",
+  "by": "sonnet course review (batch c1, 2026-10-29)",
+  "notes": "Different towns/schools with no shared header or host evidence; factor agreement alone (3.8% rule) is not proof, so kept apart.",
+  "date": "2026-10-29"
+ },
+ "xc_course/distinct/Kennebunk | Traip Academy": {
+  "verdict": "distinct",
+  "by": "sonnet course review (batch c1, 2026-10-29)",
+  "notes": "Different towns/schools with no shared header or host evidence; factor agreement alone (3.8% rule) is not proof, so kept apart.",
+  "date": "2026-10-29"
+ },
+ "xc_course/distinct/Kennebunk | Wells": {
+  "verdict": "distinct",
+  "by": "sonnet course review (batch c1, 2026-10-29)",
+  "notes": "Different towns/schools with no shared header or host evidence; factor agreement alone (3.8% rule) is not proof, so kept apart.",
+  "date": "2026-10-29"
+ },
+ "xc_course/distinct/Kittery | MDI XC course": {
+  "verdict": "distinct",
+  "by": "sonnet course review (batch c1, 2026-10-29)",
+  "notes": "Different towns/schools with no shared header or host evidence; factor agreement alone (3.8% rule) is not proof, so kept apart.",
+  "date": "2026-10-29"
+ },
+ "xc_course/distinct/Kittery | Noble": {
+  "verdict": "distinct",
+  "by": "sonnet course review (batch c1, 2026-10-29)",
+  "notes": "Different towns/schools with no shared header or host evidence; factor agreement alone (3.8% rule) is not proof, so kept apart.",
+  "date": "2026-10-29"
+ },
+ "xc_course/distinct/Kittery | Pineland Farms": {
+  "verdict": "distinct",
+  "by": "sonnet course review (batch c1, 2026-10-29)",
+  "notes": "Different towns/schools with no shared header or host evidence; factor agreement alone (3.8% rule) is not proof, so kept apart.",
+  "date": "2026-10-29"
+ },
+ "xc_course/distinct/Kittery | Pownal Road Recreation Field XC Course": {
+  "verdict": "distinct",
+  "by": "sonnet course review (batch c1, 2026-10-29)",
+  "notes": "Different towns/schools with no shared header or host evidence; factor agreement alone (3.8% rule) is not proof, so kept apart.",
+  "date": "2026-10-29"
+ },
+ "xc_course/distinct/Kittery | St. Dominic's": {
+  "verdict": "distinct",
+  "by": "sonnet course review (batch c1, 2026-10-29)",
+  "notes": "Different towns/schools with no shared header or host evidence; factor agreement alone (3.8% rule) is not proof, so kept apart.",
+  "date": "2026-10-29"
+ },
+ "xc_course/distinct/Kittery | St. Joseph's College": {
+  "verdict": "distinct",
+  "by": "sonnet course review (batch c1, 2026-10-29)",
+  "notes": "Different towns/schools with no shared header or host evidence; factor agreement alone (3.8% rule) is not proof, so kept apart.",
+  "date": "2026-10-29"
+ },
+ "xc_course/distinct/Kittery | Twin Brook Recreation Area": {
+  "verdict": "distinct",
+  "by": "sonnet course review (batch c1, 2026-10-29)",
+  "notes": "Different towns/schools with no shared header or host evidence; factor agreement alone (3.8% rule) is not proof, so kept apart.",
+  "date": "2026-10-29"
+ },
+ "xc_course/distinct/Kittery | York": {
+  "verdict": "distinct",
+  "by": "sonnet course review (batch c1, 2026-10-29)",
+  "notes": "Different towns/schools with no shared header or host evidence; factor agreement alone (3.8% rule) is not proof, so kept apart.",
+  "date": "2026-10-29"
+ },
+ "xc_course/distinct/Lake Region | Lost Valley": {
+  "verdict": "distinct",
+  "by": "sonnet course review (batch c1, 2026-10-29)",
+  "notes": "Different towns/schools with no shared header or host evidence; factor agreement alone (3.8% rule) is not proof, so kept apart.",
+  "date": "2026-10-29"
+ },
+ "xc_course/distinct/Lake Region | Poland": {
+  "verdict": "distinct",
+  "by": "sonnet course review (batch c1, 2026-10-29)",
+  "notes": "Different towns/schools with no shared header or host evidence; factor agreement alone (3.8% rule) is not proof, so kept apart.",
+  "date": "2026-10-29"
+ },
+ "xc_course/distinct/Leavitt High School | Lewiston": {
+  "verdict": "distinct",
+  "by": "sonnet course review (batch c1, 2026-10-29)",
+  "notes": "Different places: the file header disagrees with the sub5 index for this meet (corrected in venue_corrections); the two venues are separate courses.",
+  "date": "2026-10-29"
+ },
+ "xc_course/distinct/Leavitt High School | Oxford Hills": {
+  "verdict": "distinct",
+  "by": "sonnet course review (batch c1, 2026-10-29)",
+  "notes": "Different towns/schools with no shared header or host evidence; factor agreement alone (3.8% rule) is not proof, so kept apart.",
+  "date": "2026-10-29"
+ },
+ "xc_course/distinct/Lee Academy | Orono High School": {
+  "verdict": "distinct",
+  "by": "sonnet course review (batch c1, 2026-10-29)",
+  "notes": "Different towns/schools with no shared header or host evidence; factor agreement alone (3.8% rule) is not proof, so kept apart.",
+  "date": "2026-10-29"
+ },
+ "xc_course/distinct/Lee Academy | Schenck": {
+  "verdict": "distinct",
+  "by": "sonnet course review (batch c1, 2026-10-29)",
+  "notes": "Different towns/schools with no shared header or host evidence; factor agreement alone (3.8% rule) is not proof, so kept apart.",
+  "date": "2026-10-29"
+ },
+ "xc_course/distinct/Lewiston | Oxford Hills": {
+  "verdict": "distinct",
+  "by": "sonnet course review (batch c1, 2026-10-29)",
+  "notes": "Different towns/schools with no shared header or host evidence; factor agreement alone (3.8% rule) is not proof, so kept apart.",
+  "date": "2026-10-29"
+ },
+ "xc_course/distinct/Limestone | Lonesome Pine Trails": {
+  "verdict": "distinct",
+  "by": "sonnet course review (batch c1, 2026-10-29)",
+  "notes": "Different towns/schools with no shared header or host evidence; factor agreement alone (3.8% rule) is not proof, so kept apart.",
+  "date": "2026-10-29"
+ },
+ "xc_course/distinct/Limestone | MSSM": {
+  "verdict": "distinct",
+  "by": "sonnet course review (batch c1, 2026-10-29)",
+  "notes": "Different towns/schools with no shared header or host evidence; factor agreement alone (3.8% rule) is not proof, so kept apart.",
+  "date": "2026-10-29"
+ },
+ "xc_course/distinct/Limestone | Madawaska": {
+  "verdict": "distinct",
+  "by": "sonnet course review (batch c1, 2026-10-29)",
+  "notes": "Different towns/schools with no shared header or host evidence; factor agreement alone (3.8% rule) is not proof, so kept apart.",
+  "date": "2026-10-29"
+ },
+ "xc_course/distinct/Limestone | Washburn": {
+  "verdict": "distinct",
+  "by": "sonnet course review (batch c1, 2026-10-29)",
+  "notes": "Different towns/schools with no shared header or host evidence; factor agreement alone (3.8% rule) is not proof, so kept apart.",
+  "date": "2026-10-29"
+ },
+ "xc_course/distinct/Lincoln Academy | Mattanawcook Academy": {
+  "verdict": "distinct",
+  "by": "sonnet course review (batch c1, 2026-10-29)",
+  "notes": "Different places: the file header disagrees with the sub5 index for this meet (corrected in venue_corrections); the two venues are separate courses.",
+  "date": "2026-10-29"
+ },
+ "xc_course/distinct/Lonesome Pine Trails | Madawaska": {
+  "verdict": "distinct",
+  "by": "sonnet course review (batch c1, 2026-10-29)",
+  "notes": "Different towns/schools with no shared header or host evidence; factor agreement alone (3.8% rule) is not proof, so kept apart.",
+  "date": "2026-10-29"
+ },
+ "xc_course/distinct/Lost Valley | Minot Community Park": {
+  "verdict": "distinct",
+  "by": "sonnet course review (batch c1, 2026-10-29)",
+  "notes": "Different towns/schools with no shared header or host evidence; factor agreement alone (3.8% rule) is not proof, so kept apart.",
+  "date": "2026-10-29"
+ },
+ "xc_course/distinct/Lost Valley | Poland": {
+  "verdict": "distinct",
+  "by": "sonnet course review (batch c1, 2026-10-29)",
+  "notes": "Different towns/schools with no shared header or host evidence; factor agreement alone (3.8% rule) is not proof, so kept apart.",
+  "date": "2026-10-29"
+ },
+ "xc_course/distinct/Lost Valley | Sacopee Valley": {
+  "verdict": "distinct",
+  "by": "sonnet course review (batch c1, 2026-10-29)",
+  "notes": "Different towns/schools with no shared header or host evidence; factor agreement alone (3.8% rule) is not proof, so kept apart.",
+  "date": "2026-10-29"
+ },
+ "xc_course/distinct/Lost Valley | Waynflete": {
+  "verdict": "distinct",
+  "by": "sonnet course review (batch c1, 2026-10-29)",
+  "notes": "Different towns/schools with no shared header or host evidence; factor agreement alone (3.8% rule) is not proof, so kept apart.",
+  "date": "2026-10-29"
+ },
+ "xc_course/distinct/Lost Valley | Yarmouth": {
+  "verdict": "distinct",
+  "by": "sonnet course review (batch c1, 2026-10-29)",
+  "notes": "Different towns/schools with no shared header or host evidence; factor agreement alone (3.8% rule) is not proof, so kept apart.",
+  "date": "2026-10-29"
+ },
+ "xc_course/distinct/MCI | Schenck": {
+  "verdict": "distinct",
+  "by": "sonnet course review (batch c2, 2026-10-31)",
+  "notes": "Pittsfield vs East Millinocket; factor-only, Bangor shared.",
+  "date": "2026-10-31"
+ },
+ "xc_course/distinct/MDI XC course | MSSM": {
+  "verdict": "distinct",
+  "by": "sonnet course review (batch c2, 2026-10-31)",
+  "notes": "Mount Desert Island vs Limestone; factor-only, Caribou shared.",
+  "date": "2026-10-31"
+ },
+ "xc_course/distinct/MDI XC course | Old Town High School": {
+  "verdict": "distinct",
+  "by": "sonnet course review (batch c2, 2026-10-31)",
+  "notes": "Different hosts and towns; factor-only.",
+  "date": "2026-10-31"
+ },
+ "xc_course/distinct/MDI XC course | Pownal Road Recreation Field": {
+  "verdict": "distinct",
+  "by": "sonnet course review (batch c2, 2026-10-31)",
+  "notes": "Bar Harbor vs Freeport; factor-only.",
+  "date": "2026-10-31"
+ },
+ "xc_course/distinct/MDI XC course | Saxl Park": {
+  "verdict": "distinct",
+  "by": "sonnet course review (batch c2, 2026-10-31)",
+  "notes": "Bar Harbor vs Bangor; factor-only.",
+  "date": "2026-10-31"
+ },
+ "xc_course/distinct/MDI XC course | St. Joseph's College": {
+  "verdict": "distinct",
+  "by": "sonnet course review (batch c2, 2026-10-31)",
+  "notes": "Bar Harbor vs Standish; factor-only.",
+  "date": "2026-10-31"
+ },
+ "xc_course/distinct/MDI XC course | Traip Academy": {
+  "verdict": "distinct",
+  "by": "sonnet course review (batch c2, 2026-10-31)",
+  "notes": "Bar Harbor vs Kittery; factor-only.",
+  "date": "2026-10-31"
+ },
+ "xc_course/distinct/MDI XC course | UMPI": {
+  "verdict": "distinct",
+  "by": "sonnet course review (batch c2, 2026-10-31)",
+  "notes": "Bar Harbor vs Presque Isle; factor-only.",
+  "date": "2026-10-31"
+ },
+ "xc_course/distinct/MDI XC course | York": {
+  "verdict": "distinct",
+  "by": "sonnet course review (batch c2, 2026-10-31)",
+  "notes": "Bar Harbor vs York; factor-only.",
+  "date": "2026-10-31"
+ },
+ "xc_course/distinct/MSSM | Old Town High School": {
+  "verdict": "distinct",
+  "by": "sonnet course review (batch c2, 2026-10-31)",
+  "notes": "Limestone vs Old Town; factor-only.",
+  "date": "2026-10-31"
+ },
+ "xc_course/distinct/MSSM | Saxl Park": {
+  "verdict": "distinct",
+  "by": "sonnet course review (batch c2, 2026-10-31)",
+  "notes": "Limestone vs Bangor; factor-only.",
+  "date": "2026-10-31"
+ },
+ "xc_course/distinct/MSSM | UMPI": {
+  "verdict": "distinct",
+  "by": "sonnet course review (batch c2, 2026-10-31)",
+  "notes": "Limestone (2018 Aroostook League championship header 'MSSM') vs Presque Isle; factor-only.",
+  "date": "2026-10-31"
+ },
+ "xc_course/distinct/MSSM | Washburn": {
+  "verdict": "distinct",
+  "by": "sonnet course review (batch c2, 2026-10-31)",
+  "notes": "Limestone vs Washburn; factor-only.",
+  "date": "2026-10-31"
+ },
+ "xc_course/distinct/Madawaska | MSSM": {
+  "verdict": "distinct",
+  "by": "sonnet course review (batch c1, 2026-10-29)",
+  "notes": "Different towns/schools with no shared header or host evidence; factor agreement alone (3.8% rule) is not proof, so kept apart.",
+  "date": "2026-10-29"
+ },
+ "xc_course/distinct/Madison | Mount Abram": {
+  "verdict": "distinct",
+  "by": "sonnet course review (batch c1, 2026-10-29)",
+  "notes": "Different towns/schools with no shared header or host evidence; factor agreement alone (3.8% rule) is not proof, so kept apart.",
+  "date": "2026-10-29"
+ },
+ "xc_course/distinct/Madison | Telstar": {
+  "verdict": "distinct",
+  "by": "sonnet course review (batch c1, 2026-10-29)",
+  "notes": "Different towns/schools with no shared header or host evidence; factor agreement alone (3.8% rule) is not proof, so kept apart.",
+  "date": "2026-10-29"
+ },
+ "xc_course/distinct/Maine Girls' Academy | Marshwood": {
+  "verdict": "distinct",
+  "by": "sonnet course review (batch c1, 2026-10-29)",
+  "notes": "Different towns/schools with no shared header or host evidence; factor agreement alone (3.8% rule) is not proof, so kept apart.",
+  "date": "2026-10-29"
+ },
+ "xc_course/distinct/Maine Girls' Academy | Massabesic": {
+  "verdict": "distinct",
+  "by": "sonnet course review (batch c1, 2026-10-29)",
+  "notes": "Different towns/schools with no shared header or host evidence; factor agreement alone (3.8% rule) is not proof, so kept apart.",
+  "date": "2026-10-29"
+ },
+ "xc_course/distinct/Maine Girls' Academy | McAuley (Portland)": {
+  "verdict": "distinct",
+  "by": "sonnet course review (batch c1, 2026-10-29)",
+  "notes": "Different towns/schools with no shared header or host evidence; factor agreement alone (3.8% rule) is not proof, so kept apart.",
+  "date": "2026-10-29"
+ },
+ "xc_course/distinct/Maine Girls' Academy | Sacopee Valley": {
+  "verdict": "distinct",
+  "by": "sonnet course review (batch c1, 2026-10-29)",
+  "notes": "Different towns/schools with no shared header or host evidence; factor agreement alone (3.8% rule) is not proof, so kept apart.",
+  "date": "2026-10-29"
+ },
+ "xc_course/distinct/Maine Girls' Academy | Sanford": {
+  "verdict": "distinct",
+  "by": "sonnet course review (batch c1, 2026-10-29)",
+  "notes": "Different towns/schools with no shared header or host evidence; factor agreement alone (3.8% rule) is not proof, so kept apart.",
+  "date": "2026-10-29"
+ },
+ "xc_course/distinct/Maine Girls' Academy | Sunset Ridge Golf Course": {
+  "verdict": "distinct",
+  "by": "sonnet course review (batch c1, 2026-10-29)",
+  "notes": "Different towns/schools with no shared header or host evidence; factor agreement alone (3.8% rule) is not proof, so kept apart.",
+  "date": "2026-10-29"
+ },
+ "xc_course/distinct/Maine Girls' Academy | Thornton Academy": {
+  "verdict": "distinct",
+  "by": "sonnet course review (batch c1, 2026-10-29)",
+  "notes": "Different towns/schools with no shared header or host evidence; factor agreement alone (3.8% rule) is not proof, so kept apart.",
+  "date": "2026-10-29"
+ },
+ "xc_course/distinct/Maine Girls' Academy | Westbrook": {
+  "verdict": "distinct",
+  "by": "sonnet course review (batch c1, 2026-10-29)",
+  "notes": "Different towns/schools with no shared header or host evidence; factor agreement alone (3.8% rule) is not proof, so kept apart.",
+  "date": "2026-10-29"
+ },
+ "xc_course/distinct/Maine Girls' Academy | Windham": {
+  "verdict": "distinct",
+  "by": "sonnet course review (batch c1, 2026-10-29)",
+  "notes": "Different towns/schools with no shared header or host evidence; factor agreement alone (3.8% rule) is not proof, so kept apart.",
+  "date": "2026-10-29"
+ },
+ "xc_course/distinct/Maranacook | Medomak Valley High School": {
+  "verdict": "distinct",
+  "by": "sonnet course review (batch c2, 2026-10-31)",
+  "notes": "Readfield vs Waldoboro; factor-only, Lincoln Academy shared.",
+  "date": "2026-10-31"
+ },
+ "xc_course/distinct/Marshwood | Sunset Ridge Golf Course": {
+  "verdict": "distinct",
+  "by": "sonnet course review (batch c2, 2026-10-31)",
+  "notes": "Marshwood is Vaughan Woods / Great Works School grounds in South Berwick; Sunset Ridge is Westbrook's home course (2016-17 headers). Factor-only pair.",
+  "date": "2026-10-31"
+ },
+ "xc_course/distinct/Massabesic | Massabesic MS XC Course": {
+  "verdict": "distinct",
+  "by": "sonnet course review (batch c2, 2026-10-31)",
+  "notes": "Massabesic HS is at 88 West Road, Waterboro; the middle school is at 134 Old Alfred Road, East Waterboro, about 3 miles apart (RSU 57 / Wikipedia 'Massabesic High School'). The one HS race on the MS course (Sanford-Marshwood-Noble@Massabesic 2026, factor 1.06 vs 1.05) is not enough to call it the HS loop.",
+  "date": "2026-10-31"
+ },
+ "xc_course/distinct/Massabesic | Sunset Ridge Golf Course": {
+  "verdict": "distinct",
+  "by": "sonnet course review (batch c2, 2026-10-31)",
+  "notes": "Waterboro school grounds vs Westbrook's golf-course home meet; only a factor match.",
+  "date": "2026-10-31"
+ },
+ "xc_course/distinct/Medomak Valley High School | Quarry Road": {
+  "verdict": "distinct",
+  "by": "sonnet course review (batch c2, 2026-10-31)",
+  "notes": "Waldoboro vs Waterville; factor-only.",
+  "date": "2026-10-31"
+ },
+ "xc_course/distinct/Merriconeag XC course | Mt. Ararat (Topsham)": {
+  "verdict": "distinct",
+  "by": "sonnet course review (batch c2, 2026-10-31)",
+  "notes": "Merriconeag Waldorf grounds, Freeport ME (MileSplit 2011 'Merriconeag XC course, Freeport, ME') vs Topsham; factor-only.",
+  "date": "2026-10-31"
+ },
+ "xc_course/distinct/Merriconeag XC course | Oxford Hills": {
+  "verdict": "distinct",
+  "by": "sonnet course review (batch c2, 2026-10-31)",
+  "notes": "Freeport vs Roberts Farm, Norway; factor-only.",
+  "date": "2026-10-31"
+ },
+ "xc_course/distinct/Merriconeag XC course | Pineland Farms": {
+  "verdict": "distinct",
+  "by": "sonnet course review (batch c2, 2026-10-31)",
+  "notes": "Merriconeag hosted at its Freeport school grounds in 2010, 2011 and 2021 and at Pineland Farms (MileSplit 'Pineland Farms') 2012-2020; those are different places, no evidence of the same loop.",
+  "date": "2026-10-31"
+ },
+ "xc_course/distinct/Merriconeag XC course | Twin Brook Recreation Area": {
+  "verdict": "distinct",
+  "by": "sonnet course review (batch c2, 2026-10-31)",
+  "notes": "Freeport vs Cumberland; factor-only.",
+  "date": "2026-10-31"
+ },
+ "xc_course/distinct/Merriconeag XC course | York": {
+  "verdict": "distinct",
+  "by": "sonnet course review (batch c2, 2026-10-31)",
+  "notes": "Freeport vs York; factor-only.",
+  "date": "2026-10-31"
+ },
+ "xc_course/distinct/Minot Community Park (now Poland) | Sacopee Valley": {
+  "verdict": "distinct",
+  "by": "sonnet course review (batch c2, 2026-10-31)",
+  "notes": "Minot is Poland's home course; Sacopee Valley is Hiram. Factor-only.",
+  "date": "2026-10-31"
+ },
+ "xc_course/distinct/Minot Community Park (now Poland) | St. Dominic's": {
+  "verdict": "distinct",
+  "by": "sonnet course review (batch c2, 2026-10-31)",
+  "notes": "Factor-only; different host schools (Poland vs Auburn).",
+  "date": "2026-10-31"
+ },
+ "xc_course/distinct/Minot Community Park (now Poland) | Yarmouth": {
+  "verdict": "distinct",
+  "by": "sonnet course review (batch c2, 2026-10-31)",
+  "notes": "Factor-only; Yarmouth's course is Pratt's Brook Park (2008 header).",
+  "date": "2026-10-31"
+ },
+ "xc_course/distinct/Monmouth | Mount Abram": {
+  "verdict": "distinct",
+  "by": "sonnet course review (batch c2, 2026-10-31)",
+  "notes": "Monmouth Academy grounds vs Salem Township (Mt. Abram); factor-only.",
+  "date": "2026-10-31"
+ },
+ "xc_course/distinct/Mount Abram | Mt. Blue State Park": {
+  "verdict": "distinct",
+  "by": "sonnet course review (batch c2, 2026-10-31)",
+  "notes": "Salem (Mt. Abram HS) vs Weld (Mt. Blue State Park, Dirigo's home); factor-only.",
+  "date": "2026-10-31"
+ },
+ "xc_course/distinct/Mountain View School | Washington Academy": {
+  "verdict": "distinct",
+  "by": "sonnet course review (batch c2, 2026-10-31)",
+  "notes": "Mountain View School on Route 200 in Sullivan (Seacoast Invitational 2023-2025, milesplit meet venue) vs East Machias; factor-only. Also kept apart from Sumner (East Sullivan): earlier Seacoast Invitationals were at Sumner HS, and no source says the new site is the same loop.",
+  "date": "2026-10-31"
+ },
+ "xc_course/distinct/Mt A XC - Highland Green GC | Mt. Blue": {
+  "verdict": "distinct",
+  "by": "sonnet course review (batch c2, 2026-10-31)",
+  "notes": "Highland Green GC (Topsham, already merged into Mt. Ararat in batch 1) vs Farmington; factor-only.",
+  "date": "2026-10-31"
+ },
+ "xc_course/distinct/Mt A XC - Highland Green GC | Oxford Hills": {
+  "verdict": "distinct",
+  "by": "sonnet course review (batch c2, 2026-10-31)",
+  "notes": "Topsham vs Norway; factor-only.",
+  "date": "2026-10-31"
+ },
+ "xc_course/distinct/Mt. Ararat (Topsham) | Oxford Hills": {
+  "verdict": "distinct",
+  "by": "sonnet course review (batch c2, 2026-10-31)",
+  "notes": "Topsham vs Roberts Farm, Norway; factor-only.",
+  "date": "2026-10-31"
+ },
+ "xc_course/distinct/Mt. Blue | Mt. Blue State Park": {
+  "verdict": "distinct",
+  "by": "sonnet course review (batch c2, 2026-10-31)",
+  "notes": "Farmington school grounds vs Weld state park; factors 1.097 vs 1.02, already kept apart.",
+  "date": "2026-10-31"
+ },
+ "xc_course/distinct/Naples (now Lake Region) | Sacopee Valley": {
+  "verdict": "distinct",
+  "by": "sonnet course review (batch c2, 2026-10-31)",
+  "notes": "Naples is Lake Region's home; Sacopee Valley is Hiram. Factor-only.",
+  "date": "2026-10-31"
+ },
+ "xc_course/distinct/Naples (now Lake Region) | Yarmouth": {
+  "verdict": "distinct",
+  "by": "sonnet course review (batch c2, 2026-10-31)",
+  "notes": "Factor-only.",
+  "date": "2026-10-31"
+ },
+ "xc_course/distinct/Naples (now Lake Region) | York": {
+  "verdict": "distinct",
+  "by": "sonnet course review (batch c2, 2026-10-31)",
+  "notes": "Factor-only.",
+  "date": "2026-10-31"
+ },
+ "xc_course/distinct/Narragansett School (now Gorham) | Sanford": {
+  "verdict": "distinct",
+  "by": "sonnet course review (batch c2, 2026-10-31)",
+  "notes": "Gorham vs Sanford; factor-only.",
+  "date": "2026-10-31"
+ },
+ "xc_course/distinct/Narragansett School (now Gorham) | Westbrook": {
+  "verdict": "distinct",
+  "by": "sonnet course review (batch c2, 2026-10-31)",
+  "notes": "Gorham vs Westbrook; factor-only.",
+  "date": "2026-10-31"
+ },
+ "xc_course/distinct/Narragansett School (now Gorham) | Windham": {
+  "verdict": "distinct",
+  "by": "sonnet course review (batch c2, 2026-10-31)",
+  "notes": "Gorham vs Windham; factor-only.",
+  "date": "2026-10-31"
+ },
+ "xc_course/distinct/OOB | OOB MS XC Course": {
+  "verdict": "distinct",
+  "by": "sonnet course review (batch c2, 2026-10-31)",
+  "notes": "Old Orchard Beach HS is at 40 E. Emerson Cummings Blvd; Loranger Memorial School at 148 Saco Ave (RSU 23). No evidence the two loops are the same, although MileSplit put the 2025 HS meet on the MS course name.",
+  "date": "2026-10-31"
+ },
+ "xc_course/distinct/OOB | Wells": {
+  "verdict": "distinct",
+  "by": "sonnet course review (batch c2, 2026-10-31)",
+  "notes": "Different towns and hosts; only a factor match.",
+  "date": "2026-10-31"
+ },
+ "xc_course/distinct/Orono High School | Schenck": {
+  "verdict": "distinct",
+  "by": "sonnet course review (batch c2, 2026-10-31)",
+  "notes": "Orono vs East Millinocket; factor-only.",
+  "date": "2026-10-31"
+ },
+ "xc_course/distinct/Orono High School | Searsport": {
+  "verdict": "distinct",
+  "by": "sonnet course review (batch c2, 2026-10-31)",
+  "notes": "Orono vs Searsport; factor-only.",
+  "date": "2026-10-31"
+ },
+ "xc_course/distinct/Oxford Hills | Quarry Road": {
+  "verdict": "distinct",
+  "by": "sonnet course review (batch c2, 2026-10-31)",
+  "notes": "Roberts Farm, Norway vs Quarry Road, Waterville; factor-only.",
+  "date": "2026-10-31"
+ },
+ "xc_course/distinct/Pownal Road Recreation Field | Royal River Park": {
+  "verdict": "distinct",
+  "by": "sonnet course review (batch c3, 2026-10-31)",
+  "notes": "Pownal Road is Freeport's course; Royal River Park is NYA's.",
+  "date": "2026-10-31"
+ },
+ "xc_course/distinct/Pownal Road Recreation Field | Yarmouth": {
+  "verdict": "distinct",
+  "by": "sonnet course review (batch c3, 2026-10-31)",
+  "notes": "Freeport vs Yarmouth home courses.",
+  "date": "2026-10-31"
+ },
+ "xc_course/distinct/Royal River Park (now NYA) | Waynflete": {
+  "verdict": "distinct",
+  "by": "sonnet course review (batch c2, 2026-10-31)",
+  "notes": "NYA's home loop at Royal River Park vs Waynflete's own course; factor-only.",
+  "date": "2026-10-31"
+ },
+ "xc_course/distinct/Royal River Park (now NYA) | Yarmouth": {
+  "verdict": "distinct",
+  "by": "sonnet course review (batch c2, 2026-10-31)",
+  "notes": "Yarmouth HS's home meet is at Pratt's Brook Park, Yarmouth (sub5 2008/XC/Yarmouth_XC_Girls 'Location: Pratt's Brook Park'), not Royal River Park.",
+  "date": "2026-10-31"
+ },
+ "xc_course/distinct/Royal River Park | Waynflete": {
+  "verdict": "distinct",
+  "by": "sonnet course review (batch c3, 2026-10-31)",
+  "notes": "Waynflete home meets are at Smiling Hill (2020 header); Royal River is NYA's.",
+  "date": "2026-10-31"
+ },
+ "xc_course/distinct/Royal River Park | Yarmouth": {
+  "verdict": "distinct",
+  "by": "sonnet course review (batch c3, 2026-10-31)",
+  "notes": "Royal River Park is NYA's home ('Meet hosted by NYA @ Royal River Park', 2011); Yarmouth HS meets are 'Pratts Brook Park, Yarmouth' (2013, 2016, 2019).",
+  "date": "2026-10-31"
+ },
+ "xc_course/distinct/Sacopee Valley | St. Joseph's College": {
+  "verdict": "distinct",
+  "by": "sonnet course review (batch c3, 2026-10-31)",
+  "notes": "Hiram vs Windham/Standish; factor-only pair.",
+  "date": "2026-10-31"
+ },
+ "xc_course/distinct/Sacopee Valley | Thornton Academy": {
+  "verdict": "distinct",
+  "by": "sonnet course review (batch c3, 2026-10-31)",
+  "notes": "Different schools' home courses.",
+  "date": "2026-10-31"
+ },
+ "xc_course/distinct/Sacopee Valley | Waynflete": {
+  "verdict": "distinct",
+  "by": "sonnet course review (batch c3, 2026-10-31)",
+  "notes": "Different places.",
+  "date": "2026-10-31"
+ },
+ "xc_course/distinct/Sacopee Valley | Yarmouth": {
+  "verdict": "distinct",
+  "by": "sonnet course review (batch c3, 2026-10-31)",
+  "notes": "Hiram vs Pratts Brook, Yarmouth.",
+  "date": "2026-10-31"
+ },
+ "xc_course/distinct/Sanford | Sunset Ridge Golf Course": {
+  "verdict": "distinct",
+  "by": "sonnet course review (batch c3, 2026-10-31)",
+  "notes": "Sanford HS vs a Westbrook golf course.",
+  "date": "2026-10-31"
+ },
+ "xc_course/distinct/Scarborough Athletic Complex | Smiling Hill Farm": {
+  "verdict": "distinct",
+  "by": "sonnet course review (batch c3, 2026-10-31)",
+  "notes": "Headers name each separately (Athletic Complex 2020, 2025, 2026).",
+  "date": "2026-10-31"
+ },
+ "xc_course/distinct/Schenck | Skowhegan": {
+  "verdict": "distinct",
+  "by": "sonnet course review (batch c3, 2026-10-31)",
+  "notes": "East Millinocket vs Skowhegan.",
+  "date": "2026-10-31"
+ },
+ "xc_course/distinct/Searsport | Sumner": {
+  "verdict": "distinct",
+  "by": "sonnet course review (batch c3, 2026-10-31)",
+  "notes": "Different towns; shared only George Stevens runners.",
+  "date": "2026-10-31"
+ },
+ "xc_course/distinct/Searsport | Washington Academy": {
+  "verdict": "distinct",
+  "by": "sonnet course review (batch c3, 2026-10-31)",
+  "notes": "Different towns.",
+  "date": "2026-10-31"
+ },
+ "xc_course/distinct/St. Dominic's | Waynflete": {
+  "verdict": "distinct",
+  "by": "sonnet course review (batch c3, 2026-10-31)",
+  "notes": "Auburn vs Portland-area Smiling Hill.",
+  "date": "2026-10-31"
+ },
+ "xc_course/distinct/Sumner | Washington Academy": {
+  "verdict": "distinct",
+  "by": "sonnet course review (batch c3, 2026-10-31)",
+  "notes": "Sullivan vs East Machias.",
+  "date": "2026-10-31"
+ },
+ "xc_course/distinct/Sunset Ridge Golf Course | Westbrook": {
+  "verdict": "distinct",
+  "by": "sonnet course review (batch c3, 2026-10-31)",
+  "notes": "No evidence the Westbrook MS course is the golf course.",
+  "date": "2026-10-31"
+ },
+ "xc_course/distinct/Thornton Academy | Westbrook": {
+  "verdict": "distinct",
+  "by": "sonnet course review (batch c3, 2026-10-31)",
+  "notes": "Different schools.",
+  "date": "2026-10-31"
+ },
+ "xc_course/distinct/Traip Academy | Wells": {
+  "verdict": "distinct",
+  "by": "sonnet course review (batch c3, 2026-10-31)",
+  "notes": "Fort Foster, Kittery vs Wells HS.",
+  "date": "2026-10-31"
+ },
+ "xc_course/distinct/Traip Academy | York": {
+  "verdict": "distinct",
+  "by": "sonnet course review (batch c3, 2026-10-31)",
+  "notes": "Fort Foster vs York HS course.",
+  "date": "2026-10-31"
+ },
+ "xc_course/distinct/Wells | York": {
+  "verdict": "distinct",
+  "by": "sonnet course review (batch c3, 2026-10-31)",
+  "notes": "Different home courses.",
+  "date": "2026-10-31"
+ },
  "xc_course/east corinth": {
   "verdict": "decided",
   "by": "sonnet course review (batch c0, 2026-10-29)",
@@ -18009,60 +19289,6 @@
   "verdict": "decided",
   "by": "sonnet course review (batch c0, 2026-10-29)",
   "notes": "Foxcroft eras from labels: 2003-04 2.9 mi/5000 m, 2005-07 2.5 mi (2007 header 'Short Course Meet'), 2008-11 2.75 mi, 2012+ 5K: changes 2005, 2008 added to the existing 2012. Hermon, John Bapst, Old Town, Saxl pairs factor-only, kept apart.",
-  "date": "2026-10-29"
- },
- "xc_course/distinct/Bangor High School | Saxl Park": {
-  "verdict": "distinct",
-  "by": "sonnet course review (batch c0, 2026-10-29)",
-  "notes": "Saxl Park is the Bangor city park used for the PVC championships (index 'Saxl Park, Bangor' 2007-2010, headers say only 'Bangor'); Bangor HS home meets have their own course (labels 2.5-3.1 mi/5k, header 'Bangor HS'). Factors 1.037 vs 1.009 (2.8% apart) and no header ties them; PVC championship is not Bangor HS's home.",
-  "date": "2026-10-29"
- },
- "xc_course/distinct/BMHI | John Bapst": {
-  "verdict": "distinct",
-  "by": "sonnet course review (batch c0, 2026-10-29)",
-  "notes": "BMHI hosted the PVC championship 2003-2006 (headers 'at BMHI'); John Bapst's own home meet 9/19/2006 is 'at John Bapst', 2.77 mi (factor 0.925 vs BMHI 1.005).",
-  "date": "2026-10-29"
- },
- "xc_course/distinct/Colby College | Quarry Road": {
-  "verdict": "distinct",
-  "by": "sonnet course review (batch c0, 2026-10-29)",
-  "notes": "Colby College (Mayflower Hill campus; also the 2019 State of Maine college meet 'Host: Colby College') is not the Quarry Road trails in Waterville; one 2014 race, header 'Colby College', factor 1.066 vs 1.076 is not evidence.",
-  "date": "2026-10-29"
- },
- "xc_course/distinct/Cony High School (Augusta) | UMA (Augusta)": {
-  "verdict": "distinct",
-  "by": "sonnet course review (batch c0, 2026-10-29)",
-  "notes": "Cony-hosted meets (KVAC championship 10/17/2015, Cony Homecoming 2019) print only 'Augusta' in the header; sub5 index says Cony HS. UMA's course is the MVC championship site (headers 'UMA Course'). Factors 1.046 vs 1.024. Headers do not tie them; kept Cony.",
-  "date": "2026-10-29"
- },
- "xc_course/distinct/Fort Fairfield | Fort Kent": {
-  "verdict": "distinct",
-  "by": "sonnet course review (batch c0, 2026-10-29)",
-  "notes": "Different towns ~90 miles apart: 2004 Fort Fairfield meet (header 'at Fort Fairfield', 3.1 miles) vs Fort Kent home meets; shared teams only show visiting schools.",
-  "date": "2026-10-29"
- },
- "xc_course/distinct/Fort Kent | Washburn | Limestone | Lonesome Pine Trails | MSSM": {
-  "verdict": "distinct",
-  "by": "sonnet course review (batch c0, 2026-10-29)",
-  "notes": "Different towns' home courses; pairs came only from visiting teams in common (factor-only).",
-  "date": "2026-10-29"
- },
- "xc_course/distinct/Calais HS XC | Machias XC Course | Narraguagus CC Course": {
-  "verdict": "distinct",
-  "by": "sonnet course review (batch c0, 2026-10-29)",
-  "notes": "Different towns' home courses; pairs came only from visiting teams in common (factor-only).",
-  "date": "2026-10-29"
- },
- "xc_course/distinct/Falmouth | Cape Elizabeth | Kittery | MDI XC course | Merriconeag XC course | Naples": {
-  "verdict": "distinct",
-  "by": "sonnet course review (batch c0, 2026-10-29)",
-  "notes": "Each is a different school's home course; pairs came only from visiting schools in common (factor-only).",
-  "date": "2026-10-29"
- },
- "xc_course/distinct/Auburn Middle School | Edward Little XC course": {
-  "verdict": "distinct",
-  "by": "sonnet course review (batch c0, 2026-10-29)",
-  "notes": "Kept apart by header pending a factor comparison after rebuild: headers name Auburn Middle School for KVAC Second Seven/EL meets (2004-07, 2020-21, 2024) and 'Edward Little XC Course' for MileSplit/Lewiston 2024 meets. Auburn MS has its own home course (behind the school). If the rebuilt factors agree within 3.8% they may be one trail system.",
   "date": "2026-10-29"
  },
  "xc_course/freeport": {
@@ -18275,540 +19501,6 @@
   "notes": "Maine Girls' Academy XC Meet, Portland 2017: header gives only the city, no field; no evidence for any of its nine factor-only pairs, kept apart.",
   "date": "2026-10-29"
  },
- "xc_course/distinct/Freeport | Kittery": {
-  "verdict": "distinct",
-  "by": "sonnet course review (batch c1, 2026-10-29)",
-  "notes": "Different towns/schools with no shared header or host evidence; factor agreement alone (3.8% rule) is not proof, so kept apart.",
-  "date": "2026-10-29"
- },
- "xc_course/distinct/Freeport | Merriconeag XC course": {
-  "verdict": "distinct",
-  "by": "sonnet course review (batch c1, 2026-10-29)",
-  "notes": "Different towns/schools with no shared header or host evidence; factor agreement alone (3.8% rule) is not proof, so kept apart.",
-  "date": "2026-10-29"
- },
- "xc_course/distinct/Freeport | Yarmouth": {
-  "verdict": "distinct",
-  "by": "sonnet course review (batch c1, 2026-10-29)",
-  "notes": "Different towns/schools with no shared header or host evidence; factor agreement alone (3.8% rule) is not proof, so kept apart.",
-  "date": "2026-10-29"
- },
- "xc_course/distinct/Fryeburg | Kittery": {
-  "verdict": "distinct",
-  "by": "sonnet course review (batch c1, 2026-10-29)",
-  "notes": "Different towns/schools with no shared header or host evidence; factor agreement alone (3.8% rule) is not proof, so kept apart.",
-  "date": "2026-10-29"
- },
- "xc_course/distinct/Fryeburg | MDI XC course": {
-  "verdict": "distinct",
-  "by": "sonnet course review (batch c1, 2026-10-29)",
-  "notes": "Different towns/schools with no shared header or host evidence; factor agreement alone (3.8% rule) is not proof, so kept apart.",
-  "date": "2026-10-29"
- },
- "xc_course/distinct/Fryeburg | Sacopee Valley": {
-  "verdict": "distinct",
-  "by": "sonnet course review (batch c1, 2026-10-29)",
-  "notes": "Different towns/schools with no shared header or host evidence; factor agreement alone (3.8% rule) is not proof, so kept apart.",
-  "date": "2026-10-29"
- },
- "xc_course/distinct/Fryeburg | Yarmouth": {
-  "verdict": "distinct",
-  "by": "sonnet course review (batch c1, 2026-10-29)",
-  "notes": "Different towns/schools with no shared header or host evidence; factor agreement alone (3.8% rule) is not proof, so kept apart.",
-  "date": "2026-10-29"
- },
- "xc_course/distinct/Gorham Middle School XC Course | McAuley (Portland)": {
-  "verdict": "distinct",
-  "by": "sonnet course review (batch c1, 2026-10-29)",
-  "notes": "Different towns/schools with no shared header or host evidence; factor agreement alone (3.8% rule) is not proof, so kept apart.",
-  "date": "2026-10-29"
- },
- "xc_course/distinct/Gorham Middle School XC Course | Scarborough Athletic Complex": {
-  "verdict": "distinct",
-  "by": "sonnet course review (batch c1, 2026-10-29)",
-  "notes": "Different towns/schools with no shared header or host evidence; factor agreement alone (3.8% rule) is not proof, so kept apart.",
-  "date": "2026-10-29"
- },
- "xc_course/distinct/Gorham Middle School XC Course | Smiling Hill Farm": {
-  "verdict": "distinct",
-  "by": "sonnet course review (batch c1, 2026-10-29)",
-  "notes": "Different towns/schools with no shared header or host evidence; factor agreement alone (3.8% rule) is not proof, so kept apart.",
-  "date": "2026-10-29"
- },
- "xc_course/distinct/Gorham XC course @ Narragansett | South Portland": {
-  "verdict": "distinct",
-  "by": "sonnet course review (batch c1, 2026-10-29)",
-  "notes": "Different towns/schools with no shared header or host evidence; factor agreement alone (3.8% rule) is not proof, so kept apart.",
-  "date": "2026-10-29"
- },
- "xc_course/distinct/Gorham XC course @ Narragansett | Thornton Academy": {
-  "verdict": "distinct",
-  "by": "sonnet course review (batch c1, 2026-10-29)",
-  "notes": "Different towns/schools with no shared header or host evidence; factor agreement alone (3.8% rule) is not proof, so kept apart.",
-  "date": "2026-10-29"
- },
- "xc_course/distinct/Gray-New Gloucester | Lost Valley": {
-  "verdict": "distinct",
-  "by": "sonnet course review (batch c1, 2026-10-29)",
-  "notes": "Different places: the file header disagrees with the sub5 index for this meet (corrected in venue_corrections); the two venues are separate courses.",
-  "date": "2026-10-29"
- },
- "xc_course/distinct/Gray New Gloucester MS XC Course | Merriconeag XC course": {
-  "verdict": "distinct",
-  "by": "sonnet course review (batch c1, 2026-10-29)",
-  "notes": "Different towns/schools with no shared header or host evidence; factor agreement alone (3.8% rule) is not proof, so kept apart.",
-  "date": "2026-10-29"
- },
- "xc_course/distinct/Gray New Gloucester MS XC Course | Oxford Hills": {
-  "verdict": "distinct",
-  "by": "sonnet course review (batch c1, 2026-10-29)",
-  "notes": "Different towns/schools with no shared header or host evidence; factor agreement alone (3.8% rule) is not proof, so kept apart.",
-  "date": "2026-10-29"
- },
- "xc_course/distinct/Greely | Kittery": {
-  "verdict": "distinct",
-  "by": "sonnet course review (batch c1, 2026-10-29)",
-  "notes": "Different towns/schools with no shared header or host evidence; factor agreement alone (3.8% rule) is not proof, so kept apart.",
-  "date": "2026-10-29"
- },
- "xc_course/distinct/GSA (Blue Hill) | MDI XC course": {
-  "verdict": "distinct",
-  "by": "sonnet course review (batch c1, 2026-10-29)",
-  "notes": "Different towns/schools with no shared header or host evidence; factor agreement alone (3.8% rule) is not proof, so kept apart.",
-  "date": "2026-10-29"
- },
- "xc_course/distinct/GSA (Blue Hill) | Orono High School": {
-  "verdict": "distinct",
-  "by": "sonnet course review (batch c1, 2026-10-29)",
-  "notes": "Different towns/schools with no shared header or host evidence; factor agreement alone (3.8% rule) is not proof, so kept apart.",
-  "date": "2026-10-29"
- },
- "xc_course/distinct/GSA (Blue Hill) | Sumner": {
-  "verdict": "distinct",
-  "by": "sonnet course review (batch c1, 2026-10-29)",
-  "notes": "Different towns/schools with no shared header or host evidence; factor agreement alone (3.8% rule) is not proof, so kept apart.",
-  "date": "2026-10-29"
- },
- "xc_course/distinct/Gull Crest Field XC Course | Kittery": {
-  "verdict": "distinct",
-  "by": "sonnet course review (batch c1, 2026-10-29)",
-  "notes": "Different towns/schools with no shared header or host evidence; factor agreement alone (3.8% rule) is not proof, so kept apart.",
-  "date": "2026-10-29"
- },
- "xc_course/distinct/Gull Crest Field XC Course | Naples": {
-  "verdict": "distinct",
-  "by": "sonnet course review (batch c1, 2026-10-29)",
-  "notes": "Different towns/schools with no shared header or host evidence; factor agreement alone (3.8% rule) is not proof, so kept apart.",
-  "date": "2026-10-29"
- },
- "xc_course/distinct/Gull Crest Field XC Course | Sacopee Valley": {
-  "verdict": "distinct",
-  "by": "sonnet course review (batch c1, 2026-10-29)",
-  "notes": "Different towns/schools with no shared header or host evidence; factor agreement alone (3.8% rule) is not proof, so kept apart.",
-  "date": "2026-10-29"
- },
- "xc_course/distinct/Gull Crest Field XC Course | Yarmouth": {
-  "verdict": "distinct",
-  "by": "sonnet course review (batch c1, 2026-10-29)",
-  "notes": "Different towns/schools with no shared header or host evidence; factor agreement alone (3.8% rule) is not proof, so kept apart.",
-  "date": "2026-10-29"
- },
- "xc_course/distinct/Hall-Dale | Mount Abram": {
-  "verdict": "distinct",
-  "by": "sonnet course review (batch c1, 2026-10-29)",
-  "notes": "Different towns/schools with no shared header or host evidence; factor agreement alone (3.8% rule) is not proof, so kept apart.",
-  "date": "2026-10-29"
- },
- "xc_course/distinct/Hampden | Hermon High School": {
-  "verdict": "distinct",
-  "by": "sonnet course review (batch c1, 2026-10-29)",
-  "notes": "Different towns/schools with no shared header or host evidence; factor agreement alone (3.8% rule) is not proof, so kept apart.",
-  "date": "2026-10-29"
- },
- "xc_course/distinct/Hampden | John Bapst": {
-  "verdict": "distinct",
-  "by": "sonnet course review (batch c1, 2026-10-29)",
-  "notes": "Different towns/schools with no shared header or host evidence; factor agreement alone (3.8% rule) is not proof, so kept apart.",
-  "date": "2026-10-29"
- },
- "xc_course/distinct/Hampden | Schenck": {
-  "verdict": "distinct",
-  "by": "sonnet course review (batch c1, 2026-10-29)",
-  "notes": "Different towns/schools with no shared header or host evidence; factor agreement alone (3.8% rule) is not proof, so kept apart.",
-  "date": "2026-10-29"
- },
- "xc_course/distinct/Hampden | Skowhegan": {
-  "verdict": "distinct",
-  "by": "sonnet course review (batch c1, 2026-10-29)",
-  "notes": "Different towns/schools with no shared header or host evidence; factor agreement alone (3.8% rule) is not proof, so kept apart.",
-  "date": "2026-10-29"
- },
- "xc_course/distinct/Hermon High School | MCI": {
-  "verdict": "distinct",
-  "by": "sonnet course review (batch c1, 2026-10-29)",
-  "notes": "Different towns/schools with no shared header or host evidence; factor agreement alone (3.8% rule) is not proof, so kept apart.",
-  "date": "2026-10-29"
- },
- "xc_course/distinct/Hermon High School | MDI XC course": {
-  "verdict": "distinct",
-  "by": "sonnet course review (batch c1, 2026-10-29)",
-  "notes": "Different towns/schools with no shared header or host evidence; factor agreement alone (3.8% rule) is not proof, so kept apart.",
-  "date": "2026-10-29"
- },
- "xc_course/distinct/Hermon High School | MSSM": {
-  "verdict": "distinct",
-  "by": "sonnet course review (batch c1, 2026-10-29)",
-  "notes": "Different towns/schools with no shared header or host evidence; factor agreement alone (3.8% rule) is not proof, so kept apart.",
-  "date": "2026-10-29"
- },
- "xc_course/distinct/Hermon High School | Saxl Park": {
-  "verdict": "distinct",
-  "by": "sonnet course review (batch c1, 2026-10-29)",
-  "notes": "Different towns/schools with no shared header or host evidence; factor agreement alone (3.8% rule) is not proof, so kept apart.",
-  "date": "2026-10-29"
- },
- "xc_course/distinct/Houlton | Limestone": {
-  "verdict": "distinct",
-  "by": "sonnet course review (batch c1, 2026-10-29)",
-  "notes": "Different towns/schools with no shared header or host evidence; factor agreement alone (3.8% rule) is not proof, so kept apart.",
-  "date": "2026-10-29"
- },
- "xc_course/distinct/Houlton | Lonesome Pine Trails": {
-  "verdict": "distinct",
-  "by": "sonnet course review (batch c1, 2026-10-29)",
-  "notes": "Different towns/schools with no shared header or host evidence; factor agreement alone (3.8% rule) is not proof, so kept apart.",
-  "date": "2026-10-29"
- },
- "xc_course/distinct/Houlton | MDI XC course": {
-  "verdict": "distinct",
-  "by": "sonnet course review (batch c1, 2026-10-29)",
-  "notes": "Different towns/schools with no shared header or host evidence; factor agreement alone (3.8% rule) is not proof, so kept apart.",
-  "date": "2026-10-29"
- },
- "xc_course/distinct/Houlton | MSSM": {
-  "verdict": "distinct",
-  "by": "sonnet course review (batch c1, 2026-10-29)",
-  "notes": "Different towns/schools with no shared header or host evidence; factor agreement alone (3.8% rule) is not proof, so kept apart.",
-  "date": "2026-10-29"
- },
- "xc_course/distinct/John Bapst | MCI": {
-  "verdict": "distinct",
-  "by": "sonnet course review (batch c1, 2026-10-29)",
-  "notes": "Different towns/schools with no shared header or host evidence; factor agreement alone (3.8% rule) is not proof, so kept apart.",
-  "date": "2026-10-29"
- },
- "xc_course/distinct/John Bapst | Mt. Blue": {
-  "verdict": "distinct",
-  "by": "sonnet course review (batch c1, 2026-10-29)",
-  "notes": "Different towns/schools with no shared header or host evidence; factor agreement alone (3.8% rule) is not proof, so kept apart.",
-  "date": "2026-10-29"
- },
- "xc_course/distinct/John Bapst | Old Town High School": {
-  "verdict": "distinct",
-  "by": "sonnet course review (batch c1, 2026-10-29)",
-  "notes": "Different towns/schools with no shared header or host evidence; factor agreement alone (3.8% rule) is not proof, so kept apart.",
-  "date": "2026-10-29"
- },
- "xc_course/distinct/John Bapst | Quarry Road": {
-  "verdict": "distinct",
-  "by": "sonnet course review (batch c1, 2026-10-29)",
-  "notes": "Different towns/schools with no shared header or host evidence; factor agreement alone (3.8% rule) is not proof, so kept apart.",
-  "date": "2026-10-29"
- },
- "xc_course/distinct/John Bapst | Schenck": {
-  "verdict": "distinct",
-  "by": "sonnet course review (batch c1, 2026-10-29)",
-  "notes": "Different towns/schools with no shared header or host evidence; factor agreement alone (3.8% rule) is not proof, so kept apart.",
-  "date": "2026-10-29"
- },
- "xc_course/distinct/John Bapst | Skowhegan": {
-  "verdict": "distinct",
-  "by": "sonnet course review (batch c1, 2026-10-29)",
-  "notes": "Different towns/schools with no shared header or host evidence; factor agreement alone (3.8% rule) is not proof, so kept apart.",
-  "date": "2026-10-29"
- },
- "xc_course/distinct/John Bapst | Waterville": {
-  "verdict": "distinct",
-  "by": "sonnet course review (batch c1, 2026-10-29)",
-  "notes": "Different towns/schools with no shared header or host evidence; factor agreement alone (3.8% rule) is not proof, so kept apart.",
-  "date": "2026-10-29"
- },
- "xc_course/distinct/Kennebunk | Kittery": {
-  "verdict": "distinct",
-  "by": "sonnet course review (batch c1, 2026-10-29)",
-  "notes": "Different towns/schools with no shared header or host evidence; factor agreement alone (3.8% rule) is not proof, so kept apart.",
-  "date": "2026-10-29"
- },
- "xc_course/distinct/Kennebunk | Maine Girls' Academy": {
-  "verdict": "distinct",
-  "by": "sonnet course review (batch c1, 2026-10-29)",
-  "notes": "Different towns/schools with no shared header or host evidence; factor agreement alone (3.8% rule) is not proof, so kept apart.",
-  "date": "2026-10-29"
- },
- "xc_course/distinct/Kennebunk | MDI XC course": {
-  "verdict": "distinct",
-  "by": "sonnet course review (batch c1, 2026-10-29)",
-  "notes": "Different towns/schools with no shared header or host evidence; factor agreement alone (3.8% rule) is not proof, so kept apart.",
-  "date": "2026-10-29"
- },
- "xc_course/distinct/Kennebunk | Sacopee Valley": {
-  "verdict": "distinct",
-  "by": "sonnet course review (batch c1, 2026-10-29)",
-  "notes": "Different towns/schools with no shared header or host evidence; factor agreement alone (3.8% rule) is not proof, so kept apart.",
-  "date": "2026-10-29"
- },
- "xc_course/distinct/Kennebunk | Thornton Academy": {
-  "verdict": "distinct",
-  "by": "sonnet course review (batch c1, 2026-10-29)",
-  "notes": "Different towns/schools with no shared header or host evidence; factor agreement alone (3.8% rule) is not proof, so kept apart.",
-  "date": "2026-10-29"
- },
- "xc_course/distinct/Kennebunk | Traip Academy": {
-  "verdict": "distinct",
-  "by": "sonnet course review (batch c1, 2026-10-29)",
-  "notes": "Different towns/schools with no shared header or host evidence; factor agreement alone (3.8% rule) is not proof, so kept apart.",
-  "date": "2026-10-29"
- },
- "xc_course/distinct/Kennebunk | Wells": {
-  "verdict": "distinct",
-  "by": "sonnet course review (batch c1, 2026-10-29)",
-  "notes": "Different towns/schools with no shared header or host evidence; factor agreement alone (3.8% rule) is not proof, so kept apart.",
-  "date": "2026-10-29"
- },
- "xc_course/distinct/Kittery | MDI XC course": {
-  "verdict": "distinct",
-  "by": "sonnet course review (batch c1, 2026-10-29)",
-  "notes": "Different towns/schools with no shared header or host evidence; factor agreement alone (3.8% rule) is not proof, so kept apart.",
-  "date": "2026-10-29"
- },
- "xc_course/distinct/Kittery | Noble": {
-  "verdict": "distinct",
-  "by": "sonnet course review (batch c1, 2026-10-29)",
-  "notes": "Different towns/schools with no shared header or host evidence; factor agreement alone (3.8% rule) is not proof, so kept apart.",
-  "date": "2026-10-29"
- },
- "xc_course/distinct/Kittery | Pineland Farms": {
-  "verdict": "distinct",
-  "by": "sonnet course review (batch c1, 2026-10-29)",
-  "notes": "Different towns/schools with no shared header or host evidence; factor agreement alone (3.8% rule) is not proof, so kept apart.",
-  "date": "2026-10-29"
- },
- "xc_course/distinct/Kittery | Pownal Road Recreation Field XC Course": {
-  "verdict": "distinct",
-  "by": "sonnet course review (batch c1, 2026-10-29)",
-  "notes": "Different towns/schools with no shared header or host evidence; factor agreement alone (3.8% rule) is not proof, so kept apart.",
-  "date": "2026-10-29"
- },
- "xc_course/distinct/Kittery | St. Dominic's": {
-  "verdict": "distinct",
-  "by": "sonnet course review (batch c1, 2026-10-29)",
-  "notes": "Different towns/schools with no shared header or host evidence; factor agreement alone (3.8% rule) is not proof, so kept apart.",
-  "date": "2026-10-29"
- },
- "xc_course/distinct/Kittery | St. Joseph's College": {
-  "verdict": "distinct",
-  "by": "sonnet course review (batch c1, 2026-10-29)",
-  "notes": "Different towns/schools with no shared header or host evidence; factor agreement alone (3.8% rule) is not proof, so kept apart.",
-  "date": "2026-10-29"
- },
- "xc_course/distinct/Kittery | Twin Brook Recreation Area": {
-  "verdict": "distinct",
-  "by": "sonnet course review (batch c1, 2026-10-29)",
-  "notes": "Different towns/schools with no shared header or host evidence; factor agreement alone (3.8% rule) is not proof, so kept apart.",
-  "date": "2026-10-29"
- },
- "xc_course/distinct/Kittery | York": {
-  "verdict": "distinct",
-  "by": "sonnet course review (batch c1, 2026-10-29)",
-  "notes": "Different towns/schools with no shared header or host evidence; factor agreement alone (3.8% rule) is not proof, so kept apart.",
-  "date": "2026-10-29"
- },
- "xc_course/distinct/Lake Region | Lost Valley": {
-  "verdict": "distinct",
-  "by": "sonnet course review (batch c1, 2026-10-29)",
-  "notes": "Different towns/schools with no shared header or host evidence; factor agreement alone (3.8% rule) is not proof, so kept apart.",
-  "date": "2026-10-29"
- },
- "xc_course/distinct/Lake Region | Poland": {
-  "verdict": "distinct",
-  "by": "sonnet course review (batch c1, 2026-10-29)",
-  "notes": "Different towns/schools with no shared header or host evidence; factor agreement alone (3.8% rule) is not proof, so kept apart.",
-  "date": "2026-10-29"
- },
- "xc_course/distinct/Leavitt High School | Lewiston": {
-  "verdict": "distinct",
-  "by": "sonnet course review (batch c1, 2026-10-29)",
-  "notes": "Different places: the file header disagrees with the sub5 index for this meet (corrected in venue_corrections); the two venues are separate courses.",
-  "date": "2026-10-29"
- },
- "xc_course/distinct/Leavitt High School | Oxford Hills": {
-  "verdict": "distinct",
-  "by": "sonnet course review (batch c1, 2026-10-29)",
-  "notes": "Different towns/schools with no shared header or host evidence; factor agreement alone (3.8% rule) is not proof, so kept apart.",
-  "date": "2026-10-29"
- },
- "xc_course/distinct/Lee Academy | Orono High School": {
-  "verdict": "distinct",
-  "by": "sonnet course review (batch c1, 2026-10-29)",
-  "notes": "Different towns/schools with no shared header or host evidence; factor agreement alone (3.8% rule) is not proof, so kept apart.",
-  "date": "2026-10-29"
- },
- "xc_course/distinct/Lee Academy | Schenck": {
-  "verdict": "distinct",
-  "by": "sonnet course review (batch c1, 2026-10-29)",
-  "notes": "Different towns/schools with no shared header or host evidence; factor agreement alone (3.8% rule) is not proof, so kept apart.",
-  "date": "2026-10-29"
- },
- "xc_course/distinct/Lewiston | Oxford Hills": {
-  "verdict": "distinct",
-  "by": "sonnet course review (batch c1, 2026-10-29)",
-  "notes": "Different towns/schools with no shared header or host evidence; factor agreement alone (3.8% rule) is not proof, so kept apart.",
-  "date": "2026-10-29"
- },
- "xc_course/distinct/Limestone | Lonesome Pine Trails": {
-  "verdict": "distinct",
-  "by": "sonnet course review (batch c1, 2026-10-29)",
-  "notes": "Different towns/schools with no shared header or host evidence; factor agreement alone (3.8% rule) is not proof, so kept apart.",
-  "date": "2026-10-29"
- },
- "xc_course/distinct/Limestone | Madawaska": {
-  "verdict": "distinct",
-  "by": "sonnet course review (batch c1, 2026-10-29)",
-  "notes": "Different towns/schools with no shared header or host evidence; factor agreement alone (3.8% rule) is not proof, so kept apart.",
-  "date": "2026-10-29"
- },
- "xc_course/distinct/Limestone | MSSM": {
-  "verdict": "distinct",
-  "by": "sonnet course review (batch c1, 2026-10-29)",
-  "notes": "Different towns/schools with no shared header or host evidence; factor agreement alone (3.8% rule) is not proof, so kept apart.",
-  "date": "2026-10-29"
- },
- "xc_course/distinct/Limestone | Washburn": {
-  "verdict": "distinct",
-  "by": "sonnet course review (batch c1, 2026-10-29)",
-  "notes": "Different towns/schools with no shared header or host evidence; factor agreement alone (3.8% rule) is not proof, so kept apart.",
-  "date": "2026-10-29"
- },
- "xc_course/distinct/Lincoln Academy | Mattanawcook Academy": {
-  "verdict": "distinct",
-  "by": "sonnet course review (batch c1, 2026-10-29)",
-  "notes": "Different places: the file header disagrees with the sub5 index for this meet (corrected in venue_corrections); the two venues are separate courses.",
-  "date": "2026-10-29"
- },
- "xc_course/distinct/Lonesome Pine Trails | Madawaska": {
-  "verdict": "distinct",
-  "by": "sonnet course review (batch c1, 2026-10-29)",
-  "notes": "Different towns/schools with no shared header or host evidence; factor agreement alone (3.8% rule) is not proof, so kept apart.",
-  "date": "2026-10-29"
- },
- "xc_course/distinct/Lost Valley | Minot Community Park": {
-  "verdict": "distinct",
-  "by": "sonnet course review (batch c1, 2026-10-29)",
-  "notes": "Different towns/schools with no shared header or host evidence; factor agreement alone (3.8% rule) is not proof, so kept apart.",
-  "date": "2026-10-29"
- },
- "xc_course/distinct/Lost Valley | Poland": {
-  "verdict": "distinct",
-  "by": "sonnet course review (batch c1, 2026-10-29)",
-  "notes": "Different towns/schools with no shared header or host evidence; factor agreement alone (3.8% rule) is not proof, so kept apart.",
-  "date": "2026-10-29"
- },
- "xc_course/distinct/Lost Valley | Sacopee Valley": {
-  "verdict": "distinct",
-  "by": "sonnet course review (batch c1, 2026-10-29)",
-  "notes": "Different towns/schools with no shared header or host evidence; factor agreement alone (3.8% rule) is not proof, so kept apart.",
-  "date": "2026-10-29"
- },
- "xc_course/distinct/Lost Valley | Waynflete": {
-  "verdict": "distinct",
-  "by": "sonnet course review (batch c1, 2026-10-29)",
-  "notes": "Different towns/schools with no shared header or host evidence; factor agreement alone (3.8% rule) is not proof, so kept apart.",
-  "date": "2026-10-29"
- },
- "xc_course/distinct/Lost Valley | Yarmouth": {
-  "verdict": "distinct",
-  "by": "sonnet course review (batch c1, 2026-10-29)",
-  "notes": "Different towns/schools with no shared header or host evidence; factor agreement alone (3.8% rule) is not proof, so kept apart.",
-  "date": "2026-10-29"
- },
- "xc_course/distinct/Madawaska | MSSM": {
-  "verdict": "distinct",
-  "by": "sonnet course review (batch c1, 2026-10-29)",
-  "notes": "Different towns/schools with no shared header or host evidence; factor agreement alone (3.8% rule) is not proof, so kept apart.",
-  "date": "2026-10-29"
- },
- "xc_course/distinct/Madison | Mount Abram": {
-  "verdict": "distinct",
-  "by": "sonnet course review (batch c1, 2026-10-29)",
-  "notes": "Different towns/schools with no shared header or host evidence; factor agreement alone (3.8% rule) is not proof, so kept apart.",
-  "date": "2026-10-29"
- },
- "xc_course/distinct/Madison | Telstar": {
-  "verdict": "distinct",
-  "by": "sonnet course review (batch c1, 2026-10-29)",
-  "notes": "Different towns/schools with no shared header or host evidence; factor agreement alone (3.8% rule) is not proof, so kept apart.",
-  "date": "2026-10-29"
- },
- "xc_course/distinct/Maine Girls' Academy | Marshwood": {
-  "verdict": "distinct",
-  "by": "sonnet course review (batch c1, 2026-10-29)",
-  "notes": "Different towns/schools with no shared header or host evidence; factor agreement alone (3.8% rule) is not proof, so kept apart.",
-  "date": "2026-10-29"
- },
- "xc_course/distinct/Maine Girls' Academy | Massabesic": {
-  "verdict": "distinct",
-  "by": "sonnet course review (batch c1, 2026-10-29)",
-  "notes": "Different towns/schools with no shared header or host evidence; factor agreement alone (3.8% rule) is not proof, so kept apart.",
-  "date": "2026-10-29"
- },
- "xc_course/distinct/Maine Girls' Academy | McAuley (Portland)": {
-  "verdict": "distinct",
-  "by": "sonnet course review (batch c1, 2026-10-29)",
-  "notes": "Different towns/schools with no shared header or host evidence; factor agreement alone (3.8% rule) is not proof, so kept apart.",
-  "date": "2026-10-29"
- },
- "xc_course/distinct/Maine Girls' Academy | Sacopee Valley": {
-  "verdict": "distinct",
-  "by": "sonnet course review (batch c1, 2026-10-29)",
-  "notes": "Different towns/schools with no shared header or host evidence; factor agreement alone (3.8% rule) is not proof, so kept apart.",
-  "date": "2026-10-29"
- },
- "xc_course/distinct/Maine Girls' Academy | Sanford": {
-  "verdict": "distinct",
-  "by": "sonnet course review (batch c1, 2026-10-29)",
-  "notes": "Different towns/schools with no shared header or host evidence; factor agreement alone (3.8% rule) is not proof, so kept apart.",
-  "date": "2026-10-29"
- },
- "xc_course/distinct/Maine Girls' Academy | Sunset Ridge Golf Course": {
-  "verdict": "distinct",
-  "by": "sonnet course review (batch c1, 2026-10-29)",
-  "notes": "Different towns/schools with no shared header or host evidence; factor agreement alone (3.8% rule) is not proof, so kept apart.",
-  "date": "2026-10-29"
- },
- "xc_course/distinct/Maine Girls' Academy | Thornton Academy": {
-  "verdict": "distinct",
-  "by": "sonnet course review (batch c1, 2026-10-29)",
-  "notes": "Different towns/schools with no shared header or host evidence; factor agreement alone (3.8% rule) is not proof, so kept apart.",
-  "date": "2026-10-29"
- },
- "xc_course/distinct/Maine Girls' Academy | Westbrook": {
-  "verdict": "distinct",
-  "by": "sonnet course review (batch c1, 2026-10-29)",
-  "notes": "Different towns/schools with no shared header or host evidence; factor agreement alone (3.8% rule) is not proof, so kept apart.",
-  "date": "2026-10-29"
- },
- "xc_course/distinct/Maine Girls' Academy | Windham": {
-  "verdict": "distinct",
-  "by": "sonnet course review (batch c1, 2026-10-29)",
-  "notes": "Different towns/schools with no shared header or host evidence; factor agreement alone (3.8% rule) is not proof, so kept apart.",
-  "date": "2026-10-29"
- },
- "xc_course/distinct/Hyde School (Bath) | Mt. Ararat": {
-  "verdict": "distinct",
-  "by": "sonnet course review (batch c1, 2026-10-29)",
-  "notes": "Bath and Topsham are different towns and the hosts differ; the only link is similar factors.",
-  "date": "2026-10-29"
- },
  "xc_course/maranacook": {
   "verdict": "decided",
   "by": "sonnet course review (batch c2, 2026-10-31)",
@@ -19005,282 +19697,6 @@
   "verdict": "decided",
   "by": "sonnet course review (batch c2, 2026-10-31)",
   "notes": "Pineland Farms, New Gloucester: Freeport 2007-08 and Poland 2008 home meets, WMC meets 2012-2020, Lewiston 2021-22 (headers 'Pineland'). 'Pineland' already aliased. Merriconeag pair distinct (Freeport school grounds).",
-  "date": "2026-10-31"
- },
- "xc_course/distinct/Marshwood | Sunset Ridge Golf Course": {
-  "verdict": "distinct",
-  "by": "sonnet course review (batch c2, 2026-10-31)",
-  "notes": "Marshwood is Vaughan Woods / Great Works School grounds in South Berwick; Sunset Ridge is Westbrook's home course (2016-17 headers). Factor-only pair.",
-  "date": "2026-10-31"
- },
- "xc_course/distinct/Massabesic | Sunset Ridge Golf Course": {
-  "verdict": "distinct",
-  "by": "sonnet course review (batch c2, 2026-10-31)",
-  "notes": "Waterboro school grounds vs Westbrook's golf-course home meet; only a factor match.",
-  "date": "2026-10-31"
- },
- "xc_course/distinct/Massabesic | Massabesic MS XC Course": {
-  "verdict": "distinct",
-  "by": "sonnet course review (batch c2, 2026-10-31)",
-  "notes": "Massabesic HS is at 88 West Road, Waterboro; the middle school is at 134 Old Alfred Road, East Waterboro, about 3 miles apart (RSU 57 / Wikipedia 'Massabesic High School'). The one HS race on the MS course (Sanford-Marshwood-Noble@Massabesic 2026, factor 1.06 vs 1.05) is not enough to call it the HS loop.",
-  "date": "2026-10-31"
- },
- "xc_course/distinct/OOB | OOB MS XC Course": {
-  "verdict": "distinct",
-  "by": "sonnet course review (batch c2, 2026-10-31)",
-  "notes": "Old Orchard Beach HS is at 40 E. Emerson Cummings Blvd; Loranger Memorial School at 148 Saco Ave (RSU 23). No evidence the two loops are the same, although MileSplit put the 2025 HS meet on the MS course name.",
-  "date": "2026-10-31"
- },
- "xc_course/distinct/OOB | Wells": {
-  "verdict": "distinct",
-  "by": "sonnet course review (batch c2, 2026-10-31)",
-  "notes": "Different towns and hosts; only a factor match.",
-  "date": "2026-10-31"
- },
- "xc_course/distinct/MCI | Schenck": {
-  "verdict": "distinct",
-  "by": "sonnet course review (batch c2, 2026-10-31)",
-  "notes": "Pittsfield vs East Millinocket; factor-only, Bangor shared.",
-  "date": "2026-10-31"
- },
- "xc_course/distinct/MDI XC course | MSSM": {
-  "verdict": "distinct",
-  "by": "sonnet course review (batch c2, 2026-10-31)",
-  "notes": "Mount Desert Island vs Limestone; factor-only, Caribou shared.",
-  "date": "2026-10-31"
- },
- "xc_course/distinct/MDI XC course | Old Town High School": {
-  "verdict": "distinct",
-  "by": "sonnet course review (batch c2, 2026-10-31)",
-  "notes": "Different hosts and towns; factor-only.",
-  "date": "2026-10-31"
- },
- "xc_course/distinct/MDI XC course | Pownal Road Recreation Field": {
-  "verdict": "distinct",
-  "by": "sonnet course review (batch c2, 2026-10-31)",
-  "notes": "Bar Harbor vs Freeport; factor-only.",
-  "date": "2026-10-31"
- },
- "xc_course/distinct/MDI XC course | Saxl Park": {
-  "verdict": "distinct",
-  "by": "sonnet course review (batch c2, 2026-10-31)",
-  "notes": "Bar Harbor vs Bangor; factor-only.",
-  "date": "2026-10-31"
- },
- "xc_course/distinct/MDI XC course | St. Joseph's College": {
-  "verdict": "distinct",
-  "by": "sonnet course review (batch c2, 2026-10-31)",
-  "notes": "Bar Harbor vs Standish; factor-only.",
-  "date": "2026-10-31"
- },
- "xc_course/distinct/MDI XC course | Traip Academy": {
-  "verdict": "distinct",
-  "by": "sonnet course review (batch c2, 2026-10-31)",
-  "notes": "Bar Harbor vs Kittery; factor-only.",
-  "date": "2026-10-31"
- },
- "xc_course/distinct/MDI XC course | UMPI": {
-  "verdict": "distinct",
-  "by": "sonnet course review (batch c2, 2026-10-31)",
-  "notes": "Bar Harbor vs Presque Isle; factor-only.",
-  "date": "2026-10-31"
- },
- "xc_course/distinct/MDI XC course | York": {
-  "verdict": "distinct",
-  "by": "sonnet course review (batch c2, 2026-10-31)",
-  "notes": "Bar Harbor vs York; factor-only.",
-  "date": "2026-10-31"
- },
- "xc_course/distinct/Maranacook | Medomak Valley High School": {
-  "verdict": "distinct",
-  "by": "sonnet course review (batch c2, 2026-10-31)",
-  "notes": "Readfield vs Waldoboro; factor-only, Lincoln Academy shared.",
-  "date": "2026-10-31"
- },
- "xc_course/distinct/Medomak Valley High School | Quarry Road": {
-  "verdict": "distinct",
-  "by": "sonnet course review (batch c2, 2026-10-31)",
-  "notes": "Waldoboro vs Waterville; factor-only.",
-  "date": "2026-10-31"
- },
- "xc_course/distinct/Merriconeag XC course | Mt. Ararat (Topsham)": {
-  "verdict": "distinct",
-  "by": "sonnet course review (batch c2, 2026-10-31)",
-  "notes": "Merriconeag Waldorf grounds, Freeport ME (MileSplit 2011 'Merriconeag XC course, Freeport, ME') vs Topsham; factor-only.",
-  "date": "2026-10-31"
- },
- "xc_course/distinct/Merriconeag XC course | Oxford Hills": {
-  "verdict": "distinct",
-  "by": "sonnet course review (batch c2, 2026-10-31)",
-  "notes": "Freeport vs Roberts Farm, Norway; factor-only.",
-  "date": "2026-10-31"
- },
- "xc_course/distinct/Merriconeag XC course | Pineland Farms": {
-  "verdict": "distinct",
-  "by": "sonnet course review (batch c2, 2026-10-31)",
-  "notes": "Merriconeag hosted at its Freeport school grounds in 2010, 2011 and 2021 and at Pineland Farms (MileSplit 'Pineland Farms') 2012-2020; those are different places, no evidence of the same loop.",
-  "date": "2026-10-31"
- },
- "xc_course/distinct/Merriconeag XC course | Twin Brook Recreation Area": {
-  "verdict": "distinct",
-  "by": "sonnet course review (batch c2, 2026-10-31)",
-  "notes": "Freeport vs Cumberland; factor-only.",
-  "date": "2026-10-31"
- },
- "xc_course/distinct/Merriconeag XC course | York": {
-  "verdict": "distinct",
-  "by": "sonnet course review (batch c2, 2026-10-31)",
-  "notes": "Freeport vs York; factor-only.",
-  "date": "2026-10-31"
- },
- "xc_course/distinct/Minot Community Park (now Poland) | Sacopee Valley": {
-  "verdict": "distinct",
-  "by": "sonnet course review (batch c2, 2026-10-31)",
-  "notes": "Minot is Poland's home course; Sacopee Valley is Hiram. Factor-only.",
-  "date": "2026-10-31"
- },
- "xc_course/distinct/Minot Community Park (now Poland) | St. Dominic's": {
-  "verdict": "distinct",
-  "by": "sonnet course review (batch c2, 2026-10-31)",
-  "notes": "Factor-only; different host schools (Poland vs Auburn).",
-  "date": "2026-10-31"
- },
- "xc_course/distinct/Minot Community Park (now Poland) | Yarmouth": {
-  "verdict": "distinct",
-  "by": "sonnet course review (batch c2, 2026-10-31)",
-  "notes": "Factor-only; Yarmouth's course is Pratt's Brook Park (2008 header).",
-  "date": "2026-10-31"
- },
- "xc_course/distinct/Monmouth | Mount Abram": {
-  "verdict": "distinct",
-  "by": "sonnet course review (batch c2, 2026-10-31)",
-  "notes": "Monmouth Academy grounds vs Salem Township (Mt. Abram); factor-only.",
-  "date": "2026-10-31"
- },
- "xc_course/distinct/Mountain View School | Washington Academy": {
-  "verdict": "distinct",
-  "by": "sonnet course review (batch c2, 2026-10-31)",
-  "notes": "Mountain View School on Route 200 in Sullivan (Seacoast Invitational 2023-2025, milesplit meet venue) vs East Machias; factor-only. Also kept apart from Sumner (East Sullivan): earlier Seacoast Invitationals were at Sumner HS, and no source says the new site is the same loop.",
-  "date": "2026-10-31"
- },
- "xc_course/distinct/MSSM | Old Town High School": {
-  "verdict": "distinct",
-  "by": "sonnet course review (batch c2, 2026-10-31)",
-  "notes": "Limestone vs Old Town; factor-only.",
-  "date": "2026-10-31"
- },
- "xc_course/distinct/MSSM | Saxl Park": {
-  "verdict": "distinct",
-  "by": "sonnet course review (batch c2, 2026-10-31)",
-  "notes": "Limestone vs Bangor; factor-only.",
-  "date": "2026-10-31"
- },
- "xc_course/distinct/MSSM | UMPI": {
-  "verdict": "distinct",
-  "by": "sonnet course review (batch c2, 2026-10-31)",
-  "notes": "Limestone (2018 Aroostook League championship header 'MSSM') vs Presque Isle; factor-only.",
-  "date": "2026-10-31"
- },
- "xc_course/distinct/MSSM | Washburn": {
-  "verdict": "distinct",
-  "by": "sonnet course review (batch c2, 2026-10-31)",
-  "notes": "Limestone vs Washburn; factor-only.",
-  "date": "2026-10-31"
- },
- "xc_course/distinct/Mt A XC - Highland Green GC | Mt. Blue": {
-  "verdict": "distinct",
-  "by": "sonnet course review (batch c2, 2026-10-31)",
-  "notes": "Highland Green GC (Topsham, already merged into Mt. Ararat in batch 1) vs Farmington; factor-only.",
-  "date": "2026-10-31"
- },
- "xc_course/distinct/Mt A XC - Highland Green GC | Oxford Hills": {
-  "verdict": "distinct",
-  "by": "sonnet course review (batch c2, 2026-10-31)",
-  "notes": "Topsham vs Norway; factor-only.",
-  "date": "2026-10-31"
- },
- "xc_course/distinct/Mount Abram | Mt. Blue State Park": {
-  "verdict": "distinct",
-  "by": "sonnet course review (batch c2, 2026-10-31)",
-  "notes": "Salem (Mt. Abram HS) vs Weld (Mt. Blue State Park, Dirigo's home); factor-only.",
-  "date": "2026-10-31"
- },
- "xc_course/distinct/Mt. Ararat (Topsham) | Oxford Hills": {
-  "verdict": "distinct",
-  "by": "sonnet course review (batch c2, 2026-10-31)",
-  "notes": "Topsham vs Roberts Farm, Norway; factor-only.",
-  "date": "2026-10-31"
- },
- "xc_course/distinct/Mt. Blue | Mt. Blue State Park": {
-  "verdict": "distinct",
-  "by": "sonnet course review (batch c2, 2026-10-31)",
-  "notes": "Farmington school grounds vs Weld state park; factors 1.097 vs 1.02, already kept apart.",
-  "date": "2026-10-31"
- },
- "xc_course/distinct/Narragansett School (now Gorham) | Sanford": {
-  "verdict": "distinct",
-  "by": "sonnet course review (batch c2, 2026-10-31)",
-  "notes": "Gorham vs Sanford; factor-only.",
-  "date": "2026-10-31"
- },
- "xc_course/distinct/Narragansett School (now Gorham) | Westbrook": {
-  "verdict": "distinct",
-  "by": "sonnet course review (batch c2, 2026-10-31)",
-  "notes": "Gorham vs Westbrook; factor-only.",
-  "date": "2026-10-31"
- },
- "xc_course/distinct/Narragansett School (now Gorham) | Windham": {
-  "verdict": "distinct",
-  "by": "sonnet course review (batch c2, 2026-10-31)",
-  "notes": "Gorham vs Windham; factor-only.",
-  "date": "2026-10-31"
- },
- "xc_course/distinct/Royal River Park (now NYA) | Waynflete": {
-  "verdict": "distinct",
-  "by": "sonnet course review (batch c2, 2026-10-31)",
-  "notes": "NYA's home loop at Royal River Park vs Waynflete's own course; factor-only.",
-  "date": "2026-10-31"
- },
- "xc_course/distinct/Royal River Park (now NYA) | Yarmouth": {
-  "verdict": "distinct",
-  "by": "sonnet course review (batch c2, 2026-10-31)",
-  "notes": "Yarmouth HS's home meet is at Pratt's Brook Park, Yarmouth (sub5 2008/XC/Yarmouth_XC_Girls 'Location: Pratt's Brook Park'), not Royal River Park.",
-  "date": "2026-10-31"
- },
- "xc_course/distinct/Orono High School | Schenck": {
-  "verdict": "distinct",
-  "by": "sonnet course review (batch c2, 2026-10-31)",
-  "notes": "Orono vs East Millinocket; factor-only.",
-  "date": "2026-10-31"
- },
- "xc_course/distinct/Orono High School | Searsport": {
-  "verdict": "distinct",
-  "by": "sonnet course review (batch c2, 2026-10-31)",
-  "notes": "Orono vs Searsport; factor-only.",
-  "date": "2026-10-31"
- },
- "xc_course/distinct/Oxford Hills | Quarry Road": {
-  "verdict": "distinct",
-  "by": "sonnet course review (batch c2, 2026-10-31)",
-  "notes": "Roberts Farm, Norway vs Quarry Road, Waterville; factor-only.",
-  "date": "2026-10-31"
- },
- "xc_course/distinct/Naples (now Lake Region) | Sacopee Valley": {
-  "verdict": "distinct",
-  "by": "sonnet course review (batch c2, 2026-10-31)",
-  "notes": "Naples is Lake Region's home; Sacopee Valley is Hiram. Factor-only.",
-  "date": "2026-10-31"
- },
- "xc_course/distinct/Naples (now Lake Region) | Yarmouth": {
-  "verdict": "distinct",
-  "by": "sonnet course review (batch c2, 2026-10-31)",
-  "notes": "Factor-only.",
-  "date": "2026-10-31"
- },
- "xc_course/distinct/Naples (now Lake Region) | York": {
-  "verdict": "distinct",
-  "by": "sonnet course review (batch c2, 2026-10-31)",
-  "notes": "Factor-only.",
   "date": "2026-10-31"
  },
  "xc_course/pittsfield": {
@@ -19485,126 +19901,6 @@
   "verdict": "decided",
   "by": "sonnet course review (batch c3, 2026-10-31)",
   "notes": "Keep: Westbrook MS XC Course (MileSplit) and Westbrook index rows. 2021 Results-F1-10 and 2022 WEST-MS are corrected to Smiling Hill Farm (headers); 2015 and 2016-17 were already handled. No evidence the Westbrook MS course equals Sunset Ridge or Thornton: distinct.",
-  "date": "2026-10-31"
- },
- "xc_course/distinct/Royal River Park | Yarmouth": {
-  "verdict": "distinct",
-  "by": "sonnet course review (batch c3, 2026-10-31)",
-  "notes": "Royal River Park is NYA's home ('Meet hosted by NYA @ Royal River Park', 2011); Yarmouth HS meets are 'Pratts Brook Park, Yarmouth' (2013, 2016, 2019).",
-  "date": "2026-10-31"
- },
- "xc_course/distinct/Pownal Road Recreation Field | Royal River Park": {
-  "verdict": "distinct",
-  "by": "sonnet course review (batch c3, 2026-10-31)",
-  "notes": "Pownal Road is Freeport's course; Royal River Park is NYA's.",
-  "date": "2026-10-31"
- },
- "xc_course/distinct/Pownal Road Recreation Field | Yarmouth": {
-  "verdict": "distinct",
-  "by": "sonnet course review (batch c3, 2026-10-31)",
-  "notes": "Freeport vs Yarmouth home courses.",
-  "date": "2026-10-31"
- },
- "xc_course/distinct/Royal River Park | Waynflete": {
-  "verdict": "distinct",
-  "by": "sonnet course review (batch c3, 2026-10-31)",
-  "notes": "Waynflete home meets are at Smiling Hill (2020 header); Royal River is NYA's.",
-  "date": "2026-10-31"
- },
- "xc_course/distinct/Sacopee Valley | St. Joseph's College": {
-  "verdict": "distinct",
-  "by": "sonnet course review (batch c3, 2026-10-31)",
-  "notes": "Hiram vs Windham/Standish; factor-only pair.",
-  "date": "2026-10-31"
- },
- "xc_course/distinct/Sacopee Valley | Thornton Academy": {
-  "verdict": "distinct",
-  "by": "sonnet course review (batch c3, 2026-10-31)",
-  "notes": "Different schools' home courses.",
-  "date": "2026-10-31"
- },
- "xc_course/distinct/Sacopee Valley | Waynflete": {
-  "verdict": "distinct",
-  "by": "sonnet course review (batch c3, 2026-10-31)",
-  "notes": "Different places.",
-  "date": "2026-10-31"
- },
- "xc_course/distinct/Sacopee Valley | Yarmouth": {
-  "verdict": "distinct",
-  "by": "sonnet course review (batch c3, 2026-10-31)",
-  "notes": "Hiram vs Pratts Brook, Yarmouth.",
-  "date": "2026-10-31"
- },
- "xc_course/distinct/Sanford | Sunset Ridge Golf Course": {
-  "verdict": "distinct",
-  "by": "sonnet course review (batch c3, 2026-10-31)",
-  "notes": "Sanford HS vs a Westbrook golf course.",
-  "date": "2026-10-31"
- },
- "xc_course/distinct/Scarborough Athletic Complex | Smiling Hill Farm": {
-  "verdict": "distinct",
-  "by": "sonnet course review (batch c3, 2026-10-31)",
-  "notes": "Headers name each separately (Athletic Complex 2020, 2025, 2026).",
-  "date": "2026-10-31"
- },
- "xc_course/distinct/Schenck | Skowhegan": {
-  "verdict": "distinct",
-  "by": "sonnet course review (batch c3, 2026-10-31)",
-  "notes": "East Millinocket vs Skowhegan.",
-  "date": "2026-10-31"
- },
- "xc_course/distinct/Searsport | Sumner": {
-  "verdict": "distinct",
-  "by": "sonnet course review (batch c3, 2026-10-31)",
-  "notes": "Different towns; shared only George Stevens runners.",
-  "date": "2026-10-31"
- },
- "xc_course/distinct/Searsport | Washington Academy": {
-  "verdict": "distinct",
-  "by": "sonnet course review (batch c3, 2026-10-31)",
-  "notes": "Different towns.",
-  "date": "2026-10-31"
- },
- "xc_course/distinct/Sumner | Washington Academy": {
-  "verdict": "distinct",
-  "by": "sonnet course review (batch c3, 2026-10-31)",
-  "notes": "Sullivan vs East Machias.",
-  "date": "2026-10-31"
- },
- "xc_course/distinct/St. Dominic's | Waynflete": {
-  "verdict": "distinct",
-  "by": "sonnet course review (batch c3, 2026-10-31)",
-  "notes": "Auburn vs Portland-area Smiling Hill.",
-  "date": "2026-10-31"
- },
- "xc_course/distinct/Sunset Ridge Golf Course | Westbrook": {
-  "verdict": "distinct",
-  "by": "sonnet course review (batch c3, 2026-10-31)",
-  "notes": "No evidence the Westbrook MS course is the golf course.",
-  "date": "2026-10-31"
- },
- "xc_course/distinct/Thornton Academy | Westbrook": {
-  "verdict": "distinct",
-  "by": "sonnet course review (batch c3, 2026-10-31)",
-  "notes": "Different schools.",
-  "date": "2026-10-31"
- },
- "xc_course/distinct/Traip Academy | Wells": {
-  "verdict": "distinct",
-  "by": "sonnet course review (batch c3, 2026-10-31)",
-  "notes": "Fort Foster, Kittery vs Wells HS.",
-  "date": "2026-10-31"
- },
- "xc_course/distinct/Traip Academy | York": {
-  "verdict": "distinct",
-  "by": "sonnet course review (batch c3, 2026-10-31)",
-  "notes": "Fort Foster vs York HS course.",
-  "date": "2026-10-31"
- },
- "xc_course/distinct/Wells | York": {
-  "verdict": "distinct",
-  "by": "sonnet course review (batch c3, 2026-10-31)",
-  "notes": "Different home courses.",
   "date": "2026-10-31"
  },
  "xc_course/windham": {

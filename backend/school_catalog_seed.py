@@ -1796,6 +1796,12 @@ FILE_RULES = [
     (['SMC'], 'Indoor', (2023, 2023), r'^Results-wk-4-meet-3$', 'me-ms-southern-maine-catholic'),
     (['BIDD'], 'Indoor', (2023, 2023), r'^Results-wk-4-meet-3$', 'me-ms-biddeford'),
     (['SMC'], 'Indoor', (2023, 2023), r'^ResultsWK-3-MEET-1$', 'me-ms-southern-maine-catholic'),
+    # Indoor second read t7
+    (['North Yarmouth Academy'], 'Indoor', (2023, 2023), r'^Resultswmc$', 'coop-nya-maine-coast-waldorf'),
+    (['North Yarmouth Academy'], 'Indoor', (2023, 2023), r'^Resultswmc1$', 'coop-nya-maine-coast-waldorf'),
+    (['North Yarmouth Academy'], 'Indoor', (2023, 2023), r'^Resultswmc2$', 'coop-nya-maine-coast-waldorf'),
+    (['CAPE', 'Cape'], 'Indoor', (2022, 2022), r'^Results-wk-2-meet-1$', 'me-ms-cape-elizabeth'),
+    (['CAPE', 'Cape'], 'Indoor', (2022, 2022), r'^ResultsMEET-1$', 'me-ms-cape-elizabeth'),
     # 2026-10-24 unresolved-school review, batch 2
     (['F'], 'XC', (2004, 2004), r'^cape7oct04[bg]\.txt$', 'me-hs-falmouth'),   # Title lists Falmouth; only F team
     (['Y'], 'XC', (2004, 2004), r'^cape7oct04[bg]\.txt$', 'me-hs-yarmouth'),   # Title lists Yarmouth; only Y team
