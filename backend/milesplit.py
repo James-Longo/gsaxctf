@@ -1114,7 +1114,6 @@ def main():
     events=[]; rank=[]; urls=[]; paywalled=[]; head=['','']; HEADYEARS=set()
     for f in files:
         if str(f['id']) in os.environ.get('EXCLUDE','').split(','): continue
-        if f['isMeetPro']: paywalled.append(f['name']); continue
         u='https://%s/meets/%s/results/%s/raw'%(HOST,slug,f['id'])
         raw=get(u,'%s-%s.html'%(slug,f['id']))
         pre=re.findall(r'<pre[^>]*>(.*?)</pre>',raw,re.S)
@@ -1124,7 +1123,10 @@ def main():
             if rows:
                 lines=['\t'.join(html.unescape(re.sub(r'<[^>]+>','',c)).strip() for c in re.findall(r'<t[dh][^>]*>(.*?)</t[dh]>',r_,re.S)) for r_ in rows]
                 pre=[html.escape(f['name']+'\n'+'\n'.join(lines))]
-        if not pre: print('no <pre> for',f['name']); paywalled.append(f['name']+' (no text)'); continue
+        # MileSplit marks many files Pro (isMeetPro) yet shows their results to any visitor in the
+        # formatted view, which a script fills in: a raw page without text is read there in a browser
+        # (docs/agents/missing-meets.md), never listed as Pro only
+        if not pre: print('no <pre> for',f['name'],'- read its formatted view in a browser'); paywalled.append(f['name']+' (no text)'); continue
         t=html.unescape(re.sub(r'<[^>]+>','',pre[0]))
         t=re.sub(r"(?<=[\w.)])((?:Mt\. )?[A-Z][\w.]*(?: [A-Z][\w.]*)* Track Hy-Tek's MEET MANAGER\t)",r'\n\1',t)   # page header glued to the last row/leg before the page break
         global XC_HINT
@@ -1300,7 +1302,7 @@ def main():
     out={'meet_name':mname,'date':date,'venue':venue,**({'date_conflict':'result sheet dated %s, MileSplit lists %s'%('/'.join(sorted(HEADYEARS)),date)} if HEADYEARS else {}),
          'meet_level':'hs','parser':'milesplit-manual','source':{'site':'milesplit','url':urls},
          'events':events,'team_rankings':[x for i_,x in enumerate(rank) if x['teams'] and x not in rank[:i_]],
-         'notes':'Transcribed from MileSplit raw result text (me.milesplit.com). Schools kept as MileSplit prints them. Prelim/final/heat rows as printed; points column not copied; exhibition marks (x) flagged.'+dnote+(' Result file(s) %s skipped: duplicate of another meet\'s results.'%os.environ['EXCLUDE'] if os.environ.get('EXCLUDE') else '')+(' Abbreviated or mascot school names (LAC, MTB, Dragons ...) expanded to full names.' if os.environ.get('CANON') else '')+(' Schools printed as mascots in the source mapped: %s.'%os.environ['MASC'] if MASC else '')+(' '+os.environ['NOTES'] if os.environ.get('NOTES') else '')+(' School codes of this meet read from the meet itself (backend/data/milesplit_codes.json): %s.'%'; '.join('%s = %s'%kv for kv in sorted(MEETCODES.items())) if MEETCODES else '')+sub_note+(' Not available (Pro/no text): %s.'%paywalled if paywalled else '')+(' Rows not transcribed (unreadable mark or status): %s.'%'; '.join(UNP) if UNP else '')}
+         'notes':'Transcribed from MileSplit raw result text (me.milesplit.com). Schools kept as MileSplit prints them. Prelim/final/heat rows as printed; points column not copied; exhibition marks (x) flagged.'+dnote+(' Result file(s) %s skipped: duplicate of another meet\'s results.'%os.environ['EXCLUDE'] if os.environ.get('EXCLUDE') else '')+(' Abbreviated or mascot school names (LAC, MTB, Dragons ...) expanded to full names.' if os.environ.get('CANON') else '')+(' Schools printed as mascots in the source mapped: %s.'%os.environ['MASC'] if MASC else '')+(' '+os.environ['NOTES'] if os.environ.get('NOTES') else '')+(' School codes of this meet read from the meet itself (backend/data/milesplit_codes.json): %s.'%'; '.join('%s = %s'%kv for kv in sorted(MEETCODES.items())) if MEETCODES else '')+sub_note+(' Raw page without text (read the formatted view): %s.'%paywalled if paywalled else '')+(' Rows not transcribed (unreadable mark or status): %s.'%'; '.join(UNP) if UNP else '')}
     if not events: print('NO EVENTS', paywalled); return
     path=OUT+'ms-%s.json'%re.sub(r'^\d+-','',slug)
     if os.path.exists(path):   # same meet name on another date (two "Portland High School" home meets): keep both

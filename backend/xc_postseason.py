@@ -737,6 +737,25 @@ def _add_returning(out, calib, year, gender):
                         last=None, prior=True, grade=(gr + 1) if gr else None)
 
 
+# A state team is its seven from the whole roster, runners who raced in the last
+# ACTIVE_DAYS first. Measured 2026-10-31 on 2016-2025 state meets (4,640 state
+# runners on qualifying teams): the season's fastest seven held 89.5% of the
+# runners who ran (precision 87.9%; most misses were fast runners done for the
+# season), active-first 93.6% (91.9%), the regional starters 93.8% (93.3%).
+# Windows of 10 and 21 days: 93.7% and 93.1%.
+ACTIVE_DAYS = 14
+
+
+def state_seven(rated, ratings, day):
+    """A qualifying team's state entries from its (theta, aid, n) list: runners
+    with a race in the ACTIVE_DAYS before `day` first, then the rest of the
+    roster, fastest first within each."""
+    def stale(a, n):
+        last = ratings[a].get('last')
+        return n == 0 or last is None or last < day - ACTIVE_DAYS
+    return [a for _, _, a in sorted((stale(a, n), th, a) for th, a, n in rated)[:MAX_ENTRY]]
+
+
 def seven_for(rated):
     """A school's championship entries from its (theta, aid, n) list: runners
     with races this season first, fastest first; returning runners with no
@@ -1436,11 +1455,13 @@ def simulate_postseason(obs, year, gender, cutoff, groups, calib, noise,
         fields[mid] = [a for s in members for a in seven.get(s, [])]
 
     # A regional already run (its day before `cutoff`) is not simulated for
-    # qualifying: its real results decide who goes on, by the same rule the
-    # simulation uses (top half of scoring teams, at least four, plus the top
-    # INDIVIDUAL_QUALIFIERS runners). The race is the one that day whose
-    # runners' schools are this regional's class and region. A qualifying team
-    # brings everyone who started its regional, a runner who dropped out too.
+    # qualifying: its real results decide which teams and individuals go on, by
+    # the same rule the simulation uses (top half of scoring teams, at least
+    # four, plus the top INDIVIDUAL_QUALIFIERS runners). The race is the one
+    # that day whose runners' schools are this regional's class and region. A
+    # qualifying team's state entries come from its whole season roster
+    # (state_seven), whether or not they ran the regional (James 2026-10-31:
+    # "don't base the postseason sims on any one meet").
     actual_q, done = defaultdict(set), set()
     for mid, m in meets.items():
         if 'region' not in m:
@@ -1466,13 +1487,10 @@ def simulate_postseason(obs, year, gender, cutoff, groups, calib, noise,
         sch = {o.aid: o.team for o in rows_}
         ranked_, _ = score_race(order_, sch)
         q_teams = {t for t, _, _ in ranked_[:team_qualifiers(len(ranked_))]}
-        q = {a for a in order_ if sch[a] in q_teams} | set(order_[:INDIVIDUAL_QUALIFIERS])
-        aid_of = {(_name_key(r['name']), r['team']): a for a, r in ratings.items()}
-        for y, g, day, meet, nk, team in load_dnfs():
-            a = aid_of.get((nk, team))
-            if (y, g, meet) == (year, gender, rows_[0].meet) and team in q_teams and a:
-                sch[a] = team
-                q.add(a)
+        state = {t: state_seven(by_school.get(t, []), ratings, cutoff) for t in q_teams}
+        q = {a for aids in state.values() for a in aids}
+        sch.update({a: t for t, aids in state.items() for a in aids})
+        q |= {a for a in order_[:INDIVIDUAL_QUALIFIERS] if sch[a] not in q_teams}
         for a in q:
             if a in ratings:
                 school_of.setdefault(a, sch[a])

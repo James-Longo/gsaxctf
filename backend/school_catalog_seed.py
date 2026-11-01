@@ -1892,6 +1892,16 @@ FILE_RULES = [
     (['CRMS'], 'XC', (2018, 2018), r'Lincolnville\.Meet', 'me-ms-camden-rockport'),
     (['THMS'], 'XC', (2018, 2018), r'Lincolnville\.Meet', 'me-ms-troy-howard'),
     (['EDS'], 'XC', (2018, 2018), r'Lincolnville\.Meet', 'me-ms-drinkwater'),
+    # 2026 Lincolnville Meet #1 (Meet-1-Entries-and-Results-{Boys,Girls}-Results.pdf): the meet's MileSplit
+    # page (781438) lists its eight teams by name, one per code
+    (['LCS'], 'XC', (2026, 2026), r'Meet-1-Entries-and-Results', 'me-ms-lincolnville'),
+    (['CRMS'], 'XC', (2026, 2026), r'Meet-1-Entries-and-Results', 'me-ms-camden-rockport'),
+    (['AVS'], 'XC', (2026, 2026), r'Meet-1-Entries-and-Results', 'me-ms-appleton'),
+    (['DW'], 'XC', (2026, 2026), r'Meet-1-Entries-and-Results', 'me-ms-drinkwater'),
+    (['N Haven'], 'XC', (2026, 2026), r'Meet-1-Entries-and-Results', 'me-ms-north-haven'),
+    (['TH'], 'XC', (2026, 2026), r'Meet-1-Entries-and-Results', 'me-ms-troy-howard'),
+    (['StG'], 'XC', (2026, 2026), r'Meet-1-Entries-and-Results', 'me-ms-st-george'),
+    (['Searsport'], 'XC', (2026, 2026), r'Meet-1-Entries-and-Results', 'me-ms-searsport'),
     # 'Lakers'
     (['Lakers', 'LAKERS'], None, (2006, 2010), r'wmc|foley|falmouth|lakeregion', 'me-hs-lake-region'),
     (['Lakers', 'LAKERS', 'Lakers Track'], None, (2004, 2016), r'usatf|reg1|region|\bjo\b|junior', 'club-lakers-tc'),

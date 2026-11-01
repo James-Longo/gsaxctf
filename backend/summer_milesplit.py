@@ -39,9 +39,6 @@ def fetch(years=None):
         venue = re.search(r'<span class="meet-venue">\s*([^<]+)', page) or re.search(r'"location":\s*\{[^}]*"name":\s*"([^"]+)"', page)
         texts, skipped = [], []
         for f in files:
-            if f.get('isMeetPro'):
-                skipped.append(f['name'])
-                continue
             raw = ms.get(f'https://{ms.HOST}/meets/{slug}/results/{f["id"]}/raw', f'{slug}-{f["id"]}.html')
             pre = re.findall(r'<pre[^>]*>(.*?)</pre>', raw, re.S)
             if pre:
