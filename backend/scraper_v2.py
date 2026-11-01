@@ -11,7 +11,7 @@ from backend.json_store import (
     load_scrape_state, save_scrape_state, load_athletes, save_athletes,
     add_performances_for_team, rebuild_manifest, slugify_athlete, store_athlete_id, list_teams,
     TEAMS_DIR, SCRAPE_STATE_PATH, _chunk_files, _load_json, enrich_rows,
-    canonical_team_name
+    canonical_team_name, is_multi_total
 )
 from backend.event_canon import canonical_event
 from backend import school_catalog
@@ -502,17 +502,27 @@ def strip_sex_prefix(data):
 
 
 _LEG_GRADE = re.compile(r'\s+(?:FR|SO|JR|SR|Fr|So|Jr|Sr|[5-9]|1[0-2])$')
+_LEG_GRADE_CAPS = re.compile(r'\s+(?:FR|SO|JR|SR)$')
+
+
+def clean_leg_grades(legs):
+    """Relay legs printed with their class year ("1) Norah Garvey FR
+    2) Willow Whitten FR"): the year is not part of the name. A capital
+    code goes on any leg (a sheet that grades only some legs, "Emily Craft
+    SO / Linsey House"); "Jr" or a number only when most legs carry one
+    (it can be a name suffix: "James Wheatley Jr")."""
+    if not (isinstance(legs, list) and legs and all(isinstance(x, str) for x in legs)):
+        return legs
+    if sum(1 for x in legs if _LEG_GRADE.search(x)) >= max(1, len(legs) - 1):
+        return [_LEG_GRADE.sub('', x).strip() for x in legs]
+    return [_LEG_GRADE_CAPS.sub('', x).strip() for x in legs]
 
 
 def strip_leg_grades(data):
-    """Relay legs printed with their class year ("1) Norah Garvey FR
-    2) Willow Whitten FR"): the year is not part of the name."""
     for e in data.get('events') or []:
         for r in (e.get('results') or []) if isinstance(e, dict) else []:
-            legs = r.get('athletes')
-            if isinstance(legs, list) and legs and all(isinstance(x, str) for x in legs) \
-                    and sum(1 for x in legs if _LEG_GRADE.search(x)) >= max(1, len(legs) - 1):
-                r['athletes'] = [_LEG_GRADE.sub('', x).strip() for x in legs]
+            if r.get('athletes'):
+                r['athletes'] = clean_leg_grades(r['athletes'])
 
 
 def complete_cut_teams(data, text=''):
@@ -1144,7 +1154,8 @@ def _parse_one_file(args):
             for ev in res.get('events', []):
                 ev_name = ev.get('event', '')
                 is_field = any(k in ev_name.lower() for k in
-                               ('jump', 'put', 'vault', 'discus', 'javelin', 'throw'))
+                               ('jump', 'put', 'vault', 'discus', 'javelin', 'throw')) \
+                    or is_multi_total(ev_name)     # (points: higher is better)
                 vals = []
                 for r in ev.get('results', []):
                     if r.get('type') == 'Seed' or r.get('exhibition'):
@@ -1907,7 +1918,9 @@ class Sub5ScraperV2:
             meters = 1609 * (2 if '2 mile' in ev else 1)
         if not meters or meters < 50:
             return mark
-        if 'pentathlon' in ev or 'heptathlon' in ev or 'decathlon' in ev:
+        # (a combined event's points total; a leg, "Indoor Pentathlon: 800
+        # Meter Run", is a race like any other)
+        if is_multi_total(event):
             return mark
         # a time of day for a track race ("8:01:22.36" for a 200: a heat
         # timed on the clock, nokomisms17may2026.htm): no race time
@@ -2736,7 +2749,7 @@ class Sub5ScraperV2:
                             if relay_athletes:
                                 # Drop legs that are leaked result rows (contain times/marks)
                                 clean_legs = []
-                                for ra in relay_athletes:
+                                for ra in clean_leg_grades(relay_athletes):
                                     leg = self.normalize_athlete_name(ra)
                                     leg = re.sub(r'\s+(Relay|[A-D])$', '', leg).strip()
                                     if leg and not re.search(r'\d+[:.]\d+|\d{3,}', leg):
@@ -2761,10 +2774,12 @@ class Sub5ScraperV2:
                             continue
                         # a hand time cut at its column edge: "13:14.0h" -> "13:14."
                         mark = re.sub(r'(?<=\d)\.$', '', mark)
-                        if not self.mark_is_valid_format(mark):
+                        # (a combined event's standings: the points total)
+                        multi_total = is_multi_total(event_canon_name) and re.fullmatch(r'\d{3,5}', mark)
+                        if not multi_total and not self.mark_is_valid_format(mark):
                             SYNC_DROPS[(meet_key, 'mark format')] += 1
                             continue
-                        mark = self.repair_mark(mark, full_event)
+                        mark = mark if multi_total else self.repair_mark(mark, full_event)
                         if mark is None:
                             SYNC_DROPS[(meet_key, 'mark impossible for event')] += 1
                             continue

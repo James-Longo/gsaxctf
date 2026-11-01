@@ -198,6 +198,13 @@ export function normalizeEvent(event, season = '') {
 
 export function isDistanceEvent(event) {
     if (!event) return false;
+    // a combined event's standings ("Indoor Pentathlon") are points, higher
+    // is better; its legs ("Indoor Pentathlon: High Jump") read as the leg
+    const multi = /triathlon|pentathlon|heptathlon|decathlon/i;
+    if (multi.test(event)) {
+        if (!event.includes(':')) return true;
+        event = event.slice(event.indexOf(':') + 1).trim();
+    }
     const normalized = normalizeEvent(event);
     return ["High Jump", "Pole Vault", "Long Jump", "Triple Jump", "Shot Put", "Discus", "Javelin"].includes(normalized);
 }

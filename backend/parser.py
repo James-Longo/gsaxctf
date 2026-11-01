@@ -108,6 +108,135 @@ def _is_xc_event(name):
     return bool(m and float(m.group(1)) > 2)
 
 
+# combined events: Hy-Tek prints each leg as "Indoor Pentathlon: #5 Girls 800
+# Meter Run Indoor Pentathlon" and the standings as "Girls Indoor Pentathlon"
+_MULTI = re.compile(r'\b((?:indoor\s+|outdoor\s+)?(?:triathlon|pentathlon|heptathlon|decathlon))\b', re.I)
+_MULTI_LEG = re.compile(r'((?:indoor\s+|outdoor\s+)?(?:triathlon|pentathlon|heptathlon|decathlon))\s*:\s*#\s*\d+\s+(\S.*)$', re.I)
+
+
+def multi_event_name(label, normalize=lambda s: s):
+    """A combined-event header's (event name, is_total), or None.
+    A leg is "<Multi>: <leg>" ("Indoor Pentathlon: 800 Meter Run"), the
+    standings the multi alone ("Indoor Pentathlon")."""
+    s = re.sub(r'\s+', ' ', label or '').strip()
+    m = _MULTI_LEG.search(s)
+    if m:
+        multi = re.sub(r'\s+', ' ', m.group(1)).title()
+        leg = re.sub(r"\b(?:girls|boys|women|men|mixed)\b'?s?", ' ', m.group(2), flags=re.I)
+        leg = strip_age_group(re.sub(r'\bdivision\b', ' ', _MULTI.sub(' ', leg), flags=re.I))
+        leg = re.sub(r'\s+', ' ', leg).strip()
+        if leg:
+            return f'{multi}: {normalize(leg)}', False
+        return multi, True
+    m = _MULTI.search(s)
+    if not m:
+        return None
+    multi = re.sub(r'\s+', ' ', m.group(1)).title()
+    if 'indoor' in s.lower() and not multi.startswith('Indoor'):
+        multi = 'Indoor ' + multi            # "Men Heptathlon Indoor"
+    return multi, True
+
+
+_SHEET_LEGS = {'55H': '55 Meter Hurdles', '60H': '60 Meter Hurdles', '100H': '100 Meter Hurdles',
+               '110H': '110 Meter Hurdles', '55': '55 Meter Dash', '60': '60 Meter Dash',
+               '100': '100 Meter Dash', '200': '200 Meter Dash', '400': '400 Meter Dash',
+               '800': '800 Meter Run', '1000': '1000 Meter Run', '1500': '1500 Meter Run',
+               'HJ': 'High Jump', 'LJ': 'Long Jump', 'TJ': 'Triple Jump', 'PV': 'Pole Vault',
+               'SP': 'Shot Put', 'DT': 'Discus', 'JT': 'Javelin'}
+_SHEET_MARK = re.compile(r'^(?:\d{1,2}:\d{2}(?:\.\d+)?h?|\d{1,3}\.\d{1,2}[mh]?|FOUL|NH|NM|NT|DNF|DNS|DQ|FS|SCR)$', re.I)
+
+
+def _sheet_cells(line, start, ends, pattern):
+    """{column: token} for the tokens of `line` past `start`, each set under
+    the score-sheet column whose right edge it ends nearest (the columns are
+    right-aligned; a blank cell is a mark not made). A sheet whose spacing is
+    lost (PDF text) is read in order when every column holds a token."""
+    toks = [t for t in re.finditer(r'\S+', line) if t.start() >= start]
+    if not toks or not all(pattern.match(t.group()) for t in toks):
+        return {}
+    out = {}
+    for t in toks:
+        k = min(range(len(ends)), key=lambda c: abs(ends[c] - t.end()))
+        if abs(ends[k] - t.end()) > 3 or k in out:
+            out = None
+            break
+        out[k] = t.group()
+    if out is None:
+        out = {k: t.group() for k, t in enumerate(toks)} if len(toks) == len(ends) else {}
+    return out
+
+
+def parse_multi_score_sheet(lines):
+    """Hy-Tek's combined-event score sheet ("Girls Indoor Pentathlon" over
+    "Points  55H  HJ  SP  LJ  800"): three lines an athlete - place, name and
+    the leg marks; the school (and the field marks in feet-inches); the
+    total and each leg's points in brackets. One event per leg
+    ("Indoor Pentathlon: High Jump") and the standings ("Indoor Pentathlon",
+    the points total as the mark)."""
+    events = []
+    i = 0
+    while i < len(lines):
+        hdr = re.match(r'^\s*Points((?:\s+\S+){2,})\s*$', lines[i])
+        title = next((l.strip() for l in reversed(lines[max(0, i - 3):i]) if l.strip()), '')
+        g = re.match(r'(Girls|Boys|Women|Men)\b', title, re.I)
+        multi = multi_event_name(title)
+        if not (hdr and g and multi and multi[1]):
+            i += 1
+            continue
+        gender = {'women': 'Girls', 'men': 'Boys'}.get(g.group(1).lower(), g.group(1).capitalize())
+        labels = hdr.group(1).split()
+        ends = [t.end() for t in re.finditer(r'\S+', lines[i])][1:]
+        legs = [{'event': f'{multi[0]}: {_SHEET_LEGS.get(l.upper(), l)}', 'gender': gender,
+                 'is_relay': False, 'results': []} for l in labels]
+        total = {'event': multi[0], 'gender': gender, 'is_relay': False, 'results': []}
+        i += 1
+        while i < len(lines):
+            line = lines[i]
+            if re.match(r'^\s*Points\s', line) or (re.match(r'^\s*(Girls|Boys|Women|Men)\b', line, re.I)
+                                                    and multi_event_name(line)):
+                break
+            m = re.match(r'^\s*(\d{1,3})\s+([A-Za-z][^\d#]*?)(?:\s*#\d+)?(?=\s{2,}|\s*$)', line)
+            if not m:
+                i += 1
+                continue
+            place, name = int(m.group(1)), re.sub(r'\s+', ' ', m.group(2)).strip()
+            rest = [l for l in lines[i + 1:i + 6] if l.strip() and not re.match(r'^\s*-{5,}', l)][:2]
+            school, tot = 'Unknown', None
+            marks = _sheet_cells(line, m.end(), ends, _SHEET_MARK)
+            imperial, pts = {}, {}
+            if rest and not re.search(r'\(\d+\)', rest[0]):
+                cell = re.match(r'\s*(\S.*?)(?=\s{2,}|\s*$)', rest[0])
+                school = re.sub(r'\s*Team Points:.*$', '', cell.group(1)).strip() or 'Unknown'
+                imperial = _sheet_cells(rest[0], cell.end(), ends, re.compile(r'^\d{1,3}-\d{1,2}(?:\.\d+)?$'))
+                rest = rest[1:]
+            if rest:
+                mt = re.match(r'^\s*(?:Team Points:\s*[\d.]+)?\s*(\d{3,5})(?=\s)', rest[0])
+                if mt:
+                    tot = mt.group(1)
+                    pts = _sheet_cells(rest[0], mt.end(), ends, re.compile(r'^\(\d+\)$'))
+            for k, mk in sorted(marks.items()):
+                if mk.lower().endswith('m') and k in imperial:
+                    mk = imperial[k]          # (feet-inches, as the store keeps field marks)
+                row = {'athlete': name, 'school': school, 'result': re.sub(r'(?<=\d)[mh]$', '', mk, flags=re.I),
+                       'grade': '', 'type': 'Finals'}
+                if row['result'] != mk:
+                    row['warnings'] = [f'Original result: {mk}']
+                if k in pts:
+                    row['points'] = float(pts[k].strip('()'))
+                legs[k]['results'].append(row)
+            if tot:
+                total['results'].append({'athlete': name, 'school': school, 'result': tot,
+                                         'grade': '', 'type': 'Finals', 'place': place})
+            i += 1
+        # (the sheet lists athletes by total: a leg's rows in its own order,
+        # best leg points first; no place is printed for a leg)
+        for ev in legs:
+            if all('points' in r for r in ev['results']):
+                ev['results'].sort(key=lambda r: -r['points'])
+        events += [ev for ev in legs if ev['results']] + ([total] if total['results'] else [])
+    return events
+
+
 # a row's status in place of a mark; without these in the list the scan from
 # the right passes over "FAIL" / "XFOUL" to the seed mark
 STATUS_MARKS = {"DQ", "NH", "NM", "DNS", "DNF", "FOUL", "SCR", "FAIL", "FS", "ND", "NT"}
@@ -821,6 +950,13 @@ class Sub5ColumnParser:
                     line_clean, re.I)
                 if m_late:
                     m_no_event = re.match(r'(\S+)\s+(.*)', f"{m_late.group(2)} {m_late.group(1).strip()}")
+            # a combined-event leg with the gender after the leg: "Heptathlon:
+            # #1 100 Meter Hurdles 15-16 Division Girls Heptathlon"
+            if not m_no_event and not m_event:
+                m_late = re.match(r'^\s*(' + _MULTI_LEG.pattern + r')$', line_clean, re.I)
+                m_late = m_late and re.search(r'\b(Girls|Boys|Women|Men)\b', m_late.group(3), re.I)
+                if m_late:
+                    m_no_event = re.match(r'(\S+)\s+(.*)', f"{m_late.group(1)} {line_clean}")
 
             is_header = False
             gender = ""
@@ -913,6 +1049,11 @@ class Sub5ColumnParser:
 
                 # Normalize the event name
                 normalized_name = self.normalize_event_name(event_name)
+                # a combined event: each leg its own event, the standings
+                # (points totals) the multi itself
+                multi = multi_event_name(line_clean, self.normalize_event_name)
+                if multi:
+                    normalized_name = multi[0]
 
                 current_event = {
                     "gender": gender,
@@ -923,7 +1064,8 @@ class Sub5ColumnParser:
                     # Hurdle": team events that never say "Relay")
                     "is_relay": any(x in normalized_name.lower() or x in event_name.lower()
                                     for x in ["relay", "4x", "medley", "shuttle"]),
-                    "is_ms": is_ms_meet
+                    "is_ms": is_ms_meet,
+                    "multi_total": bool(multi and multi[1]),
                 }
             elif in_rankings:
                 ranking_lines.append(line)
@@ -1054,6 +1196,9 @@ class Sub5ColumnParser:
         # Parse official team rankings from the collected rankings lines only
         # (they no longer run to EOF, so relay rows can't contaminate them)
         team_rankings = self.parse_team_rankings(ranking_lines, 0 if ranking_lines else None)
+        # a combined-event score sheet (no per-event blocks at all)
+        if not parsed_events:
+            parsed_events = parse_multi_score_sheet(lines)
 
         return {
             "meet_name": meet_name,
@@ -1771,7 +1916,9 @@ class Sub5ColumnParser:
                             for k in range(len(parts)-1, 0, -1):
                                 p = parts[k]
                                 is_mark_like = ((re.search(r'\d', p) and ('.' in p or ':' in p or '-' in p))
-                                                or p.upper().lstrip("X") in STATUS_MARKS)
+                                                or p.upper().lstrip("X") in STATUS_MARKS
+                                                # (a combined event's standings: a points total)
+                                                or (ev.get('multi_total') and re.fullmatch(r'\d{3,5}[A-Za-z#*@!$%^&+]{0,2}', p)))
                                 if not is_mark_like:
                                     continue
                                 if _is_wind_reading(p):

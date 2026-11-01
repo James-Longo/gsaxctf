@@ -193,6 +193,10 @@ def family(event, season):
     e = (event or '').lower()
     if season == 'XC' or 'cross country' in e:
         return 'xc'
+    # (a combined event's leg, "Indoor Pentathlon: 55 Meter Hurdles", is a
+    # multi-event mark, not a hurdler's)
+    if re.search(r'triathlon|pentathlon|heptathlon|decathlon', e):
+        return 'multi'
     for k, f in (('hurdle', 'hurdles'), ('steeple', 'distance'), ('jump', 'jumps'),
                  ('vault', 'jumps'), ('put', 'throws'), ('throw', 'throws'),
                  ('discus', 'throws'), ('javelin', 'throws'), ('hammer', 'throws'),

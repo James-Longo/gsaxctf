@@ -49,7 +49,7 @@ WHEELCHAIR = re.compile(r'wheelchair', re.I)
 PARA = re.compile(r'\bpara\b|ambulatory', re.I)
 MILE_RE = re.compile(r'\b(1|2|one|two)?\s*miles?\b', re.I)
 MEDLEY = re.compile(r'medley', re.I)
-PENTA = re.compile(r'pentathlon|heptathlon|decathlon', re.I)
+PENTA = re.compile(r'triathlon|pentathlon|heptathlon|decathlon', re.I)
 
 JUNK = re.compile(
     r'page \d|maine\s*today|team\s+mark|team\s+best|per/sc|bowdoin college|'
@@ -114,8 +114,19 @@ def canonical_event(raw, gender, season=None, level=None, relay=False):
     adaptive = ' (Wheelchair)' if wheelchair else ' (Para Ambulatory)' if PARA.search(s) else ''
     penta = PENTA.search(s)
     if penta:
+        head, colon, leg = s.partition(':')
         kind = penta.group(0).title()
-        return gender, f'Indoor {kind}' if 'indoor' in s.lower() else kind
+        multi = f'Indoor {kind}' if 'indoor' in (head if colon else s).lower() else kind
+        # one leg of it, "Indoor Pentathlon: 800 Meter Run": its own event
+        if colon and PENTA.search(head):
+            # (an older store name keeps Hy-Tek's leg number and the repeat:
+            # "Heptathlon: #1 60 Meter Dash Heptathlon")
+            leg = PENTA.sub(' ', re.sub(r'^\s*#\s*\d+\s', ' ', leg))
+            leg = re.sub(r'\b(?:indoor|outdoor)\b', ' ', leg, flags=re.I)
+            sub = canonical_event(leg, gender, season=season, level=level)
+            if sub and not PENTA.search(sub[1]):
+                return gender, f'{multi}: {sub[1]}'
+        return gender, multi
 
     # relays first (so "4x800" isn't read as an 800)
     m = RELAY_RE.search(s.replace(' ', ' '))

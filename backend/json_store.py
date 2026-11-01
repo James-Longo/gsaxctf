@@ -82,9 +82,19 @@ BAD_MARKS = {'DQ', 'DNS', 'DNF', 'NH', 'NM', 'FOUL', 'SCR', 'ND', 'NT', 'X', 'NW
 DISTANCE_KEYWORDS = ['jump', 'put', 'throw', 'vault', 'discus', 'javelin']
 
 
+def is_multi_total(event_name: str) -> bool:
+    """A combined event's standings ("Indoor Pentathlon"): the mark is a
+    points total, higher is better. Its legs ("Indoor Pentathlon: 800 Meter
+    Run") are ordinary races and field events."""
+    return bool(event_name) and ':' not in event_name and bool(
+        re.search(r'triathlon|pentathlon|heptathlon|decathlon', event_name, re.I))
+
+
 def is_distance_event(event_name: str) -> bool:
     if not event_name:
         return False
+    if is_multi_total(event_name):
+        return True    # (points: higher is better)
     return any(k in event_name.lower() for k in DISTANCE_KEYWORDS)
 
 
@@ -100,6 +110,8 @@ def parse_mark_value(mark: str, event_name: str = "") -> tuple:
     if m in BAD_MARKS or any(m.startswith(b) for b in BAD_MARKS):
         return None, None
 
+    if is_multi_total(event_name):
+        return (float(m), True) if re.fullmatch(r'\d{1,5}', m) and int(m) > 0 else (None, None)
     force_distance = is_distance_event(event_name)
     has_dist_chars = ("'" in m or '"' in m or
                       (bool(re.search(r'\d-\d', m)) and ':' not in m))

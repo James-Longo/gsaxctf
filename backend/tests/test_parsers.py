@@ -1512,6 +1512,11 @@ def test_round2_status_rows_glued_header_and_relay_names():
     d = {'events': [{'results': [dict(relay, athletes=['Ann Ames SO', 'Bea Bean JR'])]}]}
     strip_leg_grades(d)
     assert d['events'][0]['results'][0]['athletes'] == ['Ann Ames', 'Bea Bean']
+    from backend.scraper_v2 import clean_leg_grades
+    assert clean_leg_grades(['Emily Craft SO', 'Linsey House', 'Taylor True', 'Faith Shaw FR']) == [
+        'Emily Craft', 'Linsey House', 'Taylor True', 'Faith Shaw']
+    assert clean_leg_grades(['Christopher Bowden', 'James Wheatley Jr', 'Fred Thompson', 'Jon Murray']) == [
+        'Christopher Bowden', 'James Wheatley Jr', 'Fred Thompson', 'Jon Murray']
 
 
 
@@ -2943,3 +2948,129 @@ def test_team_rankings_block_with_one_team():
             "    1) Auburn Middle School        86        2) Lyman Moore                14\n\n")
     got = sorted((b['division'], [(t['team'], t['score']) for t in b['teams']]) for b in extract_team_scores(text))
     assert got[0] == ('6th grade', [('Lyman Moore', 69.0)]), got
+
+
+MULTI_LEGS_TXT = """\
+<PRE>
+                      2020 Test Indoor Meet - 1/4/2020
+                                      Results
+
+Girls 55 Meter Dash
+============================================================================
+    Name                    Year School                  Seed     Finals  H#
+============================================================================
+  1 Ada Quill                 SR Gorham                  7.60       7.41   1
+  2 Bea Rook                  JR Windham                 7.70       7.55   1
+
+Indoor Pentathlon: #5 Girls 800 Meter Run Indoor Pentathlon
+=======================================================================
+    Name                    Year School                  Finals  Points
+=======================================================================
+  1 Cora Lark                    Bonny Eagle            2:51.35     450
+  2 Dana Finch                SO Windham                3:00.15     364
+
+Indoor Pentathlon: #3 Girls High Jump Indoor Pentathlon
+=======================================================================
+    Name                    Year School                  Finals  Points
+=======================================================================
+  1 Dana Finch                SO Windham                  1.42m     534
+  2 Cora Lark                    Bonny Eagle              1.37m     481
+
+Event 21  Indoor Pentathlon: #1 Women 55 Meter Hurdles Indoor Pentathlon
+=======================================================================
+    Name                    Year School                  Finals  Points
+=======================================================================
+  1 Cora Lark                    Bonny Eagle              10.97     409
+  2 Dana Finch                SO Windham                  11.11     386
+
+Girls Indoor Pentathlon
+============================================================================
+    Name                    Year School                  Seed     Finals  H#
+============================================================================
+  1 Cora Lark                    Bonny Eagle                        2183R    
+  2 Dana Finch                SO Windham                 1362       1447     
+
+Girls High Jump
+=======================================================================
+    Name                    Year School                  Finals
+=======================================================================
+  1 Ada Quill                 SR Gorham                 5-02.00
+</PRE>
+"""
+
+
+def test_multi_event_legs_and_standings():
+    """Hy-Tek combined events (Results2.htm 2020): each leg header ("Indoor
+    Pentathlon: #5 Girls 800 Meter Run Indoor Pentathlon") is its own event,
+    not one "Indoor Pentathlon" mixing 2:51 and 1.42; the standings block's
+    integer points totals are read as marks there and only there."""
+    data = Sub5ColumnParser('Results2.htm', text=MULTI_LEGS_TXT).parse()
+    got = {(e['event'], e['gender']): e['results'] for e in data['events']}
+    assert [r['result'] for r in got[('Indoor Pentathlon: 800 Meter Run', 'Girls')]] == ['2:51.35', '3:00.15']
+    assert got[('Indoor Pentathlon: 800 Meter Run', 'Girls')][0]['points'] == 450.0
+    assert [r['result'] for r in got[('Indoor Pentathlon: High Jump', 'Girls')]] == ['1.42', '1.37']
+    assert [r['result'] for r in got[('Indoor Pentathlon: 55 Meter Hurdles', 'Girls')]] == ['10.97', '11.11']
+    tot = got[('Indoor Pentathlon', 'Girls')]
+    assert [(r['athlete'], r['result'], r['place']) for r in tot] == [
+        ('Cora Lark', '2183', 1), ('Dana Finch', '1447', 2)], tot
+    # the other events are untouched
+    assert [r['result'] for r in got[('55 Meter Dash', 'Girls')]] == ['7.41', '7.55']
+    assert [r['athlete'] for r in got[('High Jump', 'Girls')]] == ['Ada Quill']
+
+
+def test_multi_event_canonical_names():
+    """A leg canonicalises as "<multi>: <leg>"; the multi alone keeps its name."""
+    from backend.event_canon import canonical_event
+    assert canonical_event('Indoor Pentathlon: 800 Meter Run', 'Girls') == ('Girls', 'Indoor Pentathlon: 800 Meter Run')
+    assert canonical_event('Heptathlon: Javelin Throw', 'Girls') == ('Girls', 'Heptathlon: Javelin')
+    assert canonical_event('Indoor Pentathlon: 1000 Meter Dash', 'Boys') == ('Boys', 'Indoor Pentathlon: 1000 Meter Run')
+    # (an older store name keeps the leg number and the repeat)
+    assert canonical_event('Heptathlon: #1 60 Meter Dash Heptathlon', 'Boys') == ('Boys', 'Heptathlon: 60 Meter Dash')
+    assert canonical_event('Indoor Pentathlon', 'Girls') == ('Girls', 'Indoor Pentathlon')
+    assert canonical_event('Men Heptathlon Indoor', 'Boys') == ('Boys', 'Indoor Heptathlon')
+    assert canonical_event('Indoor Pentathlon: unreadable', 'Girls') == ('Girls', 'Indoor Pentathlon')
+    from backend.json_store import parse_mark_value, is_multi_total
+    assert is_multi_total('Indoor Pentathlon') and not is_multi_total('Indoor Pentathlon: 800 Meter Run')
+    assert parse_mark_value('2183', 'Indoor Pentathlon') == (2183.0, True)       # points: higher is better
+    assert parse_mark_value('2:51.35', 'Indoor Pentathlon: 800 Meter Run') == (171.35, False)
+
+
+MULTI_SHEET_TXT = """\
+<PRE>
+  University of Southern Maine           ANAGER  3:24 PM  02/23/2007  Page 1
+                              Pentathlon - 02/23/2007
+                            Results - Indoor Pentathlon
+  Boys Indoor Pentathlon
+                              Points      55H       LJ       SP       HJ     1000
+      ---------------------------------------------------------------------------
+    1 Quill, Ada                         8.14    5.90m   10.85m    1.83m  3:02.36
+      John Bapst                              19-04.25 35-07.25     6-00
+      Team Points: 10           3170    (774)    (565)    (537)    (653)    (641)
+                                -------------------------------------------------
+    2 Rook, Bea                          9.02     FOUL   12.63m    1.62m  3:08.0h
+      Waterville High School                           41-05.25  5-03.75
+                                2277    (573)      (0)    (645)    (480)    (579)
+                                -------------------------------------------------
+    3 Lark, Cora                        10.88    4.53m   13.64m           3:06.77
+      York High School                         14-10.5    44-09
+                                1811    (211)    (295)    (706)      (0)    (599)
+</PRE>
+"""
+
+
+def test_multi_event_score_sheet():
+    """Hy-Tek's combined-event score sheet (pent07boysresult.txt.htm): three
+    lines an athlete, marks under right-aligned leg columns (a blank cell is
+    no mark, FOUL a foul), feet-inches under the field legs, leg points in
+    brackets. One event per leg plus the totals."""
+    data = Sub5ColumnParser('pent07boysresult.txt.htm', text=MULTI_SHEET_TXT).parse()
+    got = {e['event']: e['results'] for e in data['events'] if e['gender'] == 'Boys'}
+    lj = got['Indoor Pentathlon: Long Jump']
+    assert [(r['athlete'], r['result'], r['points']) for r in lj] == [
+        ('Quill, Ada', '19-04.25', 565.0), ('Lark, Cora', '14-10.5', 295.0), ('Rook, Bea', 'FOUL', 0.0)], lj
+    assert [r['athlete'] for r in got['Indoor Pentathlon: High Jump']] == ['Quill, Ada', 'Rook, Bea']
+    assert [r['result'] for r in got['Indoor Pentathlon: Shot Put']] == ['44-09', '41-05.25', '35-07.25']
+    assert {r['athlete']: r['result'] for r in got['Indoor Pentathlon: 1000 Meter Run']}['Rook, Bea'] == '3:08.0'
+    assert [(r['athlete'], r['school'], r['result'], r['place']) for r in got['Indoor Pentathlon']] == [
+        ('Quill, Ada', 'John Bapst', '3170', 1), ('Rook, Bea', 'Waterville High School', '2277', 2),
+        ('Lark, Cora', 'York High School', '1811', 3)]
