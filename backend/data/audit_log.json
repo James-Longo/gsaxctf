@@ -11247,6 +11247,22 @@
   "parse_sha": "b35fda4fe99c9eac",
   "source_sha": "adb1b5557087055f"
  },
+ "backend/data/parsed_results/2019/Indoor/2019-USM-Relays-1.json": {
+  "verdict": "confirmed",
+  "by": "sonnet audit (second read, 2026-11-02)",
+  "notes": "2018 USM New Year's Relays (12/29/2018), high-school relays. All 792 rows match the source: individual field events listed under 'Pole Vault Relay' etc. (individual attempts), prelims/finals of 55 Dash and 55 Hurdles, distance and sprint medleys, 4x200/4x400/4x800 with legs, racewalks, and the Indoor Pentathlon (totals event plus five component events with points, metric marks stored without 'm' with an 'Original result' warning). Givon McLean (Wells) FS kept as status. No team scores printed.",
+  "date": "2026-11-02",
+  "parse_sha": "16c5fb704dcf5fd8",
+  "source_sha": "1c520e302ee59b2a"
+ },
+ "backend/data/parsed_results/2019/Indoor/Bow-meet-12-22-updateResults.json": {
+  "verdict": "confirmed",
+  "by": "sonnet audit (second read, 2026-11-02)",
+  "notes": "KVAC Meet #3 (12/22/2018, Bowdoin). All 226 rows match (bib column dropped, names truncated as printed, 'LA' = Lincoln Academy, 'MTA' = Mt. Ararat, Medomak); J7.22 (Christopher, Messalonskee, 3rd) is a tie-break flag stored as 7.22; x-marks (Mt. Ararat B/C/D/E relays) stored as exhibition; relays print no legs. Printed Men and Women team rankings equal the parse; the checker's verified_close (Boys Lincoln Academy computed 32 vs printed 31) is a one-point difference in the sheet's own scoring that no row explains (Lincoln: 55H 1st+3rd, dash 5th, mile 1st+2nd, 400 3rd+4th, 800 4th, 200 4th, 4x200 3rd).",
+  "date": "2026-11-02",
+  "parse_sha": "650c72c49fa385d1",
+  "source_sha": "b31ca1fbc9a9151b"
+ },
  "backend/data/parsed_results/2019/XC/092619FMSXCBoysOverallResults.txt.json": {
   "verdict": "fixed",
   "by": "sonnet audit (second read, 2026-10-24)",
@@ -12174,6 +12190,238 @@
   "date": "2026-10-31",
   "parse_sha": "95ce1a8abaa932a1",
   "source_sha": "3d8086732488015a"
+ },
+ "backend/data/parsed_results/2020/Indoor/ResultsSMAA1-1.json": {
+  "verdict": "confirmed",
+  "by": "sonnet audit (second read, 2026-11-02)",
+  "notes": "Hy-Tek (Down East Sports Timing) meet: checked every row of every event against the source by script and by column position (place, name, school, Finals-column mark, status rows, x/J prefixes, events/gender/division headers, exhibition flags) with no difference; printed team scores (6 blocks) equal the parse's team_rankings. SMAA Week 3 Meet 1 (Chev-Deer-Gorh-Thornton-Noble), 1/11/2020 matches the index. 26 events (Junior/Senior/Open divisions as separate events). 1 'x' exhibition relay row flagged. Event '600 Yard Dash Open Division' keeps the division suffix in its name (parser pattern: the suffix is not stripped for yard events; backend/event_canon.py strips 'Open Division' downstream, so harmless). Ledger warning 'transcribed/verified but never signed off' = only that no reader had signed it.",
+  "date": "2026-11-02",
+  "parse_sha": "bf8692448cccfe8c",
+  "source_sha": "511d44ea60c51624"
+ },
+ "backend/data/parsed_results/2020/Indoor/ResultsSMAA1.json": {
+  "verdict": "confirmed",
+  "by": "sonnet audit (second read, 2026-11-02)",
+  "notes": "Hy-Tek (Down East Sports Timing) meet: checked every row of every event against the source by script and by column position (place, name, school, Finals-column mark, status rows, x/J prefixes, events/gender/division headers, exhibition flags) with no difference; printed team scores (6 blocks) equal the parse's team_rankings. SMAA Week 2 Meet 1 (West-Thorn-So Port-Falm-Port), 1/4/2020 matches the index. 52 events. Event '600 Yard Dash Open Division' keeps the division suffix in its name (parser pattern: the suffix is not stripped for yard events; backend/event_canon.py strips 'Open Division' downstream, so harmless). Ledger warning 'transcribed/verified but never signed off' = only that no reader had signed it.",
+  "date": "2026-11-02",
+  "parse_sha": "e40236e62d7fbffe",
+  "source_sha": "0ac3496e553e208f"
+ },
+ "backend/data/parsed_results/2020/Indoor/ResultsSMAA2-1.json": {
+  "verdict": "confirmed",
+  "by": "sonnet audit (second read, 2026-11-02)",
+  "notes": "Hy-Tek (Down East Sports Timing) meet: checked every row of every event against the source by script and by column position (place, name, school, Finals-column mark, status rows, x/J prefixes, events/gender/division headers, exhibition flags) with no difference; printed team scores (6 blocks) equal the parse's team_rankings. SMAA Week 2 Meet 2 (Deer-Gorh-Kenn-Mass-Noble), 1/4/2020 matches the index. 52 events. Event '600 Yard Dash Open Division' keeps the division suffix in its name (parser pattern: the suffix is not stripped for yard events; backend/event_canon.py strips 'Open Division' downstream, so harmless). Ledger warning 'transcribed/verified but never signed off' = only that no reader had signed it.",
+  "date": "2026-11-02",
+  "parse_sha": "49a953c67476feeb",
+  "source_sha": "c017d0439a8ca9e2"
+ },
+ "backend/data/parsed_results/2020/Indoor/ResultsSMAA3-1.json": {
+  "verdict": "confirmed",
+  "by": "sonnet audit (second read, 2026-11-02)",
+  "notes": "Hy-Tek (Down East Sports Timing) meet: checked every row of every event against the source by script and by column position (place, name, school, Finals-column mark, status rows, x/J prefixes, events/gender/division headers, exhibition flags) with no difference; printed team scores (6 blocks) equal the parse's team_rankings. SMAA Week 3 Meet 3 (BE/Falm/Marsh/Mass/Port), 1/11/2020 matches the index. 52 events. Event '600 Yard Dash Open Division' keeps the division suffix in its name (parser pattern: the suffix is not stripped for yard events; backend/event_canon.py strips 'Open Division' downstream, so harmless). Ledger warning 'transcribed/verified but never signed off' = only that no reader had signed it.",
+  "date": "2026-11-02",
+  "parse_sha": "4786e6e15123ad68",
+  "source_sha": "d2dd9a7bfe462c58"
+ },
+ "backend/data/parsed_results/2020/Indoor/ResultsSMAA3.json": {
+  "verdict": "confirmed",
+  "by": "sonnet audit (second read, 2026-11-02)",
+  "notes": "Hy-Tek (Down East Sports Timing) meet: checked every row of every event against the source by script and by column position (place, name, school, Finals-column mark, status rows, x/J prefixes, events/gender/division headers, exhibition flags) with no difference; printed team scores (6 blocks) equal the parse's team_rankings. SMAA Week 2 Meet 3 (BE, Bidd, Chev, Marsh, Scar, Wind), 1/4/2020 matches the index. 52 events. 'Emma Gallant' (Cheverus) is printed once as an SCR row in the boys 200 (source entry quirk, status row only, parse equals source). Event '600 Yard Dash Open Division' keeps the division suffix in its name (parser pattern: the suffix is not stripped for yard events; backend/event_canon.py strips 'Open Division' downstream, so harmless). Ledger warning 'transcribed/verified but never signed off' = only that no reader had signed it.",
+  "date": "2026-11-02",
+  "parse_sha": "fd1ac92b21389eef",
+  "source_sha": "cf0053aa02bafb13"
+ },
+ "backend/data/parsed_results/2020/Indoor/ResultsUSM.json": {
+  "verdict": "confirmed",
+  "by": "sonnet audit (second read, 2026-11-02)",
+  "notes": "Hy-Tek 'USM Meet 1 - 12/20/2019' (index: KVAC Week 3 Meet 2, 12/20/2019, matches): high-school teams (Edward Little, Winslow 'Wins', Brunswick 'Brun', Lawrence, Skowhegan, Waterville, Morse), not a college meet. All 28 events checked row by row incl. the Points column (10-8-6-4-3-2-1, ties split e.g. boys 55 3rd/3rd = 5 each) and J-prefixed field marks: parse equals source. No team scores are printed (ledger 'unverified' = nothing to check against, not a defect). Ledger warning 'transcribed/verified but never signed off' = only that no reader had signed it.",
+  "date": "2026-11-02",
+  "parse_sha": "0373a458a0ac4809",
+  "source_sha": "bb9edae9082a844f"
+ },
+ "backend/data/parsed_results/2020/Indoor/ResultsWMC.json": {
+  "verdict": "confirmed",
+  "by": "sonnet audit (second read, 2026-11-02)",
+  "notes": "Hy-Tek (Down East Sports Timing) meet: checked every row of every event against the source by script and by column position (place, name, school, Finals-column mark, status rows, x/J prefixes, events/gender/division headers, exhibition flags) with no difference; printed team scores (6 blocks) equal the parse's team_rankings. WMC Indoor Track Championship 2/8/2020 matches the index; preliminaries and finals are separate events (both kept by design; q markers dropped, original kept in warnings). Ledger warning '3 results flagged as implausible' = real marks printed in the source: Becvar, Keagan POL boys shot 26-07.00 (seed 25-02.25), Nice, Jack NYA boys shot 32-03.50 (seed 30-10.75), plus a gender-bleed flag from athlete-id merging; no parse error.",
+  "date": "2026-11-02",
+  "parse_sha": "9b7109edbcfaf265",
+  "source_sha": "94dd7210971fccfd"
+ },
+ "backend/data/parsed_results/2020/Indoor/ResultsWMC1-1.json": {
+  "verdict": "fixed",
+  "by": "sonnet audit (second read, 2026-11-02)",
+  "notes": "Hy-Tek (Down East Sports Timing) meet: checked every row of every event against the source by script and by column position (place, name, school, Finals-column mark, status rows, x/J prefixes, events/gender/division headers, exhibition flags) with no difference; printed team scores (6 blocks) equal the parse's team_rankings. WMC Week 2 Meet 1 (title 1/10/2020) matches the index. Warning is only 'never signed off'. Two findings: school and a status note. SCHOOL CODE: raw 'FA Indoor Track' (relay rows and team-score list, unresolved) -> me-hs-fryeburg; evidence: the same WMC meet lists Fryeburg Academy individuals as 'Fait' (-> me-hs-fryeburg), its team-score list has 'FA Indoor Track' as the seventh team and no other Fryeburg entry, and FA is Fryeburg Academy in the WMC. Per-meet rule for stems ResultsWMC1-1, ResultsWMC1, Resultsmeet-1, Resultswmc2-1. 'SACO' (Wedgewood, Evan: DNS/NH/DNS status rows only, no mark, no scoring effect) resolves to me-ms-saco by the catalog code; no other meet carries him and no team-score entry uses it, so left as is.",
+  "date": "2026-11-02",
+  "parse_sha": "eab6112a91ac883a",
+  "source_sha": "245ae39355492ff4"
+ },
+ "backend/data/parsed_results/2020/Indoor/ResultsWMC1.json": {
+  "verdict": "fixed",
+  "by": "sonnet audit (second read, 2026-11-02)",
+  "notes": "Hy-Tek (Down East Sports Timing) meet: checked every row of every event against the source by script and by column position (place, name, school, Finals-column mark, status rows, x/J prefixes, events/gender/division headers, exhibition flags) with no difference; printed team scores (6 blocks) equal the parse's team_rankings. File prints 'WESTERN MAINE CONFERENCE INDOOR TRACK - 1/31/2020, WEEK 5 MEET 1' (Hy-Tek 1/31/2020 7:49 PM); index says 2020-01-03 (Week 1 Meet 1): DATE CONFLICT, the index reused the generic file name; the file is right (Week 5, 1/31). SCHOOL CODE: raw 'FA Indoor Track' (relay rows and team-score list, unresolved) -> me-hs-fryeburg; evidence: the same WMC meet lists Fryeburg Academy individuals as 'Fait' (-> me-hs-fryeburg), its team-score list has 'FA Indoor Track' as the seventh team and no other Fryeburg entry, and FA is Fryeburg Academy in the WMC. Per-meet rule for stems ResultsWMC1-1, ResultsWMC1, Resultsmeet-1, Resultswmc2-1.",
+  "date": "2026-11-02",
+  "parse_sha": "f7b12fb2ed95cda6",
+  "source_sha": "c6dd7ff0d6c52002"
+ },
+ "backend/data/parsed_results/2020/Indoor/ResultsWMC2-1.json": {
+  "verdict": "fixed",
+  "by": "sonnet audit (second read, 2026-11-02)",
+  "notes": "Hy-Tek (Down East Sports Timing) meet: checked every row of every event against the source by script and by column position (place, name, school, Finals-column mark, status rows, x/J prefixes, events/gender/division headers, exhibition flags) with no difference; printed team scores (6 blocks) equal the parse's team_rankings. WMC Week 2 Meet 2 (title 1/10/2020) matches the index; warning is only 'never signed off'. Note 'Dinsmore' etc. J-prefix tie marks and X exhibition relays handled correctly. SCHOOL CODE: raw 'Boothbay Region Indoor' (relay rows and team-score list) resolves to me-hs-boothbay while the same file's individuals 'BRHS' resolve to coop-boothbay-wiscasset; one team, so -> coop-boothbay-wiscasset (same rule the ledger already holds for 2020 Results2); stems ResultsWMC2-1, ResultsWMC2, Resultswmc2-1.",
+  "date": "2026-11-02",
+  "parse_sha": "28063d2c39d08bde",
+  "source_sha": "f86ebd8a4a78edc8"
+ },
+ "backend/data/parsed_results/2020/Indoor/ResultsWMC2.json": {
+  "verdict": "fixed",
+  "by": "sonnet audit (second read, 2026-11-02)",
+  "notes": "Hy-Tek (Down East Sports Timing) meet: checked every row of every event against the source by script and by column position (place, name, school, Finals-column mark, status rows, x/J prefixes, events/gender/division headers, exhibition flags) with no difference; printed team scores (6 blocks) equal the parse's team_rankings. File prints 'WESTERN MAINE CONFERENCE INDOOR TRACK - 1/24/2020, WEEK 5 MEET 2' but Hy-Tek stamp 1/31/2020 11:04 PM; index says 2020-01-03. DATE CONFLICT: the index is wrong (generic file name reused). The title date 1/24 is a stale Week 4 setup date: Week 5 Meet 1 (ResultsWMC1) is 1/31/2020 7:49 PM, Week 4 Meet 1 (Resultsmeet-1) is 1/24, and this file's teams (York, Poland, Greely, Traip, Wells, NYA, BRHS, Mountain Valley) are exactly the WMC teams not in Week 5 Meet 1, so it is Week 5 Meet 2 on 1/31/2020 (medium-high confidence). SCHOOL CODE: raw 'Boothbay Region Indoor' (relay rows and team-score list) resolves to me-hs-boothbay while the same file's individuals 'BRHS' resolve to coop-boothbay-wiscasset; one team, so -> coop-boothbay-wiscasset (same rule the ledger already holds for 2020 Results2); stems ResultsWMC2-1, ResultsWMC2, Resultswmc2-1.",
+  "date": "2026-11-02",
+  "parse_sha": "555348e0d9207ac4",
+  "source_sha": "171cb84920a21dfb"
+ },
+ "backend/data/parsed_results/2020/Indoor/Resultsmeet-1-1.json": {
+  "verdict": "confirmed",
+  "by": "sonnet audit (second read, 2026-11-02)",
+  "notes": "Hy-Tek (Down East Sports Timing) meet: checked every row of every event against the source by script and by column position (place, name, school, Finals-column mark, status rows, x/J prefixes, events/gender/division headers, exhibition flags) with no difference; printed team scores (6 blocks) equal the parse's team_rankings. SMAA Week 5 Meet 1 (Noble-Portland-West-Windham), 2/1/2020 matches the index. 'Windham High' school string (truncated column) -> me-hs-windham. 26-event file. Event '600 Yard Dash Open Division' keeps the division suffix in its name (parser pattern: the suffix is not stripped for yard events; backend/event_canon.py strips 'Open Division' downstream, so harmless). Ledger warning 'transcribed/verified but never signed off' = only that no reader had signed it.",
+  "date": "2026-11-02",
+  "parse_sha": "a970dab213e4a182",
+  "source_sha": "ce5d1714c230bbe3"
+ },
+ "backend/data/parsed_results/2020/Indoor/Resultsmeet-1.json": {
+  "verdict": "fixed",
+  "by": "sonnet audit (second read, 2026-11-02)",
+  "notes": "Hy-Tek (Down East Sports Timing) meet: checked every row of every event against the source by script and by column position (place, name, school, Finals-column mark, status rows, x/J prefixes, events/gender/division headers, exhibition flags) with no difference; printed team scores (6 blocks) equal the parse's team_rankings. WMC Week 4 Meet 1, 1/24/2020 matches the index. Warning is only 'never signed off'. 9 'X' exhibition B relays flagged correctly. SCHOOL CODE: raw 'FA Indoor Track' (relay rows and team-score list, unresolved) -> me-hs-fryeburg; evidence: the same WMC meet lists Fryeburg Academy individuals as 'Fait' (-> me-hs-fryeburg), its team-score list has 'FA Indoor Track' as the seventh team and no other Fryeburg entry, and FA is Fryeburg Academy in the WMC. Per-meet rule for stems ResultsWMC1-1, ResultsWMC1, Resultsmeet-1, Resultswmc2-1. 'SACO' (Wedgewood, Evan: DNS/NH/DNS status rows only, no mark, no scoring effect) resolves to me-ms-saco by the catalog code; no other meet carries him and no team-score entry uses it, so left as is.",
+  "date": "2026-11-02",
+  "parse_sha": "d3bff887f4f6bab2",
+  "source_sha": "522b67eb584f1e59"
+ },
+ "backend/data/parsed_results/2020/Indoor/Resultsmeet-2.json": {
+  "verdict": "confirmed",
+  "by": "sonnet audit (second read, 2026-11-02)",
+  "notes": "Hy-Tek (Down East Sports Timing) meet: checked every row of every event against the source by script and by column position (place, name, school, Finals-column mark, status rows, x/J prefixes, events/gender/division headers, exhibition flags) with no difference; printed team scores (6 blocks) equal the parse's team_rankings. File title 'SMAA Week 5 Meet 2 - 2/1/2020' (Gorham/TA/Marsh/Mass/Scar/SP; Hy-Tek stamp 2/1/2020 10:56 PM). DATE CONFLICT: the sub5 index gives 2020-01-24 ('WMC Week 4 Meet 1/Meet 2') for Resultsmeet-2.htm, but the file's teams (Gorham, Scarborough, Thornton, South Portland, Marshwood, Massabesic) and title are SMAA Week 5 Meet 2: the index reused a generic file name; the file is right. 'Scarboro' = Scarborough, 'Sanford' stray entrants. Event '600 Yard Dash Open Division' keeps the division suffix in its name (parser pattern: the suffix is not stripped for yard events; backend/event_canon.py strips 'Open Division' downstream, so harmless). Ledger warning 'transcribed/verified but never signed off' = only that no reader had signed it.",
+  "date": "2026-11-02",
+  "parse_sha": "1df610d7ffe46cc1",
+  "source_sha": "3267012c5f18d851"
+ },
+ "backend/data/parsed_results/2020/Indoor/Resultsmeet3.json": {
+  "verdict": "confirmed",
+  "by": "sonnet audit (second read, 2026-11-02)",
+  "notes": "Hy-Tek (Down East Sports Timing) meet: checked every row of every event against the source by script and by column position (place, name, school, Finals-column mark, status rows, x/J prefixes, events/gender/division headers, exhibition flags) with no difference; printed team scores (6 blocks) equal the parse's team_rankings. SMAA Week 5 Meet 3 (Bonny Eagle-Falm-Bidd-Kenn-Chev-Deer), 2/1/2020 matches the index. 'Scots' = Bonny Eagle (-> me-hs-bonny-eagle; team list names Bonny Eagle), 'KENN' = Kennebunk. Event '600 Yard Dash Open Division' keeps the division suffix in its name (parser pattern: the suffix is not stripped for yard events; backend/event_canon.py strips 'Open Division' downstream, so harmless). Ledger warning 'transcribed/verified but never signed off' = only that no reader had signed it.",
+  "date": "2026-11-02",
+  "parse_sha": "95a77236b7202e4e",
+  "source_sha": "67e61b85ea2566c6"
+ },
+ "backend/data/parsed_results/2020/Indoor/Resultssmaa2.json": {
+  "verdict": "confirmed",
+  "by": "sonnet audit (second read, 2026-11-02)",
+  "notes": "Hy-Tek (Down East Sports Timing) meet: checked every row of every event against the source by script and by column position (place, name, school, Finals-column mark, status rows, x/J prefixes, events/gender/division headers, exhibition flags) with no difference; printed team scores (6 blocks) equal the parse's team_rankings. SMAA Week 3 Meet 2 (Bidd/Kenn/Scar/SP/West/Wind), 1/11/2020 matches the index. 52 events. Event '600 Yard Dash Open Division' keeps the division suffix in its name (parser pattern: the suffix is not stripped for yard events; backend/event_canon.py strips 'Open Division' downstream, so harmless). Ledger warning 'transcribed/verified but never signed off' = only that no reader had signed it.",
+  "date": "2026-11-02",
+  "parse_sha": "1ea6a1e7d42d11c6",
+  "source_sha": "89de674cb850d873"
+ },
+ "backend/data/parsed_results/2020/Indoor/Resultswmc2-1.json": {
+  "verdict": "fixed",
+  "by": "sonnet audit (second read, 2026-11-02)",
+  "notes": "Hy-Tek (Down East Sports Timing) meet: checked every row of every event against the source by script and by column position (place, name, school, Finals-column mark, status rows, x/J prefixes, events/gender/division headers, exhibition flags) with no difference; printed team scores (6 blocks) equal the parse's team_rankings. Title 'WESTERN MAINE CONFERENCE INDOOR TRACK - 1/17/2020 / WEEK 2 MEET 2' (Hy-Tek stamp 1/18/2020 6:22 AM): index says 2020-01-17 (Week 3 Meet 1/Meet 2) so the date agrees; the 'WEEK 2 MEET 2' in the title is stale (the file's teams York, Gray-NG, Freeport, Yarmouth, Fryeburg, BRHS, Mountain Valley differ from the real Week 2 Meet 2 file ResultsWMC2-1). SCHOOL CODE: raw 'FA Indoor Track' (relay rows and team-score list, unresolved) -> me-hs-fryeburg; evidence: the same WMC meet lists Fryeburg Academy individuals as 'Fait' (-> me-hs-fryeburg), its team-score list has 'FA Indoor Track' as the seventh team and no other Fryeburg entry, and FA is Fryeburg Academy in the WMC. Per-meet rule for stems ResultsWMC1-1, ResultsWMC1, Resultsmeet-1, Resultswmc2-1. SCHOOL CODE: raw 'Boothbay Region Indoor' (relay rows and team-score list) resolves to me-hs-boothbay while the same file's individuals 'BRHS' resolve to coop-boothbay-wiscasset; one team, so -> coop-boothbay-wiscasset (same rule the ledger already holds for 2020 Results2); stems ResultsWMC2-1, ResultsWMC2, Resultswmc2-1.",
+  "date": "2026-11-02",
+  "parse_sha": "4ff2064c1d7bc70f",
+  "source_sha": "6269d74df99015b3"
+ },
+ "backend/data/parsed_results/2020/Indoor/T2Results.json": {
+  "verdict": "confirmed",
+  "by": "sonnet audit (second read, 2026-11-02)",
+  "notes": "KVAC IDT Meet #12 at Bowdoin, 1/4/2020 (index: KVAC Week 5 Meet 3, matches); high-school teams. All 31 events and rows match (places, names, grades, marks, 14 'x' exhibition rows, 3 wheelchair events). Ledger warning 'team scores do not add up' = scoring_rules, not a parse error: only Boys Leavitt is off (printed 66, checker 93, delta 27 = three wheelchair events with one entrant each (Schomaker, Jonathan: 1 mile, 800 yd, shot put) that the file scores 1 point each, while the checker gives them 10); Leavitt's other rows sum to 63 by 10-8-6-4-3-2-1 and 63+3 = 66 = printed. All other 13 team totals equal the checker's. Printed totals are the file's own and are stored as printed. Ledger warning 'transcribed/verified but never signed off' = only that no reader had signed it.",
+  "date": "2026-11-02",
+  "parse_sha": "3ac8d99aada01318",
+  "source_sha": "b98b0722ed101a0a"
+ },
+ "backend/data/parsed_results/2020/Indoor/classaboys2020.json": {
+  "verdict": "confirmed",
+  "by": "sonnet audit (second read, 2026-11-02)",
+  "notes": "2020 Class A Indoor State Meet boys (USM, 2/17/2020). Every row of all 16 events (prelims and finals, 251 rows incl. 21+8 hurdles, relays with legs, status NH) matches the source in event, place, name, school, mark; places incl. ties (PV 5/5, 7/7) as printed. Printed 'Men - Team Rankings - 14 Events Scored' (Scarborough 103, Brunswick 56, Mt. Ararat 33 ... Skowhegan 4, 23 teams incl. 17.50/16.50) equals the parse and the checker verifies it. Flag: Ben Drummey (Biddeford) PV 16-00.00 is printed ('1 Ben Drummey SR Biddeford 16-00.00 10'), a real mark.",
+  "date": "2026-11-02",
+  "parse_sha": "70022add62cdd24b",
+  "source_sha": "ad16205cbb8244d2"
+ },
+ "backend/data/parsed_results/2020/Indoor/emitl2a_2019_dec_28.json": {
+  "verdict": "fixed",
+  "by": "sonnet audit (second read, 2026-11-02)",
+  "notes": "PVC-EMITL Meet 2A (12/28/2019). All rows/places/marks/relay legs/team rankings (Women Meet A Brewer 165 ... ; Men Brewer 95, Hermon 85 ...) match except two fixes, in the override. (1) Events 65/66 'Girls|Boys 4x100 Meter Relay Throwers' Re[lay]' were filed as plain 4x100 Meter Relay: renamed '4x100 Meter Throwers Relay'. (2) Boys 2 Mile Run, Aiden Searway (HER) DQ: the printed reason '+ 3 steps on curb' was read as 3 points; removed (this was the verified_close delta: Hermon computed 88 vs printed 85). Central 'B' X1:13.74 stays exhibition; 'HER' = Hermon. PARSER PATTERNS: Throwers' Relay header truncated at 'Re' -> plain relay name (all 2019-2020 EMITL files); DQ reason note containing a number read as points.",
+  "date": "2026-11-02",
+  "parse_sha": "21fe8ae8c35958da",
+  "source_sha": "5ac3abfc709ccf0c"
+ },
+ "backend/data/parsed_results/2020/Indoor/emitl5b18jan2020.json": {
+  "verdict": "fixed",
+  "by": "sonnet audit (second read, 2026-11-02)",
+  "notes": "PVC-EMITL Meet 5B (1/18/2020). Rows/places/marks/legs/team rankings match; override fixes (1) Events 67/68 '4x100 Meter Relay Throwers' Re[lay]' renamed '4x100 Meter Throwers Relay'; (2) Girls 200 Meter Dash Sherry Foster (John Bapst) DQ: source '-- Sherry Foster FR John Bapst DQ 8 3 + steps on curb', the '3' of the reason was read as points 3.0 (John Bapst girls computed 103 vs printed 100, the verified_close delta); points removed. Tulas Weaver (Ellsworth) FS in 55 Dash kept as printed status; '1:03.81R' record flag dropped from mark as the parse does. PARSER PATTERNS: same two as emitl2a.",
+  "date": "2026-11-02",
+  "parse_sha": "e1111d264f0bf1c7",
+  "source_sha": "35694812e2f91184"
+ },
+ "backend/data/parsed_results/2020/Indoor/emitlrelays2020.json": {
+  "verdict": "fixed",
+  "by": "sonnet audit (second read, 2026-11-02)",
+  "notes": "PVC-EMITL Relays (1/4/2020). Every row, leg and the printed team rankings (Women Bangor 128, Brewer 121, Hampden 116, Old Town 88, Orono 19, Central 9; Men Brewer 116, Hampden 110, Bangor 89, Old Town 72, Central 50, Orono 26) match. Override renames (a) the throwers' 4x100 relays to '4x100 Meter Throwers Relay' and (b) the ten team field relays (Long/Triple/High Jump, Pole Vault, Shot Put Relay: rows are team sums like 'Old Town A 44-07.50', 'Bangor A 92-09.50R', no athletes) from 'Long Jump' etc. to 'Long Jump Relay' etc.; these team sums were the 9 implausible flags ('Hampden Academy Relay' athlete-outliers). Events 32/33 (Coed male/female sprint medley) repeat Event 13's six teams for each sex's scoring: kept (team totals include them). BRW = Brewer High School. PARSER PATTERNS: throwers' relay header; team field relay events named as individual events.",
+  "date": "2026-11-02",
+  "parse_sha": "d70529a41ebb7204",
+  "source_sha": "93d2c4954414d9af"
+ },
+ "backend/data/parsed_results/2020/Indoor/emitlrelaysfield.json": {
+  "verdict": "confirmed",
+  "by": "sonnet audit (second read, 2026-11-02)",
+  "notes": "PVC-EMITL Relays field events (1/4/2020): 'Girls|Boys Long Jump / Triple Jump / High Jump / Pole Vault / Shot Put Relay Relay' list the INDIVIDUAL attempts of the team field relays (names, grade, school, mark, FOUL rows). All 248 rows match the source row by row (event, gender, place incl. ties, name, school, mark). No team scores printed. Team sums of these are in emitlrelays2020.",
+  "date": "2026-11-02",
+  "parse_sha": "2b1093fda897362b",
+  "source_sha": "2074d2846941a3ce"
+ },
+ "backend/data/parsed_results/2020/Indoor/kvac2_dec7.json": {
+  "verdict": "confirmed",
+  "by": "sonnet audit (second read, 2026-11-02)",
+  "notes": "KVAC Indoor Meet #2 (12/7/2019, UMaine). All 479 rows, relay rows (legs printed as 'Last, First'; Lewiston and some other rows print no legs), wheelchair events (Schomaker Leavitt, one entrant each, 1 point as printed) match; team rankings Women (Edward Little 100 ... Morse 19) and Men (Lewiston 92, Mt. Ararat 90.5 ...) equal the parse and verify. The 3 implausible flags (Garrett McKenna SP 39-07.00 4th; Samantha Dulac 800 2:47.97 7th; third a similar real mark) are printed marks. 'Leavitt Area High Scool' typo is as printed.",
+  "date": "2026-11-02",
+  "parse_sha": "915dc790f81184ec",
+  "source_sha": "909782ce989faa73"
+ },
+ "backend/data/parsed_results/2020/Indoor/ne-interscholastic-indoor-2020.json": {
+  "verdict": "confirmed",
+  "by": "sonnet audit (second read, 2026-11-02)",
+  "notes": "2020 New England Interscholastic Indoor (hand-keyed Maine rows; no archived source, original was an image PDF read by OCR per the file notes, web not available). Checked internal consistency instead: in every event and round places and marks are monotonic (incl. ties), prelims and finals are separate typed rows (e.g. Labbe 8.35 prelim and final, Lingley 6.63 prelim/6.64 final), grades 9-12, all 40+ schools resolve to Maine catalog ids, no duplicate athletes within a round. No team scores printed. Residual OCR name risk is noted in the file.",
+  "date": "2026-11-02",
+  "parse_sha": "df31928e73d32f3e",
+  "source_sha": "a32593aa214e0fa7"
+ },
+ "backend/data/parsed_results/2020/Indoor/ne-usatf-indoor-2020.json": {
+  "verdict": "confirmed",
+  "by": "sonnet audit (second read, 2026-11-02)",
+  "notes": "2020 USATF New England Indoor (TFRRS compiled results, Maine high-school athletes only, per docs/agents/new-england-meets.md; no archived source file, web not available). Checked internal consistency: places/marks monotonic within each event, every school resolves to a Maine id (Brunswick, Scarborough, Poland, MDI, Westbrook, Ellsworth, Gorham), no duplicates. Unattached-to-school filing is by name per the file notes.",
+  "date": "2026-11-02",
+  "parse_sha": "1b3fb5c2a010a9ea",
+  "source_sha": "a57d7458e84f347a"
+ },
+ "backend/data/parsed_results/2020/Indoor/week4meet2boysresults.json": {
+  "verdict": "fixed",
+  "by": "sonnet audit (second read, 2026-11-02)",
+  "notes": "SMAA Week 4 Meet 2 boys (1/18/2020), Hy-Tek PDF in 3 snaking columns. Re-read all columns: athletes, team codes, marks and Junior/Senior/Open division events agree row for row. Override adds what the parse lacked: places on every row; the relay legs (63 names, as printed, some teams print fewer than 4 or none); 12 printed status rows dropped by the parse (Wilkins DNF/NH, Falmouth 4x200 DQ, NH rows in HJ and PV, Leon ND). PARSER PATTERNS (LooseListParser on 3-column Hy-Tek PDF): place column not read; relay legs under the team row ignored; '---' status rows lost in places. Team scores are in week4meet2boysscores.pdf. Codes BE/FAL/SCAR/SP/NOBL/GORH/PTLD/TA (header 'BE/Falm/Scar/SP/Noble/Gorh/Port/TA') and SANF (Sanford, guests) all resolve already.",
+  "date": "2026-11-02",
+  "parse_sha": "3883419d8e5c6955",
+  "source_sha": "34be15720fafeda4"
+ },
+ "backend/data/parsed_results/2020/Indoor/week4meet2girlsresults.json": {
+  "verdict": "fixed",
+  "by": "sonnet audit (second read, 2026-11-02)",
+  "notes": "SMAA Week 4 Meet 2 girls (1/18/2020), same layout. Re-read all columns: athletes, team codes, marks and divisions agree. Override adds places on every row, relay legs (73 names) and 9 printed status rows the parse dropped (Li DQ; Rathbun, Meacham, Peterson, Libby ND; Tugman DNF; Martinez, Sterling, MacDonald NH). Same parser patterns as the boys file. Girls 4x200 Open (7 teams) was present in the parse.",
+  "date": "2026-11-02",
+  "parse_sha": "bebb7caff3926aa2",
+  "source_sha": "3ca9d831d80235c2"
+ },
+ "backend/data/parsed_results/2020/Indoor/wmc1-1.json": {
+  "verdict": "fixed",
+  "by": "sonnet audit (second read, 2026-11-02)",
+  "notes": "WMC Week 3 Meet 1 (1/17/2020), JR/SR/OPEN divisions. All 659 rows, 42 events (counts per division event), relay rows and the six printed team-ranking blocks (Women/Men JR, SR, OPEN) match the parse. The 'team scores do not add up' warning is the team-name problem only: the scores blocks print the truncated names 'Saint Domininc Track and' / 'Saint Domininc Track and F' (St. Dominic, rows printed 'Saint Doms') which do not resolve, so the checker computed 0 for them (the only 4 off teams, 82/28/10/3). School rule needed: raw 'Saint Domininc Track and', 'Saint Domininc Track and F' -> me-hs-st-dominic for this file.",
+  "date": "2026-11-02",
+  "parse_sha": "7f250dbe9c1d51ed",
+  "source_sha": "8d10cd604c5ca089"
  },
  "backend/data/parsed_results/2020/XC/2020-dhs-meet-2-girls.txt.json": {
   "verdict": "source-error",

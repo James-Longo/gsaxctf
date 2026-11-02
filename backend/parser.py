@@ -317,6 +317,9 @@ class Sub5ColumnParser:
                 best_match += ' Wheelchair'
             elif re.search(r'\bpara\b|ambulatory', low):
                 best_match += ' Para Ambulatory'
+            # "4x100 Meter Relay Throwers' Re" (EMITL 2019-20): the throwers' relay is its own event
+            if best_match.endswith(' Relay') and 'thrower' in low:
+                best_match = best_match[:-len(' Relay')] + ' Throwers Relay'
         return best_match
         
     @staticmethod

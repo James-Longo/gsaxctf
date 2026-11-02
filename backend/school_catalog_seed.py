@@ -1816,6 +1816,10 @@ FILE_RULES = [
     (['Saint Domininc High School'], 'Indoor', (2020, 2020), r'^ResultsClassB(Boys|Girls)$', 'me-hs-st-dominic'),
     (['Lincoln'], 'Indoor', (2020, 2020), r'^ResultsClassBGirls$', 'me-hs-lincoln-academy'),
     (['CRHS'], 'Indoor', (2020, 2020), r'^ResultsColby-Meet-4$', 'me-hs-camden-hills'),
+    # 2026-11-02 Indoor second read t12
+    (['FA Indoor Track'], 'Indoor', (2020, 2020), r'^(ResultsWMC1-1|ResultsWMC1|Resultsmeet-1|Resultswmc2-1)$', 'me-hs-fryeburg'),
+    (['Boothbay Region Indoor'], 'Indoor', (2020, 2020), r'^(ResultsWMC2-1|ResultsWMC2|Resultswmc2-1)$', 'coop-boothbay-wiscasset'),
+    (['Saint Domininc Track and', 'Saint Domininc Track and F'], 'Indoor', (2020, 2020), r'^wmc1-1$', 'me-hs-st-dominic'),
     # 2026-10-24 unresolved-school review, batch 2
     (['F'], 'XC', (2004, 2004), r'^cape7oct04[bg]\.txt$', 'me-hs-falmouth'),   # Title lists Falmouth; only F team
     (['Y'], 'XC', (2004, 2004), r'^cape7oct04[bg]\.txt$', 'me-hs-yarmouth'),   # Title lists Yarmouth; only Y team

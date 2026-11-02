@@ -3160,3 +3160,11 @@ def test_track_verify_repeated_standings_are_one_block():
     c = {'gender': 'Girls', 'teams': [{'team': 'Waterville', 'score': 10}, {'team': 'Winslow', 'score': 20}]}
     out = tv._merge_divisions([a, c], teams)
     assert sorted(t['score'] for t in out[0]['teams']) == [183.5, 236.83]
+
+
+def test_throwers_relay_is_its_own_event():
+    """EMITL headers "Girls 4x100 Meter Relay Throwers' Re" (cut at their
+    column) name a throwers' relay, not the 4x100 relay."""
+    p = Sub5ColumnParser('x.htm', text='')
+    assert p.normalize_event_name("Girls 4x100 Meter Relay Throwers' Re") == '4x100 Meter Throwers Relay'
+    assert p.normalize_event_name('Girls 4x100 Meter Relay') == '4x100 Meter Relay'

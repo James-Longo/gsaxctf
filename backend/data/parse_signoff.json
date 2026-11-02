@@ -10633,11 +10633,11 @@
   "evidence": "scratch re-parse compared with the signed parse: result rows identical, only team_rankings ranks changed"
  },
  "backend/data/parsed_results/2009/Indoor/bowdoinrelaysgirls.json": {
-  "parse_sha": "f0b3f623fa6e8785",
+  "parse_sha": "ca3b20d065f8537e",
   "source_sha": "eedc6e0ab6c6c8bb",
-  "date": "2026-11-01",
-  "by": "older-data loop 2026-11-01",
-  "evidence": "deliberate re-parse: team-score blocks re-read from MileSplit (rows ending in '-' were dropped before), recovered Pro/no-text races, relay-leg grades / multi-event parse; unchanged checks otherwise"
+  "date": "2026-11-02",
+  "by": "older-data loop 2026-11-02",
+  "evidence": "deliberate re-parse (throwers' relay named as its own event; relay legs without grade suffixes; 2007 KVAC whole times), rows per event unchanged, team scores still verify"
  },
  "backend/data/parsed_results/2009/Indoor/emitl_boys_1b_12.20.08.json": {
   "parse_sha": "ec8909bb780fbd80",
@@ -28518,11 +28518,11 @@
   "evidence": ""
  },
  "backend/data/parsed_results/2016/Outdoor/Class-A-girls-1.json": {
-  "parse_sha": "c8412fe3a6fd9622",
+  "parse_sha": "3214ba3aa0566c3a",
   "source_sha": "0316d144cafbcde0",
-  "date": "2026-10-28",
-  "by": "re-check 2026-10-28: re-parsed only for the team-rank fix (ranks 10+ were stored as 0-9)",
-  "evidence": "scratch re-parse compared with the signed parse: result rows identical, only team_rankings ranks changed"
+  "date": "2026-11-02",
+  "by": "older-data loop 2026-11-02",
+  "evidence": "deliberate re-parse (throwers' relay named as its own event; relay legs without grade suffixes; 2007 KVAC whole times), rows per event unchanged, team scores still verify"
  },
  "backend/data/parsed_results/2016/Outdoor/Girls-Hancock-County-5-20-16.json": {
   "parse_sha": "d8ed05804211d367",
@@ -37400,12 +37400,26 @@
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
  },
+ "backend/data/parsed_results/2019/Indoor/2019-USM-Relays-1.json": {
+  "parse_sha": "16c5fb704dcf5fd8",
+  "source_sha": "1c520e302ee59b2a",
+  "date": "2026-11-02",
+  "by": "sonnet audit (second read, 2026-11-02) (audit: confirmed)",
+  "evidence": "2018 USM New Year's Relays (12/29/2018), high-school relays. All 792 rows match the source: individual field events listed under 'Pole Vault Relay' etc. (individual attempts), prelims/finals of 55 Dash and 55 Hurdles, distance and sprint medleys, 4x200/4x400/4x800 with legs, racewalks, and the Indoor Pentathlon (totals event plus five component events with points, metric marks stored without 'm' with an 'Original result' warning). Givon McLean (Wells) FS kept as status. No team scores printed."
+ },
  "backend/data/parsed_results/2019/Indoor/Belfast-Lewiston-1-31-19.json": {
   "parse_sha": "5335d1606c9a447c",
   "source_sha": "e71a43195b480eac",
   "date": "2026-10-16",
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
+ },
+ "backend/data/parsed_results/2019/Indoor/Bow-meet-12-22-updateResults.json": {
+  "parse_sha": "650c72c49fa385d1",
+  "source_sha": "b31ca1fbc9a9151b",
+  "date": "2026-11-02",
+  "by": "sonnet audit (second read, 2026-11-02) (audit: confirmed)",
+  "evidence": "KVAC Meet #3 (12/22/2018, Bowdoin). All 226 rows match (bib column dropped, names truncated as printed, 'LA' = Lincoln Academy, 'MTA' = Mt. Ararat, Medomak); J7.22 (Christopher, Messalonskee, 3rd) is a tie-break flag stored as 7.22; x-marks (Mt. Ararat B/C/D/E relays) stored as exhibition; relays print no legs. Printed Men and Women team rankings equal the parse; the checker's verified_close (Boys Lincoln Academy computed 32 vs printed 31) is a one-point difference in the sheet's own scoring that no row explains (Lincoln: 55H 1st+3rd, dash 5th, mile 1st+2nd, 400 3rd+4th, 800 4th, 200 4th, 4x200 3rd)."
  },
  "backend/data/parsed_results/2019/Indoor/Maine-Quad-meet-results.json": {
   "parse_sha": "b5f65dc3e55dbc5f",
@@ -37625,25 +37639,25 @@
   "evidence": ""
  },
  "backend/data/parsed_results/2019/Indoor/emitl1a_dec22.json": {
-  "parse_sha": "2ab373aa8cf017a5",
+  "parse_sha": "d59e7e74d2fb1f84",
   "source_sha": "e95e7bf306cfbd2c",
-  "date": "2026-10-16",
-  "by": "auto: team scores verified exactly, all schools identified, no flags",
-  "evidence": ""
+  "date": "2026-11-02",
+  "by": "older-data loop 2026-11-02",
+  "evidence": "deliberate re-parse (throwers' relay named as its own event; relay legs without grade suffixes; 2007 KVAC whole times), rows per event unchanged, team scores still verify"
  },
  "backend/data/parsed_results/2019/Indoor/emitl1b_dec22.json": {
-  "parse_sha": "bbb4b298c7641d85",
+  "parse_sha": "f42ed2c8f02ddc73",
   "source_sha": "070bbed8ecfc7b25",
-  "date": "2026-10-16",
-  "by": "auto: team scores verified exactly, all schools identified, no flags",
-  "evidence": ""
+  "date": "2026-11-02",
+  "by": "older-data loop 2026-11-02",
+  "evidence": "deliberate re-parse (throwers' relay named as its own event; relay legs without grade suffixes; 2007 KVAC whole times), rows per event unchanged, team scores still verify"
  },
  "backend/data/parsed_results/2019/Indoor/emitl2a_30dec2018.json": {
-  "parse_sha": "281425ecfa8bed37",
+  "parse_sha": "927b52da08fc0bca",
   "source_sha": "709ccad02198d16f",
-  "date": "2026-10-16",
-  "by": "auto: team scores verified exactly, all schools identified, no flags",
-  "evidence": ""
+  "date": "2026-11-02",
+  "by": "older-data loop 2026-11-02",
+  "evidence": "deliberate re-parse (throwers' relay named as its own event; relay legs without grade suffixes; 2007 KVAC whole times), rows per event unchanged, team scores still verify"
  },
  "backend/data/parsed_results/2019/Indoor/emitl2b_30dec2018.json": {
   "parse_sha": "146b62ea4bf0ae2a",
@@ -37653,46 +37667,46 @@
   "evidence": ""
  },
  "backend/data/parsed_results/2019/Indoor/emitl3a_jan5.json": {
-  "parse_sha": "134b6532327116d6",
+  "parse_sha": "c4b95cd3a667553a",
   "source_sha": "5a94d26f227e8fec",
-  "date": "2026-10-16",
-  "by": "auto: team scores verified exactly, all schools identified, no flags",
-  "evidence": ""
+  "date": "2026-11-02",
+  "by": "older-data loop 2026-11-02",
+  "evidence": "deliberate re-parse (throwers' relay named as its own event; relay legs without grade suffixes; 2007 KVAC whole times), rows per event unchanged, team scores still verify"
  },
  "backend/data/parsed_results/2019/Indoor/emitl4a.json": {
-  "parse_sha": "33e0fe0ec4033a60",
+  "parse_sha": "f7492e0ef07b5af5",
   "source_sha": "f12e512fd79fa108",
-  "date": "2026-10-16",
-  "by": "auto: team scores verified exactly, all schools identified, no flags",
-  "evidence": ""
+  "date": "2026-11-02",
+  "by": "older-data loop 2026-11-02",
+  "evidence": "deliberate re-parse (throwers' relay named as its own event; relay legs without grade suffixes; 2007 KVAC whole times), rows per event unchanged, team scores still verify"
  },
  "backend/data/parsed_results/2019/Indoor/emitl5a.json": {
-  "parse_sha": "9a2e1150c18734e6",
+  "parse_sha": "5d0d2f819ac9f625",
   "source_sha": "39cc1eb39118fdd9",
-  "date": "2026-10-16",
-  "by": "auto: team scores verified exactly, all schools identified, no flags",
-  "evidence": ""
+  "date": "2026-11-02",
+  "by": "older-data loop 2026-11-02",
+  "evidence": "deliberate re-parse (throwers' relay named as its own event; relay legs without grade suffixes; 2007 KVAC whole times), rows per event unchanged, team scores still verify"
  },
  "backend/data/parsed_results/2019/Indoor/emitl5b.json": {
-  "parse_sha": "f713f0ceb6b29250",
+  "parse_sha": "20408da408d15756",
   "source_sha": "7e0ec1fad7bb53cd",
-  "date": "2026-10-16",
-  "by": "auto: team scores verified exactly, all schools identified, no flags",
-  "evidence": ""
+  "date": "2026-11-02",
+  "by": "older-data loop 2026-11-02",
+  "evidence": "deliberate re-parse (throwers' relay named as its own event; relay legs without grade suffixes; 2007 KVAC whole times), rows per event unchanged, team scores still verify"
  },
  "backend/data/parsed_results/2019/Indoor/emitl5c.json": {
-  "parse_sha": "145c7bd56a622882",
+  "parse_sha": "c52b5c988974ff2f",
   "source_sha": "3573547fbaee8884",
-  "date": "2026-10-16",
-  "by": "auto: team scores verified exactly, all schools identified, no flags",
-  "evidence": ""
+  "date": "2026-11-02",
+  "by": "older-data loop 2026-11-02",
+  "evidence": "deliberate re-parse (throwers' relay named as its own event; relay legs without grade suffixes; 2007 KVAC whole times), rows per event unchanged, team scores still verify"
  },
  "backend/data/parsed_results/2019/Indoor/emitl6a.json": {
-  "parse_sha": "c3699169a42c5c8d",
+  "parse_sha": "d1af3eda73c757b2",
   "source_sha": "07ddacdb62f5409e",
-  "date": "2026-10-16",
-  "by": "auto: team scores verified exactly, all schools identified, no flags",
-  "evidence": ""
+  "date": "2026-11-02",
+  "by": "older-data loop 2026-11-02",
+  "evidence": "deliberate re-parse (throwers' relay named as its own event; relay legs without grade suffixes; 2007 KVAC whole times), rows per event unchanged, team scores still verify"
  },
  "backend/data/parsed_results/2019/Indoor/emitl6b.json": {
   "parse_sha": "649b02fdf57b748c",
@@ -37702,18 +37716,18 @@
   "evidence": ""
  },
  "backend/data/parsed_results/2019/Indoor/emitl7a.json": {
-  "parse_sha": "ba5c799b3cd01450",
+  "parse_sha": "059e26c1eb049833",
   "source_sha": "cefa28175b9f03b5",
-  "date": "2026-10-16",
-  "by": "auto: team scores verified exactly, all schools identified, no flags",
-  "evidence": ""
+  "date": "2026-11-02",
+  "by": "older-data loop 2026-11-02",
+  "evidence": "deliberate re-parse (throwers' relay named as its own event; relay legs without grade suffixes; 2007 KVAC whole times), rows per event unchanged, team scores still verify"
  },
  "backend/data/parsed_results/2019/Indoor/emitl7b.json": {
-  "parse_sha": "7e555ecd5bb10efc",
+  "parse_sha": "be5d97657b76047e",
   "source_sha": "16fb92bad96fe602",
-  "date": "2026-10-16",
-  "by": "auto: team scores verified exactly, all schools identified, no flags",
-  "evidence": ""
+  "date": "2026-11-02",
+  "by": "older-data loop 2026-11-02",
+  "evidence": "deliberate re-parse (throwers' relay named as its own event; relay legs without grade suffixes; 2007 KVAC whole times), rows per event unchanged, team scores still verify"
  },
  "backend/data/parsed_results/2019/Outdoor/2019-04-27-Alliance-Men-Results.json": {
   "parse_sha": "d31674f2ce1325f2",
@@ -40459,6 +40473,125 @@
   "by": "second read t9 (Sonnet reviewer, row-by-row vs source)",
   "evidence": "verdicts in scratchpad t9_0*_verdicts.json; overrides re-parsed and rebuilt"
  },
+ "backend/data/parsed_results/2020/Indoor/ResultsSMAA1-1.json": {
+  "parse_sha": "bf8692448cccfe8c",
+  "source_sha": "511d44ea60c51624",
+  "date": "2026-11-02",
+  "by": "sonnet audit (second read, 2026-11-02) (audit: confirmed)",
+  "evidence": "Hy-Tek (Down East Sports Timing) meet: checked every row of every event against the source by script and by column position (place, name, school, Finals-column mark, status rows, x/J prefixes, events/gender/division headers, exhibition flags) with no difference; printed team scores (6 blocks) equal the parse's team_rankings. SMAA Week 3 Meet 1 (Chev-Deer-Gorh-Thornton-Noble), 1/11/2020 matches the index. 26 events (Junior/Senior/Open divisions as separate events). 1 'x' exhibition relay row flagged. Event '600 Yard Dash Open Division' keeps the division suffix in its name (parser pattern: the suffix is not stripped for yard events; backend/event_canon.py strips 'Open Division' downstream, so harmless). Ledger warning 'transcribed/verified but never signed off' = only that no reader had signed it."
+ },
+ "backend/data/parsed_results/2020/Indoor/ResultsSMAA1.json": {
+  "parse_sha": "e40236e62d7fbffe",
+  "source_sha": "0ac3496e553e208f",
+  "date": "2026-11-02",
+  "by": "sonnet audit (second read, 2026-11-02) (audit: confirmed)",
+  "evidence": "Hy-Tek (Down East Sports Timing) meet: checked every row of every event against the source by script and by column position (place, name, school, Finals-column mark, status rows, x/J prefixes, events/gender/division headers, exhibition flags) with no difference; printed team scores (6 blocks) equal the parse's team_rankings. SMAA Week 2 Meet 1 (West-Thorn-So Port-Falm-Port), 1/4/2020 matches the index. 52 events. Event '600 Yard Dash Open Division' keeps the division suffix in its name (parser pattern: the suffix is not stripped for yard events; backend/event_canon.py strips 'Open Division' downstream, so harmless). Ledger warning 'transcribed/verified but never signed off' = only that no reader had signed it."
+ },
+ "backend/data/parsed_results/2020/Indoor/ResultsSMAA2-1.json": {
+  "parse_sha": "49a953c67476feeb",
+  "source_sha": "c017d0439a8ca9e2",
+  "date": "2026-11-02",
+  "by": "sonnet audit (second read, 2026-11-02) (audit: confirmed)",
+  "evidence": "Hy-Tek (Down East Sports Timing) meet: checked every row of every event against the source by script and by column position (place, name, school, Finals-column mark, status rows, x/J prefixes, events/gender/division headers, exhibition flags) with no difference; printed team scores (6 blocks) equal the parse's team_rankings. SMAA Week 2 Meet 2 (Deer-Gorh-Kenn-Mass-Noble), 1/4/2020 matches the index. 52 events. Event '600 Yard Dash Open Division' keeps the division suffix in its name (parser pattern: the suffix is not stripped for yard events; backend/event_canon.py strips 'Open Division' downstream, so harmless). Ledger warning 'transcribed/verified but never signed off' = only that no reader had signed it."
+ },
+ "backend/data/parsed_results/2020/Indoor/ResultsSMAA3-1.json": {
+  "parse_sha": "4786e6e15123ad68",
+  "source_sha": "d2dd9a7bfe462c58",
+  "date": "2026-11-02",
+  "by": "sonnet audit (second read, 2026-11-02) (audit: confirmed)",
+  "evidence": "Hy-Tek (Down East Sports Timing) meet: checked every row of every event against the source by script and by column position (place, name, school, Finals-column mark, status rows, x/J prefixes, events/gender/division headers, exhibition flags) with no difference; printed team scores (6 blocks) equal the parse's team_rankings. SMAA Week 3 Meet 3 (BE/Falm/Marsh/Mass/Port), 1/11/2020 matches the index. 52 events. Event '600 Yard Dash Open Division' keeps the division suffix in its name (parser pattern: the suffix is not stripped for yard events; backend/event_canon.py strips 'Open Division' downstream, so harmless). Ledger warning 'transcribed/verified but never signed off' = only that no reader had signed it."
+ },
+ "backend/data/parsed_results/2020/Indoor/ResultsSMAA3.json": {
+  "parse_sha": "fd1ac92b21389eef",
+  "source_sha": "cf0053aa02bafb13",
+  "date": "2026-11-02",
+  "by": "sonnet audit (second read, 2026-11-02) (audit: confirmed)",
+  "evidence": "Hy-Tek (Down East Sports Timing) meet: checked every row of every event against the source by script and by column position (place, name, school, Finals-column mark, status rows, x/J prefixes, events/gender/division headers, exhibition flags) with no difference; printed team scores (6 blocks) equal the parse's team_rankings. SMAA Week 2 Meet 3 (BE, Bidd, Chev, Marsh, Scar, Wind), 1/4/2020 matches the index. 52 events. 'Emma Gallant' (Cheverus) is printed once as an SCR row in the boys 200 (source entry quirk, status row only, parse equals source). Event '600 Yard Dash Open Division' keeps the division suffix in its name (parser pattern: the suffix is not stripped for yard events; backend/event_canon.py strips 'Open Division' downstream, so harmless). Ledger warning 'transcribed/verified but never signed off' = only that no reader had signed it."
+ },
+ "backend/data/parsed_results/2020/Indoor/ResultsUSM.json": {
+  "parse_sha": "0373a458a0ac4809",
+  "source_sha": "bb9edae9082a844f",
+  "date": "2026-11-02",
+  "by": "sonnet audit (second read, 2026-11-02) (audit: confirmed)",
+  "evidence": "Hy-Tek 'USM Meet 1 - 12/20/2019' (index: KVAC Week 3 Meet 2, 12/20/2019, matches): high-school teams (Edward Little, Winslow 'Wins', Brunswick 'Brun', Lawrence, Skowhegan, Waterville, Morse), not a college meet. All 28 events checked row by row incl. the Points column (10-8-6-4-3-2-1, ties split e.g. boys 55 3rd/3rd = 5 each) and J-prefixed field marks: parse equals source. No team scores are printed (ledger 'unverified' = nothing to check against, not a defect). Ledger warning 'transcribed/verified but never signed off' = only that no reader had signed it."
+ },
+ "backend/data/parsed_results/2020/Indoor/ResultsWMC.json": {
+  "parse_sha": "9b7109edbcfaf265",
+  "source_sha": "94dd7210971fccfd",
+  "date": "2026-11-02",
+  "by": "sonnet audit (second read, 2026-11-02) (audit: confirmed)",
+  "evidence": "Hy-Tek (Down East Sports Timing) meet: checked every row of every event against the source by script and by column position (place, name, school, Finals-column mark, status rows, x/J prefixes, events/gender/division headers, exhibition flags) with no difference; printed team scores (6 blocks) equal the parse's team_rankings. WMC Indoor Track Championship 2/8/2020 matches the index; preliminaries and finals are separate events (both kept by design; q markers dropped, original kept in warnings). Ledger warning '3 results flagged as implausible' = real marks printed in the source: Becvar, Keagan POL boys shot 26-07.00 (seed 25-02.25), Nice, Jack NYA boys shot 32-03.50 (seed 30-10.75), plus a gender-bleed flag from athlete-id merging; no parse error."
+ },
+ "backend/data/parsed_results/2020/Indoor/ResultsWMC1-1.json": {
+  "parse_sha": "eab6112a91ac883a",
+  "source_sha": "245ae39355492ff4",
+  "date": "2026-11-02",
+  "by": "second read t12 (Sonnet reviewer, row-by-row vs source)",
+  "evidence": "verdicts in scratchpad t12_0*_verdicts.json; overrides re-parsed and rebuilt"
+ },
+ "backend/data/parsed_results/2020/Indoor/ResultsWMC1.json": {
+  "parse_sha": "f7b12fb2ed95cda6",
+  "source_sha": "c6dd7ff0d6c52002",
+  "date": "2026-11-02",
+  "by": "second read t12 (Sonnet reviewer, row-by-row vs source)",
+  "evidence": "verdicts in scratchpad t12_0*_verdicts.json; overrides re-parsed and rebuilt"
+ },
+ "backend/data/parsed_results/2020/Indoor/ResultsWMC2-1.json": {
+  "parse_sha": "28063d2c39d08bde",
+  "source_sha": "f86ebd8a4a78edc8",
+  "date": "2026-11-02",
+  "by": "second read t12 (Sonnet reviewer, row-by-row vs source)",
+  "evidence": "verdicts in scratchpad t12_0*_verdicts.json; overrides re-parsed and rebuilt"
+ },
+ "backend/data/parsed_results/2020/Indoor/ResultsWMC2.json": {
+  "parse_sha": "555348e0d9207ac4",
+  "source_sha": "171cb84920a21dfb",
+  "date": "2026-11-02",
+  "by": "second read t12 (Sonnet reviewer, row-by-row vs source)",
+  "evidence": "verdicts in scratchpad t12_0*_verdicts.json; overrides re-parsed and rebuilt"
+ },
+ "backend/data/parsed_results/2020/Indoor/Resultsmeet-1-1.json": {
+  "parse_sha": "a970dab213e4a182",
+  "source_sha": "ce5d1714c230bbe3",
+  "date": "2026-11-02",
+  "by": "sonnet audit (second read, 2026-11-02) (audit: confirmed)",
+  "evidence": "Hy-Tek (Down East Sports Timing) meet: checked every row of every event against the source by script and by column position (place, name, school, Finals-column mark, status rows, x/J prefixes, events/gender/division headers, exhibition flags) with no difference; printed team scores (6 blocks) equal the parse's team_rankings. SMAA Week 5 Meet 1 (Noble-Portland-West-Windham), 2/1/2020 matches the index. 'Windham High' school string (truncated column) -> me-hs-windham. 26-event file. Event '600 Yard Dash Open Division' keeps the division suffix in its name (parser pattern: the suffix is not stripped for yard events; backend/event_canon.py strips 'Open Division' downstream, so harmless). Ledger warning 'transcribed/verified but never signed off' = only that no reader had signed it."
+ },
+ "backend/data/parsed_results/2020/Indoor/Resultsmeet-1.json": {
+  "parse_sha": "d3bff887f4f6bab2",
+  "source_sha": "522b67eb584f1e59",
+  "date": "2026-11-02",
+  "by": "second read t12 (Sonnet reviewer, row-by-row vs source)",
+  "evidence": "verdicts in scratchpad t12_0*_verdicts.json; overrides re-parsed and rebuilt"
+ },
+ "backend/data/parsed_results/2020/Indoor/Resultsmeet-2.json": {
+  "parse_sha": "1df610d7ffe46cc1",
+  "source_sha": "3267012c5f18d851",
+  "date": "2026-11-02",
+  "by": "sonnet audit (second read, 2026-11-02) (audit: confirmed)",
+  "evidence": "Hy-Tek (Down East Sports Timing) meet: checked every row of every event against the source by script and by column position (place, name, school, Finals-column mark, status rows, x/J prefixes, events/gender/division headers, exhibition flags) with no difference; printed team scores (6 blocks) equal the parse's team_rankings. File title 'SMAA Week 5 Meet 2 - 2/1/2020' (Gorham/TA/Marsh/Mass/Scar/SP; Hy-Tek stamp 2/1/2020 10:56 PM). DATE CONFLICT: the sub5 index gives 2020-01-24 ('WMC Week 4 Meet 1/Meet 2') for Resultsmeet-2.htm, but the file's teams (Gorham, Scarborough, Thornton, South Portland, Marshwood, Massabesic) and title are SMAA Week 5 Meet 2: the index reused a generic file name; the file is right. 'Scarboro' = Scarborough, 'Sanford' stray entrants. Event '600 Yard Dash Open Division' keeps the division suffix in its name (parser pattern: the suffix is not stripped for yard events; backend/event_canon.py strips 'Open Division' downstream, so harmless). Ledger warning 'transcribed/verified but never signed off' = only that no reader had signed it."
+ },
+ "backend/data/parsed_results/2020/Indoor/Resultsmeet3.json": {
+  "parse_sha": "95a77236b7202e4e",
+  "source_sha": "67e61b85ea2566c6",
+  "date": "2026-11-02",
+  "by": "sonnet audit (second read, 2026-11-02) (audit: confirmed)",
+  "evidence": "Hy-Tek (Down East Sports Timing) meet: checked every row of every event against the source by script and by column position (place, name, school, Finals-column mark, status rows, x/J prefixes, events/gender/division headers, exhibition flags) with no difference; printed team scores (6 blocks) equal the parse's team_rankings. SMAA Week 5 Meet 3 (Bonny Eagle-Falm-Bidd-Kenn-Chev-Deer), 2/1/2020 matches the index. 'Scots' = Bonny Eagle (-> me-hs-bonny-eagle; team list names Bonny Eagle), 'KENN' = Kennebunk. Event '600 Yard Dash Open Division' keeps the division suffix in its name (parser pattern: the suffix is not stripped for yard events; backend/event_canon.py strips 'Open Division' downstream, so harmless). Ledger warning 'transcribed/verified but never signed off' = only that no reader had signed it."
+ },
+ "backend/data/parsed_results/2020/Indoor/Resultssmaa2.json": {
+  "parse_sha": "1ea6a1e7d42d11c6",
+  "source_sha": "89de674cb850d873",
+  "date": "2026-11-02",
+  "by": "sonnet audit (second read, 2026-11-02) (audit: confirmed)",
+  "evidence": "Hy-Tek (Down East Sports Timing) meet: checked every row of every event against the source by script and by column position (place, name, school, Finals-column mark, status rows, x/J prefixes, events/gender/division headers, exhibition flags) with no difference; printed team scores (6 blocks) equal the parse's team_rankings. SMAA Week 3 Meet 2 (Bidd/Kenn/Scar/SP/West/Wind), 1/11/2020 matches the index. 52 events. Event '600 Yard Dash Open Division' keeps the division suffix in its name (parser pattern: the suffix is not stripped for yard events; backend/event_canon.py strips 'Open Division' downstream, so harmless). Ledger warning 'transcribed/verified but never signed off' = only that no reader had signed it."
+ },
+ "backend/data/parsed_results/2020/Indoor/Resultswmc2-1.json": {
+  "parse_sha": "4ff2064c1d7bc70f",
+  "source_sha": "6269d74df99015b3",
+  "date": "2026-11-02",
+  "by": "second read t12 (Sonnet reviewer, row-by-row vs source)",
+  "evidence": "verdicts in scratchpad t12_0*_verdicts.json; overrides re-parsed and rebuilt"
+ },
  "backend/data/parsed_results/2020/Indoor/ScoresColby-Meet-2.json": {
   "parse_sha": "b46d207660fbd58b",
   "source_sha": "8e4521330f21cd04",
@@ -40592,6 +40725,13 @@
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
  },
+ "backend/data/parsed_results/2020/Indoor/T2Results.json": {
+  "parse_sha": "3ac8d99aada01318",
+  "source_sha": "b98b0722ed101a0a",
+  "date": "2026-11-02",
+  "by": "sonnet audit (second read, 2026-11-02) (audit: confirmed)",
+  "evidence": "KVAC IDT Meet #12 at Bowdoin, 1/4/2020 (index: KVAC Week 5 Meet 3, matches); high-school teams. All 31 events and rows match (places, names, grades, marks, 14 'x' exhibition rows, 3 wheelchair events). Ledger warning 'team scores do not add up' = scoring_rules, not a parse error: only Boys Leavitt is off (printed 66, checker 93, delta 27 = three wheelchair events with one entrant each (Schomaker, Jonathan: 1 mile, 800 yd, shot put) that the file scores 1 point each, while the checker gives them 10); Leavitt's other rows sum to 63 by 10-8-6-4-3-2-1 and 63+3 = 66 = printed. All other 13 team totals equal the checker's. Printed totals are the file's own and are stored as printed. Ledger warning 'transcribed/verified but never signed off' = only that no reader had signed it."
+ },
  "backend/data/parsed_results/2020/Indoor/USM-Invite-2020-01-25-Results.json": {
   "parse_sha": "9cb9bcce2ef14515",
   "source_sha": "7124f899e3cf97ab",
@@ -40620,6 +40760,13 @@
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
  },
+ "backend/data/parsed_results/2020/Indoor/classaboys2020.json": {
+  "parse_sha": "70022add62cdd24b",
+  "source_sha": "ad16205cbb8244d2",
+  "date": "2026-11-02",
+  "by": "sonnet audit (second read, 2026-11-02) (audit: confirmed)",
+  "evidence": "2020 Class A Indoor State Meet boys (USM, 2/17/2020). Every row of all 16 events (prelims and finals, 251 rows incl. 21+8 hurdles, relays with legs, status NH) matches the source in event, place, name, school, mark; places incl. ties (PV 5/5, 7/7) as printed. Printed 'Men - Team Rankings - 14 Events Scored' (Scarborough 103, Brunswick 56, Mt. Ararat 33 ... Skowhegan 4, 23 teams incl. 17.50/16.50) equals the parse and the checker verifies it. Flag: Ben Drummey (Biddeford) PV 16-00.00 is printed ('1 Ben Drummey SR Biddeford 16-00.00 10'), a real mark."
+ },
  "backend/data/parsed_results/2020/Indoor/classagirls2020.json": {
   "parse_sha": "f7e7ed2f7ec60841",
   "source_sha": "9cfc64e1a7485947",
@@ -40628,102 +40775,130 @@
   "evidence": "scratch re-parse compared with the signed parse: result rows identical, only team_rankings ranks changed"
  },
  "backend/data/parsed_results/2020/Indoor/emitl1a_dec21.json": {
-  "parse_sha": "dfee622a40cc122b",
+  "parse_sha": "169ec8172bebd813",
   "source_sha": "55d18a0dded09fba",
-  "date": "2026-10-16",
-  "by": "auto: team scores verified exactly, all schools identified, no flags",
-  "evidence": ""
+  "date": "2026-11-02",
+  "by": "older-data loop 2026-11-02",
+  "evidence": "deliberate re-parse (throwers' relay named as its own event; relay legs without grade suffixes; 2007 KVAC whole times), rows per event unchanged, team scores still verify"
  },
  "backend/data/parsed_results/2020/Indoor/emitl1b_dec21-1.json": {
-  "parse_sha": "b398643b7f18ee0f",
+  "parse_sha": "d37782bfaa885942",
   "source_sha": "c492f853a8d2ae90",
-  "date": "2026-10-16",
+  "date": "2026-11-02",
+  "by": "older-data loop 2026-11-02",
+  "evidence": "deliberate re-parse (throwers' relay named as its own event; relay legs without grade suffixes; 2007 KVAC whole times), rows per event unchanged, team scores still verify"
+ },
+ "backend/data/parsed_results/2020/Indoor/emitl2a_2019_dec_28.json": {
+  "parse_sha": "c0ff84b0ff045d74",
+  "source_sha": "5ac3abfc709ccf0c",
+  "date": "2026-11-02",
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
  },
  "backend/data/parsed_results/2020/Indoor/emitl2b_2019_dec_28.json": {
-  "parse_sha": "49951bf587f263c3",
+  "parse_sha": "0fc4735a5d3bbdfc",
   "source_sha": "d8befc1154361f05",
-  "date": "2026-10-16",
-  "by": "auto: team scores verified exactly, all schools identified, no flags",
-  "evidence": ""
+  "date": "2026-11-02",
+  "by": "older-data loop 2026-11-02",
+  "evidence": "deliberate re-parse (throwers' relay named as its own event; relay legs without grade suffixes; 2007 KVAC whole times), rows per event unchanged, team scores still verify"
  },
  "backend/data/parsed_results/2020/Indoor/emitl3a3jan2020.json": {
-  "parse_sha": "d7fcffee51d95774",
+  "parse_sha": "71a97daa9152f29a",
   "source_sha": "f313dcc4903ee5bf",
-  "date": "2026-10-28",
-  "by": "re-check 2026-10-28: re-parsed only for the team-rank fix (ranks 10+ were stored as 0-9)",
-  "evidence": "scratch re-parse compared with the signed parse: result rows identical, only team_rankings ranks changed"
+  "date": "2026-11-02",
+  "by": "older-data loop 2026-11-02",
+  "evidence": "deliberate re-parse (throwers' relay named as its own event; relay legs without grade suffixes; 2007 KVAC whole times), rows per event unchanged, team scores still verify"
  },
  "backend/data/parsed_results/2020/Indoor/emitl4a11jan2020.json": {
-  "parse_sha": "9e35be691b99c628",
+  "parse_sha": "849ce0f18871f579",
   "source_sha": "89eb0cb24f9d9f5d",
-  "date": "2026-10-16",
-  "by": "auto: team scores verified exactly, all schools identified, no flags",
-  "evidence": ""
+  "date": "2026-11-02",
+  "by": "older-data loop 2026-11-02",
+  "evidence": "deliberate re-parse (throwers' relay named as its own event; relay legs without grade suffixes; 2007 KVAC whole times), rows per event unchanged, team scores still verify"
  },
  "backend/data/parsed_results/2020/Indoor/emitl4b11jan2020.json": {
-  "parse_sha": "d29bf24519607d87",
+  "parse_sha": "07d34e0a528c6e4e",
   "source_sha": "0cc32ec5abf71d07",
-  "date": "2026-10-16",
-  "by": "auto: team scores verified exactly, all schools identified, no flags",
-  "evidence": ""
+  "date": "2026-11-02",
+  "by": "older-data loop 2026-11-02",
+  "evidence": "deliberate re-parse (throwers' relay named as its own event; relay legs without grade suffixes; 2007 KVAC whole times), rows per event unchanged, team scores still verify"
  },
  "backend/data/parsed_results/2020/Indoor/emitl5a18jan2020.json": {
-  "parse_sha": "3b9576cfbe5f7e8a",
+  "parse_sha": "39e509d6b68b22ec",
   "source_sha": "3f76412c93b9f5a1",
-  "date": "2026-10-19",
+  "date": "2026-11-02",
+  "by": "older-data loop 2026-11-02",
+  "evidence": "deliberate re-parse (throwers' relay named as its own event; relay legs without grade suffixes; 2007 KVAC whole times), rows per event unchanged, team scores still verify"
+ },
+ "backend/data/parsed_results/2020/Indoor/emitl5b18jan2020.json": {
+  "parse_sha": "75c72ceeb95e631a",
+  "source_sha": "35694812e2f91184",
+  "date": "2026-11-02",
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
  },
  "backend/data/parsed_results/2020/Indoor/emitl5c17jan2020.json": {
-  "parse_sha": "a59e55bb39e8dab8",
+  "parse_sha": "a9d733b27a3f39b6",
   "source_sha": "ae9e64133ba77c62",
-  "date": "2026-10-16",
-  "by": "auto: team scores verified exactly, all schools identified, no flags",
-  "evidence": ""
+  "date": "2026-11-02",
+  "by": "older-data loop 2026-11-02",
+  "evidence": "deliberate re-parse (throwers' relay named as its own event; relay legs without grade suffixes; 2007 KVAC whole times), rows per event unchanged, team scores still verify"
  },
  "backend/data/parsed_results/2020/Indoor/emitl6a25jan2020.json": {
-  "parse_sha": "4cbb0e3ce4246fe7",
+  "parse_sha": "052d4d8d4ca30c69",
   "source_sha": "2abdb4e662d10e2f",
-  "date": "2026-10-16",
-  "by": "auto: team scores verified exactly, all schools identified, no flags",
-  "evidence": ""
+  "date": "2026-11-02",
+  "by": "older-data loop 2026-11-02",
+  "evidence": "deliberate re-parse (throwers' relay named as its own event; relay legs without grade suffixes; 2007 KVAC whole times), rows per event unchanged, team scores still verify"
  },
  "backend/data/parsed_results/2020/Indoor/emitl6b25jan2020.json": {
-  "parse_sha": "21b7818aaabb28b2",
+  "parse_sha": "41dd040234770b49",
   "source_sha": "c9e4bc5adfc3ab08",
-  "date": "2026-10-16",
-  "by": "auto: team scores verified exactly, all schools identified, no flags",
-  "evidence": ""
+  "date": "2026-11-02",
+  "by": "older-data loop 2026-11-02",
+  "evidence": "deliberate re-parse (throwers' relay named as its own event; relay legs without grade suffixes; 2007 KVAC whole times), rows per event unchanged, team scores still verify"
  },
  "backend/data/parsed_results/2020/Indoor/emitl7a.json": {
-  "parse_sha": "e5719e46d74f3627",
+  "parse_sha": "bcd6841941d7efb3",
   "source_sha": "2914d1a32b77809f",
-  "date": "2026-10-16",
-  "by": "auto: team scores verified exactly, all schools identified, no flags",
-  "evidence": ""
+  "date": "2026-11-02",
+  "by": "older-data loop 2026-11-02",
+  "evidence": "deliberate re-parse (throwers' relay named as its own event; relay legs without grade suffixes; 2007 KVAC whole times), rows per event unchanged, team scores still verify"
  },
  "backend/data/parsed_results/2020/Indoor/emitl7b.json": {
-  "parse_sha": "d8335ac805fb774a",
+  "parse_sha": "9ae66097d28505d8",
   "source_sha": "53179cfe603f8a9a",
-  "date": "2026-10-16",
-  "by": "auto: team scores verified exactly, all schools identified, no flags",
-  "evidence": ""
+  "date": "2026-11-02",
+  "by": "older-data loop 2026-11-02",
+  "evidence": "deliberate re-parse (throwers' relay named as its own event; relay legs without grade suffixes; 2007 KVAC whole times), rows per event unchanged, team scores still verify"
  },
  "backend/data/parsed_results/2020/Indoor/emitllargeschool8feb2020.json": {
-  "parse_sha": "6d096d2fae2358fb",
+  "parse_sha": "c9e31c07b367261c",
   "source_sha": "1cd90f7287281f0a",
-  "date": "2026-10-16",
-  "by": "auto: team scores verified exactly, all schools identified, no flags",
-  "evidence": ""
+  "date": "2026-11-02",
+  "by": "older-data loop 2026-11-02",
+  "evidence": "deliberate re-parse (throwers' relay named as its own event; relay legs without grade suffixes; 2007 KVAC whole times), rows per event unchanged, team scores still verify"
+ },
+ "backend/data/parsed_results/2020/Indoor/emitlrelays2020.json": {
+  "parse_sha": "be749ad50cdb742e",
+  "source_sha": "93d2c4954414d9af",
+  "date": "2026-11-02",
+  "by": "second read t12 (Sonnet reviewer, row-by-row vs source)",
+  "evidence": "verdicts in scratchpad t12_0*_verdicts.json; overrides re-parsed and rebuilt"
+ },
+ "backend/data/parsed_results/2020/Indoor/emitlrelaysfield.json": {
+  "parse_sha": "2b1093fda897362b",
+  "source_sha": "2074d2846941a3ce",
+  "date": "2026-11-02",
+  "by": "sonnet audit (second read, 2026-11-02) (audit: confirmed)",
+  "evidence": "PVC-EMITL Relays field events (1/4/2020): 'Girls|Boys Long Jump / Triple Jump / High Jump / Pole Vault / Shot Put Relay Relay' list the INDIVIDUAL attempts of the team field relays (names, grade, school, mark, FOUL rows). All 248 rows match the source row by row (event, gender, place incl. ties, name, school, mark). No team scores printed. Team sums of these are in emitlrelays2020."
  },
  "backend/data/parsed_results/2020/Indoor/emitlsmallschool8feb2020.json": {
-  "parse_sha": "369974f12c1d9d69",
+  "parse_sha": "1a3eaf3ee11ad32e",
   "source_sha": "812cbd6f59cfc2e4",
-  "date": "2026-10-16",
-  "by": "auto: team scores verified exactly, all schools identified, no flags",
-  "evidence": ""
+  "date": "2026-11-02",
+  "by": "older-data loop 2026-11-02",
+  "evidence": "deliberate re-parse (throwers' relay named as its own event; relay legs without grade suffixes; 2007 KVAC whole times), rows per event unchanged, team scores still verify"
  },
  "backend/data/parsed_results/2020/Indoor/kvac10jan2020.json": {
   "parse_sha": "882cb39d336e2d3a",
@@ -40739,6 +40914,13 @@
   "by": "re-check 2026-10-28: re-parsed only for the team-rank fix (ranks 10+ were stored as 0-9)",
   "evidence": "scratch re-parse compared with the signed parse: result rows identical, only team_rankings ranks changed"
  },
+ "backend/data/parsed_results/2020/Indoor/kvac2_dec7.json": {
+  "parse_sha": "915dc790f81184ec",
+  "source_sha": "909782ce989faa73",
+  "date": "2026-11-02",
+  "by": "sonnet audit (second read, 2026-11-02) (audit: confirmed)",
+  "evidence": "KVAC Indoor Meet #2 (12/7/2019, UMaine). All 479 rows, relay rows (legs printed as 'Last, First'; Lewiston and some other rows print no legs), wheelchair events (Schomaker Leavitt, one entrant each, 1 point as printed) match; team rankings Women (Edward Little 100 ... Morse 19) and Men (Lewiston 92, Mt. Ararat 90.5 ...) equal the parse and verify. The 3 implausible flags (Garrett McKenna SP 39-07.00 4th; Samantha Dulac 800 2:47.97 7th; third a similar real mark) are printed marks. 'Leavitt Area High Scool' typo is as printed."
+ },
  "backend/data/parsed_results/2020/Indoor/mainecollege8feb2020.json": {
   "parse_sha": "247cd29f22699c9e",
   "source_sha": "c8067361c95a40b4",
@@ -40752,6 +40934,48 @@
   "date": "2026-10-16",
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
+ },
+ "backend/data/parsed_results/2020/Indoor/ne-interscholastic-indoor-2020.json": {
+  "parse_sha": "df31928e73d32f3e",
+  "source_sha": "a32593aa214e0fa7",
+  "date": "2026-11-02",
+  "by": "sonnet audit (second read, 2026-11-02) (audit: confirmed)",
+  "evidence": "2020 New England Interscholastic Indoor (hand-keyed Maine rows; no archived source, original was an image PDF read by OCR per the file notes, web not available). Checked internal consistency instead: in every event and round places and marks are monotonic (incl. ties), prelims and finals are separate typed rows (e.g. Labbe 8.35 prelim and final, Lingley 6.63 prelim/6.64 final), grades 9-12, all 40+ schools resolve to Maine catalog ids, no duplicate athletes within a round. No team scores printed. Residual OCR name risk is noted in the file."
+ },
+ "backend/data/parsed_results/2020/Indoor/ne-usatf-indoor-2020.json": {
+  "parse_sha": "1b3fb5c2a010a9ea",
+  "source_sha": "a57d7458e84f347a",
+  "date": "2026-11-02",
+  "by": "sonnet audit (second read, 2026-11-02) (audit: confirmed)",
+  "evidence": "2020 USATF New England Indoor (TFRRS compiled results, Maine high-school athletes only, per docs/agents/new-england-meets.md; no archived source file, web not available). Checked internal consistency: places/marks monotonic within each event, every school resolves to a Maine id (Brunswick, Scarborough, Poland, MDI, Westbrook, Ellsworth, Gorham), no duplicates. Unattached-to-school filing is by name per the file notes."
+ },
+ "backend/data/parsed_results/2020/Indoor/week4meet2boysresults.json": {
+  "parse_sha": "3a9dde237c726449",
+  "source_sha": "34be15720fafeda4",
+  "date": "2026-11-02",
+  "by": "second read t12 (Sonnet reviewer, row-by-row vs source)",
+  "evidence": "verdicts in scratchpad t12_0*_verdicts.json; overrides re-parsed and rebuilt"
+ },
+ "backend/data/parsed_results/2020/Indoor/week4meet2boysscores.json": {
+  "parse_sha": "175f2bd9ec17ce00",
+  "source_sha": "1839eb41a2f1692c",
+  "date": "2026-11-02",
+  "by": "auto: team scores verified exactly, all schools identified, no flags",
+  "evidence": ""
+ },
+ "backend/data/parsed_results/2020/Indoor/week4meet2girlsresults.json": {
+  "parse_sha": "fb36f20cb3fac75b",
+  "source_sha": "3ca9d831d80235c2",
+  "date": "2026-11-02",
+  "by": "second read t12 (Sonnet reviewer, row-by-row vs source)",
+  "evidence": "verdicts in scratchpad t12_0*_verdicts.json; overrides re-parsed and rebuilt"
+ },
+ "backend/data/parsed_results/2020/Indoor/wmc1-1.json": {
+  "parse_sha": "7f250dbe9c1d51ed",
+  "source_sha": "8d10cd604c5ca089",
+  "date": "2026-11-02",
+  "by": "second read t12 (Sonnet reviewer, row-by-row vs source)",
+  "evidence": "verdicts in scratchpad t12_0*_verdicts.json; overrides re-parsed and rebuilt"
  },
  "backend/data/parsed_results/2020/XC/101620FHSXCBoysResults.txt.json": {
   "parse_sha": "17df7c5748ee89cd",
@@ -42355,6 +42579,13 @@
   "date": "2026-10-31",
   "by": "second read t9 (Sonnet reviewer, row-by-row vs source)",
   "evidence": "verdicts in scratchpad t9_0*_verdicts.json; overrides re-parsed and rebuilt"
+ },
+ "backend/data/parsed_results/2021/Outdoor/2021-04-23-mto-eastern-conn-results.json": {
+  "parse_sha": "8c0d191a922aa620",
+  "source_sha": "879310251f937553",
+  "date": "2026-11-02",
+  "by": "older-data loop 2026-11-02",
+  "evidence": "deliberate re-parse (throwers' relay named as its own event; relay legs without grade suffixes; 2007 KVAC whole times), rows per event unchanged, team scores still verify"
  },
  "backend/data/parsed_results/2021/Outdoor/2021-04-23-wto-eastern-conn-results.json": {
   "parse_sha": "a034adcef2753e91",
@@ -51674,11 +51905,11 @@
   "evidence": "Second read, row by row (event, gender, place, name, school, mark, relay legs, grade where printed, exhibition) against the source: 38 events, 394 rows, none missing or extra; independent source-line scan matched every row. Orono Meet #1, 5/2/2024 (Orono, Bucksport, Sumner Memorial, Penobscot Christian, Jonesport-Beals, Searsport); title '- 5/2/2024' matches the index."
  },
  "backend/data/parsed_results/2024/Outdoor/Results-1.json": {
-  "parse_sha": "7889f84612085b9a",
+  "parse_sha": "07f47648fee9065b",
   "source_sha": "99dacbd415ea3606",
-  "date": "2026-10-29",
-  "by": "sonnet audit (second read, 2026-10-29) (audit: confirmed)",
-  "evidence": "Second read, row by row (event, gender, place, name, school, mark, relay legs, grade where printed, exhibition) against the source: 19 events, 182 rows, none missing or extra; independent source-line scan matched every row. Mt. Ararat Relays 5/13/2024 (matches the index). Medley/shuttle-hurdle/200/1600/mixed relays: legs and 'X' exhibition rows (place null) as printed; Boys SMR Mt. Ararat 'B' and DMR 'C' list no legs in the source. Throws 'relays' (Shot Put/Discus/Javelin Relay) are individual marks with team-point lines at the end of each event; the 21 team-total lines (e.g. '1 Mt. Ararat High School MTAH 8') are not athlete rows and are rightly absent. '4x100 Meter Relay Throwers' rows have no legs printed. Note: the store's canonical_event drops 'Throwers', so those slow 4x100 times file under 4x100 Meter Relay (not fixable per file)."
+  "date": "2026-11-02",
+  "by": "older-data loop 2026-11-02",
+  "evidence": "deliberate re-parse (throwers' relay named as its own event; relay legs without grade suffixes; 2007 KVAC whole times), rows per event unchanged, team scores still verify"
  },
  "backend/data/parsed_results/2024/Outdoor/Results-2.json": {
   "parse_sha": "c69251a4f390c0a3",
