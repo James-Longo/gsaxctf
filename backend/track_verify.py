@@ -255,6 +255,15 @@ def _merge_divisions(blocks, teams):
         by_g.setdefault(_gender_of(b), []).append(b)
     out = []
     for g, bl in by_g.items():
+        # the same standings printed again (a boys' and a girls' file each printing both, one to more
+        # decimals, a tie in either order: 2014 Waterville JH meet) are one block, not two divisions
+        uniq = []
+        for b in bl:
+            sc = sorted(round(float(t['score']), 1) for t in b['teams'])
+            ids = {teams(t['team'], g) for t in b['teams']}
+            if not any(sc == u_sc and len(ids & u_ids) >= 0.8 * len(ids) for u_sc, u_ids, _ in uniq):
+                uniq.append((sc, ids, b))
+        bl = [b for _, _, b in uniq]
         if len(bl) == 1:
             out.append(bl[0])
             continue

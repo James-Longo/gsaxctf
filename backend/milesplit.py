@@ -90,7 +90,9 @@ def parse(text):
     while i < len(lines):
         ln = lines[i]
         m = re.match(r'\s*Event\s+\d+\s+(.*?)\s*$', ln)
-        if not m and i+1 < len(lines) and re.match(r'\s*=+\s*$',lines[i+1]) and re.match(r'\s*(Varsity\s+)?(Boys|Girls|Men|Women)\s+\S',ln) and 'Team Rank' not in ln and not re.match(r'\s*JV\s',ln): m = re.match(r'\s*(?:Varsity\s+)?(.*?)\s*$', ln)
+        nx = i+1
+        while nx < len(lines) and nx < i+3 and not lines[nx].strip(): nx += 1   # a blank line before the ruler (2014 Almquist, Southern Maine MS)
+        if not m and nx < len(lines) and re.match(r'\s*=+\s*$',lines[nx]) and re.match(r'\s*(Varsity\s+|Middle School\s+)?(Boys|Girls|Men|Women)\s+\S',ln) and 'Team Rank' not in ln and not re.match(r'\s*JV\s',ln): m = re.match(r'\s*(?:Varsity\s+|Middle School\s+)?(.*?)\s*$', ln)
         if m:
             nm = m.group(1)
             g = re.match(r'(Boys|Girls|Men|Women)\s+(.*)', nm)
@@ -135,7 +137,7 @@ def parse(text):
         s = ln.strip()
         if re.fullmatch(r'(Preliminaries|Prelims?|Finals|Semi-?finals?|Final|Timed Finals.*|Section.*|Flight.*|Heat.*)', s, re.I) and not re.match(r'\s*\d',ln):
             sec = 'Prelims' if re.match(r'Prelim',s,re.I) else ('Finals' if re.match(r'(Final|Timed|Section|Flight|Heat)',s,re.I) else sec); i+=1; continue
-        if re.match(r'\s*(Name|School)\s', ln) and re.search(r'Finals|Prelims|Mark|Time|Result|Points',ln):
+        if re.match(r'\s*(Name|School|Team)\s', ln) and re.search(r'Finals|Prelims|Mark|Time|Result|Points',ln):   # relay tables headed "Team ... Finals" (2014-15 MS meets)
             hdr = ln; cur['is_relay']=not re.match(r'\s*Name',ln); i+=1
             if 'Prelim' in ln and 'Finals' not in ln: sec='Prelims'
             continue
@@ -172,6 +174,10 @@ def parse(text):
         if sc<0: sc=hdr.find('Team')
         if yc<0 and hdr.find('Yr')>=0 and hdr.find('Yr')<sc: yc=hdr.find('Yr')
         if yc<0: yc=sc
+        k=sc
+        while k>0 and ln[k-1:k].strip() and ln[k:k+1].strip(): k-=1
+        if k<sc and not re.fullmatch(r'(FR|SO|JR|SR|\d{1,2})',ln[k:sc]) and (yc==sc or k>yc):   # school printed left of its header column ("enter Drive Sch", "ng" for King: 2014 Piscataquis, SMMSAC)
+            yc=k if yc==sc else yc; sc=k
         name=ln[:yc]; name=re.sub(r'^\s*(\d+|--)\s+','',name).strip()
         yr=ln[yc:sc].strip() if yc<sc else ''
         rest=ln[sc:]
@@ -1137,7 +1143,7 @@ def main():
         t=re.sub(r"(?<=[\w.)])((?:Mt\. )?[A-Z][\w.]*(?: [A-Z][\w.]*)* Track Hy-Tek's MEET MANAGER\t)",r'\n\1',t)   # page header glued to the last row/leg before the page break
         global XC_HINT
         XC_HINT=('Girls' if re.search(r'(?i)girl|women',f['name']) else 'Boys' if re.search(r'(?i)\bboy|\bmen\b',f['name']) else None)
-        e,r=(parse_xc_any(t) if sys.argv[4]=='XC' else parse_tab5(t) if '\tEvent\t' in t else parse_tab(t) if t.count('\t')>5 else (parse_race(t) if 'RaceTab' in t[:200] else parse(t))); 
+        e,r=(parse_xc_any(t) if sys.argv[4]=='XC' else parse_tab5(t) if '\tEvent\t' in t else parse_tab(t) if t.count('\t')>5 else (parse_race(t) if 'RaceTab' in t[:200] and parse_race(t)[0] else parse(t)));   # RaceTab track sheets (2014 SMMSAC) read by parse() when parse_race finds no race
         if sys.argv[4]=='XC': xc_team_places(e,r)
         events+=e; rank+=r; urls.append(u)
         cm=re.search(r'Class ([ABC])\b',f['name'])

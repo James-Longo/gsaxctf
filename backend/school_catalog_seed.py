@@ -1902,6 +1902,30 @@ FILE_RULES = [
     (['TH'], 'XC', (2026, 2026), r'Meet-1-Entries-and-Results', 'me-ms-troy-howard'),
     (['StG'], 'XC', (2026, 2026), r'Meet-1-Entries-and-Results', 'me-ms-st-george'),
     (['Searsport'], 'XC', (2026, 2026), r'Meet-1-Entries-and-Results', 'me-ms-searsport'),
+    # 2014-15 MileSplit middle-school track meets (2026-11-01): each code's runners matched by name to the
+    # school they run for in our other meets (or, for initials-only "O", by distinctive surnames)
+    (['Gardiner Middle Shool'], 'Outdoor', (2014, 2014), r'ms-cal-meet-2014', 'me-ms-gardiner'),   # 30 runners: Gardiner
+    (['Warriors Track'], 'Outdoor', (2014, 2014), r'ms-pcms-middle-school-meet-2014', 'me-ms-rsu19'),   # Warrior TC / Nokomis runners
+    (['Hawks 2014'], 'Outdoor', (2014, 2014), r'ms-pcms-middle-school-meet-2014', 'me-ms-hermon'),
+    (['Natalie Fournier'], 'Outdoor', (2014, 2014), r'ms-piscataquis-ms-meet-2014', 'me-ms-glenburn'),   # 40 runners: Glenburn (a coach's name in the team column)
+    (['Bwms', 'Bruce Whittier MS'], 'Outdoor', (2014, 2014), r'ms-triple-c-outdoor-invitational-2014', 'me-ms-whittier'),   # Poland runners
+    (['Molly Ockutt'], 'Outdoor', (2014, 2014), r'ms-triple-c-outdoor-invitational-2014', 'me-ms-molly-ockett'),   # Fryeburg runners
+    (['SMC'], 'Outdoor', (2014, 2014), r'ms-smmsac-king-smc-westbrook-2014', 'me-ms-southern-maine-catholic'),   # Cheverus runners
+    (['Hawks', 'Hawk Track Club'], 'Outdoor', (2015, 2015), r'ms-bangor-middle-school-meet-2015', 'me-ms-hermon'),   # 37 runners: Hermon
+    (['O'], 'Outdoor', (2015, 2015), r'ms-camden-rockport-ms-meet-2015', 'me-ms-oceanside'),   # meet "Oceanside"; surnames later at Oceanside HS
+    (['SMS'], 'Outdoor', (2015, 2015), r'ms-junior-high-track-festival-2015', 'me-ms-skowhegan'),   # 25 runners: Skowhegan
+    (['WRJH'], 'Outdoor', (2015, 2015), r'ms-junior-high-track-festival-2015', 'me-ms-warsaw'),   # Warsaw / MCI runners
+    # meets that list the other members separately (Durham Community School; Emerson, Tremont, Trenton,
+    # Pemetic), so the bare name is the one school, not the combined team the catalog's level guess picked
+    (['Freeport'], 'XC', (2013, 2013), r'ms-triple-c-2013-cross-country-festival-meet-2013', 'me-ms-freeport'),
+    (['Mount Desert'], 'XC', (2014, 2014), r'ms-parker-pruett-middle-school-xc-meet-2014', 'me-ms-mt-desert-elementary'),
+    (['BRES'], 'Outdoor', (2015, 2015), r'ms-camden-rockport-ms-meet-2015', 'me-ms-boothbay'),   # Boothbay Region Elementary School
+    (['MCS'], 'Outdoor', (2015, 2015), r'ms-central-maine-junior-high-championship-2015', 'me-ms-maranacook'),   # Maranacook runners
+    (['OSHS'], 'Outdoor', (2015, 2015), r'ms-central-maine-junior-high-championship-2015', 'me-ms-oceanside'),   # Oceanside runners, junior-high meet
+    # 2014 Wiscasset MS triangular: its title page names "Jefferson-Wiscasset-Ocean Side"
+    (['JVS'], 'Outdoor', (2014, 2014), r'ms-wiscasset-middle-school-triangular-2014', 'me-ms-jefferson'),
+    (['WMS'], 'Outdoor', (2014, 2014), r'ms-wiscasset-middle-school-triangular-2014', 'me-ms-wiscasset'),
+    (['OS'], 'Outdoor', (2014, 2014), r'ms-wiscasset-middle-school-triangular-2014', 'me-ms-oceanside'),
     # 'Lakers'
     (['Lakers', 'LAKERS'], None, (2006, 2010), r'wmc|foley|falmouth|lakeregion', 'me-hs-lake-region'),
     (['Lakers', 'LAKERS', 'Lakers Track'], None, (2004, 2016), r'usatf|reg1|region|\bjo\b|junior', 'club-lakers-tc'),

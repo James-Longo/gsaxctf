@@ -3074,3 +3074,89 @@ def test_multi_event_score_sheet():
     assert [(r['athlete'], r['school'], r['result'], r['place']) for r in got['Indoor Pentathlon']] == [
         ('Quill, Ada', 'John Bapst', '3170', 1), ('Rook, Bea', 'Waterville High School', '2277', 2),
         ('Lark, Cora', 'York High School', '1811', 3)]
+
+
+def test_milesplit_track_headers_with_level_prefix_or_blank_line():
+    """MileSplit track sheets whose event title carries a level prefix
+    ("Middle School Boys ...", 2014 SMMSAC RaceTab) or a blank line before
+    its ===== ruler (2014 Almquist, Southern Maine MS) are read as events."""
+    from backend import milesplit as ms
+    racetab = """RaceTab 3 by MileSplit                  Registered to: Coach
+
+                Middle School Boys 55 Meter Hurdles SR
+=======================================================================
+    Name                  Yr Team                      Time  Wind  Pts
+-----------------------------------------------------------------------
+  1 Dominic Creenan          Westbrook                8.30  NWI    6
+  2 D Hichliffe              King                      9.50  NWI    4
+"""
+    events, _ = ms.parse(racetab)
+    assert [(e['event'], len(e['results'])) for e in events] == [('Boys 55 Meter Hurdles SR', 2)]
+    assert ms.parse_race(racetab)[0] == []   # so main() falls back to parse()
+    hytek = """Boys 50 Meter Dash 5th/6th grade
+
+===================================================================
+
+    Name                    Year School                  Finals  H#
+
+===================================================================
+
+Finals
+
+  1 O'Roak, Michael              Reeds Brook              7.01   1
+
+  2 Lane, Sam                    Bangor                   7.20   1
+"""
+    events, _ = ms.parse(hytek)
+    assert [(r['athlete'], r['school'], r['result']) for r in events[0]['results']] == [
+        ("O'Roak, Michael", 'Reeds Brook', '7.01'), ('Lane, Sam', 'Bangor', '7.20')]
+
+
+def test_milesplit_school_printed_left_of_its_column():
+    """A row whose school starts a character or two left of the header's
+    School column (2014 Piscataquis MS meet) keeps the whole school name."""
+    from backend import milesplit as ms
+    text = """Event 1 Girls 5-6 55 Meter Hurdles
+     Name                       School             Finals
+
+Finals
+   1    True, Jemyni            PCMS                11.83
+   2  Drake, Jacob            Center Drive Sch     16.97
+   3    Thomas, Jordan           SEDO                17.90
+"""
+    events, _ = ms.parse(text)
+    assert [(r['athlete'], r['school']) for r in events[0]['results']] == [
+        ('True, Jemyni', 'PCMS'), ('Drake, Jacob', 'Center Drive Sch'), ('Thomas, Jordan', 'SEDO')]
+
+
+def test_milesplit_relay_table_headed_team():
+    """Hy-Tek relay tables headed "Team ... Finals" (2015 Tripp MS meet) are read."""
+    from backend import milesplit as ms
+    text = """Event 9  Girls 4x100 Meter Relay
+================================================================
+    Team                                                 Finals
+================================================================
+  1 Tripp Middle School  'A'                            1:00.25
+     1) Chaisson, Alyssa                2) Trask, Aaliyah
+     3) Bilfulco, Caterina              4) Roux, Kristen
+  2 Dirigo  'A'                                         1:04.75
+"""
+    events, _ = ms.parse(text)
+    rows = events[0]['results']
+    assert [(r['school'], r['result']) for r in rows] == [('Tripp Middle School', '1:00.25'), ('Dirigo', '1:04.75')]
+    assert rows[0]['athletes'] == ['Chaisson, Alyssa', 'Trask, Aaliyah', 'Bilfulco, Caterina', 'Roux, Kristen']
+
+
+def test_track_verify_repeated_standings_are_one_block():
+    """The same girls' standings printed twice (to 2 and 3 decimals, 2014
+    Waterville JH meet) are one block, not two divisions to add up; two
+    real divisions with different scores still add."""
+    from backend import track_verify as tv
+    teams = tv.Teams('2014', 'Outdoor', 'x')
+    a = {'gender': 'Girls', 'teams': [{'team': 'Waterville', 'score': 226.83}, {'team': 'Winslow', 'score': 163.5}]}
+    b = {'gender': 'Girls', 'teams': [{'team': 'Waterville', 'score': 226.833}, {'team': 'Winslow', 'score': 163.5}]}
+    out = tv._merge_divisions([a, b], teams)
+    assert [t['score'] for t in out[0]['teams']] == [226.83, 163.5]
+    c = {'gender': 'Girls', 'teams': [{'team': 'Waterville', 'score': 10}, {'team': 'Winslow', 'score': 20}]}
+    out = tv._merge_divisions([a, c], teams)
+    assert sorted(t['score'] for t in out[0]['teams']) == [183.5, 236.83]
