@@ -343,7 +343,7 @@ def match(listing, meets, by_url, by_stem):
     if mid and mid in by_url:
         return by_url[mid]
     if listing.get('match'):   # a reader's verdict: this listing is the meet stored as <stem>
-        return by_stem.get(listing['match'])
+        return by_stem.get((listing['year'], listing['season'], listing['match']))
     cands = [m for m in meets if m['year'] == listing['year'] and m['season'] == listing['season']
              and near(m['date'], listing.get('date'))]
     if not cands:
@@ -375,7 +375,9 @@ def match(listing, meets, by_url, by_stem):
 def build():
     meets = load_have()
     by_url = {}
-    by_stem = {os.path.splitext(os.path.basename(f['path']))[0]: m for m in meets for f in m['files']}
+    # (a stem names a file within its season: wmcjvboys is a file in 2009, 2010 and 2020)
+    by_stem = {(m['year'], m['season'], os.path.splitext(os.path.basename(f['path']))[0]): m
+               for m in meets for f in m['files']}
     for m in meets:
         for u in m['urls']:
             mid = mile_meet_id(u)

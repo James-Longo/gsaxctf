@@ -156,6 +156,7 @@ def clean_name(raw):
     grade tags and generational suffixes dropped."""
     s = re.sub(r'&#39;', "'", raw or '')
     s = re.sub(r'\s{2,}[A-Z]{1,4}(\s+[a-z]{1,4})?\s*$', '', s).strip()
+    s = re.sub(r'^X\s+(?=\S)', '', s)   # "X McGrath": MileSplit's exhibition mark
     s = s.lower().replace("'", '').replace('’', '').replace('`', '').replace('.', ' ')
     s = re.sub(r'[-_/]', ' ', s)
     toks = re.findall(r'[a-z]+', s)
@@ -352,6 +353,7 @@ def build_entities(rows):
                                num=tuple(re.findall(r'\d+', name)), n=0, ays=set(), years=set(),
                                seasons=collections.Counter(), grads=collections.Counter(),
                                races=set(), meets=set(), fams=set(), best={},
+                               race_marks=collections.defaultdict(set),
                                members=collections.Counter(), teams=collections.Counter())
         e['n'] += 1
         e['ays'].add(ay)
@@ -360,6 +362,7 @@ def build_entities(rows):
         if g is not None:
             e['grads'][ay + 12 - g] += 1
         e['races'].add(f'{meet}|{year}|{season}|{event}')
+        e['race_marks'][f'{meet}|{year}|{season}|{event}'].add(mark)
         e['meets'].add(f'{meet}|{year}|{season}')
         e['fams'].add(family(event, season))
         e['members'][aid] += 1
@@ -635,22 +638,39 @@ def resolve_by_roster(roster, pairs):
     full = [e for e in roster if len(e['toks']) >= 2 and all(len(t) >= 2 for t in e['toks'][:2])
             and '/' not in e['name']]     # ("Robitaille/Hallsworth": two runners)
     by_key = {e['key']: e for e in roster}
+    # two spellings of one full name (Zac/Zach Greaton) already join: one candidate
+    joined = {frozenset((p['a'], p['b'])) for p in pairs if p['label'] == 'auto'}
+
+    def one_runner(cs):
+        return all(frozenset((x['key'], y['key'])) in joined for x, y in itertools.combinations(cs, 2))
     for e in roster:
         sf = _short_form(e)
-        if not sf:
-            continue
+        if not sf or any(len(m) > 1 for r, m in e['race_marks'].items() if r.split('|')[2] == 'XC'):
+            continue   # one short name at two times in an XC race: two runners
         kind, v = sf
 
-        def fits(f, ok):
-            return ok and set(e['ays']) <= set(f['ays']) and not (e['races'] & f['races'])
-        if kind == 'single':
-            cands = [f for f in full if fits(f, f['toks'][-1] == v)]
-            if not cands:
-                cands = [f for f in full if fits(f, f['toks'][0] == v)]
-                if len(cands) == 1 and (_mark_gap(e, cands[0]) or 0) > .25:
-                    cands = []
-        else:
-            cands = [f for f in full if fits(f, f['toks'][-1] == v[1] and f['toks'][0][0] == v[0])]
+        def fits(f, ok, near=False):
+            if not ok or e['races'] & f['races']:
+                return False
+            if not near:
+                return set(e['ays']) <= set(f['ays'])
+            # a season away: the runner's full name printed the year before or after
+            return (all(min(abs(a - b) for b in f['ays']) <= 1 for a in e['ays'])
+                    and (_mark_gap(e, f) or 0) <= .2)
+
+        def find(near):
+            if kind == 'single':
+                cands = [f for f in full if fits(f, f['toks'][-1] == v, near)]
+                if not cands:
+                    cands = [f for f in full if fits(f, f['toks'][0] == v, near)]
+                    if len(cands) == 1 and (_mark_gap(e, cands[0]) or 0) > .25:
+                        cands = []
+                return cands
+            cands = [f for f in full if fits(f, f['toks'][-1] == v[1] and f['toks'][0][0] == v[0], near)]
+            return cands
+        cands = find(False) or find(True)
+        if len(cands) > 1 and one_runner(cands):
+            cands = [max(cands, key=lambda f: f['n'])]
         mine = [p for p in pairs if e['key'] in (p['a'], p['b']) and p['label'] == 'review']
         if len(cands) != 1:
             continue
@@ -737,6 +757,14 @@ def cluster(ents, pairs, decisions):
         if any(ra_races & ents[y]['races'] for y in mb):
             refused.append((a, b, why, 'same race'))
             return
+        if why == 'roster':
+            # a short name placed by the roster never bridges two full-name
+            # runners (a "Zuke" placed with Wyatt while another season is Joe's)
+            fa = [ents[x] for x in ma if not _short_form(ents[x]) and len(ents[x]['toks']) >= 2]
+            fb = [ents[y] for y in mb if not _short_form(ents[y]) and len(ents[y]['toks']) >= 2]
+            if any(not name_relation(x, y) for x in fa for y in fb):
+                refused.append((a, b, why, 'two full names'))
+                return
         if len(ma) < len(mb):
             ra, rb = rb, ra
         parent[rb] = ra
@@ -745,9 +773,11 @@ def cluster(ents, pairs, decisions):
     for a, b, dec in decided:
         if dec == 'same':
             union(a, b, 'reviewed')
-    for p in pairs:
-        if p['label'] == 'auto' and decisions.get(pair_key(p['a'], p['b']), {}).get('decision') not in ('same', 'different'):
-            union(p['a'], p['b'], 'auto')
+    auto = [p for p in pairs if p['label'] == 'auto'
+            and decisions.get(pair_key(p['a'], p['b']), {}).get('decision') not in ('same', 'different')]
+    # (roster placements last, so they meet the runners the names already made)
+    for p in sorted(auto, key=lambda p: 'roster context' in (p.get('detail') or '')):
+        union(p['a'], p['b'], 'roster' if 'roster context' in (p.get('detail') or '') else 'auto')
     # One store id is one runner: the site resolves a profile by it, so a
     # name filed under both genders (a race the parser read as the wrong
     # sex, a Mixed list) must not become two runners with one id. The
