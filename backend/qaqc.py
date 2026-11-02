@@ -947,6 +947,8 @@ def _xc_team_places(results, cap=7, min_team=5, shared_ties=False):
             continue
         school = (r.get('team_entry') or r.get('school') or '').strip()
         mark = r.get('result', '')
+        if str(mark).upper() == 'NT' and r.get('place') is not None:
+            mark = ''   # a placed finisher whose printed time is unusable still takes the place
         if not school or str(mark).upper() in BAD_MARKS:
             continue
         if not mark:
@@ -1265,6 +1267,10 @@ def _xc_verify_block(block, results):
     if not official:
         return None
     shown = max(5, max(len(t['places']) for t in official))
+    few = {len(t['places']) for t in official}
+    if len(few) == 1 and 3 <= min(few) < 5 and len(official) >= 2:
+        shown = min(few)   # every team printed with its 3 or 4 scorers only (2026 East-West: top 3 score)
+    k5 = min(5, shown)
     # Meets differ on whether runners past the displayed scorers still take
     # team places (displace) and whether incomplete teams' runners do: try
     # each rule and keep the best fit.
@@ -1332,7 +1338,7 @@ def _xc_verify_block(block, results):
         for cap, min_team, shared in [(c, m, t) for t in ((False, True) if tied else (False,))
                                       for m in (5, 4, 3, 1, 0) for c in caps]:
             computed = _xc_team_places(order, cap, min_team, shared)
-            lists = [tuple(v[:shown]) for v in computed.values() if len(v) >= 5]
+            lists = [tuple(v[:shown]) for v in computed.values() if len(v) >= k5]
             pool = [tuple(v[:shown]) for v in computed.values()]
             # a short team's missing scorers are padded with filler places
             # past the last real one (16, 17 after 15 scorers; or field+1).
@@ -1365,7 +1371,7 @@ def _xc_verify_block(block, results):
     by_printed = bool(off) and _xc_printed_places_ok(official, results)
     if by_printed:
         off = 0
-    comp_scores = sorted(sum(v[:5]) for v in comp_lists)
+    comp_scores = sorted(sum(v[:k5]) for v in comp_lists)
     off_scores = sorted(t['score'] for t in official)
     n = min(len(comp_scores), len(off_scores))
     max_delta = max([abs(a - b) for a, b in zip(comp_scores[:n], off_scores[:n])] or [0])

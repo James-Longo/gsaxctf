@@ -145,10 +145,13 @@
     {
      "athlete": "Petersen",
      "school": "Thornton Academy",
-     "result": "2:06",
+     "result": "NT",
      "grade": "",
      "type": "Finals",
-     "place": 17
+     "place": 17,
+     "warnings": [
+      "Original result: 2:06 (printed; impossible for its place)"
+     ]
     },
     {
      "athlete": "Moekler",
@@ -197,6 +200,6 @@
    "totals_only": true
   }
  ],
- "notes": "Copy of the parse (20 rows) with the code (second line of each entry) split off the surname ('Rumery, TA') and expanded: P=Portland, TA=Thornton Academy, N=Noble (title 'Noble, TA, Portland at McAuley'; the girls twin mcauley17sept04g uses the same codes). Petersen (TA) is printed '2:06', not a readable 3-mile mark (neighbours 21:06 and 20:41); kept as printed. | 2026-10-28 second read a28: re-read against the source; all 20 rows agree with the override. The sheet has no place column but lists runners in finish order, so places 1-20 are added (checked against the printed scores: Portland 1+2+5+6+9 = 23 and TA 3+4+7+8+10 = 32 use exactly these positions). Printed team scores Portland 23, TA 32 added (totals only); Noble is printed 'ns' (fewer than five finishers) and is not ranked. The times of Fuller (21:06, between 20:04 and 17th place) and Petersen (2:06) do not fit their finish positions; both are kept as printed, source-side typos that cannot be corrected with certainty. Date September 17, 2004 as printed.",
+ "notes": "Copy of the parse (20 rows) with the code (second line of each entry) split off the surname ('Rumery, TA') and expanded: P=Portland, TA=Thornton Academy, N=Noble (title 'Noble, TA, Portland at McAuley'; the girls twin mcauley17sept04g uses the same codes). Petersen (TA) is printed '2:06', not a readable 3-mile mark (neighbours 21:06 and 20:41); kept as printed. | 2026-10-28 second read a28: re-read against the source; all 20 rows agree with the override. The sheet has no place column but lists runners in finish order, so places 1-20 are added (checked against the printed scores: Portland 1+2+5+6+9 = 23 and TA 3+4+7+8+10 = 32 use exactly these positions). Printed team scores Portland 23, TA 32 added (totals only); Noble is printed 'ns' (fewer than five finishers) and is not ranked. The times of Fuller (21:06, between 20:04 and 17th place) and Petersen (2:06) do not fit their finish positions; both are kept as printed, source-side typos that cannot be corrected with certainty. Date September 17, 2004 as printed. 2026-11-02 XC loop: printed times impossible for their finish place (a timing or typing error in the sheet) stored as NT with the printed value in a warning, so they are no runner's best: Petersen 2:06.",
  "parser": "SpreadsheetTableParser"
 }

@@ -3168,3 +3168,25 @@ def test_throwers_relay_is_its_own_event():
     p = Sub5ColumnParser('x.htm', text='')
     assert p.normalize_event_name("Girls 4x100 Meter Relay Throwers' Re") == '4x100 Meter Throwers Relay'
     assert p.normalize_event_name('Girls 4x100 Meter Relay') == '4x100 Meter Relay'
+
+
+def test_xc_placed_nt_row_keeps_its_team_place():
+    """A placed finisher whose printed time was impossible (stored "NT",
+    2011 Wells girls 0:01) still takes the place when team scores are checked."""
+    from backend import qaqc
+    rows = [{'place': i + 1, 'school': s, 'result': t} for i, (s, t) in enumerate(
+        [('A', 'NT'), ('B', '20:00'), ('A', '20:10'), ('B', '20:20'), ('A', '20:30')])]
+    places = qaqc._xc_team_places(rows, min_team=0)
+    assert places['A'] == [1, 3, 5] and places['B'] == [2, 4]
+
+
+def test_xc_three_scorer_table_verifies():
+    """A meet whose table prints every team's 3 scorers (2026 East-West
+    Conference: top 3 score) is checked on 3 places, not 5."""
+    from backend import qaqc
+    schools = ['A', 'B', 'A', 'B', 'A', 'C', 'B', 'C', 'C']
+    rows = [{'place': i + 1, 'school': s, 'result': f'{18 + i}:00'} for i, s in enumerate(schools)]
+    block = {'gender': 'Boys', 'teams': [{'team': 'A', 'score': 9, 'places': [1, 3, 5]},
+                                         {'team': 'B', 'score': 13, 'places': [2, 4, 7]},
+                                         {'team': 'C', 'score': 23, 'places': [6, 8, 9]}]}
+    assert qaqc._xc_verify_block(block, rows)['status'] == 'verified'
