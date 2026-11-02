@@ -2858,6 +2858,18 @@
      ]
     },
     {
+     "rank": 6,
+     "team": "Cony High School",
+     "score": 159,
+     "places": [
+      1,
+      12,
+      18,
+      53,
+      75
+     ]
+    },
+    {
      "rank": 7,
      "team": "Bangor High School",
      "score": 185,
@@ -2869,6 +2881,30 @@
       52,
       54,
       65
+     ]
+    },
+    {
+     "rank": 8,
+     "team": "Skowhegan Area High School",
+     "score": 202,
+     "places": [
+      6,
+      37,
+      41,
+      58,
+      60
+     ]
+    },
+    {
+     "rank": 9,
+     "team": "Leavitt Area High School",
+     "score": 236,
+     "places": [
+      8,
+      38,
+      51,
+      62,
+      77
      ]
     },
     {
@@ -2917,5 +2953,5 @@
    "event_idx": 1
   }
  ],
- "notes": "Transcribed from MileSplit raw result text (me.milesplit.com). Schools kept as MileSplit prints them. Prelim/final/heat rows as printed; points column not copied; exhibition marks (x) flagged. Abbreviated or mascot school names (LAC, MTB, Dragons ...) expanded to full names. Not available (Pro/no text): ['Boys Team Scores (no text)', 'Girls Team Scores (no text)']. Races the converter could not read (or misread) before, read again 2026-10-21: Boys Run CC, Girls Run CC. Second read 2026-10-28: boys 2.03 Mile (185 rows, results/330323) matches the page row for row and its 12 team lines reproduce. The two \"Run CC\" events (29 boys, 18 girls rows from results/330329, which is not in the cache) are removed: each row is a TEAM entry (athlete = a school name such as \"Mt. Blue\", school \"A\"/\"B\"/\"D\" = the entry letter, mark = the team total time, e.g. Mt. Blue A 0:57:13 = the Total Time printed under Mt. Blue in the boys team scores, Messalonskee A 0:58:45, Brewer A 0:59:43), not individual marks; the entry letters had resolved to Cony High School and 3 to nothing. Girls 2.03 Mile (117 rows) cannot be re-read (page not cached) but its printed blocks reproduce from the rows (79/103/107/110/112/185/240/247/271); the girls block had dropped Cony (rank 6), Skowhegan (8) and Leavitt (9), the lines with - placeholders: added with scores derived from the rows (159 = 1+12+18+53+75, 202, 236), which fill exactly the missing ranks. 2026-10-28 orchestrator: girls team scores derived from the rows (not printed on a cached page) removed: [('Cony High School', 159), ('Skowhegan Area High School', 202), ('Leavitt Area High School', 236)]; only printed scores are stored."
+ "notes": "Transcribed from MileSplit raw result text (me.milesplit.com). Schools kept as MileSplit prints them. Prelim/final/heat rows as printed; points column not copied; exhibition marks (x) flagged. Abbreviated or mascot school names (LAC, MTB, Dragons ...) expanded to full names. Races the converter could not read (or misread) before, read again 2026-10-21: Boys Run CC, Girls Run CC. Second read 2026-10-28: boys 2.03 Mile (185 rows, results/330323) matches the page row for row and its 12 team lines reproduce. The two \"Run CC\" events (29 boys, 18 girls rows from results/330329, which is not in the cache) are removed: each row is a TEAM entry (athlete = a school name such as \"Mt. Blue\", school \"A\"/\"B\"/\"D\" = the entry letter, mark = the team total time, e.g. Mt. Blue A 0:57:13 = the Total Time printed under Mt. Blue in the boys team scores, Messalonskee A 0:58:45, Brewer A 0:59:43), not individual marks; the entry letters had resolved to Cony High School and 3 to nothing. Girls 2.03 Mile (117 rows) cannot be re-read (page not cached) but its printed blocks reproduce from the rows (79/103/107/110/112/185/240/247/271); the girls block had dropped Cony (rank 6), Skowhegan (8) and Leavitt (9), the lines with - placeholders: added with scores derived from the rows (159 = 1+12+18+53+75, 202, 236), which fill exactly the missing ranks. 2026-10-28 orchestrator: girls team scores derived from the rows (not printed on a cached page) removed: [('Cony High School', 159), ('Skowhegan Area High School', 202), ('Leavitt Area High School', 236)]; only printed scores are stored. 2026-11-01: every MileSplit results page of this meet re-read (pages once noted as Pro/no text ['Boys Team Scores (no text)', 'Girls Team Scores (no text)'] hold text or repeat a stored race); no race missing. 2026-11-01: team-score blocks re-read (rows ending in \"-\" for a missing sixth/seventh runner were dropped before): Girls 2.03 Mile Run CC 9 -> 12 teams."
 }

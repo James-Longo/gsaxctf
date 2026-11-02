@@ -29,6 +29,9 @@ school one space before the time, a name one space before the year), record flag
 of a race posted in another file, a list merging two races by place, and team blocks of another meet are
 not stored as races / scores. Per-meet school codes come from backend/data/milesplit_codes.json.
 A sheet dated another year than MileSplit's listing is flagged (date_conflict).
+Nov 2026: a raw page whose sheet sits straight in the results div (no <pre>, or an unclosed "<pre") is read from that
+div; such pages were once noted "no text" though plain requests return them; team rows ending in "-" (a team
+without a sixth/seventh runner) are kept.
 Reads Hy-Tek fixed-width, tab-delimited, RaceTab and "Last, First" layouts; a
 new layout prints NO EVENTS or ROW? on stderr.
 """
@@ -467,6 +470,7 @@ def parse_xc(text, loose=False):
             elif mr and teamsec['teams'] and teamsec['g'] != ('Boys' if mr.group(1) == 'Men' else 'Girls') and mixt:   # a mixed event's scores, one sex after the other
                 teamsec = {'g': 'Boys' if mr.group(1) == 'Men' else 'Girls', 'div': teamsec['div'], 'hdr': 'Team Scores', 'teams': []}
                 raw_rank.append((teamsec['g'], teamsec['div'], ln.strip(), teamsec['teams']))
+            ln = re.sub(r'(?:\s+-+)+\s*$', '', ln)   # RaceTab prints "-" for a team's missing sixth/seventh runner
             tm = re.match(r'\s*(\d+)\s+(\S.*?)\s+(\d+)((?:\s+\d+){3,})\s*$', ln) if teamsec.get('loose') else None   # "1 Brunswick Middle S 15     1    2 ..." (team cut to its column)
             tm = tm or re.match(r'\s*(\d+)\s+(\S.*?)\s{2,}(\d+(?:\.\d+)?)((?:\s+\d+)*)\s*$', ln)
             if tm:
@@ -1123,6 +1127,8 @@ def main():
             if rows:
                 lines=['\t'.join(html.unescape(re.sub(r'<[^>]+>','',c)).strip() for c in re.findall(r'<t[dh][^>]*>(.*?)</t[dh]>',r_,re.S)) for r_ in rows]
                 pre=[html.escape(f['name']+'\n'+'\n'.join(lines))]
+            elif body and re.search(r'\n\s*\d+\.?\s*\S.*\d:\d\d', body.group(1)):   # sheet text straight in the results div, no <pre> (2010-2016 RaceTab/Hy-Tek files, "1. Name Br 12:10" lists)
+                pre=[re.sub(r'^\s*<pre\b(?:[^>\n]*>)?','',body.group(1))]   # an unclosed "<pre" or "<pre>" (2015, 2016 WMC girls) would eat the sheet up to its first '>' or hide it
         # MileSplit marks many files Pro (isMeetPro) yet shows their results to any visitor in the
         # formatted view, which a script fills in: a raw page without text is read there in a browser
         # (docs/agents/missing-meets.md), never listed as Pro only
