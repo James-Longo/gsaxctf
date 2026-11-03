@@ -669,6 +669,8 @@ def resolve_by_roster(roster, pairs):
     # two spellings of one full name (Zac/Zach Greaton) already join: one candidate
     joined = {frozenset((p['a'], p['b'])) for p in pairs if p['label'] == 'auto'}
 
+    owner = {}
+
     def one_runner(cs):
         return all(frozenset((x['key'], y['key'])) in joined for x, y in itertools.combinations(cs, 2))
     for e in roster:
@@ -679,6 +681,9 @@ def resolve_by_roster(roster, pairs):
 
         def fits(f, ok, near=False):
             if not ok or e['races'] & f['races']:
+                return False
+            # (a 'Lessard' racing after Lauren Lessard's class graduated is her sister)
+            if f['grads'] and max(e['ays']) > f['grads'].most_common(1)[0][0]:
                 return False
             if not near:
                 return set(e['ays']) <= set(f['ays'])
@@ -703,6 +708,7 @@ def resolve_by_roster(roster, pairs):
         if len(cands) != 1:
             continue
         f = cands[0]
+        owner[e['key']] = f['key']
         for p in mine:
             other = p['b'] if p['a'] == e['key'] else p['a']
             if other == f['key']:
@@ -710,6 +716,12 @@ def resolve_by_roster(roster, pairs):
                 p['detail'] = (p.get('detail') or '') + f"; roster context: the only {f['name']} on the team those seasons"
             else:
                 p['label'] = 'resolved'
+    # (two seasons of one short name that belong to two runners -- 'Lessard' 2008 is Lauren, 2010
+    # her sister Renee -- are not one runner by their spelling)
+    for p in pairs:
+        if p['label'] == 'auto' and owner.get(p['a'], p['a']) != owner.get(p['b'], p['b']) \
+                and p['a'] in owner and p['b'] in owner:
+            p['label'] = 'resolved'
 
 
 # ---------------------------------------------------------------------------
@@ -851,6 +863,9 @@ def link_across_schools(groups, ents):
     schools = sc._load()[0]['schools']
 
     def level(u):
+        # (a youth club that is a town's middle-school XC team: Sandy River TC, then Mt. Blue)
+        if schools.get(u, {}).get('youth_ms'):
+            return 0
         return 0 if u.startswith('me-ms-') else 1 if u.startswith('me-hs-') else None
 
     info = []
@@ -885,7 +900,10 @@ def link_across_schools(groups, ents):
                 by_name[(n, x['g'])].add(i)
 
     def chain(ix):
-        ix = sorted(ix, key=lambda i: (info[i]['lo'], level(info[i]['unit'])))
+        # (two careers starting one year: the one that also ends that year comes first -- Woodland
+        # XC in the fall of 2021, then Union 122 from the spring; a tie left to group order joined
+        # or split Riggs Peterson from one build to the next)
+        ix = sorted(ix, key=lambda i: (info[i]['lo'], level(info[i]['unit']), info[i]['hi'], info[i]['unit']))
         if len({info[i]['unit'] for i in ix}) < 2:
             return None
         for a, b in zip(ix, ix[1:]):
@@ -901,7 +919,16 @@ def link_across_schools(groups, ents):
         if any(info[a]['races'] & info[b]['races'] for a, b in itertools.combinations(ix, 2)):
             return None
         return ix
-    chains = list({tuple(c) for c in (chain(ix) for ix in by_name.values()) if c})
+    def chain_or_without_club(ix):
+        # (a youth club's seasons that overlap the school career -- Maeve Hickey at Sandy River TC
+        # through 2015, Mt. Blue MS in 2014 -- leave the school chain to stand on its own)
+        c = chain(ix)
+        if c is None:
+            rest = {i for i in ix if not (schools.get(info[i]['unit']) or {}).get('youth_ms')}
+            if rest != set(ix):
+                c = chain(rest)
+        return c
+    chains = list({tuple(c) for c in (chain_or_without_club(ix) for ix in by_name.values()) if c})
     # (a runner in two chains, by two spellings that met different runners: neither chain is trusted)
     seen = collections.Counter(i for c in chains for i in c)
     chains = [c for c in chains if all(seen[i] == 1 for i in c)]

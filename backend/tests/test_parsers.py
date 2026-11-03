@@ -3280,6 +3280,9 @@ def test_xc_time_slower_than_the_next_places_is_a_sheet_typo():
     rows = [{'place': p, 'result': t} for p, t in
             [(13, '20:45.8'), (14, '48:00.0'), (15, '21:05'), (16, '21:10'), (17, '21:20')]]
     assert xc_out_of_order_times(rows) == {id(rows[1])}
+    # Windham 2011: 'Leon Taquet 21:05' 47th between 22:03 and 22:08
+    rows = [{'place': p, 'result': t} for p, t in [(45, '21:58'), (46, '22:03'), (47, '21:05'), (48, '22:08')]]
+    assert xc_out_of_order_times(rows) == {id(rows[2])}
     # a close finish a few seconds out of order is left alone
     rows = [{'place': p, 'result': t} for p, t in [(1, '17:00'), (2, '17:20'), (3, '17:10'), (4, '17:30')]]
     assert not xc_out_of_order_times(rows)

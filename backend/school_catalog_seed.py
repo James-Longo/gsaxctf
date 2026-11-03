@@ -1208,7 +1208,8 @@ CLUBS = [
     # for Mt. Blue HS (the district fields "Mt. Blue JH" from 2017). The Farmington club's fall team.
     ('club-sandy-river-tc', 'Sandy River Track Club (Farmington youth)', 'Farmington', None,
      ['Sandy River', 'Sandy R', 'Sandy River Track Club', 'Sandy River TC', 'SRTC'], [], [],
-     {'state': 'ME', 'notes': "Fall middle-school XC team of the Farmington youth club, 2011-2014 (not a school)."}),
+     {'state': 'ME', 'youth_ms': True,
+      'notes': "Fall middle-school XC team of the Farmington youth club, 2011-2014 (not a school)."}),
     # Winthrop MS meets 2010: recreation-department youth teams, not schools (their runners
     # later run for several high schools; summer clubs Lisbon Striders / Augusta)
     ('club-lewiston-rec', 'Lewiston Recreation (youth)', 'Lewiston', None, ['Lewiston Rec', 'Lewiston Recreation'], [], [],

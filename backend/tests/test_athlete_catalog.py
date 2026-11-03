@@ -53,12 +53,40 @@ def test_surname_twice_in_one_race_is_two_runners():
 def test_surname_never_bridges_two_brothers():
     # "Zuke" in 2008 is Joe's season; a "Zuke" a season from Wyatt's must not
     # make Joe and Wyatt one runner
-    rows = [_row('Zuke', 2008, 'TA MS Meet', '11:40'),
+    rows = [_row('Zuke', 2008, 'TA MS Meet', '11:40', sid='zuke--2008-xc'),
             _row('Joe Zuke', 2008, 'York County MS', '11:30'),
-            _row('Zuke', 2011, 'TA MS Meet', '12:10'),
+            _row('Zuke', 2011, 'TA MS Meet', '12:10', sid='zuke--2011-xc'),
             _row('Wyatt Zuke', 2012, 'York County MS', '12:00')]
     assert not _together(_runners(rows), 'Joe Zuke', 'Wyatt Zuke')
 
+
+def test_surname_after_the_runner_graduated_is_not_her():
+    # Thornton 2010: 'Lessard' raced the fall after Lauren Lessard (class of 2010) graduated
+    hs = dict(unit='me-hs-thornton', team='Thornton Academy', event='Girls 5K Cross Country')
+    lauren = [r[:10] + (12,) + r[11:] for r in [_row('Lauren Lessard', 2009, 'SMAA', '21:10', **hs),
+                                                _row('Lauren Lessard', 2009, 'Festival', '21:00', **hs)]]
+    renee = [r[:10] + (9,) + r[11:] for r in [_row('Renee Lessard', 2010, 'SMAA', '23:10', **hs),
+                                               _row('Renee Lessard', 2011, 'SMAA', '22:50', **hs)]]
+    # (the store files a short name per season: one id each)
+    rows = lauren + renee + [_row('Lessard', 2008, 'Thornton Invite', '21:30', sid='lessard--2008-xc', **hs),
+                             _row('Lessard', 2010, 'Thornton Invite', '23:00', sid='lessard--2010-xc', **hs)]
+    groups = _runners(rows)
+    assert not _together(groups, 'Lauren Lessard', 'Renee Lessard')
+    assert not any('Lauren Lessard' in g and len([n for n in g if n == 'Lessard']) > 1 for g in groups)
+
+def test_two_schools_starting_one_year_join_in_either_order():
+    # Riggs Peterson: Woodland XC in the fall of 2021, Union 122 from the spring of 2022 on
+    w = dict(unit='me-ms-woodland', team='Woodland Elementary School')
+    u = dict(unit='me-ms-union-122', team='Union 122 combined middleschool team')
+    a = [_row('Riggs Peterson', 2021, 'ALMS 1', '13:10', **w)]
+    b = [_row('Riggs Peterson', 2022, 'ALMS 1', '12:40', **u), _row('Riggs Peterson', 2023, 'ALMS 1', '12:20', **u)]
+    b[0] = b[0][:4] + ('Outdoor', 2022) + b[0][6:8] + ('Boys 1600 Meter Run', '5:40') + b[0][10:]
+    keep, ac.FEEDER_MIN = ac.FEEDER_MIN, 1     # (the real route has a dozen runners)
+    try:
+        for rows in (a + b, b + a):
+            assert len(_runners(rows)) == 1
+    finally:
+        ac.FEEDER_MIN = keep
 
 def test_typo_inside_a_hyphenated_surname():
     # first and last words agree, the middle word differs by one letter

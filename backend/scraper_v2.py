@@ -343,6 +343,8 @@ def xc_fuller_name(keep, other):
     return other if left else keep
 
 
+HS_YEARS = {'9', '10', '11', '12', 'FR', 'SO', 'JR', 'SR'}
+
 _XC_5K_FLOOR = {'Boys': 14 * 60 + 20, 'Girls': 16 * 60 + 30}   # faster than any Maine XC 5K
 K_DIST_ANY = re.compile(r'\d')
 
@@ -364,17 +366,19 @@ def _xc_secs(mark):
 
 
 def xc_out_of_order_times(results):
-    """ids of placed rows whose time is over a minute slower than the next places' -- a typo on the
-    sheet ('M. Larivee 48:00.0' 14th between 20:45.8 and 21:05): the place stands, the time does not."""
+    """ids of placed rows whose time is over 30 s slower than the next places' or faster than the places
+    ahead -- a typo on the sheet ('M. Larivee 48:00.0' 14th between 20:45.8 and 21:05; 'Leon Taquet
+    21:05' 47th between 22:03 and 22:08): the place stands, the time does not."""
     placed = [(r, _xc_secs(r.get('result') or r.get('mark'))) for r in results or []
               if isinstance(r, dict) and str(r.get('place') or '').strip().isdigit()]
     bad = set()
     for i in range(1, len(placed) - 1):
-        t, prev = placed[i][1], placed[i - 1][1]
+        t = placed[i][1]
+        before = [x for _, x in placed[max(0, i - 3):i] if x is not None]
         after = [x for _, x in placed[i + 1:i + 4] if x is not None]
-        if t is None or prev is None or not after:
+        if t is None or not before or not after or before[-1] > after[0]:
             continue
-        if prev <= after[0] and t > max(after) + 60:
+        if t > max(after) + 30 or t < min(before) - 30:
             bad.add(id(placed[i][0]))
     return bad
 
@@ -1763,12 +1767,24 @@ def _parse_one_file(args):
                 data_to_save['meet_name'] = None   # the season index names the meet
             if meta['host'] and not data_to_save.get('host'):
                 data_to_save['host'] = meta['host']
+            # a race whose runners mostly print a high-school year is a high-school race held at a
+            # middle school ('Belfast XC meet' at Troy Howard MS): its blank years are not 'MS'
+            n_rows = n_hs = 0
+            for ev in data_to_save.get('events') or []:
+                rows = [r for r in (ev.get('results') or []) if isinstance(r, dict)] if isinstance(ev, dict) else []
+                hs = sum(str(r.get('grade') or '').upper() in HS_YEARS for r in rows)
+                n_rows, n_hs = n_rows + len(rows), n_hs + hs
+                for r in rows:
+                    if r.pop('ms_fill', None) and hs >= 0.5 * len(rows):
+                        r['grade'] = ''
+            hs_meet = n_rows >= 10 and n_hs >= 0.5 * n_rows
             # Junior-high / middle-school meets posted beside the high-school
             # results: told by the meet title, never by the venue (the
             # Festival of Champions is held at a middle school)
             if season_label == 'XC':
                 title = meta['meet'] or data_to_save.get('meet_name') or ''
-                if data_to_save.get('meet_level') == 'ms' or _MS_MEET_TITLE.search(title):
+                # (the 2004 state meet's venue line 'Troy Howard Middle School, Belfast' read as its title)
+                if data_to_save.get('meet_level') == 'ms' or (_MS_MEET_TITLE.search(title) and not hs_meet):
                     data_to_save['meet_level'] = 'ms'
                     for ev in data_to_save.get('events') or []:
                         for r in (ev.get('results') or []) if isinstance(ev, dict) else []:

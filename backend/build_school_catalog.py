@@ -66,7 +66,7 @@ def seed_entries():
                      curation='seed')
             if mpa:
                 e['mpa'] = mpa
-            for k in ('years', 'notes', 'successor', 'kind', 'bare_ok', 'members', 'middle_grades'):
+            for k in ('years', 'notes', 'successor', 'kind', 'bare_ok', 'members', 'middle_grades', 'youth_ms'):
                 if k in extra:
                     e[k] = extra[k]
             schools[sid] = e

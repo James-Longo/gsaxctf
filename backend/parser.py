@@ -1479,6 +1479,7 @@ class Sub5ColumnParser:
                 entry["team_place"] = fin[3]
             if ev.get("is_ms") and not entry["grade"]:
                 entry["grade"] = "MS"
+                entry["ms_fill"] = True
             results.append(entry)
         return results
 
@@ -2100,6 +2101,7 @@ class Sub5ColumnParser:
                                         entry["team_place"] = int(tp.group(1))
                                 if ev.get("is_ms") and not entry["grade"]:
                                     entry["grade"] = "MS"
+                                    entry["ms_fill"] = True
                                 
                                 if warnings: entry["warnings"] = warnings
                                 if name_val and school_val and res_val != anchor_type:
