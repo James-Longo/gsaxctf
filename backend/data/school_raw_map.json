@@ -1,16 +1,16 @@
 {
 "_meta": {
 "methods_by_rows": {
-"exact/alias": 1747990,
+"exact/alias": 1748253,
 "code": 257778,
 "truncation": 119648,
-"athlete-continuity": 52510,
+"athlete-continuity": 52448,
 "mascot": 28413,
 "bare name + level context": 26239,
 "unresolved": 17817,
 "manual (file rule)": 16923,
 "co-op label": 12504,
-"state-tagged (auto entry)": 10633,
+"state-tagged (auto entry)": 10432,
 "spelling (fuzzy)": 3469,
 "file-expansion": 2991,
 "debris-salvage": 1767,
@@ -22,9 +22,9 @@
 "co-op label -> host (co-op not active)": 183
 },
 "methods_by_strings": {
-"exact/alias": 4118,
+"exact/alias": 4119,
 "unresolved": 2164,
-"state-tagged (auto entry)": 1569,
+"state-tagged (auto entry)": 1568,
 "debris-salvage": 913,
 "debris": 716,
 "code": 701,
@@ -15546,21 +15546,23 @@
 2007,
 2025
 ],
-"id": "oos-auto-nh-raymond",
+"id": "me-ms-jordan-small",
 "method": "exact",
 "by_id": {
-"oos-auto-nh-raymond": 213,
-"me-ms-jordan-small": 72
+"me-ms-jordan-small": 273,
+"oos-auto-nh-raymond": 12
 },
 "context_dependent": true,
-"flags": [
-"athletes contradict name match (oos-auto-nh-raymond -> me-ms-jordan-small, 11/11)",
-"athletes contradict name match (oos-auto-nh-raymond -> me-ms-jordan-small, 18/18)",
-"athletes contradict name match (oos-auto-nh-raymond -> me-ms-jordan-small, 2/2)",
-"athletes contradict name match (oos-auto-nh-raymond -> me-ms-jordan-small, 4/4)",
-"athletes disagree with file rule (me-ms-jordan-small -> oos-auto-nh-raymond, 5/9)"
-],
-"how": "state-tagged (auto entry)"
+"by_level": {
+"ms": "me-ms-jordan-small",
+"hs": "oos-auto-nh-raymond"
+},
+"by_season": {
+"XC": "me-ms-jordan-small",
+"Outdoor": "oos-auto-nh-raymond",
+"Indoor": "oos-auto-nh-raymond"
+},
+"how": "exact/alias"
 },
 "Maine-Farmington": {
 "rows": 285,
@@ -18688,9 +18690,6 @@
 ],
 "id": "me-ms-jordan-small",
 "method": "exact",
-"flags": [
-"athletes contradict name match (me-ms-jordan-small -> oos-auto-nh-raymond, 18/18)"
-],
 "how": "exact/alias"
 },
 "Chs Boys Track": {
@@ -26914,9 +26913,6 @@
 "me-ms-jordan-small": 86
 },
 "context_dependent": true,
-"flags": [
-"athletes disagree with file rule (me-ms-jordan-small -> oos-auto-nh-raymond, 2/2)"
-],
 "how": "manual (file rule)"
 },
 "GrtrHltn": {
@@ -42312,10 +42308,6 @@
 "me-ms-jordan-small": 28
 },
 "context_dependent": true,
-"flags": [
-"athletes disagree with file rule (me-ms-jordan-small -> oos-auto-nh-raymond, 2/2)",
-"athletes disagree with file rule (me-ms-jordan-small -> oos-auto-nh-raymond, 2/6)"
-],
 "how": "manual (file rule)"
 },
 "BE-": {
@@ -57903,9 +57895,6 @@
 ],
 "id": "me-ms-jordan-small",
 "method": "exact",
-"flags": [
-"athletes contradict name match (me-ms-jordan-small -> oos-auto-nh-raymond, 5/5)"
-],
 "how": "exact/alias"
 },
 "Kennebunk HS": {
@@ -173827,7 +173816,7 @@
 "Hall-Dale": "me-ms-hall-dale",
 "Lewiston": "me-ms-lewiston",
 "Monmouth": "me-ms-monmouth",
-"Raymond": "oos-auto-nh-raymond",
+"Raymond": "me-ms-jordan-small",
 "Richmond": "me-ms-richmond",
 "Winthrop": "me-ms-winthrop"
 },
@@ -174909,7 +174898,7 @@
 "Freeport": "me-ms-freeport",
 "Gray-New Gloucester": "me-ms-gray-ng",
 "Greely": "me-ms-greely",
-"Raymond": "oos-auto-nh-raymond",
+"Raymond": "me-ms-jordan-small",
 "Scarborough": "me-ms-scarborough",
 "Seacoast": "me-ms-seacoast-christian"
 },
@@ -177480,7 +177469,7 @@
 "2008/XC/MonmouthMSBoys10_2": {
 "Hall-Dale": "me-ms-hall-dale",
 "Monmouth": "me-ms-monmouth",
-"Raymond": "oos-auto-nh-raymond",
+"Raymond": "me-ms-jordan-small",
 "Telstar": "me-ms-telstar",
 "Windsor": "me-ms-windsor",
 "Winthrop": "me-ms-winthrop"
@@ -177488,7 +177477,7 @@
 "2008/XC/MonmouthMSGirls10_2": {
 "Hall-Dale": "me-ms-hall-dale",
 "Monmouth": "me-ms-monmouth",
-"Raymond": "oos-auto-nh-raymond",
+"Raymond": "me-ms-jordan-small",
 "Telstar": "me-ms-telstar",
 "Windsor": "me-ms-windsor",
 "Winthrop": "me-ms-winthrop"
@@ -178736,7 +178725,7 @@
 "Freeport": "me-ms-freeport",
 "Greely": "me-ms-greely",
 "Marshwood": "me-ms-marshwood",
-"Raymond": "oos-auto-nh-raymond",
+"Raymond": "me-ms-jordan-small",
 "Scarboro": "me-ms-scarborough",
 "Seacoast Christian": "me-ms-seacoast-christian",
 "Unknown": "x-unknown",
@@ -178749,7 +178738,7 @@
 "Freeport": "me-ms-freeport",
 "Greely": "me-ms-greely",
 "Marshwood": "me-ms-marshwood",
-"Raymond": "oos-auto-nh-raymond",
+"Raymond": "me-ms-jordan-small",
 "Scarboro": "me-ms-scarborough",
 "Seacoast Christian": "me-ms-seacoast-christian",
 "Unknown": "x-unknown",
@@ -182114,7 +182103,7 @@
 "Falmouth": "me-ms-falmouth",
 "Freeport": "me-ms-freeport",
 "Greely": "me-ms-greely",
-"Raymond": "oos-auto-nh-raymond",
+"Raymond": "me-ms-jordan-small",
 "Scarboro": "me-ms-scarborough",
 "Seacoast Christian": "me-ms-seacoast-christian",
 "Wells": "me-ms-wells",
@@ -182125,7 +182114,7 @@
 "Falmouth": "me-ms-falmouth",
 "Freeport": "me-ms-freeport",
 "Greely": "me-ms-greely",
-"Raymond": "oos-auto-nh-raymond",
+"Raymond": "me-ms-jordan-small",
 "Scarboro": "me-ms-scarborough",
 "Seacoast Christian": "me-ms-seacoast-christian",
 "Wells": "me-ms-wells",
@@ -184663,7 +184652,7 @@
 },
 "2010/Outdoor/traipboys_pril30": {
 "Mas": null,
-"Raymond": "oos-auto-nh-raymond",
+"Raymond": "me-ms-jordan-small",
 "Unknown": "x-unknown"
 },
 "2010/Outdoor/traipgirls_april30": {
@@ -185909,7 +185898,7 @@
 "Freeport": "me-ms-freeport",
 "Gray New Gloucester": "me-ms-gray-ng",
 "Greely": "me-ms-greely",
-"Raymond": "oos-auto-nh-raymond",
+"Raymond": "me-ms-jordan-small",
 "Scarboro": "me-ms-scarborough",
 "Seacoast Christian": "me-ms-seacoast-christian",
 "Unattached": "x-unattached",
@@ -185924,7 +185913,7 @@
 "Freeport": "me-ms-freeport",
 "Gray New Gloucester": "me-ms-gray-ng",
 "Greely": "me-ms-greely",
-"Raymond": "oos-auto-nh-raymond",
+"Raymond": "me-ms-jordan-small",
 "Scarboro": "me-ms-scarborough",
 "Seacoast Christian": "me-ms-seacoast-christian",
 "Windham": "me-ms-windham",
@@ -210308,7 +210297,7 @@
 "Fryeburg": "me-hs-fryeburg",
 "Gray-New Gloucester": "me-ms-gray-ng",
 "North Yarmouth A": "me-ms-nya",
-"Raymond": "oos-auto-nh-raymond",
+"Raymond": "me-ms-jordan-small",
 "Sacopee Valley": "me-ms-sacopee",
 "Unknown": "x-unknown",
 "Waynflete": "me-ms-waynflete"
@@ -224472,7 +224461,7 @@
 "2021/XC/trippms_2021_10_14_girls": {
 "Gray-New Gloucester": "me-ms-gray-ng",
 "Lake Region": "me-ms-lake-region",
-"Raymond": "oos-auto-nh-raymond",
+"Raymond": "me-ms-jordan-small",
 "St. Dom": "me-ms-st-dominic"
 },
 "2021/XC/wells-home-meet-2-21-mf.txt": {
@@ -235967,10 +235956,6 @@
 "EO Smith High School": "oos-ct-e-o-smith-high-school",
 "EProvidence": "oos-auto-ri-e-providence",
 "EVESON LIS": null,
-"EX fort kent WISDOM": {
-"id": null,
-"basis": "name only (no joined rows)"
-},
 "EXC": null,
 "Eagles Track": null,
 "East Cath": "oos-auto-ct-east-cath",
@@ -236228,10 +236213,6 @@
 "Hazen": "oos-auto-vt-hazen",
 "Hazen Union": "oos-auto-vt-hazen-union",
 "Hbs": null,
-"HdgdnKtdn": {
-"id": null,
-"basis": "name only (no joined rows)"
-},
 "Hebron Academy": "me-hs-hebron",
 "Hebron Academy Middle School": "me-ms-hebron",
 "Helen Dunn School": "me-ms-helen-dunn",
@@ -237018,7 +236999,7 @@
 "Rams": null,
 "Randolph": "oos-auto-vt-randolph",
 "Randolph Union": "oos-auto-vt-randolph-union",
-"Raymond": "oos-auto-nh-raymond",
+"Raymond": "me-ms-jordan-small",
 "Reading Memorial High School": "oos-ma-reading-memorial-high-school",
 "Reeds Brook Middle School": "me-ms-reeds-brook",
 "Rham": "oos-auto-ct-rham",
@@ -237626,10 +237607,6 @@
 "id": null,
 "basis": "name only (no joined rows)"
 },
-"katahdin HODGDON": {
-"id": null,
-"basis": "name only (no joined rows)"
-},
 "la BrooksMicayla Hussey": {
 "id": null,
 "basis": "name only (no joined rows)"
@@ -237748,10 +237725,6 @@
 "unafreeport": null,
 "unk": null,
 "vermore Falls": {
-"id": null,
-"basis": "name only (no joined rows)"
-},
-"wisdom FORT KENT": {
 "id": null,
 "basis": "name only (no joined rows)"
 },

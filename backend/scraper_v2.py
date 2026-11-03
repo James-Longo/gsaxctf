@@ -358,6 +358,27 @@ def xc_too_fast_for_5k(results, gender):
     return best is not None and gender in _XC_5K_FLOOR and best < _XC_5K_FLOOR[gender]
 
 
+def _xc_secs(mark):
+    m = re.match(r'^\s*(?:(\d+):)?(\d+):(\d+(?:\.\d+)?)\s*$', str(mark or ''))
+    return int(m.group(1) or 0) * 3600 + int(m.group(2)) * 60 + float(m.group(3)) if m else None
+
+
+def xc_out_of_order_times(results):
+    """ids of placed rows whose time is over a minute slower than the next places' -- a typo on the
+    sheet ('M. Larivee 48:00.0' 14th between 20:45.8 and 21:05): the place stands, the time does not."""
+    placed = [(r, _xc_secs(r.get('result') or r.get('mark'))) for r in results or []
+              if isinstance(r, dict) and str(r.get('place') or '').strip().isdigit()]
+    bad = set()
+    for i in range(1, len(placed) - 1):
+        t, prev = placed[i][1], placed[i - 1][1]
+        after = [x for _, x in placed[i + 1:i + 4] if x is not None]
+        if t is None or prev is None or not after:
+            continue
+        if prev <= after[0] and t > max(after) + 60:
+            bad.add(id(placed[i][0]))
+    return bad
+
+
 def xc_sibling_distance(json_dir, filename):
     """The one course distance ('2.5 Mile') the other sex's sheet of this XC meet states, else None.
 
@@ -2901,6 +2922,7 @@ class Sub5ScraperV2:
                     gender, event_canon_name = canon
                     full_event = f"{gender} {event_canon_name}"
                     is_relay = is_relay or 'Relay' in event_canon_name
+                    bad_times = xc_out_of_order_times(results_list) if season == 'XC' and not is_relay else set()
 
                     for r in results_list:
                         # Seed-type rows come from entry/heat sheets, not results
@@ -2948,6 +2970,9 @@ class Sub5ScraperV2:
                             if re.fullmatch(r'(?i)unknown|unidentified|no name|\?+', athlete_name.strip()):
                                 SYNC_DROPS[(meet_key, 'unnamed finisher')] += 1
                                 continue
+                        if id(r) in bad_times:
+                            SYNC_DROPS[(meet_key, 'XC time out of place order (kept as NT)')] += 1
+                            mark = 'NT'
                         if not athlete_name or not mark or mark.upper() in ["DNS", "SCR"]:
                             SYNC_DROPS[(meet_key, 'no name / no mark / DNS')] += 1
                             continue

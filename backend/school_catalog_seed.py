@@ -948,7 +948,7 @@ ME_MS = [
     ('me-ms-windham', 'Windham Middle School', 'Windham', None, ['Windham Middle School', 'Windham MS', 'Windham Middle'], [], [], {}),
     ('me-ms-jordan-small', 'Jordan-Small Middle School', 'Raymond', None,
      ['Jordan-Small Middle School', 'Jordan Small Middle School', 'Jordan Small', 'Jordan-Small', 'Jordan Small MS',
-      'Jordan Small Mid', 'Raymond-Jordan Small', 'Jordan Small/ Raymond'], [], [], {}),
+      'Jordan Small Mid', 'Raymond-Jordan Small', 'Jordan Small/ Raymond', 'Raymond'], [], [], {}),   # Raymond's only school; 'Raymond - NH' stays NH
     ('me-ms-gorham', 'Gorham Middle School', 'Gorham', None, ['Gorham Middle School', 'Gorham MS', 'Gorham Middle'], ['GMS'], [], {}),
     ('me-ms-westbrook', 'Westbrook Middle School', 'Westbrook', None,
      ['Westbrook Middle School', 'Westbrook MS', 'Westbrook Middle', 'Wescott Junior High', 'Wescott'], [], [], {}),

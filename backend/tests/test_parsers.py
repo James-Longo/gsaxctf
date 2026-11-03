@@ -3274,6 +3274,16 @@ def test_bare_xc_race_too_fast_for_5k_is_not_a_5k():
     assert not xc_too_fast_for_5k([{'result': '18:21'}], 'Girls')
 
 
+def test_xc_time_slower_than_the_next_places_is_a_sheet_typo():
+    # Marshwood 2006: 'M. Larivee 48:00.0' placed 14th between 20:45.8 and 21:05
+    from backend.scraper_v2 import xc_out_of_order_times
+    rows = [{'place': p, 'result': t} for p, t in
+            [(13, '20:45.8'), (14, '48:00.0'), (15, '21:05'), (16, '21:10'), (17, '21:20')]]
+    assert xc_out_of_order_times(rows) == {id(rows[1])}
+    # a close finish a few seconds out of order is left alone
+    rows = [{'place': p, 'result': t} for p, t in [(1, '17:00'), (2, '17:20'), (3, '17:10'), (4, '17:30')]]
+    assert not xc_out_of_order_times(rows)
+
 def test_metric_xc_course_off_the_track_list_is_not_a_5k():
     # Lawrence JH '2400 Meter Run', York MS '2436 Meter Run CC' were stored as 5K
     from backend.event_canon import canonical_event
