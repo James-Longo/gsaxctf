@@ -2910,6 +2910,11 @@ class Sub5ScraperV2:
                         school = r.get("school") or r.get("team") or ""
                         mark = r.get("result") or r.get("mark") or ""
                         relay_athletes = r.get("athletes", [])
+                        # (an XC relay line is a team's total -- 'GHCA 18:39' over a 3-mile relay of
+                        # 1.5-mile legs: no runner ran it; the legs, when printed, are their own rows)
+                        if is_relay and season == 'XC':
+                            SYNC_DROPS[(meet_key, 'XC relay team total')] += 1
+                            continue
                         if is_relay:
                             if relay_athletes:
                                 # Drop legs that are leaked result rows (contain times/marks)
