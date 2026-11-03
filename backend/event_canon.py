@@ -83,6 +83,10 @@ def canonical_event(raw, gender, season=None, level=None, relay=False):
         k = K_DIST.search(s)
         if k:
             return gender, f'{k.group(1).upper()}K Cross Country'
+        # (Laliberte's '3900 Yard Run CC Varsity': a yard course, not a 5K)
+        y = re.search(r'(\d{4})\s*(?:yards?|yds?)\b', s, re.I)
+        if y:
+            return gender, f'{y.group(1)} Yard Cross Country'
         d = DIST_RE.search(s)
         if d and int(d.group(1)) >= 1500:
             meters = int(d.group(1))

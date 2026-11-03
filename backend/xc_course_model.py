@@ -283,9 +283,9 @@ MIN_LINKED = 5     # runners with other races that season needed to judge a meet
 RELAY_MEET = re.compile(r'relay', re.I)
 MIN_GRADED = 10       # graded rows needed before a meet's grade mix is judged
 
-EVENT_DIST = re.compile(r'([\d.]+)\s*(Miles?|K|Meters?)\b', re.I)
+EVENT_DIST = re.compile(r'([\d.]+)\s*(Miles?|K|Meters?|Yards?)\b', re.I)
 _DIST_UNIT = {'mile': 1609.344, 'miles': 1609.344,
-              'k': 1000.0, 'meter': 1.0, 'meters': 1.0}
+              'k': 1000.0, 'meter': 1.0, 'meters': 1.0, 'yard': 0.9144, 'yards': 0.9144}
 
 
 def event_distance(event):

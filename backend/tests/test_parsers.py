@@ -3239,3 +3239,11 @@ def test_sex_column_read_onto_names_files_each_row_by_it():
     b, g = data['events']
     assert [r['athlete'] for r in b['results']] == [f'Boy{i}, Sam' for i in range(1, 7)]
     assert [r['athlete'] for r in g['results']] == ['Girl1, Ann', 'Girl2, Eve', 'Girl3, Ann']
+
+
+def test_xc_yard_course_is_not_a_5k():
+    # Laliberte 2017-2024 prints '3900 Yard Run CC Varsity' / '3800 Yard Run CC JV'
+    from backend.event_canon import canonical_event
+    from backend.xc_course_model import event_distance
+    assert canonical_event('3900 Yard Run CC Varsity', 'Boys', 'XC') == ('Boys', '3900 Yard Cross Country')
+    assert event_distance('Boys 3900 Yard Cross Country') == 3600

@@ -2812,9 +2812,19 @@ class Sub5ScraperV2:
                                            date, course_name, url, self.normalize_athlete_name)
                     continue
 
+                # (one race of an XC file states the course ('2.71 Mile Run CC'), its other race is a bare
+                # 'Run CC' that would become a 5K: both sexes ran the one course. Not a JV race or relay leg.)
+                xc_course = None
+                if season == 'XC':
+                    stated = {e.get('event') for e in parsed_events if isinstance(e, dict) and e.get('results')
+                              and re.search(r'\d', str(e.get('event') or '')) and not e.get('is_relay')}
+                    if len(stated) == 1 and 'relay' not in low:
+                        xc_course = stated.pop()
                 for event_block in parsed_events:
                     if isinstance(event_block, dict) and "results" in event_block:
                         gender = event_block.get("gender", "")
+                        if xc_course and re.fullmatch(r'(?i)\s*run\s+cc\s*', str(event_block.get("event") or '')):
+                            event_block = dict(event_block, event=xc_course)
                         event_name = event_block.get("event", "")
                         is_relay = event_block.get("is_relay", False)
                         results_list = event_block.get("results", [])
