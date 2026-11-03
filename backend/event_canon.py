@@ -87,6 +87,10 @@ def canonical_event(raw, gender, season=None, level=None, relay=False):
         y = re.search(r'(\d{4})\s*(?:yards?|yds?)\b', s, re.I)
         if y:
             return gender, f'{y.group(1)} Yard Cross Country'
+        # (middle-school '2400 Meter Run' / York's '2436 Meter Run CC': any metric XC course)
+        xm = re.search(r'\b(\d{4,5})\s*(?:m|meters?|metres?)\b', s, re.I)
+        if xm and int(xm.group(1)) >= 1500 and int(xm.group(1)) % 1000:
+            return gender, f'{int(xm.group(1))} Meter Cross Country'
         d = DIST_RE.search(s)
         if d and int(d.group(1)) >= 1500:
             meters = int(d.group(1))

@@ -343,6 +343,21 @@ def xc_fuller_name(keep, other):
     return other if left else keep
 
 
+_XC_5K_FLOOR = {'Boys': 14 * 60 + 20, 'Girls': 16 * 60 + 30}   # faster than any Maine XC 5K
+K_DIST_ANY = re.compile(r'\d')
+
+
+def xc_too_fast_for_5k(results, gender):
+    """True when a race's winning time is faster than any 5K -- the bare 'Run CC' was a shorter course."""
+    best = None
+    for r in results or []:
+        m = re.match(r'^\s*(\d+):(\d+(?:\.\d+)?)\s*$', str((r or {}).get('result') or ''))
+        if m:
+            t = int(m.group(1)) * 60 + float(m.group(2))
+            best = t if best is None or t < best else best
+    return best is not None and gender in _XC_5K_FLOOR and best < _XC_5K_FLOOR[gender]
+
+
 def xc_sibling_distance(json_dir, filename):
     """The one course distance ('2.5 Mile') the other sex's sheet of this XC meet states, else None.
 
@@ -2874,6 +2889,11 @@ class Sub5ScraperV2:
                     # junk/out-of-scope labels dropped (see event_canon.py)
                     canon = canonical_event(event_name, gender or 'Boys', season=season,
                                             level=meet_level, relay=season == 'XC' and relay_meet)
+                    # (a race that states no distance is filed as a 5K; one whose winner beats any Maine
+                    # 5K -- 'watervillemsboys' 9:25, Hyde 14:05 -- ran a shorter course: distance unknown)
+                    if canon and canon[1] == '5K Cross Country' and not K_DIST_ANY.search(str(event_name)) \
+                            and xc_too_fast_for_5k(results_list, canon[0]):
+                        canon = (canon[0], 'Cross Country')
                     if canon is None:
                         SYNC_DROPS[(meet_key, 'event out of scope / unreadable')] += len(results_list)
                         SYNC_DROP_WHAT[('event', season, str(event_name)[:60])] += len(results_list)

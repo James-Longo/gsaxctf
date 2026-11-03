@@ -3263,3 +3263,20 @@ def test_xc_bare_race_takes_the_course_the_other_sexs_sheet_states(tmp_path=None
     assert xc_sibling_distance(d, 'leeboys_sept19.txt.json') == '2.5 Mile'
     assert xc_sibling_distance(d, 'xGirls.json') is None        # two courses: no single answer
     assert xc_sibling_distance(d, 'results.json') is None       # no sibling sheet
+
+
+def test_bare_xc_race_too_fast_for_5k_is_not_a_5k():
+    # 'watervillemsboys_oct19' states no distance; its winner ran 9:25 -- not a 5K
+    from backend.scraper_v2 import xc_too_fast_for_5k
+    assert xc_too_fast_for_5k([{'result': '9:25'}, {'result': '10:02'}], 'Boys')
+    assert not xc_too_fast_for_5k([{'result': '15:48'}, {'result': '16:30'}], 'Boys')
+    assert xc_too_fast_for_5k([{'result': '15:55'}], 'Girls')
+    assert not xc_too_fast_for_5k([{'result': '18:21'}], 'Girls')
+
+
+def test_metric_xc_course_off_the_track_list_is_not_a_5k():
+    # Lawrence JH '2400 Meter Run', York MS '2436 Meter Run CC' were stored as 5K
+    from backend.event_canon import canonical_event
+    assert canonical_event('2400 Meter Run', 'Boys', 'XC') == ('Boys', '2400 Meter Cross Country')
+    assert canonical_event('2436 Meter Run CC', 'Girls', 'XC') == ('Girls', '2436 Meter Cross Country')
+    assert canonical_event('5000 Meter Run CC', 'Boys', 'XC') == ('Boys', '5K Cross Country')
