@@ -378,7 +378,8 @@ def build_entities(rows):
         e['ay_sports'].add((ay, 'xc' if season == 'XC' else 'track'))
         e['years'].add(year)
         e['seasons'][season] += 1
-        if g is not None:
+        # (a middle school has no grade over 8: MileSplit's 'Yr 12' in a middle-school meet is an age or a typo)
+        if g is not None and not (unit.startswith('me-ms-') and g > 8):
             e['grads'][ay + 12 - g] += 1
         e['races'].add(f'{meet}|{year}|{season}|{event}')
         e['race_marks'][f'{meet}|{year}|{season}|{event}'].add(mark)
