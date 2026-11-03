@@ -538,6 +538,27 @@ def meet_level(meet_name: str = None, grade=None):
     return None
 
 
+_FILE_LEVELS = None
+
+
+def file_level(year, season, meet_name):
+    """'ms' for a file the runners show is a middle-school meet though its name doesn't say so
+    (backend/data/meet_levels.json, built by backend/meet_levels.py), else None."""
+    global _FILE_LEVELS
+    if _FILE_LEVELS is None:
+        try:
+            with open(os.path.join(DATA_DIR, 'meet_levels.json'), encoding='utf-8') as f:
+                _FILE_LEVELS = json.load(f).get('ms', {})
+        except FileNotFoundError:
+            _FILE_LEVELS = {}
+    if not meet_name:
+        return None
+    base = os.path.basename(meet_name)
+    # (a parse keeps a '.txt' its source had: 'coastal-girls.txt'; a source file name ends in .htm/.pdf)
+    stems = {base, re.sub(r'\.(json|html?|pdf|xlsx?|docx?|csv)$', '', base, flags=re.I)}
+    return 'ms' if any(f'{year}/{season}/{s}' in _FILE_LEVELS for s in stems) else None
+
+
 def file_rule(raw_school, year, season, meet_name, rules):
     """Per-file meaning of a context-dependent string (catalog 'file_rules', from reading the files)."""
     if not meet_name:
@@ -593,7 +614,7 @@ def _resolve(raw_school, *, year, season, gender=None, meet_name=None, grade=Non
     if looks_like_debris(s) and not salvage(s):
         return None
     entry = raw['raw'].get(s)
-    level = meet_level(meet_name, grade)
+    level = file_level(year, season, meet_name) or meet_level(meet_name, grade)
 
     def ok(sid):
         return sid and in_years(cat['schools'].get(sid, {}), ay)

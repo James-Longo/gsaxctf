@@ -3190,3 +3190,18 @@ def test_xc_three_scorer_table_verifies():
                                          {'team': 'B', 'score': 13, 'places': [2, 4, 7]},
                                          {'team': 'C', 'score': 23, 'places': [6, 8, 9]}]}
     assert qaqc._xc_verify_block(block, rows)['status'] == 'verified'
+
+
+def test_file_level_reads_parse_and_source_stems():
+    # a parse keeps a '.txt' its source had ('coastal-girls.txt'); the sync passes the source file
+    # name ('coastal-girls.txt.htm'); both are the middle-school meet the runners showed
+    from backend import school_catalog as sc
+    saved = sc._FILE_LEVELS
+    sc._FILE_LEVELS = {'2015/XC/coastal-girls.txt': 'Ellsworth MS runners'}
+    try:
+        assert sc.file_level(2015, 'XC', 'coastal-girls.txt') == 'ms'
+        assert sc.file_level(2015, 'XC', 'coastal-girls.txt.htm') == 'ms'
+        assert sc.file_level(2015, 'XC', 'coastal-boys.txt') is None
+        assert sc.file_level(2016, 'XC', 'coastal-girls.txt') is None
+    finally:
+        sc._FILE_LEVELS = saved

@@ -16,15 +16,16 @@ from backend import athlete_catalog as ac  # noqa: E402
 UNIT = 'me-ms-marshwood'
 
 
-def _row(name, year, meet, mark, sid=None, event='Boys 2 Mile Run CC'):
-    sid = sid or name.lower().replace(' ', '-')
-    return ('Marshwood_MS', 'Marshwood Middle School', UNIT, year, 'XC', ac.academic_year(year, 'XC'),
+def _row(name, year, meet, mark, sid=None, event='Boys 2 Mile Run CC', unit=UNIT, team='Marshwood Middle School'):
+    sid = sid or (name.lower().replace(' ', '-') + '-' + unit)
+    return (team.replace(' ', '_'), team, unit, year, 'XC', ac.academic_year(year, 'XC'),
             name, sid, event, mark, None, meet, f'{year}-10-01')
 
 
 def _runners(rows):
     ents, _ = ac.build_entities(rows)
     groups, _ = ac.cluster(ents, ac.candidate_pairs(ents), {})
+    groups, _ = ac.link_across_schools(groups, ents)
     return [sorted(ents[k]['name'] for k in g) for g in groups]
 
 
@@ -59,11 +60,48 @@ def test_surname_never_bridges_two_brothers():
     assert not _together(_runners(rows), 'Joe Zuke', 'Wyatt Zuke')
 
 
+def test_typo_inside_a_hyphenated_surname():
+    # first and last words agree, the middle word differs by one letter
+    rows = [_row('Arianna Stilles-Martin', 2021, 'PVC Meet', '22:15'),
+            _row('Arianna Stiles-Martin', 2022, 'Class C North', '22:35')]
+    assert _together(_runners(rows), 'Arianna Stilles-Martin', 'Arianna Stiles-Martin')
+
+
 def test_exhibition_x_is_not_an_initial():
     # MileSplit prints exhibition runners "X McGrath"
     rows = [_row('X McGrath', 2011, 'Kennebunk Meet', '18:40'),
             _row('Sean McGrath', 2011, 'York County MS', '18:20')]
     assert _together(_runners(rows), 'X McGrath', 'Sean McGrath')
+
+
+def test_middle_school_to_its_high_school():
+    # Bay School (Blue Hill) runners go on to George Stevens Academy (Blue Hill)
+    g = 'Girls 5K Run CC'
+    rows = [_row('Bella Cimeno', 2011, 'Coastal MS', '13:10', event=g, unit='me-ms-bay-school', team='Bay School'),
+            _row('Bella Cimeno', 2012, 'Coastal MS', '12:55', event=g, unit='me-ms-bay-school', team='Bay School'),
+            _row('Bella Cimeno', 2013, 'PVC Champs', '21:40', event=g, unit='me-hs-gsa', team='George Stevens Academy'),
+            _row('Bella Cimeno', 2014, 'PVC Champs', '21:02', event=g, unit='me-hs-gsa', team='George Stevens Academy')]
+    assert _together(_runners(rows), 'Bella Cimeno', 'Bella Cimeno') and len(_runners(rows)) == 1
+
+
+def test_one_name_at_two_schools_at_once_is_two_runners():
+    g = 'Girls 5K Run CC'
+    rows = [_row('Emma Smith', 2012, 'Coastal MS', '13:10', event=g, unit='me-ms-bay-school', team='Bay School'),
+            _row('Emma Smith', 2012, 'PVC Meet', '21:40', event=g, unit='me-hs-gsa', team='George Stevens Academy')]
+    assert len(_runners(rows)) == 2
+
+
+def test_three_schools_two_spellings_one_runner():
+    # Arianna Stiles-Martin: Bay School XC (fall 2018), Blue Hill track the same school year and
+    # XC after it as 'Ariana', then George Stevens Academy
+    g, t = 'Girls 5K Run CC', 'Girls 800 Meter Run'
+    rows = [_row('Arianna Stiles-Martin', 2018, 'Coastal MS', '13:40', event=g, unit='me-ms-bay-school', team='Bay School'),
+            _row('Ariana Stiles-Martin', 2019, 'Blue Hill Meet', '2:40', event=t, unit='me-ms-blue-hill',
+                 team='Blue Hill Consolidated School'),
+            _row('Arianna Stiles-Martin', 2019, 'Coastal MS', '13:05', event=g, unit='me-ms-blue-hill',
+                 team='Blue Hill Consolidated School'),
+            _row('Arianna Stiles-Martin', 2021, 'PVC Champs', '22:15', event=g, unit='me-hs-gsa', team='George Stevens Academy')]
+    assert len(_runners(rows)) == 1
 
 
 if __name__ == '__main__':

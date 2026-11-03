@@ -7259,18 +7259,18 @@
   "evidence": ""
  },
  "backend/data/parsed_results/2007/XC/edwardlittleboys9_7.json": {
-  "parse_sha": "722b0364973446aa",
+  "parse_sha": "03f5edd53491f60a",
   "source_sha": "99a4818bcc9407ea",
-  "date": "2026-10-16",
-  "by": "auto: team scores verified exactly, all schools identified, no flags",
-  "evidence": ""
+  "date": "2026-11-02",
+  "by": "XC loop 2026-11-02: impossible printed distance removed",
+  "evidence": "Rows as parsed. The sheet's printed distance cannot be the race's (winners' and median times fit a different distance; see each file's notes), so the race is stored as 'Run CC' with no distance; QA flags on the marks come from comparing them with the wrong distance."
  },
  "backend/data/parsed_results/2007/XC/edwardlittlegirls9_7.json": {
-  "parse_sha": "68aed3c3bb5f1503",
+  "parse_sha": "563f371f59b62856",
   "source_sha": "2fe75ee68d3937dc",
-  "date": "2026-10-16",
-  "by": "auto: team scores verified exactly, all schools identified, no flags",
-  "evidence": ""
+  "date": "2026-11-02",
+  "by": "XC loop 2026-11-02: impossible printed distance removed",
+  "evidence": "Rows as parsed. The sheet's printed distance cannot be the race's (winners' and median times fit a different distance; see each file's notes), so the race is stored as 'Run CC' with no distance; QA flags on the marks come from comparing them with the wrong distance."
  },
  "backend/data/parsed_results/2007/XC/elboys8_31.json": {
   "parse_sha": "dcc58217f12be7ec",
@@ -7665,11 +7665,11 @@
   "evidence": ""
  },
  "backend/data/parsed_results/2007/XC/ms-mt-blue-relays-2007-girls-individuals.json": {
-  "parse_sha": "64742a93f0b5ff63",
-  "source_sha": "18e4a0523f18a9bf",
+  "parse_sha": "3c01c61037738da1",
+  "source_sha": "6f9c9179004ddd2d",
   "date": "2026-11-02",
-  "by": "XC loop 2026-11-02: MileSplit race missing from sub5",
-  "evidence": "Race not held from sub5 (sub5 kept the other gender only, or a partial list: Mt Blue 2007 girls legs 169 of 305, 165 matching). Read from MileSplit's raw page; rows checked against the page; team scores verify (Scarborough within a point; WMC 2020 and the relay legs print none); schools mapped from the meet's own codes (Scots = Bonny Eagle, FA = Fryeburg Academy). Airline: winner Wyatt Lord added by hand ('*course record' note)."
+  "by": "XC loop 2026-11-02: duplicate row removed",
+  "evidence": "The same runner printed twice at consecutive places with the same time (on the source page itself, e.g. Macaluso 21 and 22 at 20:18, both non-scoring); the second copy is not stored. Team scores unchanged."
  },
  "backend/data/parsed_results/2007/XC/mtararatboys9_14.json": {
   "parse_sha": "8f4726e000645ea9",
@@ -14133,11 +14133,11 @@
   "evidence": ""
  },
  "backend/data/parsed_results/2010/XC/LisbonBoys_oct7.json": {
-  "parse_sha": "40241a30f383011f",
+  "parse_sha": "9e85f5b3a97756bd",
   "source_sha": "6970266a00e375c2",
-  "date": "2026-10-26",
-  "by": "sonnet audit (second read, 2026-10-26) (audit: source-error)",
-  "evidence": "All 28 rows match. Source prints place 6 twice: \"6 54 0 KODY PRIDDLE LISBON :20:06\" and \"6 56 6 KODY PRIDDLE LISBON :20:06\" (bibs 54 and 56, same name and time; the next place is 8, \"28 COMPETITORS\" counts both): a duplicated entry in the timing sheet, kept as printed. No team scores printed."
+  "date": "2026-11-02",
+  "by": "XC loop 2026-11-02: duplicate row removed",
+  "evidence": "The same runner printed twice at consecutive places with the same time (on the source page itself, e.g. Macaluso 21 and 22 at 20:18, both non-scoring); the second copy is not stored. Team scores unchanged."
  },
  "backend/data/parsed_results/2010/XC/LisbonGirlsScores_oct7.json": {
   "parse_sha": "73a3fd6c4a9b4dd6",
@@ -17983,11 +17983,11 @@
   "evidence": ""
  },
  "backend/data/parsed_results/2011/XC/ms-laliberte-invitational-2011.json": {
-  "parse_sha": "640b44aa3ecb4025",
-  "source_sha": "86336b87068251b6",
-  "date": "2026-10-28",
-  "by": "second read (fixed) 2026-10-23..28: override written from the source; printed team scores kept as printed",
-  "evidence": "reader compared every row with the source; the printed team totals do not reproduce from the sheet's own places (source arithmetic), as the audit and override notes record"
+  "parse_sha": "af602b93808507cf",
+  "source_sha": "a2179a7c0e3f21ca",
+  "date": "2026-11-02",
+  "by": "XC loop 2026-11-02: rebuilt from the MileSplit raw pages",
+  "evidence": "Varsity race run co-ed (242 finishers) stored as a boys and a girls race at printed overall places with printed points as team places; JV co-ed race 77 boys, 49 girls. All 43 printed team totals reproduce from their printed scorer points; the checker cannot pool school-and-sex teams in one race, so it reads a mismatch. Replaces a file that had merged varsity boys into the JV race."
  },
  "backend/data/parsed_results/2011/XC/ms-lawrence-jh-xc-2011.json": {
   "parse_sha": "1e855c22ecf33750",
@@ -21574,11 +21574,11 @@
   "evidence": ""
  },
  "backend/data/parsed_results/2012/XC/ms-smaa-biddeford-cheverus-noble-westbrook-2012.json": {
-  "parse_sha": "1bec1f1538f383a9",
-  "source_sha": "e1e9b8a6b27b4b91",
-  "date": "2026-11-01",
-  "by": "older-data loop 2026-11-01",
-  "evidence": "deliberate re-parse: team-score blocks re-read from MileSplit (rows ending in '-' were dropped before), recovered Pro/no-text races, relay-leg grades / multi-event parse; unchanged checks otherwise"
+  "parse_sha": "1165934493e4a1e9",
+  "source_sha": "609f9af06e108c05",
+  "date": "2026-11-02",
+  "by": "XC loop 2026-11-02: duplicate row removed",
+  "evidence": "The same runner printed twice at consecutive places with the same time (on the source page itself, e.g. Macaluso 21 and 22 at 20:18, both non-scoring); the second copy is not stored. Team scores unchanged."
  },
  "backend/data/parsed_results/2012/XC/ms-smaa-bonny-eagle-cheverus-massabesic-kennebunk-2012.json": {
   "parse_sha": "70d9edab2d14c3bf",
@@ -24024,11 +24024,11 @@
   "evidence": "deliberate re-parse: team-score blocks re-read from MileSplit (rows ending in '-' were dropped before), recovered Pro/no-text races, relay-leg grades / multi-event parse; unchanged checks otherwise"
  },
  "backend/data/parsed_results/2013/XC/ms-smaa-deering-massabesic-bonny-eagle-south-portland-2013.json": {
-  "parse_sha": "0b885e4dd9ecabcc",
-  "source_sha": "a6c7f093e00e0225",
-  "date": "2026-10-25",
-  "by": "auto re-check 2026-10-25: changed by a deliberate re-parse; team scores still verified exactly, every school identified, no flags",
-  "evidence": "meet_ledger confidence fields after the 2026-10-25 rebuild"
+  "parse_sha": "595d340906f2d08c",
+  "source_sha": "ec08fc6c576dc191",
+  "date": "2026-11-02",
+  "by": "XC loop 2026-11-02: duplicate row removed",
+  "evidence": "The same runner printed twice at consecutive places with the same time (on the source page itself, e.g. Macaluso 21 and 22 at 20:18, both non-scoring); the second copy is not stored. Team scores unchanged."
  },
  "backend/data/parsed_results/2013/XC/ms-smaa-deering-mcauley-portland-cheverus-2013.json": {
   "parse_sha": "02e1267912c5e1f6",
@@ -24199,11 +24199,11 @@
   "evidence": "meet_ledger confidence fields after the 2026-10-25 rebuild"
  },
  "backend/data/parsed_results/2013/XC/ms-wmc-championship-2013.json": {
-  "parse_sha": "bf09f95a6d43bb81",
-  "source_sha": "1c0f3adfa6319662",
-  "date": "2026-10-28",
-  "by": "auto: team scores verified exactly, all schools identified, no flags",
-  "evidence": ""
+  "parse_sha": "ca88286d40fe9e2c",
+  "source_sha": "1c00533a423a09a6",
+  "date": "2026-11-02",
+  "by": "XC loop 2026-11-02: glued division digit removed",
+  "evidence": "24 names carried the sheet's Div column digit where the name fills its 18-character column ('Cayman Bickerstaff 1'); digit removed, names otherwise as printed; team scores verify."
  },
  "backend/data/parsed_results/2013/XC/ms-wmc-falmouth-gray-waynflete-greely-2013.json": {
   "parse_sha": "791cb8b4d67a5151",
@@ -25816,11 +25816,11 @@
   "evidence": "deliberate re-parse: team-score blocks re-read from MileSplit (rows ending in '-' were dropped before), recovered Pro/no-text races, relay-leg grades / multi-event parse; unchanged checks otherwise"
  },
  "backend/data/parsed_results/2014/XC/ms-wmc-championship-2014.json": {
-  "parse_sha": "84bea658bc3bf192",
-  "source_sha": "e0a5e6decfa2ac8d",
-  "date": "2026-10-28",
-  "by": "second read (fixed): override written from the source",
-  "evidence": "reader compared every row with the source; no printed team scores, or scores verified"
+  "parse_sha": "2b64cfe1e2adf1cf",
+  "source_sha": "16ab675fbc111b6d",
+  "date": "2026-11-02",
+  "by": "XC loop 2026-11-02: glued division digit removed",
+  "evidence": "24 names carried the sheet's Div column digit where the name fills its 18-character column ('Cayman Bickerstaff 1'); digit removed, names otherwise as printed; team scores verify."
  },
  "backend/data/parsed_results/2014/XC/ms-wmc-falmouth-freeport-sacopee-cape-elizabeth-2014.json": {
   "parse_sha": "2db7c29b717580aa",
@@ -26929,11 +26929,11 @@
   "evidence": ""
  },
  "backend/data/parsed_results/2015/XC/Results-boys-noble-meet.json": {
-  "parse_sha": "b16c755cd27e2352",
+  "parse_sha": "221cacf9e69d9da7",
   "source_sha": "f7e5eb5345777354",
-  "date": "2026-10-16",
-  "by": "auto: team scores verified exactly, all schools identified, no flags",
-  "evidence": ""
+  "date": "2026-11-02",
+  "by": "XC loop 2026-11-02: impossible printed distance removed",
+  "evidence": "Rows as parsed. The sheet's printed distance cannot be the race's (winners' and median times fit a different distance; see each file's notes), so the race is stored as 'Run CC' with no distance; QA flags on the marks come from comparing them with the wrong distance."
  },
  "backend/data/parsed_results/2015/XC/ResultsEAXC.json": {
   "parse_sha": "a0054cb047e65229",
@@ -47110,11 +47110,11 @@
   "evidence": ""
  },
  "backend/data/parsed_results/2022/XC/Results-F3.json": {
-  "parse_sha": "18a3a769c883d53f",
+  "parse_sha": "298e0a472bbe705c",
   "source_sha": "b5cd3e10da31d4b5",
-  "date": "2026-10-16",
-  "by": "auto: team scores verified exactly, all schools identified, no flags",
-  "evidence": ""
+  "date": "2026-11-02",
+  "by": "XC loop 2026-11-02: impossible printed distance removed",
+  "evidence": "Rows as parsed. The sheet's printed distance cannot be the race's (winners' and median times fit a different distance; see each file's notes), so the race is stored as 'Run CC' with no distance; QA flags on the marks come from comparing them with the wrong distance."
  },
  "backend/data/parsed_results/2022/XC/SANF-B-1.json": {
   "parse_sha": "722c34e29e5b9132",
@@ -50197,18 +50197,18 @@
   "evidence": ""
  },
  "backend/data/parsed_results/2023/XC/LJHSBoys2.json": {
-  "parse_sha": "f3fc366ef8b832a0",
+  "parse_sha": "17bbbce6fc8c5b94",
   "source_sha": "347dc97a7158ba38",
-  "date": "2026-10-18",
-  "by": "auto: team scores verified exactly, all schools identified, no flags",
-  "evidence": ""
+  "date": "2026-11-02",
+  "by": "XC loop 2026-11-02: impossible printed distance removed",
+  "evidence": "Rows as parsed. The sheet's printed distance cannot be the race's (winners' and median times fit a different distance; see each file's notes), so the race is stored as 'Run CC' with no distance; QA flags on the marks come from comparing them with the wrong distance."
  },
  "backend/data/parsed_results/2023/XC/LJHSGirlsXC.json": {
-  "parse_sha": "c160cf946d5746c8",
+  "parse_sha": "d8b63bb1c762862d",
   "source_sha": "a94b9f0f70d7ed63",
-  "date": "2026-10-18",
-  "by": "auto: team scores verified exactly, all schools identified, no flags",
-  "evidence": ""
+  "date": "2026-11-02",
+  "by": "XC loop 2026-11-02: impossible printed distance removed",
+  "evidence": "Rows as parsed. The sheet's printed distance cannot be the race's (winners' and median times fit a different distance; see each file's notes), so the race is stored as 'Run CC' with no distance; QA flags on the marks come from comparing them with the wrong distance."
  },
  "backend/data/parsed_results/2023/XC/Maine-College-State-meet-results.json": {
   "parse_sha": "fa2d7980826dd77b",
@@ -54474,11 +54474,11 @@
   "evidence": ""
  },
  "backend/data/parsed_results/2024/XC/ms-mt-blue-relays-2024.json": {
-  "parse_sha": "3ac702f475d56846",
-  "source_sha": "91270cd3609962ad",
-  "date": "2026-10-28",
-  "by": "MileSplit re-read (fixed) 2026-10-28: copy corrected against all its cached raw pages",
-  "evidence": "reader compared every row with every page of the meet; printed team totals stored as printed"
+  "parse_sha": "e3c7c59dff5abe80",
+  "source_sha": "8f03e9bb9e55fb9b",
+  "date": "2026-11-02",
+  "by": "XC loop 2026-11-02: duplicate row removed",
+  "evidence": "The same runner printed twice at consecutive places with the same time (on the source page itself, e.g. Macaluso 21 and 22 at 20:18, both non-scoring); the second copy is not stored. Team scores unchanged."
  },
  "backend/data/parsed_results/2024/XC/ms-mvc-winthrop-2024.json": {
   "parse_sha": "aaead29adee38124",

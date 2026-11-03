@@ -354,9 +354,11 @@ def build_entities(rows):
                                seasons=collections.Counter(), grads=collections.Counter(),
                                races=set(), meets=set(), fams=set(), best={},
                                race_marks=collections.defaultdict(set),
+                               ay_sports=set(),
                                members=collections.Counter(), teams=collections.Counter())
         e['n'] += 1
         e['ays'].add(ay)
+        e['ay_sports'].add((ay, 'xc' if season == 'XC' else 'track'))
         e['years'].add(year)
         e['seasons'][season] += 1
         if g is not None:
@@ -427,6 +429,14 @@ def name_relation(a, b):
     sa, sb = set(ta), set(tb)
     if (sa < sb or sb < sa) and len(sa & sb) >= 2:
         return ('subset', 'extra name token')
+    if len(ta) == len(tb) >= 3 and ta[0] == tb[0] and ta[-1] == tb[-1]:
+        # first and last words agree, one middle word differs: "Stiles-Martin" / "Stilles-Martin"
+        diff = [(x, y) for x, y in zip(ta, tb) if x != y]
+        if len(diff) == 1:
+            x, y = diff[0]
+            d = osa(x, y)
+            if d <= (1 if min(len(x), len(y)) <= 5 else 2):
+                return ('typo_last', f'{x}~{y} d={d}')
     best = None
     for (fa, la_), (fb, lb) in (((ta[0], ta[-1]), (tb[0], tb[-1])),
                                 ((ta[0], ta[-1]), (tb[-1], tb[0]))):
@@ -799,6 +809,101 @@ def cluster(ents, pairs, decisions):
 # Build
 # ---------------------------------------------------------------------------
 
+FEEDER_MIN = 5      # different runners who make a school-to-school move before it counts as a route
+CHAIN_GAP = 2       # academic years a career may pause between schools
+CHAIN_SPAN = 8      # grades 5-12
+
+
+def link_across_schools(groups, ents):
+    """One runner at several schools: the same full name and sex at a middle school and then a high
+    school (Bay School -> George Stevens Academy), or a transfer, joins into one runner when
+      - the careers follow one another: each starts the year after the last ends or later, at most CHAIN_GAP
+        years later, middle school before high school, CHAIN_SPAN years in all (one school year shared
+        only by one sport at each school: Bay School XC in the fall, Blue Hill track in the spring);
+      - every runner of that name and sex in the state is part of the one chain (two Emma Smiths
+        racing at once are two girls), and no two parts ran one race;
+      - each move is within a town, or along a route FEEDER_MIN different runners take (the data's own
+        feeders: Reeds Brook -> Hampden, Cohen -> Bangor, Bay School -> GSA).
+    Returns the merged groups and how many groups were joined."""
+    from backend import school_catalog as sc
+    schools = sc._load()[0]['schools']
+
+    def level(u):
+        return 0 if u.startswith('me-ms-') else 1 if u.startswith('me-hs-') else None
+
+    info = []
+    for keys in groups:
+        es = [ents[k] for k in keys]
+        units = {e['unit'] for e in es}
+        if len(units) != 1:
+            info.append(None)
+            continue
+        unit = units.pop()
+        names = collections.Counter()
+        for e in es:
+            t = e['toks']
+            if len(t) >= 2 and all(len(x) >= 2 for x in t) and not _short_form(e):
+                names[' '.join(t)] += e['n']
+        sports = collections.defaultdict(set)
+        for e in es:
+            for ay, sp in e['ay_sports']:
+                sports[ay].add(sp)
+        ays = sorted({a for e in es for a in e['ays']})
+        gs = {e['g'] for e in es} - {None, '?', 'Mixed'}
+        if not names or level(unit) is None or len(gs) != 1 or not ays:
+            info.append(None)
+            continue
+        info.append(dict(name=names.most_common(1)[0][0], names=set(names), g=gs.pop(), unit=unit,
+                         lo=ays[0], hi=ays[-1], sports=sports, races=set().union(*(e['races'] for e in es))))
+    # (every spelling a runner has: 'Ariana' at Blue Hill, 'Arianna' at Bay School and GSA)
+    by_name = collections.defaultdict(set)
+    for i, x in enumerate(info):
+        if x:
+            for n in x['names']:
+                by_name[(n, x['g'])].add(i)
+
+    def chain(ix):
+        ix = sorted(ix, key=lambda i: (info[i]['lo'], level(info[i]['unit'])))
+        if len({info[i]['unit'] for i in ix}) < 2:
+            return None
+        for a, b in zip(ix, ix[1:]):
+            A, B = info[a], info[b]
+            # one school year at both is one sport at each (Bay School XC in the fall, Blue Hill
+            # track in the spring), never the same sport at two schools
+            shared = set(A['sports']) & set(B['sports'])
+            if any(A['sports'][y] & B['sports'][y] for y in shared) or len(shared) > 1 or \
+                    B['lo'] < A['hi'] or B['lo'] - A['hi'] > CHAIN_GAP or level(B['unit']) < level(A['unit']):
+                return None
+        if info[ix[-1]]['hi'] - info[ix[0]]['lo'] > CHAIN_SPAN:
+            return None
+        if any(info[a]['races'] & info[b]['races'] for a, b in itertools.combinations(ix, 2)):
+            return None
+        return ix
+    chains = list({tuple(c) for c in (chain(ix) for ix in by_name.values()) if c})
+    # (a runner in two chains, by two spellings that met different runners: neither chain is trusted)
+    seen = collections.Counter(i for c in chains for i in c)
+    chains = [c for c in chains if all(seen[i] == 1 for i in c)]
+    routes = collections.defaultdict(set)
+    for c in chains:
+        for a, b in zip(c, c[1:]):
+            if info[a]['unit'] != info[b]['unit']:
+                routes[(info[a]['unit'], info[b]['unit'])].add(info[a]['name'])
+
+    def town(u):
+        return (schools.get(u) or {}).get('town')
+    joined = set()
+    for c in chains:
+        ok = all(info[a]['unit'] == info[b]['unit'] or (town(info[a]['unit']) and town(info[a]['unit']) == town(info[b]['unit']))
+                 or len(routes[(info[a]['unit'], info[b]['unit'])]) >= FEEDER_MIN for a, b in zip(c, c[1:]))
+        if ok:
+            joined.add(tuple(c))
+    used = {i for c in joined for i in c}
+    out = [g for i, g in enumerate(groups) if i not in used]
+    for c in joined:
+        out.append([k for i in c for k in groups[i]])
+    return out, sum(len(c) - 1 for c in joined)
+
+
 def build(rows=None, quiet=False):
     say = (lambda *a: None) if quiet else (lambda *a: print(*a, file=sys.stderr))
     rows = rows if rows is not None else load_rows()
@@ -810,6 +915,8 @@ def build(rows=None, quiet=False):
     say(f'{len(pairs):,} candidate pairs: {dict(labels)}')
     decisions = load_decisions()
     groups, refused = cluster(ents, pairs, decisions)
+    groups, n_linked = link_across_schools(groups, ents)
+    say(f'{n_linked:,} runners joined across schools (middle school to high school, transfers)')
     first_freq = collections.Counter(e['toks'][0] for e in ents.values() if len(e['toks']) >= 2)
 
     athletes = []

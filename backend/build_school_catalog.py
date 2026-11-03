@@ -40,7 +40,7 @@ import sys
 import time
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-from backend import school_catalog as sc          # noqa: E402
+from backend import meet_levels, school_catalog as sc          # noqa: E402
 from backend import school_catalog_seed as seed   # noqa: E402
 
 HERE = os.path.dirname(os.path.abspath(__file__))
@@ -289,7 +289,10 @@ def row_levels(rows):
     lv_of = {}
     for (rel, ev), d in race.items():
         lv = None
-        if rel in FILE_MS and (os.path.basename(rel).startswith('ms-') or d['ex']['ms'] or d['ex']['hs'] < 3):
+        y_, se_, fn_ = rel.split(os.sep)[-3:]
+        if sc.file_level(y_, se_, fn_):
+            lv = 'ms'   # its runners race middle-school meets that season (backend/meet_levels.py)
+        elif rel in FILE_MS and (os.path.basename(rel).startswith('ms-') or d['ex']['ms'] or d['ex']['hs'] < 3):
             # (a sub5 parse's tag can come from the venue line - 'Troy Howard Middle School, Belfast'
             # hosted the 2004 state meet - so school strings that say high school outrank it)
             lv = 'ms'
@@ -877,6 +880,7 @@ def main(argv=None):
     ap.add_argument('--dump-groups', default=None, help='pickle group decisions (debugging)')
     args = ap.parse_args(argv)
     t0 = time.time()
+    meet_levels.main()   # middle-school meets read from their runners, before any level is used
 
     schools, coops = seed_entries()
     sc.NOT_SCHOOL_PATTERNS[:] = seed.NOT_SCHOOLS
@@ -921,6 +925,8 @@ def main(argv=None):
     coop_activity(groups, schools, coops, idx, args)
     n_host = coop_labels_to_host(groups, schools)
     print(f'co-op labels read where the co-op was not competing -> host school: {n_host} groups')
+    n_ms = ms_race_twins(groups, schools)
+    print(f'high schools named in middle-school races -> the town\'s middle school: {n_ms} groups')
     if args.dump_groups:
         import pickle
         with open(args.dump_groups, 'wb') as f:
@@ -930,6 +936,24 @@ def main(argv=None):
     out = assemble(groups, rows, schools, coops, idx, args)
     print(f'done in {time.time() - t0:.0f}s')
     return out
+
+
+def ms_race_twins(groups, schools):
+    """A race whose own level is middle school ('scarboroughmsinvite', 'Cape Elizabeth M. S.' in its
+    team block) holds middle schoolers: a string decided as the high school ('CAPE' -> Cape Elizabeth
+    HS, by athlete continuity: the same children run for the high school later) is the town's
+    middle school when the catalog has one. A string that says high school stays."""
+    n = 0
+    for g in groups.values():
+        if g.meet_level != 'ms' or not g.decision or explicit_level(g.raw) == 'hs':
+            continue
+        if schools.get(g.decision, {}).get('level') != 'hs' or not g.decision.startswith('me-hs-'):
+            continue
+        twin = 'me-ms-' + g.decision[len('me-hs-'):]
+        if twin in schools and sc.in_years(schools[twin], g.ay):
+            g.decision, g.method, g.weak = twin, f'{g.method}+ms-race', False
+            n += 1
+    return n
 
 
 def category(method, decision, candidates, schools):

@@ -2689,6 +2689,9 @@ class Sub5ScraperV2:
                 # the filename guess when it has one.
                 if isinstance(file_data, dict) and file_data.get('meet_level') in ('ms', 'hs', 'college'):
                     meet_level = file_data['meet_level']
+                # a meet whose runners race middle-school meets that season (backend/meet_levels.py)
+                if school_catalog.file_level(year, season, filename):
+                    meet_level = 'ms'
 
                 # Meets that are not MPA school track (backend/data/meet_scope.json):
                 # youth / USATF age-group meets go to the summer track data,
