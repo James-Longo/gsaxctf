@@ -3247,3 +3247,19 @@ def test_xc_yard_course_is_not_a_5k():
     from backend.xc_course_model import event_distance
     assert canonical_event('3900 Yard Run CC Varsity', 'Boys', 'XC') == ('Boys', '3900 Yard Cross Country')
     assert event_distance('Boys 3900 Yard Cross Country') == 3600
+
+
+def test_xc_bare_race_takes_the_course_the_other_sexs_sheet_states(tmp_path=None):
+    # Lee Invitational 2019: leeboys_sept19 prints no distance; leegirls_sept19 runs '2.5 Mile Run CC Varsity'/'JV'
+    import json, tempfile
+    from backend.scraper_v2 import xc_sibling_distance
+    d = tempfile.mkdtemp()
+    with open(os.path.join(d, 'leegirls_sept19.txt.json'), 'w') as fh:
+        json.dump({'events': [{'event': '2.5 Mile Run CC Varsity', 'results': [{}]},
+                              {'event': '2.5 Mile Run CC JV', 'results': [{}]}]}, fh)
+    with open(os.path.join(d, 'xBoys.json'), 'w') as fh:
+        json.dump({'events': [{'event': '3.1 Mile Run CC', 'results': [{}]},
+                              {'event': '2 Mile Run CC JV', 'results': [{}]}]}, fh)
+    assert xc_sibling_distance(d, 'leeboys_sept19.txt.json') == '2.5 Mile'
+    assert xc_sibling_distance(d, 'xGirls.json') is None        # two courses: no single answer
+    assert xc_sibling_distance(d, 'results.json') is None       # no sibling sheet

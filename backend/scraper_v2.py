@@ -343,6 +343,28 @@ def xc_fuller_name(keep, other):
     return other if left else keep
 
 
+def xc_sibling_distance(json_dir, filename):
+    """The one course distance ('2.5 Mile') the other sex's sheet of this XC meet states, else None.
+
+    leeboys_sept19.json states none; leegirls_sept19.json runs '2.5 Mile Run CC Varsity' and '... JV'."""
+    m_sib = re.search(r'boys|girls', filename, re.I)
+    if not m_sib:
+        return None
+    swap = {'boys': 'girls', 'girls': 'boys'}[m_sib.group().lower()]
+    swap = swap.upper() if m_sib.group().isupper() else \
+        swap.capitalize() if m_sib.group()[0].isupper() else swap
+    try:
+        with open(os.path.join(json_dir, filename[:m_sib.start()] + swap + filename[m_sib.end():])) as fh:
+            events = json.load(fh).get('events') or []
+    except (OSError, ValueError, AttributeError):
+        return None
+    dists = {re.sub(r'\s+', ' ', m.group(1)) for e in events
+             if isinstance(e, dict) and e.get('results') and not e.get('is_relay')
+             for m in [re.match(r'\s*([\d.]+\s*(?:k|km|miles?|meters?|m|yards?))\b', str(e.get('event') or ''), re.I)]
+             if m}
+    return dists.pop() if len(dists) == 1 else None
+
+
 def not_a_title(name):
     """A header line a parser took for the meet's name: 'Results', 'at Bucksport High
     School' (the venue line), 'Event 4 Boys 5k Run CC', a Hy-Tek license line."""
@@ -2814,17 +2836,28 @@ class Sub5ScraperV2:
 
                 # (one race of an XC file states the course ('2.71 Mile Run CC'), its other race is a bare
                 # 'Run CC' that would become a 5K: both sexes ran the one course. Not a JV race or relay leg.)
+                # (smaaboys.pdf is titled 'SMAA XC Relays': its bare 'Run CC' is a relay leg, not a 5K)
+                relay_meet = 'relay' in low or (isinstance(file_data, dict) and
+                                                'relay' in str(file_data.get('meet_name') or '').lower())
                 xc_course = None
                 if season == 'XC':
                     stated = {e.get('event') for e in parsed_events if isinstance(e, dict) and e.get('results')
                               and re.search(r'\d', str(e.get('event') or '')) and not e.get('is_relay')}
-                    if len(stated) == 1 and 'relay' not in low:
+                    if len(stated) == 1 and not relay_meet:
                         xc_course = stated.pop()
+                # (a boys sheet with no distance whose girls sheet at the same HS meet states one course
+                # ('2.5 Mile Run CC Varsity'/'JV'): the bare races ran that course, Varsity and JV alike)
+                xc_dist = None
+                if season == 'XC' and not xc_course and meet_level == 'hs' and not relay_meet:
+                    xc_dist = xc_sibling_distance(json_dir, filename)
                 for event_block in parsed_events:
                     if isinstance(event_block, dict) and "results" in event_block:
                         gender = event_block.get("gender", "")
                         if xc_course and re.fullmatch(r'(?i)\s*run\s+cc\s*', str(event_block.get("event") or '')):
                             event_block = dict(event_block, event=xc_course)
+                        elif xc_dist and re.fullmatch(r'(?i)\s*run\s+cc(?:\s+(?:varsity|jv))?\s*',
+                                                      str(event_block.get("event") or '')):
+                            event_block = dict(event_block, event=f"{xc_dist} {event_block['event'].strip()}")
                         event_name = event_block.get("event", "")
                         is_relay = event_block.get("is_relay", False)
                         results_list = event_block.get("results", [])
@@ -2840,7 +2873,7 @@ class Sub5ScraperV2:
                     # Canonicalize: one spelling per event, corrected gender,
                     # junk/out-of-scope labels dropped (see event_canon.py)
                     canon = canonical_event(event_name, gender or 'Boys', season=season,
-                                            level=meet_level, relay=season == 'XC' and 'relay' in low)
+                                            level=meet_level, relay=season == 'XC' and relay_meet)
                     if canon is None:
                         SYNC_DROPS[(meet_key, 'event out of scope / unreadable')] += len(results_list)
                         SYNC_DROP_WHAT[('event', season, str(event_name)[:60])] += len(results_list)
@@ -2884,6 +2917,8 @@ class Sub5ScraperV2:
                             # (';' typed for the 'l' beside it: 'Mire;;e Lafreniere', 'Rile;y Grimes', 'Nigel; Tall')
                             if ';' in athlete_name:
                                 athlete_name = re.sub(r'\s+', ' ', athlete_name.replace(';;', 'll').replace(';', '')).strip()
+                            # ('Davidson-Drexel,': a 'Last, First' column cut off the first name; keep the surname)
+                            athlete_name = re.sub(r'\s*,\s*$', '', athlete_name)
                             # (a finisher the timer could not name: ' 45 Unknown   20:35.00' has no runner to file)
                             if re.fullmatch(r'(?i)unknown|unidentified|no name|\?+', athlete_name.strip()):
                                 SYNC_DROPS[(meet_key, 'unnamed finisher')] += 1
