@@ -3287,48 +3287,67 @@ class Sub5ScraperV2:
         # 'Yahya Nure', 'Henry Horne': the names need only agree, not match; the kept row takes the
         # fuller name when its own is a surname or initials)
         dup_drop = set()
-        for team, perfs in collector.items():
-            groups = {}
-            for i, p in enumerate(perfs):
-                if p['season'] != 'XC' or not str(p.get('date') or '')[:4].isdigit():
-                    continue
-                t = _xc_secs(p.get('mark'))
-                if t is None:
-                    continue
-                groups.setdefault(str(p['date'])[:10], []).append((t, i))
-            for d_, lst in groups.items():
-                if len(lst) < 2:
-                    continue
-                lst.sort()
-                for a in range(len(lst)):
-                    ta, ia = lst[a]
-                    for b in range(a + 1, len(lst)):
-                        tb, ib = lst[b]
-                        if tb - ta > 1:
-                            break
-                        pa, pb = perfs[ia], perfs[ib]
-                        if pa['meet_name'] == pb['meet_name'] or (team, ia) in dup_drop or (team, ib) in dup_drop:
-                            continue
-                        if not xc_names_agree(pa['athlete_name'], pb['athlete_name']):
-                            continue
-                        # (a brother and sister at one time in the boys' and girls' files)
-                        sa, sb = (str(p['event']).split(' ', 1)[0] for p in (pa, pb))
-                        if sa != sb and {sa, sb} <= {'Boys', 'Girls'}:
-                            continue
-                        def rank(p, t):
-                            return (not str(p['meet_name']).startswith('ms-'), meet_size.get((p['year'], p['meet_name']), 0),
-                                    t != int(t), str(p['meet_name']))
-                        loser = ib if rank(pa, ta) >= rank(pb, tb) else ia
-                        keep = perfs[ia if loser == ib else ib]
-                        name = xc_fuller_name(keep['athlete_name'], perfs[loser]['athlete_name'])
-                        if name != keep['athlete_name']:
-                            keep['athlete_name'] = name
-                            keep['athlete_id'] = store_athlete_id(name, team, keep['year'], 'XC', keep['event'])
-                        dup_drop.add((team, loser))
-                        SYNC_DROPS[(f"{perfs[loser]['year']}_XC_{perfs[loser]['meet_name']}", 'same runner and time in another file of the race (kept there)')] += 1
-                        if pa['athlete_name'] != pb['athlete_name']:
-                            SYNC_DROP_WHAT[('xc-twice', 'XC', f"{d_} {team}: {perfs[loser]['athlete_name']} {perfs[loser]['mark']} "
-                                            f"[{perfs[loser]['meet_name']}] = {keep['athlete_name']} [{keep['meet_name']}]"[:160])] += 1
+        twins = collections.Counter()    # (date, the two files) -> rows whose names agreed
+        paired = set()                   # (team, row) a dropped copy was already matched to
+
+        def _rank(p, t):
+            return (not str(p['meet_name']).startswith('ms-'), meet_size.get((p['year'], p['meet_name']), 0),
+                    t != int(t), str(p['meet_name']))
+
+        def _twin_pass(names_needed):
+            for team, perfs in collector.items():
+                groups = {}
+                for i, p in enumerate(perfs):
+                    if p['season'] != 'XC' or not str(p.get('date') or '')[:4].isdigit():
+                        continue
+                    t = _xc_secs(p.get('mark'))
+                    if t is None:
+                        continue
+                    groups.setdefault(str(p['date'])[:10], []).append((t, i))
+                for d_, lst in groups.items():
+                    if len(lst) < 2:
+                        continue
+                    lst.sort()
+                    for a in range(len(lst)):
+                        ta, ia = lst[a]
+                        for b in range(a + 1, len(lst)):
+                            tb, ib = lst[b]
+                            if tb - ta > 1:
+                                break
+                            pa, pb = perfs[ia], perfs[ib]
+                            if pa['meet_name'] == pb['meet_name'] or (team, ia) in dup_drop or (team, ib) in dup_drop:
+                                continue
+                            # (a brother and sister at one time in the boys' and girls' files)
+                            sa, sb = (str(p['event']).split(' ', 1)[0] for p in (pa, pb))
+                            if sa != sb and {sa, sb} <= {'Boys', 'Girls'}:
+                                continue
+                            pair_key = (d_, frozenset((pa['meet_name'], pb['meet_name'])))
+                            if names_needed:
+                                if not xc_names_agree(pa['athlete_name'], pb['athlete_name']):
+                                    continue
+                            elif twins[pair_key] < 5 or (team, ia) in paired or (team, ib) in paired:
+                                continue
+                            loser = ib if _rank(pa, ta) >= _rank(pb, tb) else ia
+                            kept_i = ia if loser == ib else ib
+                            keep = perfs[kept_i]
+                            name = xc_fuller_name(keep['athlete_name'], perfs[loser]['athlete_name'])
+                            if name != keep['athlete_name']:
+                                keep['athlete_name'] = name
+                                keep['athlete_id'] = store_athlete_id(name, team, keep['year'], 'XC', keep['event'])
+                            dup_drop.add((team, loser))
+                            paired.add((team, kept_i))
+                            if names_needed:
+                                twins[pair_key] += 1
+                            SYNC_DROPS[(f"{perfs[loser]['year']}_XC_{perfs[loser]['meet_name']}", 'same runner and time in another file of the race (kept there)')] += 1
+                            if pa['athlete_name'] != pb['athlete_name']:
+                                SYNC_DROP_WHAT[('xc-twice' if names_needed else 'xc-twice-misnamed', 'XC',
+                                                f"{d_} {team}: {perfs[loser]['athlete_name']} {perfs[loser]['mark']} "
+                                                f"[{perfs[loser]['meet_name']}] = {keep['athlete_name']} [{keep['meet_name']}]"[:160])] += 1
+        _twin_pass(True)
+        # (two copies of one race that already share five or more runners: a leftover row at the same
+        # team, sex and time is that same finisher under a name the copies spell differently -- 'O'Brien'
+        # / 'Peter O'brien', 'Will Housemann' / 'Will Hausmann', a copy whose names slid one row)
+        _twin_pass(False)
         if dup_drop:
             self.report_progress(f'Dropping {len(dup_drop)} XC rows posted twice')
             for team in collector:
