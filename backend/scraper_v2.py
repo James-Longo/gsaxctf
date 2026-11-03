@@ -383,6 +383,19 @@ def xc_out_of_order_times(results):
     return bad
 
 
+_WHOLE_MINUTE = re.compile(r'\d+:00(?:\.0+)?')
+
+
+def xc_estimated_times(results):
+    """ids of rows timed to an exact minute over 3 minutes behind the runner before, in a race timed to
+    the second -- a cap or a guess ('Devin Jache 40:00.00' last, after 28:26.95), not a measured time."""
+    timed = [(r, _xc_secs(r.get('result') or r.get('mark'))) for r in results or [] if isinstance(r, dict)]
+    timed = [(r, t) for r, t in timed if t]
+    whole = [bool(_WHOLE_MINUTE.fullmatch(str(r.get('result') or r.get('mark') or '').strip())) for r, _ in timed]
+    if len(timed) < 10 or sum(whole) >= 0.1 * len(timed):
+        return set()
+    return {id(timed[i][0]) for i in range(1, len(timed)) if whole[i] and timed[i][1] - timed[i - 1][1] > 180}
+
 def xc_sibling_distance(json_dir, filename):
     """The one course distance ('2.5 Mile') the other sex's sheet of this XC meet states, else None.
 
@@ -2938,7 +2951,8 @@ class Sub5ScraperV2:
                     gender, event_canon_name = canon
                     full_event = f"{gender} {event_canon_name}"
                     is_relay = is_relay or 'Relay' in event_canon_name
-                    bad_times = xc_out_of_order_times(results_list) if season == 'XC' and not is_relay else set()
+                    bad_times = xc_out_of_order_times(results_list) | xc_estimated_times(results_list) \
+                        if season == 'XC' and not is_relay else set()
 
                     for r in results_list:
                         # Seed-type rows come from entry/heat sheets, not results
@@ -2987,7 +3001,7 @@ class Sub5ScraperV2:
                                 SYNC_DROPS[(meet_key, 'unnamed finisher')] += 1
                                 continue
                         if id(r) in bad_times:
-                            SYNC_DROPS[(meet_key, 'XC time out of place order (kept as NT)')] += 1
+                            SYNC_DROPS[(meet_key, 'XC time out of place order or estimated (kept as NT)')] += 1
                             mark = 'NT'
                         if not athlete_name or not mark or mark.upper() in ["DNS", "SCR"]:
                             SYNC_DROPS[(meet_key, 'no name / no mark / DNS')] += 1

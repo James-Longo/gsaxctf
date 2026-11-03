@@ -3287,6 +3287,16 @@ def test_xc_time_slower_than_the_next_places_is_a_sheet_typo():
     rows = [{'place': p, 'result': t} for p, t in [(1, '17:00'), (2, '17:20'), (3, '17:10'), (4, '17:30')]]
     assert not xc_out_of_order_times(rows)
 
+def test_xc_whole_minute_time_far_behind_a_timed_field_is_an_estimate():
+    # 2013 Western Maine Class C: 'Devin Jache 40:00.00' last, after 28:26.95
+    from backend.scraper_v2 import xc_estimated_times
+    rows = [{'place': i + 1, 'result': f'{17 + i}:{(7 * i + 3) % 60:02d}.{i:02d}'} for i in range(11)]
+    rows.append({'place': 12, 'result': '40:00.00'})
+    assert xc_estimated_times(rows) == {id(rows[-1])}
+    # a hand-timed race of whole minutes is left alone
+    rows = [{'place': i + 1, 'result': f'{20 + 2 * i}:00'} for i in range(12)]
+    assert not xc_estimated_times(rows)
+
 def test_metric_xc_course_off_the_track_list_is_not_a_5k():
     # Lawrence JH '2400 Meter Run', York MS '2436 Meter Run CC' were stored as 5K
     from backend.event_canon import canonical_event
