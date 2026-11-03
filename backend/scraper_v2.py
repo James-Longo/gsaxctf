@@ -285,6 +285,64 @@ _HYTEK_STOP_RE = re.compile(
     r'complete results|final results|rankings)$', re.I)
 
 
+def _name_words(name):
+    """(full words, initials) of a printed name; MileSplit's exhibition 'X' and order dropped."""
+    w = re.findall(r'[a-z]+', (name or '').lower())
+    if len(w) > 1 and w[0] == 'x':
+        w = w[1:]
+    return [t for t in w if len(t) > 1], [t for t in w if len(t) == 1]
+
+
+def _one_edit(a, b):
+    if a == b:
+        return True
+    if abs(len(a) - len(b)) > 1 or min(len(a), len(b)) < 5:
+        return False
+    if len(a) == len(b):
+        return sum(x != y for x, y in zip(a, b)) == 1
+    s, l_ = sorted((a, b), key=len)
+    return any(l_[:i] + l_[i + 1:] == s for i in range(len(l_)))
+
+
+def xc_names_agree(a, b):
+    """Two printings of one runner's name in two files of a race: a shared word (a surname, or a
+    one-letter typo of one) and nothing that contradicts it ('Mark Donahue' / 'Matt Donahue').
+    Initials must start a word the other name prints, when it prints one the first lacks."""
+    (fa, ia), (fb, ib) = _name_words(a), _name_words(b)
+    ua, ub = list(fa), list(fb)
+    shared = False
+    for x in fa:
+        y = next((y for y in ub if _one_edit(x, y)), None)
+        if y is not None:
+            ua.remove(x)
+            ub.remove(y)
+            shared = True
+    if not shared or (ua and ub):
+        return False
+    for inits, other in ((ia, ub), (ib, ua)):
+        if other and any(not any(w.startswith(i) for w in other) for i in inits):
+            return False
+    return True
+
+
+def xc_fuller_name(keep, other):
+    """The name to keep for one result printed twice: the other printing when it holds every word
+    of this one and more ('Cooper' -> 'Sierra Cooper', 'Y. Nure' -> 'Yahya Nure'), or the same words
+    without stray initials ('Henry B Horne' -> 'Henry Horne')."""
+    (fk, ik), (fo, io) = _name_words(keep), _name_words(other)
+    if sorted(fk) == sorted(fo):
+        return other if len(ik) > len(io) else keep
+    # (each word of this one in the other, to a one-letter typo: 'Karan' -> 'Alex Karam',
+    # 'Calob Holt-' -> 'Caleb Holt-fitzgerald')
+    left = list(fo)
+    for w in fk:
+        y = next((y for y in left if _one_edit(w, y)), None)
+        if y is None:
+            return keep
+        left.remove(y)
+    return other if left else keep
+
+
 def not_a_title(name):
     """A header line a parser took for the meet's name: 'Results', 'at Bucksport High
     School' (the venue line), 'Event 4 Boys 5k Run CC', a Hy-Tek license line."""
@@ -499,6 +557,41 @@ def strip_sex_prefix(data):
             for r, m in zip(rows, pre):
                 if m:
                     r['school'] = r['school'][2:]
+
+
+_SEX_SUFFIX = re.compile(r'\s+(?:--\s*)?([BGMF])$')
+
+
+def file_by_sex_column(data):
+    """A sex column read onto the names ('Horne, Henry B', 'Wilcox, Beth -- F'): when at least half
+    of an XC file's names end in one pair of sex letters (B/G or M/F), the letter goes, and a row whose
+    letter is the other sex than its race moves to that sex's race of the same distance (OCT-7-RESULTS
+    2021: eight girls read into a boys' and a 'Mixed' race)."""
+    evs = [e for e in data.get('events') or [] if isinstance(e, dict) and not e.get('is_relay')]
+    rows = [(e, r) for e in evs for r in e.get('results') or []]
+    hits = [(e, r, m) for e, r in rows for m in [_SEX_SUFFIX.search(r.get('athlete') or '')] if m]
+    letters = {m.group(1) for _, _, m in hits}
+    if len(hits) < 5 or len(hits) < 0.5 * len(rows) or not (letters <= {'B', 'G'} or letters <= {'M', 'F'}):
+        return
+    moved = False
+    for e, r, m in hits:
+        r['athlete'] = r['athlete'][:m.start()].rstrip()
+        sex = 'Boys' if m.group(1) in 'BM' else 'Girls'
+        if e.get('gender') == sex:
+            continue
+        to = next((x for x in evs if x.get('gender') == sex and x.get('event') == e.get('event')), None)
+        if to is None:
+            to = dict(e, gender=sex, results=[])
+            data['events'].append(to)
+            evs.append(to)
+        e['results'].remove(r)
+        to['results'].append(r)
+        moved = True
+    if moved:
+        data['events'] = [e for e in data['events'] if not isinstance(e, dict) or e.get('is_relay') or e.get('results')]
+        for e in data['events']:
+            if isinstance(e, dict) and e.get('results'):
+                e['results'].sort(key=lambda r: (r.get('place') is None, r.get('place') or 0))
 
 
 _LEG_GRADE = re.compile(r'\s+(?:FR|SO|JR|SR|Fr|So|Jr|Sr|[5-9]|1[0-2])$')
@@ -1579,6 +1672,7 @@ def _parse_one_file(args):
                 split_dash_codes(data_to_save)
                 complete_cut_teams(data_to_save, text)
                 fix_event_gender_from_names(data_to_save)
+                file_by_sex_column(data_to_save)
                 pre_drop_events = list(data_to_save.get('events') or [])
                 drop_sibling_gender_events(data_to_save, input_path)
             else:
@@ -2666,6 +2760,8 @@ class Sub5ScraperV2:
 
                 # Manual fixes
                 for mc in self.manual_fixes.get('meet_corrections', []):
+                    if mc.get('year') and str(mc['year']) != str(year):
+                        continue
                     if mc['meet_name_fragment'].lower() in meet_name.lower() or mc['meet_name_fragment'].lower() in filename.lower():
                         date = mc['new_date']
                         break
@@ -2774,6 +2870,13 @@ class Sub5ScraperV2:
                             # Reject leaked rows: individual athlete names never contain marks
                             if re.search(r'\d+[:.]\d+', athlete_name):
                                 SYNC_DROPS[(meet_key, 'mark in athlete name')] += 1
+                                continue
+                            # (';' typed for the 'l' beside it: 'Mire;;e Lafreniere', 'Rile;y Grimes', 'Nigel; Tall')
+                            if ';' in athlete_name:
+                                athlete_name = re.sub(r'\s+', ' ', athlete_name.replace(';;', 'll').replace(';', '')).strip()
+                            # (a finisher the timer could not name: ' 45 Unknown   20:35.00' has no runner to file)
+                            if re.fullmatch(r'(?i)unknown|unidentified|no name|\?+', athlete_name.strip()):
+                                SYNC_DROPS[(meet_key, 'unnamed finisher')] += 1
                                 continue
                         if not athlete_name or not mark or mark.upper() in ["DNS", "SCR"]:
                             SYNC_DROPS[(meet_key, 'no name / no mark / DNS')] += 1
@@ -3135,6 +3238,9 @@ class Sub5ScraperV2:
                 if p['season'] == 'XC':
                     k = (p['year'], p['meet_name'])
                     meet_size[k] = meet_size.get(k, 0) + 1
+        # (one sheet prints 'Cooper', 'Y. Nure' or 'Henry B Horne' where the other prints 'Sierra Cooper',
+        # 'Yahya Nure', 'Henry Horne': the names need only agree, not match; the kept row takes the
+        # fuller name when its own is a surname or initials)
         dup_drop = set()
         for team, perfs in collector.items():
             groups = {}
@@ -3144,9 +3250,8 @@ class Sub5ScraperV2:
                 t = _xc_secs(p.get('mark'))
                 if t is None:
                     continue
-                nk = ' '.join(sorted(re.findall(r'[a-z]+', (p.get('athlete_name') or '').lower())))
-                groups.setdefault((nk, str(p['date'])[:10]), []).append((t, i))
-            for (nk, d_), lst in groups.items():
+                groups.setdefault(str(p['date'])[:10], []).append((t, i))
+            for d_, lst in groups.items():
                 if len(lst) < 2:
                     continue
                 lst.sort()
@@ -3159,12 +3264,26 @@ class Sub5ScraperV2:
                         pa, pb = perfs[ia], perfs[ib]
                         if pa['meet_name'] == pb['meet_name'] or (team, ia) in dup_drop or (team, ib) in dup_drop:
                             continue
+                        if not xc_names_agree(pa['athlete_name'], pb['athlete_name']):
+                            continue
+                        # (a brother and sister at one time in the boys' and girls' files)
+                        sa, sb = (str(p['event']).split(' ', 1)[0] for p in (pa, pb))
+                        if sa != sb and {sa, sb} <= {'Boys', 'Girls'}:
+                            continue
                         def rank(p, t):
                             return (not str(p['meet_name']).startswith('ms-'), meet_size.get((p['year'], p['meet_name']), 0),
                                     t != int(t), str(p['meet_name']))
                         loser = ib if rank(pa, ta) >= rank(pb, tb) else ia
+                        keep = perfs[ia if loser == ib else ib]
+                        name = xc_fuller_name(keep['athlete_name'], perfs[loser]['athlete_name'])
+                        if name != keep['athlete_name']:
+                            keep['athlete_name'] = name
+                            keep['athlete_id'] = store_athlete_id(name, team, keep['year'], 'XC', keep['event'])
                         dup_drop.add((team, loser))
                         SYNC_DROPS[(f"{perfs[loser]['year']}_XC_{perfs[loser]['meet_name']}", 'same runner and time in another file of the race (kept there)')] += 1
+                        if pa['athlete_name'] != pb['athlete_name']:
+                            SYNC_DROP_WHAT[('xc-twice', 'XC', f"{d_} {team}: {perfs[loser]['athlete_name']} {perfs[loser]['mark']} "
+                                            f"[{perfs[loser]['meet_name']}] = {keep['athlete_name']} [{keep['meet_name']}]"[:160])] += 1
         if dup_drop:
             self.report_progress(f'Dropping {len(dup_drop)} XC rows posted twice')
             for team in collector:

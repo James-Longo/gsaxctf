@@ -3205,3 +3205,37 @@ def test_file_level_reads_parse_and_source_stems():
         assert sc.file_level(2016, 'XC', 'coastal-girls.txt') is None
     finally:
         sc._FILE_LEVELS = saved
+
+
+def test_xc_names_agree_across_two_copies_of_a_race():
+    # a sub5 sheet and the MileSplit copy of one race print the same runner differently
+    # (Second Seven 2012, Marshwood 10/6/16, Freeport 10/7/21): one result, not two
+    from backend.scraper_v2 import xc_names_agree, xc_fuller_name
+    for a, b, full in [('Cooper', 'Sierra Cooper', 'Sierra Cooper'),
+                       ('Y. Nure', 'Yahya Nure', 'Yahya Nure'),
+                       ('A. Troxewll', 'Alex Troxell', 'Alex Troxell'),
+                       ('Henry B Horne', 'Henry Horne', 'Henry Horne'),
+                       ('Kinney', 'X Kinney', 'Kinney'),
+                       ('Pisani Julia', 'Julia Pisani', 'Pisani Julia'),
+                       ('Karan', 'Alex Karam', 'Alex Karam'),
+                       ('Calob Holt-', 'Caleb Holt-fitzgerald', 'Caleb Holt-fitzgerald'),
+                       ('David FPhinney', 'David Phinney', 'David FPhinney')]:
+        assert xc_names_agree(a, b) and xc_names_agree(b, a), (a, b)
+        assert xc_fuller_name(a, b) == full, (a, b)
+    for a, b in [('Mark Donahue', 'Matt Donahue'), ('J. Smith', 'Kate Smith'), ('Brady', 'Shane West')]:
+        assert not xc_names_agree(a, b), (a, b)
+
+
+def test_sex_column_read_onto_names_files_each_row_by_it():
+    # OCT-7-RESULTS 2021 prints 'Horne, Henry  B FREE 1642': the B/G column is the runner's sex,
+    # not an initial; girls read into the boys' race go to the girls' race
+    from backend.scraper_v2 import file_by_sex_column
+    boys = [{'athlete': f'Boy{i}, Sam B', 'school': 'FREE', 'result': '17:00', 'place': i} for i in range(1, 7)]
+    girls = [{'athlete': f'Girl{i}, Ann G', 'school': 'YORK', 'result': '20:00', 'place': i} for i in (1, 3)]
+    stray = {'athlete': 'Girl2, Eve G', 'school': 'YORK', 'result': '20:30', 'place': 2}
+    data = {'events': [{'event': '3 Mile Run CC', 'gender': 'Boys', 'results': boys + [stray]},
+                       {'event': '3 Mile Run CC', 'gender': 'Girls', 'results': girls}]}
+    file_by_sex_column(data)
+    b, g = data['events']
+    assert [r['athlete'] for r in b['results']] == [f'Boy{i}, Sam' for i in range(1, 7)]
+    assert [r['athlete'] for r in g['results']] == ['Girl1, Ann', 'Girl2, Eve', 'Girl3, Ann']

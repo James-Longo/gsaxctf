@@ -1,7 +1,7 @@
 {
 "_meta": {
 "methods_by_rows": {
-"exact/alias": 1747989,
+"exact/alias": 1747990,
 "code": 257778,
 "truncation": 119648,
 "athlete-continuity": 52510,
@@ -1030,10 +1030,10 @@
 "how": "exact/alias"
 },
 "Caribou High School": {
-"rows": 9813,
+"rows": 9820,
 "seasons": {
 "Outdoor": 5444,
-"XC": 4369
+"XC": 4376
 },
 "years": [
 2003,
@@ -10099,34 +10099,6 @@
 ],
 "how": "code"
 },
-"Unknown": {
-"rows": 659,
-"seasons": {
-"XC": 24,
-"Outdoor": 632,
-"Indoor": 3
-},
-"years": [
-2003,
-2026
-],
-"id": "x-unknown",
-"method": "exact",
-"by_id": {
-"x-unknown": 588,
-"me-hs-lincoln-academy": 46,
-"me-hs-presque-isle": 25
-},
-"context_dependent": true,
-"flags": [
-"athletes contradict name match (x-unknown -> me-hs-caribou, 2/2)",
-"athletes contradict name match (x-unknown -> me-hs-caribou, 6/6)",
-"athletes contradict name match (x-unknown -> me-hs-greely, 7/8)",
-"athletes contradict name match (x-unknown -> me-hs-houlton, 2/2)",
-"athletes contradict name match (x-unknown -> me-hs-lincoln-academy, 24/33)"
-],
-"how": "exact/alias"
-},
 "HolHam": {
 "rows": 654,
 "seasons": {
@@ -10138,6 +10110,34 @@
 ],
 "id": "me-ms-holbrook-dedham",
 "method": "exact",
+"how": "exact/alias"
+},
+"Unknown": {
+"rows": 653,
+"seasons": {
+"XC": 18,
+"Outdoor": 632,
+"Indoor": 3
+},
+"years": [
+2003,
+2026
+],
+"id": "x-unknown",
+"method": "exact",
+"by_id": {
+"x-unknown": 582,
+"me-hs-lincoln-academy": 46,
+"me-hs-presque-isle": 25
+},
+"context_dependent": true,
+"flags": [
+"athletes contradict name match (x-unknown -> me-hs-caribou, 2/2)",
+"athletes contradict name match (x-unknown -> me-hs-greely, 7/8)",
+"athletes contradict name match (x-unknown -> me-hs-houlton, 2/2)",
+"athletes contradict name match (x-unknown -> me-hs-lincoln-academy, 24/33)",
+"athletes contradict name match (x-unknown -> me-hs-presque-isle, 19/20)"
+],
 "how": "exact/alias"
 },
 "Rock": {
@@ -209319,8 +209319,7 @@
 "2017/XC/2017-alhs-girls-results": {
 "Fort Kent": "me-hs-fort-kent",
 "GHCA": "me-hs-greater-houlton-christian",
-"Presque Isle": "me-hs-presque-isle",
-"Unknown": "x-unknown"
+"Presque Isle": "me-hs-presque-isle"
 },
 "2017/XC/2017-alms-xc-champs-boys": {
 "Ghca": "me-ms-ghca",
@@ -236005,7 +236004,7 @@
 "basis": "name only (no joined rows)"
 },
 "EXC": null,
-"Eagles Track": "me-hs-mt-ararat",
+"Eagles Track": null,
 "East Cath": "oos-auto-ct-east-cath",
 "East Catholic": "oos-auto-ct-east-catholic",
 "East Grand School": "me-hs-east-grand",
@@ -236566,13 +236565,7 @@
 "Machias Memorial High School": "me-hs-machias",
 "Madawaska MiddleHigh School": "me-hs-madawaska",
 "Madison Area Memorial High School": "me-hs-madison",
-"Madison JH": {
-"id": "me-hs-richmond",
-"held": {
-"me-hs-richmond": 4,
-"None": 4
-}
-},
+"Madison JH": null,
 "Madison Junior High School": "me-ms-madison",
 "MadisonAthens combined MS team": "me-ms-madison-athens",
 "MadisonCarrabec": null,
@@ -237105,7 +237098,6 @@
 "SAWTELL": null,
 "SCC": null,
 "SCHK": null,
-"SDOM": "me-hs-st-dominic",
 "SHD": null,
 "SHadley": "oos-auto-ma-s-hadley",
 "SISU Project": null,
@@ -237133,13 +237125,7 @@
 "Sacopee Valley High School": "me-hs-sacopee",
 "Sacopee Valley Middle School": "me-ms-sacopee",
 "Sacr Heart W": "oos-auto-ct-sacr-heart-w",
-"Saint Dominics Academy": {
-"id": "me-hs-st-dominic",
-"held": {
-"me-hs-st-dominic": 2,
-"None": 1
-}
-},
+"Saint Dominics Academy": null,
 "Saint Johns Shrewsbury": "oos-auto-ma-st-johns-shrewsbury",
 "Saint Marys": "oos-auto-ma-st-marys",
 "Saint Thomas Aquinas": "me-hs-st-thomas",

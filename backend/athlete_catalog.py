@@ -323,6 +323,23 @@ def relay_key(unit, gender, name):
     return f'relay|{unit}|{gender}|' + ';'.join(legs)
 
 
+def _two_in_one_race(e):
+    """A surname or initial printed twice in one XC race at different times (more than a second
+    apart): two runners under one printed name."""
+    for race, marks in e['race_marks'].items():
+        if '|XC|' not in race or len(marks) < 2:
+            continue
+        secs = sorted(s for s in (_mark_secs(m) for m in marks) if s is not None)
+        if secs and secs[-1] - secs[0] > 1:
+            return True
+    return False
+
+
+def _mark_secs(m):
+    p = re.fullmatch(r'(?:(\d+):)?(\d+):(\d+(?:\.\d+)?)', str(m or '').strip())
+    return int(p.group(1) or 0) * 3600 + int(p.group(2)) * 60 + float(p.group(3)) if p else None
+
+
 def build_entities(rows):
     ents, relays = {}, {}
     for (folder, team, unit, year, season, ay, name, aid, event, mark, g, meet, d) in rows:
@@ -767,6 +784,10 @@ def cluster(ents, pairs, decisions):
         if any(ra_races & ents[y]['races'] for y in mb):
             refused.append((a, b, why, 'same race'))
             return
+        if why in ('auto', 'roster') and any(_short_form(ents[x]) and _two_in_one_race(ents[x]) for x in ma | mb):
+            # ('Swiatek' 19:27 and 'Swiatek' 23:25 for York in one race: two girls, one of them no Michaela)
+            refused.append((a, b, why, 'two runners in one race'))
+            return
         if why == 'roster':
             # a short name placed by the roster never bridges two full-name
             # runners (a "Zuke" placed with Wyatt while another season is Joe's)
@@ -891,12 +912,21 @@ def link_across_schools(groups, ents):
 
     def town(u):
         return (schools.get(u) or {}).get('town')
+    # (a chain is cut at a move nothing supports, and its supported runs still join: Owen Bean at
+    # Hall-Dale MS and then Hall-Dale HS, after an Owen Bean at a South Portland middle school)
     joined = set()
     for c in chains:
-        ok = all(info[a]['unit'] == info[b]['unit'] or (town(info[a]['unit']) and town(info[a]['unit']) == town(info[b]['unit']))
-                 or len(routes[(info[a]['unit'], info[b]['unit'])]) >= FEEDER_MIN for a, b in zip(c, c[1:]))
-        if ok:
-            joined.add(tuple(c))
+        run = [c[0]]
+        for a, b in zip(c, c[1:]):
+            if info[a]['unit'] == info[b]['unit'] or (town(info[a]['unit']) and town(info[a]['unit']) == town(info[b]['unit'])) \
+                    or len(routes[(info[a]['unit'], info[b]['unit'])]) >= FEEDER_MIN:
+                run.append(b)
+                continue
+            if len(run) > 1:
+                joined.add(tuple(run))
+            run = [b]
+        if len(run) > 1:
+            joined.add(tuple(run))
     used = {i for c in joined for i in c}
     out = [g for i, g in enumerate(groups) if i not in used]
     for c in joined:

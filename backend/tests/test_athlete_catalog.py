@@ -104,6 +104,29 @@ def test_three_schools_two_spellings_one_runner():
     assert len(_runners(rows)) == 1
 
 
+def test_unsupported_move_cuts_the_chain_not_the_town_link():
+    # an Owen Bean at a South Portland middle school (2014 track) does not stop the Hall-Dale MS
+    # Owen Bean (2015 XC) from joining the Hall-Dale HS Owen Bean (2017-19): same town
+    g = 'Boys 5K Run CC'
+    rows = [_row('Owen Bean', 2014, 'SMAA MS', '2:40', event='Boys 800 Meter Run', unit='me-ms-memorial-sp',
+                 team='Memorial Middle School'),
+            _row('Owen Bean', 2015, 'CAL MS', '10:51', event='Boys 3K Run CC', unit='me-ms-hall-dale', team='HallDale Middle School'),
+            _row('Owen Bean', 2017, 'MVC', '20:17', event=g, unit='me-hs-hall-dale', team='HallDale High School'),
+            _row('Owen Bean', 2018, 'MVC', '19:50', event=g, unit='me-hs-hall-dale', team='HallDale High School')]
+    assert len(_runners(rows)) == 2
+
+
+def test_surname_twice_in_one_race_joins_no_runner():
+    # cape10_5 2007: 'Swiatek' 19:27 (Michaela) and 'Swiatek' 23:25 (another York girl) in one race;
+    # the surname entry is two girls, so it joins neither Swiatek
+    g = 'Girls 3.0 Mile Run CC'
+    rows = [_row('Swiatek', 2007, 'Cape Meet', '19:27', sid='swiatek', event=g, unit='me-hs-york', team='York High School'),
+            _row('Swiatek', 2007, 'Cape Meet', '23:25', sid='swiatek', event=g, unit='me-hs-york', team='York High School'),
+            _row('Michaela Swiatek', 2007, 'WMC Meet', '19:40', event=g, unit='me-hs-york', team='York High School'),
+            _row('Michaela Swiatek', 2008, 'WMC Meet', '19:10', event=g, unit='me-hs-york', team='York High School')]
+    assert not _together(_runners(rows), 'Swiatek', 'Michaela Swiatek')
+
+
 if __name__ == '__main__':
     for name, fn in sorted(globals().items()):
         if name.startswith('test_'):
