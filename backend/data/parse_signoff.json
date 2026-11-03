@@ -24136,11 +24136,11 @@
   "evidence": "deliberate re-parse: team-score blocks re-read from MileSplit (rows ending in '-' were dropped before), recovered Pro/no-text races, relay-leg grades / multi-event parse; unchanged checks otherwise"
  },
  "backend/data/parsed_results/2013/XC/ms-triple-c-2013-cross-country-festival-meet-2013.json": {
-  "parse_sha": "5ee1e991c54ee0e8",
-  "source_sha": "eac81d3a5f1cf69f",
-  "date": "2026-10-28",
-  "by": "sonnet audit (second read, 2026-10-28) (audit: confirmed)",
-  "evidence": "Compared every row of pages 271219 (boys 94), 271214 (girls 80) and 271220 (JV list of 136 = 91 + 45 split by sex) with the parse: place, name, school, time all match (Durham expanded to Durham Community School). The varsity boys (13 teams) and girls (11 teams) blocks match the pages and every total reproduces from the TmPl column. The warning comes from the JV list: it is ONE list of boys and girls with ONE combined team score, which the sex split cannot reproduce per sex (Gray/NG 165 and Merriconeag 196 lose their girls); printed as printed. Parse equals the existing override. The unresolved-sex JV rows noted in the override stay as they were."
+  "parse_sha": "54ed1315fde8f312",
+  "source_sha": "d945cd01a4ddff87",
+  "date": "2026-11-03",
+  "by": "random-sample sweep 2026-11-03",
+  "evidence": "batch 10: Triple C 2013 JV girls moved out of the boys' race by name; Camden Hills 2017 girls times marked incorrect on the sheet, places kept"
  },
  "backend/data/parsed_results/2013/XC/ms-tripp-xc-meet-2-2013.json": {
   "parse_sha": "eac2d56117743858",
@@ -33152,11 +33152,11 @@
   "evidence": ""
  },
  "backend/data/parsed_results/2017/XC/camden-hills-girls.txt.json": {
-  "parse_sha": "3af0dc6aed17646a",
+  "parse_sha": "57f1b51ab31025bc",
   "source_sha": "5b425389359cc856",
-  "date": "2026-10-16",
-  "by": "auto: team scores verified exactly, all schools identified, no flags",
-  "evidence": ""
+  "date": "2026-11-03",
+  "by": "random-sample sweep 2026-11-03",
+  "evidence": "batch 10: Triple C 2013 JV girls moved out of the boys' race by name; Camden Hills 2017 girls times marked incorrect on the sheet, places kept"
  },
  "backend/data/parsed_results/2017/XC/central-boys.txt.json": {
   "parse_sha": "02d658c4e898551b",
