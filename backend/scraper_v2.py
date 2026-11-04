@@ -2950,6 +2950,11 @@ class Sub5ScraperV2:
                         continue
                     gender, event_canon_name = canon
                     full_event = f"{gender} {event_canon_name}"
+                    # (a row or two of the other sex inside a race -- 'Alexa Brown  F 6 Windham' in the 6th-grade
+                    # boys' sheet: a cross entry, or a bib keyed to the wrong runner; settled once the store is in)
+                    cross_sex = season == 'XC' and len(results_list) <= 3 and any(
+                        isinstance(o, dict) and o.get('gender') not in (None, '', event_block.get('gender'))
+                        and len(o.get('results') or []) >= 20 for o in parsed_events)
                     is_relay = is_relay or 'Relay' in event_canon_name
                     bad_times = xc_out_of_order_times(results_list) | xc_estimated_times(results_list) \
                         if season == 'XC' and not is_relay else set()
@@ -3097,6 +3102,8 @@ class Sub5ScraperV2:
                         }
                         if season == 'XC':
                             p['course'] = (course_name or meet_name).strip()
+                        if cross_sex:
+                            p['_cross_sex'] = True
                         if r.get('exhibition'):
                             # ("X4:29.26": ran outside the team scoring; a real mark
                             # all the same - it counts for PRs and records)
@@ -3439,6 +3446,26 @@ class Sub5ScraperV2:
         # team, sex and time is that same finisher under a name the copies spell differently -- 'O'Brien'
         # / 'Peter O'brien', 'Will Housemann' / 'Will Hausmann', a copy whose names slid one row)
         _twin_pass(False)
+        # (a runner of the other sex inside a race who also ran her own race that day -- Alexa Brown 11:08 in
+        # the boys' sheet, 12:00 in the girls': the stray row is a bib keyed to the wrong runner)
+        for team, perfs in collector.items():
+            day = {}
+            for i, p in enumerate(perfs):
+                if p['season'] == 'XC' and (team, i) not in dup_drop:
+                    day.setdefault((str(p.get('date'))[:10], re.sub(r'\W', '', p['athlete_name'].lower())), []).append(i)
+            for i, p in enumerate(perfs):
+                if not p.get('_cross_sex') or (team, i) in dup_drop:
+                    continue
+                sex = str(p['event']).split(' ', 1)[0]
+                same = day.get((str(p.get('date'))[:10], re.sub(r'\W', '', p['athlete_name'].lower())), [])
+                if any(j != i and perfs[j]['meet_name'] != p['meet_name'] and not perfs[j].get('_cross_sex')
+                       and str(perfs[j]['event']).split(' ', 1)[0] == sex for j in same):
+                    dup_drop.add((team, i))
+                    SYNC_DROPS[(f"{p['year']}_XC_{p['meet_name']}", 'XC other-sex row; ran own race that day')] += 1
+                    SYNC_DROP_WHAT[('xc-cross-sex', 'XC', f"{str(p.get('date'))[:10]} {team}: {p['athlete_name']} {p['mark']} [{p['meet_name']}]"[:160])] += 1
+        for perfs in collector.values():
+            for p in perfs:
+                p.pop('_cross_sex', None)
         if dup_drop:
             self.report_progress(f'Dropping {len(dup_drop)} XC rows posted twice')
             for team in collector:
