@@ -1047,7 +1047,15 @@ def assemble(groups, rows, schools, coops, idx, args):
                 distinct = {i for i in ids if i}
                 if len(distinct) > 1 and not entry.get('by_level') or ids.get(None, 0) >= 0.2 * rows_n or manual:
                     entry['context_dependent'] = True
+                # (a string with one meaning everywhere -- 'FKXC', 'Hyde School - Bath' -- left unanswered in one
+                # file where nothing argues against it keeps that meaning: the 2020 Washburn boys' sheet, whose
+                # girls' sheet reads FKXC as Fort Kent. Not a mascot, a short code or a truncation: those are shared)
+                lone = len(distinct) == 1 and not entry.get('context_dependent') and len((raw or '').strip()) >= 4 \
+                    and not re.search(r'nickname|mascot|ambiguous|suggested', entry['method'])
                 for g in gs:
+                    if lone and g.decision is None and not set((g.evidence or {}).get('votes') or {}) - {best} \
+                            and (not g.meet_level or schools.get(best, {}).get('level') in (g.meet_level, None)):
+                        continue
                     if g.decision != best or entry.get('context_dependent'):
                         y, s, fn = g.rel.split(os.sep)
                         overrides[f'{y}/{s}/{os.path.splitext(fn)[0]}'][raw] = g.decision

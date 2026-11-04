@@ -3446,6 +3446,35 @@ class Sub5ScraperV2:
         # team, sex and time is that same finisher under a name the copies spell differently -- 'O'Brien'
         # / 'Peter O'brien', 'Will Housemann' / 'Will Hausmann', a copy whose names slid one row)
         _twin_pass(False)
+        # (two copies of one race, already sharing five or more runners, that print one runner at two times --
+        # 'X Tims' 24:21 on the sub5 sheet, 24:00 on the MileSplit copy of Poland 2011: he ran once)
+        twin_files = {}
+        for (d_, pair), n in twins.items():
+            if n >= 5:
+                twin_files.setdefault(d_, set()).add(pair)
+        for team, perfs in collector.items():
+            seen = {}
+            for i, p in enumerate(perfs):
+                if p['season'] != 'XC' or (team, i) in dup_drop or not str(p.get('date') or '')[:4].isdigit():
+                    continue
+                d_ = str(p['date'])[:10]
+                if d_ not in twin_files or not p['athlete_name'].strip():
+                    continue
+                k = (d_, str(p['event']).split(' ', 1)[0], re.sub(r'\W', '', p['athlete_name'].split()[-1].lower()))
+                for j in seen.get(k, []):
+                    q = perfs[j]
+                    if (team, j) in dup_drop or frozenset((p['meet_name'], q['meet_name'])) not in twin_files[d_] \
+                            or not xc_names_agree(p['athlete_name'], q['athlete_name']):
+                        continue
+                    tp, tq = _xc_secs(p.get('mark')), _xc_secs(q.get('mark'))
+                    if tp is None or tq is None:
+                        continue
+                    loser = i if _rank(q, tq) >= _rank(p, tp) else j
+                    dup_drop.add((team, loser))
+                    SYNC_DROPS[(f"{perfs[loser]['year']}_XC_{perfs[loser]['meet_name']}", 'same runner and time in another file of the race (kept there)')] += 1
+                    SYNC_DROP_WHAT[('xc-twice-retimed', 'XC', f"{d_} {team}: {perfs[loser]['athlete_name']} {perfs[loser]['mark']} [{perfs[loser]['meet_name']}] vs {perfs[i if loser == j else j]['mark']}"[:160])] += 1
+                    break
+                seen.setdefault(k, []).append(i)
         # (a runner of the other sex inside a race who also ran her own race that day -- Alexa Brown 11:08 in
         # the boys' sheet, 12:00 in the girls': the stray row is a bib keyed to the wrong runner)
         for team, perfs in collector.items():
