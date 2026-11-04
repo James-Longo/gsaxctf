@@ -3297,6 +3297,23 @@ def test_xc_whole_minute_time_far_behind_a_timed_field_is_an_estimate():
     rows = [{'place': i + 1, 'result': f'{20 + 2 * i}:00'} for i in range(12)]
     assert not xc_estimated_times(rows)
 
+def test_xc_class_glued_to_an_unplaced_rows_school():
+    # 2018 Panther 2 miler: '--  Grace Carlson  FR Foxcroft Academy  DNF'
+    from backend.scraper_v2 import XC_GRADE_SCHOOL
+    assert XC_GRADE_SCHOOL.match('FR Foxcroft Academy').group(1) == 'FR'
+    assert XC_GRADE_SCHOOL.match('10 Mdi').group(1) == '10'
+    assert not XC_GRADE_SCHOOL.match('Foxcroft Academy')
+    assert not XC_GRADE_SCHOOL.match('St. Dominic')
+
+def test_meet_report_keeps_an_unplaced_dnf():
+    # Ellsworth Invitational 2024: '--   MAYHEW, Lillian   JR   Hermon High Scho   -   DNF ---   ---'
+    import re as _re
+    from backend.parsers.meetreport import _IND
+    m = _IND.search('  --   MAYHEW, Lillian             JR     Hermon High Scho        -         DNF ---             ---')
+    assert m and m.group('place') == '--' and m.group('time') == 'DNF'
+    m = _IND.search('  12   NELSON, Casey               SR   Hampden Academy          8         17:41.20')
+    assert m and m.group('place') == '12' and m.group('time') == '17:41.20'
+
 def test_metric_xc_course_off_the_track_list_is_not_a_5k():
     # Lawrence JH '2400 Meter Run', York MS '2436 Meter Run CC' were stored as 5K
     from backend.event_canon import canonical_event

@@ -155,6 +155,31 @@ def test_surname_twice_in_one_race_joins_no_runner():
     assert not _together(_runners(rows), 'Swiatek', 'Michaela Swiatek')
 
 
+
+def test_display_name_keeps_a_surname_that_is_also_a_first_name_last():
+    # 'Sylvia Rayn' (one row) beat 'Sylvia Ryan' (28), and 'Mitchell Dulcie' beat 'Dulcie Mitchell',
+    # because Ryan and Mitchell are common first names
+    from backend.athlete_catalog import display_name
+    share = {'sylvia': (1.0, 90), 'ryan': (0.3, 400), 'rayn': (0.0, 1), 'dulcie': (1.0, 3), 'mitchell': (0.2, 300),
+             'caleb': (0.98, 500), 'pelletier': (0.01, 300), 'spencer': (0.6, 200), 'drew': (0.7, 200), 'specer': (1.0, 1),
+             'jenson': (0.4, 30), 'niejadlik': (0.6, 5), 'callahan': (0.3, 80), 'bryer': (0.5, 50), 'breyer': (1.0, 1)}
+    assert display_name({'Sylvia Ryan': 28, 'Sylvia Rayn': 1}, share) == 'Sylvia Ryan'
+    assert display_name({'Mitchell Dulcie': 6, 'Dulcie Mitchell': 4}, share) == 'Dulcie Mitchell'
+    assert display_name({'Pelletier Caleb': 9, 'Caleb Pelletier': 2}, share) == 'Caleb Pelletier'
+    # a misprint does not win on word order: 'Specer Drew', 'Callahan Breyer' (once) beside 40 'Callahan Bryer'
+    assert display_name({'Spencer Drew': 12, 'Specer Drew': 1}, share) == 'Spencer Drew'
+    assert display_name({'Callahan Bryer': 30, 'Bryer Callahan': 13, 'Callahan Breyer': 1}, share) != 'Callahan Breyer'
+    # a rare surname's share is noise: the order printed most stands
+    assert display_name({'Jenson Niejadlik': 9, 'Niejadlik Jenson': 3}, share) == 'Jenson Niejadlik'
+    assert display_name({'Bailey Mercer': 4, 'Bailey. Mercer': 6}, share) == 'Bailey Mercer'
+    assert display_name({'Brandon St. Germain': 29, 'Brandon StGermain': 1}, share) == 'Brandon St. Germain'
+    assert display_name({'Abby St. Clair': 5, 'Clair Abby St': 1}, share) == 'Abby St. Clair'
+    share.update({'harvey': (0.25, 300), 'crider': (0.0, 2)})
+    assert display_name({'Harvey Crider': 58, 'Crider Harvey': 1}, share) == 'Harvey Crider'
+    # initials give way to the full first name
+    assert display_name({'S ALEXANDER': 5, 'Steven Alexander': 2}, share) == 'Steven Alexander'
+
+
 if __name__ == '__main__':
     for name, fn in sorted(globals().items()):
         if name.startswith('test_'):

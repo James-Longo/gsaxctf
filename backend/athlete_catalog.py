@@ -246,25 +246,51 @@ def tidy(name):
 
 def display_name(names_counts, first_freq=None):
     """Canonical spelling for a cluster: a clean First Last in proper case,
-    then the spelling with the most results. Word order follows whichever
-    word is more often a first name across the store, so a runner printed
-    "Pelletier Caleb" in most files still reads "Caleb Pelletier"."""
+    then the spelling with the most results (both word orders of one spelling
+    counted together). Word order then follows whichever word more often
+    leads a name than ends one across the store (first_freq: word -> (that
+    share, how often the word is seen)), so a runner printed "Pelletier
+    Caleb" in most files still reads "Caleb Pelletier", and "Dulcie Mitchell"
+    is not reversed. A rare word's share is only its own runner's sheets, so
+    it counts as neither ('Jenson Niejadlik' keeps the order printed most)."""
     first_freq = first_freq or {}
     tidy_counts = collections.Counter()
     for name, n in names_counts.items():
         tidy_counts[tidy(name)] += n
 
-    def score(item):
-        name, n = item
-        toks = name.split()
-        lo = [t.lower() for t in toks]
-        first_first = len(lo) < 2 or first_freq.get(lo[0], 0) >= first_freq.get(lo[-1], 0)
+    def words(nm):
+        return tuple(sorted(t.lower().strip('.') for t in nm.split()))
+
+    def quality(nm):
+        toks = nm.split()
         return (len(toks) >= 2,
-                first_first,
+                len(toks[0].rstrip('.')) > 1,                # a first name, not an initial
                 all(t[:1].isupper() for t in toks),          # every word capitalized
-                not name.isupper() and not name.islower(),   # mixed case
-                n, len(name))
-    return max(tidy_counts.items(), key=score)[0]
+                not nm.isupper() and not nm.islower(),       # mixed case
+                not re.search(r'\b(?!(?:St|Ste|Jr|Sr|Mt)\.)[^\W\d_]{2,}\.', nm))   # no stray period: 'Bailey. Mercer'
+
+    def share(t):
+        sh, seen = first_freq.get(t, (0.5, 0))
+        return sh if seen >= 20 else 0.5
+
+    spelled = collections.Counter()
+    for nm, n in tidy_counts.items():
+        spelled[words(nm)] += n
+    best = max(tidy_counts, key=lambda nm: (quality(nm), spelled[words(nm)], tidy_counts[nm], len(nm)))
+    orders = [nm for nm in tidy_counts if words(nm) == words(best) and quality(nm) == quality(best)]
+
+    def first_first(nm):
+        lo = [t.lower() for t in nm.split()]
+        # (only a clear difference turns a two-word name round; 'Abby St. Clair' is not 'Clair Abby St')
+        return len(lo) != 2 or share(lo[0]) > share(lo[-1]) - 0.2
+    # (the order printed three times as often stands -- 'Harvey Crider' 58, 'Crider Harvey' once -- unless
+    # its words plainly say it is reversed: 'Pelletier Caleb')
+    ranked = sorted(orders, key=lambda nm: (tidy_counts[nm], len(nm)), reverse=True)
+    if len(ranked) > 1 and tidy_counts[ranked[0]] >= 3 * tidy_counts[ranked[1]]:
+        lo = [t.lower() for t in ranked[0].split()]
+        if len(lo) != 2 or share(lo[-1]) - share(lo[0]) < 0.6:
+            return ranked[0]
+    return max(orders, key=lambda nm: (first_first(nm), tidy_counts[nm], len(nm)))
 
 
 # ---------------------------------------------------------------------------
@@ -975,7 +1001,11 @@ def build(rows=None, quiet=False):
     groups, refused = cluster(ents, pairs, decisions)
     groups, n_linked = link_across_schools(groups, ents)
     say(f'{n_linked:,} runners joined across schools (middle school to high school, transfers)')
-    first_freq = collections.Counter(e['toks'][0] for e in ents.values() if len(e['toks']) >= 2)
+    # (how often each word leads a name rather than ends one: 'Ryan', 'Mitchell' are often first names but
+    # mostly surnames, so 'Sylvia Ryan' and 'Dulcie Mitchell' are in First Last order)
+    firsts = collections.Counter(e['toks'][0] for e in ents.values() if len(e['toks']) >= 2)
+    lasts = collections.Counter(e['toks'][-1] for e in ents.values() if len(e['toks']) >= 2)
+    first_freq = {t: (firsts[t] / (firsts[t] + lasts[t]), firsts[t] + lasts[t]) for t in set(firsts) | set(lasts)}
 
     athletes = []
     member_of = {}

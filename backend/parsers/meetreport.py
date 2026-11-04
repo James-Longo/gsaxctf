@@ -31,7 +31,7 @@ _GENDER = {'men': 'Boys', 'boys': 'Boys', 'male': 'Boys',
            'women': 'Girls', 'girls': 'Girls', 'female': 'Girls'}
 _W = r"[A-Za-z][\w'\-.]*"
 _IND = re.compile(
-    r'(?<!\S)(?P<place>\d{1,4})\s+'
+    r'(?<!\S)(?P<place>\d{1,4}|--)\s+'   # '--' an unplaced finisher: '--  MAYHEW, Lillian  JR ... -  DNF'
     r'(?P<name>' + _W + r"(?: [\w'\-.]+)*\s?,(?:\s?[\w'\-.]+(?: [\w'\-.]+)*?)?"
     r"(?: \([\w'\-. ]{1,12}\))?"   # nickname: "YANUSH, Charles (CJ)"
     r'|' + _W + r"(?: [\w'\-.]+)*? [A-Z][A-Z'\-]+(?:(?: | - )[A-Z][A-Z'\-]+)*"  # "ALVAREZ - BACK"
@@ -42,7 +42,7 @@ _IND = re.compile(
     # the team cell never holds a scoring order ("4-5-6") or a time: that
     # is a team-summary row sitting beside the athlete column
     r'\s+(?P<team>(?:(?!\d-\d|\d:\d)\S)(?:(?!\d-\d|\d:\d).)*?)\s+(?P<score>-|\(\d+\)|\d+)\s+'
-    r'(?P<time>\d{1,2}:\d{2}(?::\d{2})?(?:\.\d+)?)(?!\S)')
+    r'(?P<time>\d{1,2}:\d{2}(?::\d{2})?(?:\.\d+)?|DNF|DNS|DQ)(?!\S)')
 _TEAM = re.compile(
     r'(?<!\S)(?P<rank>\d{1,3})\s+(?P<team>\S.*?)\s+(?P<score>\d{1,4})\s+'
     r'(?P<order>\d{1,4}(?:-\d{1,4}){4,})(?P<disp>(?:\(\d{1,4}\))*)(?!\S)')
@@ -147,14 +147,18 @@ class MeetReportParser(BaseParser):
                 team = re.sub(r'^\d{1,5}\s+', '', team)
                 # DirectAthletics "Team (Team Place)": "Maine (1)" -> "Maine"
                 team = re.sub(r'\s*\(\d{1,3}\)$', '', team)
-                place = int(im.group('place'))
+                unplaced = im.group('place') == '--'
+                if unplaced != (im.group('time') in ('DNF', 'DNS', 'DQ')):
+                    continue
+                # (unplaced rows file after the placed ones, in the order printed)
+                place = 10000 + len(race['rows']) if unplaced else int(im.group('place'))
                 row = race['rows'].setdefault(place, {
                     'athlete': proper_case_name(name),
                     'school': proper_case_team(team),
                     'result': im.group('time'),
                     'grade': yr,
                     'type': 'Finals',
-                    'place': place,
+                    'place': None if unplaced else place,
                 })
                 # Score: the team-score place, "(7)" a displacer, "-" none
                 sc = re.sub(r'[()]', '', im.group('score'))

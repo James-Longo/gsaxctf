@@ -1,9 +1,9 @@
 {
 "_meta": {
 "methods_by_rows": {
-"exact/alias": 1748253,
+"exact/alias": 1748263,
 "code": 257778,
-"truncation": 119648,
+"truncation": 119650,
 "athlete-continuity": 52448,
 "mascot": 28413,
 "bare name + level context": 26239,
@@ -828,11 +828,11 @@
 "how": "exact/alias"
 },
 "Hampden Academy": {
-"rows": 10569,
+"rows": 10573,
 "seasons": {
 "Indoor": 1139,
 "Outdoor": 2648,
-"XC": 6782
+"XC": 6786
 },
 "years": [
 2003,
@@ -1424,11 +1424,11 @@
 "how": "exact/alias"
 },
 "Brewer High School": {
-"rows": 7495,
+"rows": 7497,
 "seasons": {
 "Indoor": 961,
 "Outdoor": 2924,
-"XC": 3610
+"XC": 3612
 },
 "years": [
 2003,
@@ -42809,6 +42809,19 @@
 "method": "exact",
 "how": "exact/alias"
 },
+"Mt. Desert Island Hi": {
+"rows": 28,
+"seasons": {
+"XC": 28
+},
+"years": [
+2024,
+2024
+],
+"id": "me-hs-mdi",
+"method": "stem",
+"how": "exact/alias"
+},
 "Penobscot Va": {
 "rows": 28,
 "seasons": {
@@ -43432,19 +43445,6 @@
 ],
 "id": "me-hs-gsa",
 "method": "exact",
-"how": "exact/alias"
-},
-"Mt. Desert Island Hi": {
-"rows": 27,
-"seasons": {
-"XC": 27
-},
-"years": [
-2024,
-2024
-],
-"id": "me-hs-mdi",
-"method": "stem",
 "how": "exact/alias"
 },
 "Lisbon PWS MS": {
@@ -48370,6 +48370,19 @@
 "method": "truncation",
 "how": "co-op label"
 },
+"Presque Isle High S": {
+"rows": 21,
+"seasons": {
+"XC": 21
+},
+"years": [
+2024,
+2024
+],
+"id": "me-hs-presque-isle",
+"method": "truncation+athletes",
+"how": "truncation"
+},
 "Momouth": {
 "rows": 21,
 "seasons": {
@@ -49190,7 +49203,7 @@
 "method": "exact",
 "how": "exact/alias"
 },
-"Presque Isle High S": {
+"John Bapst Memori": {
 "rows": 20,
 "seasons": {
 "XC": 20
@@ -49199,8 +49212,8 @@
 2024,
 2024
 ],
-"id": "me-hs-presque-isle",
-"method": "truncation+athletes",
+"id": "me-hs-john-bapst",
+"method": "truncation",
 "how": "truncation"
 },
 "Berwick Academy (middle grades)": {
@@ -49252,6 +49265,20 @@
 2003
 ],
 "id": "me-hs-fort-kent",
+"method": "exact",
+"how": "exact/alias"
+},
+"Hermon High Scho": {
+"rows": 19,
+"seasons": {
+"Outdoor": 9,
+"XC": 10
+},
+"years": [
+2004,
+2024
+],
+"id": "me-hs-hermon",
 "method": "exact",
 "how": "exact/alias"
 },
@@ -50001,19 +50028,6 @@
 2025
 ],
 "id": "me-ms-elm-street",
-"method": "truncation",
-"how": "truncation"
-},
-"John Bapst Memori": {
-"rows": 19,
-"seasons": {
-"XC": 19
-},
-"years": [
-2024,
-2024
-],
-"id": "me-hs-john-bapst",
 "method": "truncation",
 "how": "truncation"
 },
@@ -51115,20 +51129,6 @@
 "id": "me-hs-richmond",
 "method": "truncation+athletes",
 "how": "truncation"
-},
-"Hermon High Scho": {
-"rows": 17,
-"seasons": {
-"Outdoor": 9,
-"XC": 8
-},
-"years": [
-2004,
-2024
-],
-"id": "me-hs-hermon",
-"method": "exact",
-"how": "exact/alias"
 },
 "WAY": {
 "rows": 17,
@@ -88036,6 +88036,19 @@
 "method": "truncation+athletes",
 "how": "truncation"
 },
+"Dexter Regional Hig": {
+"rows": 4,
+"seasons": {
+"XC": 4
+},
+"years": [
+2024,
+2024
+],
+"id": "me-hs-dexter",
+"method": "stem",
+"how": "exact/alias"
+},
 "Lockview": {
 "rows": 4,
 "seasons": {
@@ -96265,19 +96278,6 @@
 ],
 "id": "me-ms-buckfield",
 "method": "exact",
-"how": "exact/alias"
-},
-"Dexter Regional Hig": {
-"rows": 3,
-"seasons": {
-"XC": 3
-},
-"years": [
-2024,
-2024
-],
-"id": "me-hs-dexter",
-"method": "stem",
 "how": "exact/alias"
 },
 "Manchester W": {
@@ -235324,7 +235324,6 @@
 "Friends School of Portland": "me-ms-friends-portland",
 "Frontier": "oos-auto-ma-frontier",
 "Fryeburg Academy": "me-hs-fryeburg",
-"Ft Kent Community HS": null,
 "G": null,
 "G Lowell": "oos-auto-ma-g-lowell",
 "GLOV": null,
@@ -235775,7 +235774,6 @@
 "Madison JH": null,
 "Madison Junior High School": "me-ms-madison",
 "MadisonAthens combined MS team": "me-ms-madison-athens",
-"MadisonCarrabec": null,
 "Mahar Reg": "oos-auto-ma-mahar",
 "Mahar Region": "oos-auto-ma-mahar-region",
 "Mahoney Middle School": "me-ms-mahoney",
@@ -236082,8 +236080,6 @@
 "Notre Dame H": null,
 "OAK": null,
 "OBryant": null,
-"OHIT": null,
-"OHTRA": null,
 "OLeary": null,
 "OSHS": null,
 "OUELETTE": null,
@@ -236332,7 +236328,10 @@
 "Sacopee Valley High School": "me-hs-sacopee",
 "Sacopee Valley Middle School": "me-ms-sacopee",
 "Sacr Heart W": "oos-auto-ct-sacr-heart-w",
-"Saint Dominics Academy": null,
+"Saint Dominics Academy": {
+"id": null,
+"basis": "name only (no joined rows)"
+},
 "Saint Johns Shrewsbury": "oos-auto-ma-st-johns-shrewsbury",
 "Saint Marys": "oos-auto-ma-st-marys",
 "Saint Thomas Aquinas": "me-hs-st-thomas",

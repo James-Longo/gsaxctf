@@ -304,6 +304,9 @@ def _one_edit(a, b):
     return any(l_[:i] + l_[i + 1:] == s for i in range(len(l_)))
 
 
+XC_GRADE_SCHOOL = re.compile(r'(FR|SO|JR|SR|9|10|11|12)\s+([A-Za-z].*)$')
+
+
 def xc_names_agree(a, b):
     """Two printings of one runner's name in two files of a race: a shared word (a surname, or a
     one-letter typo of one) and nothing that contradicts it ('Mark Donahue' / 'Matt Donahue').
@@ -2970,6 +2973,14 @@ class Sub5ScraperV2:
                             continue
                         athlete_name = r.get("athlete") or r.get("athlete_name") or ""
                         school = r.get("school") or r.get("team") or ""
+                        # (an unplaced row's class glued to its school -- '--  Grace Carlson  FR Foxcroft Academy  DNF':
+                        # the place column was empty, so the class slid into the school's. The school map already
+                        # reads the whole string; only the class is recovered)
+                        row_grade = r.get("grade", "")
+                        if season == 'XC' and not row_grade:
+                            m_gs = XC_GRADE_SCHOOL.match(str(school))
+                            if m_gs:
+                                row_grade = m_gs.group(1)
                         mark = r.get("result") or r.get("mark") or ""
                         relay_athletes = r.get("athletes", [])
                         # (an XC relay line is a team's total -- 'GHCA 18:39' over a 3-mile relay of
@@ -3092,7 +3103,7 @@ class Sub5ScraperV2:
                             'athlete_id': athlete_id,
                             'event': full_event,
                             'mark': mark,
-                            'grade': r.get("grade", ""),
+                            'grade': row_grade,
                             'team': team_norm,
                             'date': performance_date,
                             'season': season,
