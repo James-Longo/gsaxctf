@@ -2953,6 +2953,11 @@ class Sub5ScraperV2:
                     is_relay = is_relay or 'Relay' in event_canon_name
                     bad_times = xc_out_of_order_times(results_list) | xc_estimated_times(results_list) \
                         if season == 'XC' and not is_relay else set()
+                    # (one name and team twice in an XC race at two times -- 'Ali Idow' 11:22 and 18:40, a
+                    # bib keyed twice: the later row is another runner no one can name. Not at a relay meet,
+                    # where each runner runs two legs -- Mt Blue Relays 2007 -- and not an initial, 'S. Eastman',
+                    # which can be two teammates)
+                    seen_in_race = set()
 
                     for r in results_list:
                         # Seed-type rows come from entry/heat sheets, not results
@@ -3000,6 +3005,12 @@ class Sub5ScraperV2:
                             if re.fullmatch(r'(?i)unknown|unidentified|no name|\?+', athlete_name.strip()):
                                 SYNC_DROPS[(meet_key, 'unnamed finisher')] += 1
                                 continue
+                        if season == 'XC' and not is_relay and not relay_meet and re.match(r'[^\W\d_]{2,}\s', athlete_name.strip()):
+                            who = (re.sub(r'\W', '', athlete_name.lower()), str(school).lower())
+                            if who in seen_in_race:
+                                SYNC_DROPS[(meet_key, 'XC name twice in one race (later row dropped)')] += 1
+                                continue
+                            seen_in_race.add(who)
                         if id(r) in bad_times:
                             SYNC_DROPS[(meet_key, 'XC time out of place order or estimated (kept as NT)')] += 1
                             mark = 'NT'
