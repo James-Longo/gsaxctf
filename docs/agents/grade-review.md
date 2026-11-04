@@ -1,9 +1,11 @@
 # Grade review: agent procedure
 
 A result with no printed grade gets `grade_est` from the runner's class year
-(`athlete_catalog.settle_class`). A class year is settled only when every
-printed grade on the runner's profile names the same year and every season
-fits grades 3-12 (3-8 at a middle school). Otherwise the runner is a case in
+(`athlete_catalog.settle_class`). A class year settles by rule when every
+printed grade names the same year, when one meet alone disagrees (the rest
+outvote it), or when the runner has four different high-school years (the
+last is senior year), and every season fits grades 3-12 (3-8 at a middle
+school). Otherwise the runner is a case in
 `backend/data/grade_review_queue.json` (rebuilt by `athlete_catalog apply`,
 so by every resync), and a Sonnet agent decides it.
 

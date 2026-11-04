@@ -73,10 +73,10 @@ const readHash = (windows) => {
   return { sport, tab: sportTabs(sport).includes(tab) ? tab : 'history', explicit: !!SPORTS[sp] }
 }
 
-// A row's grade: as printed, else estimated from the runner's other years (lighter).
+// A row's grade: as printed, else estimated from the runner's other years.
 function Grade({ p }) {
   if (p.grade) return <span className="xs-gr"> {gradeLabel(p.grade)}</span>
-  if (p.grade_est) return <span className="xs-gr est" title="Estimated from other years"> {gradeLabel(p.grade_est)}</span>
+  if (p.grade_est) return <span className="xs-gr" title="Estimated from other years"> {gradeLabel(p.grade_est)}</span>
   return null
 }
 

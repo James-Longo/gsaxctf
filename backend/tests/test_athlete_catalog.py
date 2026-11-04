@@ -184,19 +184,40 @@ def test_class_year_settles_only_when_grades_agree():
     from collections import Counter
     hs = [dict(unit='me-hs-x', ays={2018, 2019, 2020})]
     assert ac.settle_class('a', Counter({2020: 5}), hs, {}) == ([2020], None)
-    # one misprint is still a disagreement: a reviewer decides
-    assert ac.settle_class('a', Counter({2020: 60, 2021: 1}), hs, {}) == (None, 'grades disagree')
+    # two meets printing two class years: a reviewer decides
+    split = [dict(unit='me-hs-x', ays={2018, 2019, 2020},
+                  grad_meets={2020: {'m1|d1', 'm2|d2'}, 2021: {'m3|d3', 'm4|d4'}})]
+    assert ac.settle_class('a', Counter({2020: 2, 2021: 2}), split, {}) == (None, 'grades disagree')
     dec = {'a': dict(decision='class', class_of=[2020])}
-    assert ac.settle_class('a', Counter({2020: 60, 2021: 1}), hs, dec) == ([2020], None)
+    assert ac.settle_class('a', Counter({2020: 2, 2021: 2}), split, dec) == ([2020], None)
     # a class year that makes a season grade 13, or grade 9 at a middle school, is an issue
     assert ac.settle_class('a', Counter({2019: 3}), hs, {}) == (None, 'grade out of range')
     ms = [dict(unit='me-ms-x', ays={2020, 2021})]
     assert ac.settle_class('a', Counter({2025: 2}), ms, {}) == ([2025], None)
     assert ac.settle_class('a', Counter({2024: 2}), ms, {}) == (None, 'grade out of range')
     # 'unsure' holds until the printed grades change
-    uns = {'a': dict(decision='unsure', votes={'2020': 1, '2021': 1})}
-    assert ac.settle_class('a', Counter({2020: 1, 2021: 1}), hs, uns) == (None, None)
-    assert ac.settle_class('a', Counter({2020: 2, 2021: 1}), hs, uns) == (None, 'grades disagree')
+    uns = {'a': dict(decision='unsure', votes={'2020': 2, '2021': 2})}
+    assert ac.settle_class('a', Counter({2020: 2, 2021: 2}), split, uns) == (None, None)
+    assert ac.settle_class('a', Counter({2020: 3, 2021: 2}), split, uns) == (None, 'grades disagree')
+
+
+def test_one_meet_out_of_place_adapts_to_the_rest():
+    from collections import Counter
+    # one sheet printed him a year off, in three events: the other meets outvote it
+    es = [dict(unit='me-hs-x', ays={2018, 2019, 2020},
+               grad_meets={2020: {'a|2019-05-01', 'b|2019-10-01'}, 2021: {'c|2020-05-02'}})]
+    assert ac.settle_class('a', Counter({2020: 2, 2021: 3}), es, {}) == ([2020], None)
+
+
+def test_four_high_school_years_name_the_class():
+    from collections import Counter
+    four = [dict(unit='me-ms-x', ays={2015}), dict(unit='me-hs-x', ays={2016, 2017, 2018, 2019})]
+    assert ac.settle_class('a', Counter(), four, {}) == ([2019], None)
+    split = [dict(unit='me-hs-x', ays={2016, 2017, 2018, 2019},
+                  grad_meets={2019: {'a|1'}, 2020: {'b|2', 'c|3'}})]
+    assert ac.settle_class('a', Counter({2019: 1, 2020: 2}), split, {}) == ([2019], None)
+    # three high-school years say nothing on their own
+    assert ac.settle_class('a', Counter(), [dict(unit='me-hs-x', ays={2017, 2018, 2019})], {}) == (None, None)
 
 
 if __name__ == '__main__':

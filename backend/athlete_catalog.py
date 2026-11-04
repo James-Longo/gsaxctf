@@ -402,6 +402,7 @@ def build_entities(rows):
             e = ents[k] = dict(key=k, unit=unit, g=gender, name=name, toks=clean_name(name),
                                num=tuple(re.findall(r'\d+', name)), n=0, ays=set(), years=set(),
                                seasons=collections.Counter(), grads=collections.Counter(),
+                               grad_meets=collections.defaultdict(set),
                                races=set(), meets=set(), fams=set(), best={},
                                race_marks=collections.defaultdict(set),
                                ay_sports=set(),
@@ -414,6 +415,7 @@ def build_entities(rows):
         # (a middle school has no grade over 8: MileSplit's 'Yr 12' in a middle-school meet is an age or a typo)
         if g is not None and not (unit.startswith('me-ms-') and g > 8):
             e['grads'][ay + 12 - g] += 1
+            e['grad_meets'][ay + 12 - g].add(f'{meet}|{date}')
         e['races'].add(f'{meet}|{year}|{season}|{event}')
         e['race_marks'][f'{meet}|{year}|{season}|{event}'].add(mark)
         e['meets'].add(f'{meet}|{year}|{season}')
@@ -774,14 +776,19 @@ def load_decisions(part='pairs'):
 
 
 def settle_class(cid, grads, es, decisions):
-    """(class years, issue) for one runner. Printed grades that all name one
-    class year settle it; grades that disagree, or a class year that puts a
-    season outside grades 5-12 (over 8 at a middle school), are an issue for
-    a reviewer (`class-import`). A reviewed runner keeps the reviewer's class
-    years (two when two runners share the profile) while the most-printed year
-    is among them; an 'unsure' holds until the printed grades change."""
+    """(class years, issue) for one runner. Printed grades that name one class
+    year settle it, and so do grades where one meet alone disagrees (a sheet
+    misprint: the rest outvote it). Four different high-school years settle it
+    too, with or without printed grades: the last is senior year. Anything else
+    -- grades that disagree, a class year that puts a season outside grades
+    3-12 (over 8 at a middle school) -- is an issue for a reviewer
+    (`class-import`). A reviewed runner keeps the reviewer's class years (two
+    when two runners share the profile) while the most-printed year is among
+    them; an 'unsure' holds until the printed grades change."""
+    hs = set().union(*[e['ays'] for e in es if e['unit'].startswith('me-hs-')])
+    four = max(hs) if len(hs) == 4 and max(hs) - min(hs) == 3 else None
     if not grads:
-        return None, None
+        return ([four], None) if four else (None, None)
     top = grads.most_common(1)[0][0]
     dec = decisions.get(cid) or {}
     votes = {str(y): n for y, n in grads.items()}
@@ -789,13 +796,25 @@ def settle_class(cid, grads, es, decisions):
         return sorted(dec['class_of']), None
     if dec.get('decision') == 'unsure' and dec.get('votes') == votes:
         return None, None
-    if len(grads) > 1:
+    year = top if len(grads) == 1 else None
+    if year is None and four in grads:
+        year = four
+    if year is None:
+        meets = collections.defaultdict(set)
+        for e in es:
+            for y, ms in e.get('grad_meets', {}).items():
+                meets[y] |= ms
+        best = max(meets, key=lambda y: len(meets[y]), default=None)
+        others = set().union(*[ms for y, ms in meets.items() if y != best])
+        if best is not None and len(meets[best]) >= 2 and len(others - meets[best]) == 1:
+            year = best
+    if year is None:
         return None, 'grades disagree'
     for e in es:
         for ay in e['ays']:
-            if not grade_fits(e['unit'], 12 - (top - ay)):
+            if not grade_fits(e['unit'], 12 - (year - ay)):
                 return None, 'grade out of range'
-    return [top], None
+    return [year], None
 
 
 def cluster(ents, pairs, decisions):
