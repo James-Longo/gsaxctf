@@ -304,6 +304,7 @@ def _one_edit(a, b):
     return any(l_[:i] + l_[i + 1:] == s for i in range(len(l_)))
 
 
+XC_COACH = re.compile(r'(?i)^\s*coach\b|\bcoach\s*$')
 XC_GRADE_SCHOOL = re.compile(r'(FR|SO|JR|SR|9|10|11|12)\s+([A-Za-z].*)$')
 
 
@@ -2955,6 +2956,8 @@ class Sub5ScraperV2:
                     full_event = f"{gender} {event_canon_name}"
                     # (a row or two of the other sex inside a race -- 'Alexa Brown  F 6 Windham' in the 6th-grade
                     # boys' sheet: a cross entry, or a bib keyed to the wrong runner; settled once the store is in)
+                    _names = [str(x.get('athlete') or x.get('athlete_name') or '') for x in results_list if isinstance(x, dict)]
+                    comma_sheet = season == 'XC' and len(_names) >= 10 and sum(',' in x for x in _names) >= 0.8 * len(_names)
                     cross_sex = season == 'XC' and len(results_list) <= 3 and any(
                         isinstance(o, dict) and o.get('gender') not in (None, '', event_block.get('gender'))
                         and len(o.get('results') or []) >= 20 for o in parsed_events)
@@ -3007,6 +3010,9 @@ class Sub5ScraperV2:
                                 continue
 
                         if not is_relay:
+                            # (a period typed for the comma in a 'Last, First' sheet: 'Pecoraro. Aidan')
+                            if comma_sheet:
+                                athlete_name = re.sub(r"^([^\W\d_][\w'-]{2,})\.\s+(?=[^\W\d_])", r'\1, ', athlete_name)
                             athlete_name = self.normalize_athlete_name(athlete_name)
                             # Reject leaked rows: individual athlete names never contain marks
                             if re.search(r'\d+[:.]\d+', athlete_name):
@@ -3020,6 +3026,10 @@ class Sub5ScraperV2:
                             # (a finisher the timer could not name: ' 45 Unknown   20:35.00' has no runner to file)
                             if re.fullmatch(r'(?i)unknown|unidentified|no name|\?+', athlete_name.strip()):
                                 SYNC_DROPS[(meet_key, 'unnamed finisher')] += 1
+                                continue
+                            # (a coach in the open race: 'Rolleston  Coach  Foxcroft  NS', 'Brian Kelly  Mt. Blue Coach' at the Mt Blue Relays)
+                            if season == 'XC' and (XC_COACH.search(athlete_name) or re.search(r'(?i)\bcoach\s*$', str(school))):
+                                SYNC_DROPS[(meet_key, 'XC coach running the open race')] += 1
                                 continue
                         if season == 'XC' and not is_relay and not relay_meet and re.match(r'[^\W\d_]{2,}\s', athlete_name.strip()):
                             who = (re.sub(r'\W', '', athlete_name.lower()), str(school).lower())

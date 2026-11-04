@@ -3314,6 +3314,12 @@ def test_meet_report_keeps_an_unplaced_dnf():
     m = _IND.search('  12   NELSON, Casey               SR   Hampden Academy          8         17:41.20')
     assert m and m.group('place') == '12' and m.group('time') == '17:41.20'
 
+def test_xc_coach_in_the_open_race_is_no_runner():
+    # Mt Blue Relays 2005: 'Rolleston Coach George Foxcroft NS' stored as 'Coach George Rolleston'
+    from backend.scraper_v2 import XC_COACH
+    assert XC_COACH.search('Coach George Rolleston') and XC_COACH.search('Rolleston Coach')
+    assert not XC_COACH.search('Coachman Smith') and not XC_COACH.search('Ella Coaches')
+
 def test_metric_xc_course_off_the_track_list_is_not_a_5k():
     # Lawrence JH '2400 Meter Run', York MS '2436 Meter Run CC' were stored as 5K
     from backend.event_canon import canonical_event
