@@ -195,6 +195,9 @@ def test_class_year_settles_only_when_grades_agree():
     ms = [dict(unit='me-ms-x', ays={2020, 2021})]
     assert ac.settle_class('a', Counter({2025: 2}), ms, {}) == ([2025], None)
     assert ac.settle_class('a', Counter({2024: 2}), ms, {}) == (None, 'grade out of range')
+    # a reviewer overruling the only printed grade holds while the grades are those reviewed
+    over = {'a': dict(decision='class', class_of=[2019], votes={'2020': 5})}
+    assert ac.settle_class('a', Counter({2020: 5}), hs, over) == ([2019], None)
     # 'unsure' holds until the printed grades change
     uns = {'a': dict(decision='unsure', votes={'2020': 2, '2021': 2})}
     assert ac.settle_class('a', Counter({2020: 2, 2021: 2}), split, uns) == (None, None)

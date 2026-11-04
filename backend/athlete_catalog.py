@@ -783,8 +783,9 @@ def settle_class(cid, grads, es, decisions):
     -- grades that disagree, a class year that puts a season outside grades
     3-12 (over 8 at a middle school) -- is an issue for a reviewer
     (`class-import`). A reviewed runner keeps the reviewer's class years (two
-    when two runners share the profile) while the most-printed year is among
-    them; an 'unsure' holds until the printed grades change."""
+    when two runners share the profile) while the printed grades are those
+    reviewed or the most-printed year is among them; an 'unsure' holds until
+    the printed grades change."""
     hs = set().union(*[e['ays'] for e in es if e['unit'].startswith('me-hs-')])
     four = max(hs) if len(hs) == 4 and max(hs) - min(hs) == 3 else None
     if not grads:
@@ -792,7 +793,7 @@ def settle_class(cid, grads, es, decisions):
     top = grads.most_common(1)[0][0]
     dec = decisions.get(cid) or {}
     votes = {str(y): n for y, n in grads.items()}
-    if dec.get('decision') == 'class' and top in dec.get('class_of', []):
+    if dec.get('decision') == 'class' and (top in dec.get('class_of', []) or dec.get('votes') == votes):
         return sorted(dec['class_of']), None
     if dec.get('decision') == 'unsure' and dec.get('votes') == votes:
         return None, None
