@@ -180,6 +180,25 @@ def test_display_name_keeps_a_surname_that_is_also_a_first_name_last():
     assert display_name({'S ALEXANDER': 5, 'Steven Alexander': 2}, share) == 'Steven Alexander'
 
 
+def test_class_year_settles_only_when_grades_agree():
+    from collections import Counter
+    hs = [dict(unit='me-hs-x', ays={2018, 2019, 2020})]
+    assert ac.settle_class('a', Counter({2020: 5}), hs, {}) == ([2020], None)
+    # one misprint is still a disagreement: a reviewer decides
+    assert ac.settle_class('a', Counter({2020: 60, 2021: 1}), hs, {}) == (None, 'grades disagree')
+    dec = {'a': dict(decision='class', class_of=[2020])}
+    assert ac.settle_class('a', Counter({2020: 60, 2021: 1}), hs, dec) == ([2020], None)
+    # a class year that makes a season grade 13, or grade 9 at a middle school, is an issue
+    assert ac.settle_class('a', Counter({2019: 3}), hs, {}) == (None, 'grade out of range')
+    ms = [dict(unit='me-ms-x', ays={2020, 2021})]
+    assert ac.settle_class('a', Counter({2025: 2}), ms, {}) == ([2025], None)
+    assert ac.settle_class('a', Counter({2024: 2}), ms, {}) == (None, 'grade out of range')
+    # 'unsure' holds until the printed grades change
+    uns = {'a': dict(decision='unsure', votes={'2020': 1, '2021': 1})}
+    assert ac.settle_class('a', Counter({2020: 1, 2021: 1}), hs, uns) == (None, None)
+    assert ac.settle_class('a', Counter({2020: 2, 2021: 1}), hs, uns) == (None, 'grades disagree')
+
+
 if __name__ == '__main__':
     for name, fn in sorted(globals().items()):
         if name.startswith('test_'):

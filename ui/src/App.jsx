@@ -73,6 +73,13 @@ const readHash = (windows) => {
   return { sport, tab: sportTabs(sport).includes(tab) ? tab : 'history', explicit: !!SPORTS[sp] }
 }
 
+// A row's grade: as printed, else estimated from the runner's other years (lighter).
+function Grade({ p }) {
+  if (p.grade) return <span className="xs-gr"> {gradeLabel(p.grade)}</span>
+  if (p.grade_est) return <span className="xs-gr est" title="Estimated from other years"> {gradeLabel(p.grade_est)}</span>
+  return null
+}
+
 function App() {
   const [dataLoaded, setDataLoaded] = useState(false)
   const [manifest, setManifest] = useState([])
@@ -616,8 +623,8 @@ function App() {
                         return (
                           <React.Fragment key={p.id}>
                             <tr className={showPR ? 'pr-row' : ''}>
-                              <td>{p.date.split('T')[0]}{selectedAthlete.id !== 'all' && p.grade ? <span className="xs-gr"> {gradeLabel(p.grade)}</span> : null}</td>
-                              {selectedAthlete.id === 'all' && <td>{p.athlete_name}{p.grade ? <span className="xs-gr"> {gradeLabel(p.grade)}</span> : null}</td>}
+                              <td>{p.date.split('T')[0]}{selectedAthlete.id !== 'all' ? <Grade p={p} /> : null}</td>
+                              {selectedAthlete.id === 'all' && <td>{p.athlete_name}<Grade p={p} /></td>}
                               {!isXC && <td>{normalizeEvent(p.event)}</td>}
                               <td>
                                 {p.mark}

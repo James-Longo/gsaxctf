@@ -137,6 +137,14 @@ settle every spelling pair by rule (same team, never in one race, nothing in
 the results against it; see the module docstring). Nothing is reviewed by a
 person. Report the stats line.
 
+**Grades**: a result with no printed grade gets `grade_est` from the
+runner's class year. Runners whose printed grades disagree, or whose class
+year puts a season outside a school career, are cases in
+`backend/data/grade_review_queue.json`. Cases among this season's runners
+go to one Sonnet agent following `docs/agents/grade-review.md`; import its
+decisions with `class-import`, then `build` and `apply` again. Report the
+`class_issues` count.
+
 ## 4. Postseason predictions
 
 `python3 -m backend.routine sims` publishes the XC postseason predictions while

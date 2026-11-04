@@ -58,6 +58,7 @@ BASE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 DATA = os.path.join(BASE, 'backend', 'data')
 CATALOG_PATH = os.path.join(DATA, 'athlete_catalog.json.gz')
 DECISIONS_PATH = os.path.join(DATA, 'athlete_decisions.json')
+GRADE_QUEUE_PATH = os.path.join(DATA, 'grade_review_queue.json')
 BUILDER_VERSION = 1
 
 GRADE_WORDS = {'FR': 9, 'FY': 9, 'SO': 10, 'JR': 11, 'SR': 12}
@@ -176,6 +177,12 @@ def grade_num(g):
         n = int(m.group(1))
         return n if 5 <= n <= 12 else None
     return None
+
+
+def grade_fits(unit, g):
+    """A grade a runner on this school unit can be in (elementary schools send 3rd and 4th
+    graders to middle-school races; a middle school has no grade over 8)."""
+    return 3 <= g <= 12 and not (unit.startswith('me-ms-') and g > 8)
 
 
 def academic_year(year, season):
@@ -758,12 +765,37 @@ def pair_key(a, b):
     return '||'.join(sorted((a, b)))
 
 
-def load_decisions():
+def load_decisions(part='pairs'):
     try:
         with open(DECISIONS_PATH, encoding='utf-8') as f:
-            return json.load(f).get('pairs', {})
+            return json.load(f).get(part, {})
     except (OSError, ValueError):
         return {}
+
+
+def settle_class(cid, grads, es, decisions):
+    """(class years, issue) for one runner. Printed grades that all name one
+    class year settle it; grades that disagree, or a class year that puts a
+    season outside grades 5-12 (over 8 at a middle school), are an issue for
+    a reviewer (`class-import`). A reviewed runner keeps the reviewer's class
+    years (two when two runners share the profile) while the most-printed year
+    is among them; an 'unsure' holds until the printed grades change."""
+    if not grads:
+        return None, None
+    top = grads.most_common(1)[0][0]
+    dec = decisions.get(cid) or {}
+    votes = {str(y): n for y, n in grads.items()}
+    if dec.get('decision') == 'class' and top in dec.get('class_of', []):
+        return sorted(dec['class_of']), None
+    if dec.get('decision') == 'unsure' and dec.get('votes') == votes:
+        return None, None
+    if len(grads) > 1:
+        return None, 'grades disagree'
+    for e in es:
+        for ay in e['ays']:
+            if not grade_fits(e['unit'], 12 - (top - ay)):
+                return None, 'grade out of range'
+    return [top], None
 
 
 def cluster(ents, pairs, decisions):
@@ -998,6 +1030,7 @@ def build(rows=None, quiet=False):
     labels = collections.Counter(p['label'] for p in pairs)
     say(f'{len(pairs):,} candidate pairs: {dict(labels)}')
     decisions = load_decisions()
+    class_decisions = load_decisions('class_of')
     groups, refused = cluster(ents, pairs, decisions)
     groups, n_linked = link_across_schools(groups, ents)
     say(f'{n_linked:,} runners joined across schools (middle school to high school, transfers)')
@@ -1037,6 +1070,12 @@ def build(rows=None, quiet=False):
                  primary_team=teams.most_common(1)[0][0], teams=sorted(teams),
                  sports=sorted(seasons), rows=sum(e['n'] for e in es),
                  years=[min(min(e['years']) for e in es), max(max(e['years']) for e in es)])
+        class_years, issue = settle_class(cid, grads, es, class_decisions)
+        if class_years:
+            a['class_years'] = class_years
+        if issue:
+            a['class_issue'] = issue
+            a['class_votes'] = {str(y): n for y, n in grads.items()}
         if len(store_ids) > 1:
             a['members'] = sorted(store_ids)
         if len(names) > 1:
@@ -1064,7 +1103,9 @@ def build(rows=None, quiet=False):
         merged_athletes=sum(1 for a in athletes if 'entities' in a),
         entities_merged=sum(len(a.get('entities', [])) for a in athletes),
         relay_teams=len(relay_out), pairs=dict(labels), decisions=len(decisions), refused=len(refused),
-        gender_conflicts=len(gender_conflicts))
+        gender_conflicts=len(gender_conflicts),
+        class_settled=sum(1 for a in athletes if a.get('class_years')),
+        class_issues=dict(collections.Counter(a['class_issue'] for a in athletes if a.get('class_issue'))))
     say(json.dumps(stats))
     catalog = dict(stats=stats, athletes=athletes, relays=relay_out, member_of=member_of,
                    refused=[dict(a=a, b=b, why=w, reason=r) for a, b, w, r in refused],
@@ -1141,22 +1182,44 @@ def apply(catalog=None, quiet=False):
     say = (lambda *a: None) if quiet else (lambda *a: print(*a, file=sys.stderr))
     catalog = catalog or load_catalog()
     member_of = catalog.get('member_of', {})
+    # a row with no printed grade gets grade_est from the runner's settled class year
+    # (one id shared by two runners the catalog could not join gets none)
+    ids = collections.Counter(a['id'] for a in catalog.get('athletes', []))
+    class_years = {a['id']: a['class_years'] for a in catalog.get('athletes', [])
+                   if a.get('class_years') and ids[a['id']] == 1}
+    issues = {a['id']: a for a in catalog.get('athletes', []) if a.get('class_issue')}
+    evidence = collections.defaultdict(list)
+    n_est = 0
     # pass 1: every row's (catalog id, event, season) key and value, in date order
     refs = collections.defaultdict(list)     # key -> [(date, value, mark, event, chunk, i)]
     chunks = {}
+    est = {}
     for folder in sorted(os.listdir(js.TEAMS_DIR)):
         d = os.path.join(js.TEAMS_DIR, folder)
         if not os.path.isdir(d):
             continue
         team = js.canonical_team_name(folder)
+        unit = _unit_for(folder, team)
         for key, fn in js._chunk_files(d):
             path = os.path.join(d, fn)
             rows = js._load_json(path, [])
             chunks[path] = (team, key, rows)
             year, _, season = key.partition('_')
+            ay = academic_year(year, season) if year.isdigit() else None
             for i, p in enumerate(rows):
                 aid = p.get('athlete_id') or js.slugify_athlete(p.get('athlete_name', ''), team)
                 cid = member_of.get(aid, aid)
+                if cid in class_years and ay and not str(p.get('grade') or '').strip():
+                    fit = {12 - (y - ay) for y in class_years[cid]}
+                    fit = [g for g in fit if grade_fits(unit, g)]
+                    if len(fit) == 1:
+                        est[(path, i)] = str(fit[0])
+                        n_est += 1
+                if cid in issues:
+                    evidence[cid].append(dict(date=(p.get('date') or '')[:10], season=season, team=team,
+                                              name=p.get('athlete_name', ''), event=p.get('event', ''),
+                                              mark=p.get('mark', ''), grade=p.get('grade', ''),
+                                              meet=p.get('meet_name', '')))
                 ev = p.get('event', '')
                 val, _ = js.parse_mark_value(p.get('mark', ''), ev)
                 refs[(cid, ev, season)].append(((p.get('date') or ''), val, p.get('mark', ''),
@@ -1188,15 +1251,75 @@ def apply(catalog=None, quiet=False):
             if f and any(bool(p.get(x)) != f[x] for x in f):
                 p.update(f)
                 dirty = True
+            g = est.get((path, i))
+            if p.get('grade_est') != g:
+                if g:
+                    p['grade_est'] = g
+                else:
+                    p.pop('grade_est', None)
+                dirty = True
         if dirty:
             js._atomic_write(path, rows)
             changed += 1
-    say(f'PR flags: {changed} chunk files rewritten')
+    say(f'PR flags and estimated grades: {changed} chunk files rewritten; {n_est:,} rows have grade_est')
+    _write_grade_queue(issues, evidence)
     _write_registry(catalog)
     # Owen's Predictor reads the store with these merges
     from backend import predictor_data
     predictor_data.build(quiet=quiet)
     return changed
+
+
+def _write_grade_queue(issues, evidence):
+    """grade_review_queue.json: every runner whose printed grades disagree or
+    run outside a school career, with each graded row and a count of the
+    ungraded ones per season, for a reviewer (docs/agents/grade-review.md)."""
+    cases = []
+    for cid, a in issues.items():
+        rows = sorted(evidence.get(cid, []), key=lambda r: r['date'])
+        graded = [r for r in rows if str(r['grade']).strip()]
+        ungraded = collections.Counter(f"{r['date'][:4]} {r['season']} {r['team']}"
+                                       for r in rows if not str(r['grade']).strip())
+        cases.append(dict(id=cid, name=a['name'], gender=a['gender'], issue=a['class_issue'],
+                          votes=a.get('class_votes', {}), teams=a.get('teams', []),
+                          graded=graded, ungraded=dict(sorted(ungraded.items()))))
+    cases.sort(key=lambda c: (c['issue'], -len(c['graded']), c['id']))
+    with open(GRADE_QUEUE_PATH, 'w', encoding='utf-8') as f:
+        json.dump(dict(built=date.today().isoformat(), cases=cases), f, indent=1)
+
+
+def class_import(paths, reviewer):
+    """Record class-year decisions: each file holds {"decisions": [{"id": catalog id,
+    "decision": "class|unsure", "class_of": [year, ...], "reason": "..."}]}."""
+    with open(DECISIONS_PATH, encoding='utf-8') as f:
+        store = json.load(f)
+    queue = {c['id']: c for c in _read_json(GRADE_QUEUE_PATH, {}).get('cases', [])}
+    book = store.setdefault('class_of', {})
+    n = collections.Counter()
+    for path in paths:
+        for d in _read_json(path, {}).get('decisions', []):
+            dec, cid = d.get('decision'), d.get('id')
+            years = sorted({int(y) for y in d.get('class_of') or []})
+            if cid not in queue or dec not in ('class', 'unsure') or (dec == 'class' and not years):
+                n['invalid'] += 1
+                continue
+            book[cid] = dict(decision=dec, reason=d.get('reason', ''), by=reviewer,
+                             date=date.today().isoformat(), votes=queue[cid]['votes'])
+            if dec == 'class':
+                book[cid]['class_of'] = years
+            n[dec] += 1
+    with open(DECISIONS_PATH, 'w', encoding='utf-8') as f:
+        json.dump(store, f, indent=1, sort_keys=True)
+    print(dict(n))
+    return n
+
+
+def _read_json(path, default):
+    try:
+        with open(path, encoding='utf-8') as f:
+            return json.load(f)
+    except (OSError, ValueError):
+        return default
 
 
 def _write_registry(catalog):
@@ -1250,6 +1373,9 @@ def main():
     im = sub.add_parser('review-import')
     im.add_argument('paths', nargs='+')
     im.add_argument('--by', required=True, help='who decided, e.g. "sonnet-5.5 review" or "James Longo"')
+    ci = sub.add_parser('class-import')
+    ci.add_argument('paths', nargs='+')
+    ci.add_argument('--by', required=True)
     a = ap.parse_args()
     if a.cmd == 'build':
         build()
@@ -1259,6 +1385,8 @@ def main():
         apply()
     elif a.cmd == 'review-import':
         review_import(a.paths, a.by)
+    elif a.cmd == 'class-import':
+        class_import(a.paths, a.by)
 
 
 if __name__ == '__main__':
