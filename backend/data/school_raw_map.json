@@ -1,7 +1,7 @@
 {
 "_meta": {
 "methods_by_rows": {
-"exact/alias": 1748263,
+"exact/alias": 1748188,
 "code": 257778,
 "truncation": 119650,
 "athlete-continuity": 52448,
@@ -922,11 +922,11 @@
 "how": "exact/alias"
 },
 "Lake Region": {
-"rows": 10184,
+"rows": 10183,
 "seasons": {
 "Indoor": 3635,
 "Outdoor": 4907,
-"XC": 1642
+"XC": 1641
 },
 "years": [
 2003,
@@ -936,7 +936,7 @@
 "method": "exact",
 "by_id": {
 "me-hs-lake-region": 9638,
-"me-ms-lake-region": 546
+"me-ms-lake-region": 545
 },
 "context_dependent": true,
 "by_level": {
@@ -2287,11 +2287,11 @@
 "how": "truncation"
 },
 "Cape Elizabeth": {
-"rows": 4898,
+"rows": 4897,
 "seasons": {
 "Indoor": 248,
 "Outdoor": 1599,
-"XC": 3051
+"XC": 3050
 },
 "years": [
 2003,
@@ -2301,7 +2301,7 @@
 "method": "exact",
 "by_id": {
 "me-hs-cape-elizabeth": 4203,
-"me-ms-cape-elizabeth": 695
+"me-ms-cape-elizabeth": 694
 },
 "context_dependent": true,
 "by_level": {
@@ -2636,10 +2636,10 @@
 "how": "exact/alias"
 },
 "Fryeburg Academy": {
-"rows": 4273,
+"rows": 4272,
 "seasons": {
 "Outdoor": 1410,
-"XC": 2555,
+"XC": 2554,
 "Indoor": 308
 },
 "years": [
@@ -8209,20 +8209,6 @@
 "method": "exact",
 "how": "exact/alias"
 },
-"Noble MS": {
-"rows": 935,
-"seasons": {
-"Outdoor": 486,
-"XC": 449
-},
-"years": [
-2023,
-2026
-],
-"id": "me-ms-noble",
-"method": "exact",
-"how": "exact/alias"
-},
 "S": {
 "rows": 934,
 "seasons": {
@@ -8323,6 +8309,20 @@
 2026
 ],
 "id": "col-usm",
+"method": "exact",
+"how": "exact/alias"
+},
+"Noble MS": {
+"rows": 919,
+"seasons": {
+"Outdoor": 486,
+"XC": 433
+},
+"years": [
+2023,
+2026
+],
+"id": "me-ms-noble",
 "method": "exact",
 "how": "exact/alias"
 },
@@ -8975,10 +8975,10 @@
 "how": "exact/alias"
 },
 "Windham MS": {
-"rows": 825,
+"rows": 824,
 "seasons": {
 "Outdoor": 547,
-"XC": 278
+"XC": 277
 },
 "years": [
 2023,
@@ -11179,28 +11179,6 @@
 "method": "exact",
 "how": "exact/alias"
 },
-"Merriconeag": {
-"rows": 538,
-"seasons": {
-"XC": 538
-},
-"years": [
-2007,
-2014
-],
-"id": "me-hs-maine-coast-waldorf",
-"method": "exact",
-"by_id": {
-"me-hs-maine-coast-waldorf": 469,
-"me-ms-maine-coast-waldorf": 69
-},
-"context_dependent": true,
-"by_level": {
-"hs": "me-hs-maine-coast-waldorf",
-"ms": "me-ms-maine-coast-waldorf"
-},
-"how": "exact/alias"
-},
 "Hall-Dale Mi": {
 "rows": 538,
 "seasons": {
@@ -11213,6 +11191,28 @@
 "id": "me-ms-hall-dale",
 "method": "truncation+athletes",
 "how": "truncation"
+},
+"Merriconeag": {
+"rows": 537,
+"seasons": {
+"XC": 537
+},
+"years": [
+2007,
+2014
+],
+"id": "me-hs-maine-coast-waldorf",
+"method": "exact",
+"by_id": {
+"me-hs-maine-coast-waldorf": 469,
+"me-ms-maine-coast-waldorf": 68
+},
+"context_dependent": true,
+"by_level": {
+"hs": "me-hs-maine-coast-waldorf",
+"ms": "me-ms-maine-coast-waldorf"
+},
+"how": "exact/alias"
 },
 "WAG": {
 "rows": 537,
@@ -14577,19 +14577,6 @@
 "method": "exact",
 "how": "exact/alias"
 },
-"King MS": {
-"rows": 321,
-"seasons": {
-"XC": 321
-},
-"years": [
-2022,
-2026
-],
-"id": "me-ms-king",
-"method": "exact",
-"how": "exact/alias"
-},
 "Lrhs": {
 "rows": 320,
 "seasons": {
@@ -14617,6 +14604,19 @@
 "id": "me-ms-carrabec",
 "method": "truncation+athletes",
 "how": "truncation"
+},
+"King MS": {
+"rows": 320,
+"seasons": {
+"XC": 320
+},
+"years": [
+2022,
+2026
+],
+"id": "me-ms-king",
+"method": "exact",
+"how": "exact/alias"
 },
 "BIDH": {
 "rows": 320,
@@ -14678,20 +14678,6 @@
 "Indoor": "coop-boothbay-wiscasset"
 },
 "how": "code"
-},
-"Wells Middle School": {
-"rows": 318,
-"seasons": {
-"XC": 309,
-"Outdoor": 9
-},
-"years": [
-2006,
-2026
-],
-"id": "me-ms-wells",
-"method": "exact",
-"how": "exact/alias"
 },
 "MASS": {
 "rows": 318,
@@ -14884,20 +14870,6 @@
 "method": "code",
 "how": "code"
 },
-"Biddeford Middle School": {
-"rows": 308,
-"seasons": {
-"XC": 292,
-"Outdoor": 16
-},
-"years": [
-2006,
-2026
-],
-"id": "me-ms-biddeford",
-"method": "exact",
-"how": "exact/alias"
-},
 "Stags": {
 "rows": 307,
 "seasons": {
@@ -15018,6 +14990,20 @@
 },
 "how": "exact/alias"
 },
+"Wells Middle School": {
+"rows": 303,
+"seasons": {
+"XC": 294,
+"Outdoor": 9
+},
+"years": [
+2006,
+2026
+],
+"id": "me-ms-wells",
+"method": "exact",
+"how": "exact/alias"
+},
 "SEDO": {
 "rows": 303,
 "seasons": {
@@ -15055,6 +15041,20 @@
 2025
 ],
 "id": "me-ms-saco",
+"method": "exact",
+"how": "exact/alias"
+},
+"Biddeford Middle School": {
+"rows": 302,
+"seasons": {
+"XC": 286,
+"Outdoor": 16
+},
+"years": [
+2006,
+2026
+],
+"id": "me-ms-biddeford",
 "method": "exact",
 "how": "exact/alias"
 },
@@ -18586,19 +18586,6 @@
 "method": "exact",
 "how": "exact/alias"
 },
-"Massabesic Middle School": {
-"rows": 204,
-"seasons": {
-"XC": 204
-},
-"years": [
-2006,
-2026
-],
-"id": "me-ms-massabesic",
-"method": "exact",
-"how": "exact/alias"
-},
 "Mt Valley": {
 "rows": 204,
 "seasons": {
@@ -19240,6 +19227,19 @@
 2023
 ],
 "id": "me-hs-mt-ararat",
+"method": "exact",
+"how": "exact/alias"
+},
+"Massabesic Middle School": {
+"rows": 188,
+"seasons": {
+"XC": 188
+},
+"years": [
+2006,
+2026
+],
+"id": "me-ms-massabesic",
 "method": "exact",
 "how": "exact/alias"
 },
@@ -20934,20 +20934,6 @@
 "method": "athlete-continuity",
 "how": "athlete-continuity"
 },
-"Thornton Middle School": {
-"rows": 153,
-"seasons": {
-"Outdoor": 1,
-"XC": 152
-},
-"years": [
-2023,
-2026
-],
-"id": "me-ms-thornton",
-"method": "exact",
-"how": "exact/alias"
-},
 "DEX": {
 "rows": 152,
 "seasons": {
@@ -21828,6 +21814,20 @@
 "XC": "me-hs-lisbon"
 },
 "how": "code"
+},
+"Thornton Middle School": {
+"rows": 137,
+"seasons": {
+"Outdoor": 1,
+"XC": 136
+},
+"years": [
+2023,
+2026
+],
+"id": "me-ms-thornton",
+"method": "exact",
+"how": "exact/alias"
 },
 "Gray-NG": {
 "rows": 136,
