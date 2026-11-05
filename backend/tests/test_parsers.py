@@ -3389,6 +3389,15 @@ def test_looselist_last_first_run_into_its_code():
         assert r and (r['athlete'], r['result']) == want, (row, r)
 
 
+def test_milesplit_cut_off_first_name_is_the_same_runner():
+    from backend.milesplit import same_runner
+    assert same_runner('damion gerdingshaw', 'dam gerdingshaw')
+    assert same_runner('b rancattibragg', 'brady rancattibragg')
+    assert not same_runner('haddon doyle', 'nathan wilcox')
+    assert not same_runner('emma smith', 'emily smith')
+    assert not same_runner('jo li', 'joe li')   # no whole shared word of 3+ letters
+
+
 if __name__ == '__main__':
     qaqc._ensure_team_mapping()
     failed = 0

@@ -36,6 +36,18 @@ Reads Hy-Tek fixed-width, tab-delimited, RaceTab and "Last, First" layouts; a
 new layout prints NO EVENTS or ROW? on stderr.
 """
 import sys, re, json, html, time, subprocess, os
+from collections import defaultdict
+
+
+def same_runner(a, b):
+    """Two lowercased, sorted-word names are one runner when each word is a word or the
+    cut-off start of a word of the other and they share a whole word of 3+ letters (the
+    Hy-Tek file of a meet prints "Gerding-Shaw, Dam" where MileSplit's sheet has Damion)."""
+    if a == b: return True
+    wa, wb = a.split(), b.split()
+    return bool(wa and wb and any(w in wb and len(w) >= 3 for w in wa)
+                and all(any(v.startswith(w) or w.startswith(v) for v in wb) for w in wa)
+                and all(any(v.startswith(w) or w.startswith(v) for v in wa) for w in wb))
 BASE = os.path.dirname(os.path.abspath(__file__))
 SP = os.path.join(BASE, 'data', 'milesplit_cache') + '/'
 os.makedirs(SP, exist_ok=True)
@@ -1152,6 +1164,10 @@ def main():
         XC_HINT=('Girls' if re.search(r'(?i)girl|women',f['name']) else 'Boys' if re.search(r'(?i)\bboy|\bmen\b',f['name']) else None)
         e,r=(parse_xc_any(t) if sys.argv[4]=='XC' else parse_tab5(t) if '\tEvent\t' in t else parse_tab(t) if t.count('\t')>5 else (parse_race(t) if 'RaceTab' in t[:200] and parse_race(t)[0] else parse(t)));   # RaceTab track sheets (2014 SMMSAC) read by parse() when parse_race finds no race
         if sys.argv[4]=='XC': xc_team_places(e,r)
+        for ev in e:   # Hy-Tek relay legs with bibs ("Alana #70 Heggeman, Adalyn #71 Irish")
+            for x in ev['results']:
+                if x.get('athlete') and '#' in x['athlete']: x['athlete'] = re.sub(r'\s*#\s*\d+\b', '', x['athlete']).strip()
+                if x.get('athletes'): x['athletes'] = [re.sub(r'\s*#\s*\d+\b', '', a).strip() for a in x['athletes']]
         # one meet posted twice, as MileSplit's own sheet and as the Hy-Tek file (WMC week 5 2026):
         # a row an earlier file already holds (same event, runner, mark) is not a second result
         def _mv(m):   # a mark by value: "16-05.75" is "16-5.75", "1:02.40" is "1:02.4"
@@ -1160,8 +1176,11 @@ def main():
             tm = re.fullmatch(r'(?:(\d+):)?(\d+(?:\.\d+)?)', m or '')
             return round(int(tm.group(1) or 0) * 60 + float(tm.group(2)), 2) if tm else m
         def _rk(ev, x): return (re.sub(r'\W', '', ev['event'].lower()), ' '.join(sorted(re.sub(r'[^a-z ]', '', (x.get('athlete') or x.get('school') or '').lower().replace(',', ' ')).split())), _mv(x.get('result')))
-        held = {_rk(ev, x) for ev in events for x in ev['results']}
-        for ev in e: ev['results'] = [x for x in ev['results'] if _rk(ev, x) not in held]
+        held = defaultdict(list)
+        for ev in events:
+            for x in ev['results']:
+                k = _rk(ev, x); held[(k[0], k[2])].append(k[1])
+        for ev in e: ev['results'] = [x for x in ev['results'] if not any(same_runner(_rk(ev, x)[1], n) for n in held[(_rk(ev, x)[0], _rk(ev, x)[2])])]
         e = [ev for ev in e if ev['results']]
         events+=e; rank+=r; urls.append(u)
         cm=re.search(r'Class ([ABC])\b',f['name'])
