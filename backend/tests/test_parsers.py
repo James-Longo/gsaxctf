@@ -3376,6 +3376,19 @@ def test_milesplit_own_track_sheet():
     assert len(ev[0]['results']) == 1 and [t['score'] for t in rk[0]['teams']] == [46, 39], (ev, rk)
 
 
+
+def test_looselist_last_first_run_into_its_code():
+    # SMAA weekly 2026: "von Spiegelfeld, Leopold" was stored under team "Leopold_MARH";
+    # "Myers-Thivierge, EmersonNOHS" rows were dropped
+    from backend.parsers.looselist import LooseListParser
+    p = LooseListParser()
+    for row, want in [('9 #30 von Spiegelfeld, Leopold MARH    1:52.75', ('von Spiegelfeld, Leopold', '1:52.75')),
+                      ('2 #114 Canete Aragones, CandelaWEHS    2:53.68', ('Canete Aragones, Candela', '2:53.68')),
+                      ('4 #108 Myers-Thivierge, EmersonNOHS 12-06.75', ('Myers-Thivierge, Emerson', '12-06.75'))]:
+        r = p._parse_row(row, False)
+        assert r and (r['athlete'], r['result']) == want, (row, r)
+
+
 if __name__ == '__main__':
     qaqc._ensure_team_mapping()
     failed = 0

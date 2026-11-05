@@ -361,6 +361,13 @@ class LooseListParser(BaseParser):
             if school and not school.replace('.', '').isdigit():
                 return {'school': school, 'result': clean_mark(parts[1]),
                         'athletes': [], 'grade': '', 'type': 'Finals'}
+        # "von Spiegelfeld, Leopold MARH  1:52.75", "Canete Aragones, CandelaWEHS  2:53.68"
+        # (SMAA 2026): a long "Last, First" runs into its school code
+        if not is_relay and len(parts) <= 2:
+            fc = re.fullmatch(r"(.+?,\s*[A-Z][a-z'\-]+?)\s*([A-Z]{2,5})\s+(\S+)(?:\s+\d{1,2})?", rest.strip())
+            if fc and is_mark(fc.group(3)):
+                return {'athlete': fc.group(1), 'school': self._resolve_school(fc.group(2)),
+                        'result': clean_mark(fc.group(3)), 'grade': '', 'type': 'Finals'}
         # "LASSARD    TH 11:36.0": the code typed one space from the mark
         if not is_relay and len(parts) == 2 and re.fullmatch(r'[A-Z]{1,3} \S+', parts[1]) \
                 and is_mark(parts[1].split()[1]) and re.search(r'[A-Za-z]{2}', parts[0]):
