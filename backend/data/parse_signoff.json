@@ -58085,6 +58085,13 @@
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
  },
+ "backend/data/parsed_results/2026/Indoor/B-Boys.json": {
+  "parse_sha": "afa8283160564a84",
+  "source_sha": "26a8123146fb1a5d",
+  "date": "2026-11-05",
+  "by": "sonnet track review 2026-11-05",
+  "evidence": "sonnet row-by-row audit: every event, name, mark, grade, school folder and relay leg vs source; clean"
+ },
  "backend/data/parsed_results/2026/Indoor/Class-B-girls-results.json": {
   "parse_sha": "d7f8452940a461b9",
   "source_sha": "8c9023f096c081d5",
@@ -58113,12 +58120,26 @@
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
  },
+ "backend/data/parsed_results/2026/Indoor/KVAC-2B.json": {
+  "parse_sha": "ca1477b8b8960c6d",
+  "source_sha": "da116598fc14dac3",
+  "date": "2026-11-05",
+  "by": "sonnet track review 2026-11-05",
+  "evidence": "sonnet row-by-row audit: every event, name, mark, grade, school folder and relay leg vs source; clean; sheet prints no date, stored 2025-12-20 unconfirmed"
+ },
  "backend/data/parsed_results/2026/Indoor/KVAC-2C.json": {
   "parse_sha": "3eb1e9bc6ef69f53",
   "source_sha": "cb30a043cfb1c9c0",
   "date": "2026-10-16",
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
+ },
+ "backend/data/parsed_results/2026/Indoor/KVACMeet1AResults-1.json": {
+  "parse_sha": "5bf6875ea3af6a78",
+  "source_sha": "469cfff7f97c81b0",
+  "date": "2026-11-05",
+  "by": "sonnet track review 2026-11-05",
+  "evidence": "sonnet row-by-row audit vs source: every stored row matches the sheet; long Last,First names printed without the first name stay surname-only (source truncation); SMAA3: one of two identical Massabesic 4x200 DQ rows collapsed"
  },
  "backend/data/parsed_results/2026/Indoor/Marathon-Elite-girls-results.json": {
   "parse_sha": "878552d64d73d1f6",
@@ -58127,6 +58148,20 @@
   "by": "2026-10-26 sonnet audit (routine) (audit: confirmed)",
   "evidence": "Machine-compared every parse row with the source text (name, mark, place, grade, event heading/order, relay members, per-event row counts): 190 rows, 15 events (prelims and finals), all match; relay 'Scarborough 1:51.15R' members match; 'Unattached'->x-unattached; 'Maine Centra'->me-hs-mci; no Cony rows in this file."
  },
+ "backend/data/parsed_results/2026/Indoor/Results-1.json": {
+  "parse_sha": "c579e100b128a83f",
+  "source_sha": "67843421fa076098",
+  "date": "2026-11-05",
+  "by": "sonnet track review 2026-11-05",
+  "evidence": "sonnet row-by-row audit vs source: every stored row matches the sheet; long Last,First names printed without the first name stay surname-only (source truncation); SMAA3: one of two identical Massabesic 4x200 DQ rows collapsed"
+ },
+ "backend/data/parsed_results/2026/Indoor/Results-KVAC-6B-Meet.json": {
+  "parse_sha": "303698d2935af6ec",
+  "source_sha": "86ccd82b5372dcdc",
+  "date": "2026-11-05",
+  "by": "sonnet track review 2026-11-05",
+  "evidence": "sonnet row-by-row audit: every event, name, mark, grade, school folder and relay leg vs source; clean"
+ },
  "backend/data/parsed_results/2026/Indoor/Results-KVAC-6D-Meet.json": {
   "parse_sha": "9bce70871fd701b7",
   "source_sha": "6604b199a6daf1c9",
@@ -58134,12 +58169,26 @@
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
  },
+ "backend/data/parsed_results/2026/Indoor/Results-meet-2.json": {
+  "parse_sha": "73837bf1b82c873a",
+  "source_sha": "8cbbc4f3f9fc4632",
+  "date": "2026-11-05",
+  "by": "sonnet track review 2026-11-05",
+  "evidence": "sonnet row-by-row audit vs source: every stored row matches the sheet; long Last,First names printed without the first name stay surname-only (source truncation); SMAA3: one of two identical Massabesic 4x200 DQ rows collapsed"
+ },
  "backend/data/parsed_results/2026/Indoor/Results-meet-3.json": {
   "parse_sha": "a6670c584dc27998",
   "source_sha": "ab6557db22121db8",
   "date": "2026-10-20",
   "by": "sonnet audit pilot 2026-10-20 (audit: confirmed)",
   "evidence": "All 53 events (Junior/Senior/Open divisions, individual, field, relays) compared row by row with source: place, name, school, mark identical (relay 'XDQ' parsed as DQ, NH/FOUL rows place None). Schools Noble High S, Biddeford Hi, Windham High, Cheverus/Way -> coop-cheverus-waynflete correct. Printed team tables match parse: Women Jr Cheverus/Waynflete 60, Noble 46, Biddeford 25, Windham 4; Sr 61.5/41.5/32/8; Open 49/24/9/2; Men Jr 43/39/37/32; Sr Windham 40, Noble 35, Cheverus 32, Biddeford 30; Open 43/21/14/13. 'team scores do not add up' warning is the sheet's own scoring, rows all match. Note: event dicts carry no division (Junior vs Senior 'Girls 55 Meter Dash' are separate events with identical names); only team_rankings keep 'division'. 'Boys 55 Yard Hurdles qualifier Open Division' stored as 'Boys 55 Yard Hurdles'."
+ },
+ "backend/data/parsed_results/2026/Indoor/Results-meet-4.json": {
+  "parse_sha": "239afe72acbb97d0",
+  "source_sha": "8c97a941f81f6d0c",
+  "date": "2026-11-05",
+  "by": "sonnet track review 2026-11-05",
+  "evidence": "sonnet row-by-row audit vs source: every stored row matches the sheet; long Last,First names printed without the first name stay surname-only (source truncation); SMAA3: one of two identical Massabesic 4x200 DQ rows collapsed"
  },
  "backend/data/parsed_results/2026/Indoor/Results.json": {
   "parse_sha": "24e86c59d8d0d7d7",
@@ -58154,6 +58203,13 @@
   "date": "2026-10-16",
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
+ },
+ "backend/data/parsed_results/2026/Indoor/ResultsKVAC-5C-Meet.json": {
+  "parse_sha": "cd6a50035a5fd531",
+  "source_sha": "d3be8c3a128d2b6d",
+  "date": "2026-11-05",
+  "by": "sonnet track review 2026-11-05",
+  "evidence": "sonnet row-by-row audit: every event, name, mark, grade, school folder and relay leg vs source; clean"
  },
  "backend/data/parsed_results/2026/Indoor/ResultsKVACIndoorMeet3C.json": {
   "parse_sha": "c3d591507707b77f",
@@ -58176,6 +58232,13 @@
   "by": "sonnet audit pilot 2026-10-20 (audit: confirmed)",
   "evidence": "All 53 events compared row by row: place, name, school, mark identical, incl. exhibition relays printed with X prefix (e.g. 'X2:10.43' South Portland, parsed 2:10.43 with place None). Schools Bonny Eagle, Falmouth Hig, Massabesic H, South Portla all right. Team tables match (Women Jr South Portland 93, Massabesic 23, Falmouth 20, Bonny Eagle 7; Men Jr 80/40.5/15/11.5; Men Sr 96/31/12/4; Men Open 41/21/17/14; Women Sr 76/26/22/10; Open 27/26/22/12). 'team scores do not add up' = sheet's scoring, not a parse issue. Same note as Results-meet-3: events carry no Junior/Senior/Open division label."
  },
+ "backend/data/parsed_results/2026/Indoor/ResultsSMAA-1.json": {
+  "parse_sha": "42b958a6037da22b",
+  "source_sha": "e78fa2f0df84c48d",
+  "date": "2026-11-05",
+  "by": "sonnet track review 2026-11-05",
+  "evidence": "sonnet row-by-row audit vs source: every stored row matches the sheet; long Last,First names printed without the first name stay surname-only (source truncation); SMAA3: one of two identical Massabesic 4x200 DQ rows collapsed"
+ },
  "backend/data/parsed_results/2026/Indoor/ResultsSMAA-2.json": {
   "parse_sha": "18b8ea8ad6cf4cb7",
   "source_sha": "49fc7408dbccc6be",
@@ -58189,6 +58252,13 @@
   "date": "2026-11-05",
   "by": "sonnet track review 2026-11-05",
   "evidence": "888 source rows vs 886 stored, every event; 2 prelim=final marks stored once by design"
+ },
+ "backend/data/parsed_results/2026/Indoor/ResultsSMAA3.json": {
+  "parse_sha": "1db1e81f7c1f0e63",
+  "source_sha": "1d788b09fabd3949",
+  "date": "2026-11-05",
+  "by": "sonnet track review 2026-11-05",
+  "evidence": "sonnet row-by-row audit vs source: every stored row matches the sheet; long Last,First names printed without the first name stay surname-only (source truncation); SMAA3: one of two identical Massabesic 4x200 DQ rows collapsed"
  },
  "backend/data/parsed_results/2026/Indoor/ResultsSMAA4.json": {
   "parse_sha": "14f374fc5bbf5dfb",
@@ -58260,6 +58330,13 @@
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
  },
+ "backend/data/parsed_results/2026/Indoor/emitl2b20dec2025.json": {
+  "parse_sha": "544b682f7fbb3e31",
+  "source_sha": "b5a02f20ec360d55",
+  "date": "2026-11-05",
+  "by": "sonnet track review 2026-11-05",
+  "evidence": "sonnet row-by-row audit: every event, name, mark, grade, school folder and relay leg vs source; clean"
+ },
  "backend/data/parsed_results/2026/Indoor/emitl3a27dec2025.json": {
   "parse_sha": "9bd56c4995d04c05",
   "source_sha": "e47d49bde4116fb3",
@@ -58329,6 +58406,13 @@
   "date": "2026-10-19",
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
+ },
+ "backend/data/parsed_results/2026/Indoor/emitlchamps7feb2026.json": {
+  "parse_sha": "caedeed9ccdfc02c",
+  "source_sha": "0dbe9cbd2f7f70f1",
+  "date": "2026-11-05",
+  "by": "sonnet track review 2026-11-05",
+  "evidence": "sonnet row-by-row audit: every event, name, mark, grade, school folder and relay leg vs source; clean"
  },
  "backend/data/parsed_results/2026/Outdoor/2026-alms-tf-championship-results.json": {
   "parse_sha": "6a3bd06b1b23ffa3",
