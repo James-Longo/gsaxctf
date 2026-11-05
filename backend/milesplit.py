@@ -104,7 +104,7 @@ def parse(text):
             cur = {'event': (gender+' '+norm_event(ev)).strip(), 'gender': gender,
                    'is_relay': bool(re.search(r'Relay|Medley|Shuttle|Carousel|\dx\d',ev)), 'results': []}
             events.append(cur); sec='Finals'; hdr=None; i+=1; continue
-        mts=re.match(r'\s*(Female|Male|Women|Men|Girls|Boys)\s+Team Scores',ln)
+        mts=re.match(r'\s*(Female|Male|Women|Men|Girls|Boys)\s+(?:[A-Z]+\s+DIVISION\s+)?Team Scores',ln)   # "Girls JR DIVISION  Team Scores" (WMC 2026)
         if mts:
             g='Girls' if mts.group(1) in ('Female','Women','Girls') else 'Boys'
             teams=[]; i+=1

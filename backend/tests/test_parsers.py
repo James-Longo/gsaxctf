@@ -3370,6 +3370,10 @@ def test_milesplit_own_track_sheet():
     assert ev[0]['results'][0]['school'] == 'Cony High School' and ev[0]['results'][0]['result'] == '10:15.49'
     r = ev[1]['results'][0]
     assert (r['athlete'], r['grade'], r['school'], r['result']) == ('Gracie Jewell', '9', 'Skowhegan Area High School', '9.46'), r
+    ev, rk = M.parse('\n'.join(text.split('\n')[:6] + [
+        'Girls JR DIVISION  Team Scores', '      TEAM                               SCORE', '=' * 50,
+        '1     York High School                   46', '2     Wells High School                  39', '']))
+    assert len(ev[0]['results']) == 1 and [t['score'] for t in rk[0]['teams']] == [46, 39], (ev, rk)
 
 
 if __name__ == '__main__':
