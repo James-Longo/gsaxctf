@@ -139,10 +139,11 @@ def parse(text):
         s = ln.strip()
         if re.fullmatch(r'(Preliminaries|Prelims?|Finals|Semi-?finals?|Final|Timed Finals.*|Section.*|Flight.*|Heat.*)', s, re.I) and not re.match(r'\s*\d',ln):
             sec = 'Prelims' if re.match(r'Prelim',s,re.I) else ('Finals' if re.match(r'(Final|Timed|Section|Flight|Heat)',s,re.I) else sec); i+=1; continue
-        if re.match(r'\s*NAME\s+YR\s+TEAM\s+MARK', ln):
+        ms_own = bool(re.match(r'\s*NAME\s+YR\s+TEAM\s+MARK', ln))   # one header for every event, relays included
+        if ms_own:
             ln = ln.replace('NAME', 'Name').replace('YR', 'Yr').replace('TEAM', 'Team').replace('MARK', 'Mark')
         if re.match(r'\s*(Name|School|Team)\s', ln) and re.search(r'Finals|Prelims|Mark|Time|Result|Points',ln):   # relay tables headed "Team ... Finals" (2014-15 MS meets)
-            hdr = ln; cur['is_relay']=not re.match(r'\s*Name',ln); i+=1
+            hdr = ln; cur['is_relay']=(cur['is_relay'] and ms_own) or not re.match(r'\s*Name',ln); i+=1
             if 'Prelim' in ln and 'Finals' not in ln: sec='Prelims'
             continue
         rm = re.match(r'\s*(\d+|--)\s+(\S.*)$', ln)
