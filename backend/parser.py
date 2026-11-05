@@ -1942,6 +1942,11 @@ class Sub5ColumnParser:
                                 if re.fullmatch(r'\d+(?:\.\d+)?m', p) and any(
                                         re.fullmatch(r"[A-Z]?\d{1,3}-\d{1,2}(?:\.\d+)?[A-Za-z#*@]{0,2}", q) for q in parts[:k]):
                                     continue
+                                # (a tied final's 3-decimal tie-break after the
+                                # printed mark, "8.40   8.391", Marathon Elite 2026)
+                                if re.fullmatch(r'\d{1,2}\.\d{3}', p) and k > 0 and re.fullmatch(r'\d{1,2}\.\d{2}[A-Za-z]?', parts[k - 1]) \
+                                        and abs(float(re.sub(r'[A-Za-z]$', '', parts[k - 1])) - float(p)) < 0.01:
+                                    continue
                                 res_idx = k
                                 break
                             # a field relay's jumper rows print the team

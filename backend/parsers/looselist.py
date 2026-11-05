@@ -182,6 +182,14 @@ class LooseListParser(BaseParser):
                 row = self._parse_unranked_row(s, current['is_relay'])
             if row is None and season_type == 'XC':
                 row = self._parse_xc_dnf(s)
+            if row and not current['is_relay']:
+                # a two-column PDF row glued to the next column's row ("15 #53 Sheehan-Kopp, Calvin  MARH  2:07.90
+                # 6 #47 Horvath, Baylor  MARH  7-06.00", SMAA 2026): the left row keeps its own mark; the right one
+                # belongs to an event this reader can't place, so it is left out
+                gm = re.match(r'(\S+)\s+(\S+)\s+\d{1,3}\s+#\d+\s', row.get('school') or '')
+                if gm and is_mark(gm.group(2)):
+                    row['school'] = self._resolve_school(gm.group(1))
+                    row['result'] = clean_mark(gm.group(2))
             if row:
                 if season_type == 'XC' and 'place' not in row:
                     pm = re.match(r'^(\d{1,3})[.)]?\s+\S', s)

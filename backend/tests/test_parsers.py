@@ -3446,6 +3446,42 @@ def test_milesplit_bulk_small_race_is_not_matched_to_a_held_race():
     del mb._HELD_RUNNERS[(1999, 'Indoor')]
 
 
+def test_tied_final_keeps_printed_mark_over_tie_break():
+    from backend.parsers.column import ColumnStrategyParser
+    text = """Marathon Elite Invitational - 1/10/2026
+
+Event 2  Boys 55 Meter Hurdles
+================================================================
+    Name                    Year School                  Finals 
+================================================================
+Finals
+  1 Devin Berry               11 South Portla              7.71  
+  2 Abdulkadir Munye          11 Deering High              8.01  
+  3 Noah Madden               11 Hampden Acad              8.10  
+  5 Caleb Ramsell             12 South Portla              8.40   8.391
+  6 Brady Webber              12 Freeport Hig              8.40   8.393
+  7 Mason Arbour              12 Windham High              8.54  
+"""
+    r = ColumnStrategyParser().parse(text, 'x.htm', 'Indoor')
+    marks = {x['athlete']: x['result'] for e in r['events'] for x in e['results']}
+    assert marks['Caleb Ramsell'] == '8.40' and marks['Brady Webber'] == '8.40' and marks['Mason Arbour'] == '8.54', marks
+
+
+def test_looselist_two_column_row_glued_to_the_next_column():
+    text = """SMAA WK 5 MEET 4 - 1/24/2026
+Boys 600 Meter Run Open Division
+      Name                         Team         Finals
+Finals
+   14 #50 Smith, Joe                  MARH        2:05.10
+   15 #53 Sheehan-Kopp, Calvin       MARH        2:07.90   6 #47 Horvath, Baylor   MARH   7-06.00
+   16 #41 Day, Ayden                 MARH        2:09.36
+"""
+    res = LooseListParser().parse(text, 'x.pdf', 'Indoor')
+    rows = [(x['athlete'], x['result']) for e in res['events'] for x in e['results']]
+    assert ('Sheehan-Kopp, Calvin', '2:07.90') in rows, rows
+    assert not any(r[1] == '7-06.00' for r in rows), rows
+
+
 if __name__ == '__main__':
     qaqc._ensure_team_mapping()
     failed = 0
