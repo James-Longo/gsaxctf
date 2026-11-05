@@ -2887,21 +2887,40 @@ def test_continuation_page_marks_not_cut():
     assert not [r for r in ev['results'] if str(r['result']).endswith('.')]
     assert ('Harper Pearson', '18.28') in [(r.get('athlete'), r['result']) for r in ev['results']]
 
-if __name__ == '__main__':
-    qaqc._ensure_team_mapping()
-    failed = 0
-    for name, fn in sorted(globals().items()):
-        if name.startswith('test_') and callable(fn):
-            try:
-                fn()
-                print('PASS', name)
-            except Exception as e:  # noqa: BLE001
-                failed += 1
-                import traceback
-                traceback.print_exc()
-                print('FAIL', name, e)
-    sys.exit(1 if failed else 0)
+def test_flagged_feet_mark_beats_its_metric_conversion():
+    # NYI-results 2026: 'J5-06.00      1.67m' (jump-off) and '18-01.00R     5.51m'
+    # (record) were stored as 1.67 and 5.51
+    from backend.parsers.column import ColumnStrategyParser
+    text = '\n'.join([
+        'Event 28  Boys High Jump',
+        '==========================================================================',
+        '    Name                    Year School                  Finals           ',
+        '==========================================================================',
+        '  1 Larson Stone              12 Lewiston Hig           6-00.00      1.82m ',
+        ' 10 Wyatt Ferro               12 Bangor High           J5-06.00      1.67m ',
+        '  1 Sophia Chase              12 Bangor High           18-01.00R     5.51m ',
+        ''])
+    rows = ColumnStrategyParser().parse(text, 'NYI-results.htm', 'Indoor')['events'][0]['results']
+    assert [r['result'] for r in rows] == ['6-00.00', '5-06.00', '18-01.00'], rows
 
+def test_race_walk_title_and_dq_rule_note():
+    # NYI-results 2026: 'Boys 1 Mile Run Race Walk' was filed as the mile, and
+    # '-- Caleb Ramsell ... DQ   R.5-14-1f Hurdle Vio' stored '.5-14-1' as the mark
+    from backend.parser import Sub5ColumnParser
+    p = Sub5ColumnParser('x.htm', text='')
+    assert p.normalize_event_name('Boys 1 Mile Run Race Walk') == '1 Mile Race Walk'
+    assert p.normalize_event_name('Boys 1 Mile Run') == '1 Mile Run'
+    from backend.parsers.column import ColumnStrategyParser
+    text = '\n'.join([
+        'Event 6  Boys 55 Meter Hurdles',
+        '=================================================================================',
+        '    Name                    Year School                  Finals                  ',
+        '=================================================================================',
+        '  1 Larson Stone              12 Lewiston Hig              7.80                  ',
+        ' -- Caleb Ramsell             12 South Portla                DQ   R.5-14-1f Hurdle Vio',
+        ''])
+    rows = ColumnStrategyParser().parse(text, 'NYI-results.htm', 'Indoor')['events'][0]['results']
+    assert [r['result'] for r in rows] == ['7.80', 'DQ'], rows
 
 def test_team_rankings_rank_ten_and_up():
     """Hy-Tek prints two teams per line: "10) Old Town" is rank 10, not a
@@ -3326,3 +3345,44 @@ def test_metric_xc_course_off_the_track_list_is_not_a_5k():
     assert canonical_event('2400 Meter Run', 'Boys', 'XC') == ('Boys', '2400 Meter Cross Country')
     assert canonical_event('2436 Meter Run CC', 'Girls', 'XC') == ('Girls', '2436 Meter Cross Country')
     assert canonical_event('5000 Meter Run CC', 'Boys', 'XC') == ('Boys', '5K Cross Country')
+
+
+
+def test_milesplit_own_track_sheet():
+    # MileSplit's raw track pages (KVAC Meet 4A 2026): title, "Finals", ruler,
+    # "NAME YR TEAM MARK H# WIND" -- read no events before
+    from backend import milesplit as M
+    text = '\n'.join([
+        'Boys 4x800 Meter Relay  ', 'Finals',
+        '=' * 105,
+        '      NAME                          YR   TEAM                               MARK           H#    WIND',
+        '=' * 103,
+        '1                                        Cony High School                   10:15.49       1     ',
+        '', '',
+        'Girls 55 meter Hurdles  ', 'Finals',
+        '=' * 105,
+        '      NAME                          YR   TEAM                               MARK           H#    WIND',
+        '=' * 103,
+        '1     Gracie Jewell                 9    Skowhegan Area High School         9.46           1     ',
+        ''])
+    ev, _ = M.parse(text)
+    assert [(e['event'], e['is_relay']) for e in ev] == [('Boys 4x800 Meter Relay', True), ('Girls 55 meter Hurdles', False)], ev
+    assert ev[0]['results'][0]['school'] == 'Cony High School' and ev[0]['results'][0]['result'] == '10:15.49'
+    r = ev[1]['results'][0]
+    assert (r['athlete'], r['grade'], r['school'], r['result']) == ('Gracie Jewell', '9', 'Skowhegan Area High School', '9.46'), r
+
+
+if __name__ == '__main__':
+    qaqc._ensure_team_mapping()
+    failed = 0
+    for name, fn in sorted(globals().items()):
+        if name.startswith('test_') and callable(fn):
+            try:
+                fn()
+                print('PASS', name)
+            except Exception as e:  # noqa: BLE001
+                failed += 1
+                import traceback
+                traceback.print_exc()
+                print('FAIL', name, e)
+    sys.exit(1 if failed else 0)

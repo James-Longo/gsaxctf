@@ -317,6 +317,9 @@ class Sub5ColumnParser:
                 best_match += ' Wheelchair'
             elif re.search(r'\bpara\b|ambulatory', low):
                 best_match += ' Para Ambulatory'
+            # "Boys 1 Mile Run Race Walk" (NYI 2026): a walk, not the mile
+            if 'walk' in low and best_match.endswith(' Run'):
+                best_match = best_match[:-len(' Run')] + ' Race Walk'
             # "4x100 Meter Relay Throwers' Re" (EMITL 2019-20): the throwers' relay is its own event
             if best_match.endswith(' Relay') and 'thrower' in low:
                 best_match = best_match[:-len(' Relay')] + ' Throwers Relay'
@@ -1927,10 +1930,17 @@ class Sub5ColumnParser:
                                     continue
                                 if _is_wind_reading(p):
                                     continue
+                                # (a DQ's rule note, "DQ   R.5-14-1f Hurdle Vio",
+                                # NYI-results 2026: the status is the mark)
+                                if not re.fullmatch(r'X?[\d:.\-]+[A-Za-z#*@]{0,2}', p) and any(
+                                        q.upper() in STATUS_MARKS for q in parts[:k]):
+                                    continue
                                 # (a dual-unit row, "119-11   36.55m": the metric
-                                # conversion printed after the feet-inches mark)
+                                # conversion printed after the feet-inches mark,
+                                # also one flagged "J5-06.00" jump-off or
+                                # "18-01.00R" record, NYI-results 2026)
                                 if re.fullmatch(r'\d+(?:\.\d+)?m', p) and any(
-                                        re.fullmatch(r"\d{1,3}-\d{1,2}(?:\.\d+)?", q) for q in parts[:k]):
+                                        re.fullmatch(r"[A-Z]?\d{1,3}-\d{1,2}(?:\.\d+)?[A-Za-z#*@]{0,2}", q) for q in parts[:k]):
                                     continue
                                 res_idx = k
                                 break

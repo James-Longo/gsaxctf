@@ -92,6 +92,8 @@ def parse(text):
         m = re.match(r'\s*Event\s+\d+\s+(.*?)\s*$', ln)
         nx = i+1
         while nx < len(lines) and nx < i+3 and not lines[nx].strip(): nx += 1   # a blank line before the ruler (2014 Almquist, Southern Maine MS)
+        if nx < len(lines) and re.fullmatch(r'\s*(Finals|Prelims|Preliminaries)\s*', lines[nx]) and nx+1 < len(lines) and re.match(r'\s*=+\s*$', lines[nx+1]):
+            nx += 1   # MileSplit's own sheet: "Girls 55 meter Hurdles" / "Finals" / ruler / "NAME  YR  TEAM  MARK  H#  WIND"
         if not m and nx < len(lines) and re.match(r'\s*=+\s*$',lines[nx]) and re.match(r'\s*(Varsity\s+|Middle School\s+)?(Boys|Girls|Men|Women)\s+\S',ln) and 'Team Rank' not in ln and not re.match(r'\s*JV\s',ln): m = re.match(r'\s*(?:Varsity\s+|Middle School\s+)?(.*?)\s*$', ln)
         if m:
             nm = m.group(1)
@@ -137,6 +139,8 @@ def parse(text):
         s = ln.strip()
         if re.fullmatch(r'(Preliminaries|Prelims?|Finals|Semi-?finals?|Final|Timed Finals.*|Section.*|Flight.*|Heat.*)', s, re.I) and not re.match(r'\s*\d',ln):
             sec = 'Prelims' if re.match(r'Prelim',s,re.I) else ('Finals' if re.match(r'(Final|Timed|Section|Flight|Heat)',s,re.I) else sec); i+=1; continue
+        if re.match(r'\s*NAME\s+YR\s+TEAM\s+MARK', ln):
+            ln = ln.replace('NAME', 'Name').replace('YR', 'Yr').replace('TEAM', 'Team').replace('MARK', 'Mark')
         if re.match(r'\s*(Name|School|Team)\s', ln) and re.search(r'Finals|Prelims|Mark|Time|Result|Points',ln):   # relay tables headed "Team ... Finals" (2014-15 MS meets)
             hdr = ln; cur['is_relay']=not re.match(r'\s*Name',ln); i+=1
             if 'Prelim' in ln and 'Finals' not in ln: sec='Prelims'
@@ -146,7 +150,7 @@ def parse(text):
         if not rm or hdr is None: i+=1; continue
         place = None if rm.group(1)=='--' else int(rm.group(1))
         if cur['is_relay']:
-            fe=max(hdr.find('Finals')+6, hdr.find('Prelims')+7, hdr.find('Time')+4)
+            fe=max(hdr.find('Finals')+6, hdr.find('Prelims')+7, hdr.find('Time')+4, hdr.find('Mark')+4)
             ms=[(mt.start(),mt.end(),mt.group(0)) for mt in re.finditer(r'(?<![\w.:-])(%s)(?![\w.:-])'%MARK, ln)]
             ms=[x for x in ms if x[0]>12]
             if not ms: note('RELAY?',ln); i+=1; continue
