@@ -160,12 +160,13 @@ def held_runners(year, season):
 
 def race_homes(doc, year, season):
     """Per race of the staged meet: the held file holding that race already (80%+ of its runners at their
-    times, or 70%+ at their places, in a held race at least 95% its size), else None. Races of fewer than 3 runners: 'small'."""
+    times, or 70%+ at their places, in a held race at least 95% its size), else None. Races of fewer than 5 runners: 'small'
+    (kept: three middle schoolers within a second of their festival times are not that race, 2026 SMMSAC SR girls 440)."""
     held = held_runners(year, season)
     out = []
     for e in doc.get('events', []):
         rc = _race_keys(e)
-        if len(rc) < 3:
+        if len(rc) < 5:
             out.append('small')
             continue
         home = None

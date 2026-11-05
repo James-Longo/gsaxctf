@@ -3433,6 +3433,19 @@ Finals
     assert rankings == [{'gender': 'Boys', 'teams': [{'rank': 1, 'team': 'Southern Maine Catholic', 'score': 32}, {'rank': 2, 'team': 'Biddeford Middle School', 'score': 12}]}], rankings
 
 
+def test_milesplit_bulk_small_race_is_not_matched_to_a_held_race():
+    from backend import milesplit_bulk as mb
+    held = {'festival': mb._near({'events': [{'results': [
+        {'athlete': 'Laura Sholl', 'result': '1:14.57', 'place': 1}, {'athlete': 'Maysun Burnham', 'result': '1:17.81', 'place': 2},
+        {'athlete': 'Emma Stevens', 'result': '1:19.21', 'place': 3}, {'athlete': 'A B', 'result': '1:20.00', 'place': 4}]}]})}
+    mb._HELD_RUNNERS[(1999, 'Indoor')] = held
+    doc = {'events': [{'results': [{'athlete': 'Laura Sholl', 'result': '1:14.50', 'place': 1},
+                                   {'athlete': 'Maysun Burnham', 'result': '1:17.90', 'place': 2},
+                                   {'athlete': 'Emma Stevens', 'result': '1:18.60', 'place': 3}]}]}
+    assert mb.race_homes(doc, 1999, 'Indoor') == ['small']
+    del mb._HELD_RUNNERS[(1999, 'Indoor')]
+
+
 if __name__ == '__main__':
     qaqc._ensure_team_mapping()
     failed = 0
