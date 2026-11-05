@@ -150,6 +150,8 @@ def parse(text):
         if rm and re.match(r'\s*\d{4}\s.* - \d+/\d+/\d{4}\s*$', ln): i+=1; continue  # page header "2014 Lewiston KVAC Meet 1 - 4/18/2014"
         if not rm or hdr is None: i+=1; continue
         place = None if rm.group(1)=='--' else int(rm.group(1))
+        mb = re.match(r'(\s*(?:\d+|--)\s+)(#\s*\d+\s)', ln)
+        if mb: ln = mb.group(1) + ' ' * len(mb.group(2)) + ln[mb.end():]   # a bib column ("  1 #   76 Diallo, Jacquelin"), columns kept
         if cur['is_relay']:
             fe=max(hdr.find('Finals')+6, hdr.find('Prelims')+7, hdr.find('Time')+4, hdr.find('Mark')+4)
             ms=[(mt.start(),mt.end(),mt.group(0)) for mt in re.finditer(r'(?<![\w.:-])(%s)(?![\w.:-])'%MARK, ln)]
@@ -1150,6 +1152,17 @@ def main():
         XC_HINT=('Girls' if re.search(r'(?i)girl|women',f['name']) else 'Boys' if re.search(r'(?i)\bboy|\bmen\b',f['name']) else None)
         e,r=(parse_xc_any(t) if sys.argv[4]=='XC' else parse_tab5(t) if '\tEvent\t' in t else parse_tab(t) if t.count('\t')>5 else (parse_race(t) if 'RaceTab' in t[:200] and parse_race(t)[0] else parse(t)));   # RaceTab track sheets (2014 SMMSAC) read by parse() when parse_race finds no race
         if sys.argv[4]=='XC': xc_team_places(e,r)
+        # one meet posted twice, as MileSplit's own sheet and as the Hy-Tek file (WMC week 5 2026):
+        # a row an earlier file already holds (same event, runner, mark) is not a second result
+        def _mv(m):   # a mark by value: "16-05.75" is "16-5.75", "1:02.40" is "1:02.4"
+            fm = re.fullmatch(r'(\d+)-(\d+(?:\.\d+)?)', m or '')
+            if fm: return round(int(fm.group(1)) * 12 + float(fm.group(2)), 2)
+            tm = re.fullmatch(r'(?:(\d+):)?(\d+(?:\.\d+)?)', m or '')
+            return round(int(tm.group(1) or 0) * 60 + float(tm.group(2)), 2) if tm else m
+        def _rk(ev, x): return (re.sub(r'\W', '', ev['event'].lower()), ' '.join(sorted(re.sub(r'[^a-z ]', '', (x.get('athlete') or x.get('school') or '').lower().replace(',', ' ')).split())), _mv(x.get('result')))
+        held = {_rk(ev, x) for ev in events for x in ev['results']}
+        for ev in e: ev['results'] = [x for x in ev['results'] if _rk(ev, x) not in held]
+        e = [ev for ev in e if ev['results']]
         events+=e; rank+=r; urls.append(u)
         cm=re.search(r'Class ([ABC])\b',f['name'])
         if cm and CLASSFILES:
