@@ -395,7 +395,7 @@ def build():
             index[id(hit)]['listed'].append(ref)
             continue
         kind = l.get('kind', 'hs')
-        if l.get('site') == 'milesplit' and l.get('url') and not re.match(r'https?://me\.milesplit', l['url']) and kind == 'hs':
+        if l.get('site') == 'milesplit' and l.get('url') and not re.match(r'https?://me\.milesplit', l['url']) and kind in ('hs', 'ms'):
             kind = 'out-of-state'   # a meet on another state's MileSplit: Maine rows only, low priority
         rows.append(dict(year=l['year'], season=l['season'], date=l.get('date'), name=l.get('name'),
                          status='missing' if kind in ('hs', 'ms') else 'skipped', kind=kind,
