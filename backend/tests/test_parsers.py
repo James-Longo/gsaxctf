@@ -3398,6 +3398,41 @@ def test_milesplit_cut_off_first_name_is_the_same_runner():
     assert not same_runner('jo li', 'joe li')   # no whole shared word of 3+ letters
 
 
+def test_milesplit_ms_untitled_relay_and_division_team_scores():
+    from backend.milesplit import parse
+    text = """Boys 40 yard Dash SR BOYS 
+Finals
+==========================================================================================
+      NAME                          YR   TEAM                               MARK           H#    WIND
+==========================================================================================
+1     Owen Crockett                 8    Biddeford Middle School            6.31           2     
+
+
+Boys  SR BOYS 
+Finals
+==========================================================================================
+      NAME                          YR   TEAM                               MARK           H#    WIND
+==========================================================================================
+1                                        Biddeford Middle School            2:00.49        1     
+
+
+Boys JR BOYS  Team Scores
+      TEAM                               SCORE
+==================================================
+1     Southern Maine Catholic            32
+2     Biddeford Middle School            12
+Girls Shot Put JR GIRLS 
+Finals
+==========================================================================================
+      NAME                          YR   TEAM                               MARK           H#    WIND
+==========================================================================================
+"""
+    events, rankings = parse(text)
+    rows = [(e['event'], x.get('athlete'), x['result']) for e in events for x in e['results']]
+    assert rows == [('Boys 40 yard Dash SR BOYS', 'Owen Crockett', '6.31')], rows
+    assert rankings == [{'gender': 'Boys', 'teams': [{'rank': 1, 'team': 'Southern Maine Catholic', 'score': 32}, {'rank': 2, 'team': 'Biddeford Middle School', 'score': 12}]}], rankings
+
+
 if __name__ == '__main__':
     qaqc._ensure_team_mapping()
     failed = 0

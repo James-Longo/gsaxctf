@@ -360,7 +360,7 @@ def check_date_season_consistency(all_perfs):
             continue
         season = p.get('season')
         if season == 'Indoor':
-            ok = _dt(yr - 1, 11, 1) <= dt <= _dt(yr, 3, 31)
+            ok = _dt(yr - 1, 11, 1) <= dt <= _dt(yr, 4, 15)
         elif season == 'Outdoor':
             ok = _dt(yr, 3, 1) <= dt <= _dt(yr, 7, 31)
         else:

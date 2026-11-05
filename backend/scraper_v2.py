@@ -2508,7 +2508,7 @@ class Sub5ScraperV2:
             year_val = int(year)
             if season == "Indoor":
                 start_date = datetime(year_val - 1, 11, 1)
-                end_date = datetime(year_val, 3, 31)
+                end_date = datetime(year_val, 4, 15)   # middle-school festivals close the season in early April (SMMSAC/GPC)
                 return start_date <= dt <= end_date
             elif season == "Outdoor":
                 start_date = datetime(year_val, 3, 1)

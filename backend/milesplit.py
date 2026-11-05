@@ -113,10 +113,12 @@ def parse(text):
             gender = {'Boys':'Boys','Men':'Boys','Girls':'Girls','Women':'Girls'}[g.group(1)] if g else ''
             ev = g.group(2) if g else nm
             ev = re.sub(r'\bRace Walk\b','Race Walk',ev)
+            if re.fullmatch(r'(JR|INT|SR|OPEN)\s+(BOYS|GIRLS)', ev.strip()):   # "Girls  JR GIRLS": an event with no name (the GPC/SMMSAC 2026 MS relays) has no distance to file it under
+                note('UNTITLED', ln); cur = None; i += 1; continue
             cur = {'event': (gender+' '+norm_event(ev)).strip(), 'gender': gender,
                    'is_relay': bool(re.search(r'Relay|Medley|Shuttle|Carousel|\dx\d',ev)), 'results': []}
             events.append(cur); sec='Finals'; hdr=None; i+=1; continue
-        mts=re.match(r'\s*(Female|Male|Women|Men|Girls|Boys)\s+(?:[A-Z]+\s+DIVISION\s+)?Team Scores',ln)   # "Girls JR DIVISION  Team Scores" (WMC 2026)
+        mts=re.match(r'\s*(Female|Male|Women|Men|Girls|Boys)\s+(?:[A-Z]+\s+(?:DIVISION|BOYS|GIRLS)\s+)?Team Scores',ln)   # "Girls JR DIVISION  Team Scores" (WMC 2026), "Boys JR BOYS  Team Scores" (GPC/SMMSAC MS 2026)
         if mts:
             g='Girls' if mts.group(1) in ('Female','Women','Girls') else 'Boys'
             teams=[]; i+=1

@@ -33,7 +33,7 @@ BAD_NAME = re.compile(r'\d|\bunknown\b|\bcoach\b|^\W|\(|\)|,|\b(relay|team|schoo
 def season_window(year, season):
     """(first, last) month-day dates a season of that year can fall in."""
     if season == 'Indoor':
-        return f'{year - 1}-11-01', f'{year}-03-31'
+        return f'{year - 1}-11-01', f'{year}-04-15'
     if season == 'Outdoor':
         return f'{year}-03-15', f'{year}-07-31'
     return f'{year}-08-01', f'{year}-11-30'
@@ -113,7 +113,7 @@ def counts(rows, year, season):
         if {'Boys', 'Girls'} <= sx:
             hits['runner in both genders'].append((n, t))
     for (n, t, ev, m), ms in marks.items():
-        if len(ms) > 1 and not re.search(r'55|60|Hurdles|athlon', ev):   # prelims/finals are sprint and hurdle events; multi-event components
+        if len(ms) > 1 and not re.search(r'\b(40|55|60) (Yard|Meter) (Dash|Hurdles)|Hurdles|athlon', ev):   # prelims/finals are sprint and hurdle events; multi-event components
             hits['two marks in one race'].append((m, t, n, ev, sorted(ms)))
     return hits
 
