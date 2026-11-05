@@ -54894,25 +54894,25 @@
   "evidence": ""
  },
  "backend/data/parsed_results/2025/Indoor/4A-results.json": {
-  "parse_sha": "0e7077badda9a52d",
+  "parse_sha": "1dfa248a7dec13fc",
   "source_sha": "42352baff7f53bb8",
-  "date": "2026-10-16",
-  "by": "auto: team scores verified exactly, all schools identified, no flags",
-  "evidence": ""
+  "date": "2026-11-05",
+  "by": "re-check 2026-11-05: tie-break fix",
+  "evidence": "full dry re-parse diff: only tied finals' 3-decimal tie-breaks replaced by the printed marks; all other rows identical to the signed parse"
  },
  "backend/data/parsed_results/2025/Indoor/Class-B-boys-results.json": {
-  "parse_sha": "c926b30c8ebbdd06",
+  "parse_sha": "37e8559307678041",
   "source_sha": "6614938e49c01118",
-  "date": "2026-10-28",
-  "by": "re-check 2026-10-28: re-parsed only for the team-rank fix (ranks 10+ were stored as 0-9)",
-  "evidence": "scratch re-parse compared with the signed parse: result rows identical, only team_rankings ranks changed"
+  "date": "2026-11-05",
+  "by": "re-check 2026-11-05: tie-break fix",
+  "evidence": "full dry re-parse diff: only tied finals' 3-decimal tie-breaks replaced by the printed marks; all other rows identical to the signed parse"
  },
  "backend/data/parsed_results/2025/Indoor/Class-B-girls-results.json": {
-  "parse_sha": "fac5e4b6898f27cb",
+  "parse_sha": "27cbea990f296859",
   "source_sha": "0e1de1d52c9cc97a",
-  "date": "2026-10-28",
-  "by": "re-check 2026-10-28: re-parsed only for the team-rank fix (ranks 10+ were stored as 0-9)",
-  "evidence": "scratch re-parse compared with the signed parse: result rows identical, only team_rankings ranks changed"
+  "date": "2026-11-05",
+  "by": "re-check 2026-11-05: tie-break fix",
+  "evidence": "full dry re-parse diff: only tied finals' 3-decimal tie-breaks replaced by the printed marks; all other rows identical to the signed parse"
  },
  "backend/data/parsed_results/2025/Indoor/EMITL-Large-School-girls.json": {
   "parse_sha": "df7bc10c63fc0523",
@@ -58141,12 +58141,26 @@
   "by": "sonnet track review 2026-11-05",
   "evidence": "sonnet row-by-row audit vs source: every stored row matches the sheet; long Last,First names printed without the first name stay surname-only (source truncation); SMAA3: one of two identical Massabesic 4x200 DQ rows collapsed"
  },
+ "backend/data/parsed_results/2026/Indoor/Marathon-Elite-boys-results-1.json": {
+  "parse_sha": "bd864150306d1a79",
+  "source_sha": "30e0b2dcd56e16e9",
+  "date": "2026-11-05",
+  "by": "sonnet track review 2026-11-05 + fixes",
+  "evidence": "sonnet audit vs source: faithful except tied finals stored as their 3-decimal tie-breaks; re-parsed with the tie-break rule, diff changes exactly those 2 rows"
+ },
  "backend/data/parsed_results/2026/Indoor/Marathon-Elite-girls-results.json": {
   "parse_sha": "878552d64d73d1f6",
   "source_sha": "da415000a16b0d7e",
   "date": "2026-10-26",
   "by": "2026-10-26 sonnet audit (routine) (audit: confirmed)",
   "evidence": "Machine-compared every parse row with the source text (name, mark, place, grade, event heading/order, relay members, per-event row counts): 190 rows, 15 events (prelims and finals), all match; relay 'Scarborough 1:51.15R' members match; 'Unattached'->x-unattached; 'Maine Centra'->me-hs-mci; no Cony rows in this file."
+ },
+ "backend/data/parsed_results/2026/Indoor/NYI-results.json": {
+  "parse_sha": "f78c4a8b6dd8b1fd",
+  "source_sha": "3d2efbd398618c2f",
+  "date": "2026-11-05",
+  "by": "sonnet track review 2026-11-05 + fixes",
+  "evidence": "sonnet audit vs source; re-parsed with each finding fixed and tested: J/R-flagged feet marks, race walk event, DQ rule note, pentathlon components as their own events; dated 2026-01-03 (sheet typo 1/2/2025-1/3/2025)"
  },
  "backend/data/parsed_results/2026/Indoor/Results-1.json": {
   "parse_sha": "c579e100b128a83f",
@@ -58728,6 +58742,62 @@
   "date": "2026-11-05",
   "by": "sonnet track review 2026-11-05",
   "evidence": "sonnet audit vs cached MileSplit text: every event, name, mark, school, date; clean (prelim=final stored once)"
+ },
+ "backend/data/parsed_results/2026/Indoor/smaa-1-1.json": {
+  "parse_sha": "3795f465096348e2",
+  "source_sha": "03dbda10ae395d18",
+  "date": "2026-11-05",
+  "by": "sonnet track review 2026-11-05 + fixes",
+  "evidence": "sonnet audit vs PDF: every placed row faithful after the Last, First name fix; DQ/DNF/NH/FOUL status rows are not stored by the LooseList reader (site lists skip them)"
+ },
+ "backend/data/parsed_results/2026/Indoor/smaa-1.json": {
+  "parse_sha": "95e512095fd08b4a",
+  "source_sha": "709ce6e62b07a483",
+  "date": "2026-11-05",
+  "by": "sonnet track review 2026-11-05 + fixes",
+  "evidence": "sonnet audit vs PDF: every placed row faithful after the Last, First name fix; DQ/DNF/NH/FOUL status rows are not stored by the LooseList reader (site lists skip them)"
+ },
+ "backend/data/parsed_results/2026/Indoor/smaa-2.json": {
+  "parse_sha": "18fa817d30d8fea4",
+  "source_sha": "679c229f9f51ccc4",
+  "date": "2026-11-05",
+  "by": "sonnet track review 2026-11-05 + fixes",
+  "evidence": "sonnet audit vs PDF: placed rows faithful; status rows not stored (LooseList); the Mixed 1 Mile Race Walk (5 rows, third column of a 3-column page, M/W per row) is not read"
+ },
+ "backend/data/parsed_results/2026/Indoor/smaa-3-1.json": {
+  "parse_sha": "2f8624fec0284090",
+  "source_sha": "7c0f8eff3d412d64",
+  "date": "2026-11-05",
+  "by": "sonnet track review 2026-11-05 + fixes",
+  "evidence": "sonnet audit vs PDF: every placed row faithful after the Last, First name fix; DQ/DNF/NH/FOUL status rows are not stored by the LooseList reader (site lists skip them)"
+ },
+ "backend/data/parsed_results/2026/Indoor/smaa-3.json": {
+  "parse_sha": "455cc5ae99279fa5",
+  "source_sha": "20c1c258f97d4d57",
+  "date": "2026-11-05",
+  "by": "sonnet track review 2026-11-05 + fixes",
+  "evidence": "sonnet audit vs PDF: every placed row faithful after the Last, First name fix; DQ/DNF/NH/FOUL status rows are not stored by the LooseList reader (site lists skip them)"
+ },
+ "backend/data/parsed_results/2026/Indoor/smaa-4-1.json": {
+  "parse_sha": "1dbeddd5b11f7880",
+  "source_sha": "db22c6824d29f572",
+  "date": "2026-11-05",
+  "by": "sonnet track review 2026-11-05 + fixes",
+  "evidence": "sonnet audit vs PDF: faithful after the name and glued-row fixes; status rows not stored; Horvath pole vault 7-06.00 lost (printed on the 600's line from the other column, event unknown to the reader)"
+ },
+ "backend/data/parsed_results/2026/Indoor/smaa-4.json": {
+  "parse_sha": "b90cb9bc9cdc231b",
+  "source_sha": "b0618b764893bb53",
+  "date": "2026-11-05",
+  "by": "sonnet track review 2026-11-05 + fixes",
+  "evidence": "sonnet audit vs PDF: every placed row faithful after the Last, First name fix; DQ/DNF/NH/FOUL status rows are not stored by the LooseList reader (site lists skip them)"
+ },
+ "backend/data/parsed_results/2026/Indoor/smaa2.json": {
+  "parse_sha": "c034c23a51575877",
+  "source_sha": "fb6928ad90249825",
+  "date": "2026-11-05",
+  "by": "sonnet track review 2026-11-05 + fixes",
+  "evidence": "sonnet audit vs PDF: every placed row faithful after the Last, First name fix; DQ/DNF/NH/FOUL status rows are not stored by the LooseList reader (site lists skip them)"
  },
  "backend/data/parsed_results/2026/Outdoor/2026-alms-tf-championship-results.json": {
   "parse_sha": "6a3bd06b1b23ffa3",
