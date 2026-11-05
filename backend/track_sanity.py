@@ -113,7 +113,7 @@ def counts(rows, year, season):
         if {'Boys', 'Girls'} <= sx:
             hits['runner in both genders'].append((n, t))
     for (n, t, ev, m), ms in marks.items():
-        if len(ms) > 1 and not re.search(r'55|60|Hurdles', ev):   # prelims/finals are sprint and hurdle events
+        if len(ms) > 1 and not re.search(r'55|60|Hurdles|athlon', ev):   # prelims/finals are sprint and hurdle events; multi-event components
             hits['two marks in one race'].append((m, t, n, ev, sorted(ms)))
     return hits
 
