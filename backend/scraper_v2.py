@@ -2840,6 +2840,9 @@ class Sub5ScraperV2:
                     if date and parsed_d and season != 'XC':
                         try:
                             from datetime import date as _d
+                            # (not 1-3 days: files named for their day, "WMC1_JAN22", carry
+                            # a sheet date a day early; the KVAC Class B posting lags are
+                            # dated by meet_corrections from MileSplit instead)
                             if (_d.fromisoformat(parsed_d) - _d.fromisoformat(date)).days > 3:
                                 parsed_d = date
                         except ValueError:

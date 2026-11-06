@@ -1795,6 +1795,14 @@ FILE_RULES = [
     (['BIDD'], 'Indoor', (2023, 2023), r'^Results-wk-3-meet-2$', 'me-ms-biddeford'),
     (['CAPE'], 'Indoor', (2023, 2023), r'^Results-wk-4-meet-3$', 'me-ms-cape-elizabeth'),
     (['SMC'], 'Indoor', (2023, 2023), r'^Results-wk-4-meet-3$', 'me-ms-southern-maine-catholic'),
+    (['SMC'], 'Indoor', (2023, 2023), r'^ms-smmsac-indoor-track-week-\d-meet-\d-2023$', 'me-ms-southern-maine-catholic'),
+    # 2023 SMMSAC weekly MS meets and festival (sub5 and MileSplit copies): every team is a middle school; the
+    # catalog rebuild of 2026-11-06 let athlete-continuity send the festival's CAPE and week 1's YAR to the high schools
+    (['CAPE', 'Cape Elizabeth'], 'Indoor', (2023, 2023), r'^(Resultssmmsac-festival|Results-?wk-\d-meet-\d|ResultsWK-\d-MEET-\d|ms-smmsac-indoor-track-week-\d-meet-\d-2023)$', 'me-ms-cape-elizabeth'),
+    (['YAR', 'Yarmouth'], 'Indoor', (2023, 2023), r'^(Resultssmmsac-festival|Results-?wk-\d-meet-\d|ResultsWK-\d-MEET-\d|ms-smmsac-indoor-track-week-\d-meet-\d-2023)$', 'me-ms-harrison'),
+    (['North Yarmou'], 'Indoor', (2023, 2023), r'^Resultswmc[12]?$', 'coop-nya-maine-coast-waldorf'),
+    (['Cony High Sc'], 'Indoor', (2026, 2026), r'^KVAC-1C-Results$', 'me-hs-cony'),                       # as before the 2026-11-06 rebuild
+    (['Cony High Sc'], 'Indoor', (2026, 2026), r'^classaboysindor16feb2026$', 'coop-it-cony-halldale-winthrop'),   # as before the 2026-11-06 rebuild   # as before the 2026-11-06 rebuild (its full-name rows: the co-op)   # SMMSAC weekly MS meets; the sheets' relay rows print 'Southern Maine Catholic (combined MS team)'
     (['BIDD'], 'Indoor', (2023, 2023), r'^Results-wk-4-meet-3$', 'me-ms-biddeford'),
     (['SMC'], 'Indoor', (2023, 2023), r'^ResultsWK-3-MEET-1$', 'me-ms-southern-maine-catholic'),
     # Indoor second read t7
