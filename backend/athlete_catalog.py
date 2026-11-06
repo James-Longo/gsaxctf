@@ -206,7 +206,7 @@ def family(event, season):
     if re.search(r'triathlon|pentathlon|heptathlon|decathlon', e):
         return 'multi'
     for k, f in (('hurdle', 'hurdles'), ('steeple', 'distance'), ('jump', 'jumps'),
-                 ('vault', 'jumps'), ('put', 'throws'), ('throw', 'throws'),
+                 ('vault', 'jumps'), ('put', 'throws'), ('weight throw', 'throws'),
                  ('discus', 'throws'), ('javelin', 'throws'), ('hammer', 'throws'),
                  ('pentathlon', 'multi'), ('heptathlon', 'multi'),
                  ('decathlon', 'multi'), ('walk', 'walk')):

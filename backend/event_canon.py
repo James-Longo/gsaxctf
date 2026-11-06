@@ -153,7 +153,9 @@ def canonical_event(raw, gender, season=None, level=None, relay=False):
                 return gender, '3x1 Mile Relay' if s.replace(' ', '').lower().startswith('3x') else '4x1 Mile Relay'
             if leg == '8':
                 leg = '800'
-            return gender, f'{legs}x{leg} {unit} Relay'
+            # (EMITL's '4x100/4x200 Meter Throwers Relay': its own event, not the sprint relay)
+            kind = 'Throwers Relay' if re.search(r'thrower', s, re.I) else 'Relay'
+            return gender, f'{legs}x{leg} {unit} {kind}'
         # bare "... Relay" with a distance elsewhere: "1600 Relay" = 4x400
         d = DIST_RE.search(s)
         if d:

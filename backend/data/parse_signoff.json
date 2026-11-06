@@ -37771,6 +37771,13 @@
   "by": "sonnet audit (second read, 2026-11-02) (audit: confirmed)",
   "evidence": "Hy-Tek (Down East Sports Timing, SMAA Week 3 Meet 1, USM, 1/12/2019 (BIDD-PORT-MASS-BONNY EAGLE-MARSH)). Checked every row against the source by script (place, name, school string, Finals-column mark, status/x rows, relay legs, event/gender headers, event and row counts) with no difference. Schools printed as mascots/short names resolve correctly for this meet's team list: 'Bulldogs' = Portland, 'Scots' = Bonny Eagle, 'Mustangs' = Massabesic, 'Biddt&F' = Biddeford (me-hs-portland / bonny-eagle / massabesic / biddeford). 51 events. Date matches the index. Ledger warning 'never read by a reviewer' = only that no reader had signed it. "
  },
+ "backend/data/parsed_results/2019/Indoor/ResultsSMAA2-1.json": {
+  "parse_sha": "f0ffe0263608a9ed",
+  "source_sha": "0eb79bd2b7585903",
+  "date": "2026-11-06",
+  "by": "sonnet audit rev19 A/B 2026-11-06",
+  "evidence": "every row vs source (sub5 htm/pdf, MileSplit cache); only finding: FS rows stored with the seed mark, fixed in milesplit.py and patched (Sjostedt, Awad, Hay); 'Indoor Track' = Yarmouth by runners' other results"
+ },
  "backend/data/parsed_results/2019/Indoor/ResultsSMAA2.json": {
   "parse_sha": "e62ab922434defb1",
   "source_sha": "2bb48a067bead3b2",
@@ -38030,6 +38037,13 @@
   "by": "sonnet audit (second read, 2026-11-02) (audit: confirmed)",
   "evidence": "30 events agree row by row (place, name, school, mark, exhibition 'x', status). School string 'Indoor' (40 rows) is Leavitt: the source cuts 'Leavitt Indoor' to its last word, relays print 'Leavitt Indoor' (resolves to me-hs-leavitt in this file). Ledger 'team scores do not add up': the checker's only miss is Boys Leavitt (official 33). With 'Indoor' read as Leavitt the rows give 51; the two wheelchair events (Event 30 Boys 1 Mile Run Wheelchair, Event 31 Boys 400 Yard Dash Wheelchair, one entrant each, Schomaker) score 1 point each in the printed totals, not 10: 51-18 = 33. All other teams reproduce (Men/Women Team Rankings blocks match the parse)."
  },
+ "backend/data/parsed_results/2019/Indoor/a-final-results.json": {
+  "parse_sha": "af0d4d2d952c345e",
+  "source_sha": "ad11a5fceb687129",
+  "date": "2026-11-06",
+  "by": "sonnet audit rev19 A/B 2026-11-06",
+  "evidence": "every row vs source (sub5 htm/pdf, MileSplit cache); only finding: FS rows stored with the seed mark, fixed in milesplit.py and patched (Sjostedt, Awad, Hay); 'Indoor Track' = Yarmouth by runners' other results"
+ },
  "backend/data/parsed_results/2019/Indoor/bowdoininvite1men.json": {
   "parse_sha": "d1c185961c07e463",
   "source_sha": "6c445f9705b7438e",
@@ -38071,6 +38085,13 @@
   "date": "2026-11-05",
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
+ },
+ "backend/data/parsed_results/2019/Indoor/class-b-final-results.json": {
+  "parse_sha": "388d405f728be3e8",
+  "source_sha": "db110e039ba4c776",
+  "date": "2026-11-06",
+  "by": "sonnet audit rev19 A/B 2026-11-06",
+  "evidence": "every row vs source (sub5 htm/pdf, MileSplit cache); only finding: FS rows stored with the seed mark, fixed in milesplit.py and patched (Sjostedt, Awad, Hay); 'Indoor Track' = Yarmouth by runners' other results"
  },
  "backend/data/parsed_results/2019/Indoor/classaboysindoor2019.json": {
   "parse_sha": "2147a6a2343433d3",
@@ -38205,12 +38226,75 @@
   "by": "older-data loop 2026-11-02",
   "evidence": "deliberate re-parse (throwers' relay named as its own event; relay legs without grade suffixes; 2007 KVAC whole times), rows per event unchanged, team scores still verify"
  },
+ "backend/data/parsed_results/2019/Indoor/emitlchamps19.json": {
+  "parse_sha": "9ae72cf6a4706eda",
+  "source_sha": "d6d987f34c942f0d",
+  "date": "2026-11-06",
+  "by": "sonnet audit rev19 A/B 2026-11-06",
+  "evidence": "every row vs source (sub5 htm/pdf, MileSplit cache); only finding: FS rows stored with the seed mark, fixed in milesplit.py and patched (Sjostedt, Awad, Hay); 'Indoor Track' = Yarmouth by runners' other results"
+ },
  "backend/data/parsed_results/2019/Indoor/emitlrelaysfieldevents.json": {
   "parse_sha": "64e2ffe33eab63ad",
   "source_sha": "a3b2bb9392516c79",
   "date": "2026-11-02",
   "by": "sonnet audit (second read, 2026-11-02) (audit: confirmed)",
   "evidence": "10 events (Girls|Boys Long/Triple/High Jump, Pole Vault, Shot Put 'Relay' individual attempts) agree row by row (place, name, grade, school, mark, fractional relay points 3.33/2.66/...). Same layout and naming as the 2020 sibling emitlrelaysfield; the team sums for these events are in emitlrelaysscored. BRW = Brewer, Penquis athlete without a year has grade blank as printed."
+ },
+ "backend/data/parsed_results/2019/Indoor/emitlrelaysscored.json": {
+  "parse_sha": "a629e1dda097a8e7",
+  "source_sha": "e723a148b2351195",
+  "date": "2026-11-06",
+  "by": "sonnet audit rev19 A/B 2026-11-06",
+  "evidence": "every row vs source (sub5 htm/pdf, MileSplit cache); only finding: FS rows stored with the seed mark, fixed in milesplit.py and patched (Sjostedt, Awad, Hay); 'Indoor Track' = Yarmouth by runners' other results"
+ },
+ "backend/data/parsed_results/2019/Indoor/mens_results_umaine_invitational_track_2.10.19.json": {
+  "parse_sha": "679050577eeff4e7",
+  "source_sha": "e4bff290190d4114",
+  "date": "2026-11-06",
+  "by": "out-of-scope",
+  "evidence": "UMaine Invitational 2019-02-10: college meet (Maine, Husson, USM, UMFK, unattached); same meet in 2020/2022/2025 is out-of-scope"
+ },
+ "backend/data/parsed_results/2019/Indoor/ms-smaa-chev-no-west-gor-kenn-ta-2019.json": {
+  "parse_sha": "e3ef0101091ca771",
+  "source_sha": "73dcf671ee2321b7",
+  "date": "2026-11-06",
+  "by": "sonnet audit rev19 A/B 2026-11-06",
+  "evidence": "every row vs source (sub5 htm/pdf, MileSplit cache); only finding: FS rows stored with the seed mark, fixed in milesplit.py and patched (Sjostedt, Awad, Hay); 'Indoor Track' = Yarmouth by runners' other results"
+ },
+ "backend/data/parsed_results/2019/Indoor/ms-smaa-por-mass-nob-scar-sp-ta-west-win-2019.json": {
+  "parse_sha": "92a5d8b4aea745d8",
+  "source_sha": "f6e65d7b9b809f78",
+  "date": "2026-11-06",
+  "by": "sonnet audit rev19 A/B 2026-11-06",
+  "evidence": "every row vs source (sub5 htm/pdf, MileSplit cache); only finding: FS rows stored with the seed mark, fixed in milesplit.py and patched (Sjostedt, Awad, Hay); 'Indoor Track' = Yarmouth by runners' other results"
+ },
+ "backend/data/parsed_results/2019/Indoor/ms-wmc-greely-pol-frye-yar-traip-wells-nya-st-domlisbon-2019.json": {
+  "parse_sha": "83b0fd9cdd36698c",
+  "source_sha": "905e50c45efb6a4f",
+  "date": "2026-11-06",
+  "by": "sonnet audit rev19 A/B 2026-11-06",
+  "evidence": "every row vs source (sub5 htm/pdf, MileSplit cache); only finding: FS rows stored with the seed mark, fixed in milesplit.py and patched (Sjostedt, Awad, Hay); 'Indoor Track' = Yarmouth by runners' other results"
+ },
+ "backend/data/parsed_results/2019/Indoor/ms-wmc-meet-2019.json": {
+  "parse_sha": "18168f3ef7f91ffa",
+  "source_sha": "e413e70480327826",
+  "date": "2026-11-06",
+  "by": "sonnet audit rev19 A/B 2026-11-06",
+  "evidence": "every row vs source (sub5 htm/pdf, MileSplit cache); only finding: FS rows stored with the seed mark, fixed in milesplit.py and patched (Sjostedt, Awad, Hay); 'Indoor Track' = Yarmouth by runners' other results"
+ },
+ "backend/data/parsed_results/2019/Indoor/ms-wmcyork-cape-gng-freeport-lake-region-boothbay-2019.json": {
+  "parse_sha": "27d504b9b639e82e",
+  "source_sha": "151948c1ca4e36f0",
+  "date": "2026-11-06",
+  "by": "sonnet audit rev19 A/B 2026-11-06",
+  "evidence": "every row vs source (sub5 htm/pdf, MileSplit cache); only finding: FS rows stored with the seed mark, fixed in milesplit.py and patched (Sjostedt, Awad, Hay); 'Indoor Track' = Yarmouth by runners' other results"
+ },
+ "backend/data/parsed_results/2019/Indoor/womens_results_umaine_invitational_track_2.10.19.json": {
+  "parse_sha": "efab98a4e26e0747",
+  "source_sha": "c33321e1d0c4ccdc",
+  "date": "2026-11-06",
+  "by": "out-of-scope",
+  "evidence": "UMaine Invitational 2019-02-10: college meet (Maine, Husson, USM, UMFK, unattached); same meet in 2020/2022/2025 is out-of-scope"
  },
  "backend/data/parsed_results/2019/Outdoor/2019-04-27-Alliance-Men-Results.json": {
   "parse_sha": "d31674f2ce1325f2",
@@ -41419,11 +41503,11 @@
   "evidence": ""
  },
  "backend/data/parsed_results/2020/Indoor/ms-kvac-meet-16-2020.json": {
-  "parse_sha": "bdbc89708e565613",
-  "source_sha": "2725ffc7a655dcd7",
+  "parse_sha": "5319932f3f7ca8b1",
+  "source_sha": "ebe21d83df150493",
   "date": "2026-11-06",
-  "by": "rev20 (2 Sonnet reviewers, 2026-11-06)",
-  "evidence": "every row compared to MileSplit raw pages; 9 clean; KVAC #16 dated 2020-01-31 by MileSplit/Friday series (exact correction); SMC relay legs' grade tags removed"
+  "by": "re-signoff 2026-11-06",
+  "evidence": "only change: false-start rows (seed or heat number stored as the mark) set to FS per the cached MileSplit page"
  },
  "backend/data/parsed_results/2020/Indoor/ms-kvac-meet-17-2020.json": {
   "parse_sha": "0dc9e6fa447bbc2e",
@@ -41447,11 +41531,11 @@
   "evidence": "every row compared to MileSplit raw pages; 9 clean; KVAC #16 dated 2020-01-31 by MileSplit/Friday series (exact correction); SMC relay legs' grade tags removed"
  },
  "backend/data/parsed_results/2020/Indoor/ms-smaa-chev-der-mars-mass-west-wind-biken-2020.json": {
-  "parse_sha": "efc4219e5e30dc20",
-  "source_sha": "5e52c510585b596a",
+  "parse_sha": "26e0ddb03a51b201",
+  "source_sha": "f96b190148a3b519",
   "date": "2026-11-06",
-  "by": "rev20 (2 Sonnet reviewers, 2026-11-06)",
-  "evidence": "every row compared to MileSplit raw pages; 9 clean; KVAC #16 dated 2020-01-31 by MileSplit/Friday series (exact correction); SMC relay legs' grade tags removed"
+  "by": "re-signoff 2026-11-06",
+  "evidence": "only change: false-start rows (seed or heat number stored as the mark) set to FS per the cached MileSplit page"
  },
  "backend/data/parsed_results/2020/Indoor/ms-smmsitcl-biddeford-falmouth-poland-smc-2020.json": {
   "parse_sha": "8809994c7a3459fc",
@@ -41482,18 +41566,18 @@
   "evidence": "every row compared to MileSplit raw pages; 9 clean; KVAC #16 dated 2020-01-31 by MileSplit/Friday series (exact correction); SMC relay legs' grade tags removed"
  },
  "backend/data/parsed_results/2020/Indoor/ms-wmcpol-frye-yar-traip-wells-st-dlisbon-york-bb-2020.json": {
-  "parse_sha": "03c9ccb60551a186",
-  "source_sha": "4d90196c45ddfd7a",
+  "parse_sha": "59e2c87562305d11",
+  "source_sha": "c078d217e8f8f796",
   "date": "2026-11-06",
-  "by": "rev20 (2 Sonnet reviewers, 2026-11-06)",
-  "evidence": "every row compared to MileSplit raw pages; 9 clean; KVAC #16 dated 2020-01-31 by MileSplit/Friday series (exact correction); SMC relay legs' grade tags removed"
+  "by": "re-signoff 2026-11-06",
+  "evidence": "only change: false-start rows (seed or heat number stored as the mark) set to FS per the cached MileSplit page"
  },
  "backend/data/parsed_results/2020/Indoor/ms-wmcyork-cape-gng-freeport-lake-region-boothbay-2020.json": {
-  "parse_sha": "cd379a09f6e4f62b",
-  "source_sha": "2f34332820c72e52",
+  "parse_sha": "0c25251cb77c723d",
+  "source_sha": "df6284e2c51f89d1",
   "date": "2026-11-06",
-  "by": "rev20 (2 Sonnet reviewers, 2026-11-06)",
-  "evidence": "every row compared to MileSplit raw pages; 9 clean; KVAC #16 dated 2020-01-31 by MileSplit/Friday series (exact correction); SMC relay legs' grade tags removed"
+  "by": "re-signoff 2026-11-06",
+  "evidence": "only change: false-start rows (seed or heat number stored as the mark) set to FS per the cached MileSplit page"
  },
  "backend/data/parsed_results/2020/Indoor/ne-interscholastic-indoor-2020.json": {
   "parse_sha": "df31928e73d32f3e",
@@ -55664,11 +55748,11 @@
   "evidence": "every individual row matches the MileSplit sheet; relays (4x140y/4x210y) were dropped by event_canon and restored by 7fa760da0, now stored"
  },
  "backend/data/parsed_results/2025/Indoor/ms-12-noon-biddeford-deering-gorham-marshwood-2025.json": {
-  "parse_sha": "8558e2d204fb1f9c",
-  "source_sha": "336de0af7aa6b62a",
-  "date": "2026-11-05",
-  "by": "sonnet track review 2026-11-06",
-  "evidence": "Row-by-row vs the cached MileSplit raw page: every row matches (kvac-4c: relay leg 'Miles Fleming (H)' fixed to 'Miles Fleming')"
+  "parse_sha": "fc120473e600dc52",
+  "source_sha": "4525a0b72099a8b7",
+  "date": "2026-11-06",
+  "by": "re-signoff 2026-11-06",
+  "evidence": "only change: team-score rows (52, 49, 40.5 ...) an older converter had stored as Boys 4x400 Open results removed; current converter reads the page with only the relay teams"
  },
  "backend/data/parsed_results/2025/Indoor/ms-3pm-bonny-eagle-falmouth-lincoln-2025.json": {
   "parse_sha": "7e6c6ff1396aaa25",
@@ -55790,11 +55874,11 @@
   "evidence": "every individual row matches the MileSplit sheet; relays (4x140y/4x210y) were dropped by event_canon and restored by 7fa760da0, now stored"
  },
  "backend/data/parsed_results/2025/Indoor/ms-9-am-bonny-eagle-noble-portland-scarborough-2025.json": {
-  "parse_sha": "bae6c71421b29517",
-  "source_sha": "0802598abd097454",
-  "date": "2026-11-05",
-  "by": "sonnet track review 2026-11-06",
-  "evidence": "Row-by-row vs the cached MileSplit raw page: every row matches (kvac-4c: relay leg 'Miles Fleming (H)' fixed to 'Miles Fleming')"
+  "parse_sha": "643fb2e0226a0e7f",
+  "source_sha": "48e8c3ec9ee3b39c",
+  "date": "2026-11-06",
+  "by": "re-signoff 2026-11-06",
+  "evidence": "only change: team-score rows (52, 49, 40.5 ...) an older converter had stored as Boys 4x400 Open results removed; current converter reads the page with only the relay teams"
  },
  "backend/data/parsed_results/2025/Indoor/ms-c-l-g-new-year-mini-2025.json": {
   "parse_sha": "a4f36c4147501711",
@@ -59402,11 +59486,11 @@
   "evidence": "sonnet audit vs cached MileSplit text: every event, name, mark, school, date; clean (prelim=final stored once)"
  },
  "backend/data/parsed_results/2026/Indoor/ms-wmc-greely-cape-pol-lr-wells-nya-mt-val-booth-wisc-2026.json": {
-  "parse_sha": "6b3290012a9d53f3",
-  "source_sha": "dacb41a761163989",
-  "date": "2026-11-05",
-  "by": "sonnet track review 2026-11-05",
-  "evidence": "sonnet audit vs cached MileSplit text; faithful except one FS (false start) status row not stored"
+  "parse_sha": "946c4ff246b91754",
+  "source_sha": "b70a46424d1dbbea",
+  "date": "2026-11-06",
+  "by": "re-signoff 2026-11-06",
+  "evidence": "only change: false-start rows (seed or heat number stored as the mark) set to FS per the cached MileSplit page"
  },
  "backend/data/parsed_results/2026/Indoor/ms-wmc-indoor-championship-2026.json": {
   "parse_sha": "4c63d537e2dfa8f6",

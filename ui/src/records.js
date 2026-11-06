@@ -23,7 +23,7 @@ const STATUS = /^[A-Z]+$/
 export function markValue(mark, event) {
   const s = String(mark || '').trim().toUpperCase()
   if (!s || STATUS.test(s)) return null
-  const field = isDistanceEvent(event) || /jump|vault|put|throw|discus|javelin/i.test(event || '')
+  const field = isDistanceEvent(event) || /jump|vault|put|weight throw|hammer|discus|javelin/i.test(event || '')
   if (field) {
     const metric = s.match(/^(\d+(?:\.\d+)?)\s*M$/)
     if (metric) return parseFloat(metric[1]) * 39.3701
@@ -110,7 +110,7 @@ export function computeRecords(performances, { season, runnerId = (p) => p.athle
     const { gender, event } = splitGender(p.event)
     if (!isRelay(event) && isTeamEntry(p.athlete_name, p.team)) continue
     const key = `${gender}|${event}`
-    if (!groups.has(key)) groups.set(key, { gender, event, field: isDistanceEvent(p.event) || /jump|vault|put|throw|discus|javelin/i.test(p.event), rows: [] })
+    if (!groups.has(key)) groups.set(key, { gender, event, field: isDistanceEvent(p.event) || /jump|vault|put|weight throw|hammer|discus|javelin/i.test(p.event), rows: [] })
     groups.get(key).rows.push({ p, value })
   }
   const out = []

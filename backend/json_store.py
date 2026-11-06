@@ -79,7 +79,7 @@ def make_perf_id(athlete_id: str, event: str, mark: str, date: str, meet: str) -
 
 BAD_MARKS = {'DQ', 'DNS', 'DNF', 'NH', 'NM', 'FOUL', 'SCR', 'ND', 'NT', 'X', 'NWI'}
 
-DISTANCE_KEYWORDS = ['jump', 'put', 'throw', 'vault', 'discus', 'javelin']
+DISTANCE_KEYWORDS = ['jump', 'put', 'weight throw', 'hammer', 'vault', 'discus', 'javelin']   # (not 'throw': 'Throwers Relay' is a race)
 
 
 def is_multi_total(event_name: str) -> bool:

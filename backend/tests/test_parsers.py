@@ -3187,6 +3187,11 @@ def test_throwers_relay_is_its_own_event():
     p = Sub5ColumnParser('x.htm', text='')
     assert p.normalize_event_name("Girls 4x100 Meter Relay Throwers' Re") == '4x100 Meter Throwers Relay'
     assert p.normalize_event_name('Girls 4x100 Meter Relay') == '4x100 Meter Relay'
+    # the store keeps it apart too (it had merged into the 4x100 and 4x200 sprint relays)
+    from backend.event_canon import canonical_event
+    assert canonical_event('4x100 Meter Throwers Relay', 'Boys') == ('Boys', '4x100 Meter Throwers Relay')
+    assert canonical_event('4x220 Yard Relay Throwers', 'Girls') == ('Girls', '4x220 Yard Throwers Relay')
+    assert canonical_event('4x200 Meter Relay', 'Girls') == ('Girls', '4x200 Meter Relay')
 
 
 def test_jump_standing_suffix_is_the_standing_jump():
@@ -3210,6 +3215,23 @@ def test_relay_leg_grade_tag_is_not_part_of_the_name():
     assert leg_without_grade('DiCentes, Madi 12') == 'DiCentes, Madi'
     assert leg_without_grade('Henry VIII') == 'Henry VIII'
     assert leg_without_grade('Smith, John') == 'Smith, John'
+
+
+def test_false_start_is_a_status_not_the_seed():
+    """SMAA 2019: '-- Gage Sjostedt  Gorham  10.42  FS' -- 10.42 is the seed;
+    with a heat column after FS the heat number had been read as the mark."""
+    from backend import milesplit as M
+    text = (
+        "Boys 55 Meter Hurdles\n"
+        "=========================================================================\n"
+        "    Name                    Year School                  Seed     Finals  H#\n"
+        "=========================================================================\n"
+        "  1 Ben Smith                    York                    9.00       8.90   1 \n"
+        " -- Gage Sjostedt                Gorham                 10.42         FS   2 \n")
+    ev = M.parse(text)[0]
+    rows = {r['athlete']: r['result'] for e in ev for r in e['results']}
+    assert rows['Ben Smith'] == '8.90'
+    assert rows['Gage Sjostedt'] == 'FS'
 
 
 def test_coed_relay_score_copies_are_dropped():

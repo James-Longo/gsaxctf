@@ -1809,6 +1809,8 @@ FILE_RULES = [
     (['YHS'], 'Indoor', (2020, 2020), r'^ms-wmc-?(gre-pol-frye-yarm-traip-wells-nya-st-dlisbon|pol-frye-yar-traip-wells-st-dlisbon-york-bb)-2020$', 'me-hs-yarmouth'),
     (['FA Indoor Track'], 'Indoor', (2020, 2020), r'^ms-wmc-gre-pol-frye-yarm-traip-wells-nya-st-dlisbon-2020$', 'me-hs-fryeburg'),
     (['BRHS'], 'Indoor', (2020, 2020), r'^ms-wmcpol-frye-yar-traip-wells-st-dlisbon-york-bb-2020$', 'coop-boothbay-wiscasset'),
+    # 2019 WMC Jan 4: 'Indoor Track' runners' other 2018-19 results are all Yarmouth
+    (['Indoor Track'], 'Indoor', (2019, 2019), r'^ms-wmc-greely-pol-frye-yar-traip-wells-nya-st-domlisbon-2019$', 'me-hs-yarmouth'),
     # 2022 WMC MileSplit meets: 'YHS'/'Yhs' rows are Yarmouth's runners (York prints its full name in the same sheet)
     (['YHS', 'Yhs'], 'Indoor', (2022, 2022), r'^ms-wmc(-practice-meet|poland-yarmouth-wells-st-domslisbon-york-greely)-2022$', 'me-hs-yarmouth'),
     (['Cony High Sc'], 'Indoor', (2026, 2026), r'^KVAC-1C-Results$', 'me-hs-cony'),                       # as before the 2026-11-06 rebuild

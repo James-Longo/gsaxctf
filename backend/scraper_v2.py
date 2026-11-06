@@ -1328,7 +1328,7 @@ def _parse_one_file(args):
             for ev in res.get('events', []):
                 ev_name = ev.get('event', '')
                 is_field = any(k in ev_name.lower() for k in
-                               ('jump', 'put', 'vault', 'discus', 'javelin', 'throw')) \
+                               ('jump', 'put', 'vault', 'discus', 'javelin', 'weight throw', 'hammer')) \
                     or is_multi_total(ev_name)     # (points: higher is better)
                 vals = []
                 for r in ev.get('results', []):
@@ -2089,7 +2089,7 @@ class Sub5ScraperV2:
         Returns (possibly repaired) mark, or None when the mark is physically
         impossible for the event even after repair."""
         ev = event.lower()
-        if any(k in ev for k in ('jump', 'put', 'vault', 'discus', 'javelin', 'throw')):
+        if any(k in ev for k in ('jump', 'put', 'vault', 'discus', 'javelin', 'weight throw', 'hammer')):   # (not 'throw': 'Throwers Relay')
             return mark
         # "12.19.94", "4.13.74": a dot typed for the colon (BucksportMeet.pdf 2016)
         dd = re.fullmatch(r'(\d{1,2})\.(\d{2})\.(\d{1,2})', str(mark).strip())
@@ -3071,7 +3071,7 @@ class Sub5ScraperV2:
                         # Reject marks whose format contradicts the event type:
                         # time-format (M:SS.ss) in a field event, or distance-format (F-I) in a running event.
                         _ev_low = full_event.lower()
-                        _is_field_ev = any(k in _ev_low for k in ('jump', 'put', 'throw', 'vault', 'discus', 'javelin'))
+                        _is_field_ev = any(k in _ev_low for k in ('jump', 'put', 'weight throw', 'hammer', 'vault', 'discus', 'javelin'))   # (a 'Throwers Relay' is a race)
                         _is_track_ev = any(k in _ev_low for k in ('dash', 'run', 'hurdles', 'mile', 'relay', '4x', 'walk'))
                         _has_time_fmt = ':' in mark and '.' in mark
                         _has_dist_fmt = bool(re.match(r'^\d+-\d+', mark))

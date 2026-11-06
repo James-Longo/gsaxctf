@@ -170,7 +170,7 @@ def score_table(races, teams, table, relay_table, limit, merge_divisions=False):
             group = lambda x: x[0]
         else:
             low = any(k in (ev or '').lower() for k in TRACK) and not any(
-                k in (ev or '').lower() for k in ('jump', 'vault', 'put', 'throw', 'discus', 'javelin'))
+                k in (ev or '').lower() for k in ('jump', 'vault', 'put', 'weight throw', 'hammer', 'discus', 'javelin'))
             marks = [x for x in marks if x[1] is not None]
             marks.sort(key=lambda x: x[1], reverse=not low)
             group = lambda x: x[1]

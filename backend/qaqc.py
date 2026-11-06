@@ -29,7 +29,7 @@ ARCHIVE_BASE = os.path.join(BASE_DIR, 'backend', 'data', 'sub5_archive')
 PARSED_BASE = os.path.join(BASE_DIR, 'backend', 'data', 'parsed_results')
 
 BAD_MARKS = {'DQ', 'DNS', 'DNF', 'NH', 'NM', 'FOUL', 'SCR', 'ND', 'NT'}
-FIELD_KEYWORDS = ['jump', 'put', 'throw', 'vault', 'discus', 'javelin', 'weight throw']
+FIELD_KEYWORDS = ['jump', 'put', 'hammer', 'vault', 'discus', 'javelin', 'weight throw']   # (not 'throw': 'Throwers Relay' is a race)
 TRACK_KEYWORDS = ['dash', 'run', 'hurdles', 'mile', 'relay', '4x', 'walk']
 
 IMPLAUSIBLE = {

@@ -22,9 +22,9 @@ FLAGS = os.path.join(BASE, 'backend', 'data', 'qaqc_flags.json')
 HISTORY = os.path.join(BASE, 'backend', 'data', 'track_sanity.json')
 
 OUTDOOR_ONLY = re.compile(r'\b(100 Meter Dash|110 Meter Hurdles|100 Meter Hurdles|300 Meter Hurdles|400 Meter Hurdles|'
-                          r'4x100|Discus|Javelin|Hammer|3200 Meter Run|1600 Meter Run|Steeplechase)\b')
+                          r'4x100(?! Meter Throwers)|Discus|Javelin|Hammer|3200 Meter Run|1600 Meter Run|Steeplechase)\b')
 INDOOR_ONLY = re.compile(r'\b(55 Meter|60 Meter|Weight Throw|600 Yard|300 Meter Dash|1000 Meter Run)\b')
-FIELD = re.compile(r'Jump|Vault|Put|Throw|Discus|Javelin|Hammer')
+FIELD = re.compile(r'Jump|Vault|Put|Throw\b|Discus|Javelin|Hammer')   # (not 'Throwers Relay', a race; EMITL runs it indoors)
 FIELD_MARK = re.compile(r'^\d{1,3}-\d{1,2}(\.\d+)?$|^\d{1,2}\.\d{2}m?$')
 TIME_MARK = re.compile(r'^(\d{1,2}:)?\d{1,2}:\d{2}(\.\d+)?$|^\d{1,3}\.\d{1,3}$')
 BAD_NAME = re.compile(r'\d|\bunknown\b|\bcoach\b|^\W|\(|\)|,|\b(relay|team|school|academy|high)\b', re.I)
