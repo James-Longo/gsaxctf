@@ -3234,6 +3234,28 @@ def test_false_start_is_a_status_not_the_seed():
     assert rows['Gage Sjostedt'] == 'FS'
 
 
+def test_racetab_division_first_headers():
+    """Triple C 2018 (RaceTab): "Junior Boys 40 Yard Dash Prelims" is the boys'
+    40 yd junior division, prelim rows; the parser had read no events."""
+    from backend import milesplit as M
+    text = (
+        "                 Junior Boys 40 Yard Dash Prelims               \n"
+        "==============================================================\n"
+        "    Name                  Yr Team                      Time H#\n"
+        "--------------------------------------------------------------\n"
+        "  1 Caden True             6 Thornton Middle Scho     5.70   2\n"
+        "\n"
+        "                    Senior Girls 40 Yard Dash                    \n"
+        "=================================================================\n"
+        "    Name                  Yr Team                      Time   Pts\n"
+        "-----------------------------------------------------------------\n"
+        "  1 Maya Panozzo           8 Yarmouth Middle Scho     5.90       \n")
+    ev = M.parse(text)[0]
+    got = [(e['event'], [(r['athlete'], r['result'], r['type']) for r in e['results']]) for e in ev]
+    assert got == [('Boys 40 Yard Dash Junior Division', [('Caden True', '5.70', 'Prelims')]),
+                   ('Girls 40 Yard Dash Senior Division', [('Maya Panozzo', '5.90', 'Finals')])], got
+
+
 def test_coed_relay_score_copies_are_dropped():
     """emitlrelays2020 prints the coed sprint medley as Mixed and again as
     'Boys ... Coed male' / 'Girls ... COED female' (team scoring): one race."""

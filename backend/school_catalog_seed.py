@@ -644,6 +644,8 @@ ME_MS = [
     ('me-ms-southern-maine-catholic', 'Southern Maine Catholic (combined MS team)', None, None,
      ['Southern Maine Catholic', 'Southern ME Catholic', 'So. ME Catholic', 'So. Maine Catholic', 'Southern ME Cath',
       'SO Maine Catholic'], [], [], {'kind': 'combined', 'notes': 'Catholic K-8 schools of southern Maine; members not identified.'}),
+    ('me-ms-st-james-biddeford', 'St. James School', 'Biddeford', None, ['St. James School', 'St James School'], [], [],
+     {'notes': 'Catholic K-8 school in Biddeford; Triple C middle-school meets 2018 print it as St. James.'}),
     ('me-ms-reeds-brook', 'Reeds Brook Middle School', 'Hampden', None,
      ['Reeds Brook Middle School', 'Reeds Brook', 'Reeds Brooks', 'Reeds Brook MS', 'Reeds Brooks MS', 'Reeds Brook Middle'],
      ['RBMS'], [], {}),
@@ -1809,6 +1811,8 @@ FILE_RULES = [
     (['YHS'], 'Indoor', (2020, 2020), r'^ms-wmc-?(gre-pol-frye-yarm-traip-wells-nya-st-dlisbon|pol-frye-yar-traip-wells-st-dlisbon-york-bb)-2020$', 'me-hs-yarmouth'),
     (['FA Indoor Track'], 'Indoor', (2020, 2020), r'^ms-wmc-gre-pol-frye-yarm-traip-wells-nya-st-dlisbon-2020$', 'me-hs-fryeburg'),
     (['BRHS'], 'Indoor', (2020, 2020), r'^ms-wmcpol-frye-yar-traip-wells-st-dlisbon-york-bb-2020$', 'coop-boothbay-wiscasset'),
+    # Triple C middle-school meets 2018 (Biddeford, Saco, TA, Noble ...): 'St. James' is St. James School, Biddeford
+    (['St. James'], 'Indoor', (2018, 2018), r'^ms-triple-c', 'me-ms-st-james-biddeford'),
     # 2019 WMC Jan 4: 'Indoor Track' runners' other 2018-19 results are all Yarmouth
     (['Indoor Track'], 'Indoor', (2019, 2019), r'^ms-wmc-greely-pol-frye-yar-traip-wells-nya-st-domlisbon-2019$', 'me-hs-yarmouth'),
     # 2022 WMC MileSplit meets: 'YHS'/'Yhs' rows are Yarmouth's runners (York prints its full name in the same sheet)

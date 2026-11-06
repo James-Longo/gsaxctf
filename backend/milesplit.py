@@ -106,9 +106,14 @@ def parse(text):
         while nx < len(lines) and nx < i+3 and not lines[nx].strip(): nx += 1   # a blank line before the ruler (2014 Almquist, Southern Maine MS)
         if nx < len(lines) and re.fullmatch(r'\s*(Finals|Prelims|Preliminaries)\s*', lines[nx]) and nx+1 < len(lines) and re.match(r'\s*=+\s*$', lines[nx+1]):
             nx += 1   # MileSplit's own sheet: "Girls 55 meter Hurdles" / "Finals" / ruler / "NAME  YR  TEAM  MARK  H#  WIND"
-        if not m and nx < len(lines) and re.match(r'\s*=+\s*$',lines[nx]) and re.match(r'\s*(Varsity\s+|Middle School\s+)?(Boys|Girls|Men|Women)\s+\S',ln) and 'Team Rank' not in ln and not re.match(r'\s*JV\s',ln): m = re.match(r'\s*(?:Varsity\s+|Middle School\s+)?(.*?)\s*$', ln)
+        if not m and nx < len(lines) and re.match(r'\s*=+\s*$',lines[nx]) and re.match(r'\s*(Varsity\s+|Middle School\s+|(?:Junior|Senior|Intermediate|Open)\s+(?=(?:Boys|Girls)\s))?(Boys|Girls|Men|Women)\s+\S',ln) and 'Team Rank' not in ln and not re.match(r'\s*JV\s',ln): m = re.match(r'\s*(?:Varsity\s+|Middle School\s+)?(.*?)\s*$', ln)
         if m:
             nm = m.group(1)
+            # RaceTab MS sheets lead with the division: "Senior Girls 40 Yard Dash", "Junior Boys 40 Yard Dash
+            # Prelims" (Triple C 2018) -> "Girls 40 Yard Dash Senior Division", prelim rows typed Prelims
+            dv = re.fullmatch(r'(Junior|Senior|Intermediate|Open)\s+(Boys|Girls)\s+(.*?)(?:\s+(Prelims|Finals))?', nm.strip())
+            if dv:
+                nm = f'{dv.group(2)} {dv.group(3)} {dv.group(1)} Division'
             g = re.match(r'(Boys|Girls|Men|Women)\s+(.*)', nm)
             gender = {'Boys':'Boys','Men':'Boys','Girls':'Girls','Women':'Girls'}[g.group(1)] if g else ''
             ev = g.group(2) if g else nm
@@ -126,7 +131,7 @@ def parse(text):
                 events.append(cur); sec = 'Finals'; hdr = None; i += 1; continue
             cur = {'event': (gender+' '+norm_event(ev)).strip(), 'gender': gender,
                    'is_relay': bool(re.search(r'Relay|Medley|Shuttle|Carousel|\dx\d',ev)), 'results': []}
-            events.append(cur); sec='Finals'; hdr=None; i+=1; continue
+            events.append(cur); sec='Prelims' if dv and dv.group(4) == 'Prelims' else 'Finals'; hdr=None; i+=1; continue
         mts=re.match(r'\s*(Female|Male|Women|Men|Girls|Boys)\s+(?:[A-Za-z]+\s+(?:DIVISION|BOYS|GIRLS|Division)\s+)?Team Scores',ln)   # "Girls JR DIVISION  Team Scores" (WMC 2026), "Boys JR BOYS  Team Scores" (GPC/SMMSAC MS 2026)
         if mts:
             g='Girls' if mts.group(1) in ('Female','Women','Girls') else 'Boys'
