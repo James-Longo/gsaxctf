@@ -2102,8 +2102,13 @@ class Sub5ScraperV2:
             mark = f'{dd.group(1)}:{dd.group(2)}.{dd.group(3)}'
         meters = None
         m = self._EVENT_METERS.search(event)
+        y = None if m else re.search(r'(\d{2,4})\s*(?:yard|yd)', event, re.I)
         if m:
             meters = int(m.group(1))
+            if '4x' in ev.replace(' ', ''):
+                meters *= 4
+        elif y:   # (yard races, mostly middle school: a 240 Yard Dash '7.70' is no 240, 2018 Triple C)
+            meters = int(int(y.group(1)) * 0.9144)
             if '4x' in ev.replace(' ', ''):
                 meters *= 4
         elif 'mile' in ev:
@@ -2133,6 +2138,12 @@ class Sub5ScraperV2:
                 return f'{mm.group(1)}:{mm.group(2)}'
         if val is not None and val < floor:
             return None  # impossible even after repair
+        # (ten minutes or more for a yard race of 1000 m or less is no race time: a 240 Yard Dash
+        # '48:01.00' for 48.01, 2018 Triple C)
+        hm = re.fullmatch(r'(\d{1,3}):(\d{2})(?:\.\d+)?', str(mark).strip())
+        # (yard sprints only: a meter race's 10-minute time is a mislabelled longer race, a real mark)
+        if hm and y and meters <= 1000 and int(hm.group(1)) >= 10 and 'relay' not in ev and 'walk' not in ev:
+            return None
         return mark
 
     def team_name_is_sane(self, team):

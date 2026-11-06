@@ -3764,6 +3764,19 @@ def test_mile_race_walk_is_not_the_mile_run():
     assert canonical_event('Girls 1 Mile Run', 'Girls', season='Indoor') == ('Girls', '1 Mile Run')
 
 
+def test_yard_race_marks_are_checked_for_impossible_times():
+    """2018 Triple C: a 240 Yard Dash '7.70', a 1000 Yard Run '44.90' and a 240 Yard Dash '48:01.00'
+    are no race times; real yard marks and a colon-loss '2.42' 1000 yards (2:42) stay."""
+    from backend import scraper_v2 as sv
+    s = sv.Sub5ScraperV2.__new__(sv.Sub5ScraperV2)
+    assert s.repair_mark('7.70', 'Boys 240 Yard Dash') is None
+    assert s.repair_mark('44.90', 'Girls 1000 Yard Run') is None
+    assert s.repair_mark('48:01.00', 'Girls 240 Yard Dash') is None
+    assert s.repair_mark('37.70', 'Boys 240 Yard Dash') == '37.70'
+    assert s.repair_mark('5.00', 'Girls 40 Yard Dash') == '5.00'
+    assert s.repair_mark('2.42', 'Boys 1000 Yard Run') == '2:42'
+
+
 if __name__ == '__main__':
     qaqc._ensure_team_mapping()
     failed = 0
