@@ -355,11 +355,6 @@ def stage_one(year, season, lst, held, cache):
         json.dump(doc, open(path, 'w'), indent=1)
     ids, unresolved, nrows = school_ids(doc, year, season, cache, os.path.basename(path))
     maine = maine_share(doc, year, season, cache, os.path.basename(path))
-    if nrows and maine < MIN_MAINE_SCHOOL:
-        os.remove(path)
-        set_listing_kind(year, season, lst['id'], 'open',
-                         f'auto (milesplit_bulk): {maine:.0%} of rows are Maine high or middle schools (college, club or out-of-state meet)')
-        return dict(status='skipped', why=[f'not a Maine school meet ({maine:.0%} Maine school rows)'])
     d = day(doc.get('date')) or day(lst.get('date') or '')
     mine = _names(doc)
     for stem, hids, hday, stems in held:
@@ -376,6 +371,13 @@ def stage_one(year, season, lst, held, cache):
         os.remove(path)
         set_listing_match(year, season, lst['id'], real[0], 'auto (milesplit_bulk): the same runners at the same times as the meet we hold')
         return dict(status='duplicate', match=real[0])
+    # after the duplicate checks: a meet we already hold is a duplicate even when its sheet's school
+    # codes do not resolve (2021 Morse vs Brunswick printed Brunswick as 'Bhs' and was relabelled open)
+    if nrows and maine < MIN_MAINE_SCHOOL:
+        os.remove(path)
+        set_listing_kind(year, season, lst['id'], 'open',
+                         f'auto (milesplit_bulk): {maine:.0%} of rows are Maine high or middle schools (college, club or out-of-state meet)')
+        return dict(status='skipped', why=[f'not a Maine school meet ({maine:.0%} Maine school rows)'])
     if any(h and h != 'small' for h in homes):   # some races held, some new: store the new ones only
         gone = [(e['gender'], e['event'], h) for e, h in zip(doc['events'], homes) if h and h != 'small']
         doc['events'] = [e for e, h in zip(doc['events'], homes) if not h or h == 'small']
