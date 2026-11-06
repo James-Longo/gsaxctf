@@ -265,6 +265,7 @@ def signoff(paths, by, evidence, auto=False):
 
 
 _web_dates = None
+_exact_dates = None
 
 
 def in_season(d, year, season):
@@ -275,8 +276,17 @@ def in_season(d, year, season):
 
 
 def file_date(doc, year, season, stem):
-    """The file's own date, else the season index's date for it (what the store uses)."""
-    global _web_dates
+    """The file's own date, else the season index's date for it (what the store uses).
+    An exact meet correction in manual_fixes.json (stem, year, season) wins, as in the store."""
+    global _web_dates, _exact_dates
+    if _exact_dates is None:
+        p = os.path.join(BASE, 'manual_fixes.json')
+        mc = json.load(open(p)).get('meet_corrections', []) if os.path.exists(p) else []
+        _exact_dates = {(str(m.get('year')), m.get('season'), m['meet_name_fragment']): m['new_date']
+                        for m in mc if m.get('exact') and m.get('year') and m.get('season')}
+    fixed = _exact_dates.get((str(year), season, stem))
+    if fixed:
+        return fixed
     d = doc.get('date')
     if d and re.match(r'\d{4}-\d\d-\d\d', d) and in_season(d, int(year), season):
         return d   # (a date outside the season is a typo on the sheet: "11jan2024" in 2025 Indoor)

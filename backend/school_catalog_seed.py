@@ -1801,6 +1801,14 @@ FILE_RULES = [
     (['CAPE', 'Cape Elizabeth'], 'Indoor', (2023, 2023), r'^(Resultssmmsac-festival|Results-?wk-\d-meet-\d|ResultsWK-\d-MEET-\d|ms-smmsac-indoor-track-week-\d-meet-\d-2023)$', 'me-ms-cape-elizabeth'),
     (['YAR', 'Yarmouth'], 'Indoor', (2023, 2023), r'^(Resultssmmsac-festival|Results-?wk-\d-meet-\d|ResultsWK-\d-MEET-\d|ms-smmsac-indoor-track-week-\d-meet-\d-2023)$', 'me-ms-harrison'),
     (['North Yarmou'], 'Indoor', (2023, 2023), r'^Resultswmc[12]?$', 'coop-nya-maine-coast-waldorf'),
+    # 2020 MileSplit meets (codes checked against each runner's other results)
+    (['OHHS'], 'Indoor', (2020, 2020), r'^ms-kvac-meet-6-2020$', 'me-hs-oxford-hills'),
+    (['OHS'], 'Indoor', (2020, 2020), r'^ms-kvac-meet-6-2020$', 'me-hs-oceanside'),
+    (['CRHS'], 'Indoor', (2020, 2020), r'^ms-kvac-meet-1?6-2020$', 'me-hs-camden-hills'),
+    (['SMC'], 'Indoor', (2020, 2020), r'^ms-smmsitcl-biddeford-falmouth-poland-smc-2020$', 'me-ms-southern-maine-catholic'),
+    (['YHS'], 'Indoor', (2020, 2020), r'^ms-wmc-?(gre-pol-frye-yarm-traip-wells-nya-st-dlisbon|pol-frye-yar-traip-wells-st-dlisbon-york-bb)-2020$', 'me-hs-yarmouth'),
+    (['FA Indoor Track'], 'Indoor', (2020, 2020), r'^ms-wmc-gre-pol-frye-yarm-traip-wells-nya-st-dlisbon-2020$', 'me-hs-fryeburg'),
+    (['BRHS'], 'Indoor', (2020, 2020), r'^ms-wmcpol-frye-yar-traip-wells-st-dlisbon-york-bb-2020$', 'coop-boothbay-wiscasset'),
     # 2022 WMC MileSplit meets: 'YHS'/'Yhs' rows are Yarmouth's runners (York prints its full name in the same sheet)
     (['YHS', 'Yhs'], 'Indoor', (2022, 2022), r'^ms-wmc(-practice-meet|poland-yarmouth-wells-st-domslisbon-york-greely)-2022$', 'me-hs-yarmouth'),
     (['Cony High Sc'], 'Indoor', (2026, 2026), r'^KVAC-1C-Results$', 'me-hs-cony'),                       # as before the 2026-11-06 rebuild

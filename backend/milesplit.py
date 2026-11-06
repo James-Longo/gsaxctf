@@ -1173,6 +1173,12 @@ def listing(year, season):
                'listed': 'https://me.milesplit.com/results?year=%s&season=%s' % (year, MS_SEASON[season]),
                'meets': meets}, open(out, 'w'), indent=1)
     print('LISTED', len(meets), 'meets ->', out)
+def leg_without_grade(leg):
+    """A relay leg printed with its grade after the name ("Kubwimana, Ian 6t", "Ball, Kelsey 9"):
+    the name alone. Grades 4-12, optionally with a 't'/'th' tag."""
+    return re.sub(r'\s+(?:[4-9]|1[0-2])(?:t|th)?$', '', leg.strip())
+
+
 def drop_nickname(name):
     """"Carmen (Scar) Brown" -> "Carmen Brown"; the sheet's name column cuts some short
     ("Abigail (Abb Dorrington"); "Nolan Circo (H)" (a co-op member's home-school mark) -> "Nolan Circo"."""
@@ -1324,6 +1330,7 @@ def main():
                 r['athlete'], r['grade'] = gc.group(1) + ' ' + gc.group(3), gc.group(2)
             if 'athletes' in r:
                 r['athletes']=[re.sub(r'^\d+\s+','',a) for a in r['athletes']]
+                r['athletes']=[leg_without_grade(a) for a in r['athletes']]   # "Kubwimana, Ian 6t" (SMMSITCL 2020)
                 r['athletes']=[(lambda mm: mm.group(2)+' '+mm.group(1) if mm else a)(re.match(r'^([^,]+),\s+(.+)$',a)) for a in r['athletes']]
             nm=re.match(r'^([^,]+),\s+(.+)$',r.get('athlete',''))
             if nm: r['athlete']=nm.group(2)+' '+nm.group(1)

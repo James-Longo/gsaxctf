@@ -3201,6 +3201,17 @@ def test_jump_standing_suffix_is_the_standing_jump():
     assert canonical_event('Standing Long Jump', 'Girls', 'Indoor')[1] == 'Standing Long Jump'
 
 
+def test_relay_leg_grade_tag_is_not_part_of_the_name():
+    """SMMSITCL 2020 prints relay legs "1) Kubwimana, Ian 6t"; the NE
+    Interscholastic 2026 sheet "Ball, Kelsey 9": the grade is not the name."""
+    from backend.milesplit import leg_without_grade
+    assert leg_without_grade('Kubwimana, Ian 6t') == 'Kubwimana, Ian'
+    assert leg_without_grade('Ball, Kelsey 9') == 'Ball, Kelsey'
+    assert leg_without_grade('DiCentes, Madi 12') == 'DiCentes, Madi'
+    assert leg_without_grade('Henry VIII') == 'Henry VIII'
+    assert leg_without_grade('Smith, John') == 'Smith, John'
+
+
 def test_xc_placed_nt_row_keeps_its_team_place():
     """A placed finisher whose printed time was impossible (stored "NT",
     2011 Wells girls 0:01) still takes the place when team scores are checked."""
