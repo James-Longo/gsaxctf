@@ -1132,6 +1132,15 @@ def listing(year, season):
                'listed': 'https://me.milesplit.com/results?year=%s&season=%s' % (year, MS_SEASON[season]),
                'meets': meets}, open(out, 'w'), indent=1)
     print('LISTED', len(meets), 'meets ->', out)
+def superseded(files):
+    """Drop a posting that a same-named "Updated"/"Revised"/"Corrected" posting replaces:
+    "Results" + "Updated Results 12/15" (2026 Falcon/Patriot Jam) reads only the update,
+    which corrects marks; reading both stores a runner's old and new marks side by side."""
+    def base(n):
+        n = re.sub(r'(?i)\b(updated|revised|corrected)\b|\(\s*\)|\b\d{1,2}/\d{1,2}(/\d{2,4})?\b', ' ', n)
+        return re.sub(r'[^a-z]+', ' ', n.lower()).strip()
+    upd = {base(f['name']) for f in files if re.search(r'(?i)\b(updated|revised|corrected)\b', f['name'])}
+    return [f for f in files if re.search(r'(?i)\b(updated|revised|corrected)\b', f['name']) or base(f['name']) not in upd]
 def main():
     cmd, slug = sys.argv[1], sys.argv[2]
     if cmd == 'list':
@@ -1143,6 +1152,7 @@ def main():
     if cmd=='info':
         print(slug, date, title[:80], [(f['name'],f['id'],f['isMeetPro']) for f in files]); return
     events=[]; rank=[]; urls=[]; paywalled=[]; head=['','']; HEADYEARS=set()
+    files=superseded(files)
     for f in files:
         if str(f['id']) in os.environ.get('EXCLUDE','').split(','): continue
         u='https://%s/meets/%s/results/%s/raw'%(HOST,slug,f['id'])

@@ -3499,6 +3499,15 @@ def test_ledger_december_indoor_listing_opens_next_season():
     assert got == {'1': 2026, '2': 2025}, got
 
 
+def test_milesplit_updated_posting_supersedes_the_original():
+    from backend.milesplit import superseded
+    ids = lambda fs: [f['id'] for f in superseded([dict(name=n, id=i) for n, i in fs])]
+    assert ids([('Results', 1), ('Updated Results 12/15', 2)]) == [2]
+    assert ids([('Boys Results', 1), ('Girls Results', 2), ('Updated Boys Results', 3), ('Updated Girls Results', 4)]) == [3, 4]
+    assert ids([('BOYS (UPDATED 5/16)', 1), ('GIRLS', 2)]) == [1, 2]
+    assert ids([('Boys Results Updated 8/30', 1), ('Girls Results', 2)]) == [1, 2]
+
+
 if __name__ == '__main__':
     qaqc._ensure_team_mapping()
     failed = 0
