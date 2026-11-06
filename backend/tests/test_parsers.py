@@ -3541,6 +3541,16 @@ Girls Senior Division Team Scores
     assert rank and rank[0]['gender'] == 'Girls' and len(rank[0]['teams']) == 2, rank
 
 
+def test_milesplit_nickname_in_parentheses_is_dropped():
+    from backend.milesplit import drop_nickname
+    assert drop_nickname('Carmen (Scar) Brown') == 'Carmen Brown'
+    assert drop_nickname('Abigail (Abb Dorrington') == 'Abigail Dorrington'
+    assert drop_nickname('Nolan Circo (H)') == 'Nolan Circo'
+    assert drop_nickname('Jamari (Jj) Jenkins') == 'Jamari Jenkins'
+    assert drop_nickname('Charles (CJ) Yanush') == 'Charles Yanush'
+    assert drop_nickname('Mary Smith') == 'Mary Smith'
+
+
 if __name__ == '__main__':
     qaqc._ensure_team_mapping()
     failed = 0

@@ -1148,6 +1148,11 @@ def listing(year, season):
                'listed': 'https://me.milesplit.com/results?year=%s&season=%s' % (year, MS_SEASON[season]),
                'meets': meets}, open(out, 'w'), indent=1)
     print('LISTED', len(meets), 'meets ->', out)
+def drop_nickname(name):
+    """"Carmen (Scar) Brown" -> "Carmen Brown"; the sheet's name column cuts some short
+    ("Abigail (Abb Dorrington"); "Nolan Circo (H)" (a co-op member's home-school mark) -> "Nolan Circo"."""
+    out = re.sub(r'\s*\((?:[A-Z][A-Za-z.\'-]{0,11})\)?(?=\s|$)', '', name)
+    return re.sub(r'\s+', ' ', out).strip() or name
 def superseded(files):
     """Drop a posting that a same-named "Updated"/"Revised"/"Corrected" posting replaces:
     "Results" + "Updated Results 12/15" (2026 Falcon/Patriot Jam) reads only the update,
@@ -1195,6 +1200,7 @@ def main():
         for ev in e:   # Hy-Tek relay legs with bibs ("Alana #70 Heggeman, Adalyn #71 Irish")
             for x in ev['results']:
                 if x.get('athlete') and '#' in x['athlete']: x['athlete'] = re.sub(r'\s*#\s*\d+\b', '', x['athlete']).strip()
+                if x.get('athlete') and '(' in x['athlete']: x['athlete'] = drop_nickname(x['athlete'])
                 if x.get('athletes'): x['athletes'] = [re.sub(r'\s*#\s*\d+\b', '', a).strip() for a in x['athletes']]
         # one meet posted twice, as MileSplit's own sheet and as the Hy-Tek file (WMC week 5 2026):
         # a row an earlier file already holds (same event, runner, mark) is not a second result
