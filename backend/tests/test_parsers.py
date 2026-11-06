@@ -3428,9 +3428,19 @@ Finals
 ==========================================================================================
 """
     events, rankings = parse(text)
-    rows = [(e['event'], x.get('athlete'), x['result']) for e in events for x in e['results']]
-    assert rows == [('Boys 40 yard Dash SR BOYS', 'Owen Crockett', '6.31')], rows
+    rows = [(e['event'], x.get('athlete') or x.get('school'), x['result']) for e in events for x in e['results']]
+    # the untitled SR section is the 4x210yd relay (the same sheets name it so in 2025; its time fits)
+    assert rows == [('Boys 40 yard Dash SR BOYS', 'Owen Crockett', '6.31'),
+                    ('Boys 4x210yd Relay SR BOYS', 'Biddeford Middle School', '2:00.49')], rows
     assert rankings == [{'gender': 'Boys', 'teams': [{'rank': 1, 'team': 'Southern Maine Catholic', 'score': 32}, {'rank': 2, 'team': 'Biddeford Middle School', 'score': 12}]}], rankings
+    from backend.event_canon import canonical_event
+    assert canonical_event('Boys 4x210yd Relay SR BOYS', 'Boys')[1] == '4x210 Yard Relay'
+    # a time that can't be that relay, or a named runner, leaves the section unfiled
+    bad = text.replace('2:00.49', '3:40.00')
+    assert [e['event'] for e in parse(bad)[0]] == ['Boys 40 yard Dash SR BOYS']
+    jr = text.replace('Boys  SR BOYS', 'Boys  JR BOYS').replace('                                        Biddeford Middle School            2:00.49',
+                                                               ('      Ann Lee'.ljust(36) + '7   ') + 'Biddeford Middle School            1:20.49')
+    assert [e['event'] for e in parse(jr)[0]] == ['Boys 40 yard Dash SR BOYS']
 
 
 def test_milesplit_bulk_small_race_is_not_matched_to_a_held_race():

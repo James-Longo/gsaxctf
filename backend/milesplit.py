@@ -113,8 +113,17 @@ def parse(text):
             gender = {'Boys':'Boys','Men':'Boys','Girls':'Girls','Women':'Girls'}[g.group(1)] if g else ''
             ev = g.group(2) if g else nm
             ev = re.sub(r'\bRace Walk\b','Race Walk',ev)
-            if re.fullmatch(r'(JR|INT|SR|OPEN)\s+(BOYS|GIRLS)', ev.strip()):   # "Girls  JR GIRLS": an event with no name (the GPC/SMMSAC 2026 MS relays) has no distance to file it under
-                note('UNTITLED', ln); cur = None; i += 1; continue
+            ud = re.fullmatch(r'(JR|INT|SR|OPEN)\s+(BOYS|GIRLS)', ev.strip())
+            if ud:   # "Girls  JR GIRLS": an event with no name (GPC/SMMSAC MS relays, 2024 and 2026)
+                if ud.group(1) == 'OPEN':
+                    note('UNTITLED', ln); cur = None; i += 1; continue
+                # the same sheets name them when they do: JR and INT run the 4x140yd, SR the 4x210yd
+                # ("Girls  JR 4x140yd Relay GIRLS", 2025); kept only if every row is a team with a time
+                # in that relay's range (checked at the end)
+                leg = '4x210yd' if ud.group(1) == 'SR' else '4x140yd'
+                cur = {'event': f'{gender} {leg} Relay {ud.group(1)} {ud.group(2)}', 'gender': gender,
+                       'is_relay': False, 'results': [], '_untitled': leg}   # read as individual rows: the NAME column must be blank
+                events.append(cur); sec = 'Finals'; hdr = None; i += 1; continue
             cur = {'event': (gender+' '+norm_event(ev)).strip(), 'gender': gender,
                    'is_relay': bool(re.search(r'Relay|Medley|Shuttle|Carousel|\dx\d',ev)), 'results': []}
             events.append(cur); sec='Finals'; hdr=None; i+=1; continue
@@ -218,6 +227,22 @@ def parse(text):
         r={'place':place if mk not in STAT else None,'athlete':name,'school':school,'grade':yr,'result':mk,'type':sec}
         if ex: r['exhibition']=True
         cur['results'].append(r); i+=1; continue
+    def _secs(mk):
+        p = mk.split(':')
+        try: return sum(float(x) * 60 ** k for k, x in enumerate(reversed(p)))
+        except ValueError: return None
+    span = {'4x140yd': (65, 130), '4x210yd': (100, 190)}
+    for e in events:
+        leg = e.pop('_untitled', None)
+        if leg and e['results']:
+            lo, hi = span[leg]
+            if all(not (x.get('athlete') or '').strip() and (x['result'] in STAT or lo <= (_secs(x['result']) or 0) <= hi)
+                   for x in e['results']):
+                e['is_relay'] = True
+                e['results'] = [{'place': x['place'], 'school': x['school'], 'result': x['result'],
+                                 'athletes': [], 'type': x['type']} for x in e['results']]
+            else:
+                note('UNTITLED', e['event']); e['results'] = []
     return [e for e in events if e['results']], rankings
 HDR = re.compile(r'^\s*(?:Event\s+\d+\s+)?(Varsity\s+|JV\s+)?(Boys|Girls|Men|Women)\s+([A-Za-z0-9 ./-]+?)\s*(?:\(.*\))?\s*$')
 def hdr_gender(ln):
