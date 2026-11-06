@@ -3757,6 +3757,13 @@ def test_name_flip_drops_stray_period_class_marker_and_bad_byte():
     assert n(s, 'Smith, J.') == 'J. Smith'
 
 
+def test_mile_race_walk_is_not_the_mile_run():
+    """'Girls 1 Mile Race Walk Open Division' (2025 SMAA) is a race walk, not the mile."""
+    from backend.event_canon import canonical_event
+    assert canonical_event('Girls 1 Mile Race Walk Open Division', 'Girls', season='Indoor') == ('Girls', '1 Mile Race Walk')
+    assert canonical_event('Girls 1 Mile Run', 'Girls', season='Indoor') == ('Girls', '1 Mile Run')
+
+
 if __name__ == '__main__':
     qaqc._ensure_team_mapping()
     failed = 0

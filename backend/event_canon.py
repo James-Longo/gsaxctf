@@ -196,6 +196,8 @@ def canonical_event(raw, gender, season=None, level=None, relay=False):
     if m and not DIST_RE.search(s):
         n = (m.group(1) or '1').lower()
         n = {'one': '1', 'two': '2'}.get(n, n)
+        if TYPE_WALK.search(s) or re.search(r'\bwalk\b', s, re.I):   # ('Girls 1 Mile Race Walk', 2025 SMAA)
+            return gender, f'{n} Mile Race Walk'
         return gender, f'{n} Mile Run' + (' (Wheelchair)' if wheelchair else '')
 
     # distance + type
