@@ -264,6 +264,26 @@ def signoff(paths, by, evidence, auto=False):
     return n
 
 
+_web_dates = None
+
+
+def file_date(doc, year, season, stem):
+    """The file's own date, else the season index's date for it (what the store uses)."""
+    global _web_dates
+    d = doc.get('date')
+    if d and re.match(r'\d{4}-\d\d-\d\d', d):
+        return d
+    if _web_dates is None:
+        p = os.path.join(BASE, 'web_date_mapping.json')
+        _web_dates = json.load(open(p)) if os.path.exists(p) else {}
+    for ext in ('.htm', '.html', '.pdf', '.txt'):
+        raw = _web_dates.get(f'{year}/{season}/{stem}{ext}')
+        if raw:
+            from backend.scraper_v2 import Sub5ScraperV2
+            return Sub5ScraperV2.parse_web_date(None, raw)
+    return d or None
+
+
 def load_have():
     from backend import school_catalog
     cache = {}
@@ -280,7 +300,7 @@ def load_have():
         rows = sum(len(e.get('results', [])) for e in doc.get('events', []))
         schools, unresolved = schools_of(doc, int(year), season, school_catalog.resolve, cache, meet_name=os.path.basename(path))
         rel = os.path.relpath(path, os.path.dirname(BASE))
-        files.append(dict(year=int(year), season=season, stem=stem, date=doc.get('date') or None,
+        files.append(dict(year=int(year), season=season, stem=stem, date=file_date(doc, year, season, stem),
                           name=doc.get('meet_name') or '', source=source_of(stem, doc), urls=urls_of(doc),
                           rows=rows, schools=schools, path=rel,
                           check=confidence(rel, int(year), season, stem, doc, rows, unresolved)))
@@ -311,9 +331,12 @@ def load_listings():
     for path in sorted(glob.glob(os.path.join(LISTINGS, '*.json'))):
         doc = json.load(open(path))
         for m in doc.get('meets', []):
-            out.append(dict(m, site=doc.get('site'), year=int(m.get('year') or doc['year']),
-                             season=m.get('season') or doc['season'], listed=doc.get('listed'),
-                             listing_file=os.path.basename(path)))
+            year, season = int(m.get('year') or doc['year']), m.get('season') or doc['season']
+            d = m.get('date') or ''
+            if season == 'Indoor' and d[:4] == str(year) and d[5:7] in ('11', '12'):
+                year += 1   # MileSplit lists a December meet under its calendar year; it opens the next season
+            out.append(dict(m, site=doc.get('site'), year=year, season=season, listed=doc.get('listed'),
+                            listing_file=os.path.basename(path)))
     return out
 
 
@@ -338,12 +361,36 @@ def near(d1, d2, days=1):
     return abs((a - b).days) <= days
 
 
+LEAGUES = 'kvac|emitl|smaa|wmc|pvc|mvc|gpc|sml|ccc'
+
+
+def meet_code(name):
+    """('kvac', '1a') from "KVAC Meet 1A 2026"; None when the name has no league + meet code."""
+    m = re.search(r'\b(' + LEAGUES + r')\b\W*(?:indoor\W*)?(?:meet\W*)?#?(\d{1,2}[a-d]{0,2})\b', (name or '').lower())
+    return (m.group(1), m.group(2)) if m else None
+
+
+def has_code(m, code):
+    league, c = code
+    text = re.sub(r'[^a-z0-9]', '', ' '.join([m['name']] + [os.path.basename(f['path']) for f in m['files']]).lower())
+    end = r'(?![a-d])' if c[-1].isalpha() else r'(?![a-d0-9])'   # "emitl1a6dec2025": a date may follow a lettered code
+    return bool(re.search(league + r'(?:indoor)?(?:meet)?' + c + end, text)) or \
+        (league not in text and bool(re.search(r'meet' + c + end, text)) and
+         any(league in os.path.basename(f['path']).lower() for f in m['files']))
+
+
 def match(listing, meets, by_url, by_stem):
     mid = mile_meet_id(listing.get('url'))
     if mid and mid in by_url:
         return by_url[mid]
     if listing.get('match'):   # a reader's verdict: this listing is the meet stored as <stem>
         return by_stem.get((listing['year'], listing['season'], listing['match']))
+    code = meet_code(listing.get('name'))
+    if code:   # "KVAC Meet 1A": the held file that names the same league and code, within a few days
+        hits = [m for m in meets if m['year'] == listing['year'] and m['season'] == listing['season']
+                and near(m['date'], listing.get('date'), 4) and has_code(m, code)]
+        if len(hits) == 1:
+            return hits[0]
     cands = [m for m in meets if m['year'] == listing['year'] and m['season'] == listing['season']
              and near(m['date'], listing.get('date'))]
     if not cands:

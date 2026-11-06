@@ -306,25 +306,27 @@ def maine_share(doc, year, season, cache, fname=None):
     return ok / len(rows)
 
 
+def _update_listing(year, season, mid, **fields):
+    # a December Indoor meet is listed in the previous calendar year's file
+    for y in (year, year - 1) if season == 'Indoor' else (year,):
+        p = os.path.join(LISTINGS, f'milesplit-{y}-{season}.json')
+        if not os.path.exists(p):
+            continue
+        doc = json.load(open(p))
+        hits = [m for m in doc['meets'] if str(m['id']) == mid]
+        if hits:
+            for m in hits:
+                m.update(fields)
+            json.dump(doc, open(p, 'w'), indent=1)
+            return
+
+
 def set_listing_kind(year, season, mid, kind, note):
-    p = os.path.join(LISTINGS, f'milesplit-{year}-{season}.json')
-    doc = json.load(open(p))
-    for m in doc['meets']:
-        if str(m['id']) == mid:
-            m['kind'] = kind
-            m['kind_checked'] = True
-            m['note'] = note
-    json.dump(doc, open(p, 'w'), indent=1)
+    _update_listing(year, season, mid, kind=kind, kind_checked=True, note=note)
 
 
 def set_listing_match(year, season, mid, stem, note):
-    p = os.path.join(LISTINGS, f'milesplit-{year}-{season}.json')
-    doc = json.load(open(p))
-    for m in doc['meets']:
-        if str(m['id']) == mid:
-            m['match'] = stem
-            m['note'] = note
-    json.dump(doc, open(p, 'w'), indent=1)
+    _update_listing(year, season, mid, match=stem, note=note)
 
 
 def stage_one(year, season, lst, held, cache):

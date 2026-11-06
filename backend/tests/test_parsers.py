@@ -3482,6 +3482,23 @@ Finals
     assert not any(r[1] == '7-06.00' for r in rows), rows
 
 
+def test_ledger_december_indoor_listing_opens_next_season():
+    import json, tempfile, os
+    import backend.meet_ledger as ml
+    d = tempfile.mkdtemp()
+    json.dump({'site': 'milesplit', 'year': 2025, 'season': 'Indoor', 'meets': [
+        {'id': '1', 'name': 'KVAC Meet 1A', 'date': '2025-12-12'},
+        {'id': '2', 'name': 'KVAC Meet 3A', 'date': '2025-01-10'}]},
+        open(os.path.join(d, 'milesplit-2025-Indoor.json'), 'w'))
+    old = ml.LISTINGS
+    ml.LISTINGS = d
+    try:
+        got = {l['id']: l['year'] for l in ml.load_listings()}
+    finally:
+        ml.LISTINGS = old
+    assert got == {'1': 2026, '2': 2025}, got
+
+
 if __name__ == '__main__':
     qaqc._ensure_team_mapping()
     failed = 0
