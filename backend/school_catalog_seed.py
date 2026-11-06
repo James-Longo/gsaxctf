@@ -1811,6 +1811,8 @@ FILE_RULES = [
     (['YHS'], 'Indoor', (2020, 2020), r'^ms-wmc-?(gre-pol-frye-yarm-traip-wells-nya-st-dlisbon|pol-frye-yar-traip-wells-st-dlisbon-york-bb)-2020$', 'me-hs-yarmouth'),
     (['FA Indoor Track'], 'Indoor', (2020, 2020), r'^ms-wmc-gre-pol-frye-yarm-traip-wells-nya-st-dlisbon-2020$', 'me-hs-fryeburg'),
     (['BRHS'], 'Indoor', (2020, 2020), r'^ms-wmcpol-frye-yar-traip-wells-st-dlisbon-york-bb-2020$', 'coop-boothbay-wiscasset'),
+    # KVAC 2017-18 sheets print Brunswick's relays 'Bhs Indoor Track 17-18 'A'' (individuals 'Bhs 17-18', stored as Brunswick)
+    (['Bhs Indoor Track 17-18'], 'Indoor', (2018, 2018), r'.', 'me-hs-brunswick'),
     # Triple C middle-school meets 2018 (Biddeford, Saco, TA, Noble ...): 'St. James' is St. James School, Biddeford
     (['St. James'], 'Indoor', (2018, 2018), r'^ms-triple-c', 'me-ms-st-james-biddeford'),
     # 2019 WMC Jan 4: 'Indoor Track' runners' other 2018-19 results are all Yarmouth
