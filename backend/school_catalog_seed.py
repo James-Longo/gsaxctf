@@ -555,7 +555,7 @@ COOPS = [
          members=['me-hs-sumner', 'me-hs-narraguagus'], seasons=['Indoor'], genders=['Boys', 'Girls'],
          years=[None, None],
          labels=['Sumner/Narraguagus', 'Sumner/Narragaugus', 'SumnerNarragaugus', 'Sumner/Narra', 'Sumner/Guagus',
-                 'Sumner-Narraguagus'],
+                 'Sumner-Narraguagus', 'Sumner/Narraguagus Schools'],
          evidence=['MPA IT 2026-27 B "Sumner/Narraguagus"; XC 2026-27 and OT 2025-26 list them separately']),
     dict(id='coop-nya-maine-coast-waldorf', label='North Yarmouth/Maine Coast Waldorf', host='me-hs-nya',
          members=['me-hs-nya', 'me-hs-maine-coast-waldorf'], seasons=['Indoor', 'Outdoor'], genders=['Boys', 'Girls'],
