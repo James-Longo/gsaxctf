@@ -34537,6 +34537,13 @@
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
  },
+ "backend/data/parsed_results/2018/Indoor/MEET-2Results.json": {
+  "parse_sha": "fc701aefe7ec48ea",
+  "source_sha": "3a6a92c0ae5d05dc",
+  "date": "2026-11-06",
+  "by": "sonnet audit rev18e B 2026-11-06",
+  "evidence": "every row vs sub5 sheet: clean, 1:1"
+ },
  "backend/data/parsed_results/2018/Indoor/MEET-2Scores.json": {
   "parse_sha": "4f57c30a0858061b",
   "source_sha": "879d417c40ca5281",
@@ -34557,6 +34564,20 @@
   "date": "2026-11-05",
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
+ },
+ "backend/data/parsed_results/2018/Indoor/MEET3Results.json": {
+  "parse_sha": "6ba43cb3de57ec63",
+  "source_sha": "d8957885b99d2a95",
+  "date": "2026-11-06",
+  "by": "sonnet audit rev18e B 2026-11-06",
+  "evidence": "every row vs sub5 sheet: clean, 1:1"
+ },
+ "backend/data/parsed_results/2018/Indoor/MEET4Results.json": {
+  "parse_sha": "52fbaa1849bc987c",
+  "source_sha": "09e953650a011e34",
+  "date": "2026-11-06",
+  "by": "sonnet audit rev18e A 2026-11-06",
+  "evidence": "every row vs sub5 sheet: clean, counts equal"
  },
  "backend/data/parsed_results/2018/Indoor/MEET4Scores.json": {
   "parse_sha": "5a029cc11005caa6",
@@ -34628,6 +34649,13 @@
   "by": "sonnet audit rev18b A/B 2026-11-06",
   "evidence": "every row vs sub5 sheet; only finding: Brunswick relays 'Bhs Indoor Track 17-18' unresolved and dropped (4 KVAC files, 24 rows) -> mapped to Brunswick by file rule, restored; rest clean (equal prelim/final marks stored once)"
  },
+ "backend/data/parsed_results/2018/Indoor/Results4.json": {
+  "parse_sha": "2e1169be532f9a6e",
+  "source_sha": "5fd72dad8274d7d2",
+  "date": "2026-11-06",
+  "by": "sonnet audit rev18e B 2026-11-06",
+  "evidence": "every row vs sub5 sheet: clean, 1:1"
+ },
  "backend/data/parsed_results/2018/Indoor/ResultsC2.json": {
   "parse_sha": "e85cca382ea3fb4a",
   "source_sha": "6e0929aedfdafa28",
@@ -34670,12 +34698,33 @@
   "by": "re-check 2026-10-28: re-parsed only for the team-rank fix (ranks 10+ were stored as 0-9)",
   "evidence": "scratch re-parse compared with the signed parse: result rows identical, only team_rankings ranks changed"
  },
+ "backend/data/parsed_results/2018/Indoor/ResultsMEET-3.json": {
+  "parse_sha": "c192ca9949b65197",
+  "source_sha": "a121d318e37c6096",
+  "date": "2026-11-06",
+  "by": "sonnet audit rev18e A 2026-11-06",
+  "evidence": "every row vs sub5 sheet: rows clean; date was the sub5 index's Week 1 row (reused file name) -> exact meet_correction 2018-01-09 from the sheet header"
+ },
+ "backend/data/parsed_results/2018/Indoor/ResultsWMC1.json": {
+  "parse_sha": "89425a22811df9e6",
+  "source_sha": "f4e969b629ab72aa",
+  "date": "2026-11-06",
+  "by": "sonnet audit rev18e B 2026-11-06",
+  "evidence": "every row vs sub5 sheet: clean, 1:1"
+ },
  "backend/data/parsed_results/2018/Indoor/Resultsclassagirlsindoor2018.json": {
   "parse_sha": "bf9f8d5386fe460a",
   "source_sha": "741e3d922e2d742b",
   "date": "2026-10-28",
   "by": "re-check 2026-10-28: re-parsed only for the team-rank fix (ranks 10+ were stored as 0-9)",
   "evidence": "scratch re-parse compared with the signed parse: result rows identical, only team_rankings ranks changed"
+ },
+ "backend/data/parsed_results/2018/Indoor/Resultsmeet-2.json": {
+  "parse_sha": "688d616d41224b7a",
+  "source_sha": "946807fa37fbdbe0",
+  "date": "2026-11-06",
+  "by": "sonnet audit rev18e A 2026-11-06",
+  "evidence": "every row vs sub5 sheet: clean, counts equal"
  },
  "backend/data/parsed_results/2018/Indoor/Resultsmeet-4.json": {
   "parse_sha": "e76a806d96135ec9",
@@ -34684,12 +34733,26 @@
   "by": "sonnet audit rev18b A/B 2026-11-06",
   "evidence": "every row vs sub5 sheet; only finding: Brunswick relays 'Bhs Indoor Track 17-18' unresolved and dropped (4 KVAC files, 24 rows) -> mapped to Brunswick by file rule, restored; rest clean (equal prelim/final marks stored once)"
  },
+ "backend/data/parsed_results/2018/Indoor/SMAA1Results.json": {
+  "parse_sha": "4946ba7ccbb348ab",
+  "source_sha": "0b5cf4b605b332be",
+  "date": "2026-11-06",
+  "by": "sonnet audit rev18e B 2026-11-06",
+  "evidence": "every row vs sub5 sheet: clean, 1:1"
+ },
  "backend/data/parsed_results/2018/Indoor/SMAA1Scores.json": {
   "parse_sha": "1960a3699959a7d6",
   "source_sha": "18c45e63a9935bdc",
   "date": "2026-11-05",
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
+ },
+ "backend/data/parsed_results/2018/Indoor/SMAA2Results.json": {
+  "parse_sha": "e18dba1084c7e3e5",
+  "source_sha": "68d3c7e56c133c31",
+  "date": "2026-11-06",
+  "by": "sonnet audit rev18e B 2026-11-06",
+  "evidence": "every row vs sub5 sheet: clean, 1:1"
  },
  "backend/data/parsed_results/2018/Indoor/SMAA2Scores.json": {
   "parse_sha": "7ecef524e802c4ed",
@@ -34747,6 +34810,13 @@
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
  },
+ "backend/data/parsed_results/2018/Indoor/WMC-1Results.json": {
+  "parse_sha": "f25dd5ab963edb78",
+  "source_sha": "1eee28ba50cb879b",
+  "date": "2026-11-06",
+  "by": "sonnet audit rev18e B 2026-11-06",
+  "evidence": "every row vs sub5 sheet: clean, 1:1"
+ },
  "backend/data/parsed_results/2018/Indoor/WMC1-Scores.json": {
   "parse_sha": "a37268b9b847b259",
   "source_sha": "ce40468376a12aa1",
@@ -34774,6 +34844,13 @@
   "date": "2026-11-05",
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
+ },
+ "backend/data/parsed_results/2018/Indoor/WMC2Results-1.json": {
+  "parse_sha": "6e4418c1c6acfcf8",
+  "source_sha": "20453ddab9ef626a",
+  "date": "2026-11-06",
+  "by": "sonnet audit rev18e A 2026-11-06",
+  "evidence": "every row vs sub5 sheet: clean, counts equal"
  },
  "backend/data/parsed_results/2018/Indoor/WMC2Scores-1.json": {
   "parse_sha": "72b8a6747086c3cb",
@@ -34858,6 +34935,13 @@
   "date": "2026-10-28",
   "by": "re-check 2026-10-28: re-parsed only for the team-rank fix (ranks 10+ were stored as 0-9)",
   "evidence": "scratch re-parse compared with the signed parse: result rows identical, only team_rankings ranks changed"
+ },
+ "backend/data/parsed_results/2018/Indoor/corrected_boys_emitl_meet1b_results_12.16.17.json": {
+  "parse_sha": "e4030b15babbe2d9",
+  "source_sha": "bf4dc1e77f6f0092",
+  "date": "2026-11-06",
+  "by": "sonnet audit rev18e A 2026-11-06",
+  "evidence": "every row vs sub5 sheet: clean, counts equal"
  },
  "backend/data/parsed_results/2018/Indoor/corrected_emitl_girls_meet_4a_results_1.15.18.json": {
   "parse_sha": "8b5326c72ff2d155",
@@ -35027,6 +35111,20 @@
   "by": "sonnet audit rev18c A/B 2026-11-06",
   "evidence": "every row vs sub5 sheet: clean (status/exhibition rows and equal prelim/final marks stored once by design)"
  },
+ "backend/data/parsed_results/2018/Indoor/meet-1-smaa.json": {
+  "parse_sha": "57bb51d014cff233",
+  "source_sha": "f904f04820ff7b63",
+  "date": "2026-11-06",
+  "by": "sonnet audit rev18e B 2026-11-06",
+  "evidence": "every row vs sub5 sheet: clean, 1:1"
+ },
+ "backend/data/parsed_results/2018/Indoor/meet-1Results.json": {
+  "parse_sha": "777cc4dfe1712cae",
+  "source_sha": "8ebcf37fd3fc77e5",
+  "date": "2026-11-06",
+  "by": "sonnet audit rev18e A 2026-11-06",
+  "evidence": "every row vs sub5 sheet: clean, counts equal"
+ },
  "backend/data/parsed_results/2018/Indoor/meet-2Scores.json": {
   "parse_sha": "3ef46957c21d089c",
   "source_sha": "33c66b3713c697ad",
@@ -35174,6 +35272,13 @@
   "by": "sonnet audit rev18c A/B 2026-11-06",
   "evidence": "every row vs sub5 sheet; field-event relay team totals now dropped at sync (all files), 1200/1600 sprint medleys now separate events; score mismatch = the dropped field relays' points"
  },
+ "backend/data/parsed_results/2018/Indoor/smaa3Results.json": {
+  "parse_sha": "b569dbc77738cf29",
+  "source_sha": "92bd80ecdc715101",
+  "date": "2026-11-06",
+  "by": "sonnet audit rev18e A 2026-11-06",
+  "evidence": "every row vs sub5 sheet: clean, counts equal"
+ },
  "backend/data/parsed_results/2018/Indoor/smaa3Scores.json": {
   "parse_sha": "8fbe8bf1fbd86ed6",
   "source_sha": "c3b17cb0c30f27a3",
@@ -35187,6 +35292,13 @@
   "date": "2026-11-05",
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
+ },
+ "backend/data/parsed_results/2018/Indoor/wmc-2Results.json": {
+  "parse_sha": "c52f9208b2e36367",
+  "source_sha": "f16a50f350ed5c35",
+  "date": "2026-11-06",
+  "by": "sonnet audit rev18e A 2026-11-06",
+  "evidence": "every row vs sub5 sheet: clean, counts equal"
  },
  "backend/data/parsed_results/2018/Indoor/wmc-2cores.json": {
   "parse_sha": "e404b3c28a84e9de",
