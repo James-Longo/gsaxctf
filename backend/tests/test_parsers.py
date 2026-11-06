@@ -3189,6 +3189,18 @@ def test_throwers_relay_is_its_own_event():
     assert p.normalize_event_name('Girls 4x100 Meter Relay') == '4x100 Meter Relay'
 
 
+def test_jump_standing_suffix_is_the_standing_jump():
+    """Brunswick-Morse 2021 COVID duals print "Boys Long Jump Standing" and
+    "Girls Triple Jump Standing": standing jumps, not the long or triple jump."""
+    from backend.event_canon import canonical_event
+    p = Sub5ColumnParser('x.htm', text='')
+    assert p.normalize_event_name('Boys Long Jump Standing') == 'Standing Long Jump'
+    assert p.normalize_event_name('Girls Triple Jump Standing') == 'Standing Triple Jump'
+    assert p.normalize_event_name('Boys Long Jump') == 'Long Jump'
+    assert canonical_event('Standing Triple Jump', 'Boys', 'Indoor')[1] == 'Standing Triple Jump'
+    assert canonical_event('Standing Long Jump', 'Girls', 'Indoor')[1] == 'Standing Long Jump'
+
+
 def test_xc_placed_nt_row_keeps_its_team_place():
     """A placed finisher whose printed time was impossible (stored "NT",
     2011 Wells girls 0:01) still takes the place when team scores are checked."""

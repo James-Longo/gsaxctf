@@ -323,6 +323,9 @@ class Sub5ColumnParser:
             # "4x100 Meter Relay Throwers' Re" (EMITL 2019-20): the throwers' relay is its own event
             if best_match.endswith(' Relay') and 'thrower' in low:
                 best_match = best_match[:-len(' Relay')] + ' Throwers Relay'
+            # "Boys Long Jump Standing" (Brunswick-Morse 2021 COVID duals): the standing jump is its own event
+            if best_match in ('Long Jump', 'Triple Jump') and re.search(r'\bstanding\b', low):
+                best_match = 'Standing ' + best_match
         return best_match
         
     @staticmethod
