@@ -1201,7 +1201,7 @@ def main():
             for x in ev['results']:
                 if x.get('athlete') and '#' in x['athlete']: x['athlete'] = re.sub(r'\s*#\s*\d+\b', '', x['athlete']).strip()
                 if x.get('athlete') and '(' in x['athlete']: x['athlete'] = drop_nickname(x['athlete'])
-                if x.get('athletes'): x['athletes'] = [re.sub(r'\s*#\s*\d+\b', '', a).strip() for a in x['athletes']]
+                if x.get('athletes'): x['athletes'] = [drop_nickname(re.sub(r'\s*#\s*\d+\b', '', a).strip()) if '(' in a else re.sub(r'\s*#\s*\d+\b', '', a).strip() for a in x['athletes']]
         # one meet posted twice, as MileSplit's own sheet and as the Hy-Tek file (WMC week 5 2026):
         # a row an earlier file already holds (same event, runner, mark) is not a second result
         def _mv(m):   # a mark by value: "16-05.75" is "16-5.75", "1:02.40" is "1:02.4"
