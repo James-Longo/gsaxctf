@@ -3508,6 +3508,39 @@ def test_milesplit_updated_posting_supersedes_the_original():
     assert ids([('Boys Results Updated 8/30', 1), ('Girls Results', 2)]) == [1, 2]
 
 
+def test_milesplit_tab_sheet_read_by_its_header_columns():
+    from backend.milesplit import parse_tab
+    txt = "Boys 400 meter Dash Finals\nPLACE\tNAME\tGRADE\tGENDER\tTEAM\tMARK\tHEAT\tWIND\n" \
+          "1\tCaleb March\t12\tm\tHampden Academy\t52.64\t4\t\n" \
+          "\tCamden Bunnell\t10\tm\tEllsworth High School\t--\t1\t\n"
+    ev, _ = parse_tab(txt)
+    r = ev[0]['results']
+    assert len(r) == 1 and r[0]['athlete'] == 'Caleb March' and r[0]['school'] == 'Hampden Academy' \
+        and r[0]['grade'] == '12' and r[0]['result'] == '52.64', r
+
+
+def test_milesplit_senior_division_team_scores_are_not_results():
+    from backend.milesplit import parse
+    text = """Boys 55 Meter Hurdles Open Division
+Finals
+=========================================================================================================
+      NAME                          YR   TEAM                               MARK           H#    WIND
+=======================================================================================================
+1     Isaac Arey                    10   South Portland High School         8.94           1     
+
+
+Girls Senior Division Team Scores
+      TEAM                               SCORE
+==================================================
+1     South Portland High School         63.5
+2     Windham High School                50
+"""
+    ev, rank = parse(text)
+    rows = [r for e in ev for r in e['results']]
+    assert len(rows) == 1 and rows[0]['athlete'] == 'Isaac Arey', rows
+    assert rank and rank[0]['gender'] == 'Girls' and len(rank[0]['teams']) == 2, rank
+
+
 if __name__ == '__main__':
     qaqc._ensure_team_mapping()
     failed = 0

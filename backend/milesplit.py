@@ -118,7 +118,7 @@ def parse(text):
             cur = {'event': (gender+' '+norm_event(ev)).strip(), 'gender': gender,
                    'is_relay': bool(re.search(r'Relay|Medley|Shuttle|Carousel|\dx\d',ev)), 'results': []}
             events.append(cur); sec='Finals'; hdr=None; i+=1; continue
-        mts=re.match(r'\s*(Female|Male|Women|Men|Girls|Boys)\s+(?:[A-Z]+\s+(?:DIVISION|BOYS|GIRLS)\s+)?Team Scores',ln)   # "Girls JR DIVISION  Team Scores" (WMC 2026), "Boys JR BOYS  Team Scores" (GPC/SMMSAC MS 2026)
+        mts=re.match(r'\s*(Female|Male|Women|Men|Girls|Boys)\s+(?:[A-Za-z]+\s+(?:DIVISION|BOYS|GIRLS|Division)\s+)?Team Scores',ln)   # "Girls JR DIVISION  Team Scores" (WMC 2026), "Boys JR BOYS  Team Scores" (GPC/SMMSAC MS 2026)
         if mts:
             g='Girls' if mts.group(1) in ('Female','Women','Girls') else 'Boys'
             teams=[]; i+=1
@@ -268,7 +268,7 @@ def parse_race(text):
         cur['results'].append(r)
     return [e for e in events if e['results']],[x for x in rankings if x['teams']]
 def parse_tab(text):
-    events=[]; rankings=[]; cur=None; sec='Finals'
+    events=[]; rankings=[]; cur=None; sec='Finals'; cols=None
     for ln in text.split(chr(10)):
         m=re.match(r'\s*Event\s+\d+\s+(.*?)\s*$',ln)
         if m:
@@ -288,7 +288,23 @@ def parse_tab(text):
         f=[x.strip() for x in ln.split(chr(9))]
         if re.match(r'\d\)',f[0]) and cur['results'] and cur['is_relay']:   # relay legs "1) Last, First <tab> 2) ..."
             cur['results'][-1]['athletes']+=[re.sub(r'^\d\)\s*','',x) for x in f if re.match(r'\d\)',x)]; continue
-        if re.match(r'(pl|place)$',f[0],re.I) or re.match(r'\d{4}$',f[0]): continue
+        if re.match(r'(pl|place)$',f[0],re.I):   # "PLACE NAME GRADE GENDER TEAM MARK HEAT WIND": read rows by these columns
+            h=[x.upper() for x in f]
+            cols={k:h.index(k) for k in ('NAME','GRADE','TEAM','MARK') if k in h} if {'TEAM','MARK'}<=set(h) else None
+            continue
+        if re.match(r'\d{4}$',f[0]): continue
+        if cols and len(f)>cols['MARK'] and (f[0].isdigit() or f[0] in ('---','--')) and not (len(f)>2 and re.match(r'J\d',f[cols['MARK']])):
+            mk_raw=f[cols['MARK']].split()[0] if f[cols['MARK']].split() else ''
+            if re.fullmatch(MARK,mk_raw):
+                mk=clean_mark(mk_raw); place=int(f[0]) if f[0].isdigit() else None
+                nm=f[cols['NAME']] if 'NAME' in cols else ''
+                if cur['is_relay'] or not nm:
+                    r={'place':place if mk not in STAT else None,'school':f[cols['TEAM']],'result':mk,'athletes':[],'type':sec}
+                else:
+                    r={'place':place if mk not in STAT else None,'athlete':nm,'school':f[cols['TEAM']],
+                       'grade':f[cols['GRADE']] if 'GRADE' in cols and f[cols['GRADE']].isdigit() else '','result':mk,'type':sec}
+                if mk_raw.startswith(('x','X')): r['exhibition']=True
+                cur['results'].append(r); continue
         if len(f)<3 or (len(f)==3 and not (f[0].isdigit() or f[0] in ('---','--'))):
             if re.match(r'\s*(Prelim|Preliminaries)',ln,re.I): sec='Prelims'
             elif re.match(r'\s*Finals?\s*$',ln,re.I): sec='Finals'

@@ -267,12 +267,19 @@ def signoff(paths, by, evidence, auto=False):
 _web_dates = None
 
 
+def in_season(d, year, season):
+    """The store's season windows (scraper_v2.is_date_in_season)."""
+    lo, hi = {'Indoor': (f'{year - 1}-11-01', f'{year}-04-15'), 'Outdoor': (f'{year}-03-01', f'{year}-06-30'),
+              'XC': (f'{year}-08-01', f'{year}-12-10')}.get(season, ('0', '9'))
+    return lo <= d[:10] <= hi
+
+
 def file_date(doc, year, season, stem):
     """The file's own date, else the season index's date for it (what the store uses)."""
     global _web_dates
     d = doc.get('date')
-    if d and re.match(r'\d{4}-\d\d-\d\d', d):
-        return d
+    if d and re.match(r'\d{4}-\d\d-\d\d', d) and in_season(d, int(year), season):
+        return d   # (a date outside the season is a typo on the sheet: "11jan2024" in 2025 Indoor)
     if _web_dates is None:
         p = os.path.join(BASE, 'web_date_mapping.json')
         _web_dates = json.load(open(p)) if os.path.exists(p) else {}
