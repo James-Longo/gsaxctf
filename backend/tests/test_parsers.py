@@ -3570,6 +3570,20 @@ def test_event_canon_ms_yard_relays_with_glued_unit():
     assert c('Girls 4x200 Meter Relay', 'Girls') == ('Girls', '4x200 Meter Relay')
 
 
+
+def test_milesplit_judged_time_with_j_prefix_is_kept():
+    from backend.milesplit import parse
+    text = """Girls 1 Mile Run OPEN GIRLS
+=======================================================================
+    Name                    Year School                  Finals  Points
+=======================================================================
+  1 Zompa, Ava                   SCAR                   J7:17.50
+  2 Cashin, Mae                  SCAR                   J7:17.50
+  3 Lee, Ann                     BIDD                     7:40.10
+"""
+    rows = [(x['athlete'], x['result']) for e in parse(text)[0] for x in e['results']]
+    assert rows == [('Zompa, Ava', '7:17.50'), ('Cashin, Mae', '7:17.50'), ('Lee, Ann', '7:40.10')], rows
+
 if __name__ == '__main__':
     qaqc._ensure_team_mapping()
     failed = 0

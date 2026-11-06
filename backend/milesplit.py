@@ -77,7 +77,7 @@ def meetinfo(slug):
         nm={i:html.unescape(n).strip() for i,n in re.findall(r'results/(\d+)\?type=formatted"[^>]*>\s*([^<]+?)\s*</option>',h)}
         files=[{'id':int(i),'name':nm.get(i,'Results'),'isMeetPro':0} for i in ids]
     return (date.group(1) if date else None), (json.loads(files.group(1)) if hasattr(files,'group') else files), html.unescape(title), h
-MARK = r"[xX]?(?:\d+:)?\d+(?:\.\d+)?[a-zA-Z]?|[xXjJ]?\d+-\d+(?:\.\d+)?[a-zA-Z]?|[xX]?(?:DQ|DNF|DNS|NH|FOUL|FAIL|ND|NT|SCR|DNQ)"
+MARK = r"[xXjJ]?(?:\d+:)?\d+(?:\.\d+)?[a-zA-Z]?|[xXjJ]?\d+-\d+(?:\.\d+)?[a-zA-Z]?|[xX]?(?:DQ|DNF|DNS|NH|FOUL|FAIL|ND|NT|SCR|DNQ)"
 STAT = {'DQ','DNF','NH','FOUL','FAIL','ND','NT','DNQ'}
 def clean_mark(m):
     m = re.sub(r'^[xXjJ](?=\d)','',m)
