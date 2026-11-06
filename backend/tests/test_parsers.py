@@ -3551,6 +3551,15 @@ def test_milesplit_nickname_in_parentheses_is_dropped():
     assert drop_nickname('Mary Smith') == 'Mary Smith'
 
 
+def test_event_canon_ms_yard_relays_with_glued_unit():
+    from backend.event_canon import canonical_event as c
+    assert c('Girls JR 4x140y Relay', 'Girls') == ('Girls', '4x140 Yard Relay')
+    assert c('Boys INT 4x140yd Relay BOYS', 'Boys') == ('Boys', '4x140 Yard Relay')
+    assert c('Girls SR 4X210Y Relay', 'Girls') == ('Girls', '4x210 Yard Relay')
+    assert c('Boys 4x800 Meter Relay', 'Boys') == ('Boys', '4x800 Meter Relay')
+    assert c('Girls 4x200 Meter Relay', 'Girls') == ('Girls', '4x200 Meter Relay')
+
+
 if __name__ == '__main__':
     qaqc._ensure_team_mapping()
     failed = 0
