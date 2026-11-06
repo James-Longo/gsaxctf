@@ -1801,6 +1801,8 @@ FILE_RULES = [
     (['CAPE', 'Cape Elizabeth'], 'Indoor', (2023, 2023), r'^(Resultssmmsac-festival|Results-?wk-\d-meet-\d|ResultsWK-\d-MEET-\d|ms-smmsac-indoor-track-week-\d-meet-\d-2023)$', 'me-ms-cape-elizabeth'),
     (['YAR', 'Yarmouth'], 'Indoor', (2023, 2023), r'^(Resultssmmsac-festival|Results-?wk-\d-meet-\d|ResultsWK-\d-MEET-\d|ms-smmsac-indoor-track-week-\d-meet-\d-2023)$', 'me-ms-harrison'),
     (['North Yarmou'], 'Indoor', (2023, 2023), r'^Resultswmc[12]?$', 'coop-nya-maine-coast-waldorf'),
+    # 2022 WMC MileSplit meets: 'YHS'/'Yhs' rows are Yarmouth's runners (York prints its full name in the same sheet)
+    (['YHS', 'Yhs'], 'Indoor', (2022, 2022), r'^ms-wmc(-practice-meet|poland-yarmouth-wells-st-domslisbon-york-greely)-2022$', 'me-hs-yarmouth'),
     (['Cony High Sc'], 'Indoor', (2026, 2026), r'^KVAC-1C-Results$', 'me-hs-cony'),                       # as before the 2026-11-06 rebuild
     (['Cony High Sc'], 'Indoor', (2026, 2026), r'^classaboysindor16feb2026$', 'coop-it-cony-halldale-winthrop'),   # as before the 2026-11-06 rebuild   # as before the 2026-11-06 rebuild (its full-name rows: the co-op)   # SMMSAC weekly MS meets; the sheets' relay rows print 'Southern Maine Catholic (combined MS team)'
     (['BIDD'], 'Indoor', (2023, 2023), r'^Results-wk-4-meet-3$', 'me-ms-biddeford'),
