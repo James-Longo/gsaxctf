@@ -10,6 +10,19 @@ except ImportError:
     # Fallback for different execution contexts
     from backend.parser import Sub5ColumnParser
 
+import re
+
+
+def drop_coed_score_copies(events):
+    """EMITL relay meets (2019, 2020) print the coed sprint medley once as 'Mixed ... COED Relay'
+    and again as 'Boys ... Coed male' / 'Girls ... COED female' for each gender's team scores:
+    the same race, so a gendered coed copy whose teams and marks equal a Mixed event's is dropped."""
+    key = lambda e: [(r.get('school'), r.get('result')) for r in e.get('results', [])]
+    mixed = [key(e) for e in events if e.get('gender') == 'Mixed']
+    return [e for e in events if not (e.get('gender') in ('Boys', 'Girls')
+            and re.search(r'\bco-?ed\b', e.get('event') or '', re.I) and key(e) in mixed)]
+
+
 class ColumnStrategyParser(BaseParser):
     def __init__(self, scraper=None):
         super().__init__(scraper)
@@ -41,6 +54,8 @@ class ColumnStrategyParser(BaseParser):
                 flat_events[-1]['section'] = ev['section']
             if ev.get('age_group'):
                 flat_events[-1]['age_group'] = ev['age_group']
+
+        flat_events = drop_coed_score_copies(flat_events)
 
         # Keep team_rankings so QAQC scoring can verify meets without re-parsing
         return {

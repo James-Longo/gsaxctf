@@ -879,6 +879,8 @@ def load_transcription(input_path):
                   dict(b, kind='xc', **({} if 'totals_only' in b or any(t.get('places') for t in b.get('teams') or [])
                                         else {'totals_only': True}))
                   for b in blocks]
+    from backend.parsers.column import drop_coed_score_copies
+    events = drop_coed_score_copies(events)   # (a coed relay's per-gender scoring copies)
     return {'events': events, 'date': d.get('date'), 'meet_name': d.get('meet_name'),
             'venue': d.get('venue'), 'team_rankings': blocks,
             'parser': 'Transcribed',

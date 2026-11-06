@@ -3212,6 +3212,19 @@ def test_relay_leg_grade_tag_is_not_part_of_the_name():
     assert leg_without_grade('Smith, John') == 'Smith, John'
 
 
+def test_coed_relay_score_copies_are_dropped():
+    """emitlrelays2020 prints the coed sprint medley as Mixed and again as
+    'Boys ... Coed male' / 'Girls ... COED female' (team scoring): one race."""
+    from backend.parsers.column import drop_coed_score_copies
+    rows = [{'school': 'Bangor', 'result': '2:53.20'}, {'school': 'Brewer', 'result': '2:59.98'}]
+    ev = [{'gender': 'Mixed', 'event': '1200 Sprint Medley COED Relay', 'results': rows},
+          {'gender': 'Boys', 'event': '1200 Sprint Medley Coed male', 'results': rows},
+          {'gender': 'Girls', 'event': '1200 Sprint Medley COED female', 'results': rows},
+          {'gender': 'Boys', 'event': '1200 Sprint Medley', 'results': [{'school': 'Hampden', 'result': '2:53.82'}]}]
+    out = drop_coed_score_copies(ev)
+    assert [(e['gender'], e['event']) for e in out] == [('Mixed', '1200 Sprint Medley COED Relay'), ('Boys', '1200 Sprint Medley')]
+
+
 def test_xc_placed_nt_row_keeps_its_team_place():
     """A placed finisher whose printed time was impossible (stored "NT",
     2011 Wells girls 0:01) still takes the place when team scores are checked."""
