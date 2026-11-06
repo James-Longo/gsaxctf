@@ -575,7 +575,7 @@ def test_spreadsheet_sheets_first_last_and_constant_columns():
 
 
 def test_event_gender_fixes_and_sibling_drop(tmp=None):
-    import tempfile
+    import json, tempfile
     from backend.scraper_v2 import (fix_event_gender_from_label, fix_event_gender_from_names,
                                     drop_sibling_gender_events)
     data = {'events': [{'event': '3k Run CC 9-10 Division Boys', 'gender': 'Girls', 'results': []}]}
@@ -2336,7 +2336,7 @@ def test_windows_1252_nbsp_padding_in_a_hytek_txt(tmp=None):
     """Latin-1 non-breaking spaces typed as a fixed-width row's padding
     ("Diego\\xa0Villamarin\\xa0\\xa0\\xa0JR St. Dominic"): read as spaces; a
     stray one beside an ordinary space ("Calvin\\xa0 Nelson") is dropped."""
-    import tempfile
+    import json, tempfile
     from backend.scraper_v2 import _parse_one_file
     import json as _json
     head = (b'Boys 5000 Meter Run Class C\r\n\r\nResults - Men Class C\r\n'
@@ -2724,7 +2724,7 @@ def test_short_name_store_id_per_season_and_sex():
 def test_transcription_xc_team_scores_marked_xc():
     """A reader's XC team scores without 'kind' still reach the XC score check."""
     import json
-    import tempfile
+    import json, tempfile
     import backend.scraper_v2 as sv
     old = sv.TRANSCRIBED
     with tempfile.TemporaryDirectory() as d:
@@ -2757,7 +2757,7 @@ def test_web_date_iso_and_filename_month_day():
 def test_transcription_no_team_scores_flag():
     """A race cut out of a combined ranking says so: the page's scores stay off it."""
     import json
-    import tempfile
+    import json, tempfile
     import backend.scraper_v2 as sv
     old = sv.TRANSCRIBED
     with tempfile.TemporaryDirectory() as d:
@@ -2778,7 +2778,7 @@ def test_transcription_belongs_to_its_source_file():
     """A .htm and a .pdf sharing a stem are different meets: an override that
     names the .htm as its source is not applied to the .pdf."""
     import json
-    import tempfile
+    import json, tempfile
     import backend.scraper_v2 as sv
     old = sv.TRANSCRIBED
     with tempfile.TemporaryDirectory() as d:
@@ -2877,7 +2877,7 @@ def test_continuation_page_marks_not_cut():
     if not os.path.exists(src):
         return
     import json
-    import tempfile
+    import json, tempfile
     from backend import scraper_v2 as sv
     with tempfile.TemporaryDirectory() as td:
         out = os.path.join(td, 'p.json')
@@ -2937,7 +2937,7 @@ def test_transcription_keeps_track_row_fields():
     """A track override keeps what the parsers attach to a row (splits,
     exhibition marks, warnings) and an event's age group."""
     import json
-    import tempfile
+    import json, tempfile
     import backend.scraper_v2 as sv
     old = sv.TRANSCRIBED
     with tempfile.TemporaryDirectory() as d:
@@ -3730,6 +3730,18 @@ def test_pentathlon_leg_named_first_and_smaa_grade_before_school():
     r, _ = HyTekSMAAParser().parse_row(['  15      Labbe, Sarah              SR    Messalonskee            8.41'],
                                        0, 'Girls', '55 Meter Dash', '2018', 'd', 'm', 'x Indoor')
     assert (r['grade'], r['school']) == ('SR', 'Messalonskee')
+
+
+def test_record_note_between_school_and_mark_is_blanked():
+    """'1 Ashley Anderson SR MDI (HS Facility record) 26.22' (EMITL 2018 meet 5B): the note is not
+    part of the school; 'C. Albin SP (Meet Record) 27.6' (SMAA girls 2004) keeps its row."""
+    import json, tempfile
+    from backend import scraper_v2 as sv
+    out = os.path.join(tempfile.mkdtemp(), 'x.json')
+    base = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'data', 'sub5_archive')
+    sv._parse_one_file((os.path.join(base, '2018', 'Indoor', 'emitl_girls_meet_5b_results_1.20.18.htm'), out, 'Indoor'))
+    rows = [r for e in json.load(open(out))['events'] if e['event'] == '200 Meter Dash' for r in e['results']]
+    assert any(r.get('athlete') == 'Ashley Anderson' and r.get('school') == 'MDI' for r in rows)
 
 
 if __name__ == '__main__':

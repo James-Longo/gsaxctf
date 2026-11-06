@@ -1278,6 +1278,11 @@ def _parse_one_file(args):
             elif season_label == 'XC':
                 # (a few stray U+FFFD in table cells: "W \ufffd", "Noble \ufffd")
                 text = re.sub(r'\s*\ufffd+\s*(?=<)', ' ', text)
+        if season_label != 'XC':
+            # a record note between the school and the mark ("1 Ashley Anderson SR MDI (HS Facility
+            # record) 26.22", EMITL 2018): blanked to its own width, so the columns stay put
+            text = re.sub(r"\([^()<>\n]{0,30}\brecord\b[^()<>\n]{0,12}\)", lambda m: ' ' * len(m.group()),
+                          text, flags=re.I)
         if season_label == 'XC':
             # (zero-width spaces between a PDF's words: "Matyas\u200b \u200bNachtigall")
             text = text.replace('\u200b', '')
