@@ -134,6 +134,12 @@ def canonical_event(raw, gender, season=None, level=None, relay=False):
             sub = canonical_event(leg, gender, season=season, level=level)
             if sub and not PENTA.search(sub[1]):
                 return gender, f'{multi}: {sub[1]}'
+        # (the leg first, Hy-Tek flat rows: "55 Meter Hurdles Indoor Pentathlon")
+        pre = re.sub(r'\b(?:indoor|outdoor|girls|boys|women|men)\b', ' ', s[:penta.start()], flags=re.I).strip()
+        if not colon and re.search(r'\d|jump|vault|put|throw|hurdle', pre, re.I):
+            sub = canonical_event(pre, gender, season=season, level=level)
+            if sub and not PENTA.search(sub[1]):
+                return gender, f'{multi}: {sub[1]}'
         return gender, multi
 
     # relays first (so "4x800" isn't read as an 800)
@@ -142,6 +148,12 @@ def canonical_event(raw, gender, season=None, level=None, relay=False):
         if MEDLEY.search(s):
             name = 'Sprint Medley Relay' if re.search(r'sprint', s, re.I) else \
                    'Distance Medley Relay' if re.search(r'distance', s, re.I) else 'Medley Relay'
+            # (an 800, 1200 and 1600 sprint medley are different races: each its own event; 1320 and
+            # 1760 are yards -- 220-220-440-440, the 'Long' mile medley)
+            d = re.search(r'\b(800|880|1000|1200|1320|1600|1760|1800)\b', s) if name == 'Sprint Medley Relay' else None
+            if d:
+                unit = 'Yard' if d.group(1) in ('880', '1320', '1760') or re.search(r'y(ar)?d', s, re.I) else 'Meter'
+                name = f'{d.group(1)} {unit} Sprint Medley Relay'
             return gender, name
         if re.search(r'shut+le|shut\s*hurd', s, re.I):
             return gender, 'Shuttle Hurdle Relay'

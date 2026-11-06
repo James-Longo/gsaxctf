@@ -552,6 +552,15 @@ class Sub5ColumnParser:
         columns = [[] for _ in range(len(bounds) - 1)]
 
         def _cut(l, b):
+            # (a page-top continuation of the right column's event printed
+            # in a compact font starts left of the bound, beside the left
+            # column's "Finals ... (Event 20 ...)": "...CLASS A)        16
+            # Labbe, Sarah   SR Messalonskee  30.53", 2018 Class A PDF)
+            # (and so does its event header: "Event 56 Boys Pole Vault" at x=66)
+            m = re.compile(r"\s{4,}(\d{1,3}\s{1,3}[A-Z][\w'.-]*,\s|Event\s+\d+\s+(?:Girls|Boys|Women|Men)\s)").search(
+                l, max(36, b - 20), b + 1)
+            if m and m.start(1) < b:
+                return m.start(1)
             # a column's own header word can start a char or two left of
             # the bound (Hy-Tek prints "Event 6 Boys ...", "Women 400 ...",
             # "Finals" at Name-7, one left of Name-6): cut at the gap
@@ -1987,10 +1996,10 @@ class Sub5ColumnParser:
                                     if yr_idx > 0 and line[yr_idx - 1:yr_idx + 1].strip() == line[yr_idx - 1:yr_idx + 1] \
                                             and line[yr_idx - 1].isalpha():
                                         mo = re.match(r'\s*(\S.*?\S)\s+(FR|SO|JR|SR|\d{1,2})\s+(?=[A-Za-z])',
-                                                      line[name_idx:res_pos])
+                                                      line[ns:res_pos])
                                         if mo:
                                             name_val, grade_val = mo.group(1), mo.group(2)
-                                            row_school_idx = name_idx + mo.end() + 5
+                                            row_school_idx = ns + mo.end() + 5
                                 else:
                                     name_val = line[ns:school_idx].strip()
 
@@ -2025,6 +2034,12 @@ class Sub5ColumnParser:
                                     school_raw = school_area[m_school.start():].strip()
                                     if grade_val and school_raw.startswith(grade_val + " "):
                                         school_raw = school_raw[len(grade_val):].strip()
+                                    # (a header whose 'Yr' sits left of the grades, 2018 Class B
+                                    # PDF: "SO    Winslow" is the grade, then the school)
+                                    mg = re.match(r'(FR|SO|JR|SR)\s{2,}(?=[A-Za-z])', school_raw)
+                                    if mg:
+                                        grade_val = grade_val or mg.group(1)
+                                        school_raw = school_raw[mg.end():]
                                     school_val = re.sub(r'^\d+\s+', '', school_raw).strip()
                                     # Take only the first part if it splits by large gaps
                                     school_val = re.split(r'\s{2,}', school_val)[0].strip()

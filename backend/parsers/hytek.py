@@ -122,8 +122,12 @@ class HyTekStandardParser(HyTekBaseParser):
 
     def parse_row(self, lines, i, gender, event, season, date, meet_name, url):
         line = lines[i].strip()
+        # (a page-top continuation in a compact font keeps one space after the
+        # rank and the grade: "16 Labbe, Sarah   SR Messalonskee   30.53")
+        line = re.sub(r"^(\d{1,3}) (?=[A-Z][\w'.-]*,)", r'\1  ', line)
+        line = re.sub(r'(?<=\s)(FR|SO|JR|SR) (?=[A-Z])', r'\1  ', line)
         parts = [p.strip() for p in re.split(r'\s{2,}|\t', line) if p.strip()]
-        
+
         if len(parts) < 3: return None, i
 
         rank = parts[0].strip('.')
@@ -159,7 +163,7 @@ class HyTekStandardParser(HyTekBaseParser):
         if mark_idx == -1: return None, i
         parts, mark_idx = _split_glued_mark(parts, mark_idx)
         
-        mark = parts[mark_idx]
+        mark = re.sub(r'(?<=\d)\s+\d{1,2}$', '', parts[mark_idx])   # ("35-06.00 1": the points)
         school = " ".join(parts[grade_idx+1:mark_idx])
 
         if self.is_junk(name, school): return None, i
@@ -188,6 +192,7 @@ class HyTekSMAAParser(HyTekBaseParser):
 
     def parse_row(self, lines, i, gender, event, season, date, meet_name, url):
         line = lines[i].strip()
+        line = re.sub(r"^(\d{1,3}) (?=[A-Z][\w'.-]*,)", r'\1  ', line)   # (compact continuation row)
         parts = [p.strip() for p in re.split(r'\s{2,}|\t', line) if p.strip()]
         
         if len(parts) < 3: return None, i
@@ -214,9 +219,13 @@ class HyTekSMAAParser(HyTekBaseParser):
         if mark_idx == -1: return None, i
         parts, mark_idx = _split_glued_mark(parts, mark_idx)
         
-        mark = parts[mark_idx]
+        mark = re.sub(r'(?<=\d)\s+\d{1,2}$', '', parts[mark_idx])   # ("35-06.00 1": the points)
         school = " ".join(parts[2:mark_idx])
         grade = "--" # SMAA has no grade
+        # (unless a sheet with one prints it before the school: "SR Messalonskee", 2018 KVAC)
+        mg = re.match(r'(FR|SO|JR|SR)\s+(?=[A-Z])', school)
+        if mg:
+            grade, school = mg.group(1), school[mg.end():]
 
         if self.is_junk(name, school): return None, i
         

@@ -3664,6 +3664,74 @@ def test_milesplit_judged_time_with_j_prefix_is_kept():
     rows = [(x['athlete'], x['result']) for e in parse(text)[0] for x in e['results']]
     assert rows == [('Zompa, Ava', '7:17.50'), ('Cashin, Mae', '7:17.50'), ('Lee, Ann', '7:40.10')], rows
 
+def test_coop_follows_the_years_it_competed():
+    """Sumner/Narraguagus indoor ran as one team in 2018 and from 2024 on, separately in between:
+    the scoring unit and a printed co-op label follow the year."""
+    from backend.school_catalog import team_unit, coop_or_host
+    co = 'coop-it-sumner-narraguagus'
+    assert team_unit('me-hs-sumner', 2018, 'Indoor') == co
+    assert team_unit('me-hs-narraguagus', 2025, 'Indoor') == co
+    for y in (2012, 2019, 2021, 2023):
+        assert team_unit('me-hs-sumner', y, 'Indoor') == 'me-hs-sumner'
+        assert coop_or_host(co, y, 'Indoor') == 'me-hs-sumner'
+    assert team_unit('me-hs-narraguagus', 2025, 'XC') == 'me-hs-narraguagus'
+
+
+def test_sprint_medleys_are_named_by_distance():
+    """An 800, 1200 and 1600 sprint medley are different races (EMITL relays 2018 stored its 1200 and
+    1600 under one 'Sprint Medley Relay')."""
+    from backend.event_canon import canonical_event as c
+    assert c('800 Sprint Medley', 'Boys', 'Indoor') == ('Boys', '800 Meter Sprint Medley Relay')
+    assert c('1600 Sprint Medley Long', 'Boys', 'Indoor') == ('Boys', '1600 Meter Sprint Medley Relay')
+    assert c('1200 Sprint Medley', 'Mixed', 'Indoor') == ('Mixed', '1200 Meter Sprint Medley Relay')
+    assert c('1760 Sprint Medley Long', 'Girls', 'Indoor') == ('Girls', '1760 Yard Sprint Medley Relay')
+    assert c('Sprint Medley Relay', 'Girls', 'Outdoor') == ('Girls', 'Sprint Medley Relay')
+    assert c('Distance Medley 4K', 'Boys', 'Indoor') == ('Boys', 'Distance Medley Relay')
+
+
+def test_compact_continuation_rows_and_shifted_grade_column():
+    """2018 KVAC Class A/B PDFs: a page-top continuation printed in a compact font
+    ("16 Labbe, Sarah   SR Messalonskee   30.53"), a 'Yr' header left of the grades
+    ("SO    Winslow" is grade then school), and a cramped row starting left of the
+    Name header ("  4 Meader, Brianna      JR Lawrence") all read whole."""
+    import re
+    from backend.parsers.hytek import HyTekStandardParser, HyTekSMAAParser
+    from backend.parser import Sub5ColumnParser as P
+    row = ['  16 Labbe, Sarah         SR Messalonskee      30.53']
+    r, _ = HyTekStandardParser().parse_row(row, 0, 'Girls', '200 Meter Dash', '2018', 'd', 'm', 'x Indoor')
+    assert (r['athlete_name'], r['school'], r['mark']) == ('Labbe, Sarah', 'Messalonskee', '30.53')
+    r, _ = HyTekSMAAParser().parse_row(['7 Walker, James        SR Skowhegan     35-06.00 1'], 0, 'Boys',
+                                       'Shot Put', '2018', 'd', 'm', 'x Indoor')
+    assert (r['athlete_name'], r['mark']) == ('Walker, James', '35-06.00')
+    lines = ['Event 29 Girls 2 Mile Run CLASS B', '       Name                   Yr School             Finals',
+             'Finals', '   1   Tiner, Olivia          FR Winslow           12:49.24   10',
+             '  4 Meader, Brianna      JR Lawrence       13:23.25 4',
+             '  1      Spaulding, Maximus         SO    Winslow               53.16   10']
+    rows = P('x.pdf', text='\n'.join(lines)).parse_event_block(dict(
+        lines=lines, is_relay=False, event='2 Mile Run', gender='Girls', original_event_name='Girls 2 Mile Run'))
+    assert [(x['athlete'], x['school'], x['grade']) for x in rows] == [
+        ('Tiner, Olivia', 'Winslow', 'FR'), ('Meader, Brianna', 'Lawrence', 'JR'), ('Spaulding, Maximus', 'Winslow', 'SO')]
+    page = ('Finals ... (Event 20 Boys 400 Meter Dash CLASS A)                    16 Labbe, Sarah         SR Messalonskee      30.53\n'
+            '      Name                      Yr School           Finals           17 Crowell, Emily       SO Messalonskee      30.75\n'
+            '  14      Ousmane, Amadou             SR    Edward Little         1:01.34          18      Schinhofen, Rayna          FR Brunswick                30.93\n'
+            '                     Name                       Yr School     Finals                Name                  Yr School    Finals')
+    out = P.split_pdf_columns(page)
+    assert '16 Labbe, Sarah' in out and 'CLASS A)' in out.split('16 Labbe')[0] and \
+        not re.search(r'CLASS A\)\s+16', out)
+
+
+def test_pentathlon_leg_named_first_and_smaa_grade_before_school():
+    """Hy-Tek flat rows name a pentathlon leg first ('55 Meter Hurdles Indoor Pentathlon'): a leg,
+    not the total. A grade the SMAA reader finds before the school ('SR Messalonskee') is the grade."""
+    from backend.event_canon import canonical_event as c
+    from backend.parsers.hytek import HyTekSMAAParser
+    assert c('55 Meter Hurdles Indoor Pentathlon', 'Girls', 'Indoor') == ('Girls', 'Indoor Pentathlon: 55 Meter Hurdles')
+    assert c('Girls Indoor Pentathlon', 'Girls', 'Indoor') == ('Girls', 'Indoor Pentathlon')
+    r, _ = HyTekSMAAParser().parse_row(['  15      Labbe, Sarah              SR    Messalonskee            8.41'],
+                                       0, 'Girls', '55 Meter Dash', '2018', 'd', 'm', 'x Indoor')
+    assert (r['grade'], r['school']) == ('SR', 'Messalonskee')
+
+
 if __name__ == '__main__':
     qaqc._ensure_team_mapping()
     failed = 0

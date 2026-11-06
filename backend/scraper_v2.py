@@ -2966,6 +2966,13 @@ class Sub5ScraperV2:
                         SYNC_DROP_WHAT[('event', season, str(event_name)[:60])] += len(results_list)
                         continue
                     gender, event_canon_name = canon
+                    # (a field-event relay -- 'Boys Long Jump Relay' at the EMITL, Bowdoin, Black Bear and MDI
+                    # relays -- is a team's summed marks, not an athlete's jump or throw)
+                    if season != 'XC' and is_relay and re.search(
+                            r'Jump|Vault|Put|Weight Throw|Hammer|Discus|Javelin', event_canon_name):
+                        SYNC_DROPS[(meet_key, 'field-event relay (team total)')] += len(results_list)
+                        SYNC_DROP_WHAT[('event', season, str(event_name)[:60])] += len(results_list)
+                        continue
                     full_event = f"{gender} {event_canon_name}"
                     # (a row or two of the other sex inside a race -- 'Alexa Brown  F 6 Windham' in the 6th-grade
                     # boys' sheet: a cross entry, or a bib keyed to the wrong runner; settled once the store is in)
