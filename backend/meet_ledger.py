@@ -314,7 +314,8 @@ def load_have():
         except Exception:
             continue
         stem = os.path.splitext(os.path.basename(path))[0]
-        rows = sum(len(e.get('results', [])) for e in doc.get('events', []))
+        # (a flat file lists its rows themselves as events: 2018 KVAC class-a-results.pdf)
+        rows = sum(len(e['results']) if 'results' in e else int(bool(e.get('athlete_name'))) for e in doc.get('events', []))
         schools, unresolved = schools_of(doc, int(year), season, school_catalog.resolve, cache, meet_name=os.path.basename(path))
         rel = os.path.relpath(path, os.path.dirname(BASE))
         files.append(dict(year=int(year), season=season, stem=stem, date=file_date(doc, year, season, stem),
@@ -464,6 +465,11 @@ def build():
         rows.append(dict(year=l['year'], season=l['season'], date=l.get('date'), name=l.get('name'),
                          status='missing' if kind in ('hs', 'ms') else 'skipped', kind=kind,
                          schools=[], files=[], listed=[ref]))
+    # a listed meet held only as team scores (its results sheet lost, e.g. a reused sub5 file name)
+    # is still missing its results: 2018 WMC meet 2 of 1/5 was held as WMC2.htm's scores alone
+    for r in rows:
+        if r['status'] == 'have' and r['listed'] and r['files'] and not any(f.get('rows') for f in r['files']):
+            r['status'], r['why'] = 'missing', 'held only as team scores'
     for nf in load_not_found():
         rows.append(dict(year=nf['year'], season=nf['season'], date=None, name=nf['text'], status='not_found',
                          schools=[], files=[], listed=[]))

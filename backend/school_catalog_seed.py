@@ -1259,6 +1259,7 @@ _OOS_SIMPLE = [
     ('NH', 'Hanover High School', ['Hanover']),
     ('MA', "The Governor's Academy", ["The Governor's Academy", 'The Governor', 'Governors Academy']),
     ('MA', 'Andover High School', ['Andover']),
+    ('MA', 'Landmark School', ['Landmark School', 'Landmark Sch', 'Landmark_School']),   # Prides Crossing, MA (2018 Phillips Exeter meet)
     ('MA', 'Austin Preparatory School', ['Austin Prep', 'Austin']),
     ('MA', 'Central Catholic High School', ['Central Catholic', 'Central Cath']),
     ('MA', 'Tewksbury Memorial High School', ['Tewksbury']),

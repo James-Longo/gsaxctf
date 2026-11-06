@@ -3744,6 +3744,19 @@ def test_record_note_between_school_and_mark_is_blanked():
     assert any(r.get('athlete') == 'Ashley Anderson' and r.get('school') == 'MDI' for r in rows)
 
 
+def test_name_flip_drops_stray_period_class_marker_and_bad_byte():
+    """'Antonelli, Alexis.' (2018 WMC Poland rows), 'Mulonda, Mwesa PG' (a post-graduate in a relay list)
+    and 'Laakkonen, Otto \ufffd' (an undecodable byte, 2018 Phillips Exeter); an initial keeps its period."""
+    from backend import scraper_v2 as sv
+    n = sv.Sub5ScraperV2.normalize_athlete_name
+    s = sv.Sub5ScraperV2.__new__(sv.Sub5ScraperV2)
+    s.manual_fixes = {}
+    assert n(s, 'Antonelli, Alexis.') == 'Alexis Antonelli'
+    assert n(s, 'Mulonda, Mwesa PG') == 'Mwesa Mulonda'
+    assert n(s, 'Laakkonen, Otto \ufffd') == 'Otto Laakkonen'
+    assert n(s, 'Smith, J.') == 'J. Smith'
+
+
 if __name__ == '__main__':
     qaqc._ensure_team_mapping()
     failed = 0

@@ -265,7 +265,10 @@ def held_meets(year, season):
 
 
 def _names(doc):
-    return {k[0] for e in doc.get('events', []) for r in e.get('results', []) for k in [_runner_key(r)] if k}
+    rows = [r for e in doc.get('events', []) for r in e.get('results', [])]
+    # (a flat file lists its rows themselves as events)
+    rows += [dict(athlete=e['athlete_name'], result=e.get('mark')) for e in doc.get('events', []) if 'results' not in e and e.get('athlete_name')]
+    return {k[0] for r in rows for k in [_runner_key(r)] if k}
 
 
 def held_names(year, season, stems):
@@ -361,7 +364,8 @@ def stage_one(year, season, lst, held, cache):
         # (same day, same schools -- and the same runners: a middle-school festival and the
         # conference championship two days later share every school, no runner)
         hn = held_names(year, season, stems) if mine else set()
-        if same_meet(ids, d, hids, hday) and (not mine or not hn or len(mine & hn) >= 0.5 * min(len(mine), len(hn))):
+        # (a held meet with no runners is a team-scores sheet: its results are still missing)
+        if same_meet(ids, d, hids, hday) and (not mine or (hn and len(mine & hn) >= 0.5 * min(len(mine), len(hn)))):
             os.remove(path)
             set_listing_match(year, season, lst['id'], stem, 'auto (milesplit_bulk): same date and schools as the meet we hold')
             return dict(status='duplicate', match=stem)

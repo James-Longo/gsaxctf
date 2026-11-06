@@ -578,7 +578,7 @@ class Sub5ColumnParser:
         return '\n'.join('\n'.join(col) for col in columns)
 
     @staticmethod
-    def clean_pdf_text(text):
+    def clean_pdf_text(text, title_date=False):
         """Strip PDF-specific artifacts so the column parser works normally.
 
         Artifacts handled:
@@ -608,6 +608,21 @@ class Sub5ColumnParser:
 
         injected_date_line = None
         m_date = _re.search(r"Hy-Tek's MEET MANAGER.*?(\d{1,2}/\d{1,2}/\d{4})", text)
+        # (that is when the page was printed; the meet's title line under it carries the meet's
+        # own date: "SMAA WK 4 MEET 1 - 1/17/2026" printed 1/18/2026, 2026 smaa-1.pdf)
+        if m_date and title_date:
+            head = text[m_date.end():m_date.end() + 600].splitlines()[1:6]
+            t = next((t for t in (_re.search(r"\S.*?[-–]\s*(\d{1,2}/\d{1,2}/\d{4})\s*$", l.strip()) for l in head) if t), None)
+            import datetime as _dt
+            def _d(s):
+                try:
+                    return _dt.datetime.strptime(s, '%m/%d/%Y').date()
+                except ValueError:
+                    return None
+            # (only a meet held up to a week before the printing: a record line's
+            # 'Meet Record ... - 9/8/2018' on a 2023 sheet is not this meet)
+            if t and _d(t.group(1)) and _d(m_date.group(1)) and 0 <= (_d(m_date.group(1)) - _d(t.group(1))).days <= 7:
+                m_date = t
         if m_date:
             injected_date_line = f"Meet Date: {m_date.group(1)}"
 

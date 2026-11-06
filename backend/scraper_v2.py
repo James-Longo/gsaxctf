@@ -1242,7 +1242,7 @@ def _parse_one_file(args):
                 return (filename, 0, 'pdftotext unavailable')
             if season_label == 'XC':
                 raw = unshift_font_text(raw)
-            text = Sub5ColumnParser.clean_pdf_text(raw)
+            text = Sub5ColumnParser.clean_pdf_text(raw, title_date=season_label != 'XC')
         else:
             with open(input_path, 'r', encoding='utf-8', errors='ignore') as f:
                 text = f.read()
@@ -1626,7 +1626,7 @@ def _parse_one_file(args):
                 alt = extractor(input_path)
                 if not alt:
                     continue
-                alt_results, alt_n = _run_chain(Sub5ColumnParser.clean_pdf_text(alt), strict=True)
+                alt_results, alt_n = _run_chain(Sub5ColumnParser.clean_pdf_text(alt, title_date=season_label != 'XC'), strict=True)
                 # compare by actual content: order-rejected keeps report n=0
                 # but still carry (flagged) results worth more than nothing
                 if _count(alt_results) > _count(results):
@@ -1654,7 +1654,7 @@ def _parse_one_file(args):
                     if not alt:
                         continue
                     if alt is not raw:
-                        alt = Sub5ColumnParser.clean_pdf_text(alt)
+                        alt = Sub5ColumnParser.clean_pdf_text(alt, title_date=season_label != 'XC')
                     alt_results, alt_n = _run_chain(alt, strict=True)
                     # (more runners, not the same runners twice)
                     # (more runners, not the same runners twice; a list's
@@ -1674,7 +1674,7 @@ def _parse_one_file(args):
             from backend.parser import Sub5ColumnParser
             cols = Sub5ColumnParser.split_layout_columns(raw)
             if cols is not raw:
-                alt_results, alt_n = _run_chain(Sub5ColumnParser.clean_pdf_text(cols), strict=True, most=True)
+                alt_results, alt_n = _run_chain(Sub5ColumnParser.clean_pdf_text(cols, title_date=season_label != 'XC'), strict=True, most=True)
                 if alt_n >= 5 and _count(alt_results) > 1.2 * _count(results) + 10 and \
                         _dups(alt_results) <= _dups(results) + 2:
                     results, best_n = alt_results, max(alt_n, best_n)
@@ -1693,7 +1693,7 @@ def _parse_one_file(args):
                 rt = ''
             if rt:
                 from backend.parser import Sub5ColumnParser
-                alt_results, alt_n = _run_chain(Sub5ColumnParser.clean_pdf_text(rt), strict=True)
+                alt_results, alt_n = _run_chain(Sub5ColumnParser.clean_pdf_text(rt, title_date=season_label != 'XC'), strict=True)
                 if alt_n >= 5 and _holes(alt_results) < _holes(results) and \
                         _count(alt_results) > _count(results) and _dups(alt_results) <= _dups(results):
                     # (reading-order text has one space between cells: "L. Lam South Portland" splits
@@ -2422,7 +2422,7 @@ class Sub5ScraperV2:
 
     def normalize_athlete_name(self, name):
         if not name: return ""
-        name = name.strip()
+        name = name.replace('\ufffd', ' ').strip()   # (an undecodable byte: 'Laakkonen, Otto \ufffd', 2018 Phillips Exeter)
         name = re.sub(r'^[\s#\-]*\d+[\s.\-]*', '', name).strip()
         
         # Check manual fixes on the raw cleaned name first
@@ -2441,6 +2441,11 @@ class Sub5ScraperV2:
                 # Remove leftover commas in names
                 last_name = last_name.replace(',', '').strip()
                 first_name = first_name.replace(',', '').strip()
+                # ('Antonelli, Alexis.': a stray period after the first name, 2018 WMC Poland rows;
+                # an initial keeps its period)
+                first_name = re.sub(r'(?<=[a-z]{2})\.$', '', first_name)
+                # ('Mulonda, Mwesa PG': a post-graduate's class marker in a relay's member list)
+                first_name = re.sub(r'\s+PG$', '', first_name)
                 if last_name and first_name:
                     # Look for class year / suffix at the end of first_name (e.g., "JR", "SR", "SO", "FR", "II", "III")
                     suffix_match = re.search(r'\s+(JR|SR|SO|FR|I|II|III|IV|JR\.|SR\.)$', first_name, re.IGNORECASE)
