@@ -2853,6 +2853,14 @@ class Sub5ScraperV2:
                 for mc in self.manual_fixes.get('meet_corrections', []):
                     if mc.get('year') and str(mc['year']) != str(year):
                         continue
+                    if mc.get('season') and mc['season'] != season:
+                        continue
+                    # "exact": the stem itself ("Results" is in every Results*.htm)
+                    if mc.get('exact'):
+                        if mc['meet_name_fragment'] == meet_name:
+                            date = mc['new_date']
+                            break
+                        continue
                     if mc['meet_name_fragment'].lower() in meet_name.lower() or mc['meet_name_fragment'].lower() in filename.lower():
                         date = mc['new_date']
                         break

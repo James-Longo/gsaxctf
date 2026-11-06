@@ -76,12 +76,12 @@ def counts(rows, year, season):
             hits['outdoor event indoors'].append((r['meet_name'], ev))
         if season == 'Outdoor' and INDOOR_ONLY.search(ev):
             hits['indoor event outdoors'].append((r['meet_name'], ev))
-        if mark and mark.upper() not in ('DNF', 'DNS', 'DQ', 'NH', 'NM', 'FOUL', 'FAIL', 'SCR', 'NT', 'ND'):
+        if mark and mark.upper() not in ('DNF', 'DNS', 'DQ', 'NH', 'NM', 'FOUL', 'FAIL', 'SCR', 'NT', 'ND', 'FS'):   # FS: false start
             if re.search(r'athlon', ev):
                 pass   # multi-event points and component marks
             elif FIELD.search(ev) and not FIELD_MARK.match(mark):
                 hits['field mark not a distance'].append((r['meet_name'], ev, name, mark))
-            if not FIELD.search(ev) and not TIME_MARK.match(mark):
+            elif not FIELD.search(ev) and not TIME_MARK.match(mark):
                 hits['running mark not a time'].append((r['meet_name'], ev, name, mark))
         if not relay and re.search(r'\brelay$', name, re.I):
             hits['relay team as athlete'].append((r['meet_name'], r['team'], ev, name))
