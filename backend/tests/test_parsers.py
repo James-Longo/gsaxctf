@@ -3254,6 +3254,23 @@ def test_racetab_division_first_headers():
     got = [(e['event'], [(r['athlete'], r['result'], r['type']) for r in e['results']]) for e in ev]
     assert got == [('Boys 40 Yard Dash Junior Division', [('Caden True', '5.70', 'Prelims')]),
                    ('Girls 40 Yard Dash Senior Division', [('Maya Panozzo', '5.90', 'Finals')])], got
+    # SMMSAC 2017 abbreviates the division: "Jr Girls 600 Yard Run", "Int Boys 440 Yard Dash"
+    text = (
+        "                      Jr Girls 600 Yard Run                      \n"
+        "=================================================================\n"
+        "    Name                  Yr Team                      Time   Pts\n"
+        "-----------------------------------------------------------------\n"
+        "  1 Miieke Butterbaugh     6 Cape Elizabeth Middl  2:02.80      6\n"
+        "\n"
+        "                     Int Boys 440 Yard Dash                      \n"
+        "=================================================================\n"
+        "    Name                  Yr Team                      Time   Pts\n"
+        "-----------------------------------------------------------------\n"
+        "  1 Mac Madore             7 Greely Middle School  1:25.60      6\n")
+    ev = M.parse(text)[0]
+    got = [(e['event'], [r['athlete'] for r in e['results']]) for e in ev]
+    assert got == [('Girls 600 Yard Run Junior Division', ['Miieke Butterbaugh']),
+                   ('Boys 440 Yard Dash Intermediate Division', ['Mac Madore'])], got
 
 
 def test_coed_relay_score_copies_are_dropped():
