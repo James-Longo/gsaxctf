@@ -2603,7 +2603,11 @@ class Sub5ScraperV2:
             # crawled as their own seasons via SEASONS, never as meet results.
             if re.search(r'results\s*\d{2}/(meetresults\d{0,2}|results)\.htm$', h):
                 return False
-            junk = ['meetresults', 'resultspPVC', 'index.htm', 'contact.htm', 'about.htm',
+            # (a legacy year index is "meetresultsNN.htm"; "KVACmeetResults-12-29.htm",
+            # a 2019 KVAC meet, only contains the word)
+            if re.match(r'meetresults\d{0,2}\.htm$', h.split('/')[-1]):
+                return False
+            junk = ['resultspPVC', 'index.htm', 'contact.htm', 'about.htm',
                     'links.htm', 'home.htm', 'siteinfo', 'coachinfo', 'schedule',
                     'performanceupdate', 'top10', 'records', 'photos', 'summeryouth',
                     'email-protection', 'entries', 'entry', 'psych', 'heat-sheet',
@@ -2675,6 +2679,25 @@ class Sub5ScraperV2:
             # Scope by season: generic filenames (Results-1.htm, classaboys.htm)
             # recur across years and would otherwise clobber each other.
             scoped_key = f"{curr_year}/{curr_season}/{filename}"
+            # sub5 reuses a file name within a season under another upload month
+            # (uploads/2015/12/Results1.htm and uploads/2016/01/Results1.htm are two
+            # meets): the name already held from another link keeps it, and this
+            # link is saved as "<stem>-uYYYY-MM<ext>" with its own date
+            known = self.web_url_mapping.get(scoped_key)
+            # (a link already saved under another name - "SMAA-week2-meet1-12.19.15.htm"
+            # for uploads/2015/12/Results1.htm - keeps that name)
+            prev = [k for k, u in self.web_url_mapping.items()
+                    if k.startswith(f"{curr_year}/{curr_season}/") and u.split('://')[-1] == link.split('://')[-1]]
+            if prev and scoped_key not in prev:
+                scoped_key = prev[0]
+                filename = scoped_key.split('/', 2)[2]
+            elif known and known.split('://')[-1] != link.split('://')[-1]:
+                um = re.search(r'/uploads/(\d{4})/(\d{2})/', link)
+                km = re.search(r'/uploads/(\d{4})/(\d{2})/', known)
+                if um and km and um.groups() != km.groups():
+                    stem_, ext_ = os.path.splitext(filename)
+                    filename = f"{stem_}-u{um.group(1)}-{um.group(2)}{ext_}"
+                    scoped_key = f"{curr_year}/{curr_season}/{filename}"
             if self.web_url_mapping.get(scoped_key) != link:
                 self.web_url_mapping[scoped_key] = link
                 mapping_changed = True

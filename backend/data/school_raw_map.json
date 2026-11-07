@@ -3,9 +3,9 @@
 "methods_by_rows": {
 "exact/alias": 1821974,
 "code": 258977,
-"truncation": 121148,
+"truncation": 121195,
 "athlete-continuity": 52908,
-"mascot": 28482,
+"mascot": 28435,
 "bare name + level context": 26581,
 "manual (file rule)": 18363,
 "unresolved": 17600,
@@ -13,8 +13,8 @@
 "state-tagged (auto entry)": 10435,
 "spelling (fuzzy)": 3470,
 "file-expansion": 2638,
-"debris-salvage": 1767,
-"debris": 1012,
+"debris-salvage": 1772,
+"debris": 1007,
 "ambiguous": 852,
 "company": 736,
 "later-hs": 597,
@@ -25,16 +25,16 @@
 "exact/alias": 4126,
 "unresolved": 2151,
 "state-tagged (auto entry)": 1568,
-"debris-salvage": 913,
-"debris": 714,
+"debris-salvage": 914,
+"debris": 713,
 "code": 701,
-"truncation": 531,
+"truncation": 533,
 "athlete-continuity": 460,
 "spelling (fuzzy)": 288,
 "manual (file rule)": 185,
 "co-op label": 78,
 "bare name + level context": 74,
-"mascot": 42,
+"mascot": 40,
 "ambiguous": 30,
 "file-expansion": 13,
 "later-hs": 2
@@ -36374,8 +36374,8 @@
 2013
 ],
 "id": "me-hs-morse",
-"method": "nickname+athletes",
-"how": "mascot"
+"method": "truncation",
+"how": "truncation"
 },
 "Timberlane": {
 "rows": 41,
@@ -73327,8 +73327,8 @@
 2006
 ],
 "id": "me-hs-morse",
-"method": "nickname",
-"how": "mascot"
+"method": "truncation",
+"how": "truncation"
 },
 "Gray New GLoucester": {
 "rows": 6,
@@ -79420,9 +79420,9 @@
 2016,
 2016
 ],
-"id": null,
-"method": "debris",
-"how": "debris"
+"id": "me-hs-morse",
+"method": "salvaged:truncation",
+"how": "debris-salvage"
 },
 "Bonny Eagle A": {
 "rows": 5,
@@ -235843,11 +235843,8 @@
 },
 "Gabby": null,
 "Gardiner Area High School": "me-hs-gardiner",
-"Gardiner High School": {
-"id": "me-hs-gardiner",
-"basis": "name only (no joined rows)"
-},
 "Gardiner Regional Middle School": "me-ms-gardiner",
+"GardinerHallDale indoor track 2016": "coop-it-gardiner-halldale-2016",
 "GardinerLisbonMaranacook indoor track": "me-hs-gardiner",
 "Gardner": "oos-auto-ma-gardner",
 "Gavin R": null,
@@ -245002,20 +244999,6 @@
 "id": null,
 "method": "unresolved",
 "how": "unresolved"
-},
-{
-"raw": "Shipbuilders 14-15",
-"rows": 5,
-"seasons": {
-"Indoor": 5
-},
-"years": [
-2016,
-2016
-],
-"id": null,
-"method": "debris",
-"how": "debris"
 },
 {
 "raw": "Mass Velocit",

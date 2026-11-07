@@ -159,7 +159,7 @@ ME_HS = [
     ('me-hs-freeport', 'Freeport High School', 'Freeport', 'Freeport',
      ['Freeport', 'Freeport HS', 'Freeport High', 'Freeport Falcons'], ['FREE', 'FHS'], ['Falcons'], {}),
     ('me-hs-morse', 'Morse High School', 'Bath', 'Morse',
-     ['Morse', 'Morse HS', 'Morse High', 'Morse Shipbuilders', 'Morse Shipbuilers'], ['MOR', 'MORS', 'MORSE', 'MHS'],
+     ['Morse', 'Morse HS', 'Morse High', 'Morse Shipbuilders', 'Morse Shipbuilers', 'Shipbuilders 14-15'], ['MOR', 'MORS', 'MORSE', 'MHS'],
      ['Shipbuilders'], {}),
     ('me-hs-greely', 'Greely High School', 'Cumberland', 'Greely',
      ['Greely', 'Greely HS', 'Greely High', 'Greeley'], ['GHS', 'GREE', 'GRE'], ['Rangers'], {}),
