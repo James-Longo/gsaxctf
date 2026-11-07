@@ -176,6 +176,17 @@ def _context():
     if not _ctx:
         _ctx['verify'] = json.load(open(os.path.join(DATA, 'meet_verification.json'))) \
             if os.path.exists(os.path.join(DATA, 'meet_verification.json')) else {}
+        # a scores-only sheet checked against the results file beside it (ScoresSMAA1 -> ResultsSMAA1)
+        # is that results file's check too
+        rank = {'verified': 0, 'verified_close': 1, 'mismatch': 2}
+        via = {}
+        for k, v in _ctx['verify'].items():
+            rf = (v or {}).get('results_file')
+            if rf and v.get('status') in rank:
+                rk = '_'.join(k.split('_', 2)[:2]) + '_' + rf
+                if rk not in via or rank[v['status']] < rank[via[rk][0]]:
+                    via[rk] = (v['status'], k.split('_', 2)[2])
+        _ctx['via_scores'] = via
         flags = collections.Counter()
         fp = os.path.join(DATA, 'qaqc_flags.json')
         for x in (json.load(open(fp)) if os.path.exists(fp) else []):
@@ -204,12 +215,17 @@ def confidence(path, year, season, stem, doc, rows, unresolved):
     c = _context()
     key = f'{year}_{season}_{stem}'
     score = (c['verify'].get(key) or {}).get('status')
+    via = c['via_scores'].get(key)
+    if via and score in (None, 'no_rankings'):
+        score = via[0]
     flags = c['flags'][(str(year), season, stem)]
     transcribed = os.path.exists(os.path.join(TRANSCRIBED, str(year), season, stem + '.json'))
     manual = (doc.get('parser') or '').endswith('-manual')
     audit = c['audits'].get(key)
     psha, ssha = parse_sha(doc), source_sha(year, season, stem, path)
     out = dict(score=score, flags=flags, unresolved=unresolved, parse_sha=psha, source_sha=ssha)
+    if via and score == via[0]:
+        out['score_via'] = via[1]
     if transcribed:
         out['transcribed'] = True
     so = c['signoff'].get(path)
