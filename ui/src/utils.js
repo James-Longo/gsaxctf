@@ -135,12 +135,15 @@ export const EVENT_MAP = {
     "200m Dash": ["200m Dash", "200 Meter Dash", "200 Dash", "200 Meter Run"],
     "400m Dash": ["400m Dash", "400 Meter Dash", "400 Dash", "400 Meter Run"],
     "800m Run": ["800m Run", "800 Meter Run", "800 Run"],
-    // NOTE: 3200m Run before 1600m Run — "2 Mile" must match before bare "Mile" aliases.
+    // The mile and 2 mile (indoor) are their own races, never the 1600/3200.
+    // 2 Mile before 1 Mile: "Mile Run" would match inside "2 Mile Run".
+    "1 Mile Race Walk": ["1 Mile Race Walk", "Mile Race Walk"],
+    "2 Mile Run": ["2 Mile Run", "2 Mile", "Two Mile", "2-Mile Run", "2-Mile"],
+    "1 Mile Run": ["1 Mile Run", "1 Mile", "One Mile", "Mile Run"],
     // NOTE: No bare "3200 Meter" alias — too broad.
-    "3200m Run": ["3200m Run", "3200 Meter Run", "2 Mile Run", "2 Mile", "Two Mile", "2-Mile Run", "2-Mile"],
+    "3200m Run": ["3200m Run", "3200 Meter Run"],
     // NOTE: No bare "1600 Meter" alias — too broad, would match "1600 Meter Race Walk".
-    // NOTE: No bare "Mile" alias — too broad, would match "2 Mile Run".
-    "1600m Run": ["1600m Run", "1600 Meter Run", "1 Mile Run", "1 Mile", "One Mile", "Mile Run"],
+    "1600m Run": ["1600m Run", "1600 Meter Run"],
     // Hurdles
     "55m Hurdles": ["55m Hurdles", "55 Meter Hurdles", "55m High Hurdle", "55m Hurdle", "55 Meter Hurdle", "55m H. Hurdle"],
     "100m Hurdles": ["100m Hurdles", "100 Meter Hurdles", "100m H. Hurdle", "100m Hurdle", "100 Meter Hurdle"],
