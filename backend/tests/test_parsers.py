@@ -3271,6 +3271,16 @@ def test_racetab_division_first_headers():
     got = [(e['event'], [r['athlete'] for r in e['results']]) for e in ev]
     assert got == [('Girls 600 Yard Run Junior Division', ['Miieke Butterbaugh']),
                    ('Boys 440 Yard Dash Intermediate Division', ['Mac Madore'])], got
+    # a header printed ~10 columns right of its marks ("Time         H#"): the heat number sat
+    # nearer the Time label and was taken as the mark (SMMSAC 3/11/2017 Sr Boys 40 prelims)
+    text = (
+        "   Sr Boys 40 Yard Dash Prelims                 \n"
+        "==============================================================\n"
+        "    Name                  Yr Team                        Time         H#\n"
+        "--------------------------------------------------------------\n"
+        "  1 Isaac Rawson           8 Biddeford Middle Sch     5.10   1\n")
+    ev = M.parse(text)[0]
+    assert [(r['athlete'], r['result']) for r in ev[0]['results']] == [('Isaac Rawson', '5.10')], ev
 
 
 def test_coed_relay_score_copies_are_dropped():

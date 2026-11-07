@@ -224,6 +224,9 @@ def parse(text):
         ms=[(mt.start()+sc,mt.end()+sc,mt.group(0)) for mt in re.finditer(r'(?<![\w.:-])(%s)(?![\w.:-])'%MARK, rest)]
         if not ms: note('ROW?',ln); i+=1; continue
         best=min(ms,key=lambda x:abs(x[1]-fe))
+        if re.fullmatch(r'\d{1,2}',best[2]):   # a heat or points number nearer the header's Time than the time itself
+            real=[x for x in ms if re.search(r'[.:]',x[2])]   # (SMMSAC 2017 "Time         H#": header 10 columns right)
+            if real: best=min(real,key=lambda x:abs(x[1]-fe))
         pieces=re.split(r'\s{2,}',rest.strip())
         school=pieces[0].strip() if len(pieces)>1 else rest[:best[0]-sc].strip()
         if best[0]-sc < len(school): school=rest[:best[0]-sc].strip()
