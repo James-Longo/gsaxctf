@@ -46,7 +46,8 @@ TABLES = [
     ('5-3-2-1', [5, 3, 2, 1]),
     ('5-3-1', [5, 3, 1]),
 ]
-RELAY_TABLES = {'5-3-1': [[5], [5, 3, 1]], '5-3-2-1': [[5, 3], [5, 3, 2, 1]]}
+RELAY_TABLES = {'5-3-1': [[5], [5, 3, 1]], '5-3-2-1': [[5, 3], [5, 3, 2, 1]],
+                '6-4-3-2-1': [[6, 4, 3, 2, 1], [6, 4, 2]]}   # SMAA 2017: relays 6-4-2 (ResultsSMAA2-1, ResultsSMAA3)
 BAD = {'DQ', 'DNF', 'DNS', 'NH', 'NM', 'FOUL', 'SCR', 'FS', 'NT', 'ND', 'X'}
 TRACK = ('dash', 'run', 'hurdle', 'relay', 'mile', 'walk', 'steeple', 'meter', 'yard', '4x', 'm ')
 
