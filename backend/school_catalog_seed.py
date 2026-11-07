@@ -2519,6 +2519,10 @@ FILE_CODES = {
     # 5/5 'Hawks' = Marshwood ("Masrshwood High School MSWD 53"), 5/13 'Rams' = Kennebunk ("Kennebunk High School KENN 33")
     ('Outdoor', 2008, 'scarboroughgirls_may5'): {'Hawks': 'me-hs-marshwood'},
     ('Outdoor', 2008, 'scarboroughgirls_may13'): {'Rams': 'me-hs-kennebunk'},
+    # 2016/Outdoor/Results (middle-school meet): the sheet prints DUR apart from Freeport; its 24 runners are Durham
+    # Community School in 2015/2016 XC (Durham kids run with Freeport MS indoors, RSU 5's combined team). Pinned
+    # 2026-11-07 after the 2016 SMMSAC Indoor meets made the athlete-continuity reading ambiguous.
+    ('Outdoor', 2016, 'Results'): {'DUR': 'me-ms-durham'},
 }
 
 # Out-of-state schools printed 'Town, ST' at the Festival of Champions (2004-05 festival heats, 2022 FOC). The resolver reads

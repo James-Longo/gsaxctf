@@ -82,6 +82,7 @@ STAT = {'DQ','DNF','NH','FOUL','FAIL','ND','NT','DNQ','FS'}   # (FS: a false sta
 def clean_mark(m):
     m = re.sub(r'^[xXjJ](?=\d)','',m)
     m = re.sub(r'(?<=\d)[FR]$', '', m)   # meet/facility record flag
+    m = re.sub(r'(?<=\d\.\d)[hH]$', '', m)   # hand time "5.4h" (Triple C festival 2016)
     m = re.sub(r'^[xX](?=[A-Z]{2})','',m)
     if m in STAT: return m
     if re.fullmatch(r'.*\d[qQ]', m): m = m[:-1]

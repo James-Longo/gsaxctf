@@ -3234,6 +3234,13 @@ def test_false_start_is_a_status_not_the_seed():
     assert rows['Gage Sjostedt'] == 'FS'
 
 
+def test_milesplit_hand_time_suffix():
+    """Triple C boys festival 2016 prints hand times '5.4h': the mark is 5.4."""
+    from backend import milesplit as M
+    assert M.clean_mark('5.4h') == '5.4' and M.clean_mark('1:05.2h') == '1:05.2'
+    assert M.clean_mark('5.40') == '5.40' and M.clean_mark('15-04h') == '15-04h'
+
+
 def test_racetab_division_first_headers():
     """Triple C 2018 (RaceTab): "Junior Boys 40 Yard Dash Prelims" is the boys'
     40 yd junior division, prelim rows; the parser had read no events."""
