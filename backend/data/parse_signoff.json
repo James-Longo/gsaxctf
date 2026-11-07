@@ -25997,6 +25997,41 @@
   "by": "re-check 2026-10-28: re-parsed only for the team-rank fix (ranks 10+ were stored as 0-9)",
   "evidence": "scratch re-parse compared with the signed parse: result rows identical, only team_rankings ranks changed"
  },
+ "backend/data/parsed_results/2015/Indoor/ResultsColby-Meet-3.json": {
+  "parse_sha": "9b4268868554c6b7",
+  "source_sha": "ca13c3d1aae2aaab",
+  "date": "2026-11-07",
+  "by": "sonnet-reviewers-rev15b",
+  "evidence": "2 Sonnet reviewers (rev15b A/B) compared every stored row to the sub5 sheet / cached MileSplit page: clean; gaps are status rows, prelim=final stored once, exhibition rows"
+ },
+ "backend/data/parsed_results/2015/Indoor/ResultsSMAAMEET11.json": {
+  "parse_sha": "0ac0b0136a0b007c",
+  "source_sha": "94ba757127faf35f",
+  "date": "2026-11-07",
+  "by": "sonnet-reviewers-rev15b",
+  "evidence": "2 Sonnet reviewers (rev15b A/B) compared every stored row to the sub5 sheet / cached MileSplit page: clean; gaps are status rows, prelim=final stored once, exhibition rows"
+ },
+ "backend/data/parsed_results/2015/Indoor/ResultsSMAAMEET2.json": {
+  "parse_sha": "39b5eb26415cc4e6",
+  "source_sha": "97a626b7b8e78cdc",
+  "date": "2026-11-07",
+  "by": "sonnet-reviewers-rev15b",
+  "evidence": "2 Sonnet reviewers (rev15b A/B) compared every stored row to the sub5 sheet / cached MileSplit page: clean; gaps are status rows, prelim=final stored once, exhibition rows"
+ },
+ "backend/data/parsed_results/2015/Indoor/ResultsSMAAMEET31.json": {
+  "parse_sha": "c201e7533c43f008",
+  "source_sha": "5f5d16ad081f2734",
+  "date": "2026-11-07",
+  "by": "sonnet-reviewers-rev15b",
+  "evidence": "2 Sonnet reviewers (rev15b A/B) compared every stored row to the sub5 sheet / cached MileSplit page: clean; gaps are status rows, prelim=final stored once, exhibition rows"
+ },
+ "backend/data/parsed_results/2015/Indoor/ResultsSMAAMEET41.json": {
+  "parse_sha": "4512960a292bba61",
+  "source_sha": "5f4e286c04354112",
+  "date": "2026-11-07",
+  "by": "sonnet-reviewers-rev15b",
+  "evidence": "2 Sonnet reviewers (rev15b A/B) compared every stored row to the sub5 sheet / cached MileSplit page: clean; gaps are status rows, prelim=final stored once, exhibition rows"
+ },
  "backend/data/parsed_results/2015/Indoor/boys_class_b_state_2.16.15.json": {
   "parse_sha": "af00224271f7c0ef",
   "source_sha": "fbbdf40b05e9c727",
@@ -26059,6 +26094,20 @@
   "date": "2026-11-07",
   "by": "sonnet-reviewers-rev15a",
   "evidence": "2 Sonnet reviewers (rev15a A/B) compared every stored row to the sub5 sheet: all 24 clean; status/exhibition rows by design; corrected 3A Boys 800 (hand-added) matches the sheet"
+ },
+ "backend/data/parsed_results/2015/Indoor/classaboys.json": {
+  "parse_sha": "68b5e8d5874112e8",
+  "source_sha": "c4d88165f6f90926",
+  "date": "2026-11-07",
+  "by": "sonnet-reviewers-rev15b",
+  "evidence": "2 Sonnet reviewers (rev15b A/B) compared every stored row to the sub5 sheet / cached MileSplit page: clean; gaps are status rows, prelim=final stored once, exhibition rows"
+ },
+ "backend/data/parsed_results/2015/Indoor/classagirls.json": {
+  "parse_sha": "e711cf63fa7e1cbe",
+  "source_sha": "ac8e5205ebb373e0",
+  "date": "2026-11-07",
+  "by": "sonnet-reviewers-rev15b",
+  "evidence": "2 Sonnet reviewers (rev15b A/B) compared every stored row to the sub5 sheet / cached MileSplit page: clean; gaps are status rows, prelim=final stored once, exhibition rows"
  },
  "backend/data/parsed_results/2015/Indoor/corrected_emitl_boys_meet_3a_1.10.15.json": {
   "parse_sha": "aba288d866171d72",
@@ -26172,12 +26221,82 @@
   "by": "sonnet-reviewers-rev15a",
   "evidence": "2 Sonnet reviewers (rev15a A/B) compared every stored row to the sub5 sheet: all 24 clean; status/exhibition rows by design; corrected 3A Boys 800 (hand-added) matches the sheet"
  },
+ "backend/data/parsed_results/2015/Indoor/ms-bowdoin-relays-2015.json": {
+  "parse_sha": "f512483a6aa9c1fc",
+  "source_sha": "f5d88fecc001e1d7",
+  "date": "2026-11-07",
+  "by": "sonnet-reviewers-rev15b + fix",
+  "evidence": "rev15b A: all rows match the MileSplit page except the coed 1800 SMR stored under Boys and Girls; fixed (one Mixed event, girls copy removed, 6 rows); field-event team sums flagged as relays (not stored)"
+ },
+ "backend/data/parsed_results/2015/Indoor/ms-kvac-championship-2015.json": {
+  "parse_sha": "ffb7500ad3427a27",
+  "source_sha": "d6b0cc7d2acb630f",
+  "date": "2026-11-07",
+  "by": "sonnet-reviewers-rev15b",
+  "evidence": "2 Sonnet reviewers (rev15b A/B) compared every stored row to the sub5 sheet / cached MileSplit page: clean; gaps are status rows, prelim=final stored once, exhibition rows"
+ },
+ "backend/data/parsed_results/2015/Indoor/ms-kvac-colby-meet-1-2015.json": {
+  "parse_sha": "a4a265af2d574dc1",
+  "source_sha": "9fcf41b528546877",
+  "date": "2026-11-07",
+  "by": "sonnet-reviewers-rev15b",
+  "evidence": "2 Sonnet reviewers (rev15b A/B) compared every stored row to the sub5 sheet / cached MileSplit page: clean; gaps are status rows, prelim=final stored once, exhibition rows"
+ },
+ "backend/data/parsed_results/2015/Indoor/ms-kvac-colby-meet-2-2015.json": {
+  "parse_sha": "83e8dfd7d9f1924f",
+  "source_sha": "417bfd666948445e",
+  "date": "2026-11-07",
+  "by": "sonnet-reviewers-rev15b",
+  "evidence": "2 Sonnet reviewers (rev15b A/B) compared every stored row to the sub5 sheet / cached MileSplit page: clean; gaps are status rows, prelim=final stored once, exhibition rows"
+ },
+ "backend/data/parsed_results/2015/Indoor/ms-smaa-makeup-colby-2015.json": {
+  "parse_sha": "8bbc65913629273e",
+  "source_sha": "6d30e71398f71c72",
+  "date": "2026-11-07",
+  "by": "sonnet-reviewers-rev15b",
+  "evidence": "2 Sonnet reviewers (rev15b A/B) compared every stored row to the sub5 sheet / cached MileSplit page: clean; gaps are status rows, prelim=final stored once, exhibition rows"
+ },
+ "backend/data/parsed_results/2015/Indoor/ms-smaa-southwesterns-championships-2015.json": {
+  "parse_sha": "1ec84aeef40877ce",
+  "source_sha": "d9b3ecfde5552e37",
+  "date": "2026-11-07",
+  "by": "sonnet-reviewers-rev15b",
+  "evidence": "2 Sonnet reviewers (rev15b A/B) compared every stored row to the sub5 sheet / cached MileSplit page: clean; gaps are status rows, prelim=final stored once, exhibition rows"
+ },
+ "backend/data/parsed_results/2015/Indoor/ms-wmc-championship-2015.json": {
+  "parse_sha": "fd0001585aa0edb6",
+  "source_sha": "284cdcd76c7edee5",
+  "date": "2026-11-07",
+  "by": "sonnet-reviewers-rev15b",
+  "evidence": "2 Sonnet reviewers (rev15b A/B) compared every stored row to the sub5 sheet / cached MileSplit page: clean; gaps are status rows, prelim=final stored once, exhibition rows"
+ },
+ "backend/data/parsed_results/2015/Indoor/ne-usatf-indoor-2015.json": {
+  "parse_sha": "fbf407205b4eedfe",
+  "source_sha": "995de1a7e99885d0",
+  "date": "2026-11-07",
+  "by": "claude vs TFRRS 38530 (2026-11-07)",
+  "evidence": "TFRRS compiled women's results: Kennedy mile 19th 5:30.14, 3000 10th 11:22.34; Allen 3000 RW 1st 14:55.43; Emery 5th 18:49.07; Close 60H 5th 9.61, 400 9th 1:05.02; Fitzgerald LJ 4th 16-6.5, SP 6th 29-6.5; Lake Region 4x440y 6th 4:40.61: all 9 rows match"
+ },
  "backend/data/parsed_results/2015/Indoor/redone_boys_emitl_meet_4a_results.1.17.15.json": {
   "parse_sha": "8377b9da60de2495",
   "source_sha": "17dc9ab368ca204a",
   "date": "2026-11-07",
   "by": "sonnet-reviewers-rev15a",
   "evidence": "2 Sonnet reviewers (rev15a A/B) compared every stored row to the sub5 sheet: all 24 clean; status/exhibition rows by design; corrected 3A Boys 800 (hand-added) matches the sheet"
+ },
+ "backend/data/parsed_results/2015/Indoor/usmrelaysboys.json": {
+  "parse_sha": "8b165ed3b7e8a91c",
+  "source_sha": "32de878143a78d48",
+  "date": "2026-11-07",
+  "by": "sonnet-reviewers-rev15b",
+  "evidence": "2 Sonnet reviewers (rev15b A/B) compared every stored row to the sub5 sheet / cached MileSplit page: clean; gaps are status rows, prelim=final stored once, exhibition rows"
+ },
+ "backend/data/parsed_results/2015/Indoor/usmrelaysgirls.json": {
+  "parse_sha": "8fd13922b4163f60",
+  "source_sha": "e95cca10241ea49c",
+  "date": "2026-11-07",
+  "by": "sonnet-reviewers-rev15b",
+  "evidence": "2 Sonnet reviewers (rev15b A/B) compared every stored row to the sub5 sheet / cached MileSplit page: clean; gaps are status rows, prelim=final stored once, exhibition rows"
  },
  "backend/data/parsed_results/2015/Outdoor/Results_MVC_boys.json": {
   "parse_sha": "1fca85aa80681a2a",
