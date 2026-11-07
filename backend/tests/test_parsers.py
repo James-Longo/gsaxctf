@@ -3841,6 +3841,52 @@ def test_pdf_split_relay_left_column_one_name_header():
     assert any(l.strip().startswith('Boys Pole Vault') for l in out)
 
 
+def test_milesplit_track_pentathlon_legs():
+    """MileSplit prints each pentathlon leg as "Indoor Pentathlon: #5 Boys 1000 Meter
+    Run Indoor Pentathlon" (USM Relays 2014): its own event, not rows of the event above."""
+    from backend import milesplit as ms
+    text = '\n'.join([
+        'Boys Shot Put',
+        '===================================================================',
+        '    Name                    Year School                  Finals',
+        '===================================================================',
+        '  1 Michael Pino              SR Thornton               47-02.00',
+        ' ',
+        'Indoor Pentathlon: #5 Boys 1000 Meter Run Indoor Pentathlon',
+        '=======================================================================',
+        '    Name                    Year School                  Finals  Points',
+        '=======================================================================',
+        '  1 Erik Dodge                SR Erskine Academy        2:48.32     783',
+        '  2 Henry Hintermeister       JR Noble                  2:57.11     693',
+    ])
+    out = ms.parse(text)
+    events = out[0] if isinstance(out, tuple) else out['events'] if isinstance(out, dict) else out
+    by = {e['event']: e for e in events}
+    assert len(by['Boys Shot Put']['results']) == 1
+    leg = by['Boys Indoor Pentathlon: 1000 Meter Run']
+    assert leg['gender'] == 'Boys' and len(leg['results']) == 2
+
+
+def test_milesplit_track_age_column():
+    """A Hy-Tek "Name  Age School" sheet (WMC 1/10/2014): the age is neither part of
+    the name nor a grade."""
+    from backend import milesplit as ms
+    text = '\n'.join([
+        'Boys Shot Put SR DIVISION',
+        '================================================================================',
+        '    Name                     Age School                  Seed     Finals  Points',
+        '================================================================================',
+        '  1 Neary, Jack                  York                37-09.50   38-02.50   10   ',
+        ' 13 Roy, Ben                  17 Lake Region         30-09.00   32-01.00  ',
+    ])
+    out = ms.parse(text)
+    events = out[0] if isinstance(out, tuple) else out['events'] if isinstance(out, dict) else out
+    rows = events[0]['results']
+    roy = [r for r in rows if 'Roy' in r['athlete']][0]
+    assert '17' not in roy['athlete'] and roy['grade'] in ('', None)
+    assert roy['school'].startswith('Lake Region') and roy['result'] == '32-01.00'
+
+
 if __name__ == '__main__':
     qaqc._ensure_team_mapping()
     failed = 0

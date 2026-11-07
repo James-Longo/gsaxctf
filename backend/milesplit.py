@@ -108,6 +108,16 @@ def parse(text):
         if nx < len(lines) and re.fullmatch(r'\s*(Finals|Prelims|Preliminaries)\s*', lines[nx]) and nx+1 < len(lines) and re.match(r'\s*=+\s*$', lines[nx+1]):
             nx += 1   # MileSplit's own sheet: "Girls 55 meter Hurdles" / "Finals" / ruler / "NAME  YR  TEAM  MARK  H#  WIND"
         if not m and nx < len(lines) and re.match(r'\s*=+\s*$',lines[nx]) and re.match(r'\s*(Varsity\s+|Middle School\s+|(?:Junior|Senior|Intermediate|Open|Jr|Int|Sr)\s+(?=(?:Boys|Girls)\s))?(Boys|Girls|Men|Women)\s+\S',ln) and 'Team Rank' not in ln and not re.match(r'\s*JV\s',ln): m = re.match(r'\s*(?:Varsity\s+|Middle School\s+)?(.*?)\s*$', ln)
+        if not m and nx < len(lines) and re.match(r'\s*=+\s*$', lines[nx]):
+            # a combined-event leg: "Indoor Pentathlon: #5 Boys 1000 Meter Run Indoor Pentathlon"
+            # (USM Relays 2014) -> "Boys Indoor Pentathlon: 1000 Meter Run"
+            ml = re.match(r'\s*((?:Indoor\s+|Outdoor\s+)?(?:Triathlon|Pentathlon|Heptathlon|Decathlon)\s*:\s*#\s*\d+\s+.*?)\s*$', ln, re.I)
+            gl = ml and re.search(r'\b(Boys|Girls|Men|Women)\b', ml.group(1))
+            if gl:
+                from backend.parser import multi_event_name
+                mn = multi_event_name(ml.group(1))
+                if mn and not mn[1]:
+                    m = re.match(r'(.*)', f'{gl.group(1)} {mn[0]}')
         if m:
             nm = m.group(1)
             # RaceTab MS sheets lead with the division: "Senior Girls 40 Yard Dash", "Junior Boys 40 Yard Dash
@@ -211,6 +221,8 @@ def parse(text):
         yc=hdr.find('Year'); sc=hdr.find('School')
         if sc<0: sc=hdr.find('Team')
         if yc<0 and hdr.find('Yr')>=0 and hdr.find('Yr')<sc: yc=hdr.find('Yr')
+        ac=re.search(r'\bAge\b',hdr[:sc]) if yc<0 and sc>0 else None   # an age column, not a grade ("Roy, Ben  17 Lake Region", WMC 2014)
+        if ac: yc=ac.start()
         if yc<0: yc=sc
         k=sc
         while k>0 and ln[k-1:k].strip() and ln[k:k+1].strip(): k-=1
@@ -221,6 +233,7 @@ def parse(text):
         rest=ln[sc:]
         mm_=re.fullmatch(r'(?:(FR|SO|JR|SR|\d{1,2})\s+)?([A-Z])',yr)
         if mm_: yr=mm_.group(1) or ''; rest=mm_.group(2)+rest  # school column printed one character left of the header
+        if ac and re.fullmatch(r'\d{1,2}',yr): yr=''   # an age is not a grade
         fe=max(hdr.find('Finals')+6, hdr.find('Prelims')+7, hdr.find('Mark')+4, hdr.find('Time')+4)
         ms=[(mt.start()+sc,mt.end()+sc,mt.group(0)) for mt in re.finditer(r'(?<![\w.:-])(%s)(?![\w.:-])'%MARK, rest)]
         if not ms: note('ROW?',ln); i+=1; continue
