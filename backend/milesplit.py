@@ -1136,6 +1136,9 @@ def kind_of(name):
     n = name.lower()
     if re.search(r'middle|\bms\b|jr\.? high|junior high|grade|\b[5-8]th\b|elementary', n): return 'ms'
     if re.search(r'usatf|youth|junior olympic|\bjo\b|group [a-d]\b|age group', n): return 'youth'
+    # a Maine high-school league meet held at a college ("KVAC: ... @ Bowdoin", "SMAA makeup
+    # @ Colby"), the Bowdoin high-school relays and the USM Relays are high-school meets
+    if re.search(r'\b(kvac|smaa|emitl|wmc|pvc|mvc|mpa)\b|high school|usm (new year.s )?relays', n): return 'hs'
     if re.search(r'college|collegiate|university|ncaa|\barmy\b|\bnavy\b|\bair force\b|nescac|\bcolby\b|bates|bowdoin(?! relays)|\bumaine\b|husson|\bume\b|usm\b', n): return 'college'
     if re.search(r'twilight|road race|\b5k\b|masters|open\b', n): return 'open'
     return 'hs'

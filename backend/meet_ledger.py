@@ -68,6 +68,9 @@ def urls_of(doc):
 
 def words(s):
     s = re.sub(r'([a-z])([A-Z])', r'\1 \2', s or '')
+    # "So. Portland", "South Portland": one school, not Portland ("portland" alone matched a
+    # 1/12/2022 Bonny Eagle-Noble-Portland-Scarborough listing to the So. Portland meet of 1/13)
+    s = re.sub(r'\b(?:so|south|s)\W{0,2}portland', 'southportland', s, flags=re.I)
     return {w for w in re.findall(r'[a-z]{3,}', s.lower())} - {
         'boys', 'girls', 'results', 'result', 'meet', 'track', 'field', 'outdoor', 'indoor', 'high',
         'school', 'the', 'and', 'final', 'finals', 'revised', 'updated', 'corrected', 'htm', 'html',

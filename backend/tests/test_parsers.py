@@ -3811,6 +3811,36 @@ def test_yard_race_marks_are_checked_for_impossible_times():
     assert s.repair_mark('2.42', 'Boys 1000 Yard Run') == '2:42'
 
 
+def test_listing_kind_and_ledger_words():
+    """A KVAC/SMAA meet at a college is a high-school meet; "So. Portland" is not Portland."""
+    from backend.milesplit import kind_of
+    from backend.meet_ledger import words
+    assert kind_of('KVAC:Lew,Mess,Bruns,Bel, Mt A,Erk, Mt B,Cony, Mor,CH @ Bowdoin') == 'hs'
+    assert kind_of('SMAA makeup @ Colby') == 'hs' and kind_of('USM Relays') == 'hs'
+    assert kind_of('Bowdoin College High School Relays') == 'hs'
+    assert kind_of('Smith College Winter Classic') == 'college' and kind_of('USM Invitational #1') == 'college'
+    assert 'portland' not in words('so. portland-thornton-windham')
+    assert 'portland' in words('SMAA:Bonny Eagle-Noble-Portland-Scarborough')
+
+
+def test_pdf_split_relay_left_column_one_name_header():
+    """Southwestern 2016 page 13: the left column heads only relays ("Team
+    Relay Finals" at x=6), the right one a single 'Name' table; the page
+    still splits, so the right column's pole vault is not glued to the
+    left column's relay rows."""
+    from backend.parser import Sub5ColumnParser as P
+    page = '\n'.join([
+        'Boys 4x800 Meter Relay OPEN DIVISION' + ' ' * 40 + 'Boys Pole Vault OPEN DIVISION',
+        '       Team                     Relay        Finals' + ' ' * 25 + 'Name          Team          Finals',
+        '   5      Deering High School  A          9:01.33   2' + ' ' * 20 + '1     S Rusak    Scarboro      15-09.00   10',
+        '   6      Bonny Eagle          A          9:22.35   1' + ' ' * 20 + '2     A Dionne   Scarboro      12-06.00    8',
+    ])
+    out = P.split_pdf_columns(page).splitlines()
+    left = [l for l in out if 'Bonny Eagle' in l]
+    assert left and '12-06.00' not in left[0]
+    assert any(l.strip().startswith('Boys Pole Vault') for l in out)
+
+
 if __name__ == '__main__':
     qaqc._ensure_team_mapping()
     failed = 0

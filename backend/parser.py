@@ -528,6 +528,14 @@ class Sub5ColumnParser:
             else:
                 clusters.append([p])
         starts = sorted(min(c) for c in clusters if len(c) >= 1)
+        # (a page whose left column heads only relays, "Team  Relay  Finals"
+        # at x=6, and whose right column heads one 'Name' table: the right
+        # header alone marks the split - southwestern 2016 page 13, where
+        # the right column holds the sprint medley's rows 8-12 and the
+        # boys pole vault)
+        if len(starts) == 1 and starts[0] >= 40 and any(
+                (m := re.search(r'\bTeam\s+Relay\b', l)) and m.start() < starts[0] - 20 for l in lines):
+            starts = [0] + starts
         if len(starts) < 2:
             return page_text
         # column boundaries: a bit left of each 'Name' header (rank numbers

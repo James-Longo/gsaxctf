@@ -580,6 +580,12 @@ COOPS = [
     dict(id='coop-it-gardiner-lisbon-maranacook', label='Gardiner/Lisbon/Maranacook (indoor track)', host='me-hs-gardiner',
          members=['me-hs-gardiner', 'me-hs-lisbon', 'me-hs-maranacook'], seasons=['Indoor'], genders=['Boys', 'Girls'],
          years=[None, None], labels=['Gardiner/Lisbon/Maranacook'], evidence=['MPA IT 2026-27 A']),
+    dict(id='coop-it-gardiner-halldale-2016', label='Gardiner/Hall-Dale (indoor track 2016)', host='me-hs-gardiner',
+         members=['me-hs-gardiner', 'me-hs-hall-dale'], seasons=['Indoor'], genders=['Boys', 'Girls'],
+         years=[2016, 2016], labels=['GHD', 'Gardiner Hall Dale', 'Gardiner HD', 'Gardiner/Hall-Dale'],
+         evidence=['2016 Indoor sheets (Class A, KVAC 12/30/2015) print individuals "GHD" and relays '
+                   '"Gardiner Hall Dale"; its runners run 2015-16 outdoor and XC for both Gardiner '
+                   '(Goodridge, Hillman, Quirion, Barron) and Hall-Dale (Longfellow, Lynch, McDougal, Walp)']),
     dict(id='coop-it-central-dexter', label='Central/Dexter (indoor track)', host='me-hs-central',
          members=['me-hs-central', 'me-hs-dexter'], seasons=['Indoor'], genders=['Boys', 'Girls'], years=[None, None],
          labels=['Central/Dexter'], evidence=['MPA IT 2026-27 B']),
