@@ -31373,6 +31373,13 @@
   "by": "re-check 2026-10-28: re-parsed only for the team-rank fix (ranks 10+ were stored as 0-9)",
   "evidence": "scratch re-parse compared with the signed parse: result rows identical, only team_rankings ranks changed"
  },
+ "backend/data/parsed_results/2017/Indoor/Results-1.json": {
+  "parse_sha": "58552a161866e1b5",
+  "source_sha": "1c53fa3fe65a9ec9",
+  "date": "2026-11-07",
+  "by": "rev17e Sonnet review: every event, place, mark, school and date checked against the sheet; store vs parse diffed locally",
+  "evidence": "2 reviewers; WMC girls HJ 4.00 = 4-00.00 (Mallory, Oliver); Conrad 5.00 in 8th below 4-06 removed as unreadable; ResultsFixed = KVAC meet 9 at Bowdoin (HS, in scope); Results-1 meet day 2/10 (2/11 is the print stamp)"
+ },
  "backend/data/parsed_results/2017/Indoor/Results-12-31-Meet.json": {
   "parse_sha": "2bb5a93679451b56",
   "source_sha": "307e2d12dad7b443",
@@ -31401,6 +31408,20 @@
   "by": "rev17c Sonnet review: every event, place, mark and school checked against the sheet",
   "evidence": "2 reviewers; WMC1/WMC2/SMAA Southwestern dates set from sheet titles via exact meet_corrections; USM2 college meet out of scope"
  },
+ "backend/data/parsed_results/2017/Indoor/Results.htmWMC2.json": {
+  "parse_sha": "5e631ff0de515532",
+  "source_sha": "0adff1959235bdc8",
+  "date": "2026-11-07",
+  "by": "rev17e Sonnet review: every event, place, mark, school and date checked against the sheet; store vs parse diffed locally",
+  "evidence": "2 reviewers; WMC girls HJ 4.00 = 4-00.00 (Mallory, Oliver); Conrad 5.00 in 8th below 4-06 removed as unreadable; ResultsFixed = KVAC meet 9 at Bowdoin (HS, in scope); Results-1 meet day 2/10 (2/11 is the print stamp)"
+ },
+ "backend/data/parsed_results/2017/Indoor/Results.json": {
+  "parse_sha": "d36f15a9a657ac9b",
+  "source_sha": "7d9f96a82456853d",
+  "date": "2026-11-07",
+  "by": "rev17e Sonnet review: every event, place, mark, school and date checked against the sheet; store vs parse diffed locally",
+  "evidence": "2 reviewers; WMC girls HJ 4.00 = 4-00.00 (Mallory, Oliver); Conrad 5.00 in 8th below 4-06 removed as unreadable; ResultsFixed = KVAC meet 9 at Bowdoin (HS, in scope); Results-1 meet day 2/10 (2/11 is the print stamp)"
+ },
  "backend/data/parsed_results/2017/Indoor/Results.meet-on-12-23.json": {
   "parse_sha": "6ea5d55005f5df07",
   "source_sha": "60ba7e88a11f7236",
@@ -31428,6 +31449,13 @@
   "date": "2026-11-06",
   "by": "team scores verified exactly by the meet's own scores sheet posted beside it",
   "evidence": "meet_verification.json results_file pairing"
+ },
+ "backend/data/parsed_results/2017/Indoor/ResultsFixed.json": {
+  "parse_sha": "f74bdf26eb1040ae",
+  "source_sha": "9c8f1f6bf63b9753",
+  "date": "2026-11-07",
+  "by": "rev17e Sonnet review: every event, place, mark, school and date checked against the sheet; store vs parse diffed locally",
+  "evidence": "2 reviewers; WMC girls HJ 4.00 = 4-00.00 (Mallory, Oliver); Conrad 5.00 in 8th below 4-06 removed as unreadable; ResultsFixed = KVAC meet 9 at Bowdoin (HS, in scope); Results-1 meet day 2/10 (2/11 is the print stamp)"
  },
  "backend/data/parsed_results/2017/Indoor/ResultsKVAC12-30meet.json": {
   "parse_sha": "838e929b69db958e",
@@ -31548,12 +31576,33 @@
   "by": "rev17d Sonnet review: every event, place, mark, school and date checked against the sheet",
   "evidence": "2 reviewers, row-by-row scripts; SMAA team totals verified against paired Scores sheets"
  },
+ "backend/data/parsed_results/2017/Indoor/ResultsWMC1-1.json": {
+  "parse_sha": "63adc52f6644e287",
+  "source_sha": "ac0c4855721a69d0",
+  "date": "2026-11-07",
+  "by": "rev17e Sonnet review: every event, place, mark, school and date checked against the sheet; store vs parse diffed locally",
+  "evidence": "2 reviewers; WMC girls HJ 4.00 = 4-00.00 (Mallory, Oliver); Conrad 5.00 in 8th below 4-06 removed as unreadable; ResultsFixed = KVAC meet 9 at Bowdoin (HS, in scope); Results-1 meet day 2/10 (2/11 is the print stamp)"
+ },
+ "backend/data/parsed_results/2017/Indoor/ResultsWMC1-2.json": {
+  "parse_sha": "13af8e85c2c2aa30",
+  "source_sha": "eb214469c4b141dd",
+  "date": "2026-11-07",
+  "by": "rev17e Sonnet review: every event, place, mark, school and date checked against the sheet; store vs parse diffed locally",
+  "evidence": "2 reviewers; WMC girls HJ 4.00 = 4-00.00 (Mallory, Oliver); Conrad 5.00 in 8th below 4-06 removed as unreadable; ResultsFixed = KVAC meet 9 at Bowdoin (HS, in scope); Results-1 meet day 2/10 (2/11 is the print stamp)"
+ },
  "backend/data/parsed_results/2017/Indoor/ResultsWMC1.json": {
-  "parse_sha": "e4969ba5f57d9f61",
+  "parse_sha": "86530529935656c4",
   "source_sha": "37348eb63004d6ef",
-  "date": "2026-11-06",
-  "by": "rev17c Sonnet review: every event, place, mark and school checked against the sheet",
-  "evidence": "2 reviewers; WMC1/WMC2/SMAA Southwestern dates set from sheet titles via exact meet_corrections; USM2 college meet out of scope"
+  "date": "2026-11-07",
+  "by": "rev17e Sonnet review: every event, place, mark, school and date checked against the sheet; store vs parse diffed locally",
+  "evidence": "2 reviewers; WMC girls HJ 4.00 = 4-00.00 (Mallory, Oliver); Conrad 5.00 in 8th below 4-06 removed as unreadable; ResultsFixed = KVAC meet 9 at Bowdoin (HS, in scope); Results-1 meet day 2/10 (2/11 is the print stamp)"
+ },
+ "backend/data/parsed_results/2017/Indoor/ResultsWMC2-1.json": {
+  "parse_sha": "c0296af787c90634",
+  "source_sha": "dbc168dc884b89f4",
+  "date": "2026-11-07",
+  "by": "rev17e Sonnet review: every event, place, mark, school and date checked against the sheet; store vs parse diffed locally",
+  "evidence": "2 reviewers; WMC girls HJ 4.00 = 4-00.00 (Mallory, Oliver); Conrad 5.00 in 8th below 4-06 removed as unreadable; ResultsFixed = KVAC meet 9 at Bowdoin (HS, in scope); Results-1 meet day 2/10 (2/11 is the print stamp)"
  },
  "backend/data/parsed_results/2017/Indoor/ResultsWMC2.json": {
   "parse_sha": "d289c761cba7ad2b",
@@ -31582,6 +31631,20 @@
   "date": "2026-11-06",
   "by": "rev17c Sonnet review: every event, place, mark and school checked against the sheet",
   "evidence": "2 reviewers; WMC1/WMC2/SMAA Southwestern dates set from sheet titles via exact meet_corrections; USM2 college meet out of scope"
+ },
+ "backend/data/parsed_results/2017/Indoor/Resultswmc1.json": {
+  "parse_sha": "4b2fd60f49cc92cd",
+  "source_sha": "47e224012dd2c521",
+  "date": "2026-11-07",
+  "by": "rev17e Sonnet review: every event, place, mark, school and date checked against the sheet; store vs parse diffed locally",
+  "evidence": "2 reviewers; WMC girls HJ 4.00 = 4-00.00 (Mallory, Oliver); Conrad 5.00 in 8th below 4-06 removed as unreadable; ResultsFixed = KVAC meet 9 at Bowdoin (HS, in scope); Results-1 meet day 2/10 (2/11 is the print stamp)"
+ },
+ "backend/data/parsed_results/2017/Indoor/Resultswmc2.json": {
+  "parse_sha": "62446f3ca7872527",
+  "source_sha": "2fd32c0b11d991c5",
+  "date": "2026-11-07",
+  "by": "rev17e Sonnet review: every event, place, mark, school and date checked against the sheet; store vs parse diffed locally",
+  "evidence": "2 reviewers; WMC girls HJ 4.00 = 4-00.00 (Mallory, Oliver); Conrad 5.00 in 8th below 4-06 removed as unreadable; ResultsFixed = KVAC meet 9 at Bowdoin (HS, in scope); Results-1 meet day 2/10 (2/11 is the print stamp)"
  },
  "backend/data/parsed_results/2017/Indoor/ScoreMEET4.json": {
   "parse_sha": "6181ab91ab534704",
@@ -31737,6 +31800,20 @@
   "by": "re-check 2026-10-28: re-parsed only for the team-rank fix (ranks 10+ were stored as 0-9)",
   "evidence": "scratch re-parse compared with the signed parse: result rows identical, only team_rankings ranks changed"
  },
+ "backend/data/parsed_results/2017/Indoor/boys_class_b_indoor_track_results_2.18.17.json": {
+  "parse_sha": "7da09ea4b73cc12d",
+  "source_sha": "d0fa9371a38eb731",
+  "date": "2026-11-07",
+  "by": "rev17e Sonnet review: every event, place, mark, school and date checked against the sheet; store vs parse diffed locally",
+  "evidence": "2 reviewers; WMC girls HJ 4.00 = 4-00.00 (Mallory, Oliver); Conrad 5.00 in 8th below 4-06 removed as unreadable; ResultsFixed = KVAC meet 9 at Bowdoin (HS, in scope); Results-1 meet day 2/10 (2/11 is the print stamp)"
+ },
+ "backend/data/parsed_results/2017/Indoor/boys_emitl_champ_results_2.10.17.json": {
+  "parse_sha": "2e7e9af45b2b561b",
+  "source_sha": "d30b5ae0c3bc42ca",
+  "date": "2026-11-07",
+  "by": "rev17e Sonnet review: every event, place, mark, school and date checked against the sheet; store vs parse diffed locally",
+  "evidence": "2 reviewers; WMC girls HJ 4.00 = 4-00.00 (Mallory, Oliver); Conrad 5.00 in 8th below 4-06 removed as unreadable; ResultsFixed = KVAC meet 9 at Bowdoin (HS, in scope); Results-1 meet day 2/10 (2/11 is the print stamp)"
+ },
  "backend/data/parsed_results/2017/Indoor/boys_emitl_meet5a_results_1.21.17.json": {
   "parse_sha": "8edd9709841e929b",
   "source_sha": "ca64fafd36541d01",
@@ -31750,6 +31827,34 @@
   "date": "2026-11-07",
   "by": "rev17d Sonnet review: every event, place, mark, school and date checked against the sheet",
   "evidence": "2 reviewers, row-by-row scripts; SMAA team totals verified against paired Scores sheets"
+ },
+ "backend/data/parsed_results/2017/Indoor/boys_emitl_meet6a_results-1.28.17.json": {
+  "parse_sha": "f776ec406c5f8980",
+  "source_sha": "4b0f2af2b3fa78ee",
+  "date": "2026-11-07",
+  "by": "rev17e Sonnet review: every event, place, mark, school and date checked against the sheet; store vs parse diffed locally",
+  "evidence": "2 reviewers; WMC girls HJ 4.00 = 4-00.00 (Mallory, Oliver); Conrad 5.00 in 8th below 4-06 removed as unreadable; ResultsFixed = KVAC meet 9 at Bowdoin (HS, in scope); Results-1 meet day 2/10 (2/11 is the print stamp)"
+ },
+ "backend/data/parsed_results/2017/Indoor/boys_emitl_meet6b_results_1.28.17.json": {
+  "parse_sha": "28d41551837102eb",
+  "source_sha": "8a2e13ce227a61d7",
+  "date": "2026-11-07",
+  "by": "rev17e Sonnet review: every event, place, mark, school and date checked against the sheet; store vs parse diffed locally",
+  "evidence": "2 reviewers; WMC girls HJ 4.00 = 4-00.00 (Mallory, Oliver); Conrad 5.00 in 8th below 4-06 removed as unreadable; ResultsFixed = KVAC meet 9 at Bowdoin (HS, in scope); Results-1 meet day 2/10 (2/11 is the print stamp)"
+ },
+ "backend/data/parsed_results/2017/Indoor/boys_emitl_meet7a_results_2.4.17.json": {
+  "parse_sha": "ad4b41b44ab90c2c",
+  "source_sha": "40975fc30ac3ea64",
+  "date": "2026-11-07",
+  "by": "rev17e Sonnet review: every event, place, mark, school and date checked against the sheet; store vs parse diffed locally",
+  "evidence": "2 reviewers; WMC girls HJ 4.00 = 4-00.00 (Mallory, Oliver); Conrad 5.00 in 8th below 4-06 removed as unreadable; ResultsFixed = KVAC meet 9 at Bowdoin (HS, in scope); Results-1 meet day 2/10 (2/11 is the print stamp)"
+ },
+ "backend/data/parsed_results/2017/Indoor/boys_emitl_meet7b_results_2.4.17.json": {
+  "parse_sha": "2ccca1aef7ac9bde",
+  "source_sha": "0bf42f87513c4601",
+  "date": "2026-11-07",
+  "by": "rev17e Sonnet review: every event, place, mark, school and date checked against the sheet; store vs parse diffed locally",
+  "evidence": "2 reviewers; WMC girls HJ 4.00 = 4-00.00 (Mallory, Oliver); Conrad 5.00 in 8th below 4-06 removed as unreadable; ResultsFixed = KVAC meet 9 at Bowdoin (HS, in scope); Results-1 meet day 2/10 (2/11 is the print stamp)"
  },
  "backend/data/parsed_results/2017/Indoor/classaboys2017.json": {
   "parse_sha": "e3f3d463d0d4b28d",
@@ -31849,6 +31954,20 @@
   "by": "rev17d Sonnet review: every event, place, mark, school and date checked against the sheet",
   "evidence": "2 reviewers, row-by-row scripts; SMAA team totals verified against paired Scores sheets"
  },
+ "backend/data/parsed_results/2017/Indoor/girls_class_b_indoor_track_results_2.18.17.json": {
+  "parse_sha": "0da19fce09a26da7",
+  "source_sha": "754b8d4509c91946",
+  "date": "2026-11-07",
+  "by": "rev17e Sonnet review: every event, place, mark, school and date checked against the sheet; store vs parse diffed locally",
+  "evidence": "2 reviewers; WMC girls HJ 4.00 = 4-00.00 (Mallory, Oliver); Conrad 5.00 in 8th below 4-06 removed as unreadable; ResultsFixed = KVAC meet 9 at Bowdoin (HS, in scope); Results-1 meet day 2/10 (2/11 is the print stamp)"
+ },
+ "backend/data/parsed_results/2017/Indoor/girls_emitl_champ_results_2.10.17.json": {
+  "parse_sha": "a5348a3a3782fe2a",
+  "source_sha": "b226eec0f131d708",
+  "date": "2026-11-07",
+  "by": "rev17e Sonnet review: every event, place, mark, school and date checked against the sheet; store vs parse diffed locally",
+  "evidence": "2 reviewers; WMC girls HJ 4.00 = 4-00.00 (Mallory, Oliver); Conrad 5.00 in 8th below 4-06 removed as unreadable; ResultsFixed = KVAC meet 9 at Bowdoin (HS, in scope); Results-1 meet day 2/10 (2/11 is the print stamp)"
+ },
  "backend/data/parsed_results/2017/Indoor/girls_emitl_meet4a_results_1.14.17.json": {
   "parse_sha": "c64a0278f636a5df",
   "source_sha": "7e915688d58b264a",
@@ -31869,6 +31988,34 @@
   "date": "2026-11-07",
   "by": "rev17d Sonnet review: every event, place, mark, school and date checked against the sheet",
   "evidence": "2 reviewers, row-by-row scripts; SMAA team totals verified against paired Scores sheets"
+ },
+ "backend/data/parsed_results/2017/Indoor/girls_emitl_meet6a_results_1.28.17.json": {
+  "parse_sha": "edbb023a9326aa99",
+  "source_sha": "e50d5ce4eea53898",
+  "date": "2026-11-07",
+  "by": "rev17e Sonnet review: every event, place, mark, school and date checked against the sheet; store vs parse diffed locally",
+  "evidence": "2 reviewers; WMC girls HJ 4.00 = 4-00.00 (Mallory, Oliver); Conrad 5.00 in 8th below 4-06 removed as unreadable; ResultsFixed = KVAC meet 9 at Bowdoin (HS, in scope); Results-1 meet day 2/10 (2/11 is the print stamp)"
+ },
+ "backend/data/parsed_results/2017/Indoor/girls_emitl_meet6b_results_1.28.17.json": {
+  "parse_sha": "de700cf01396c10f",
+  "source_sha": "204347778a19271c",
+  "date": "2026-11-07",
+  "by": "rev17e Sonnet review: every event, place, mark, school and date checked against the sheet; store vs parse diffed locally",
+  "evidence": "2 reviewers; WMC girls HJ 4.00 = 4-00.00 (Mallory, Oliver); Conrad 5.00 in 8th below 4-06 removed as unreadable; ResultsFixed = KVAC meet 9 at Bowdoin (HS, in scope); Results-1 meet day 2/10 (2/11 is the print stamp)"
+ },
+ "backend/data/parsed_results/2017/Indoor/girls_emitl_meet7a_results_2.4.17.json": {
+  "parse_sha": "89ca42bd360ab5f6",
+  "source_sha": "c960ea5559e6048d",
+  "date": "2026-11-07",
+  "by": "rev17e Sonnet review: every event, place, mark, school and date checked against the sheet; store vs parse diffed locally",
+  "evidence": "2 reviewers; WMC girls HJ 4.00 = 4-00.00 (Mallory, Oliver); Conrad 5.00 in 8th below 4-06 removed as unreadable; ResultsFixed = KVAC meet 9 at Bowdoin (HS, in scope); Results-1 meet day 2/10 (2/11 is the print stamp)"
+ },
+ "backend/data/parsed_results/2017/Indoor/girls_emitl_meet7b_results_2.4.17.json": {
+  "parse_sha": "434da007bec72935",
+  "source_sha": "0431fea22e485377",
+  "date": "2026-11-07",
+  "by": "rev17e Sonnet review: every event, place, mark, school and date checked against the sheet; store vs parse diffed locally",
+  "evidence": "2 reviewers; WMC girls HJ 4.00 = 4-00.00 (Mallory, Oliver); Conrad 5.00 in 8th below 4-06 removed as unreadable; ResultsFixed = KVAC meet 9 at Bowdoin (HS, in scope); Results-1 meet day 2/10 (2/11 is the print stamp)"
  },
  "backend/data/parsed_results/2017/Indoor/maine_and_newhampshire_men_results_12.3.16.json": {
   "parse_sha": "f73a30c41e318984",
