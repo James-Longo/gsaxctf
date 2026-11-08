@@ -3934,6 +3934,41 @@ def test_milesplit_track_division_prefix_with_period():
     assert '600' in names[1] and 'Junior' in names[1] and events[1]['gender'] == 'Girls', names
 
 
+def test_milesplit_track_grade_division_headers():
+    """SMMSAC 2011 divides by grade ("8th Grade Boys 300 Yard Dash Finals") with per-grade team scores between events."""
+    from backend import milesplit as ms
+    text = '\n'.join([
+        '                 Middle School Boys 1000 Yard Run Finals                  ',
+        '==========================================================================',
+        '    Name                      Yr Team                           Time   Pts',
+        '==========================================================================',
+        '  1 Gabe Mahoney               8 Falmouth Middle School      2:57.90     6',
+        '',
+        '                    8th Grade Boys 300 Yard Dash Finals                   ',
+        '==========================================================================',
+        '    Name                      Yr Team                           Time   Pts',
+        '==========================================================================',
+        '  1 Rodric Jones               8 Biddeford Middle School       43.10     6',
+        '',
+        '              8th Grade Boys Team Scores (2 Events Scored)               ',
+        '==========================================================================',
+        '  1 Falmouth Middle School     6',
+        '',
+        '                  6th Grade Girls 40 Yard Dash Semis                      ',
+        '==========================================================================',
+        '    Name                      Yr Team                           Time   Pts',
+        '==========================================================================',
+        '  1 Lucy Mahoney               6 Falmouth Middle School         5.90',
+    ])
+    out = ms.parse(text)
+    events = out[0] if isinstance(out, tuple) else out['events'] if isinstance(out, dict) else out
+    names = [e.get('event') for e in events]
+    assert len(events) == 3, names
+    assert names[1] == 'Boys 300 Yard Dash 8th Grade Division' and events[1]['results'][0]['result'] == '43.10', names
+    assert events[2]['gender'] == 'Girls' and events[2]['results'][0]['type'] == 'Prelims', events[2]
+    assert all(r.get('athlete') for e in events for r in e['results'])
+
+
 if __name__ == '__main__':
     qaqc._ensure_team_mapping()
     failed = 0
