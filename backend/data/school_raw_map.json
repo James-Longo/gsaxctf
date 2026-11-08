@@ -1,12 +1,12 @@
 {
 "_meta": {
 "methods_by_rows": {
-"exact/alias": 1869959,
-"code": 260220,
-"truncation": 121667,
-"athlete-continuity": 52921,
+"exact/alias": 1872979,
+"code": 260071,
+"truncation": 121829,
+"athlete-continuity": 53219,
 "mascot": 28809,
-"bare name + level context": 27102,
+"bare name + level context": 27472,
 "manual (file rule)": 18363,
 "unresolved": 17600,
 "co-op label": 12726,
@@ -15,7 +15,7 @@
 "file-expansion": 2638,
 "debris-salvage": 1772,
 "debris": 1007,
-"ambiguous": 854,
+"ambiguous": 830,
 "company": 736,
 "later-hs": 597,
 "blank": 190,
@@ -28,14 +28,14 @@
 "debris-salvage": 914,
 "debris": 713,
 "code": 702,
-"truncation": 533,
+"truncation": 534,
 "athlete-continuity": 461,
 "spelling (fuzzy)": 288,
 "manual (file rule)": 185,
 "co-op label": 78,
-"bare name + level context": 74,
+"bare name + level context": 75,
 "mascot": 40,
-"ambiguous": 31,
+"ambiguous": 29,
 "file-expansion": 13,
 "later-hs": 2
 },
@@ -83,9 +83,9 @@
 "how": "exact/alias"
 },
 "Falmouth": {
-"rows": 25766,
+"rows": 25860,
 "seasons": {
-"Indoor": 9981,
+"Indoor": 10075,
 "Outdoor": 9391,
 "XC": 6394
 },
@@ -97,7 +97,7 @@
 "method": "exact",
 "by_id": {
 "me-hs-falmouth": 23815,
-"me-ms-falmouth": 1951
+"me-ms-falmouth": 2045
 },
 "context_dependent": true,
 "by_level": {
@@ -670,9 +670,9 @@
 "how": "exact/alias"
 },
 "Greely": {
-"rows": 15142,
+"rows": 15202,
 "seasons": {
-"Indoor": 8791,
+"Indoor": 8851,
 "Outdoor": 4574,
 "XC": 1777
 },
@@ -684,7 +684,7 @@
 "method": "exact",
 "by_id": {
 "me-hs-greely": 14199,
-"me-ms-greely": 943
+"me-ms-greely": 1003
 },
 "context_dependent": true,
 "by_level": {
@@ -870,9 +870,9 @@
 "how": "exact/alias"
 },
 "Hampden Academy": {
-"rows": 10795,
+"rows": 10794,
 "seasons": {
-"Indoor": 1361,
+"Indoor": 1360,
 "Outdoor": 2648,
 "XC": 6786
 },
@@ -1143,6 +1143,30 @@
 "method": "exact",
 "how": "exact/alias"
 },
+"Biddeford": {
+"rows": 9583,
+"seasons": {
+"Indoor": 5259,
+"Outdoor": 2912,
+"XC": 1412
+},
+"years": [
+2003,
+2026
+],
+"id": "me-hs-biddeford",
+"method": "exact",
+"by_id": {
+"me-hs-biddeford": 9242,
+"me-ms-biddeford": 341
+},
+"context_dependent": true,
+"by_level": {
+"hs": "me-hs-biddeford",
+"ms": "me-ms-biddeford"
+},
+"how": "exact/alias"
+},
 "Scarboro": {
 "rows": 9543,
 "seasons": {
@@ -1164,30 +1188,6 @@
 "by_level": {
 "hs": "me-hs-scarborough",
 "ms": "me-ms-scarborough"
-},
-"how": "exact/alias"
-},
-"Biddeford": {
-"rows": 9485,
-"seasons": {
-"Indoor": 5161,
-"Outdoor": 2912,
-"XC": 1412
-},
-"years": [
-2003,
-2026
-],
-"id": "me-hs-biddeford",
-"method": "exact",
-"by_id": {
-"me-hs-biddeford": 9242,
-"me-ms-biddeford": 243
-},
-"context_dependent": true,
-"by_level": {
-"hs": "me-hs-biddeford",
-"ms": "me-ms-biddeford"
 },
 "how": "exact/alias"
 },
@@ -1418,9 +1418,9 @@
 "how": "exact/alias"
 },
 "Windham High School": {
-"rows": 8352,
+"rows": 8351,
 "seasons": {
-"Indoor": 2790,
+"Indoor": 2789,
 "XC": 3357,
 "Outdoor": 2205
 },
@@ -1460,9 +1460,9 @@
 "how": "exact/alias"
 },
 "Scarborough High School": {
-"rows": 8203,
+"rows": 8202,
 "seasons": {
-"Indoor": 4022,
+"Indoor": 4021,
 "Outdoor": 2437,
 "XC": 1744
 },
@@ -1499,9 +1499,9 @@
 "how": "exact/alias"
 },
 "Brewer High School": {
-"rows": 7801,
+"rows": 7800,
 "seasons": {
-"Indoor": 1265,
+"Indoor": 1264,
 "Outdoor": 2924,
 "XC": 3612
 },
@@ -1514,9 +1514,9 @@
 "how": "exact/alias"
 },
 "Gorham High School": {
-"rows": 7675,
+"rows": 7668,
 "seasons": {
-"Indoor": 2515,
+"Indoor": 2508,
 "Outdoor": 2213,
 "XC": 2947
 },
@@ -1710,9 +1710,9 @@
 "how": "exact/alias"
 },
 "Orono High School": {
-"rows": 6891,
+"rows": 6890,
 "seasons": {
-"Indoor": 775,
+"Indoor": 774,
 "Outdoor": 2722,
 "XC": 3394
 },
@@ -2126,11 +2126,11 @@
 "how": "exact/alias"
 },
 "Freeport High School": {
-"rows": 5702,
+"rows": 5705,
 "seasons": {
 "XC": 1954,
 "Outdoor": 909,
-"Indoor": 2839
+"Indoor": 2842
 },
 "years": [
 2003,
@@ -2138,12 +2138,20 @@
 ],
 "id": "me-hs-freeport",
 "method": "exact",
+"by_id": {
+"me-hs-freeport": 5702,
+"me-ms-freeport": 3
+},
+"context_dependent": true,
+"flags": [
+"athletes contradict name match (me-hs-freeport -> me-ms-freeport, 2/2)"
+],
 "how": "exact/alias"
 },
 "Bonny Eagle High School": {
-"rows": 5675,
+"rows": 5674,
 "seasons": {
-"Indoor": 2232,
+"Indoor": 2231,
 "Outdoor": 1718,
 "XC": 1725
 },
@@ -2152,6 +2160,21 @@
 2026
 ],
 "id": "me-hs-bonny-eagle",
+"method": "exact",
+"how": "exact/alias"
+},
+"Biddeford Middle School": {
+"rows": 5608,
+"seasons": {
+"XC": 286,
+"Indoor": 5306,
+"Outdoor": 16
+},
+"years": [
+2006,
+2026
+],
+"id": "me-ms-biddeford",
 "method": "exact",
 "how": "exact/alias"
 },
@@ -2408,21 +2431,6 @@
 "hs": "me-hs-hall-dale",
 "ms": "me-ms-hall-dale"
 },
-"how": "exact/alias"
-},
-"Biddeford Middle School": {
-"rows": 5206,
-"seasons": {
-"XC": 286,
-"Indoor": 4904,
-"Outdoor": 16
-},
-"years": [
-2006,
-2026
-],
-"id": "me-ms-biddeford",
-"method": "exact",
 "how": "exact/alias"
 },
 "George Stevens": {
@@ -2695,6 +2703,21 @@
 "method": "exact",
 "how": "exact/alias"
 },
+"Saco Middle School": {
+"rows": 4576,
+"seasons": {
+"XC": 1117,
+"Indoor": 3457,
+"Outdoor": 2
+},
+"years": [
+2005,
+2026
+],
+"id": "me-ms-saco",
+"method": "exact",
+"how": "exact/alias"
+},
 "Dexter": {
 "rows": 4568,
 "seasons": {
@@ -2912,21 +2935,6 @@
 ],
 "how": "exact/alias"
 },
-"Saco Middle School": {
-"rows": 4276,
-"seasons": {
-"XC": 1117,
-"Indoor": 3157,
-"Outdoor": 2
-},
-"years": [
-2005,
-2026
-],
-"id": "me-ms-saco",
-"method": "exact",
-"how": "exact/alias"
-},
 "Hermon High School": {
 "rows": 4212,
 "seasons": {
@@ -2960,14 +2968,48 @@
 "me-ms-scarborough": 775
 },
 "context_dependent": true,
-"by_level": {
-"hs": "me-hs-scarborough",
-"ms": "me-ms-scarborough"
-},
 "flags": [
 "athletes contradict name match (me-hs-scarborough -> me-ms-scarborough, 29/29)"
 ],
 "how": "code"
+},
+"Scarborough Middle School": {
+"rows": 4132,
+"seasons": {
+"Outdoor": 36,
+"Indoor": 3855,
+"XC": 241
+},
+"years": [
+2010,
+2026
+],
+"id": "me-ms-scarborough",
+"method": "exact",
+"how": "exact/alias"
+},
+"Winslow High School": {
+"rows": 4117,
+"seasons": {
+"XC": 1745,
+"Indoor": 879,
+"Outdoor": 1493
+},
+"years": [
+2003,
+2026
+],
+"id": "me-hs-winslow",
+"method": "exact",
+"by_id": {
+"me-hs-winslow": 4011,
+"me-ms-winslow": 106
+},
+"context_dependent": true,
+"flags": [
+"athletes contradict name match (me-hs-winslow -> me-ms-winslow, 46/48)"
+],
+"how": "exact/alias"
 },
 "John Bapst M": {
 "rows": 4096,
@@ -2983,29 +3025,6 @@
 "id": "me-hs-john-bapst",
 "method": "truncation",
 "how": "truncation"
-},
-"Winslow High School": {
-"rows": 4093,
-"seasons": {
-"XC": 1745,
-"Indoor": 855,
-"Outdoor": 1493
-},
-"years": [
-2003,
-2026
-],
-"id": "me-hs-winslow",
-"method": "exact",
-"by_id": {
-"me-hs-winslow": 3987,
-"me-ms-winslow": 106
-},
-"context_dependent": true,
-"flags": [
-"athletes contradict name match (me-hs-winslow -> me-ms-winslow, 46/48)"
-],
-"how": "exact/alias"
 },
 "Mount Ararat High School": {
 "rows": 4014,
@@ -3312,6 +3331,25 @@
 },
 "how": "exact/alias"
 },
+"Cape Elizabeth Middle School": {
+"rows": 3808,
+"seasons": {
+"Outdoor": 62,
+"XC": 417,
+"Indoor": 3329
+},
+"years": [
+2007,
+2026
+],
+"id": "me-ms-cape-elizabeth",
+"method": "exact",
+"flags": [
+"athletes contradict name match (me-ms-cape-elizabeth -> me-hs-cape-elizabeth, 19/20)",
+"athletes contradict name match (me-ms-cape-elizabeth -> me-hs-cape-elizabeth, 21/21)"
+],
+"how": "exact/alias"
+},
 "Portland Hig": {
 "rows": 3759,
 "seasons": {
@@ -3389,25 +3427,6 @@
 ],
 "id": "me-hs-foxcroft",
 "method": "exact",
-"how": "exact/alias"
-},
-"Cape Elizabeth Middle School": {
-"rows": 3644,
-"seasons": {
-"Outdoor": 62,
-"XC": 417,
-"Indoor": 3165
-},
-"years": [
-2007,
-2026
-],
-"id": "me-ms-cape-elizabeth",
-"method": "exact",
-"flags": [
-"athletes contradict name match (me-ms-cape-elizabeth -> me-hs-cape-elizabeth, 19/20)",
-"athletes contradict name match (me-ms-cape-elizabeth -> me-hs-cape-elizabeth, 21/21)"
-],
 "how": "exact/alias"
 },
 "MAMS": {
@@ -3561,21 +3580,6 @@
 2026
 ],
 "id": "me-ms-tripp",
-"method": "exact",
-"how": "exact/alias"
-},
-"Scarborough Middle School": {
-"rows": 3573,
-"seasons": {
-"Outdoor": 36,
-"XC": 241,
-"Indoor": 3296
-},
-"years": [
-2010,
-2026
-],
-"id": "me-ms-scarborough",
 "method": "exact",
 "how": "exact/alias"
 },
@@ -3767,6 +3771,36 @@
 "id": "me-hs-thornton",
 "method": "truncation+athletes",
 "how": "truncation"
+},
+"Greely Middle School": {
+"rows": 3239,
+"seasons": {
+"XC": 334,
+"Outdoor": 206,
+"Indoor": 2699
+},
+"years": [
+2008,
+2026
+],
+"id": "me-ms-greely",
+"method": "exact",
+"how": "exact/alias"
+},
+"Falmouth Middle School": {
+"rows": 3233,
+"seasons": {
+"Outdoor": 254,
+"XC": 460,
+"Indoor": 2519
+},
+"years": [
+2007,
+2026
+],
+"id": "me-ms-falmouth",
+"method": "exact",
+"how": "exact/alias"
 },
 "Central High": {
 "rows": 3209,
@@ -4037,6 +4071,42 @@
 ],
 "how": "exact/alias"
 },
+"Cape": {
+"rows": 3058,
+"seasons": {
+"Indoor": 2022,
+"Outdoor": 544,
+"XC": 492
+},
+"years": [
+2003,
+2022
+],
+"id": "me-hs-cape-elizabeth",
+"method": "exact",
+"by_id": {
+"me-hs-cape-elizabeth": 2506,
+"me-ms-cape-elizabeth": 552
+},
+"context_dependent": true,
+"by_level": {
+"hs": "me-hs-cape-elizabeth",
+"ms": "me-ms-cape-elizabeth"
+},
+"by_season": {
+"Indoor": "me-hs-cape-elizabeth",
+"Outdoor": "me-hs-cape-elizabeth",
+"XC": "me-ms-cape-elizabeth"
+},
+"flags": [
+"athletes contradict name match (me-hs-cape-elizabeth -> me-ms-cape-elizabeth, 16/16)",
+"athletes contradict name match (me-hs-cape-elizabeth -> me-ms-cape-elizabeth, 16/20)",
+"athletes contradict name match (me-hs-cape-elizabeth -> me-ms-cape-elizabeth, 19/19)",
+"athletes contradict name match (me-hs-cape-elizabeth -> me-ms-cape-elizabeth, 4/6)",
+"athletes contradict name match (me-hs-cape-elizabeth -> me-ms-cape-elizabeth, 5/5)"
+],
+"how": "exact/alias"
+},
 "Bowdoin": {
 "rows": 3044,
 "seasons": {
@@ -4062,21 +4132,6 @@
 2026
 ],
 "id": "me-ms-mdi-elementary",
-"method": "exact",
-"how": "exact/alias"
-},
-"Greely Middle School": {
-"rows": 3041,
-"seasons": {
-"XC": 334,
-"Outdoor": 206,
-"Indoor": 2501
-},
-"years": [
-2008,
-2026
-],
-"id": "me-ms-greely",
 "method": "exact",
 "how": "exact/alias"
 },
@@ -4131,41 +4186,6 @@
 },
 "flags": [
 "athletes contradict name match (me-ms-madison -> me-hs-madison, 17/24)"
-],
-"how": "exact/alias"
-},
-"Cape": {
-"rows": 3018,
-"seasons": {
-"Indoor": 1982,
-"Outdoor": 544,
-"XC": 492
-},
-"years": [
-2003,
-2022
-],
-"id": "me-hs-cape-elizabeth",
-"method": "exact",
-"by_id": {
-"me-hs-cape-elizabeth": 2506,
-"me-ms-cape-elizabeth": 512
-},
-"context_dependent": true,
-"by_level": {
-"hs": "me-hs-cape-elizabeth",
-"ms": "me-ms-cape-elizabeth"
-},
-"by_season": {
-"Indoor": "me-hs-cape-elizabeth",
-"Outdoor": "me-hs-cape-elizabeth",
-"XC": "me-ms-cape-elizabeth"
-},
-"flags": [
-"athletes contradict name match (me-hs-cape-elizabeth -> me-ms-cape-elizabeth, 16/16)",
-"athletes contradict name match (me-hs-cape-elizabeth -> me-ms-cape-elizabeth, 19/19)",
-"athletes contradict name match (me-hs-cape-elizabeth -> me-ms-cape-elizabeth, 5/5)",
-"athletes disagree with file rule (me-ms-cape-elizabeth -> me-hs-cape-elizabeth, 3/3)"
 ],
 "how": "exact/alias"
 },
@@ -4298,21 +4318,6 @@
 "method": "exact",
 "how": "exact/alias"
 },
-"Falmouth Middle School": {
-"rows": 2880,
-"seasons": {
-"Outdoor": 254,
-"XC": 460,
-"Indoor": 2166
-},
-"years": [
-2007,
-2026
-],
-"id": "me-ms-falmouth",
-"method": "exact",
-"how": "exact/alias"
-},
 "Mt. Ararat High School": {
 "rows": 2873,
 "seasons": {
@@ -4424,6 +4429,21 @@
 2023
 ],
 "id": "me-hs-greenville",
+"method": "exact",
+"how": "exact/alias"
+},
+"Freeport Middle School": {
+"rows": 2703,
+"seasons": {
+"XC": 173,
+"Indoor": 2511,
+"Outdoor": 19
+},
+"years": [
+2008,
+2026
+],
+"id": "me-ms-freeport",
 "method": "exact",
 "how": "exact/alias"
 },
@@ -4583,9 +4603,9 @@
 "how": "exact/alias"
 },
 "Unattached": {
-"rows": 2618,
+"rows": 2614,
 "seasons": {
-"Indoor": 1750,
+"Indoor": 1746,
 "XC": 463,
 "Outdoor": 405
 },
@@ -4596,7 +4616,7 @@
 "id": "x-unattached",
 "method": "exact",
 "by_id": {
-"x-unattached": 2073,
+"x-unattached": 2069,
 "me-ms-leonard": 367,
 "col-umaine": 73,
 "col-usm": 57,
@@ -4734,21 +4754,6 @@
 "method": "exact",
 "how": "exact/alias"
 },
-"Freeport Middle School": {
-"rows": 2515,
-"seasons": {
-"XC": 173,
-"Indoor": 2323,
-"Outdoor": 19
-},
-"years": [
-2008,
-2026
-],
-"id": "me-ms-freeport",
-"method": "exact",
-"how": "exact/alias"
-},
 "WIN": {
 "rows": 2506,
 "seasons": {
@@ -4803,6 +4808,21 @@
 "id": "me-hs-sanford",
 "method": "code",
 "how": "code"
+},
+"Yarmouth Middle School": {
+"rows": 2466,
+"seasons": {
+"Outdoor": 21,
+"Indoor": 2172,
+"XC": 273
+},
+"years": [
+2010,
+2026
+],
+"id": "me-ms-harrison",
+"method": "exact",
+"how": "exact/alias"
 },
 "Kennebunk Hi": {
 "rows": 2453,
@@ -4905,21 +4925,6 @@
 2022
 ],
 "id": "me-hs-south-portland",
-"method": "exact",
-"how": "exact/alias"
-},
-"Yarmouth Middle School": {
-"rows": 2353,
-"seasons": {
-"Outdoor": 21,
-"Indoor": 2059,
-"XC": 273
-},
-"years": [
-2010,
-2026
-],
-"id": "me-ms-harrison",
 "method": "exact",
 "how": "exact/alias"
 },
@@ -5430,6 +5435,21 @@
 "method": "exact",
 "how": "exact/alias"
 },
+"Thornton Middle School": {
+"rows": 2044,
+"seasons": {
+"Indoor": 1907,
+"Outdoor": 1,
+"XC": 136
+},
+"years": [
+2013,
+2026
+],
+"id": "me-ms-thornton",
+"method": "exact",
+"how": "exact/alias"
+},
 "Winthrop High School": {
 "rows": 2029,
 "seasons": {
@@ -5543,21 +5563,6 @@
 "id": "me-ms-auburn",
 "method": "code",
 "how": "code"
-},
-"Thornton Middle School": {
-"rows": 1917,
-"seasons": {
-"Indoor": 1780,
-"Outdoor": 1,
-"XC": 136
-},
-"years": [
-2014,
-2026
-],
-"id": "me-ms-thornton",
-"method": "exact",
-"how": "exact/alias"
 },
 "Cape Elizabe": {
 "rows": 1912,
@@ -6335,6 +6340,19 @@
 },
 "how": "code"
 },
+"Southern Maine Catho": {
+"rows": 1555,
+"seasons": {
+"Indoor": 1555
+},
+"years": [
+2013,
+2018
+],
+"id": "me-ms-southern-maine-catholic",
+"method": "truncation",
+"how": "truncation"
+},
 "Maranacook Community School": {
 "rows": 1552,
 "seasons": {
@@ -6361,6 +6379,20 @@
 2026
 ],
 "id": "me-hs-dirigo",
+"method": "exact",
+"how": "exact/alias"
+},
+"Poland Middle School": {
+"rows": 1546,
+"seasons": {
+"Outdoor": 2,
+"Indoor": 1544
+},
+"years": [
+2008,
+2022
+],
+"id": "me-ms-whittier",
 "method": "exact",
 "how": "exact/alias"
 },
@@ -6776,20 +6808,6 @@
 "method": "exact",
 "how": "exact/alias"
 },
-"Poland Middle School": {
-"rows": 1420,
-"seasons": {
-"Outdoor": 2,
-"Indoor": 1418
-},
-"years": [
-2008,
-2022
-],
-"id": "me-ms-whittier",
-"method": "exact",
-"how": "exact/alias"
-},
 "FOX": {
 "rows": 1413,
 "seasons": {
@@ -6908,19 +6926,6 @@
 "company: me-ms-mdi-elementary (1.60) -> me-ms-mt-desert-elementary (9.00)"
 ],
 "how": "exact/alias"
-},
-"Southern Maine Catho": {
-"rows": 1394,
-"seasons": {
-"Indoor": 1394
-},
-"years": [
-2014,
-2018
-],
-"id": "me-ms-southern-maine-catholic",
-"method": "truncation",
-"how": "truncation"
 },
 "Calais": {
 "rows": 1388,
@@ -7304,6 +7309,23 @@
 "id": "me-ms-all-saints",
 "method": "exact",
 "how": "exact/alias"
+},
+"St. James": {
+"rows": 1299,
+"seasons": {
+"Indoor": 1299
+},
+"years": [
+2013,
+2018
+],
+"id": "me-ms-st-james-biddeford",
+"method": "bare-name",
+"by_id": {
+"me-ms-st-james-biddeford": 1299
+},
+"context_dependent": true,
+"how": "bare name + level context"
 },
 "Mustangs": {
 "rows": 1297,
@@ -8331,23 +8353,6 @@
 "method": "exact",
 "how": "exact/alias"
 },
-"St. James": {
-"rows": 1014,
-"seasons": {
-"Indoor": 1014
-},
-"years": [
-2014,
-2018
-],
-"id": "me-ms-st-james-biddeford",
-"method": "bare-name",
-"by_id": {
-"me-ms-st-james-biddeford": 1014
-},
-"context_dependent": true,
-"how": "bare name + level context"
-},
 "GAR": {
 "rows": 1000,
 "seasons": {
@@ -8490,6 +8495,21 @@
 "athletes contradict name match (me-hs-falmouth -> me-ms-falmouth, 30/33)"
 ],
 "how": "athlete-continuity"
+},
+"Southern Maine Catholic (combined MS team)": {
+"rows": 957,
+"seasons": {
+"Indoor": 839,
+"Outdoor": 1,
+"XC": 117
+},
+"years": [
+2013,
+2026
+],
+"id": "me-ms-southern-maine-catholic",
+"method": "exact",
+"how": "exact/alias"
 },
 "LA": {
 "rows": 956,
@@ -8940,21 +8960,6 @@
 "athletes contradict name match (me-hs-mt-abram -> me-hs-mattanawcook, 3/3)",
 "athletes contradict name match (me-hs-mt-abram -> me-hs-mt-ararat, 2/2)"
 ],
-"how": "exact/alias"
-},
-"Southern Maine Catholic (combined MS team)": {
-"rows": 878,
-"seasons": {
-"Indoor": 760,
-"Outdoor": 1,
-"XC": 117
-},
-"years": [
-2014,
-2026
-],
-"id": "me-ms-southern-maine-catholic",
-"method": "exact",
 "how": "exact/alias"
 },
 "Boothbay Mid": {
@@ -15932,9 +15937,6 @@
 ],
 "id": "me-ms-southern-maine-catholic",
 "method": "exact",
-"flags": [
-"athletes contradict name match (me-ms-southern-maine-catholic -> col-usm, 3/5)"
-],
 "how": "exact/alias"
 },
 "HTC": {
@@ -18394,6 +18396,24 @@
 "method": "unresolved",
 "how": "unresolved"
 },
+"Saco": {
+"rows": 214,
+"seasons": {
+"XC": 85,
+"Indoor": 129
+},
+"years": [
+2005,
+2022
+],
+"id": "me-ms-saco",
+"method": "exact",
+"by_id": {
+"me-ms-saco": 214
+},
+"context_dependent": true,
+"how": "exact/alias"
+},
 "Sanford Middle School": {
 "rows": 214,
 "seasons": {
@@ -20067,6 +20087,9 @@
 ],
 "id": "me-ms-durham",
 "method": "exact",
+"flags": [
+"athletes contradict name match (me-ms-durham -> me-ms-freeport, 3/3)"
+],
 "how": "exact/alias"
 },
 "Poland High School": {
@@ -21280,6 +21303,19 @@
 "method": "exact",
 "how": "exact/alias"
 },
+"Freeport/Durham": {
+"rows": 149,
+"seasons": {
+"Indoor": 149
+},
+"years": [
+2013,
+2023
+],
+"id": "me-ms-durham-freeport",
+"method": "exact",
+"how": "exact/alias"
+},
 "Eems": {
 "rows": 149,
 "seasons": {
@@ -22019,6 +22055,20 @@
 2022
 ],
 "id": "col-umass-dartmouth",
+"method": "exact",
+"how": "exact/alias"
+},
+"Yarmouth MS": {
+"rows": 135,
+"seasons": {
+"XC": 87,
+"Indoor": 48
+},
+"years": [
+2005,
+2026
+],
+"id": "me-ms-harrison",
 "method": "exact",
 "how": "exact/alias"
 },
@@ -23455,6 +23505,29 @@
 "method": "exact+season-words",
 "how": "exact/alias"
 },
+"Pol": {
+"rows": 116,
+"seasons": {
+"XC": 60,
+"Indoor": 56
+},
+"years": [
+2005,
+2013
+],
+"id": "me-hs-poland",
+"method": "code",
+"by_id": {
+"me-hs-poland": 60,
+"me-ms-whittier": 56
+},
+"context_dependent": true,
+"by_season": {
+"XC": "me-hs-poland",
+"Indoor": "me-ms-whittier"
+},
+"how": "code"
+},
 "Lake Region High": {
 "rows": 116,
 "seasons": {
@@ -24066,7 +24139,7 @@
 "method": "exact",
 "flags": [
 "athletes contradict name match (col-usm -> me-ms-southern-maine-catholic, 12/12)",
-"athletes contradict name match (col-usm -> me-ms-southern-maine-catholic, 3/3)"
+"athletes contradict name match (col-usm -> me-ms-southern-maine-catholic, 14/14)"
 ],
 "how": "exact/alias"
 },
@@ -24432,24 +24505,6 @@
 "XC": "me-hs-cony"
 },
 "how": "athlete-continuity"
-},
-"Saco": {
-"rows": 107,
-"seasons": {
-"XC": 85,
-"Indoor": 22
-},
-"years": [
-2005,
-2022
-],
-"id": "me-ms-saco",
-"method": "exact",
-"by_id": {
-"me-ms-saco": 107
-},
-"context_dependent": true,
-"how": "exact/alias"
 },
 "Nekomis": {
 "rows": 107,
@@ -25101,19 +25156,6 @@
 2018
 ],
 "id": "me-hs-wells",
-"method": "exact",
-"how": "exact/alias"
-},
-"Freeport/Durham": {
-"rows": 102,
-"seasons": {
-"Indoor": 102
-},
-"years": [
-2020,
-2023
-],
-"id": "me-ms-durham-freeport",
 "method": "exact",
 "how": "exact/alias"
 },
@@ -26868,19 +26910,6 @@
 "unresolved_rows": 62,
 "how": "athlete-continuity"
 },
-"Yarmouth MS": {
-"rows": 87,
-"seasons": {
-"XC": 87
-},
-"years": [
-2005,
-2026
-],
-"id": "me-ms-harrison",
-"method": "exact",
-"how": "exact/alias"
-},
 "WIN2": {
 "rows": 87,
 "seasons": {
@@ -27151,6 +27180,19 @@
 "id": "me-ms-leonard",
 "method": "code",
 "how": "code"
+},
+"St James": {
+"rows": 85,
+"seasons": {
+"Indoor": 85
+},
+"years": [
+2013,
+2013
+],
+"id": "me-ms-st-james-biddeford",
+"method": "bare-name",
+"how": "bare name + level context"
 },
 "Blue Hill Consolidated School": {
 "rows": 85,
@@ -31169,19 +31211,6 @@
 "id": "me-hs-massabesic",
 "method": "exact",
 "how": "exact/alias"
-},
-"Pol": {
-"rows": 60,
-"seasons": {
-"XC": 60
-},
-"years": [
-2005,
-2006
-],
-"id": "me-hs-poland",
-"method": "code",
-"how": "code"
 },
 "BRU": {
 "rows": 60,
@@ -51771,25 +51800,6 @@
 "method": "exact",
 "how": "exact/alias"
 },
-"Raiders 2012": {
-"rows": 17,
-"seasons": {
-"Indoor": 17
-},
-"years": [
-2013,
-2013
-],
-"id": null,
-"method": "nickname+season-words",
-"candidates": [
-"me-hs-fryeburg",
-"me-hs-oak-hill",
-"me-hs-washington-academy",
-"me-hs-winslow"
-],
-"how": "ambiguous"
-},
 "Indian island": {
 "rows": 17,
 "seasons": {
@@ -71033,25 +71043,6 @@
 "id": "me-hs-oxford-hills",
 "method": "athlete-continuity",
 "how": "athlete-continuity"
-},
-"Raiders 2013": {
-"rows": 7,
-"seasons": {
-"Indoor": 7
-},
-"years": [
-2014,
-2014
-],
-"id": null,
-"method": "nickname+season-words",
-"candidates": [
-"me-hs-fryeburg",
-"me-hs-oak-hill",
-"me-hs-washington-academy",
-"me-hs-winslow"
-],
-"how": "ambiguous"
 },
 "Katahdin High School": {
 "rows": 7,
@@ -136761,6 +136752,19 @@
 "method": "unresolved",
 "how": "unresolved"
 },
+"Scao": {
+"rows": 1,
+"seasons": {
+"Indoor": 1
+},
+"years": [
+2013,
+2013
+],
+"id": "me-ms-sacopee",
+"method": "truncation+ms-race",
+"how": "truncation"
+},
 "Camden Rockport Middle School 'C'": {
 "rows": 1,
 "seasons": {
@@ -164067,6 +164071,7 @@
 },
 "2003/XC/ms-2003-maine-xc-championships-2003": {
 "Cony High School": "me-hs-cony",
+"Freeport High School": "me-hs-freeport",
 "Gray-New Gloucester High School": "me-hs-gray-ng",
 "Mattanawcook Academy": "me-hs-mattanawcook",
 "Monmouth Academy": "me-hs-monmouth",
@@ -165238,6 +165243,7 @@
 },
 "2004/Outdoor/ne-interscholastic-outdoor-2004": {
 "Cony High School": "me-hs-cony",
+"Freeport High School": "me-hs-freeport",
 "Mattanawcook Academy": "me-hs-mattanawcook",
 "Messalonskee High School": "me-hs-messalonskee",
 "North Yarmouth Academy": "me-hs-nya",
@@ -166228,6 +166234,7 @@
 },
 "2004/XC/ms-2004-maine-xc-championships-2004": {
 "Cony High School": "me-hs-cony",
+"Freeport High School": "me-hs-freeport",
 "Mattanawcook Academy": "me-hs-mattanawcook",
 "Monmouth Academy": "me-hs-monmouth",
 "North Haven Community School": "me-hs-north-haven",
@@ -166991,6 +166998,7 @@
 "Bonny Eagle": "me-hs-bonny-eagle",
 "Falmouth": "me-hs-falmouth",
 "Free": "me-hs-freeport",
+"Freeport High School": "me-hs-freeport",
 "Gorham": "me-hs-gorham",
 "Greely": "me-hs-greely",
 "North Yarmouth Academy": "me-hs-nya",
@@ -167042,6 +167050,7 @@
 "Cape": "me-hs-cape-elizabeth",
 "Falmouth": "me-hs-falmouth",
 "Free": "me-hs-freeport",
+"Freeport High School": "me-hs-freeport",
 "Gorham": "me-hs-gorham",
 "Hall-Dale": "me-hs-hall-dale",
 "North Yarmouth Academy": "me-hs-nya",
@@ -167053,6 +167062,7 @@
 "Cape": "me-hs-cape-elizabeth",
 "Falmouth": "me-hs-falmouth",
 "Free": "me-hs-freeport",
+"Freeport High School": "me-hs-freeport",
 "Gng": "me-hs-gray-ng",
 "Gorham": "me-hs-gorham",
 "Greely": "me-hs-greely",
@@ -167261,6 +167271,7 @@
 },
 "2005/Outdoor/centralmainefrosh": {
 "Falmouth": "me-hs-falmouth",
+"Freeport High School": "me-hs-freeport",
 "Gray New Glouste": "me-hs-gray-ng",
 "Lisbon": "me-hs-lisbon",
 "Scarborough": "me-hs-scarborough",
@@ -167344,6 +167355,7 @@
 "Central": "me-hs-central",
 "Dirigo": "me-hs-dirigo",
 "Freeport": "me-hs-freeport",
+"Freeport High School": "me-hs-freeport",
 "Hall-Dale": "me-hs-hall-dale",
 "Hermon": "me-hs-hermon",
 "Lisbon": "me-hs-lisbon",
@@ -167855,6 +167867,7 @@
 "MA": "me-hs-mattanawcook"
 },
 "2005/XC/CHANDLER%20RELAY%20RESULTS.txt": {
+"Freeport High School": "me-hs-freeport",
 "North Yarmouth Academy": "me-hs-nya",
 "St. Dominic Academy": "me-hs-st-dominic"
 },
@@ -167879,6 +167892,7 @@
 "Gng": "me-hs-gray-ng",
 "Gorham": "me-hs-gorham",
 "LR": "me-hs-lake-region",
+"Pol": "me-hs-poland",
 "Sc": "me-hs-scarborough"
 },
 "2005/XC/MARANACOOK-GIRLS-9-2.txt": {
@@ -167973,7 +167987,8 @@
 },
 "2005/XC/capeelizabeth9_30B.txt": {
 "CE": "me-hs-cape-elizabeth",
-"LR": "me-hs-lake-region"
+"LR": "me-hs-lake-region",
+"Pol": "me-hs-poland"
 },
 "2005/XC/caribou9_14b": {
 "CAR": "me-hs-caribou",
@@ -169694,6 +169709,7 @@
 "Cape": "me-hs-cape-elizabeth",
 "Falmouth": "me-hs-falmouth",
 "Free": "me-hs-freeport",
+"Freeport High School": "me-hs-freeport",
 "North Yarmouth Academy": "me-hs-nya",
 "Poland": "me-hs-poland"
 },
@@ -171193,6 +171209,9 @@
 "Waynflete": "me-hs-waynflete",
 "York": "me-hs-york"
 },
+"2006/XC/fryeburg9_29": {
+"Freeport High School": "me-hs-freeport"
+},
 "2006/XC/girlscombined.txt": {
 "Bonny Eagle": "me-hs-bonny-eagle",
 "Brunswick": "me-hs-brunswick",
@@ -171330,13 +171349,15 @@
 "2006/XC/lakeregion10_6": {
 "FA": "me-hs-fryeburg",
 "GNG": "me-hs-gray-ng",
-"LR": "me-hs-lake-region"
+"LR": "me-hs-lake-region",
+"Pol": "me-hs-poland"
 },
 "2006/XC/lakeregioninvite": {
 "GNG": "me-hs-gray-ng",
 "LR": "me-hs-lake-region",
 "McA": "me-hs-mcauley",
 "NYA": "me-hs-nya",
+"Pol": "me-hs-poland",
 "StD": "me-hs-st-dominic",
 "Win": "me-hs-windham"
 },
@@ -171517,6 +171538,7 @@
 },
 "2006/XC/ms-2006-maine-xc-championships-2006": {
 "Cony High School": "me-hs-cony",
+"Freeport High School": "me-hs-freeport",
 "Gray-New Gloucester High School": "me-hs-gray-ng",
 "Mattanawcook Academy": "me-hs-mattanawcook",
 "Messalonskee High School": "me-hs-messalonskee",
@@ -172054,6 +172076,7 @@
 "Brunswick": "me-hs-brunswick",
 "Falmouth": "me-hs-falmouth",
 "Freeport": "me-hs-freeport",
+"Freeport High School": "me-hs-freeport",
 "Greely": "me-hs-greely",
 "Lake Region": "me-hs-lake-region",
 "Lewiston": "me-hs-lewiston",
@@ -172096,6 +172119,7 @@
 "2007/Indoor/bowdoingirls": {
 "Brunswick": "me-hs-brunswick",
 "Freeport": "me-hs-freeport",
+"Freeport High School": "me-hs-freeport",
 "Greely": "me-hs-greely",
 "Lake Region": "me-hs-lake-region",
 "Lewiston": "me-hs-lewiston",
@@ -172719,6 +172743,7 @@
 },
 "2007/Indoor/wmc1B": {
 "Free": "me-hs-freeport",
+"Freeport High School": "me-hs-freeport",
 "Gray-New Gloucester": "me-hs-gray-ng",
 "North Yarmouth Academy": "me-hs-nya",
 "Wells": "me-hs-wells",
@@ -172727,6 +172752,7 @@
 "2007/Indoor/wmc2A": {
 "Cape": "me-hs-cape-elizabeth",
 "Freeport": "me-hs-freeport",
+"Freeport High School": "me-hs-freeport",
 "Lisbon": "me-hs-lisbon",
 "North Yarmouth Academy": "me-hs-nya",
 "Wells": "me-hs-wells",
@@ -172743,6 +172769,7 @@
 "2007/Indoor/wmc3A": {
 "Falmouth": "me-hs-falmouth",
 "Free": "me-hs-freeport",
+"Freeport High School": "me-hs-freeport",
 "Wells": "me-hs-wells"
 },
 "2007/Indoor/wmc3B": {
@@ -172766,6 +172793,7 @@
 "2007/Indoor/wmc4b": {
 "Cape": "me-hs-cape-elizabeth",
 "Free": "me-hs-freeport",
+"Freeport High School": "me-hs-freeport",
 "Fryeburg": "me-hs-fryeburg",
 "Lakers": "me-hs-lake-region",
 "Poland": "me-hs-poland"
@@ -172791,6 +172819,7 @@
 "Cape": "me-hs-cape-elizabeth",
 "Falmouth": "me-hs-falmouth",
 "Free": "me-hs-freeport",
+"Freeport High School": "me-hs-freeport",
 "Fryeburg": "me-hs-fryeburg",
 "Greely": "me-hs-greely",
 "Lakers": "me-hs-lake-region",
@@ -173237,6 +173266,7 @@
 "2007/Outdoor/froshchampgirls": {
 "BRHS": "me-hs-boothbay",
 "Bonny Eagle": "me-hs-bonny-eagle",
+"Freeport High School": "me-hs-freeport",
 "Mt. Ararat": "me-hs-mt-ararat",
 "North Yarmouth Academy": "me-hs-nya",
 "SP": "me-hs-south-portland",
@@ -173719,6 +173749,7 @@
 "Cape Elizabeth": "me-hs-cape-elizabeth",
 "Falmouth": "me-hs-falmouth",
 "Freeport": "me-hs-freeport",
+"Freeport High School": "me-hs-freeport",
 "Fryeburg": "me-hs-fryeburg",
 "GNG": "me-hs-gray-ng",
 "Gray New Gloucester": "me-hs-gray-ng",
@@ -175355,6 +175386,7 @@
 "2008/Indoor/ResultsWMC1": {
 "FREE": "me-hs-freeport",
 "Falmouth": "me-hs-falmouth",
+"Freeport High School": "me-hs-freeport",
 "Lakers": "me-hs-lake-region",
 "NYA": "me-hs-nya",
 "North Yarmouth Academy": "me-hs-nya",
@@ -175450,6 +175482,7 @@
 "Boothbay": "me-ms-boothbay",
 "Brewer": "me-ms-brewer",
 "Brunswick": "me-ms-brunswick",
+"Freeport High School": "me-hs-freeport",
 "Greely": "me-ms-greely",
 "Lake Region": "me-ms-lake-region",
 "Lewiston": "me-ms-lewiston",
@@ -175487,6 +175520,7 @@
 "Brewer": "me-hs-brewer",
 "Brunswick": "me-hs-brunswick",
 "Freeport": "me-hs-freeport",
+"Freeport High School": "me-hs-freeport",
 "Greely": "me-hs-greely",
 "Lake Region": "me-hs-lake-region",
 "Lewiston": "me-hs-lewiston",
@@ -176171,6 +176205,7 @@
 "Cape": "me-hs-cape-elizabeth",
 "FREE": "me-hs-freeport",
 "Falmouth": "me-hs-falmouth",
+"Freeport High School": "me-hs-freeport",
 "NYA": "me-hs-nya",
 "North Yarmouth Academy": "me-hs-nya",
 "Poland": "me-hs-poland",
@@ -176201,6 +176236,7 @@
 "2008/Indoor/wmcweek4meet1": {
 "FREE": "me-hs-freeport",
 "Falmouth": "me-hs-falmouth",
+"Freeport High School": "me-hs-freeport",
 "Greely": "me-hs-greely",
 "NYA": "me-hs-nya",
 "North Yarmouth Academy": "me-hs-nya",
@@ -176238,6 +176274,7 @@
 "2008/Outdoor/080515@Falmouth": {
 "Falmouth": "me-hs-falmouth",
 "Free": "me-hs-freeport",
+"Freeport High School": "me-hs-freeport",
 "Sacopee Vall": "me-hs-sacopee",
 "York": "me-hs-york"
 },
@@ -176465,6 +176502,7 @@
 "Central": "me-hs-central",
 "Dirigo": "me-hs-dirigo",
 "Freeport": "me-hs-freeport",
+"Freeport High School": "me-hs-freeport",
 "Hall-Dale": "me-hs-hall-dale",
 "Jay High School": "me-hs-jay",
 "Limestone/MSSM": "coop-limestone-mssm",
@@ -176635,6 +176673,7 @@
 "Central": "me-hs-central",
 "Dirigo": "me-hs-dirigo",
 "Freeport": "me-hs-freeport",
+"Freeport High School": "me-hs-freeport",
 "Hall-Dale": "me-hs-hall-dale",
 "Jay High School": "me-hs-jay",
 "Lisbon": "me-hs-lisbon",
@@ -176864,6 +176903,7 @@
 "2008/Outdoor/freeport_may17": {
 "Brhs": "me-hs-boothbay",
 "FREE": "me-hs-freeport",
+"Freeport High School": "me-hs-freeport",
 "Noble": "me-hs-noble",
 "Unattached": "x-unattached",
 "Waynflete School": "me-hs-waynflete"
@@ -177335,6 +177375,7 @@
 "CAPE": "me-hs-cape-elizabeth",
 "FREE": "me-hs-freeport",
 "Falmouth": "me-hs-falmouth",
+"Freeport High School": "me-hs-freeport",
 "Fryeburg": "me-hs-fryeburg",
 "GNG": "me-hs-gray-ng",
 "Greely": "me-hs-greely",
@@ -178539,6 +178580,7 @@
 "Yarmouth High School": "me-hs-yarmouth"
 },
 "2008/XC/ms-gng-wmc-xc-meet-2008": {
+"Freeport High School": "me-hs-freeport",
 "Gray-New Gloucester High School": "me-hs-gray-ng",
 "St. Dominic Academy": "me-hs-st-dominic"
 },
@@ -179106,6 +179148,7 @@
 "Ellsworth": "me-hs-ellsworth",
 "Falmouth": "me-hs-falmouth",
 "Freeport": "me-hs-freeport",
+"Freeport High School": "me-hs-freeport",
 "Fryeburg": "me-hs-fryeburg",
 "GNG": "me-hs-gray-ng",
 "Gardiner": "me-hs-gardiner",
@@ -179490,6 +179533,7 @@
 "Winslow High School": "me-hs-winslow"
 },
 "2009/Indoor/kvac12_31": {
+"Freeport High School": "me-hs-freeport",
 "MTA": "me-hs-mt-ararat"
 },
 "2009/Indoor/kvac2a": {
@@ -179828,6 +179872,7 @@
 "2009/Indoor/wmcweek1meet1": {
 "FREE": "me-hs-freeport",
 "Falmouth": "me-hs-falmouth",
+"Freeport High School": "me-hs-freeport",
 "Fryeburg": "me-hs-fryeburg",
 "Lakers": "me-hs-lake-region",
 "NYA": "me-hs-nya",
@@ -179944,6 +179989,7 @@
 "CAPE": "me-hs-cape-elizabeth",
 "FREE": "me-hs-freeport",
 "Falmouth": "me-hs-falmouth",
+"Freeport High School": "me-hs-freeport",
 "Fryeburg": "me-hs-fryeburg",
 "Greely": "me-hs-greely",
 "Lakers": "me-hs-lake-region",
@@ -180260,6 +180306,7 @@
 "2009/Outdoor/cmfroshchamps": {
 "BRHS": "me-hs-boothbay",
 "FREE": "me-hs-freeport",
+"Freeport High School": "me-hs-freeport",
 "Maranacook": "me-hs-maranacook",
 "Mt. Ararat": "me-hs-mt-ararat",
 "North Yarmouth Academy": "me-hs-nya",
@@ -181073,16 +181120,19 @@
 },
 "2009/XC/GNGXC_9_18": {
 "": null,
+"Freeport High School": "me-hs-freeport",
 "Gray-New Gloucester High School": "me-hs-gray-ng",
 "North Yarmouth Academy": "me-hs-nya",
 "Yarmouth High School": "me-hs-yarmouth"
 },
 "2009/XC/GNGXC_9_18%203": {
+"Freeport High School": "me-hs-freeport",
 "Gray-New Gloucester High School": "me-hs-gray-ng",
 "North Yarmouth Academy": "me-hs-nya",
 "Yarmouth High School": "me-hs-yarmouth"
 },
 "2009/XC/GNGXC_9_18%204": {
+"Freeport High School": "me-hs-freeport",
 "Gray-New Gloucester High School": "me-hs-gray-ng",
 "North Yarmouth Academy": "me-hs-nya",
 "Yarmouth High School": "me-hs-yarmouth"
@@ -181907,6 +181957,7 @@
 "2009/XC/ms-2009-maine-xc-championships-2009": {
 "Bangor Christian Schools": "me-hs-bangor-christian",
 "Cony High School": "me-hs-cony",
+"Freeport High School": "me-hs-freeport",
 "Islesboro Central School": "me-hs-islesboro",
 "Mattanawcook Academy": "me-hs-mattanawcook",
 "Messalonskee High School": "me-hs-messalonskee",
@@ -181948,6 +181999,7 @@
 "Westbrook High School": "me-hs-westbrook"
 },
 "2009/XC/ms-wmc-freeport-waynflete-nya-2009": {
+"Freeport High School": "me-hs-freeport",
 "North Yarmouth Academy": "me-hs-nya",
 "Waynflete School": "me-hs-waynflete"
 },
@@ -181964,10 +182016,12 @@
 "L": "me-hs-lawrence"
 },
 "2009/XC/nyaboys_oct16": {
+"Freeport High School": "me-hs-freeport",
 "North Yarmouth Academy": "me-hs-nya",
 "Waynflete School": "me-hs-waynflete"
 },
 "2009/XC/nyagirls_oct16": {
+"Freeport High School": "me-hs-freeport",
 "North Yarmouth Academy": "me-hs-nya",
 "Waynflete School": "me-hs-waynflete"
 },
@@ -182530,10 +182584,12 @@
 "Yarmouth": "me-hs-yarmouth"
 },
 "2009/XC/yarmouthboys_sept11": {
+"Freeport High School": "me-hs-freeport",
 "Gray-New Gloucester High School": "me-hs-gray-ng",
 "Yarmouth High School": "me-hs-yarmouth"
 },
 "2009/XC/yarmouthgirls_sept11": {
+"Freeport High School": "me-hs-freeport",
 "Gray-New Gloucester High School": "me-hs-gray-ng",
 "Yarmouth High School": "me-hs-yarmouth"
 },
@@ -182570,6 +182626,7 @@
 "2010/Indoor/ResultsWMC1": {
 "FREE": "me-hs-freeport",
 "Falmouth": "me-hs-falmouth",
+"Freeport High School": "me-hs-freeport",
 "Wells": "me-hs-wells",
 "Yarmouth": "me-hs-yarmouth",
 "Yarmouth High School": "me-hs-yarmouth"
@@ -182667,6 +182724,7 @@
 "Brunswick": "me-hs-brunswick",
 "Falmouth": "me-hs-falmouth",
 "Freeport": "me-hs-freeport",
+"Freeport High School": "me-hs-freeport",
 "Gorham": "me-hs-gorham",
 "Greely": "me-hs-greely",
 "Lewiston": "me-hs-lewiston",
@@ -182684,6 +182742,7 @@
 "2010/Indoor/bowdoinrelaysgirls": {
 "Brunswick": "me-hs-brunswick",
 "Falmouth": "me-hs-falmouth",
+"Freeport High School": "me-hs-freeport",
 "Gorham": "me-hs-gorham",
 "Greely": "me-hs-greely",
 "Lewiston": "me-hs-lewiston",
@@ -182713,6 +182772,7 @@
 "Ellsworth": "me-hs-ellsworth",
 "Falmouth": "me-hs-falmouth",
 "Freeport": "me-hs-freeport",
+"Freeport High School": "me-hs-freeport",
 "Gardiner": "me-hs-gardiner",
 "Greely": "me-hs-greely",
 "Hermon": "me-hs-hermon",
@@ -182742,6 +182802,7 @@
 "Ellsworth": "me-hs-ellsworth",
 "Falmouth": "me-hs-falmouth",
 "Freeport": "me-hs-freeport",
+"Freeport High School": "me-hs-freeport",
 "Gardiner": "me-hs-gardiner",
 "Greely": "me-hs-greely",
 "Hermon": "me-hs-hermon",
@@ -183403,6 +183464,7 @@
 "CAPE": "me-hs-cape-elizabeth",
 "Falmouth": "me-hs-falmouth",
 "Freeport": "me-hs-freeport",
+"Freeport High School": "me-hs-freeport",
 "Fryeburg": "me-hs-fryeburg",
 "Gray New Gloucester": "me-hs-gray-ng",
 "Greely": "me-hs-greely",
@@ -183419,6 +183481,7 @@
 "CAPE": "me-hs-cape-elizabeth",
 "Falmouth": "me-hs-falmouth",
 "Freeport": "me-hs-freeport",
+"Freeport High School": "me-hs-freeport",
 "Fryeburg": "me-hs-fryeburg",
 "Gray New Gloucester": "me-hs-gray-ng",
 "Greely": "me-hs-greely",
@@ -183434,6 +183497,7 @@
 "2010/Indoor/wmcw4m1": {
 "CAPE": "me-hs-cape-elizabeth",
 "Freeport": "me-hs-freeport",
+"Freeport High School": "me-hs-freeport",
 "Gray New Gloucester": "me-hs-gray-ng",
 "NYA": "me-hs-nya",
 "North Yarmouth Academy": "me-hs-nya",
@@ -183461,6 +183525,7 @@
 "2010/Indoor/wmcw5m2": {
 "Falmouth": "me-hs-falmouth",
 "Freeport": "me-hs-freeport",
+"Freeport High School": "me-hs-freeport",
 "Fryeburg": "me-hs-fryeburg",
 "Lakers": "me-hs-lake-region",
 "NYA": "me-hs-nya",
@@ -183470,6 +183535,7 @@
 "2010/Indoor/wmcweek2meet2": {
 "FREE": "me-hs-freeport",
 "Falmouth": "me-hs-falmouth",
+"Freeport High School": "me-hs-freeport",
 "Greely": "me-hs-greely",
 "NYA": "me-hs-nya",
 "North Yarmouth Academy": "me-hs-nya",
@@ -183486,6 +183552,7 @@
 "2010/Indoor/wmcweek3meet2": {
 "CAPE": "me-hs-cape-elizabeth",
 "FREE": "me-hs-freeport",
+"Freeport High School": "me-hs-freeport",
 "Gray New Gloucester": "me-hs-gray-ng",
 "Wells": "me-hs-wells",
 "Yarmouth": "me-hs-yarmouth",
@@ -183723,6 +183790,7 @@
 "Dirigo": "me-hs-dirigo",
 "Fort Kent": "me-hs-fort-kent",
 "Freeport": "me-hs-freeport",
+"Freeport High School": "me-hs-freeport",
 "Hall-Dale": "me-hs-hall-dale",
 "Islesboro": "me-hs-islesboro",
 "Islesboro Central School": "me-hs-islesboro",
@@ -183757,6 +183825,7 @@
 "Dirigo": "me-hs-dirigo",
 "Fort Kent": "me-hs-fort-kent",
 "Freeport": "me-hs-freeport",
+"Freeport High School": "me-hs-freeport",
 "Hall-Dale": "me-hs-hall-dale",
 "Lisbon": "me-hs-lisbon",
 "Madison": "me-hs-madison",
@@ -184703,6 +184772,7 @@
 "FRYE": "me-hs-fryeburg",
 "Falmouth": "me-hs-falmouth",
 "Freeport": "me-hs-freeport",
+"Freeport High School": "me-hs-freeport",
 "Greely": "me-hs-greely",
 "Lakers": "me-hs-lake-region",
 "NYA": "me-hs-nya",
@@ -185639,6 +185709,7 @@
 "Westbrook High School": "me-hs-westbrook"
 },
 "2010/XC/ms-wmc-freeport-lake-region-gng-2010": {
+"Freeport High School": "me-hs-freeport",
 "Gray-New Gloucester High School": "me-hs-gray-ng"
 },
 "2010/XC/ms-wmc-fryeburg-waynflete-merriconeag-2010": {
@@ -186091,24 +186162,28 @@
 "Winslow High School": "me-hs-winslow"
 },
 "2010/XC/wmcjvboys": {
+"Freeport High School": "me-hs-freeport",
 "Gray-New Gloucester": "me-hs-gray-ng",
 "North Yarmouth Academy": "me-hs-nya",
 "Waynflete School": "me-hs-waynflete",
 "Yarmouth High School": "me-hs-yarmouth"
 },
 "2010/XC/wmcjvgirls": {
+"Freeport High School": "me-hs-freeport",
 "Gray-New Gloucester": "me-hs-gray-ng",
 "North Yarmouth Academy": "me-hs-nya",
 "Waynflete School": "me-hs-waynflete",
 "Yarmouth High School": "me-hs-yarmouth"
 },
 "2010/XC/wmcvboys": {
+"Freeport High School": "me-hs-freeport",
 "Gray-New Gloucester": "me-hs-gray-ng",
 "North Yarmouth Academy": "me-hs-nya",
 "Waynflete School": "me-hs-waynflete",
 "Yarmouth High School": "me-hs-yarmouth"
 },
 "2010/XC/wmcvgirls": {
+"Freeport High School": "me-hs-freeport",
 "Gray-New Gloucester": "me-hs-gray-ng",
 "North Yarmouth Academy": "me-hs-nya",
 "Waynflete School": "me-hs-waynflete",
@@ -186128,6 +186203,9 @@
 "Waynflete": "me-hs-waynflete",
 "Wells": "me-hs-wells",
 "Yarmouth": "me-hs-yarmouth"
+},
+"2010/XC/york_sept3": {
+"Freeport High School": "me-hs-freeport"
 },
 "2010/XC/yorkmsxc%20results%202010%20MS%20boys%20junior": {
 "B": "me-ms-biddeford",
@@ -186192,6 +186270,7 @@
 "CAPE": "me-hs-cape-elizabeth",
 "Falmouth": "me-hs-falmouth",
 "Freeport": "me-hs-freeport",
+"Freeport High School": "me-hs-freeport",
 "Greely": "me-hs-greely",
 "NYA": "me-hs-nya",
 "North Yarmouth Academy": "me-hs-nya",
@@ -186314,6 +186393,7 @@
 },
 "2011/Indoor/WMC2_JAN22": {
 "Freeport": "me-hs-freeport",
+"Freeport High School": "me-hs-freeport",
 "Gray New Gloucester": "me-hs-gray-ng",
 "Wells": "me-hs-wells",
 "YORK": "me-hs-york",
@@ -186321,6 +186401,7 @@
 },
 "2011/Indoor/bowdoinrelaysboys": {
 "Freeport": "me-hs-freeport",
+"Freeport High School": "me-hs-freeport",
 "Greely": "me-hs-greely",
 "Lewiston": "me-hs-lewiston",
 "Marshwood": "me-hs-marshwood",
@@ -186352,6 +186433,7 @@
 },
 "2011/Indoor/bowdoinrelaysgirls": {
 "Freeport": "me-hs-freeport",
+"Freeport High School": "me-hs-freeport",
 "Greely": "me-hs-greely",
 "Lewiston": "me-hs-lewiston",
 "Marshwood": "me-hs-marshwood",
@@ -186517,6 +186599,7 @@
 "Ellsworth": "me-hs-ellsworth",
 "Falmouth": "me-hs-falmouth",
 "Freeport": "me-hs-freeport",
+"Freeport High School": "me-hs-freeport",
 "Fryeburg": "me-hs-fryeburg",
 "Gardiner": "me-hs-gardiner",
 "Gray New Gloucester": "me-hs-gray-ng",
@@ -186997,6 +187080,7 @@
 "FA": "me-hs-fryeburg",
 "Falmouth": "me-hs-falmouth",
 "Freeport": "me-hs-freeport",
+"Freeport High School": "me-hs-freeport",
 "Greely": "me-hs-greely",
 "NYA": "me-hs-nya",
 "North Yarmouth Academy": "me-hs-nya",
@@ -187006,6 +187090,7 @@
 "2011/Indoor/wmc1_jan1": {
 "Falmouth": "me-hs-falmouth",
 "Freeport": "me-hs-freeport",
+"Freeport High School": "me-hs-freeport",
 "Gray New Gloucester": "me-hs-gray-ng",
 "NYA": "me-hs-nya",
 "North Yarmouth Academy": "me-hs-nya",
@@ -187032,6 +187117,7 @@
 "FA": "me-hs-fryeburg",
 "Falmouth": "me-hs-falmouth",
 "Freeport": "me-hs-freeport",
+"Freeport High School": "me-hs-freeport",
 "Gray New Gloucester": "me-hs-gray-ng",
 "Greely": "me-hs-greely",
 "NYA": "me-hs-nya",
@@ -187045,6 +187131,7 @@
 "2011/Indoor/wmcmeet1_jan28": {
 "CAPE": "me-hs-cape-elizabeth",
 "Freeport": "me-hs-freeport",
+"Freeport High School": "me-hs-freeport",
 "Hebron Academy": "me-hs-hebron",
 "YORK": "me-hs-york",
 "York": "me-hs-york"
@@ -187379,6 +187466,7 @@
 "Dirigo": "me-hs-dirigo",
 "Fort Kent": "me-hs-fort-kent",
 "Freeport": "me-hs-freeport",
+"Freeport High School": "me-hs-freeport",
 "Hall-Dale": "me-hs-hall-dale",
 "Islesboro": "me-hs-islesboro",
 "Lisbon": "me-hs-lisbon",
@@ -187413,6 +187501,7 @@
 "Dirigo": "me-hs-dirigo",
 "Fort Kent": "me-hs-fort-kent",
 "Freeport": "me-hs-freeport",
+"Freeport High School": "me-hs-freeport",
 "Hall-Dale": "me-hs-hall-dale",
 "Jay High School": "me-hs-jay",
 "Lisbon": "me-hs-lisbon",
@@ -187549,6 +187638,7 @@
 "2011/Outdoor/cmfrosh": {
 "BRHS": "me-hs-boothbay",
 "FA": "me-hs-fryeburg",
+"Freeport High School": "me-hs-freeport",
 "GNG": "me-hs-gray-ng",
 "Lisbon": "me-hs-lisbon",
 "Maranacook": "me-hs-maranacook",
@@ -187639,6 +187729,7 @@
 "2011/Outdoor/falmouth_may6": {
 "Falmouth": "me-hs-falmouth",
 "Freeport": "me-hs-freeport",
+"Freeport High School": "me-hs-freeport",
 "Sacopee": "me-hs-sacopee",
 "YORK": "me-hs-york",
 "York": "me-hs-york"
@@ -187795,6 +187886,7 @@
 },
 "2011/Outdoor/lakeregion_april29": {
 "Freeport": "me-hs-freeport",
+"Freeport High School": "me-hs-freeport",
 "Greely": "me-hs-greely",
 "Lake Region": "me-hs-lake-region",
 "OOB": "me-hs-old-orchard",
@@ -188396,12 +188488,14 @@
 "2011/Outdoor/wellsboys_may3": {
 "FA": "me-hs-fryeburg",
 "Freeport": "me-hs-freeport",
+"Freeport High School": "me-hs-freeport",
 "Seacoast": "me-hs-seacoast-christian",
 "WELLS": "me-hs-wells"
 },
 "2011/Outdoor/wellsgirls_may3": {
 "FA": "me-hs-fryeburg",
 "Freeport": "me-hs-freeport",
+"Freeport High School": "me-hs-freeport",
 "Seacoast": "me-hs-seacoast-christian",
 "WELLS": "me-hs-wells"
 },
@@ -188419,6 +188513,7 @@
 "CAPE": "me-hs-cape-elizabeth",
 "Falmouth": "me-hs-falmouth",
 "Freeport": "me-hs-freeport",
+"Freeport High School": "me-hs-freeport",
 "Gng": "me-hs-gray-ng",
 "Greely": "me-hs-greely",
 "Lake Region": "me-hs-lake-region",
@@ -188458,12 +188553,14 @@
 },
 "2011/XC/2011WMC%20Championship%20Var.%20Girls.txt": {
 "Cape Elizabeth": "me-hs-cape-elizabeth",
+"Freeport High School": "me-hs-freeport",
 "North Yarmouth Academy": "me-hs-nya",
 "Waynflete School": "me-hs-waynflete",
 "Yarmouth High School": "me-hs-yarmouth"
 },
 "2011/XC/2011WMC%20ChampionshipDivisions.txt": {
 "Cape Elizabeth": "me-hs-cape-elizabeth",
+"Freeport High School": "me-hs-freeport",
 "North Yarmouth Academy": "me-hs-nya",
 "RW Traip Academy": "me-hs-traip",
 "Waynflete School": "me-hs-waynflete",
@@ -188472,6 +188569,7 @@
 },
 "2011/XC/2011WMC%20ChampionshipVarBoys.txt": {
 "Cape Elizabeth": "me-hs-cape-elizabeth",
+"Freeport High School": "me-hs-freeport",
 "North Yarmouth Academy": "me-hs-nya",
 "Waynflete School": "me-hs-waynflete",
 "Wells": "me-hs-wells",
@@ -189481,6 +189579,7 @@
 "Gray-New Gloucester High School": "me-hs-gray-ng"
 },
 "2011/XC/ms-wmc-freeport-waynflete-yarmouth-poland-2011": {
+"Freeport High School": "me-hs-freeport",
 "Waynflete School": "me-hs-waynflete",
 "Yarmouth High School": "me-hs-yarmouth"
 },
@@ -190258,6 +190357,7 @@
 },
 "2012/Indoor/ResultsWMC2_feb3": {
 "Freeport": "me-hs-freeport",
+"Freeport High School": "me-hs-freeport",
 "Gray New Gloucester": "me-hs-gray-ng",
 "Lake Region": "me-hs-lake-region",
 "NYA": "me-hs-nya",
@@ -190269,6 +190369,7 @@
 "2012/Indoor/ResultsWMC2_jan27": {
 "CAPE": "me-hs-cape-elizabeth",
 "Freeport": "me-hs-freeport",
+"Freeport High School": "me-hs-freeport",
 "Greely": "me-hs-greely",
 "Lake Region": "me-hs-lake-region",
 "Lisbon": "me-hs-lisbon",
@@ -190281,6 +190382,7 @@
 "FRYE": "me-hs-fryeburg",
 "Falmouth": "me-hs-falmouth",
 "Freeport": "me-hs-freeport",
+"Freeport High School": "me-hs-freeport",
 "Gray New Gloucester": "me-hs-gray-ng",
 "Greely": "me-hs-greely",
 "Lake Region": "me-hs-lake-region",
@@ -190449,6 +190551,7 @@
 "Ellsworth": "me-hs-ellsworth",
 "Falmouth": "me-hs-falmouth",
 "Freeport": "me-hs-freeport",
+"Freeport High School": "me-hs-freeport",
 "Gardiner": "me-hs-gardiner",
 "Gray New Gloucester": "me-hs-gray-ng",
 "Greely": "me-hs-greely",
@@ -190888,6 +190991,7 @@
 "CAPE": "me-hs-cape-elizabeth",
 "FRYE": "me-hs-fryeburg",
 "Freeport": "me-hs-freeport",
+"Freeport High School": "me-hs-freeport",
 "Gray New Gloucester": "me-hs-gray-ng",
 "Lake Region": "me-hs-lake-region",
 "Yarmouth": "me-hs-yarmouth",
@@ -190904,6 +191008,7 @@
 "2012/Indoor/wmcresults1_jan13": {
 "FRYE": "me-hs-fryeburg",
 "Freeport": "me-hs-freeport",
+"Freeport High School": "me-hs-freeport",
 "Greely": "me-hs-greely",
 "NYA": "me-hs-nya",
 "North Yarmouth Academy": "me-hs-nya",
@@ -190928,6 +191033,7 @@
 "2012/Indoor/wmcresultsmeet2_jan6": {
 "Falmouth": "me-hs-falmouth",
 "Freeport": "me-hs-freeport",
+"Freeport High School": "me-hs-freeport",
 "Gray New Gloucester": "me-hs-gray-ng",
 "Greely": "me-hs-greely",
 "Lisbon": "me-hs-lisbon",
@@ -191474,6 +191580,7 @@
 "Central": "me-hs-central",
 "Dirigo": "me-hs-dirigo",
 "Freeport": "me-hs-freeport",
+"Freeport High School": "me-hs-freeport",
 "Hall-Dale": "me-hs-hall-dale",
 "Limestone/MSSM": "coop-limestone-mssm",
 "Lisbon": "me-hs-lisbon",
@@ -191509,6 +191616,7 @@
 "Dirigo": "me-hs-dirigo",
 "Fort Kent": "me-hs-fort-kent",
 "Freeport": "me-hs-freeport",
+"Freeport High School": "me-hs-freeport",
 "Hall-Dale": "me-hs-hall-dale",
 "Lisbon": "me-hs-lisbon",
 "Madison": "me-hs-madison",
@@ -191629,6 +191737,7 @@
 "2012/Outdoor/falmouth_may3": {
 "Falmouth": "me-hs-falmouth",
 "Freeport": "me-hs-freeport",
+"Freeport High School": "me-hs-freeport",
 "Sacopee": "me-hs-sacopee",
 "York": "me-hs-york"
 },
@@ -191674,6 +191783,7 @@
 },
 "2012/Outdoor/fryeburg_april26": {
 "Freeport": "me-hs-freeport",
+"Freeport High School": "me-hs-freeport",
 "Fryeburg": "me-hs-fryeburg",
 "Yarmouth": "me-hs-yarmouth",
 "Yarmouth High School": "me-hs-yarmouth"
@@ -192115,6 +192225,7 @@
 "2012/Outdoor/sacopeevalley_may7": {
 "Carrabec": "me-hs-carrabec",
 "Freeport": "me-hs-freeport",
+"Freeport High School": "me-hs-freeport",
 "Lisbon": "me-hs-lisbon",
 "NYA": "me-hs-nya",
 "North Yarmouth Academy": "me-hs-nya",
@@ -192370,6 +192481,7 @@
 },
 "2012/Outdoor/wells_may21": {
 "Freeport": "me-hs-freeport",
+"Freeport High School": "me-hs-freeport",
 "NYA": "me-hs-nya",
 "North Yarmouth Academy": "me-hs-nya",
 "OOB": "me-hs-old-orchard",
@@ -192398,6 +192510,7 @@
 },
 "2012/Outdoor/wmcdiv2": {
 "Freeport": "me-hs-freeport",
+"Freeport High School": "me-hs-freeport",
 "NYA": "me-hs-nya",
 "North Yarmouth Academy": "me-hs-nya",
 "OOB": "me-hs-old-orchard",
@@ -193353,6 +193466,12 @@
 "2012/XC/foxcroftgirls_sept13": {
 "Bangor Christian": "me-hs-bangor-christian"
 },
+"2012/XC/freeportboys_sept14.txt": {
+"Freeport High School": "me-hs-freeport"
+},
+"2012/XC/freeportgirls_sept14.txt": {
+"Freeport High School": "me-hs-freeport"
+},
 "2012/XC/girls_jv_oldtown_xc_9.22.12": {
 "Caribou": "me-hs-caribou",
 "MDI": "me-hs-mdi",
@@ -193664,22 +193783,31 @@
 "Yarmouth High School": "me-hs-yarmouth"
 },
 "2012/XC/ms-wmc-championship-2012": {
+"Freeport High School": "me-hs-freeport",
 "Gray-New Gloucester High School": "me-hs-gray-ng",
 "Merriconeag": "me-hs-maine-coast-waldorf",
 "North Yarmouth Academy": "me-hs-nya",
 "Waynflete School": "me-hs-waynflete",
 "Yarmouth High School": "me-hs-yarmouth"
 },
+"2012/XC/ms-wmc-falmouth-fryeburg-freeport-2012": {
+"Freeport High School": "me-hs-freeport"
+},
 "2012/XC/ms-wmc-falmouth-merriconeag-gng-2012-2012-09-07": {
 "FAL": "me-hs-falmouth",
 "Gray-New Gloucester High School": "me-hs-gray-ng",
 "MERR": "me-hs-maine-coast-waldorf"
 },
+"2012/XC/ms-wmc-freeport-lake-region-traip-wells-cape-elizabeth-2012": {
+"Freeport High School": "me-hs-freeport"
+},
 "2012/XC/ms-wmc-freeport-merriconeag-sacopee-nya-2012": {
+"Freeport High School": "me-hs-freeport",
 "North Yarmouth Academy": "me-hs-nya",
 "SV": "me-hs-sacopee"
 },
 "2012/XC/ms-wmc-freeport-waynflete-yarmouth-poland-2012": {
+"Freeport High School": "me-hs-freeport",
 "Waynflete School": "me-hs-waynflete",
 "Yarmouth High School": "me-hs-yarmouth"
 },
@@ -194317,7 +194445,8 @@
 "MESS": "me-hs-messalonskee",
 "Messalonskee": "me-hs-messalonskee",
 "Skowhegan": "me-hs-skowhegan",
-"WIN": "me-hs-winslow"
+"WIN": "me-hs-winslow",
+"Winslow High School": "me-hs-winslow"
 },
 "2013/Indoor/ColbyMeet3Results_jan26": {
 "Lawrence": "me-hs-lawrence",
@@ -194327,7 +194456,8 @@
 "OSHS": "me-hs-oceanside",
 "Skowhegan": "me-hs-skowhegan",
 "WIN": "me-hs-winslow",
-"WTVL": "me-hs-waterville"
+"WTVL": "me-hs-waterville",
+"Winslow High School": "me-hs-winslow"
 },
 "2013/Indoor/DEC%2020%20YORK%20V%20TRAIP": {
 "F": null,
@@ -194341,7 +194471,8 @@
 "Lewiston": "me-hs-lewiston",
 "MESS": "me-hs-messalonskee",
 "Messalonskee": "me-hs-messalonskee",
-"WIN": "me-hs-winslow"
+"WIN": "me-hs-winslow",
+"Winslow High School": "me-hs-winslow"
 },
 "2013/Indoor/ResultsMEET1_dec15": {
 "Gorham": "me-hs-gorham",
@@ -194419,6 +194550,7 @@
 "2013/Indoor/ResultsWMC1_jan25": {
 "CAPE": "me-hs-cape-elizabeth",
 "Freeport": "me-hs-freeport",
+"Freeport High School": "me-hs-freeport",
 "Fryeburg": "me-hs-fryeburg",
 "Greely": "me-hs-greely",
 "Lake Region": "me-hs-lake-region",
@@ -194452,6 +194584,7 @@
 "CAPE": "me-hs-cape-elizabeth",
 "Falmouth": "me-hs-falmouth",
 "Freeport": "me-hs-freeport",
+"Freeport High School": "me-hs-freeport",
 "Fryeburg": "me-hs-fryeburg",
 "Greely": "me-hs-greely",
 "Lisbon": "me-hs-lisbon",
@@ -194461,6 +194594,7 @@
 "CAPE": "me-hs-cape-elizabeth",
 "Falmouth": "me-hs-falmouth",
 "Freeport": "me-hs-freeport",
+"Freeport High School": "me-hs-freeport",
 "Fryeburg": "me-hs-fryeburg",
 "Gray New Gloucester": "me-hs-gray-ng",
 "Greely": "me-hs-greely",
@@ -194565,6 +194699,7 @@
 "Ellsworth": "me-hs-ellsworth",
 "Falmouth": "me-hs-falmouth",
 "Freeport": "me-hs-freeport",
+"Freeport High School": "me-hs-freeport",
 "Fryeburg": "me-hs-fryeburg",
 "Gardner": "oos-auto-ma-gardner",
 "Gray New Gloucester": "me-hs-gray-ng",
@@ -194785,7 +194920,8 @@
 "MTA": "me-hs-mt-ararat",
 "Messalonskee": "me-hs-messalonskee",
 "Skowhegan": "me-hs-skowhegan",
-"WIN": "me-hs-winslow"
+"WIN": "me-hs-winslow",
+"Winslow High School": "me-hs-winslow"
 },
 "2013/Indoor/kvac_jan18": {
 "Lewiston": "me-hs-lewiston",
@@ -194828,7 +194964,34 @@
 "OSHS": "me-hs-oceanside",
 "Oceanside High School": "me-hs-oceanside",
 "WIN": "me-hs-winslow",
-"WTVL": "me-hs-waterville"
+"WTVL": "me-hs-waterville",
+"Winslow High School": "me-hs-winslow"
+},
+"2013/Indoor/ms-smmsac-bidd-fal-smc-and-freeportdurham-2013": {
+"Biddeford": "me-ms-biddeford",
+"Falmouth": "me-ms-falmouth"
+},
+"2013/Indoor/ms-smmsac-biddeford-saco-st-james-and-ta-2013": {
+"St. James": "me-ms-st-james-biddeford"
+},
+"2013/Indoor/ms-smmsac-boys-festival-2013": {
+"St. James": "me-ms-st-james-biddeford"
+},
+"2013/Indoor/ms-smmsac-cape-falmouth-st-james-and-freeportdurham-2013": {
+"Freeport High School": "me-ms-freeport",
+"St. James": "me-ms-st-james-biddeford"
+},
+"2013/Indoor/ms-smmsac-cape-greely-saco-and-poland-2013": {
+"Cape": "me-ms-cape-elizabeth",
+"Greely": "me-ms-greely",
+"Pol": "me-ms-whittier",
+"Saco": "me-ms-saco"
+},
+"2013/Indoor/ms-smmsac-girls-festival-2013": {
+"St. James": "me-ms-st-james-biddeford"
+},
+"2013/Indoor/ms-smmsac-greely-st-james-smc-and-thornton-2013": {
+"St. James": "me-ms-st-james-biddeford"
 },
 "2013/Indoor/pvcemitl_boys_meet_3b_1.12.13": {
 "Brewer": "me-hs-brewer",
@@ -195058,6 +195221,7 @@
 "2013/Indoor/wmcmeet1_jan18": {
 "CAPE": "me-hs-cape-elizabeth",
 "Freeport": "me-hs-freeport",
+"Freeport High School": "me-hs-freeport",
 "Gray New Gloucester": "me-hs-gray-ng",
 "Greely": "me-hs-greely",
 "Lake Region": "me-hs-lake-region",
@@ -195068,6 +195232,7 @@
 "2013/Indoor/wmcmeet1_jan4": {
 "Falmouth": "me-hs-falmouth",
 "Freeport": "me-hs-freeport",
+"Freeport High School": "me-hs-freeport",
 "Gray New Gloucester": "me-hs-gray-ng",
 "Greely": "me-hs-greely",
 "Sacopee Valley": "me-hs-sacopee",
@@ -195177,6 +195342,7 @@
 "Oceanside": "me-ms-oceanside"
 },
 "2013/Outdoor/CENTRALMAINEFROSHRESULTS": {
+"Freeport High School": "me-hs-freeport",
 "North Yarmouth Academy": "me-hs-nya",
 "Yarmouth High School": "me-hs-yarmouth"
 },
@@ -195401,6 +195567,7 @@
 "Dirigo": "me-hs-dirigo",
 "Fort Kent": "me-hs-fort-kent",
 "Freeport": "me-hs-freeport",
+"Freeport High School": "me-hs-freeport",
 "Hall-Dale": "me-hs-hall-dale",
 "Limestone/MSSM": "coop-limestone-mssm",
 "Lisbon": "me-hs-lisbon",
@@ -195816,6 +195983,7 @@
 "2013/Outdoor/fryeburg_may3": {
 "FRYE": "me-hs-fryeburg",
 "Freeport": "me-hs-freeport",
+"Freeport High School": "me-hs-freeport",
 "Fryeburg": "me-hs-fryeburg"
 },
 "2013/Outdoor/girls%20results%20class%20C": {
@@ -195828,6 +195996,7 @@
 "Dirigo": "me-hs-dirigo",
 "Fort Kent": "me-hs-fort-kent",
 "Freeport": "me-hs-freeport",
+"Freeport High School": "me-hs-freeport",
 "Hall-Dale": "me-hs-hall-dale",
 "Limestone/MSSM": "coop-limestone-mssm",
 "Lisbon": "me-hs-lisbon",
@@ -195942,6 +196111,7 @@
 },
 "2013/Outdoor/greely_may10": {
 "Freeport": "me-hs-freeport",
+"Freeport High School": "me-hs-freeport",
 "Greely": "me-hs-greely",
 "Lake Region": "me-hs-lake-region",
 "OOB": "me-hs-old-orchard",
@@ -196215,6 +196385,7 @@
 },
 "2013/Outdoor/ne-interscholastic-outdoor-2013": {
 "Cony High School": "me-hs-cony",
+"Freeport High School": "me-hs-freeport",
 "Gray-New Gloucester High School": "me-hs-gray-ng",
 "Messalonskee High School": "me-hs-messalonskee",
 "North Yarmouth Academy": "me-hs-nya",
@@ -196489,6 +196660,7 @@
 "Cape Elizabeth": "me-hs-cape-elizabeth",
 "Falmouth": "me-hs-falmouth",
 "Freeport": "me-hs-freeport",
+"Freeport High School": "me-hs-freeport",
 "Fryeburg": "me-hs-fryeburg",
 "GNG": "me-hs-gray-ng",
 "Greely": "me-hs-greely",
@@ -196752,6 +196924,9 @@
 "Lisbon": "me-hs-lisbon",
 "Madison": "me-hs-madison",
 "Telstar": "me-hs-telstar"
+},
+"2013/XC/WMC_Falmouth_Freeport_Cape": {
+"Freeport High School": "me-hs-freeport"
 },
 "2013/XC/all-aroostook%20selection%20race%20caribou%209-20-13%20boys": {
 "Fort Kent": "me-hs-fort-kent",
@@ -197497,6 +197672,7 @@
 "Gray-New Gloucester High School": "me-hs-gray-ng"
 },
 "2013/XC/ms-wmc-championship-2013": {
+"Freeport High School": "me-hs-freeport",
 "Gray-New Gloucester High School": "me-hs-gray-ng",
 "Merriconeag": "me-hs-maine-coast-waldorf",
 "North Yarmouth Academy": "me-hs-nya",
@@ -197508,9 +197684,13 @@
 "Waynflete School": "me-hs-waynflete"
 },
 "2013/XC/ms-wmc-freeport-nya-yarmouth-merriconeag-2013": {
+"Freeport High School": "me-hs-freeport",
 "Merriconeag": "me-hs-maine-coast-waldorf",
 "North Yarmouth Academy": "me-hs-nya",
 "Yarmouth High School": "me-hs-yarmouth"
+},
+"2013/XC/ms-wmc-fryeburg-traip-wells-merriconeag-freeport-2013": {
+"Freeport High School": "me-hs-freeport"
 },
 "2013/XC/ms-wmc-kennebunk-lake-region-sacopee-waynflete-york-poland-2013": {
 "St. Dominic Academy": "me-hs-st-dominic",
@@ -197519,6 +197699,9 @@
 "2013/XC/ms-wmc-kennebunk-merriconeag-nya-poland-sv-greely-2013": {
 "Merriconeag": "me-hs-maine-coast-waldorf",
 "North Yarmouth Academy": "me-hs-nya"
+},
+"2013/XC/ms-wmc-merriconeag-poland-york-freeport-2013": {
+"Freeport High School": "me-hs-freeport"
 },
 "2013/XC/mtararatboys_sept20": {
 "Cony High School": "me-hs-cony",
@@ -198045,6 +198228,7 @@
 "Central": "me-hs-central",
 "Ellsworth": "me-hs-ellsworth",
 "Freeport": "me-hs-freeport",
+"Freeport High School": "me-hs-freeport",
 "Fryeburg": "me-hs-fryeburg",
 "Greely": "me-hs-greely",
 "Hermon": "me-hs-hermon",
@@ -198077,6 +198261,7 @@
 "Cape Elizabeth": "me-hs-cape-elizabeth",
 "Ellsworth": "me-hs-ellsworth",
 "Freeport": "me-hs-freeport",
+"Freeport High School": "me-hs-freeport",
 "Fryeburg": "me-hs-fryeburg",
 "Greely": "me-hs-greely",
 "Hermon": "me-hs-hermon",
@@ -198213,20 +198398,27 @@
 "Yarmouth High School": "me-hs-yarmouth"
 },
 "2014/Indoor/ms-wmc-ce-gng-freeport-falm-lr-traipyork-st-doms-2014": {
+"Freeport High School": "me-hs-freeport",
 "Gray-New Gloucester High School": "me-hs-gray-ng",
 "St. Dominic Academy": "me-hs-st-dominic"
 },
 "2014/Indoor/ms-wmc-ce-greely-freeport-frye-lr-nya-wells-fal-traip-yor-2014": {
+"Freeport High School": "me-hs-freeport",
 "North Yarmouth Academy": "me-hs-nya"
 },
 "2014/Indoor/ms-wmc-ce-lr-freeport-yarm-gng-yorkgreely-st-doms-2014": {
+"Freeport High School": "me-hs-freeport",
 "Gray-New Gloucester High School": "me-hs-gray-ng",
 "Yarmouth High School": "me-hs-yarmouth"
 },
 "2014/Indoor/ms-wmc-championship-2014": {
+"Freeport High School": "me-hs-freeport",
 "Gray-New Gloucester High School": "me-hs-gray-ng",
 "North Yarmouth Academy": "me-hs-nya",
 "Yarmouth High School": "me-hs-yarmouth"
+},
+"2014/Indoor/ms-wmc-fal-traip-york-frye-freept-cape-greely-2014": {
+"Freeport High School": "me-hs-freeport"
 },
 "2014/Indoor/ms-wmc-traip-york-falm-yarm-gng-prhssv-hyde-2014": {
 "Gray-New Gloucester High School": "me-hs-gray-ng",
@@ -198370,6 +198562,7 @@
 "Caribou": "me-hs-caribou",
 "Ellsworth": "me-hs-ellsworth",
 "Freeport": "me-hs-freeport",
+"Freeport High School": "me-hs-freeport",
 "Fryeburg": "me-hs-fryeburg",
 "Gardiner": "me-hs-gardiner",
 "Greely": "me-hs-greely",
@@ -198481,6 +198674,7 @@
 "Caribou": "me-hs-caribou",
 "Ellsworth": "me-hs-ellsworth",
 "Freeport": "me-hs-freeport",
+"Freeport High School": "me-hs-freeport",
 "Fryeburg": "me-hs-fryeburg",
 "Gardiner": "me-hs-gardiner",
 "Greely": "me-hs-greely",
@@ -198910,10 +199104,14 @@
 "Gray-New Gloucester High School": "me-hs-gray-ng"
 },
 "2014/Outdoor/ms-wmc-championship-2014": {
+"Freeport High School": "me-hs-freeport",
 "Gray-New Gloucester High School": "me-hs-gray-ng",
 "North Yarmouth Academy": "me-hs-nya",
 "Waynflete School": "me-hs-waynflete",
 "Yarmouth High School": "me-hs-yarmouth"
+},
+"2014/Outdoor/ms-wmc-falmouth-york-freeport-kennebunk-2014": {
+"Freeport High School": "me-hs-freeport"
 },
 "2014/Outdoor/ms-wmc-greely-nya-waynflete-traip-2014": {
 "North Yarmouth Academy": "me-hs-nya",
@@ -198923,6 +199121,7 @@
 "Gray-New Gloucester High School": "me-hs-gray-ng"
 },
 "2014/Outdoor/ms-wmc-nya-poland-freeport-gng-2014": {
+"Freeport High School": "me-hs-freeport",
 "GNG High School": "me-ms-gray-ng",
 "North Yarmouth Academy": "me-hs-nya"
 },
@@ -198937,9 +199136,11 @@
 "Gray-New Gloucester High School": "me-hs-gray-ng"
 },
 "2014/Outdoor/ms-wmc-wells-freeport-waynflete-kennebunk-cape-2014": {
+"Freeport High School": "me-hs-freeport",
 "Waynflete School": "me-hs-waynflete"
 },
 "2014/Outdoor/ms-wmc-yarmouth-freeport-york-kennebunk-traip-2014": {
+"Freeport High School": "me-hs-freeport",
 "Yarmouth High School": "me-hs-yarmouth"
 },
 "2014/Outdoor/ms-wmc-yarmouth-wells-lake-r-sacopee-v-poland-2014": {
@@ -198949,6 +199150,7 @@
 "Thornton Academy": "me-hs-thornton"
 },
 "2014/Outdoor/ne-interscholastic-outdoor-2014": {
+"Freeport High School": "me-hs-freeport",
 "Mattanawcook Academy": "me-hs-mattanawcook",
 "Messalonskee High School": "me-hs-messalonskee",
 "Monmouth Academy": "me-hs-monmouth",
@@ -199766,10 +199968,14 @@
 "Waynflete School": "me-hs-waynflete"
 },
 "2014/XC/ms-wmc-championship-2014": {
+"Freeport High School": "me-hs-freeport",
 "Gray-New Gloucester High School": "me-hs-gray-ng",
 "North Yarmouth Academy": "me-hs-nya",
 "Waynflete School": "me-hs-waynflete",
 "Yarmouth High School": "me-hs-yarmouth"
+},
+"2014/XC/ms-wmc-falmouth-freeport-sacopee-cape-elizabeth-2014": {
+"Freeport High School": "me-hs-freeport"
 },
 "2014/XC/ms-wmc-falmouth-traip-wells-yarmouth-poland-2014": {
 "Yarmouth High School": "me-hs-yarmouth"
@@ -199778,6 +199984,7 @@
 "Gray-New Gloucester High School": "me-hs-gray-ng"
 },
 "2014/XC/ms-wmc-freeport-merriconeag-yarmouth-nya-2014": {
+"Freeport High School": "me-hs-freeport",
 "Merriconeag": "me-hs-maine-coast-waldorf",
 "North Yarmouth Academy": "me-hs-nya",
 "Yarmouth High School": "me-hs-yarmouth"
@@ -199787,7 +199994,11 @@
 "Yarmouth High School": "me-hs-yarmouth"
 },
 "2014/XC/ms-wmc-fryeburg-greely-nya-freeport-2014": {
+"Freeport High School": "me-hs-freeport",
 "North Yarmouth Academy": "me-hs-nya"
+},
+"2014/XC/ms-wmc-fryeburg-sacopee-valley-poland-2014": {
+"Freeport High School": "me-hs-freeport"
 },
 "2014/XC/ms-wmc-gng-falmouth-greely-2014": {
 "Gray-New Gloucester High School": "me-hs-gray-ng"
@@ -199809,6 +200020,7 @@
 "Yarmouth High School": "me-hs-yarmouth"
 },
 "2014/XC/ms-wmc-merriconeag-poland-york-freeport-2014": {
+"Freeport High School": "me-hs-freeport",
 "Merriconeag": "me-hs-maine-coast-waldorf"
 },
 "2014/XC/ms-wmc-waynflete-traip-wells-lake-region-2014": {
@@ -199891,6 +200103,7 @@
 "Cape Elizabeth": "me-hs-cape-elizabeth",
 "Central": "me-hs-central",
 "Freeport": "me-hs-freeport",
+"Freeport High School": "me-hs-freeport",
 "Fryeburg": "me-hs-fryeburg",
 "Gardiner": "me-hs-gardiner",
 "Greely": "me-hs-greely",
@@ -200082,6 +200295,7 @@
 "Central": "me-hs-central",
 "Ellsworth": "me-hs-ellsworth",
 "Freeport": "me-hs-freeport",
+"Freeport High School": "me-hs-freeport",
 "Fryeburg": "me-hs-fryeburg",
 "Gardiner": "me-hs-gardiner",
 "Greely": "me-hs-greely",
@@ -200253,23 +200467,30 @@
 "St. James": "me-ms-st-james-biddeford"
 },
 "2015/Indoor/ms-wmc-cape-greely-freeport-fryeburg-lake-reg-nya-wells-2015": {
+"Freeport High School": "me-hs-freeport",
 "North Yarmouth Academy": "me-hs-nya",
 "St. Dominic Academy": "me-hs-st-dominic"
 },
 "2015/Indoor/ms-wmc-cape-lr-freeport-yarmouth-gng-york-greely-st-doms-2015": {
+"Freeport High School": "me-hs-freeport",
 "Gray-New Gloucester High School": "me-hs-gray-ng",
 "St. Dominic Academy": "me-hs-st-dominic",
 "Yarmouth High School": "me-hs-yarmouth"
 },
 "2015/Indoor/ms-wmc-ce-gng-freeport-falm-lr-traipyork-st-doms-2015": {
+"Freeport High School": "me-hs-freeport",
 "Gray-New Gloucester High School": "me-hs-gray-ng",
 "St. Dominic Academy": "me-hs-st-dominic"
 },
 "2015/Indoor/ms-wmc-championship-2015": {
+"Freeport High School": "me-hs-freeport",
 "Gray-New Gloucester High School": "me-hs-gray-ng",
 "Knights": "me-hs-poland",
 "North Yarmouth Academy": "me-hs-nya",
 "Yarmouth High School": "me-hs-yarmouth"
+},
+"2015/Indoor/ms-wmc-fal-traip-york-frye-freept-cape-greely-2015": {
+"Freeport High School": "me-hs-freeport"
 },
 "2015/Indoor/ms-wmc-traip-york-falm-yarm-gngprhssv-2015": {
 "Gray-New Gloucester High School": "me-hs-gray-ng",
@@ -201045,10 +201266,14 @@
 "Gray-New Gloucester High School": "me-hs-gray-ng"
 },
 "2015/Outdoor/ms-wmc-championship-2015": {
+"Freeport High School": "me-hs-freeport",
 "Gray-New Gloucester High School": "me-hs-gray-ng",
 "North Yarmouth Academy": "me-hs-nya",
 "Waynflete School": "me-hs-waynflete",
 "Yarmouth High School": "me-hs-yarmouth"
+},
+"2015/Outdoor/ms-wmc-falmouth-freeport-sacopee-york-2015": {
+"Freeport High School": "me-hs-freeport"
 },
 "2015/Outdoor/ms-wmc-falmouth-nya-fryeburg-kennebunk-wells-2015": {
 "North Yarmouth Academy": "me-hs-nya"
@@ -201056,12 +201281,16 @@
 "2015/Outdoor/ms-wmc-gng-falmouth-lake-region-traip-2015": {
 "Gray-New Gloucester High School": "me-hs-gray-ng"
 },
+"2015/Outdoor/ms-wmc-greely-old-orchard-freeport-lake-region-2015": {
+"Freeport High School": "me-hs-freeport"
+},
 "2015/Outdoor/ms-wmc-lake-region-waynflete-fryeburg-sacopee-valley-2015": {
 "Mountain Valley": "me-hs-mountain-valley",
 "Seacoast Christian": "me-hs-seacoast-christian",
 "Waynflete School": "me-hs-waynflete"
 },
 "2015/Outdoor/ms-wmc-nya-gng-freeport-poland-2015": {
+"Freeport High School": "me-hs-freeport",
 "Gray New Gloucester": "me-hs-gray-ng",
 "Gray-New Gloucester High School": "me-hs-gray-ng",
 "North Yarmouth Academy": "me-hs-nya"
@@ -201074,6 +201303,7 @@
 "St. Dominic Academy": "me-hs-st-dominic"
 },
 "2015/Outdoor/ms-wmc-wells-freeport-waynflete-kennebunk-cape-elizabeth-2015": {
+"Freeport High School": "me-hs-freeport",
 "St. Dominic Academy": "me-hs-st-dominic",
 "Waynflete School": "me-hs-waynflete"
 },
@@ -202527,10 +202757,15 @@
 "2015/XC/ms-wmc-falm-sv-kenn-yarmouth-2015": {
 "Yarmouth High School": "me-hs-yarmouth"
 },
+"2015/XC/ms-wmc-freep-frye-oob-poland-2015": {
+"Freeport High School": "me-hs-freeport"
+},
 "2015/XC/ms-wmc-freep-greely-frye-lr-nya-2015": {
+"Freeport High School": "me-hs-freeport",
 "North Yarmouth Academy": "me-hs-nya"
 },
 "2015/XC/ms-wmc-freep-nya-yarm-maine-coast-waldorf-2015": {
+"Freeport High School": "me-hs-freeport",
 "North Yarmouth Academy": "me-hs-nya",
 "Yarmouth High School": "me-hs-yarmouth"
 },
@@ -203026,6 +203261,7 @@
 "2016/Indoor/Results1-1": {
 "CAPE": "me-hs-cape-elizabeth",
 "Freeport": "me-hs-freeport",
+"Freeport High School": "me-hs-freeport",
 "GNG": "me-hs-gray-ng",
 "Greely": "me-hs-greely",
 "Lake Region": "me-hs-lake-region",
@@ -203074,6 +203310,7 @@
 "FREE": "me-hs-freeport",
 "FRYE": "me-hs-fryeburg",
 "Falmouth": "me-hs-falmouth",
+"Freeport High School": "me-hs-freeport",
 "Fryeburg": "me-hs-fryeburg",
 "Greely": "me-hs-greely",
 "York": "me-hs-york"
@@ -203082,6 +203319,7 @@
 "CAPE": "me-hs-cape-elizabeth",
 "FREE": "me-hs-freeport",
 "FRYE": "me-hs-fryeburg",
+"Freeport High School": "me-hs-freeport",
 "Fryeburg": "me-hs-fryeburg",
 "Greely": "me-hs-greely",
 "Lake Region": "me-hs-lake-region",
@@ -203107,6 +203345,7 @@
 "CAPE": "me-hs-cape-elizabeth",
 "Falmouth": "me-hs-falmouth",
 "Freeport": "me-hs-freeport",
+"Freeport High School": "me-hs-freeport",
 "GNG": "me-hs-gray-ng",
 "Lake Region": "me-hs-lake-region",
 "Lisbon": "me-hs-lisbon",
@@ -203120,6 +203359,7 @@
 "2016/Indoor/Results2-5": {
 "Falmouth": "me-hs-falmouth",
 "Freeport": "me-hs-freeport",
+"Freeport High School": "me-hs-freeport",
 "GNG": "me-hs-gray-ng",
 "Greely": "me-hs-greely",
 "Sacopee Valley": "me-hs-sacopee",
@@ -203359,6 +203599,7 @@
 "Cape Elizabeth": "me-hs-cape-elizabeth",
 "Ellsworth": "me-hs-ellsworth",
 "Freeport": "me-hs-freeport",
+"Freeport High School": "me-hs-freeport",
 "Fryeburg": "me-hs-fryeburg",
 "Greely": "me-hs-greely",
 "Hermon": "me-hs-hermon",
@@ -203404,6 +203645,7 @@
 "Central": "me-hs-central",
 "Ellsworth": "me-hs-ellsworth",
 "Freeport": "me-hs-freeport",
+"Freeport High School": "me-hs-freeport",
 "Fryeburg": "me-hs-fryeburg",
 "Greely": "me-hs-greely",
 "Hermon": "me-hs-hermon",
@@ -204893,6 +205135,7 @@
 "Cape Elizabeth": "me-hs-cape-elizabeth",
 "Falmouth": "me-hs-falmouth",
 "Freeport": "me-hs-freeport",
+"Freeport High School": "me-hs-freeport",
 "Fryeburg": "me-hs-fryeburg",
 "Greely": "me-hs-greely",
 "Kennebunk": "me-hs-kennebunk",
@@ -204930,6 +205173,7 @@
 "Cape Elizabeth": "me-hs-cape-elizabeth",
 "Falmouth": "me-hs-falmouth",
 "Freeport": "me-hs-freeport",
+"Freeport High School": "me-hs-freeport",
 "Fryeburg": "me-hs-fryeburg",
 "Greely": "me-hs-greely",
 "Kennebunk": "me-hs-kennebunk",
@@ -205246,6 +205490,7 @@
 "Searsport": "me-hs-searsport"
 },
 "2016/Outdoor/ne-interscholastic-outdoor-2016": {
+"Freeport High School": "me-hs-freeport",
 "Mattanawcook Academy": "me-hs-mattanawcook",
 "Messalonskee High School": "me-hs-messalonskee",
 "Monmouth Academy": "me-hs-monmouth",
@@ -206834,6 +207079,7 @@
 "Westbrook High School": "me-hs-westbrook"
 },
 "2016/XC/ms-wmc-championship-2016": {
+"Freeport High School": "me-hs-freeport",
 "Gray-New Gloucester High School": "me-hs-gray-ng",
 "North Yarmouth Academy": "me-hs-nya",
 "St. Dominic Academy": "me-hs-st-dominic",
@@ -206849,6 +207095,7 @@
 "Yarmouth High School": "me-hs-yarmouth"
 },
 "2016/XC/ms-wmc-waynflete-gng-falmouth-freepgreely-2016": {
+"Freeport High School": "me-hs-freeport",
 "Gray-New Gloucester High School": "me-hs-gray-ng",
 "North Yarmouth Academy": "me-hs-nya",
 "Waynflete School": "me-hs-waynflete"
@@ -206861,6 +207108,7 @@
 "Waynflete School": "me-hs-waynflete"
 },
 "2016/XC/ms-wmccape-fryeburg-freeport-st-dominic-2016": {
+"Freeport High School": "me-hs-freeport",
 "St. Dominic Academy": "me-hs-st-dominic"
 },
 "2016/XC/ms-wmcyork-gng-nya-oob-sdfryeburg-2016": {
@@ -207092,6 +207340,7 @@
 "CAPE": "me-hs-cape-elizabeth",
 "FREE": "me-hs-freeport",
 "Falmouth": "me-hs-falmouth",
+"Freeport High School": "me-hs-freeport",
 "Fryeburg": "me-hs-fryeburg",
 "GNG": "me-hs-gray-ng",
 "Lake Region": "me-hs-lake-region",
@@ -207145,6 +207394,7 @@
 "2017/Indoor/Results.htmWMC2": {
 "FREE": "me-hs-freeport",
 "FRYE": "me-hs-fryeburg",
+"Freeport High School": "me-hs-freeport",
 "Fryeburg": "me-hs-fryeburg",
 "GNG": "me-hs-gray-ng",
 "Mountain Valley": "me-hs-mountain-valley",
@@ -207308,6 +207558,7 @@
 "2017/Indoor/ResultsWMC1-1": {
 "CAPE": "me-hs-cape-elizabeth",
 "FREE": "me-hs-freeport",
+"Freeport High School": "me-hs-freeport",
 "Fryeburg": "me-hs-fryeburg",
 "Lake Region": "me-hs-lake-region",
 "NYA": "me-hs-nya",
@@ -207325,6 +207576,7 @@
 "FREE": "me-hs-freeport",
 "FRYE": "me-hs-fryeburg",
 "Falmouth": "me-hs-falmouth",
+"Freeport High School": "me-hs-freeport",
 "Fryeburg": "me-hs-fryeburg",
 "York": "me-hs-york"
 },
@@ -207385,6 +207637,7 @@
 "2017/Indoor/Resultswmc2": {
 "CAPE": "me-hs-cape-elizabeth",
 "FREE": "me-hs-freeport",
+"Freeport High School": "me-hs-freeport",
 "GNG": "me-hs-gray-ng",
 "LIS": "me-hs-lisbon",
 "Lake Region": "me-hs-lake-region",
@@ -207406,6 +207659,7 @@
 "Central": "me-hs-central",
 "Ellsworth": "me-hs-ellsworth",
 "Freeport": "me-hs-freeport",
+"Freeport High School": "me-hs-freeport",
 "Fryeburg": "me-hs-fryeburg",
 "GNG": "me-hs-gray-ng",
 "Greely": "me-hs-greely",
@@ -207631,6 +207885,7 @@
 "Central": "me-hs-central",
 "Ellsworth": "me-hs-ellsworth",
 "Freeport": "me-hs-freeport",
+"Freeport High School": "me-hs-freeport",
 "Fryeburg": "me-hs-fryeburg",
 "GNG": "me-hs-gray-ng",
 "Greely": "me-hs-greely",
@@ -207736,6 +207991,7 @@
 "St. James": "me-ms-st-james-biddeford"
 },
 "2017/Indoor/ms-wmc-greely-fal-york-yarm-gng-freeport-sacopee-st-doms-2017": {
+"Freeport High School": "me-hs-freeport",
 "Gray-New Gloucester High School": "me-hs-gray-ng",
 "St. Dominic Academy": "me-hs-st-dominic",
 "Yarmouth High School": "me-hs-yarmouth"
@@ -208156,6 +208412,7 @@
 },
 "2017/Outdoor/Lake-Region-girls": {
 "Freeport": "me-hs-freeport",
+"Freeport High School": "me-hs-freeport",
 "Fryeburg": "me-hs-fryeburg",
 "Lake Region": "me-hs-lake-region"
 },
@@ -208699,6 +208956,7 @@
 "2017/Outdoor/Resultscape": {
 "Cape Elizabeth": "me-hs-cape-elizabeth",
 "Freeport": "me-hs-freeport",
+"Freeport High School": "me-hs-freeport",
 "Fryeburg": "me-hs-fryeburg",
 "Yarmouth": "me-hs-yarmouth",
 "Yarmouth High School": "me-hs-yarmouth"
@@ -208876,6 +209134,7 @@
 "Cape Elizabeth": "me-hs-cape-elizabeth",
 "Falmouth": "me-hs-falmouth",
 "Freeport": "me-hs-freeport",
+"Freeport High School": "me-hs-freeport",
 "Fryeburg": "me-hs-fryeburg",
 "Kennebunk": "me-hs-kennebunk",
 "Lake Region": "me-hs-lake-region",
@@ -208886,6 +209145,7 @@
 "Cape Elizabeth": "me-hs-cape-elizabeth",
 "Falmouth": "me-hs-falmouth",
 "Freeport": "me-hs-freeport",
+"Freeport High School": "me-hs-freeport",
 "Fryeburg": "me-hs-fryeburg",
 "Kennebunk": "me-hs-kennebunk",
 "Lake Region": "me-hs-lake-region",
@@ -209174,6 +209434,7 @@
 "Camden Hills": "me-hs-camden-hills",
 "Ellsworth": "me-hs-ellsworth",
 "Freeport": "me-hs-freeport",
+"Freeport High School": "me-hs-freeport",
 "Fryeburg": "me-hs-fryeburg",
 "Gardiner": "me-hs-gardiner",
 "Gray New Gloucester": "me-hs-gray-ng",
@@ -209275,6 +209536,7 @@
 },
 "2017/Outdoor/lake-region-boys": {
 "Freeport": "me-hs-freeport",
+"Freeport High School": "me-hs-freeport",
 "Fryeburg": "me-hs-fryeburg",
 "Lake Region": "me-hs-lake-region"
 },
@@ -209360,6 +209622,7 @@
 "Camden Hills": "me-hs-camden-hills",
 "Ellsworth": "me-hs-ellsworth",
 "Freeport": "me-hs-freeport",
+"Freeport High School": "me-hs-freeport",
 "Fryeburg": "me-hs-fryeburg",
 "Gardiner": "me-hs-gardiner",
 "Gray New Gloucester": "me-hs-gray-ng",
@@ -210723,6 +210986,7 @@
 "Yarmouth High School": "me-hs-yarmouth"
 },
 "2017/XC/ms-wmc-wayn-gng-freep-york-greely-2017": {
+"Freeport High School": "me-hs-freeport",
 "GNG": "me-hs-gray-ng",
 "York": "me-hs-york"
 },
@@ -211562,6 +211826,7 @@
 "Central": "me-hs-central",
 "Ellsworth": "me-hs-ellsworth",
 "Freeport": "me-hs-freeport",
+"Freeport High School": "me-hs-freeport",
 "Fryeburg": "me-hs-fryeburg",
 "GNG": "me-hs-gray-ng",
 "Greely": "me-hs-greely",
@@ -211590,6 +211855,7 @@
 "Central": "me-hs-central",
 "Ellsworth": "me-hs-ellsworth",
 "Freeport": "me-hs-freeport",
+"Freeport High School": "me-hs-freeport",
 "Fryeburg": "me-hs-fryeburg",
 "GNG": "me-hs-gray-ng",
 "Greely": "me-hs-greely",
@@ -211728,6 +211994,7 @@
 "2018/Indoor/WMC1Results": {
 "CAPE": "me-hs-cape-elizabeth",
 "FREE": "me-hs-freeport",
+"Freeport High School": "me-hs-freeport",
 "Fryeburg": "me-hs-fryeburg",
 "GNG": "me-hs-gray-ng",
 "Lake Region": "me-hs-lake-region",
@@ -211737,6 +212004,7 @@
 "2018/Indoor/WMC1Results-1": {
 "CAPE": "me-hs-cape-elizabeth",
 "FREE": "me-hs-freeport",
+"Freeport High School": "me-hs-freeport",
 "GNG": "me-hs-gray-ng",
 "Lake Region": "me-hs-lake-region",
 "NYA": "me-hs-nya",
@@ -211768,6 +212036,7 @@
 "2018/Indoor/WMC2Results-jan5": {
 "CAPE": "me-hs-cape-elizabeth",
 "FREE": "me-hs-freeport",
+"Freeport High School": "me-hs-freeport",
 "GNG": "me-hs-gray-ng",
 "Lake Region": "me-hs-lake-region",
 "York": "me-hs-york"
@@ -211775,6 +212044,7 @@
 "2018/Indoor/WMCResults": {
 "CAPE": "me-hs-cape-elizabeth",
 "FREE": "me-hs-freeport",
+"Freeport High School": "me-hs-freeport",
 "Fryeburg": "me-hs-fryeburg",
 "GNG": "me-hs-gray-ng",
 "Lake Region": "me-hs-lake-region",
@@ -212105,6 +212375,7 @@
 "St. James": "me-ms-st-james-biddeford"
 },
 "2018/Indoor/ms-wmc-gng-freeport-poland-fryeburg-yarmouth-traip-wells-2018": {
+"Freeport High School": "me-hs-freeport",
 "Gray-New Gloucester High School": "me-hs-gray-ng",
 "Yarmouth High School": "me-hs-yarmouth"
 },
@@ -212184,6 +212455,7 @@
 },
 "2018/Indoor/wmc-2Results": {
 "FREE": "me-hs-freeport",
+"Freeport High School": "me-hs-freeport",
 "Fryeburg": "me-hs-fryeburg",
 "GNG": "me-hs-gray-ng",
 "North Haven": "me-hs-north-haven",
@@ -212626,12 +212898,14 @@
 },
 "2018/Outdoor/Lake-Region-boys": {
 "Freeport": "me-hs-freeport",
+"Freeport High School": "me-hs-freeport",
 "Fryeburg": "me-hs-fryeburg",
 "Lake Region": "me-hs-lake-region",
 "Old Orchard": "me-hs-old-orchard"
 },
 "2018/Outdoor/Lake-region-girls-1": {
 "Freeport": "me-hs-freeport",
+"Freeport High School": "me-hs-freeport",
 "Fryeburg": "me-hs-fryeburg",
 "Lake Region": "me-hs-lake-region",
 "Old Orchard": "me-hs-old-orchard"
@@ -213295,6 +213569,7 @@
 "2018/Outdoor/WMC-boys": {
 "Cape Elizabeth": "me-hs-cape-elizabeth",
 "Freeport": "me-hs-freeport",
+"Freeport High School": "me-hs-freeport",
 "Fryeburg": "me-hs-fryeburg",
 "GNG": "me-hs-gray-ng",
 "Gray New Gloucester": "me-hs-gray-ng",
@@ -213316,6 +213591,7 @@
 "2018/Outdoor/WMC-girls": {
 "Cape Elizabeth": "me-hs-cape-elizabeth",
 "Freeport": "me-hs-freeport",
+"Freeport High School": "me-hs-freeport",
 "Fryeburg": "me-hs-fryeburg",
 "GNG": "me-hs-gray-ng",
 "Gray New Gloucester": "me-hs-gray-ng",
@@ -213490,6 +213766,7 @@
 "Cony High School": "me-hs-cony",
 "Ellsworth": "me-hs-ellsworth",
 "Freeport": "me-hs-freeport",
+"Freeport High School": "me-hs-freeport",
 "Fryeburg": "me-hs-fryeburg",
 "GNG": "me-hs-gray-ng",
 "Gardiner": "me-hs-gardiner",
@@ -213522,6 +213799,7 @@
 "Cony High School": "me-hs-cony",
 "Ellsworth": "me-hs-ellsworth",
 "Freeport": "me-hs-freeport",
+"Freeport High School": "me-hs-freeport",
 "Fryeburg": "me-hs-fryeburg",
 "GNG": "me-hs-gray-ng",
 "Gardiner": "me-hs-gardiner",
@@ -213689,6 +213967,7 @@
 "2018/Outdoor/ne-interscholastic-outdoor-2018": {
 "Bangor Christian Schools": "me-hs-bangor-christian",
 "Cony High School": "me-hs-cony",
+"Freeport High School": "me-hs-freeport",
 "Gray-New Gloucester High School": "me-hs-gray-ng",
 "Mattanawcook Academy": "me-hs-mattanawcook",
 "Messalonskee High School": "me-hs-messalonskee",
@@ -215481,6 +215760,7 @@
 "Greely": "me-ms-greely"
 },
 "2018/XC/ms-freeport-falcon-4k-xc-challenge-2018": {
+"Freeport High School": "me-hs-freeport",
 "Yarmouth High School": "me-hs-yarmouth"
 },
 "2018/XC/ms-great-salt-bay-xc-meet-2018": {
@@ -215513,11 +215793,15 @@
 "Westbrook High School": "me-hs-westbrook"
 },
 "2018/XC/ms-wmc-ce-freep-gng-nya-2018": {
+"Freeport High School": "me-hs-freeport",
 "Gray-New Gloucester High School": "me-hs-gray-ng",
 "North Yarmouth Academy": "me-hs-nya"
 },
 "2018/XC/ms-wmc-ce-oob-sd-fryebrug-academy-2018": {
 "St. Dominic Academy": "me-hs-st-dominic"
+},
+"2018/XC/ms-wmc-freep-greely-lr-cape-elizabeth-2018": {
+"Freeport High School": "me-hs-freeport"
 },
 "2018/XC/ms-wmc-nya-oob-wayn-maine-coast-waldorf-2018": {
 "North Yarmouth Academy": "me-hs-nya",
@@ -216178,6 +216462,7 @@
 "2019/Indoor/ResultsWMC": {
 "CAPE": "me-hs-cape-elizabeth",
 "FREE": "me-hs-freeport",
+"Freeport High School": "me-hs-freeport",
 "Fryeburg": "me-hs-fryeburg",
 "GNG": "me-hs-gray-ng",
 "Lake Region": "me-hs-lake-region",
@@ -216192,6 +216477,7 @@
 "2019/Indoor/ResultsWMC1": {
 "CAPE": "me-hs-cape-elizabeth",
 "FREE": "me-hs-freeport",
+"Freeport High School": "me-hs-freeport",
 "Fryeburg": "me-hs-fryeburg",
 "GNG": "me-hs-gray-ng",
 "Lake Region": "me-hs-lake-region",
@@ -216200,6 +216486,7 @@
 },
 "2019/Indoor/ResultsWMC1-2": {
 "FREE": "me-hs-freeport",
+"Freeport High School": "me-hs-freeport",
 "Fryeburg": "me-hs-fryeburg",
 "GNG": "me-hs-gray-ng",
 "Wells": "me-hs-wells",
@@ -216216,6 +216503,7 @@
 "2019/Indoor/ResultsWMC1-4": {
 "CAPE": "me-hs-cape-elizabeth",
 "FREE": "me-hs-freeport",
+"Freeport High School": "me-hs-freeport",
 "GNG": "me-hs-gray-ng",
 "Lake Region": "me-hs-lake-region",
 "NYA": "me-hs-nya",
@@ -216235,6 +216523,7 @@
 },
 "2019/Indoor/ResultsWMC2-2": {
 "FREE": "me-hs-freeport",
+"Freeport High School": "me-hs-freeport",
 "Fryeburg": "me-hs-fryeburg",
 "GNG": "me-hs-gray-ng",
 "Yarmouth": "me-hs-yarmouth",
@@ -216396,6 +216685,7 @@
 "Central": "me-hs-central",
 "Ellsworth": "me-hs-ellsworth",
 "Freeport": "me-hs-freeport",
+"Freeport High School": "me-hs-freeport",
 "Fryeburg": "me-hs-fryeburg",
 "GNG": "me-hs-gray-ng",
 "Greely": "me-hs-greely",
@@ -216575,6 +216865,7 @@
 "Gray-New Gloucester High School": "me-hs-gray-ng"
 },
 "2019/Indoor/ms-wmcyork-cape-gng-freeport-lake-region-boothbay-2019": {
+"Freeport High School": "me-hs-freeport",
 "Gray-New Gloucester High School": "me-hs-gray-ng"
 },
 "2019/Indoor/ne-usatf-indoor-2019": {
@@ -217358,6 +217649,7 @@
 "Cony High School": "me-hs-cony",
 "Ellsworth": "me-hs-ellsworth",
 "Freeport": "me-hs-freeport",
+"Freeport High School": "me-hs-freeport",
 "Fryeburg": "me-hs-fryeburg",
 "GNG": "me-hs-gray-ng",
 "Gardiner": "me-hs-gardiner",
@@ -217388,6 +217680,7 @@
 "Cony High School": "me-hs-cony",
 "Ellsworth": "me-hs-ellsworth",
 "Freeport": "me-hs-freeport",
+"Freeport High School": "me-hs-freeport",
 "Fryeburg": "me-hs-fryeburg",
 "GNG": "me-hs-gray-ng",
 "Gardiner": "me-hs-gardiner",
@@ -217790,6 +218083,7 @@
 "2019/Outdoor/WMC": {
 "CAPE": "me-hs-cape-elizabeth",
 "Freeport": "me-hs-freeport",
+"Freeport High School": "me-hs-freeport",
 "Fryeburg": "me-hs-fryeburg",
 "GNG": "me-hs-gray-ng",
 "Gray New Gloucester": "me-hs-gray-ng",
@@ -219720,6 +220014,7 @@
 "Westbrook High School": "me-hs-westbrook"
 },
 "2019/XC/ms-wmc-championship-2019": {
+"Freeport High School": "me-hs-freeport",
 "Gray-New Gloucester High School": "me-hs-gray-ng",
 "North Yarmouth Academy": "me-hs-nya",
 "St. Dominic Academy": "me-hs-st-dominic",
@@ -219739,6 +220034,7 @@
 "North Yarmouth Academy": "me-hs-nya"
 },
 "2019/XC/ms-wmcfreep-gng-greely-lr-mcwpoland-2019": {
+"Freeport High School": "me-hs-freeport",
 "Gray-New Gloucester High School": "me-hs-gray-ng"
 },
 "2019/XC/mta-home-meet-10-4-19": {
@@ -220214,6 +220510,7 @@
 },
 "2020/Indoor/Results-1": {
 "FREE": "me-hs-freeport",
+"Freeport High School": "me-hs-freeport",
 "GNG": "me-hs-gray-ng",
 "YHS": "me-hs-yarmouth",
 "Yarmouth High School": "me-hs-yarmouth"
@@ -220230,6 +220527,7 @@
 "Boothbay Region Indoor": "coop-boothbay-wiscasset",
 "Brunswick": "me-hs-brunswick",
 "Falmouth": "me-hs-falmouth",
+"Freeport High School": "me-hs-freeport",
 "Fryeburg": "me-hs-fryeburg",
 "GNG": "me-hs-gray-ng",
 "Gorham": "me-hs-gorham",
@@ -220262,6 +220560,7 @@
 "Cony": "me-hs-cony",
 "Ellsworth": "me-hs-ellsworth",
 "Freeport": "me-hs-freeport",
+"Freeport High School": "me-hs-freeport",
 "Greely": "me-hs-greely",
 "Hermon": "me-hs-hermon",
 "Lawrence": "me-hs-lawrence",
@@ -220296,6 +220595,7 @@
 "Cony High School": "me-hs-cony",
 "Ellsworth": "me-hs-ellsworth",
 "Freeport": "me-hs-freeport",
+"Freeport High School": "me-hs-freeport",
 "Fryeburg": "me-hs-fryeburg",
 "Greely": "me-hs-greely",
 "Hermon": "me-hs-hermon",
@@ -220427,6 +220727,7 @@
 "2020/Indoor/ResultsWMC": {
 "CAPE": "me-hs-cape-elizabeth",
 "FREE": "me-hs-freeport",
+"Freeport High School": "me-hs-freeport",
 "Fryeburg": "me-hs-fryeburg",
 "GNG": "me-hs-gray-ng",
 "Lake Region": "me-hs-lake-region",
@@ -220442,6 +220743,7 @@
 "CAPE": "me-hs-cape-elizabeth",
 "FA Indoor Track": "me-hs-fryeburg",
 "FREE": "me-hs-freeport",
+"Freeport High School": "me-hs-freeport",
 "GNG": "me-hs-gray-ng",
 "Lake Region": "me-hs-lake-region",
 "YHS": "me-hs-yarmouth",
@@ -220450,6 +220752,7 @@
 "2020/Indoor/ResultsWMC1-1": {
 "FA Indoor Track": "me-hs-fryeburg",
 "FREE": "me-hs-freeport",
+"Freeport High School": "me-hs-freeport",
 "GNG": "me-hs-gray-ng",
 "POL": "me-hs-poland",
 "Wells": "me-hs-wells",
@@ -220482,6 +220785,7 @@
 "CAPE": "me-hs-cape-elizabeth",
 "FA Indoor Track": "me-hs-fryeburg",
 "FREE": "me-hs-freeport",
+"Freeport High School": "me-hs-freeport",
 "GNG": "me-hs-gray-ng",
 "GREE": "me-hs-greely",
 "Lake Region": "me-hs-lake-region",
@@ -220523,6 +220827,7 @@
 "Boothbay Region Indoor": "coop-boothbay-wiscasset",
 "FA Indoor Track": "me-hs-fryeburg",
 "FREE": "me-hs-freeport",
+"Freeport High School": "me-hs-freeport",
 "GNG": "me-hs-gray-ng",
 "Mountain Valley": "me-hs-mountain-valley",
 "YHS": "me-hs-yarmouth",
@@ -220825,6 +221130,7 @@
 },
 "2020/Indoor/ms-wmcyork-cape-gng-freeport-lake-region-boothbay-2020": {
 "BRHS": "coop-boothbay-wiscasset",
+"Freeport High School": "me-hs-freeport",
 "Gray-New Gloucester High School": "me-hs-gray-ng"
 },
 "2020/Indoor/ne-usatf-indoor-2020": {
@@ -221505,11 +221811,15 @@
 "CE": "me-hs-cape-elizabeth"
 },
 "2020/XC/ms-wmc-nya-freeport-2020": {
+"Freeport High School": "me-hs-freeport",
 "North Yarmouth Academy": "me-hs-nya"
 },
 "2020/XC/ms-wmc-sacopee-valley-lake-region-fryeburg-academy-2020": {
 "LR": "me-hs-lake-region",
 "SV": "me-hs-sacopee"
+},
+"2020/XC/ms-wmcfreeport-mcw-2020": {
+"Freeport High School": "me-hs-freeport"
 },
 "2020/XC/ms-wmcgng-yarmouth-2020": {
 "GNG": "me-hs-gray-ng"
@@ -221954,6 +222264,7 @@
 "Cony": "me-hs-cony",
 "Cony High School": "me-hs-cony",
 "Ellsworth": "me-hs-ellsworth",
+"Freeport High School": "me-hs-freeport",
 "Fryeburg": "me-hs-fryeburg",
 "GNG": "me-hs-gray-ng",
 "Gardiner": "me-hs-gardiner",
@@ -221981,6 +222292,7 @@
 "Cony": "me-hs-cony",
 "Cony High School": "me-hs-cony",
 "Ellsworth": "me-hs-ellsworth",
+"Freeport High School": "me-hs-freeport",
 "Fryeburg": "me-hs-fryeburg",
 "GNG": "me-hs-gray-ng",
 "Gardiner": "me-hs-gardiner",
@@ -222358,6 +222670,7 @@
 },
 "2021/Outdoor/ResultsGNG": {
 "Freeport": "me-hs-freeport",
+"Freeport High School": "me-hs-freeport",
 "GNG": "me-hs-gray-ng",
 "Gray New Gloucester": "me-hs-gray-ng",
 "Yarmouth": "me-hs-yarmouth",
@@ -222508,6 +222821,7 @@
 "Winslow High School": "me-hs-winslow"
 },
 "2021/Outdoor/ResultsYARM": {
+"Freeport High School": "me-hs-freeport",
 "GNG": "me-hs-gray-ng",
 "Gray New Gloucester": "me-hs-gray-ng",
 "YHS": "me-hs-yarmouth",
@@ -222515,6 +222829,7 @@
 },
 "2021/Outdoor/ResultsYARM-1": {
 "CAPE": "me-hs-cape-elizabeth",
+"Freeport High School": "me-hs-freeport",
 "GNG": "me-hs-gray-ng",
 "GREE": "me-hs-greely",
 "Gray New Gloucester": "me-hs-gray-ng",
@@ -222604,6 +222919,7 @@
 "2021/Outdoor/WMC-boys": {
 "Cape Elizabeth": "me-hs-cape-elizabeth",
 "Freeport": "me-hs-freeport",
+"Freeport High School": "me-hs-freeport",
 "Fryeburg": "me-hs-fryeburg",
 "GNG": "me-hs-gray-ng",
 "Gray New Gloucester": "me-hs-gray-ng",
@@ -222621,6 +222937,7 @@
 "2021/Outdoor/WMC-girls": {
 "Cape Elizabeth": "me-hs-cape-elizabeth",
 "Freeport": "me-hs-freeport",
+"Freeport High School": "me-hs-freeport",
 "Fryeburg": "me-hs-fryeburg",
 "GNG": "me-hs-gray-ng",
 "Greely": "me-hs-greely",
@@ -222728,6 +223045,7 @@
 "Piscataquis Comm": "me-ms-piscataquis"
 },
 "2021/Outdoor/freeport-results": {
+"Freeport High School": "me-hs-freeport",
 "GNG": "me-hs-gray-ng",
 "Gray New Gloucester": "me-hs-gray-ng",
 "NYA": "me-hs-nya",
@@ -222879,6 +223197,7 @@
 "Lewiston": "me-hs-lewiston"
 },
 "2021/Outdoor/results_2021_05_13-1": {
+"Freeport High School": "me-hs-freeport",
 "LMS": "me-ms-loranger",
 "SD": "me-ms-st-dominic",
 "St Doms": "me-ms-st-dominic"
@@ -224343,6 +224662,7 @@
 "Searsport": "me-ms-searsport"
 },
 "2021/XC/ms-freeport-falcon-4k-xc-challenge-2021": {
+"Freeport High School": "me-hs-freeport",
 "Yarmouth High School": "me-hs-yarmouth"
 },
 "2021/XC/ms-scarborough-middle-school-invitational-2021": {
@@ -224363,11 +224683,18 @@
 "2021/XC/ms-wmc-fa-lrgng-sv-poland-2021": {
 "Gray-New Gloucester High School": "me-hs-gray-ng"
 },
+"2021/XC/ms-wmc-free-greely-wells-york-2021": {
+"Freeport High School": "me-hs-freeport"
+},
 "2021/XC/ms-wmc-fryeburg-academy-nya-st-dominic-sacopee-valley-2021": {
 "North Yarmouth Academy": "me-hs-nya",
 "St. Dominic Academy": "me-hs-st-dominic"
 },
+"2021/XC/ms-wmc-fryeburg-greely-traip-wells-york-freeport-2021": {
+"Freeport High School": "me-hs-freeport"
+},
 "2021/XC/ms-wmc-gng-lake-region-mcw-poland-freeport-2021": {
+"Freeport High School": "me-hs-freeport",
 "Gray-New Gloucester High School": "me-hs-gray-ng"
 },
 "2021/XC/ms-wmc-mcw-nya-oob-traip-2021": {
@@ -224377,6 +224704,9 @@
 "St. Dominic Academy": "me-hs-st-dominic",
 "Waynflete School": "me-hs-waynflete",
 "Yarmouth High School": "me-hs-yarmouth"
+},
+"2021/XC/ms-wmcfreeport-traip-fryeburg-academy-2021": {
+"Freeport High School": "me-hs-freeport"
 },
 "2021/XC/north-class-b-boys.txt": {
 "Belfast": "me-hs-belfast",
@@ -224905,6 +225235,7 @@
 },
 "2022/Indoor/ResultsWMC": {
 "CAPE": "me-hs-cape-elizabeth",
+"Freeport High School": "me-hs-freeport",
 "GNG": "me-hs-gray-ng",
 "GREE": "me-hs-greely",
 "Lake Region": "me-hs-lake-region",
@@ -224918,6 +225249,7 @@
 },
 "2022/Indoor/ResultsWMC-championship": {
 "CAPE": "me-hs-cape-elizabeth",
+"Freeport High School": "me-hs-freeport",
 "GNG": "me-hs-gray-ng",
 "GREE": "me-hs-greely",
 "Lake Region": "me-hs-lake-region",
@@ -224932,6 +225264,7 @@
 "York": "me-hs-york"
 },
 "2022/Indoor/ResultsWMC1": {
+"Freeport High School": "me-hs-freeport",
 "Fryeburg": "me-hs-fryeburg",
 "GNG": "me-hs-gray-ng",
 "POL": "me-hs-poland",
@@ -225024,6 +225357,7 @@
 "Scarborough": "me-ms-scarborough"
 },
 "2022/Indoor/Resultswmc": {
+"Freeport High School": "me-hs-freeport",
 "Fryeburg": "me-hs-fryeburg",
 "GNG": "me-hs-gray-ng",
 "GREE": "me-hs-greely",
@@ -225039,6 +225373,7 @@
 },
 "2022/Indoor/Resultswmc-1": {
 "CAPE": "me-hs-cape-elizabeth",
+"Freeport High School": "me-hs-freeport",
 "Fryeburg": "me-hs-fryeburg",
 "GNG": "me-hs-gray-ng",
 "GREE": "me-hs-greely",
@@ -225113,6 +225448,7 @@
 "Cony": "me-hs-cony",
 "Cony High School": "me-hs-cony",
 "Ellsworth": "me-hs-ellsworth",
+"Freeport High School": "me-hs-freeport",
 "Fryeburg": "me-hs-fryeburg",
 "GNG": "me-hs-gray-ng",
 "Greely": "me-hs-greely",
@@ -225146,6 +225482,7 @@
 "Cony": "me-hs-cony",
 "Cony High School": "me-hs-cony",
 "Ellsworth": "me-hs-ellsworth",
+"Freeport High School": "me-hs-freeport",
 "GNG": "me-hs-gray-ng",
 "Greely": "me-hs-greely",
 "Lake Region": "me-hs-lake-region",
@@ -225262,11 +225599,13 @@
 "Greely": "me-ms-greely"
 },
 "2022/Indoor/ms-wmc-practice-meet-2022": {
+"Freeport High School": "me-hs-freeport",
 "Gray-New Gloucester High School": "me-hs-gray-ng",
 "YHS": "me-hs-yarmouth",
 "Yarmouth High School": "me-hs-yarmouth"
 },
 "2022/Indoor/ms-wmcgng-freeport-nya-cape-lake-region-fryeburg-traip-2022": {
+"Freeport High School": "me-hs-freeport",
 "Gray-New Gloucester High School": "me-hs-gray-ng",
 "North Yarmouth Academy": "me-hs-nya"
 },
@@ -225381,6 +225720,7 @@
 "Cape Elizabe": "me-hs-cape-elizabeth",
 "Cony High Sc": "me-hs-cony",
 "Cony High School": "me-hs-cony",
+"Freeport High School": "me-hs-freeport",
 "Gray New Glo": "me-hs-gray-ng",
 "Lake Region": "me-hs-lake-region",
 "Medomak Vall": "me-hs-medomak",
@@ -225582,6 +225922,7 @@
 "Cony High School": "me-hs-cony"
 },
 "2022/Outdoor/Results-Greely-42922-1": {
+"Freeport High School": "me-hs-freeport",
 "Gray New Glo": "me-hs-gray-ng",
 "Yarmouth High School": "me-hs-yarmouth"
 },
@@ -225658,6 +225999,7 @@
 "Winslow High School": "me-hs-winslow"
 },
 "2022/Outdoor/ResultsYARM": {
+"Freeport High School": "me-hs-freeport",
 "GNG": "me-hs-gray-ng",
 "GREE": "me-hs-greely",
 "Gray New Gloucester": "me-hs-gray-ng",
@@ -225721,6 +226063,7 @@
 },
 "2022/Outdoor/WMC-results-1": {
 "Cape Elizabe": "me-hs-cape-elizabeth",
+"Freeport High School": "me-hs-freeport",
 "Gray New Glo": "me-hs-gray-ng",
 "Lake Region": "me-hs-lake-region",
 "North Yarmou": "coop-nya-maine-coast-waldorf",
@@ -226925,10 +227268,17 @@
 "2022/XC/ms-downeast-athletic-conference-championship-2022": {
 "Sumner Memorial High School": "me-hs-sumner"
 },
+"2022/XC/ms-freeport-falcon-4k-xc-challenge-2022": {
+"Freeport High School": "me-hs-freeport"
+},
+"2022/XC/ms-freeport-high-xc-2022": {
+"Freeport High School": "me-hs-freeport"
+},
 "2022/XC/ms-freeport-ms-xc-meet-2022": {
 "Freeport": "me-ms-freeport"
 },
 "2022/XC/ms-fryeburg-academy-potato-invitational-2022": {
+"Freeport High School": "me-hs-freeport",
 "North Yarmouth Academy": "me-hs-nya"
 },
 "2022/XC/ms-kvaccony-gardiner-and-spruce-mt-mt-blue-2022": {
@@ -226987,7 +227337,11 @@
 "Waynflete School": "me-hs-waynflete",
 "YHS": "me-hs-yarmouth"
 },
+"2022/XC/ms-wmc-freeport-2022": {
+"Freeport High School": "me-hs-freeport"
+},
 "2022/XC/ms-wmc-meet-1-2022": {
+"Freeport High School": "me-hs-freeport",
 "Yarmouth High School": "me-hs-yarmouth"
 },
 "2022/XC/ms-wmc-poland-2022": {
@@ -227139,6 +227493,7 @@
 "Yarmouth": "me-hs-yarmouth"
 },
 "2023/Indoor/2022-DECEMBER-JAM-RESULTS": {
+"Freeport High School": "me-hs-freeport",
 "Gray New Glo": "me-hs-gray-ng",
 "Lake Region": "me-hs-lake-region",
 "Yarmouth High School": "me-hs-yarmouth"
@@ -227162,6 +227517,7 @@
 "Cape Elizabe": "me-hs-cape-elizabeth",
 "Cony High Sc": "me-hs-cony",
 "Cony High School": "me-hs-cony",
+"Freeport High School": "me-hs-freeport",
 "Gray New Glo": "me-hs-gray-ng",
 "Lake Region": "me-hs-lake-region",
 "Medomak Vall": "me-hs-medomak",
@@ -227178,6 +227534,7 @@
 "Cape Elizabe": "me-hs-cape-elizabeth",
 "Cony High Sc": "me-hs-cony",
 "Cony High School": "me-hs-cony",
+"Freeport High School": "me-hs-freeport",
 "Gray New Glo": "me-hs-gray-ng",
 "Lake Region": "me-hs-lake-region",
 "North Yarmouth Academy": "me-hs-nya",
@@ -227266,6 +227623,7 @@
 },
 "2023/Indoor/Results-meet-1-1": {
 "Cape Elizabe": "me-hs-cape-elizabeth",
+"Freeport High School": "me-hs-freeport",
 "Gray New Glo": "me-hs-gray-ng",
 "Yarmouth High School": "me-hs-yarmouth"
 },
@@ -227340,17 +227698,20 @@
 },
 "2023/Indoor/ResultsWMC1": {
 "Cape Elizabe": "me-hs-cape-elizabeth",
+"Freeport High School": "me-hs-freeport",
 "Gray New Glo": "me-hs-gray-ng",
 "Lake Region": "me-hs-lake-region",
 "Sacopee Vall": "me-hs-sacopee"
 },
 "2023/Indoor/ResultsWMC2": {
 "Cape Elizabe": "me-hs-cape-elizabeth",
+"Freeport High School": "me-hs-freeport",
 "Gray New Glo": "me-hs-gray-ng",
 "Lake Region": "me-hs-lake-region",
 "Mountain Valley": "me-hs-mountain-valley"
 },
 "2023/Indoor/ResultsWMC2-1": {
+"Freeport High School": "me-hs-freeport",
 "Gray New Glo": "me-hs-gray-ng",
 "Yarmouth High School": "me-hs-yarmouth"
 },
@@ -227411,6 +227772,7 @@
 },
 "2023/Indoor/Resultswmc": {
 "Cape Elizabe": "me-hs-cape-elizabeth",
+"Freeport High School": "me-hs-freeport",
 "Gray New Glo": "me-hs-gray-ng",
 "Lake Region": "me-hs-lake-region",
 "North Yarmou": "coop-nya-maine-coast-waldorf",
@@ -227435,6 +227797,7 @@
 },
 "2023/Indoor/USM-Invitational-results": {
 "Bonny Eagle": "me-hs-bonny-eagle",
+"Freeport High School": "me-hs-freeport",
 "Lake Region": "me-hs-lake-region",
 "Portsmouth": "oos-auto-nh-portsmouth",
 "Scarborough": "me-hs-scarborough",
@@ -227594,12 +227957,14 @@
 "Yarmouth High School": "me-hs-yarmouth"
 },
 "2023/Indoor/ms-wmc-polandyarmouthwellsst-domslisbon-york-greely-2023": {
+"Freeport High School": "me-hs-freeport",
 "Gray-New Gloucester High School": "me-hs-gray-ng",
 "North Yarmouth Academy": "me-hs-nya",
 "St. Dominic Academy": "me-hs-st-dominic",
 "Yarmouth High School": "me-hs-yarmouth"
 },
 "2023/Indoor/ne-usatf-indoor-2023": {
+"Freeport High School": "me-hs-freeport",
 "Monmouth Academy": "me-hs-monmouth"
 },
 "2023/Outdoor/2023-aroostook-county-tf-championships": {
@@ -227719,6 +228084,7 @@
 "Cape Elizabe": "me-hs-cape-elizabeth",
 "Cony High Sc": "me-hs-cony",
 "Cony High School": "me-hs-cony",
+"Freeport High School": "me-hs-freeport",
 "Gray New Glo": "me-hs-gray-ng",
 "Lake Region": "me-hs-lake-region",
 "Medomak Vall": "me-hs-medomak",
@@ -227730,6 +228096,7 @@
 "Cape Elizabe": "me-hs-cape-elizabeth",
 "Cony High Sc": "me-hs-cony",
 "Cony High School": "me-hs-cony",
+"Freeport High School": "me-hs-freeport",
 "Gray New Glo": "me-hs-gray-ng",
 "Lake Region": "me-hs-lake-region",
 "Medomak Vall": "me-hs-medomak",
@@ -227992,6 +228359,7 @@
 "Southern Mai": "col-usm"
 },
 "2023/Outdoor/Results-BOB-MORSE": {
+"Freeport High School": "me-hs-freeport",
 "Gray New Glo": "me-hs-gray-ng",
 "Lake Region": "me-hs-lake-region",
 "Yarmouth High School": "me-hs-yarmouth"
@@ -228033,6 +228401,7 @@
 "Scarborough": "me-ms-scarborough"
 },
 "2023/Outdoor/ResultsFREEPORT": {
+"Freeport High School": "me-hs-freeport",
 "Old Orchard": "me-hs-old-orchard",
 "Old Orchard Beach": "me-hs-old-orchard",
 "Yarmouth High School": "me-hs-yarmouth"
@@ -228221,12 +228590,14 @@
 },
 "2023/Outdoor/WMC-Div-1-Boys": {
 "Cape Elizabe": "me-hs-cape-elizabeth",
+"Freeport High School": "me-hs-freeport",
 "Gray New Glo": "me-hs-gray-ng",
 "Lake Region": "me-hs-lake-region",
 "Yarmouth High School": "me-hs-yarmouth"
 },
 "2023/Outdoor/WMC-Div-1-girls": {
 "Cape Elizabe": "me-hs-cape-elizabeth",
+"Freeport High School": "me-hs-freeport",
 "Gray New Glo": "me-hs-gray-ng",
 "Lake Region": "me-hs-lake-region",
 "Yarmouth High School": "me-hs-yarmouth"
@@ -229318,10 +229689,15 @@
 "SMC": "me-ms-southern-maine-catholic",
 "Westbrook": "me-ms-westbrook"
 },
+"2023/XC/ms-freeport-falcon-4k-xc-challenge-2023": {
+"Freeport High School": "me-hs-freeport"
+},
 "2023/XC/ms-freeport-high-school-2023": {
+"Freeport High School": "me-hs-freeport",
 "North Yarmouth Academy": "me-hs-nya"
 },
 "2023/XC/ms-fryeburg-academy-potato-invitational-2023": {
+"Freeport High School": "me-hs-freeport",
 "North Yarmouth Academy": "me-hs-nya"
 },
 "2023/XC/ms-gardiner-meet-uma-2023": {
@@ -229382,10 +229758,14 @@
 "2023/XC/ms-the-real-tripp-meet-2023": {
 "North Yarmouth A": "me-ms-nya"
 },
+"2023/XC/ms-traip-academy-2023": {
+"Freeport High School": "me-hs-freeport"
+},
 "2023/XC/ms-westbrook-2023": {
 "Westbrook High School": "me-hs-westbrook"
 },
 "2023/XC/ms-western-maine-conference-invitational-2023": {
+"Freeport High School": "me-hs-freeport",
 "Gray-New Gloucester High School": "me-hs-gray-ng",
 "North Yarmouth Academy": "me-hs-nya",
 "St. Dominic Academy": "me-hs-st-dominic",
@@ -229643,6 +230023,7 @@
 "Cape Elizabe": "me-hs-cape-elizabeth",
 "Cony High Sc": "me-hs-cony",
 "Cony High School": "me-hs-cony",
+"Freeport High School": "me-hs-freeport",
 "Gray New Glo": "me-hs-gray-ng",
 "Islesboro Ce": "me-hs-islesboro",
 "Lake Region": "me-hs-lake-region",
@@ -229660,6 +230041,7 @@
 "Cape Elizabe": "me-hs-cape-elizabeth",
 "Cony High Sc": "me-hs-cony",
 "Cony High School": "me-hs-cony",
+"Freeport High School": "me-hs-freeport",
 "Gray New Glo": "me-hs-gray-ng",
 "Lake Region": "me-hs-lake-region",
 "Medomak Vall": "me-hs-medomak",
@@ -229718,6 +230100,7 @@
 },
 "2024/Indoor/Results1": {
 "Cape Elizabe": "me-hs-cape-elizabeth",
+"Freeport High School": "me-hs-freeport",
 "Gray New Glo": "me-hs-gray-ng"
 },
 "2024/Indoor/Results1-1": {
@@ -229810,6 +230193,7 @@
 },
 "2024/Indoor/ResultsWMC": {
 "Cape Elizabe": "me-hs-cape-elizabeth",
+"Freeport High School": "me-hs-freeport",
 "Gray New Glo": "me-hs-gray-ng",
 "Lake Region": "me-hs-lake-region",
 "North Yarmou": "coop-nya-maine-coast-waldorf",
@@ -229818,6 +230202,7 @@
 },
 "2024/Indoor/ResultsWMC1": {
 "Cape Elizabe": "me-hs-cape-elizabeth",
+"Freeport High School": "me-hs-freeport",
 "Gray New Glo": "me-hs-gray-ng",
 "Lake Region": "me-hs-lake-region"
 },
@@ -229830,6 +230215,7 @@
 },
 "2024/Indoor/ResultsWMC2-1": {
 "Cape Elizabe": "me-hs-cape-elizabeth",
+"Freeport High School": "me-hs-freeport",
 "Islesboro Ce": "me-hs-islesboro",
 "Yarmouth High School": "me-hs-yarmouth"
 },
@@ -229849,6 +230235,7 @@
 "Thornton Academy": "me-hs-thornton"
 },
 "2024/Indoor/Resultsmeet-2-2": {
+"Freeport High School": "me-hs-freeport",
 "Gray New Glo": "me-hs-gray-ng",
 "Yarmouth High School": "me-hs-yarmouth"
 },
@@ -229937,6 +230324,7 @@
 "Sumner Memorial High School": "me-hs-sumner"
 },
 "2024/Indoor/ms-december-jam-2024": {
+"Freeport High School": "me-hs-freeport",
 "Gray-New Gloucester High School": "me-hs-gray-ng",
 "Yarmouth High School": "me-hs-yarmouth"
 },
@@ -229958,12 +230346,14 @@
 "St. Dominic Academy": "me-hs-st-dominic"
 },
 "2024/Indoor/ms-wmc-york-cape-gng-freeport-traip-mt-val-booth-wisc-yarm-2024": {
+"Freeport High School": "me-hs-freeport",
 "Gray-New Gloucester High School": "me-hs-gray-ng",
 "Yarmouth High School": "me-hs-yarmouth"
 },
 "2024/Indoor/usmrelays2023": {
 "Bonny Eagle": "me-hs-bonny-eagle",
 "Cape Elizabeth": "me-hs-cape-elizabeth",
+"Freeport High School": "me-hs-freeport",
 "Gray New Glo": "me-hs-gray-ng",
 "Islesboro Ce": "me-hs-islesboro",
 "Lake Region": "me-hs-lake-region",
@@ -230019,6 +230409,7 @@
 "Cape Elizabe": "me-ms-cape-elizabeth"
 },
 "2024/Outdoor/CMFTC-2024-1": {
+"Freeport High School": "me-hs-freeport",
 "Old Orchard Beach": "me-hs-old-orchard"
 },
 "2024/Outdoor/Camden-Rockport-MS": {
@@ -230356,6 +230747,7 @@
 },
 "2024/Outdoor/WMC-results": {
 "Cape Elizabe": "me-hs-cape-elizabeth",
+"Freeport High School": "me-hs-freeport",
 "Gray New Glo": "me-hs-gray-ng",
 "Lake Region": "me-hs-lake-region",
 "North Yarmou": "coop-nya-maine-coast-waldorf",
@@ -230435,7 +230827,8 @@
 "Penobscot Ch": "me-ms-penobscot-christian"
 },
 "2024/Outdoor/cape-elizabeth-42624-results": {
-"Cape Elizabe": "me-hs-cape-elizabeth"
+"Cape Elizabe": "me-hs-cape-elizabeth",
+"Freeport High School": "me-hs-freeport"
 },
 "2024/Outdoor/classaboys1june2024": {
 "Bonny Eagle": "me-hs-bonny-eagle",
@@ -230466,6 +230859,7 @@
 "Cape Elizabe": "me-hs-cape-elizabeth",
 "Cony High Sc": "me-hs-cony",
 "Cony High School": "me-hs-cony",
+"Freeport High School": "me-hs-freeport",
 "Gray New Glo": "me-hs-gray-ng",
 "Lake Region": "me-hs-lake-region",
 "Medomak Vall": "me-hs-medomak",
@@ -230477,6 +230871,7 @@
 "Cape Elizabe": "me-hs-cape-elizabeth",
 "Cony High Sc": "me-hs-cony",
 "Cony High School": "me-hs-cony",
+"Freeport High School": "me-hs-freeport",
 "Gray New Glo": "me-hs-gray-ng",
 "Lake Region": "me-hs-lake-region",
 "Medomak Vall": "me-hs-medomak",
@@ -230550,6 +230945,7 @@
 "Bangor Christian Schools": "me-hs-bangor-christian",
 "Cony High School": "me-hs-cony",
 "Fort Fairfield Middle/High School": "me-hs-fort-fairfield",
+"Freeport High School": "me-hs-freeport",
 "Gray-New Gloucester High School": "me-hs-gray-ng",
 "North Yarmouth Academy": "me-hs-nya",
 "Sumner Memorial High School": "me-hs-sumner",
@@ -231544,6 +231940,7 @@
 "Waynflete": "me-ms-waynflete"
 },
 "2024/XC/ms-cape-freeport-greely-traip-wells-yarmouth-2024": {
+"Freeport High School": "me-hs-freeport",
 "Yarmouth High School": "me-hs-yarmouth"
 },
 "2024/XC/ms-ccc-ms-xc-meet-at-lake-region-2024": {
@@ -231574,12 +231971,14 @@
 "Gray-New Gloucester High School": "me-hs-gray-ng"
 },
 "2024/XC/ms-fryeburg-academy-potato-invitational-2024": {
+"Freeport High School": "me-hs-freeport",
 "St. Dominic Academy": "me-hs-st-dominic"
 },
 "2024/XC/ms-gardiner-meet-uma-2024": {
 "Winslow High School": "me-hs-winslow"
 },
 "2024/XC/ms-gray-new-gloucester-high-school-2024": {
+"Freeport High School": "me-hs-freeport",
 "Gray-New Gloucester High School": "me-hs-gray-ng",
 "North Yarmouth Academy": "me-hs-nya",
 "Yarmouth High School": "me-hs-yarmouth"
@@ -231619,6 +232018,7 @@
 "Thornton Academy": "me-hs-thornton"
 },
 "2024/XC/ms-western-maine-conference-invitational-2024": {
+"Freeport High School": "me-hs-freeport",
 "Gray-New Gloucester High School": "me-hs-gray-ng",
 "North Yarmouth Academy": "me-hs-nya",
 "St. Dominic Academy": "me-hs-st-dominic",
@@ -231811,6 +232211,7 @@
 "Cape Elizabe": "me-hs-cape-elizabeth",
 "Cony High Sc": "me-hs-cony",
 "Cony High School": "me-hs-cony",
+"Freeport High School": "me-hs-freeport",
 "Gray New Glo": "me-hs-gray-ng",
 "Lake Region": "me-hs-lake-region",
 "Medomak Vall": "me-hs-medomak",
@@ -231828,6 +232229,7 @@
 "Cape Elizabe": "me-hs-cape-elizabeth",
 "Cony High Sc": "me-hs-cony",
 "Cony High School": "me-hs-cony",
+"Freeport High School": "me-hs-freeport",
 "Gray New Glo": "me-hs-gray-ng",
 "Medomak Vall": "me-hs-medomak",
 "North Yarmouth Academy": "me-hs-nya",
@@ -231966,6 +232368,7 @@
 },
 "2025/Indoor/USM-boys": {
 "Bonny Eagle": "me-hs-bonny-eagle",
+"Freeport High School": "me-hs-freeport",
 "Gray New Glo": "me-hs-gray-ng",
 "Lake Region": "me-hs-lake-region",
 "Portsmouth": "oos-auto-nh-portsmouth",
@@ -231981,6 +232384,7 @@
 "2025/Indoor/USM-girls": {
 "Bonny Eagle": "me-hs-bonny-eagle",
 "Cape Elizabe": "me-hs-cape-elizabeth",
+"Freeport High School": "me-hs-freeport",
 "Portsmouth": "oos-auto-nh-portsmouth",
 "Raymond": "oos-auto-nh-raymond",
 "Scarborough": "me-hs-scarborough",
@@ -232123,6 +232527,7 @@
 "Gray-New Gloucester High School": "me-hs-gray-ng"
 },
 "2025/Indoor/ms-greely-cape-mt-valley-gng-freeport-lake-region-fryeburg-std-2025": {
+"Freeport High School": "me-hs-freeport",
 "Gray-New Gloucester High School": "me-hs-gray-ng",
 "St. Dominic Academy": "me-hs-st-dominic"
 },
@@ -232146,6 +232551,7 @@
 "Winslow High School": "me-hs-winslow"
 },
 "2025/Indoor/ms-meet-1-freep-nya-poland-wells-st-dom-win-lisbon-york-lr-traip-2025": {
+"Freeport High School": "me-hs-freeport",
 "North Yarmouth Academy": "me-hs-nya",
 "St. Dominic Academy": "me-hs-st-dominic"
 },
@@ -232158,12 +232564,14 @@
 "Yarmouth High School": "me-hs-yarmouth"
 },
 "2025/Indoor/ms-western-maine-conference-championship-2025": {
+"Freeport High School": "me-hs-freeport",
 "Gray-New Gloucester High School": "me-hs-gray-ng",
 "North Yarmouth Academy": "me-hs-nya",
 "St. Dominic Academy": "me-hs-st-dominic",
 "Yarmouth High School": "me-hs-yarmouth"
 },
 "2025/Indoor/ms-wmc-gng-freeport-poland-fryeburg-wells-cape-st-dom-wint-lisbon-2025": {
+"Freeport High School": "me-hs-freeport",
 "Gray-New Gloucester High School": "me-hs-gray-ng",
 "St. Dominic Academy": "me-hs-st-dominic"
 },
@@ -232176,10 +232584,12 @@
 "St. Dominic Academy": "me-hs-st-dominic"
 },
 "2025/Indoor/ms-wmc-york-cape-gng-freeport-traip-mt-valley-botthbay-wiscasset-y-2025": {
+"Freeport High School": "me-hs-freeport",
 "Gray-New Gloucester High School": "me-hs-gray-ng",
 "Yarmouth High School": "me-hs-yarmouth"
 },
 "2025/Indoor/ms-wmc-york-gng-freeport-fryeburg-yarmouth-traip-2025": {
+"Freeport High School": "me-hs-freeport",
 "Gray-New Gloucester High School": "me-hs-gray-ng",
 "Yarmouth High School": "me-hs-yarmouth"
 },
@@ -232308,6 +232718,7 @@
 "Cape Elizabe": "me-hs-cape-elizabeth",
 "Cony High Sc": "me-hs-cony",
 "Cony High School": "me-hs-cony",
+"Freeport High School": "me-hs-freeport",
 "Gray New Glo": "me-hs-gray-ng",
 "Lake Region": "me-hs-lake-region",
 "Medomak Vall": "me-hs-medomak",
@@ -232320,6 +232731,7 @@
 "Cape Elizabe": "me-hs-cape-elizabeth",
 "Cony High Sc": "me-hs-cony",
 "Cony High School": "me-hs-cony",
+"Freeport High School": "me-hs-freeport",
 "Gray New Glo": "me-hs-gray-ng",
 "Lake Region": "me-hs-lake-region",
 "Medomak Vall": "me-hs-medomak",
@@ -232343,6 +232755,7 @@
 "Unattached": "x-unattached"
 },
 "2025/Outdoor/Freeport-HS-5925-Results-1": {
+"Freeport High School": "me-hs-freeport",
 "Gray New Glo": "me-hs-gray-ng",
 "Lake Region": "me-hs-lake-region",
 "Old Orchard": "me-hs-old-orchard",
@@ -232462,6 +232875,7 @@
 },
 "2025/Outdoor/WMC-boys-1": {
 "Cape Elizabe": "me-hs-cape-elizabeth",
+"Freeport High School": "me-hs-freeport",
 "Gray New Glo": "me-hs-gray-ng",
 "Lake Region": "me-hs-lake-region",
 "North Yarmou": "coop-nya-maine-coast-waldorf",
@@ -232473,6 +232887,7 @@
 },
 "2025/Outdoor/WMC-girls-1": {
 "Cape Elizabe": "me-hs-cape-elizabeth",
+"Freeport High School": "me-hs-freeport",
 "Gray New Glo": "me-hs-gray-ng",
 "Lake Region": "me-hs-lake-region",
 "North Yarmou": "coop-nya-maine-coast-waldorf",
@@ -233736,6 +234151,7 @@
 "CE": "me-hs-cape-elizabeth"
 },
 "2025/XC/ms-cape-freeport-greely-traip-wells-yarmouth-2025": {
+"Freeport High School": "me-hs-freeport",
 "Yarmouth High School": "me-hs-yarmouth"
 },
 "2025/XC/ms-cheverus-portland-so-portland-westbrookdeering-2025": {
@@ -233752,6 +234168,7 @@
 "Winslow High School": "me-hs-winslow"
 },
 "2025/XC/ms-freeport-falcon-4k-xc-challenge-2025": {
+"Freeport High School": "me-hs-freeport",
 "Yarmouth High School": "me-hs-yarmouth"
 },
 "2025/XC/ms-fryeburg-gng-york-poland-lake-region-2025": {
@@ -233837,14 +234254,19 @@
 "Seacoast Chr": "me-ms-seacoast-christian"
 },
 "2025/XC/ms-western-maine-conference-championship-2025": {
+"Freeport High School": "me-hs-freeport",
 "Gray-New Gloucester High School": "me-hs-gray-ng",
 "North Yarmouth Academy": "me-hs-nya",
 "Waynflete School": "me-hs-waynflete",
 "Yarmouth High School": "me-hs-yarmouth"
 },
 "2025/XC/ms-wmc-jv-invitational-2025": {
+"Freeport High School": "me-hs-freeport",
 "Waynflete School": "me-hs-waynflete",
 "Yarmouth High School": "me-hs-yarmouth"
+},
+"2025/XC/ms-wmcfreeport-2025": {
+"Freeport High School": "me-hs-freeport"
 },
 "2025/XC/ms-york-noble-thornton-wells-shapleigh-seacoast-marshwood-2025": {
 "Seacoast Christian": "me-ms-seacoast-christian"
@@ -234291,6 +234713,7 @@
 "2026/Indoor/B-Boys": {
 "Bangor Chris": "me-hs-bangor-christian",
 "Cape Elizabe": "me-hs-cape-elizabeth",
+"Freeport High School": "me-hs-freeport",
 "Gray New Glo": "me-hs-gray-ng",
 "Lake Region": "me-hs-lake-region",
 "Medomak Vall": "me-hs-medomak",
@@ -234304,6 +234727,7 @@
 "Bangor Chris": "me-hs-bangor-christian",
 "Belfast Area": "me-hs-belfast",
 "Cape Elizabe": "me-hs-cape-elizabeth",
+"Freeport High School": "me-hs-freeport",
 "Gray New Glo": "me-hs-gray-ng",
 "Medomak Vall": "me-hs-medomak",
 "North Yarmou": "me-hs-nya",
@@ -234356,6 +234780,7 @@
 },
 "2026/Indoor/Marathon-Elite-girls-results": {
 "Bonny Eagle": "me-hs-bonny-eagle",
+"Freeport High School": "me-hs-freeport",
 "Lake Region": "me-hs-lake-region",
 "Scarborough": "me-hs-scarborough",
 "South Portla": "me-hs-south-portland",
@@ -234368,6 +234793,7 @@
 "Cape Elizabe": "me-hs-cape-elizabeth",
 "Cony High Sc": "coop-it-cony-halldale-winthrop",
 "Cony High School": "coop-it-cony-halldale-winthrop",
+"Freeport High School": "me-hs-freeport",
 "Gray New Glo": "me-hs-gray-ng",
 "Lake Region": "me-hs-lake-region",
 "Messalonskee": "me-hs-messalonskee",
@@ -234528,6 +234954,7 @@
 "Presque Isle": "me-hs-presque-isle"
 },
 "2026/Indoor/ms-december-falconpatriot-jam-2026": {
+"Freeport High School": "me-hs-freeport",
 "Gray-New Gloucester High School": "me-hs-gray-ng"
 },
 "2026/Indoor/ms-kvac-class-a-championship-2026": {
@@ -234561,6 +234988,7 @@
 "Yarmouth High School": "me-hs-yarmouth"
 },
 "2026/Indoor/ms-wmc-gng-cape-pol-wells-freep-frye-2026": {
+"Freeport High School": "me-hs-freeport",
 "Gray-New Gloucester High School": "me-hs-gray-ng"
 },
 "2026/Indoor/ms-wmc-gre-lr-nya-mt-val-york-traip-booth-wisc-yarm-2026": {
@@ -234572,17 +235000,20 @@
 "Yarmouth High School": "me-hs-yarmouth"
 },
 "2026/Indoor/ms-wmc-greely-cape-lr-mt-val-gng-freep-frye-2026": {
+"Freeport High School": "me-hs-freeport",
 "Gray-New Gloucester High School": "me-hs-gray-ng"
 },
 "2026/Indoor/ms-wmc-greely-cape-pol-lr-wells-nya-mt-val-booth-wisc-2026": {
 "North Yarmouth Academy": "me-hs-nya"
 },
 "2026/Indoor/ms-wmc-indoor-championship-2026": {
+"Freeport High School": "me-hs-freeport",
 "Gray-New Gloucester High School": "me-hs-gray-ng",
 "North Yarmouth Academy": "me-hs-nya",
 "Yarmouth High School": "me-hs-yarmouth"
 },
 "2026/Indoor/ms-wmc-meet-1-greely-pol-lr-wells-nya-frye-freeport-2026": {
+"Freeport High School": "me-hs-freeport",
 "North Yarmouth Academy": "me-hs-nya"
 },
 "2026/Indoor/ms-wmc-pol-wells-nya-traip-yarm-booth-wisc-2026": {
@@ -234590,9 +235021,11 @@
 "Yarmouth High School": "me-hs-yarmouth"
 },
 "2026/Indoor/ms-wmc-york-free-traip-mt-val-pol-lr-wells-nya-2026": {
+"Freeport High School": "me-hs-freeport",
 "North Yarmouth Academy": "me-hs-nya"
 },
 "2026/Indoor/ms-wmc-york-gng-freeport-traip-frye-yarm-2026": {
+"Freeport High School": "me-hs-freeport",
 "Gray-New Gloucester High School": "me-hs-gray-ng",
 "Yarmouth High School": "me-hs-yarmouth"
 },
@@ -234681,6 +235114,7 @@
 "Cape Elizabe": "me-hs-cape-elizabeth",
 "Cony High Sc": "me-hs-cony",
 "Cony High School": "me-hs-cony",
+"Freeport High School": "me-hs-freeport",
 "Gray New Glo": "me-hs-gray-ng",
 "Lake Region": "me-hs-lake-region",
 "Medomak Vall": "me-hs-medomak",
@@ -234693,6 +235127,7 @@
 "Cape Elizabe": "me-hs-cape-elizabeth",
 "Cony High Sc": "me-hs-cony",
 "Cony High School": "me-hs-cony",
+"Freeport High School": "me-hs-freeport",
 "Gray New Glo": "me-hs-gray-ng",
 "Lake Region": "me-hs-lake-region",
 "Medomak Vall": "me-hs-medomak",
@@ -234717,6 +235152,7 @@
 },
 "2026/Outdoor/Lake-Region-results": {
 "Cape Elizabe": "me-hs-cape-elizabeth",
+"Freeport High School": "me-hs-freeport",
 "Lake Region": "me-hs-lake-region",
 "North Yarmou": "coop-nya-maine-coast-waldorf",
 "North Yarmouth Academy": "me-hs-nya"
@@ -234998,6 +235434,7 @@
 },
 "2026/Outdoor/WMC-girls-results": {
 "Cape Elizabe": "me-hs-cape-elizabeth",
+"Freeport High School": "me-hs-freeport",
 "Gray New Glo": "me-hs-gray-ng",
 "Lake Region": "me-hs-lake-region",
 "North Yarmou": "coop-nya-maine-coast-waldorf",
@@ -235008,6 +235445,7 @@
 },
 "2026/Outdoor/WMC-results-boys": {
 "Cape Elizabe": "me-hs-cape-elizabeth",
+"Freeport High School": "me-hs-freeport",
 "Gray New Glo": "me-hs-gray-ng",
 "Lake Region": "me-hs-lake-region",
 "North Yarmou": "me-hs-nya",
@@ -235444,6 +235882,7 @@
 "Winslow": "me-hs-winslow"
 },
 "2026/XC/ms-2026-southern-maine-classic-2026": {
+"Freeport High School": "me-hs-freeport",
 "Gray-New Gloucester High School": "me-hs-gray-ng",
 "Lisbon/Oak Hill": "me-hs-lisbon",
 "North Yarmouth Academy": "me-hs-nya",
@@ -235481,6 +235920,9 @@
 "2026/XC/ms-calais-invitational-2026": {
 "Sumner Memorial High School": "me-hs-sumner"
 },
+"2026/XC/ms-cape-greely-freeport-wells-2026": {
+"Freeport High School": "me-hs-freeport"
+},
 "2026/XC/ms-ccc-ms-xc-meet-3-at-lake-region-2026": {
 "GNG": "me-ms-gray-ng",
 "Lake Region": "me-ms-lake-region",
@@ -235509,6 +235951,7 @@
 "Sumner Memorial High School": "me-hs-sumner"
 },
 "2026/XC/ms-freeport-falcon-4k-xc-challenge-2026": {
+"Freeport High School": "me-hs-freeport",
 "Unattached": "x-unattached",
 "Waynflete School": "me-hs-waynflete",
 "Yarmouth High School": "me-hs-yarmouth"
@@ -235558,6 +236001,7 @@
 },
 "2026/XC/ms-maine-state-xc-championship-class-b-2026": {
 "Cony High School": "me-hs-cony",
+"Freeport High School": "me-hs-freeport",
 "Yarmouth High School": "me-hs-yarmouth"
 },
 "2026/XC/ms-maine-state-xc-championship-class-c-2026": {
@@ -235666,6 +236110,7 @@
 "Westbrook High School": "me-hs-westbrook"
 },
 "2026/XC/ms-southern-maine-class-b-regional-xc-championship-2026": {
+"Freeport High School": "me-hs-freeport",
 "Gray-New Gloucester High School": "me-hs-gray-ng",
 "Yarmouth High School": "me-hs-yarmouth"
 },
@@ -235703,6 +236148,7 @@
 "Waynflete School": "me-hs-waynflete"
 },
 "2026/XC/ms-wells-high-school-invitational-laudholm-farm-2026": {
+"Freeport High School": "me-hs-freeport",
 "Gray-New Gloucester High School": "me-hs-gray-ng",
 "North Yarmouth Academy": "me-hs-nya",
 "Yarmouth High School": "me-hs-yarmouth"
@@ -235714,9 +236160,16 @@
 "2026/XC/ms-winthrop-meet-2026": {
 "Monmouth Academy": "me-hs-monmouth"
 },
+"2026/XC/ms-wmc-freeport-2026": {
+"Freeport High School": "me-hs-freeport"
+},
 "2026/XC/ms-wmc-jv-invitational-2026": {
+"Freeport High School": "me-hs-freeport",
 "Waynflete School": "me-hs-waynflete",
 "Yarmouth High School": "me-hs-yarmouth"
+},
+"2026/XC/ms-wmc-lake-region-2026": {
+"Freeport High School": "me-hs-freeport"
 },
 "2026/XC/ms-wmc-poland-2026": {
 "Gray-New Gloucester High School": "me-hs-gray-ng"
@@ -237568,7 +238021,6 @@
 "Veazie Community School": "me-ms-veazie",
 "Vergennes": "oos-auto-vt-vergennes",
 "Vergennes Union": "oos-auto-vt-vergennes-union",
-"Vik": "me-ms-oxford-hills",
 "Vikings": {
 "id": null,
 "basis": "name only (no joined rows)"
@@ -240638,26 +241090,6 @@
 "id": null,
 "method": "unresolved",
 "how": "unresolved"
-},
-{
-"raw": "Raiders 2012",
-"rows": 17,
-"seasons": {
-"Indoor": 17
-},
-"years": [
-2013,
-2013
-],
-"id": null,
-"method": "nickname+season-words",
-"candidates": [
-"me-hs-fryeburg",
-"me-hs-oak-hill",
-"me-hs-washington-academy",
-"me-hs-winslow"
-],
-"how": "ambiguous"
 },
 {
 "raw": "Providence C",
@@ -243754,26 +244186,6 @@
 "id": null,
 "method": "unresolved",
 "how": "unresolved"
-},
-{
-"raw": "Raiders 2013",
-"rows": 7,
-"seasons": {
-"Indoor": 7
-},
-"years": [
-2014,
-2014
-],
-"id": null,
-"method": "nickname+season-words",
-"candidates": [
-"me-hs-fryeburg",
-"me-hs-oak-hill",
-"me-hs-washington-academy",
-"me-hs-winslow"
-],
-"how": "ambiguous"
 },
 {
 "raw": "Weaver",

@@ -3887,6 +3887,30 @@ def test_milesplit_track_age_column():
     assert roy['school'].startswith('Lake Region') and roy['result'] == '32-01.00'
 
 
+def test_milesplit_track_uppercase_division_prefix():
+    """SMMSAC 2013 RaceTab sheets print the division in capitals: "SR Boys Shot Put"."""
+    from backend import milesplit as ms
+    text = '\n'.join([
+        '                       SR Boys Shot Put                       ',
+        '==============================================================',
+        '    Name                  Yr Team                      Mark',
+        '--------------------------------------------------------------',
+        '  1 Kyle Holman              Saco                  40-00.00   ',
+        '',
+        '                      INT Boys Shot Put                       ',
+        '==============================================================',
+        '    Name                  Yr Team                      Mark',
+        '--------------------------------------------------------------',
+        '  1 Brian Bernier            Pol                   21-04.00   ',
+    ])
+    out = ms.parse(text)
+    events = out[0] if isinstance(out, tuple) else out['events'] if isinstance(out, dict) else out
+    names = [e.get('event') or e.get('event_name') for e in events]
+    assert len(events) == 2, names
+    assert all('Shot Put' in n for n in names) and 'Senior' in names[0] and 'Intermediate' in names[1], names
+    assert events[0]['results'][0]['result'] == '40-00.00'
+
+
 if __name__ == '__main__':
     qaqc._ensure_team_mapping()
     failed = 0
