@@ -2114,14 +2114,6 @@
                     "place": 3
                 },
                 {
-                    "athlete": "South Port",
-                    "school": "High School",
-                    "result": "95.5",
-                    "grade": "",
-                    "type": "Finals",
-                    "place": 2
-                },
-                {
                     "athlete": "Portland H",
                     "school": "School",
                     "result": "42.5",
@@ -2166,5 +2158,8 @@
         }
     ],
     "parser": "ColumnStrategyParser",
-    "team_rankings_source": "teamscores"
+    "team_rankings_source": "teamscores",
+    "warnings": [
+        "Male Team Scores line '2 South Portland High School SP 95.5' after Event 41 hurdles qualifier had been read as a result; removed"
+    ]
 }
