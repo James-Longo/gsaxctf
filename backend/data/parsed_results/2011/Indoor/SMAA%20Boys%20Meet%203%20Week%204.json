@@ -715,17 +715,6 @@
             "is_relay": false,
             "results": [
                 {
-                    "athlete": "Joe Slattery",
-                    "school": "Cheverus",
-                    "result": "4.08",
-                    "grade": "JR",
-                    "type": "Prelims",
-                    "place": 1,
-                    "warnings": [
-                        "Original result: 4.08q"
-                    ]
-                },
-                {
                     "athlete": "Christopher Bowden",
                     "school": "Westbrook",
                     "result": "4.90",
@@ -1849,5 +1838,8 @@
     "meet_name": "SMAA Boys Meet 3 Week 4",
     "venue": null,
     "team_rankings": [],
-    "parser": "ColumnStrategyParser"
+    "parser": "ColumnStrategyParser",
+    "warnings": [
+        "Boys 40 Yard Dash: Joe Slattery (Cheverus) prelim printed 4.08q, his final 4.80 (seeded 4.08); 4.08 is impossible for 40 yards, prelim row left out"
+    ]
 }
