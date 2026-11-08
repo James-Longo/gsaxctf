@@ -3983,3 +3983,24 @@ if __name__ == '__main__':
                 traceback.print_exc()
                 print('FAIL', name, e)
     sys.exit(1 if failed else 0)
+
+
+def test_milesplit_racetab_division_headers_not_merged():
+    """A RaceTab sheet with 'Junior Boys ...' division headers (WMC 2010): parse_race reads no such
+    header and would run the section into the race before; the writer reads the sheet with parse()."""
+    from backend import milesplit as M
+    rule = '=' * 60
+    t = '\n'.join([
+        'RaceTab 3 by MileSplit        Registered to: X', '',
+        '               Varsity Girls Two Mile Run Finals', rule,
+        '    Name                    Yr Team               Time     Pts', rule,
+        '  1 Kendra Lobley              Poland             12:09.15   10',
+        '  2 Erin Morris                Falmouth           13:01.41    8', '',
+        '               Junior Boys 4x200 Meter Relay Finals', rule,
+        '    Team                                           Time     Pts', rule,
+        '  1 Falmouth                                      1:43.27   10',
+        '  2 York                                          1:43.73    8', ''])
+    ev, _ = M.read_racetab_or_hytek(t)
+    two = [e for e in ev if 'Two Mile' in e['event']]
+    assert len(two) == 1 and len(two[0]['results']) == 2
+    assert any(e['is_relay'] and len(e['results']) == 2 for e in ev)

@@ -277,6 +277,16 @@ def hdr_gender(ln):
     if ln.count(chr(9))>2 or re.match(r'\s*\d',ln): return None
     m=HDR.match(ln.rstrip())
     return m
+def read_racetab_or_hytek(t):
+    """A track sheet's (events, rankings). RaceTab sheets go to parse_race, but parse() reads them when
+    parse_race finds no race (2014 SMMSAC) or fewer races than parse(): parse_race reads no
+    'Junior Boys ...' division header and runs those sections into the race before (WMC 2010)."""
+    if 'RaceTab' in t[:200]:
+        a = parse_race(t)
+        if a[0]:
+            b = parse(t)
+            return a if len(a[0]) >= len(b[0]) else b
+    return parse(t)
 def parse_race(text):
     events=[]; rankings=[]; cur=None; skip=False; teamsec=None; teamtot=False
     for ln in text.split(chr(10)):
@@ -1255,7 +1265,7 @@ def main():
         t=re.sub(r"(?<=[\w.)])((?:Mt\. )?[A-Z][\w.]*(?: [A-Z][\w.]*)* Track Hy-Tek's MEET MANAGER\t)",r'\n\1',t)   # page header glued to the last row/leg before the page break
         global XC_HINT
         XC_HINT=('Girls' if re.search(r'(?i)girl|women',f['name']) else 'Boys' if re.search(r'(?i)\bboy|\bmen\b',f['name']) else None)
-        e,r=(parse_xc_any(t) if sys.argv[4]=='XC' else parse_tab5(t) if '\tEvent\t' in t else parse_tab(t) if t.count('\t')>5 else (parse_race(t) if 'RaceTab' in t[:200] and parse_race(t)[0] else parse(t)));   # RaceTab track sheets (2014 SMMSAC) read by parse() when parse_race finds no race
+        e,r=(parse_xc_any(t) if sys.argv[4]=='XC' else parse_tab5(t) if '\tEvent\t' in t else parse_tab(t) if t.count('\t')>5 else read_racetab_or_hytek(t));
         if sys.argv[4]=='XC': xc_team_places(e,r)
         for ev in e:   # Hy-Tek relay legs with bibs ("Alana #70 Heggeman, Adalyn #71 Irish")
             for x in ev['results']:
