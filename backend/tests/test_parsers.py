@@ -3911,6 +3911,29 @@ def test_milesplit_track_uppercase_division_prefix():
     assert events[0]['results'][0]['result'] == '40-00.00'
 
 
+def test_milesplit_track_division_prefix_with_period():
+    """SMMSAC 2012 RaceTab sheets print "Jr. Girls 600 Yard Run" after "Open Boys 1000 Yard Run"."""
+    from backend import milesplit as ms
+    text = '\n'.join([
+        '                         Open Boys 1000 Yard Run                          ',
+        '==========================================================================',
+        '    Name                      Yr Team                           Time   Pts',
+        '==========================================================================',
+        '  1 Justin Guerette            8 Cape Elizabeth Middle Sch    2:57.7     6',
+        '',
+        '                          Jr. Girls 600 Yard Run                          ',
+        '==========================================================================',
+        '    Name                      Yr Team                           Time   Pts',
+        '==========================================================================',
+        '  1 Abby Charles               6 Cape Elizabeth Middle Sch    2:17.4     6',
+    ])
+    out = ms.parse(text)
+    events = out[0] if isinstance(out, tuple) else out['events'] if isinstance(out, dict) else out
+    names = [e.get('event') or e.get('event_name') for e in events]
+    assert len(events) == 2, names
+    assert '600' in names[1] and 'Junior' in names[1] and events[1]['gender'] == 'Girls', names
+
+
 if __name__ == '__main__':
     qaqc._ensure_team_mapping()
     failed = 0
