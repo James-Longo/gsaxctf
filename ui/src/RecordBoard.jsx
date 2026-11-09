@@ -1,14 +1,16 @@
 import React, { useState, useMemo, useEffect } from 'react'
-import { computeRecords, coopTeams } from './records.js'
+import { computeRecords, coopTeams, mergeBoard } from './records.js'
+import { OFFICIAL_BOARDS, BOARD_EVENTS } from './officialBoards.js'
 import './App.css'
 
 // A team's record board for the season type in view (Indoor or Outdoor):
-// the best mark ever per event and gender, from the results store. Rules are
-// in records.js. Click an event for its all-time top 10.
+// the best mark ever per event and gender, from the results store, for the
+// events on GSA's official boards. Rules are in records.js; a team with an
+// official board (officialBoards.js) is cross-checked against it. Click an
+// event for its all-time top 10.
 function RecordBoard({ performances, selectedTeam, manifest, loadTeamData, season, runnerId, athletes, meetLinks }) {
-    const [fromYear, setFromYear] = useState('All')
     const [open, setOpen] = useState(new Set())
-    useEffect(() => { setOpen(new Set()); setFromYear('All') }, [selectedTeam, season])
+    useEffect(() => { setOpen(new Set()) }, [selectedTeam, season])
 
     // co-op squads the school hosts count toward its records
     const coops = useMemo(() => coopTeams(selectedTeam, manifest.teams || [])
@@ -25,9 +27,11 @@ function RecordBoard({ performances, selectedTeam, manifest, loadTeamData, seaso
         return (id) => m.get(id)
     }, [athletes])
     const years = useMemo(() => [...new Set(rows.map(p => p.year))].sort(), [rows])
-    const records = useMemo(() => computeRecords(rows, {
-        season, runnerId, nameOf, fromYear: fromYear === 'All' ? null : fromYear,
-    }), [rows, season, runnerId, nameOf, fromYear])
+    const board = OFFICIAL_BOARDS[selectedTeam]?.[season]
+    const records = useMemo(() => mergeBoard(
+        computeRecords(rows, { season, runnerId, nameOf })
+            .filter(r => BOARD_EVENTS[season]?.has(`${r.gender}|${r.event}`)),
+        board), [rows, season, runnerId, nameOf, board])
 
     if (selectedTeam === 'All') {
         return <div className="empty-state"><p>Choose a team to see its record board.</p></div>
@@ -44,25 +48,27 @@ function RecordBoard({ performances, selectedTeam, manifest, loadTeamData, seaso
     }
     const who = (e) => e.legs && e.legs.length > 1 ? e.legs.join(', ') : e.name
     const genders = [...new Set(records.map(r => r.gender))]
+    const rulesTitle = [
+        `Best mark per event in this site's results${years.length ? ` (${years[0]}–${years[years.length - 1]})` : ''}`,
+        board && `cross-checked against the ${selectedTeam} record board`,
+        coops.length > 0 && `includes co-op squads: ${coops.map(t => t.name).join(', ')}`,
+        'one entry per runner; DQ/DNF/foul marks excluded; hand times as written; click an event for its top 10',
+    ].filter(Boolean).join('; ')
+    const fmtEntry = (e) => `${who(e)}, ${e.mark} (${e.date || e.year})`
+    const boardBadge = (r) => {
+        if (!r.board) return null
+        const { row, status, site } = r.board
+        if (status === 'match') return <span className="badge board-badge" title="Matches the record board">✓</span>
+        if (status === 'beats') return <span className="badge board-badge" title={`Record board: ${row.name}, ${row.mark} (${row.year})`}>beats board</span>
+        const from = row.note ? `From the record board: ${row.note}` : 'From the record board; not in these results'
+        return <span className="badge board-badge" title={site ? `${from}. Best here: ${fmtEntry(site)}` : from}>board</span>
+    }
 
     return (
         <div className="record-board">
             <div className="header-row">
-                <h2>{selectedTeam} {season} Records</h2>
-                <div className="filter-group">
-                    <label>From</label>
-                    <select value={fromYear} onChange={e => setFromYear(e.target.value)}>
-                        <option value="All">All years</option>
-                        {years.map(y => <option key={y} value={y}>{y}</option>)}
-                    </select>
-                </div>
+                <h2 title={rulesTitle}>{selectedTeam} {season} Records</h2>
             </div>
-            <p className="record-note">
-                Best mark per event in the results on this site{years.length ? ` (${years[0]}–${years[years.length - 1]})` : ''}.
-                One entry per runner across name spellings; DQ/DNF/foul and similar marks don't count.
-                Hand times count as written. Click an event for its top 10.
-                {coops.length > 0 && ` Includes co-op squads: ${coops.map(t => t.name).join(', ')}.`}
-            </p>
             {!records.length && <div className="empty-state"><p>No {season.toLowerCase()} results loaded for this team yet.</p></div>}
             {genders.map(g => (
                 <div key={g} className="table-container record-section">
@@ -82,7 +88,7 @@ function RecordBoard({ performances, selectedTeam, manifest, loadTeamData, seaso
                                                 {i === 0 && <td rowSpan={r.record.length} className="record-event">
                                                     {r.event}<span className="splits-toggle">{isOpen ? ' ▲' : ' ▼'}</span>
                                                 </td>}
-                                                {i === 0 && <td rowSpan={r.record.length} className="mark-cell">{e.mark}</td>}
+                                                {i === 0 && <td rowSpan={r.record.length} className="mark-cell">{e.mark}{boardBadge(r)}</td>}
                                                 <td>{who(e)}{r.record.length > 1 && i === 0 && <span className="badge">tie</span>}</td>
                                                 <td className="record-date">{e.date}</td>
                                                 <td>{meetCell(e, season)}</td>

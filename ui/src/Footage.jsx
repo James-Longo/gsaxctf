@@ -3,6 +3,7 @@ import { asset } from './utils'
 
 export default function Footage() {
   const [albums, setAlbums] = useState([]);
+  const [broken, setBroken] = useState({});  // album ids whose cover failed to load
 
   useEffect(() => {
     fetch(asset('/albums.json'))
@@ -30,11 +31,12 @@ export default function Footage() {
             className="album-card"
           >
             <div className="album-card-banner" style={{ padding: 0, position: 'relative' }}>
-              {album.coverImage ? (
-                <img 
-                  src={album.coverImage} 
-                  alt={album.title} 
-                  referrerPolicy="no-referrer" 
+              {album.coverImage && !broken[album.id] ? (
+                <img
+                  src={album.coverImage}
+                  alt={album.title}
+                  referrerPolicy="no-referrer"
+                  onError={() => setBroken(b => ({ ...b, [album.id]: true }))}
                   style={{ width: '100%', height: '100%', objectFit: 'cover' }} 
                 />
               ) : (

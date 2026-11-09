@@ -29,7 +29,7 @@ import RecordBoard from './RecordBoard'
 const TRACK_TABS = ['history', 'records', 'sim', 'pr-pop', 'athlete-profile', 'predictor']
 const SPORTS = {
   xc: { label: 'Cross Country', season: 'XC', tabs: ['history', 'sim', 'xc-courses'], team: [] },
-  indoor: { label: 'Indoor', season: 'Indoor', tabs: TRACK_TABS, team: ['practice', 'footage'] },
+  indoor: { label: 'Indoor', season: 'Indoor', tabs: TRACK_TABS, team: ['footage'] },
   outdoor: { label: 'Outdoor', season: 'Outdoor', tabs: TRACK_TABS, team: ['practice', 'footage'] },
   // USATF Maine Youth Summer Series: clubs and age groups, its own data (backend/summer_track.py)
   summer: { label: 'Summer', season: 'Summer', tabs: ['history', 'records'], team: [] },

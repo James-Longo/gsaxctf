@@ -54992,11 +54992,11 @@
   "evidence": "scratch re-parse compared with the signed parse: result rows identical, only team_rankings ranks changed"
  },
  "backend/data/parsed_results/2023/Indoor/EMITL-Meet-3A.json": {
-  "parse_sha": "908f6c223e123a1c",
+  "parse_sha": "9f6db325c2f0a497",
   "source_sha": "97628bad1f980549",
-  "date": "2026-10-29",
-  "by": "sonnet audit (second read, 2026-10-29) (audit: confirmed)",
-  "evidence": "Ledger warning cleared by this read. PVC-Eastern Maine Indoor Track League Meet 3A, UMaine, 12/30/2022 (Hy-Tek; index December 30, 2022). Hy-Tek text compared row by row with scripts over the source (event, gender, place incl. ties, name, grade, school string, mark with q/J/R/x flags, 'X' B/C relay marks = exhibition, '--' rows = no place; points column; relay legs where printed; every school string against the parse): 32 races / 400 rows all agree (prelims with q marks and finals kept as separate events); both Team Rankings blocks (Women: Bangor 197, Brewer 95, Bucksport 61, GSA 23, Ellsworth 18, Central 5; Men: Bangor 117.5, Brewer 111 ...) equal the parse and the checker (10-8-6-4-2-1) says 'verified' (0 differences). Schools Bangor, Brewer, Bucksport, Ellsworth, Central, George Stevens, Foxcroft, Blue Hill Harbor resolve to their me-hs entries. The gender-bleed flag is not a parse error (no name in both genders)."
+  "date": "2026-11-09",
+  "by": "Claude (record-board relay fix)",
+  "evidence": "GSA relay legs added from MileSplit live results (URLs in each row's warnings); timer files print only the school"
  },
  "backend/data/parsed_results/2023/Indoor/EMITL-Meet-3B.json": {
   "parse_sha": "9dc553e669977581",
@@ -55062,11 +55062,11 @@
   "evidence": ""
  },
  "backend/data/parsed_results/2023/Indoor/Meet-6B.json": {
-  "parse_sha": "b1ff73c172f454b2",
+  "parse_sha": "004201f782d88c8c",
   "source_sha": "67502b3d7b93bebc",
-  "date": "2026-10-29",
-  "by": "sonnet audit (second read, 2026-10-29) (audit: confirmed)",
-  "evidence": "Hy-Tek text compared row by row with a script against the source (event/gender from header, place, name, grade, school string, finals mark, printed Points column, relay school and printed legs, x-exhibition rows, DQ/NH/FOUL/ND rows, Prelims vs Finals sections): 26 events / 323 rows, no differences. PVC-Eastern Maine Indoor Track League Meet 6B 1/26/2023, UMaine. Printed team scores (2 blocks) equal the parse. 'J' prefix on jump/pole vault/time marks (J3-10.00, J6-06.00) kept as numeric mark with parser warning 'Original result: J...'; x-prefixed Hampden 'B' 4x200 = exhibition; DQ comments ('cut in before cone', 'handoff out of zone') are not stored (fine). Schools: Bangor, Hampden Acad, George Stevens (me-hs-gsa), Sumner, MDI, Hermon, Blue Hill Harbor all right."
+  "date": "2026-11-09",
+  "by": "Claude (record-board relay fix)",
+  "evidence": "GSA relay legs added from MileSplit live results (URLs in each row's warnings); timer files print only the school"
  },
  "backend/data/parsed_results/2023/Indoor/Results-1.json": {
   "parse_sha": "4d8ba1e59e3a3aa9",
@@ -61733,11 +61733,11 @@
   "evidence": ""
  },
  "backend/data/parsed_results/2025/Indoor/EMITL-Small-school-boys.json": {
-  "parse_sha": "24ec1ec5038087a3",
+  "parse_sha": "65fa6871e6e2c6e4",
   "source_sha": "2283159ffa3a5d36",
-  "date": "2026-10-16",
-  "by": "auto: team scores verified exactly, all schools identified, no flags",
-  "evidence": ""
+  "date": "2026-11-09",
+  "by": "Claude (record-board relay fix)",
+  "evidence": "GSA relay legs added from MileSplit live results (URLs in each row's warnings); timer files print only the school"
  },
  "backend/data/parsed_results/2025/Indoor/EMITL-Small-school-girls.json": {
   "parse_sha": "f08fbccfd7e11983",
