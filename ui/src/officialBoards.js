@@ -1,4 +1,4 @@
-// GSA's official record boards, copied from James's Drive (read 2026-11-09):
+// GSA's official record boards, copied from James's Drive (read 2026-11-09; Indoor shot put and boys 4x800 lines updated from the results):
 //   Indoor:  "GSA Indoor Track Records" (Google Sheet 1aGgQTPSWmLqqeHuFV7sdD44gAq2536eCpbxOEl-kdP4),
 //            year = the season's January
 //   Outdoor: "GSA Outdoor Track Records.xlsx" (1j-0OrV1lANrIUZb65vuN3XvDOTL-BaiB), "GSA Records" sheet
@@ -8,8 +8,7 @@
 // The boards' events are the events every team's record board shows
 // (BOARD_EVENTS); GSA's board is also cross-checked against its results.
 
-// note: where a board mark the results don't hold comes from
-const b = (gender, event, name, mark, year, note) => ({ gender, event, name, mark, year, ...(note ? { note } : {}) })
+const b = (gender, event, name, mark, year) => ({ gender, event, name, mark, year })
 
 const GSA = {
   Indoor: [
@@ -17,17 +16,16 @@ const GSA = {
     b('Boys', '200 Meter Dash', 'Ben Baldwin', '24.03', '2025'),
     b('Boys', '400 Meter Dash', 'Wyatt Richardson', '52.84', '2025'),
     b('Boys', '800 Meter Run', 'John Hassett', '1:57.09', '2017'),
-    b('Boys', '1 Mile Run', 'John Hassett', '4:25.20', '2017',
-      'USATF New England Indoor Championships, Harvard, 2/19/2017, unattached (tfrrs.org/results/48924)'),
+    b('Boys', '1 Mile Run', 'John Hassett', '4:25.20', '2017'),
     b('Boys', '2 Mile Run', 'John Hassett', '10:00.57', '2017'),
     b('Boys', '55 Meter Hurdles', 'Andrew Hipsky', '8.21', '2023'),
     b('Boys', '4x200 Meter Relay', 'Ben Baldwin, Jake Lepper, Fred Coit, Rowan Gagne', '1:36.48', '2025'),
-    b('Boys', '4x800 Meter Relay', 'Addison Pellerano, Connor Meginnis, Caleb Hale, Keith Fisher', '9:07.92', '2007'),
+    b('Boys', '4x800 Meter Relay', 'Names unknown', '8:59.29', '2005'),
     b('Boys', 'High Jump', 'Cameron Gordon', '5-10.00', '2016'),
     b('Boys', 'Pole Vault', 'Thomas Coolidge', '12-00.00', '2025'),
     b('Boys', 'Long Jump', 'Reece Renwick', '20-06.50', '2025'),
     b('Boys', 'Triple Jump', 'Reece Renwick', '42-10.50', '2026'),
-    b('Boys', 'Shot Put', 'Charles St Lawrence', '35-00.50', '2023'),
+    b('Boys', 'Shot Put', 'Stephen Murdoch', '41-11.50', '2005'),
     b('Girls', '55 Meter Dash', 'Ripley King-Ofsiany', '7.89', '2026'),
     b('Girls', '200 Meter Dash', 'Ripley King-Ofsiany', '27.70', '2026'),
     b('Girls', '400 Meter Dash', 'Logan Townsend', '1:04.14', '2025'),
@@ -41,7 +39,7 @@ const GSA = {
     b('Girls', 'Pole Vault', 'Hazel Kimball', '7-00.00', '2026'),
     b('Girls', 'Long Jump', 'Ivy Manner-Wheeldon', '15-00.25', '2019'),
     b('Girls', 'Triple Jump', 'Ripley King-Ofsiany', '33-05.25', '2026'),
-    b('Girls', 'Shot Put', 'Maranda Pert', '30-11.00', '2024'),
+    b('Girls', 'Shot Put', 'Verronika Cousins', '32-00.50', '2007'),
   ],
   Outdoor: [
     b('Boys', '100 Meter Dash', 'Rowan Gagne', '11.23', '2025'),
