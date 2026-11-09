@@ -180,6 +180,20 @@ def test_display_name_keeps_a_surname_that_is_also_a_first_name_last():
     assert display_name({'S ALEXANDER': 5, 'Steven Alexander': 2}, share) == 'Steven Alexander'
 
 
+def test_display_name_counts_hyphen_forms_together_and_weighs_meets():
+    from backend.athlete_catalog import display_name
+    # 'Manner-Wheeldon' and 'Manner Wheeldon' are one spelling (15 + 14 rows beat 'Wheelden' 20)
+    assert display_name({'Ivy Manner-Wheelden': 20, 'Ivy Manner-Wheeldon': 15, 'Ivy Manner Wheeldon': 14}) \
+        == 'Ivy Manner-Wheeldon'
+    # a spelling seen at more meets beats one a timer repeats on many rows
+    m = {'Orion Ouelette': {f'a{i}' for i in range(5)}, 'Orion Ouellette': {f'b{i}' for i in range(10)}}
+    assert display_name({'Orion Ouelette': 11, 'Orion Ouellette': 10}, None, m) == 'Orion Ouellette'
+    assert display_name({'Orion Ouelette': 11, 'Orion Ouellette': 10}) == 'Orion Ouelette'
+    # initials still give way to the full first name, whatever the meet count
+    m = {'C Greeley': {f'a{i}' for i in range(15)}, 'Cody Greeley': {f'b{i}' for i in range(8)}}
+    assert display_name({'C Greeley': 28, 'Cody Greeley': 15}, None, m) == 'Cody Greeley'
+
+
 def test_class_year_settles_only_when_grades_agree():
     from collections import Counter
     hs = [dict(unit='me-hs-x', ays={2018, 2019, 2020})]
