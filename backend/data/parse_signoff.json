@@ -902,6 +902,13 @@
   "by": "re-check 2026-10-28: re-parsed only for the team-rank fix (ranks 10+ were stored as 0-9)",
   "evidence": "scratch re-parse compared with the signed parse: result rows identical, only team_rankings ranks changed"
  },
+ "backend/data/parsed_results/2004/Indoor/bbrelays.json": {
+  "parse_sha": "01e26acf337e3b3b",
+  "source_sha": "58f07f2aefb62483",
+  "date": "2026-11-09",
+  "by": "gsa-relay-legs",
+  "evidence": "Only change: legs added to nameless GSA relay rows (athletes + warnings citing the source): MileSplit live results, athletic.net, BDN results via Internet Archive, the Mixed SMR section of the same file, or exact field-relay sums from the meet's field file. git diff shows only those lines; resync 0 rows lost"
+ },
  "backend/data/parsed_results/2004/Indoor/emitlboys.json": {
   "parse_sha": "296cd08d4e889722",
   "source_sha": "60e492eea722015c",
@@ -18773,6 +18780,13 @@
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
  },
+ "backend/data/parsed_results/2011/Outdoor/mdi_relays_boys_results_4.30.11.json": {
+  "parse_sha": "c263e879ca326b6c",
+  "source_sha": "108de60092ef3ff0",
+  "date": "2026-11-09",
+  "by": "gsa-relay-legs",
+  "evidence": "Only change: legs added to nameless GSA relay rows (athletes + warnings citing the source): MileSplit live results, athletic.net, BDN results via Internet Archive, the Mixed SMR section of the same file, or exact field-relay sums from the meet's field file. git diff shows only those lines; resync 0 rows lost"
+ },
  "backend/data/parsed_results/2011/Outdoor/mdiboys_may6.json": {
   "parse_sha": "14e8925b68922ccd",
   "source_sha": "b3edc5cc717f7268",
@@ -18891,6 +18905,13 @@
   "date": "2026-11-05",
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
+ },
+ "backend/data/parsed_results/2011/Outdoor/updated_girls_mdi_relays_results_4.30.11.json": {
+  "parse_sha": "e0939de3838ba45e",
+  "source_sha": "a97aa6980923a8b5",
+  "date": "2026-11-09",
+  "by": "gsa-relay-legs",
+  "evidence": "Only change: legs added to nameless GSA relay rows (athletes + warnings citing the source): MileSplit live results, athletic.net, BDN results via Internet Archive, the Mixed SMR section of the same file, or exact field-relay sums from the meet's field file. git diff shows only those lines; resync 0 rows lost"
  },
  "backend/data/parsed_results/2011/Outdoor/watervilleMSscores_may11.json": {
   "parse_sha": "7fe494eaf6105b56",
@@ -37365,6 +37386,20 @@
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
  },
+ "backend/data/parsed_results/2017/Outdoor/JV-boys.json": {
+  "parse_sha": "133cbf376d990539",
+  "source_sha": "dc7f33b9b813bd5b",
+  "date": "2026-11-09",
+  "by": "gsa-relay-legs",
+  "evidence": "Only change: legs added to nameless GSA relay rows (athletes + warnings citing the source): MileSplit live results, athletic.net, BDN results via Internet Archive, the Mixed SMR section of the same file, or exact field-relay sums from the meet's field file. git diff shows only those lines; resync 0 rows lost"
+ },
+ "backend/data/parsed_results/2017/Outdoor/JV-girls.json": {
+  "parse_sha": "84cc41d8a10bcad0",
+  "source_sha": "4a84053ff7652e1c",
+  "date": "2026-11-09",
+  "by": "gsa-relay-legs",
+  "evidence": "Only change: legs added to nameless GSA relay rows (athletes + warnings citing the source): MileSplit live results, athletic.net, BDN results via Internet Archive, the Mixed SMR section of the same file, or exact field-relay sums from the meet's field file. git diff shows only those lines; resync 0 rows lost"
+ },
  "backend/data/parsed_results/2017/Outdoor/KVAC-B-Results-2017-Boys.json": {
   "parse_sha": "9e6e0f2f6835378b",
   "source_sha": "a0e1b350c50c5736",
@@ -37714,6 +37749,20 @@
   "date": "2026-11-05",
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
+ },
+ "backend/data/parsed_results/2017/Outdoor/bircboys2017.json": {
+  "parse_sha": "0376eed09d758af5",
+  "source_sha": "afe9786cd682094e",
+  "date": "2026-11-09",
+  "by": "gsa-relay-legs",
+  "evidence": "Only change: legs added to nameless GSA relay rows (athletes + warnings citing the source): MileSplit live results, athletic.net, BDN results via Internet Archive, the Mixed SMR section of the same file, or exact field-relay sums from the meet's field file. git diff shows only those lines; resync 0 rows lost"
+ },
+ "backend/data/parsed_results/2017/Outdoor/bircgirls2017.json": {
+  "parse_sha": "7a7d421ce1c5026a",
+  "source_sha": "dd7b90d3dee78e0d",
+  "date": "2026-11-09",
+  "by": "gsa-relay-legs",
+  "evidence": "Only change: legs added to nameless GSA relay rows (athletes + warnings citing the source): MileSplit live results, athletic.net, BDN results via Internet Archive, the Mixed SMR section of the same file, or exact field-relay sums from the meet's field file. git diff shows only those lines; resync 0 rows lost"
  },
  "backend/data/parsed_results/2017/Outdoor/boys-results-1.json": {
   "parse_sha": "49a222007f86e6a7",
@@ -40096,11 +40145,11 @@
   "evidence": "every row vs sub5 sheet; relays 'Sumner/Narraguagus Schools' were filed apart from the co-op's runners -> label added to coop-it-sumner-narraguagus, 33 rows now in one team folder; rest clean"
  },
  "backend/data/parsed_results/2018/Indoor/EMITL1BGIRLS_16DEC2017.json": {
-  "parse_sha": "a97b78e8cc6b83f0",
+  "parse_sha": "f0ef9e32514d842d",
   "source_sha": "e8c9c75b0301be4b",
-  "date": "2026-10-16",
-  "by": "auto: team scores verified exactly, all schools identified, no flags",
-  "evidence": ""
+  "date": "2026-11-09",
+  "by": "gsa-relay-legs",
+  "evidence": "Only change: legs added to nameless GSA relay rows (athletes + warnings citing the source): MileSplit live results, athletic.net, BDN results via Internet Archive, the Mixed SMR section of the same file, or exact field-relay sums from the meet's field file. git diff shows only those lines; resync 0 rows lost"
  },
  "backend/data/parsed_results/2018/Indoor/KVAC-12-16-meet.json": {
   "parse_sha": "dcdce881d615b530",
@@ -41558,12 +41607,19 @@
   "by": "re-check 2026-10-28: re-parsed only for the team-rank fix (ranks 10+ were stored as 0-9)",
   "evidence": "scratch re-parse compared with the signed parse: result rows identical, only team_rankings ranks changed"
  },
+ "backend/data/parsed_results/2018/Outdoor/bircboys.json": {
+  "parse_sha": "3aa7a00dcc98da9a",
+  "source_sha": "7a923323ed843cac",
+  "date": "2026-11-09",
+  "by": "gsa-relay-legs",
+  "evidence": "Only change: legs added to nameless GSA relay rows (athletes + warnings citing the source): MileSplit live results, athletic.net, BDN results via Internet Archive, the Mixed SMR section of the same file, or exact field-relay sums from the meet's field file. git diff shows only those lines; resync 0 rows lost"
+ },
  "backend/data/parsed_results/2018/Outdoor/bircgirls.json": {
-  "parse_sha": "d7bfa445ee3b52ff",
+  "parse_sha": "1e74681acfd313d3",
   "source_sha": "62a6aebf8f5d1655",
-  "date": "2026-10-28",
-  "by": "re-check 2026-10-28: re-parsed only for the team-rank fix (ranks 10+ were stored as 0-9)",
-  "evidence": "scratch re-parse compared with the signed parse: result rows identical, only team_rankings ranks changed"
+  "date": "2026-11-09",
+  "by": "gsa-relay-legs",
+  "evidence": "Only change: legs added to nameless GSA relay rows (athletes + warnings citing the source): MileSplit live results, athletic.net, BDN results via Internet Archive, the Mixed SMR section of the same file, or exact field-relay sums from the meet's field file. git diff shows only those lines; resync 0 rows lost"
  },
  "backend/data/parsed_results/2018/Outdoor/boys_bangor_meet_5.11.18.json": {
   "parse_sha": "11be540b304b0e35",
@@ -44896,6 +44952,20 @@
   "date": "2026-10-16",
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
+ },
+ "backend/data/parsed_results/2019/Outdoor/ResultsBIRCBoys.json": {
+  "parse_sha": "64de91ad98dbf089",
+  "source_sha": "54e2e5a0a3daaf87",
+  "date": "2026-11-09",
+  "by": "gsa-relay-legs",
+  "evidence": "Only change: legs added to nameless GSA relay rows (athletes + warnings citing the source): MileSplit live results, athletic.net, BDN results via Internet Archive, the Mixed SMR section of the same file, or exact field-relay sums from the meet's field file. git diff shows only those lines; resync 0 rows lost"
+ },
+ "backend/data/parsed_results/2019/Outdoor/ResultsBIRCGirls.json": {
+  "parse_sha": "9989c7f6a47e2806",
+  "source_sha": "25d35680dce04f48",
+  "date": "2026-11-09",
+  "by": "gsa-relay-legs",
+  "evidence": "Only change: legs added to nameless GSA relay rows (athletes + warnings citing the source): MileSplit live results, athletic.net, BDN results via Internet Archive, the Mixed SMR section of the same file, or exact field-relay sums from the meet's field file. git diff shows only those lines; resync 0 rows lost"
  },
  "backend/data/parsed_results/2019/Outdoor/ResultsYARM.json": {
   "parse_sha": "6105b38ffcf634ac",
@@ -55062,11 +55132,11 @@
   "evidence": ""
  },
  "backend/data/parsed_results/2023/Indoor/Meet-6B.json": {
-  "parse_sha": "004201f782d88c8c",
+  "parse_sha": "8b21ebc74430decc",
   "source_sha": "67502b3d7b93bebc",
   "date": "2026-11-09",
-  "by": "Claude (record-board relay fix)",
-  "evidence": "GSA relay legs added from MileSplit live results (URLs in each row's warnings); timer files print only the school"
+  "by": "gsa-relay-legs",
+  "evidence": "Only change: legs added to nameless GSA relay rows (athletes + warnings citing the source): MileSplit live results, athletic.net, BDN results via Internet Archive, the Mixed SMR section of the same file, or exact field-relay sums from the meet's field file. git diff shows only those lines; resync 0 rows lost"
  },
  "backend/data/parsed_results/2023/Indoor/Results-1.json": {
   "parse_sha": "4d8ba1e59e3a3aa9",
@@ -55902,18 +55972,18 @@
   "evidence": ""
  },
  "backend/data/parsed_results/2023/Outdoor/Ellsworth-HS-boys-results.json": {
-  "parse_sha": "d909ad1aff9bf173",
+  "parse_sha": "76f674427d212780",
   "source_sha": "b1d95527b207ddfd",
-  "date": "2026-10-16",
-  "by": "auto: team scores verified exactly, all schools identified, no flags",
-  "evidence": ""
+  "date": "2026-11-09",
+  "by": "gsa-relay-legs",
+  "evidence": "Only change: legs added to nameless GSA relay rows (athletes + warnings citing the source): MileSplit live results, athletic.net, BDN results via Internet Archive, the Mixed SMR section of the same file, or exact field-relay sums from the meet's field file. git diff shows only those lines; resync 0 rows lost"
  },
  "backend/data/parsed_results/2023/Outdoor/Ellsworth-HS-girls-results.json": {
-  "parse_sha": "f862575a80f2d790",
+  "parse_sha": "37756ce7b780aa4e",
   "source_sha": "2eb485d9c675e245",
-  "date": "2026-10-16",
-  "by": "auto: team scores verified exactly, all schools identified, no flags",
-  "evidence": ""
+  "date": "2026-11-09",
+  "by": "gsa-relay-legs",
+  "evidence": "Only change: legs added to nameless GSA relay rows (athletes + warnings citing the source): MileSplit live results, athletic.net, BDN results via Internet Archive, the Mixed SMR section of the same file, or exact field-relay sums from the meet's field file. git diff shows only those lines; resync 0 rows lost"
  },
  "backend/data/parsed_results/2023/Outdoor/Ellsworth-boys-results.json": {
   "parse_sha": "162506891e328b1a",
@@ -55984,6 +56054,20 @@
   "date": "2026-10-16",
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
+ },
+ "backend/data/parsed_results/2023/Outdoor/MDI-boys.json": {
+  "parse_sha": "13be8f08ddcb206d",
+  "source_sha": "66944d1606361ec3",
+  "date": "2026-11-09",
+  "by": "gsa-relay-legs",
+  "evidence": "Only change: legs added to nameless GSA relay rows (athletes + warnings citing the source): MileSplit live results, athletic.net, BDN results via Internet Archive, the Mixed SMR section of the same file, or exact field-relay sums from the meet's field file. git diff shows only those lines; resync 0 rows lost"
+ },
+ "backend/data/parsed_results/2023/Outdoor/MDI-girls.json": {
+  "parse_sha": "f48f9767cbdf7f4f",
+  "source_sha": "449c096d6c4cb8bc",
+  "date": "2026-11-09",
+  "by": "gsa-relay-legs",
+  "evidence": "Only change: legs added to nameless GSA relay rows (athletes + warnings citing the source): MileSplit live results, athletic.net, BDN results via Internet Archive, the Mixed SMR section of the same file, or exact field-relay sums from the meet's field file. git diff shows only those lines; resync 0 rows lost"
  },
  "backend/data/parsed_results/2023/Outdoor/Medoamk-MS-boys.json": {
   "parse_sha": "6552b9c9379c0d42",
@@ -61740,11 +61824,11 @@
   "evidence": "GSA relay legs added from MileSplit live results (URLs in each row's warnings); timer files print only the school"
  },
  "backend/data/parsed_results/2025/Indoor/EMITL-Small-school-girls.json": {
-  "parse_sha": "f08fbccfd7e11983",
+  "parse_sha": "1c1208e4e3d060e2",
   "source_sha": "224ce5f9ff5ed346",
-  "date": "2026-10-16",
-  "by": "auto: team scores verified exactly, all schools identified, no flags",
-  "evidence": ""
+  "date": "2026-11-09",
+  "by": "gsa-relay-legs",
+  "evidence": "Only change: legs added to nameless GSA relay rows (athletes + warnings citing the source): MileSplit live results, athletic.net, BDN results via Internet Archive, the Mixed SMR section of the same file, or exact field-relay sums from the meet's field file. git diff shows only those lines; resync 0 rows lost"
  },
  "backend/data/parsed_results/2025/Indoor/KVAC-3B-Results.json": {
   "parse_sha": "6a08bd3b05e415aa",
