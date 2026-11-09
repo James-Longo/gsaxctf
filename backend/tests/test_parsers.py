@@ -4004,3 +4004,26 @@ def test_milesplit_racetab_division_headers_not_merged():
     two = [e for e in ev if 'Two Mile' in e['event']]
     assert len(two) == 1 and len(two[0]['results']) == 2
     assert any(e['is_relay'] and len(e['results']) == 2 for e in ev)
+
+
+def test_milesplit_rows_without_a_place_kept():
+    """Triple C 2010 prints every prelim row, and an unscored heat, without a place: parse() read
+    only rows that start with a place and dropped them. A page header never becomes a row."""
+    from backend import milesplit as M
+    rule = '=' * 70
+    t = '\n'.join([
+        '               6th Grade Boys 40 Yard Dash Prelims', rule,
+        '    Name                      Yr Team                          Time H#', rule,
+        "    Conner O'Donnell           6 Yarmouth Middle School          NT  1",
+        '     Owen Elliot               6 St. James                     5.70  1',
+        '    Josh Hill                  6 St. James                     6.90  2',
+        "Licensed to SMAA            HY-TEK's Meet Manager 4.0 - 12:47 PM  12/13/2014",
+        '               6th Grade Boys 40 Yard Dash Finals', rule,
+        '    Name                      Yr Team                          Time   Pts', rule,
+        '  1  Owen Elliot               6 St. James                     5.50     6', ''])
+    ev, _ = M.parse(t)
+    rows = [(r['athlete'], r['result'], r['type'], r['place']) for e in ev for r in e['results']]
+    assert ('Josh Hill', '6.90', 'Prelims', None) in rows
+    assert ('Owen Elliot', '5.70', 'Prelims', None) in rows
+    assert ('Owen Elliot', '5.50', 'Finals', 1) in rows
+    assert not any('Meet Manager' in str(a) or 'Licensed' in str(a) for a, *_ in rows)

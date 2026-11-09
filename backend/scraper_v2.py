@@ -2433,7 +2433,7 @@ class Sub5ScraperV2:
 
     def normalize_athlete_name(self, name):
         if not name: return ""
-        name = name.replace('\ufffd', ' ').strip()   # (an undecodable byte: 'Laakkonen, Otto \ufffd', 2018 Phillips Exeter)
+        name = re.sub(r'\s+', ' ', name.replace('\ufffd', ' ')).strip()   # (an undecodable byte: 'Laakkonen, Otto \ufffd', 2018 Phillips Exeter; a double space, 'Anthony  Quintiliani', 2010 Triple C, splits a runner)
         name = re.sub(r'^[\s#\-]*\d+[\s.\-]*', '', name).strip()
         
         # Check manual fixes on the raw cleaned name first

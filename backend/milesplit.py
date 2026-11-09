@@ -60,6 +60,7 @@ def note(tag,ln):
 def get(url, cache):
     p = SP + cache
     if os.path.exists(p): return open(p).read()
+    if os.environ.get('MS_OFFLINE'): raise SystemExit('not cached (MS_OFFLINE): %s' % url)   # re-reads of cached meets never fetch
     time.sleep(3)
     r = subprocess.run(['curl','-s','-L','--max-redirs','2','-m','40','-A',UA,'-w','\n%{http_code}',url],capture_output=True)   # -L: a renamed meet's slug redirects
     try: out = r.stdout.decode('utf-8')
@@ -191,8 +192,12 @@ def parse(text):
             continue
         rm = re.match(r'\s*(\d+|--)\s+(\S.*)$', ln)
         if rm and re.match(r'\s*\d{4}\s.* - \d+/\d+/\d{4}\s*$', ln): i+=1; continue  # page header "2014 Lewiston KVAC Meet 1 - 4/18/2014"
+        if not rm and hdr is not None and not cur['is_relay'] and re.match(r"\s+[A-Z][A-Za-z'.-]*,?\s+[A-Za-z]", ln) \
+                and not re.match(r'\s*(Wind|Heat|Flight|Section|Records?|Meet|Facility|State|Team|Event|Licensed|Page)\b', ln, re.I) \
+                and not re.search(r"Meet Manager|\d{1,2}/\d{1,2}/\d{2}", ln) and re.search(r'\d[.:]\d|\d-\d', ln):   # never a page header ("HY-TEK's Meet Manager", "Week 1 - 12/13/2014")
+            rm = re.match(r'(\s*)(\S.*)$', ln)   # a row printed without a place (Triple C 2010 prelims, an unscored heat): no place
         if not rm or hdr is None: i+=1; continue
-        place = None if rm.group(1)=='--' else int(rm.group(1))
+        place = None if rm.group(1).strip() in ('', '--') else int(rm.group(1))
         mb = re.match(r'(\s*(?:\d+|--)\s+)(#\s*\d+\s)', ln)
         if mb: ln = mb.group(1) + ' ' * len(mb.group(2)) + ln[mb.end():]   # a bib column ("  1 #   76 Diallo, Jacquelin"), columns kept
         if cur['is_relay']:
