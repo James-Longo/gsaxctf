@@ -247,3 +247,20 @@ export const fetchGz = async (url) => {
   }
   return JSON.parse(new TextDecoder().decode(buf))
 }
+
+// A store row's athlete id (backend/json_store.py store_athlete_id): the
+// slug of name and team; a surname-only or initial name ("Bonsey",
+// "J Smith") gets one id per season and sex.
+const slugifyAthlete = (name, team) => {
+  const raw = `${name.toLowerCase()}--${team.toLowerCase()}`
+  return raw.replace(/[^a-zA-Z0-9_]/g, '-').replace(/-+/g, '-').replace(/^-|-$/g, '')
+}
+export function storeAthleteId(name, team, year, season, event) {
+  const id = slugifyAthlete(name, team)
+  const toks = (name || '').replace(/'/g, '').match(/[A-Za-z]+(?:-[A-Za-z]+)*/g) || []
+  const short = toks.length === 1 ? toks[0].length >= 2
+    : toks.length === 2 && ((toks[0].length === 1) !== (toks[1].length === 1))
+  if (!short || /relay/i.test(event || '')) return id
+  const g = (event || '').split(' ')[0]
+  return `${id}--${year}-${String(season).toLowerCase()}` + (g === 'Boys' || g === 'Girls' ? `-${g[0].toLowerCase()}` : '')
+}

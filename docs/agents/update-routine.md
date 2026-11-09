@@ -125,7 +125,10 @@ one season at a time):
 2. *New school records*: every record-board change this run (a new best in
    an event for any team, `ui/src/records.js`) is checked against the
    meet's MileSplit page. A disagreement is settled by the procedure's
-   "MileSplit wins" rule and reported.
+   "MileSplit wins" rule and reported. Then `npm --prefix ui run
+   check:boards` compares GSA's records with its Drive record boards
+   (`ui/src/officialBoards.js`); report each FAIL (a new GSA record the
+   board sheet lacks, or a board mark the results are missing).
 3. *Mismatches*: a meet whose team scores still mismatch after the step
    above is checked against MileSplit the same way.
 
