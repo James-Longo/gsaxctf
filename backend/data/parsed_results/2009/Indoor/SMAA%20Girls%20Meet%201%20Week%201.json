@@ -305,7 +305,7 @@
             "meet_name": "Thornton Academy, Gorham, Portland"
         },
         {
-            "event": "4x200 Yard Relay Junior Division",
+            "event": "4x210 Yard Relay Junior Division",
             "gender": "Girls",
             "is_relay": true,
             "results": [
@@ -315,7 +315,10 @@
                     "athletes": [],
                     "type": "Finals",
                     "place": 1,
-                    "points": 5.0
+                    "points": 5.0,
+                    "warnings": [
+                        "printed event: 4x200 Yard Relay Junior Division"
+                    ]
                 },
                 {
                     "school": "Portland High School",
@@ -323,14 +326,20 @@
                     "athletes": [],
                     "type": "Finals",
                     "place": 2,
-                    "points": 3.0
+                    "points": 3.0,
+                    "warnings": [
+                        "printed event: 4x200 Yard Relay Junior Division"
+                    ]
                 },
                 {
                     "school": "Gorham High School",
                     "result": "2:09.80",
                     "athletes": [],
                     "type": "Finals",
-                    "place": 3
+                    "place": 3,
+                    "warnings": [
+                        "printed event: 4x200 Yard Relay Junior Division"
+                    ]
                 }
             ],
             "date": "2009-01-03",
@@ -747,7 +756,7 @@
             "meet_name": "Thornton Academy, Gorham, Portland"
         },
         {
-            "event": "4x200 Yard Relay Senior Division",
+            "event": "4x210 Yard Relay Senior Division",
             "gender": "Girls",
             "is_relay": true,
             "results": [
@@ -757,7 +766,10 @@
                     "athletes": [],
                     "type": "Finals",
                     "place": 1,
-                    "points": 5.0
+                    "points": 5.0,
+                    "warnings": [
+                        "printed event: 4x200 Yard Relay Senior Division"
+                    ]
                 },
                 {
                     "school": "Gorham High School",
@@ -765,14 +777,20 @@
                     "athletes": [],
                     "type": "Finals",
                     "place": 2,
-                    "points": 3.0
+                    "points": 3.0,
+                    "warnings": [
+                        "printed event: 4x200 Yard Relay Senior Division"
+                    ]
                 },
                 {
                     "school": "Portland High School",
                     "result": "2:08.20",
                     "athletes": [],
                     "type": "Finals",
-                    "place": 3
+                    "place": 3,
+                    "warnings": [
+                        "printed event: 4x200 Yard Relay Senior Division"
+                    ]
                 }
             ],
             "date": "2009-01-03",
@@ -1058,7 +1076,7 @@
             "meet_name": "Thornton Academy, Gorham, Portland"
         },
         {
-            "event": "4x200 Yard Relay Open Division",
+            "event": "4x400 Yard Relay Open Division",
             "gender": "Girls",
             "is_relay": true,
             "results": [
@@ -1068,7 +1086,10 @@
                     "athletes": [],
                     "type": "Finals",
                     "place": 1,
-                    "points": 5.0
+                    "points": 5.0,
+                    "warnings": [
+                        "printed event: 4x200 Yard Relay Open Division"
+                    ]
                 },
                 {
                     "school": "Portland High School",
@@ -1076,7 +1097,10 @@
                     "athletes": [],
                     "type": "Finals",
                     "place": 2,
-                    "points": 3.0
+                    "points": 3.0,
+                    "warnings": [
+                        "printed event: 4x200 Yard Relay Open Division"
+                    ]
                 }
             ],
             "date": "2009-01-03",
@@ -1217,5 +1241,6 @@
         }
     ],
     "parser": "ColumnStrategyParser",
-    "team_rankings_source": "teamscores"
+    "team_rankings_source": "teamscores",
+    "notes": "Relay events printed as '4x200 Yard Relay' (Junior, Senior, Open) stored as 4x210 yd (Junior/Senior) and 4x400 yd (Open): every other SMAA girls sheet of 2009, including meets 3 and 4 the same day, runs those three relays, and the Open times (4:30-5:19) are 4x400-yard times."
 }
