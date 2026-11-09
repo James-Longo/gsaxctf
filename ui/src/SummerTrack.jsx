@@ -68,6 +68,7 @@ export default function SummerTrack({ view }) {
   const [athlete, setAthlete] = useState('all')
   const [year, setYear] = useState('All')
   const [event, setEvent] = useState('All')
+  const [ageGroup, setAgeGroup] = useState('All')
   const [sortField, setSortField] = useState('date')
   const [sortDir, setSortDir] = useState('desc')
 
@@ -144,7 +145,7 @@ export default function SummerTrack({ view }) {
 
   const inClub = (r) => club === 'All' || r.club === club
   const pickClub = (c) => { setClub(c); setAthlete('all'); setYear('All'); setEvent('All') }
-  const pickAthlete = (a) => { setAthlete(a); setYear('All'); setEvent('All') }
+  const pickAthlete = (a) => { setAthlete(a); setYear('All'); setEvent('All'); setAgeGroup('All') }
   const clubPicker = (
     <div className="filter-group">
       <label>Club</label>
@@ -243,8 +244,12 @@ export default function SummerTrack({ view }) {
   const last4 = new Set(years.slice(0, 4))
   const yearOk = (r) => year === 'All' || (year === 'Last4' ? last4.has(r.year) : r.year === year)
   const mine = all ? rows.filter(inClub) : (runners.get(athlete)?.rows || []).map(i => rows[i])
-  const events = [...new Set(mine.filter(yearOk).map(r => r.ev))].sort((a, b) => a.localeCompare(b))
-  const shown = mine.filter(r => yearOk(r) && (event === 'All' || r.ev === event))
+  const ageOk = (r) => ageGroup === 'All' || r.age_group === ageGroup
+  const events = [...new Set(mine.filter(r => yearOk(r) && ageOk(r)).map(r => r.ev))].sort((a, b) => a.localeCompare(b))
+  // the chosen group stays listed when another club or year has none
+  const ages = [...new Set([...mine.filter(r => yearOk(r) && (event === 'All' || r.ev === event)).map(r => r.age_group),
+    ...(ageGroup === 'All' ? [] : [ageGroup])])].filter(Boolean).sort((a, b) => ageRank(a) - ageRank(b))
+  const shown = mine.filter(r => yearOk(r) && ageOk(r) && (event === 'All' || r.ev === event))
   const cap = all && club === 'All' ? SHOW : Infinity
   shown.sort((a, b) => {
     let d = 0
@@ -276,6 +281,13 @@ export default function SummerTrack({ view }) {
             <option value="All">All Years</option>
             <option value="Last4">Last 4 Years</option>
             {years.map(y => <option key={y} value={y}>{y}</option>)}
+          </select>
+        </div>
+        <div className="filter-group">
+          <label title="USATF age group">Age group</label>
+          <select value={ageGroup} onChange={e => setAgeGroup(e.target.value)}>
+            <option value="All">All Ages</option>
+            {ages.map(a => <option key={a} value={a}>{a}</option>)}
           </select>
         </div>
         <div className="filter-group">

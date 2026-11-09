@@ -73,6 +73,12 @@ const readHash = (windows) => {
   return { sport, tab: sportTabs(sport).includes(tab) ? tab : 'history', explicit: !!SPORTS[sp] }
 }
 
+// The grade a row is filed under: as printed, else estimated from the
+// runner's other years; 'MS' when only "middle school" is known.
+const rowGrade = (p) => /^\d{1,2}$/.test(p.grade || '') ? String(+p.grade)
+  : p.grade_est ? String(+p.grade_est) : p.grade === 'MS' ? 'MS' : ''
+const GRADES = ['5', '6', '7', '8', 'MS', '9', '10', '11', '12']
+
 // A row's grade: as printed, else estimated from the runner's other years.
 function Grade({ p }) {
   if (p.grade) return <span className="xs-gr"> {gradeLabel(p.grade)}</span>
@@ -103,6 +109,7 @@ function App() {
   const filterSeasonType = SPORTS[sport].season
   const [filterEvent, setFilterEvent] = useState('All')
   const [filterMeet, setFilterMeet] = useState('All')
+  const [filterGrade, setFilterGrade] = useState('All')
   const [showPRsOnly, setShowPRsOnly] = useState(false)
 
   // Sort states
@@ -326,7 +333,7 @@ function App() {
   }, [allPerformances, selectedAthlete, selectedTeam, dataLoaded, runnerId])
 
   // Rest of the logic (Stats, filtering, sorting) is the same...
-  const { filteredPerformances, years, seasonTypes, events, meets } = useMemo(() => {
+  const { filteredPerformances, years, seasonTypes, events, meets, grades } = useMemo(() => {
     const runningBests = {} 
     const runningSeasonBests = {} 
     const prIds = new Set()
@@ -388,13 +395,14 @@ function App() {
     const last4 = new Set(allYears.slice(0, 4));
 
     const matches = (p, filters) => {
-      const { year, type, event, meet, team } = filters
+      const { year, type, event, meet, team, grade = filterGrade } = filters
       const yearOk = year === 'All' ||
         (year === 'Last4' ? last4.has(p.derivedYear) : p.derivedYear === year)
       return yearOk &&
         (type === 'All' || p.derivedType === type) &&
         (event === 'All' || normalizeEvent(p.event) === normalizeEvent(event)) &&
         (meet === 'All' || p.meetWithYear === meet) &&
+        (grade === 'All' || rowGrade(p) === grade) &&
         (team === 'All' || selectedAthlete.id !== 'all' || p.team === team)
     }
 
@@ -407,6 +415,10 @@ function App() {
     enriched.filter(p => matches(p, { year: filterYear, type: filterSeasonType, event: 'All', meet: filterMeet, team: selectedTeam }))
       .forEach(p => { const k = normalizeEvent(p.event); if (!eventByLabel.has(k)) eventByLabel.set(k, p.event) })
     const availableEvents = [...eventByLabel.entries()].sort(([a], [b]) => a.localeCompare(b)).map(([, raw]) => raw)
+
+    // grades held by the rows the other filters leave
+    const gradeSet = new Set(enriched.filter(p => matches(p, { year: filterYear, type: filterSeasonType, event: filterEvent, meet: filterMeet, team: selectedTeam, grade: 'All' })).map(rowGrade))
+    const availableGrades = GRADES.filter(g => gradeSet.has(g))
 
     const availableMeets = Array.from(new Set(
       enriched.filter(p => matches(p, { year: filterYear, type: filterSeasonType, event: filterEvent, meet: 'All', team: selectedTeam })).map(p => p.meetWithYear)
@@ -426,8 +438,8 @@ function App() {
       return sortDirection === 'asc' ? comparison : -comparison
     })
 
-    return { filteredPerformances: filtered, years: availableYears, seasonTypes: availableTypes, events: availableEvents, meets: availableMeets }
-  }, [performances, filterYear, filterSeasonType, filterEvent, filterMeet, selectedTeam, showPRsOnly, sortField, sortDirection, manifest, runnerId])
+    return { filteredPerformances: filtered, years: availableYears, seasonTypes: availableTypes, events: availableEvents, meets: availableMeets, grades: availableGrades }
+  }, [performances, filterYear, filterSeasonType, filterEvent, filterMeet, filterGrade, selectedTeam, showPRsOnly, sortField, sortDirection, manifest, runnerId])
 
   useEffect(() => {
     if (activeTab !== 'splits' || !manifest.teams) return;
@@ -441,7 +453,7 @@ function App() {
   }, [selectedTeam])
 
   useEffect(() => {
-    setFilterYear('All'); setFilterEvent('All'); setFilterMeet('All')
+    setFilterYear('All'); setFilterEvent('All'); setFilterMeet('All'); setFilterGrade('All')
   }, [selectedAthlete])
 
   // Opening Athlete Profiles with no athlete chosen shows the default
@@ -570,6 +582,15 @@ function App() {
                         <option value="All">All Years</option>
                         <option value="Last4">Last 4 Years</option>
                         {years.map(y => <option key={y} value={y}>{y}</option>)}
+                      </select>
+                    </div>
+                    <div className="filter-group">
+                      <label title="As printed, else estimated from the runner's other years">Grade</label>
+                      <select value={filterGrade} onChange={e => setFilterGrade(e.target.value)}>
+                        <option value="All">All Grades</option>
+                        {/* the chosen grade stays listed when another team has none */}
+                        {GRADES.filter(g => grades.includes(g) || g === filterGrade).map(g =>
+                          <option key={g} value={g} title={g === 'MS' ? 'Middle school, grade not printed' : undefined}>{gradeLabel(g)}</option>)}
                       </select>
                     </div>
                     <div className="filter-group">
