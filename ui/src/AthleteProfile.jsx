@@ -11,7 +11,7 @@ import {
     ResponsiveContainer,
     Scatter
 } from 'recharts';
-import { parseMark, isDistanceEvent, normalizeEvent, isBetter, gradeLabel } from './utils';
+import { parseMark, isDistanceEvent, normalizeEvent, gradeLabel } from './utils';
 import './App.css';
 
 const AthleteProfile = ({ performances, selectedAthlete }) => {
@@ -24,7 +24,10 @@ const AthleteProfile = ({ performances, selectedAthlete }) => {
 
             if (!groups[groupKey]) groups[groupKey] = [];
 
-            const parsed = parseMark(p.mark, isDistanceEvent(p.event));
+            // summer rows carry their value already (field marks print in feet or meters)
+            const parsed = p.numericValue != null
+                ? { valid: true, value: p.numericValue, isTime: p.isTime }
+                : parseMark(p.mark, isDistanceEvent(p.event));
             if (parsed.valid) {
                 groups[groupKey].push({
                     ...p,
@@ -99,7 +102,7 @@ const AthleteProfile = ({ performances, selectedAthlete }) => {
             const progression = [];
             data.forEach(d => {
                 const prev = progression[progression.length - 1];
-                if (!prev || isBetter(d.mark, prev.mark, d.event)) {
+                if (!prev || (d.isTime ? d.numericValue < prev.numericValue : d.numericValue > prev.numericValue)) {
                     progression.push({
                         ...d,
                         timestamp: Date.parse(d.date),
@@ -282,7 +285,7 @@ const AthleteProfile = ({ performances, selectedAthlete }) => {
                                 <tbody>
                                     {group.progression.map(p => (
                                         <tr key={p.id}>
-                                            <td>{p.date.split('T')[0]}{p.grade ? <span className="xs-gr"> {gradeLabel(p.grade)}</span> : null}</td>
+                                            <td>{p.date.split('T')[0]}{p.grade ? <span className="xs-gr"> {gradeLabel(p.grade)}</span> : p.age ? <span className="xs-gr"> age {p.age}</span> : null}</td>
                                             <td>{p.mark}</td>
                                             <td className="pr-gain">{p.gain == null ? '' : formatGain(p.gain, group.isTime)}</td>
                                             <td>{p.meet_name}</td>
