@@ -251,7 +251,7 @@ def tidy(name):
     return re.sub(r'\s+', ' ', BLEED.sub('', name or '')).strip()
 
 
-def display_name(names_counts, first_freq=None):
+def display_name(names_counts, first_freq=None, meets=None):
     """Canonical spelling for a cluster: a clean First Last in proper case,
     then the spelling with the most results (both word orders of one spelling
     counted together). Word order then follows whichever word more often
@@ -259,14 +259,20 @@ def display_name(names_counts, first_freq=None):
     share, how often the word is seen)), so a runner printed "Pelletier
     Caleb" in most files still reads "Caleb Pelletier", and "Dulcie Mitchell"
     is not reversed. A rare word's share is only its own runner's sheets, so
-    it counts as neither ('Jenson Niejadlik' keeps the order printed most)."""
+    it counts as neither ('Jenson Niejadlik' keeps the order printed most).
+    Hyphen and space forms of a name are one spelling ('Manner-Wheeldon',
+    'Manner Wheeldon'), and with meets (printed name -> its meets) a
+    spelling seen at more meets beats one a single timer repeats on many
+    rows by a clear margin ('Orion Ouellette' at 10 meets over 'Ouelette' on
+    11 rows at 5)."""
     first_freq = first_freq or {}
+    meets = meets or {}
     tidy_counts = collections.Counter()
     for name, n in names_counts.items():
         tidy_counts[tidy(name)] += n
 
     def words(nm):
-        return tuple(sorted(t.lower().strip('.') for t in nm.split()))
+        return tuple(sorted(t.lower().strip('.') for t in re.sub(r'(?<=\w)[-\u2010\u2011](?=\w)', ' ', nm).split()))
 
     def quality(nm):
         toks = nm.split()
@@ -281,9 +287,16 @@ def display_name(names_counts, first_freq=None):
         return sh if seen >= 20 else 0.5
 
     spelled = collections.Counter()
-    for nm, n in tidy_counts.items():
-        spelled[words(nm)] += n
+    seen_at = collections.defaultdict(set)
+    for nm, n in names_counts.items():
+        spelled[words(tidy(nm))] += n
+        seen_at[words(tidy(nm))] |= set(meets.get(nm, ()))
     best = max(tidy_counts, key=lambda nm: (quality(nm), spelled[words(nm)], tidy_counts[nm], len(nm)))
+    # (meets overrule rows only by a clear margin: 3 meets against 2 is noise, and 'Barlett' would beat 'Bartlett')
+    wide = [nm for nm in tidy_counts if quality(nm) == quality(best)
+            and len(seen_at[words(nm)]) >= max(2 * len(seen_at[words(best)]), len(seen_at[words(best)]) + 3)]
+    if wide:
+        best = max(wide, key=lambda nm: (len(seen_at[words(nm)]), spelled[words(nm)], tidy_counts[nm], len(nm)))
     orders = [nm for nm in tidy_counts if words(nm) == words(best) and quality(nm) == quality(best)]
 
     def first_first(nm):
@@ -1067,12 +1080,14 @@ def build(rows=None, quiet=False):
         es = [ents[k] for k in keys]
         store_ids = collections.Counter()
         names = collections.Counter()
+        name_meets = collections.defaultdict(set)
         teams = collections.Counter()
         grads = collections.Counter()
         seasons = collections.Counter()
         for e in es:
             store_ids.update(e['members'])
             names[e['name']] += e['n']
+            name_meets[e['name']] |= e['meets']
             teams.update(e['teams'])
             grads.update(e['grads'])
             seasons.update(e['seasons'])
@@ -1085,7 +1100,7 @@ def build(rows=None, quiet=False):
             gender_conflicts.append(dict(
                 id=cid, gender=gender, rows=dict(by_g),
                 other=sorted(r for e in es if e['g'] != gender for r in e['races'])[:20]))
-        a = dict(id=cid, name=display_name(names, first_freq), gender=gender, unit=es[0]['unit'],
+        a = dict(id=cid, name=display_name(names, first_freq, name_meets), gender=gender, unit=es[0]['unit'],
                  class_of=grads.most_common(1)[0][0] if grads else None,
                  primary_team=teams.most_common(1)[0][0], teams=sorted(teams),
                  sports=sorted(seasons), rows=sum(e['n'] for e in es),
