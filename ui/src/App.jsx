@@ -32,7 +32,7 @@ const SPORTS = {
   indoor: { label: 'Indoor', season: 'Indoor', tabs: TRACK_TABS, team: ['footage'] },
   outdoor: { label: 'Outdoor', season: 'Outdoor', tabs: TRACK_TABS, team: ['practice', 'footage'] },
   // USATF Maine Youth Summer Series: clubs and age groups, its own data (backend/summer_track.py)
-  summer: { label: 'Summer', season: 'Summer', tabs: ['history', 'records'], team: [] },
+  summer: { label: 'Summer', season: 'Summer', tabs: ['history', 'records', 'athlete-profile'], team: [] },
 }
 // Athlete Profiles opens on this runner when no athlete is chosen
 const DEFAULT_PROFILE_ATHLETE = 'owen-cannon-george-stevens-academy'

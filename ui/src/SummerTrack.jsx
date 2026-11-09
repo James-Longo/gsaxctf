@@ -1,5 +1,7 @@
 import React, { useState, useEffect, useMemo } from 'react'
 import { asset, fetchGz } from './utils'
+import AthleteProfile from './AthleteProfile'
+import SearchSelect from './SearchSelect'
 
 /**
  * Summer track: the USATF Maine Youth Developmental Summer Series (14 & under).
@@ -29,6 +31,7 @@ export default function SummerTrack({ view }) {
   const [club, setClub] = useState(HOME_CLUB)
   const [meet, setMeet] = useState(null)
   const [gender, setGender] = useState('Girls')
+  const [athlete, setAthlete] = useState(null)
 
   useEffect(() => {
     fetchGz(asset('/data/summer.json.gz')).then(setData).catch(e => setError(String(e)))
@@ -48,6 +51,25 @@ export default function SummerTrack({ view }) {
     const all = Object.keys(n).sort((a, b) => a.localeCompare(b))
     return { series: all.filter(c => series.has(c)), other: all.filter(c => !series.has(c)) }
   }, [rows, data])
+
+  // One runner: the athletic.net id where printed; otherwise name, gender and
+  // club (a common name in another club is another kid). Rows without the id
+  // join the id'd runner with the same name, gender and club.
+  const runners = useMemo(() => {
+    const key = (r) => `${r.name}|${r.gender}|${r.club}`
+    const aidOf = {}
+    rows.forEach(r => { if (r.aid && r.name) aidOf[key(r)] ||= r.aid })
+    const by = {}
+    rows.forEach((r, i) => {
+      // relay teams and points events (pentathlon) are not one runner's marks
+      if (r.legs || !r.name || /athlon/i.test(r.event) || r.value == null) return
+      const id = r.aid || aidOf[key(r)] || key(r)
+      const a = (by[id] ||= { id, name: r.name, gender: r.gender, clubs: new Set(), rows: [] })
+      a.clubs.add(r.club)
+      a.rows.push(i)
+    })
+    return Object.values(by)
+  }, [rows])
 
   const meetOrder = useMemo(() => data
     ? data.meets.map((m, i) => ({ ...m, i })).sort((a, b) => (b.date || '').localeCompare(a.date || ''))
@@ -127,6 +149,40 @@ export default function SummerTrack({ view }) {
             </div>
           )
         })}
+      </div>
+    )
+  }
+
+  if (view === 'athlete-profile') {
+    const list = runners.filter(a => club === 'All' || a.clubs.has(club))
+      .sort((a, b) => a.name.localeCompare(b.name))
+    // opens on the club's runner with the most marks
+    const cur = list.find(a => a.id === athlete)
+      || list.reduce((b, a) => (!b || a.rows.length > b.rows.length ? a : b), null)
+    const perfs = cur ? cur.rows.map(i => {
+      const r = rows[i], m = data.meets[r.meet]
+      const field = FIELD.test(r.event)
+      return {
+        id: i, event: r.event, mark: r.mark, date: m.date, year: (m.date || '').slice(0, 4),
+        meet_name: m.name, age: r.age,
+        // field values are meters; the profile charts inches (to the quarter inch)
+        numericValue: field ? Math.round(r.value * 39.3701 * 4) / 4 : r.value, isTime: !field,
+      }
+    }) : []
+    return (
+      <div className="summer-track">
+        <div className="filter-bar">
+          {clubPicker}
+          <div className="filter-group">
+            <label>Athlete</label>
+            <SearchSelect value={cur?.id ?? ''} onChange={setAthlete}
+              options={list.map(a => ({ value: a.id, label: a.name,
+                secondary: club === 'All' ? [...a.clubs].join(', ') : `${a.rows.length}` }))}
+              placeholder="Search athletes..." minSearch={club === 'All' ? 2 : 0} />
+          </div>
+        </div>
+        {cur ? <AthleteProfile performances={perfs} selectedAthlete={cur} />
+          : <p>No athletes for this club.</p>}
       </div>
     )
   }
