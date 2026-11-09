@@ -8,7 +8,8 @@
 // The boards' events are the events every team's record board shows
 // (BOARD_EVENTS); GSA's board is also cross-checked against its results.
 
-const b = (gender, event, name, mark, year) => ({ gender, event, name, mark, year })
+// note: where a board mark the results don't hold comes from
+const b = (gender, event, name, mark, year, note) => ({ gender, event, name, mark, year, ...(note ? { note } : {}) })
 
 const GSA = {
   Indoor: [
@@ -16,7 +17,8 @@ const GSA = {
     b('Boys', '200 Meter Dash', 'Ben Baldwin', '24.03', '2025'),
     b('Boys', '400 Meter Dash', 'Wyatt Richardson', '52.84', '2025'),
     b('Boys', '800 Meter Run', 'John Hassett', '1:57.09', '2017'),
-    b('Boys', '1 Mile Run', 'John Hassett', '4:25.20', '2017'),
+    b('Boys', '1 Mile Run', 'John Hassett', '4:25.20', '2017',
+      'USATF New England Indoor Championships, Harvard, 2/19/2017, unattached (tfrrs.org/results/48924)'),
     b('Boys', '2 Mile Run', 'John Hassett', '10:00.57', '2017'),
     b('Boys', '55 Meter Hurdles', 'Andrew Hipsky', '8.21', '2023'),
     b('Boys', '4x200 Meter Relay', 'Ben Baldwin, Jake Lepper, Fred Coit, Rowan Gagne', '1:36.48', '2025'),

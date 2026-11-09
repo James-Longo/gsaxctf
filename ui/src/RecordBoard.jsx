@@ -60,7 +60,8 @@ function RecordBoard({ performances, selectedTeam, manifest, loadTeamData, seaso
         const { row, status, site } = r.board
         if (status === 'match') return <span className="badge board-badge" title="Matches the record board">✓</span>
         if (status === 'beats') return <span className="badge board-badge" title={`Record board: ${row.name}, ${row.mark} (${row.year})`}>beats board</span>
-        return <span className="badge board-badge" title={site ? `From the record board; not in these results. Best here: ${fmtEntry(site)}` : 'From the record board; not in these results'}>board</span>
+        const from = row.note ? `From the record board: ${row.note}` : 'From the record board; not in these results'
+        return <span className="badge board-badge" title={site ? `${from}. Best here: ${fmtEntry(site)}` : from}>board</span>
     }
 
     return (
