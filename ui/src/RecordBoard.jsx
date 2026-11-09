@@ -54,14 +54,15 @@ function RecordBoard({ performances, selectedTeam, manifest, loadTeamData, seaso
         coops.length > 0 && `includes co-op squads: ${coops.map(t => t.name).join(', ')}`,
         'one entry per runner; DQ/DNF/foul marks excluded; hand times as written; click an event for its top 10',
     ].filter(Boolean).join('; ')
+    // a relay whose results print only the school ("George Stevens Academy Relay")
+    const noLegs = (e) => e.legs && e.legs.length < 2
     const fmtEntry = (e) => `${who(e)}, ${e.mark} (${e.date || e.year})`
     const boardBadge = (r) => {
         if (!r.board) return null
         const { row, status, site } = r.board
         if (status === 'match') return <span className="badge board-badge" title="Matches the record board">✓</span>
         if (status === 'beats') return <span className="badge board-badge" title={`Record board: ${row.name}, ${row.mark} (${row.year})`}>beats board</span>
-        const from = row.note ? `From the record board: ${row.note}` : 'From the record board; not in these results'
-        return <span className="badge board-badge" title={site ? `${from}. Best here: ${fmtEntry(site)}` : from}>board</span>
+        return <span className="badge board-badge" title={site ? `From the record board; not in these results. Best here: ${fmtEntry(site)}` : 'From the record board; not in these results'}>board</span>
     }
 
     return (
@@ -89,7 +90,7 @@ function RecordBoard({ performances, selectedTeam, manifest, loadTeamData, seaso
                                                     {r.event}<span className="splits-toggle">{isOpen ? ' ▲' : ' ▼'}</span>
                                                 </td>}
                                                 {i === 0 && <td rowSpan={r.record.length} className="mark-cell">{e.mark}{boardBadge(r)}</td>}
-                                                <td>{who(e)}{r.record.length > 1 && i === 0 && <span className="badge">tie</span>}</td>
+                                                <td>{who(e)}{r.record.length > 1 && i === 0 && <span className="badge">tie</span>}{noLegs(e) && <span className="badge board-badge" title="No result or other source found names the runners">names?</span>}</td>
                                                 <td className="record-date">{e.date}</td>
                                                 <td>{meetCell(e, season)}</td>
                                             </tr>
