@@ -11,7 +11,7 @@ import {
     ResponsiveContainer,
     Scatter
 } from 'recharts';
-import { parseMark, isDistanceEvent, normalizeEvent } from './utils';
+import { parseMark, isDistanceEvent, normalizeEvent, isBetter, gradeLabel } from './utils';
 import './App.css';
 
 const AthleteProfile = ({ performances, selectedAthlete }) => {
@@ -37,7 +37,9 @@ const AthleteProfile = ({ performances, selectedAthlete }) => {
         // Calculate stats and prepare chart data for each event
         const processedGroups = {};
         Object.keys(groups).forEach(event => {
-            const data = groups[event].sort((a, b) => new Date(a.date) - new Date(b.date));
+            // undated marks can't be placed in time: left out of the chart and progression
+            const data = groups[event].filter(d => !isNaN(Date.parse(d.date)))
+                .sort((a, b) => Date.parse(a.date) - Date.parse(b.date));
             if (data.length === 0) return;
 
             const values = data.map(d => d.numericValue);
@@ -93,8 +95,29 @@ const AthleteProfile = ({ performances, selectedAthlete }) => {
                 return new Date(date.getFullYear(), 0, 1).getTime();
             }))).sort();
 
+            // PR progression: each mark that beat everything before it
+            const progression = [];
+            data.forEach(d => {
+                const prev = progression[progression.length - 1];
+                if (!prev || isBetter(d.mark, prev.mark, d.event)) {
+                    progression.push({
+                        ...d,
+                        timestamp: Date.parse(d.date),
+                        gain: prev ? Math.abs(d.numericValue - prev.numericValue) : null,
+                    });
+                }
+            });
+            // the PR line holds its level out to the latest race
+            const lastTs = Date.parse(data[data.length - 1].date);
+            const prLine = [...progression];
+            if (lastTs > prLine[prLine.length - 1].timestamp) {
+                prLine.push({ ...prLine[prLine.length - 1], timestamp: lastTs, isHold: true });
+            }
+
             processedGroups[event] = {
                 data,
+                progression,
+                prLine,
                 yearGroups,
                 yearTicks,
                 stats: {
@@ -123,6 +146,12 @@ const AthleteProfile = ({ performances, selectedAthlete }) => {
         return `${feet}' ${remainingInches}"`;
     }
 
+    function formatGain(v, isTime) {
+        if (isTime) return '−' + (v < 60 ? v.toFixed(2) : formatTime(v));
+        if (v < 12) return '+' + v.toFixed(2).replace(/\.?0+$/, '') + '"';
+        return '+' + formatDistance(v);
+    }
+
     const COLORS = ['#3182ce', '#38a169', '#d53f8c', '#805ad5', '#dd6b20', '#319795', '#e53e3e'];
 
     if (!selectedAthlete) {
@@ -132,6 +161,9 @@ const AthleteProfile = ({ performances, selectedAthlete }) => {
             </div>
         );
     }
+
+    // one runner's progression only (All Athletes mixes runners)
+    const showProgression = selectedAthlete.id !== 'all';
 
     return (
         <div className="athlete-profile">
@@ -221,9 +253,45 @@ const AthleteProfile = ({ performances, selectedAthlete }) => {
                                         />
                                     </React.Fragment>
                                 ))}
+                                {showProgression && (
+                                    <Line
+                                        data={group.prLine}
+                                        type="stepAfter"
+                                        dataKey="numericValue"
+                                        name="PR"
+                                        stroke="#1a202c"
+                                        strokeWidth={2}
+                                        dot={(props) => props.payload.isHold
+                                            ? <g key={props.key} />
+                                            : <circle key={props.key} cx={props.cx} cy={props.cy} r={4} fill="#fff" stroke="#1a202c" strokeWidth={2} />}
+                                        activeDot={false}
+                                        isAnimationActive={false}
+                                    />
+                                )}
                             </LineChart>
                         </ResponsiveContainer>
                     </div>
+
+                    {showProgression && (
+                        <div className="pr-progression">
+                            <h4>PR progression</h4>
+                            <table className="performance-table">
+                                <thead>
+                                    <tr><th>Date</th><th>Result</th><th title="Gain on the previous PR">+/−</th><th>Meet</th></tr>
+                                </thead>
+                                <tbody>
+                                    {group.progression.map(p => (
+                                        <tr key={p.id}>
+                                            <td>{p.date.split('T')[0]}{p.grade ? <span className="xs-gr"> {gradeLabel(p.grade)}</span> : null}</td>
+                                            <td>{p.mark}</td>
+                                            <td className="pr-gain">{p.gain == null ? '' : formatGain(p.gain, group.isTime)}</td>
+                                            <td>{p.meet_name}</td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </table>
+                        </div>
+                    )}
                 </div>
             ))}
         </div>
