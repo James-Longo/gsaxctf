@@ -20,7 +20,7 @@ const GSA = {
     b('Boys', '2 Mile Run', 'John Hassett', '10:00.57', '2017'),
     b('Boys', '55 Meter Hurdles', 'Andrew Hipsky', '8.21', '2023'),
     b('Boys', '4x200 Meter Relay', 'Ben Baldwin, Jake Lepper, Fred Coit, Rowan Gagne', '1:36.48', '2025'),
-    b('Boys', '4x800 Meter Relay', 'Names unknown', '8:59.29', '2005'),
+    b('Boys', '4x800 Meter Relay', 'Adam Wiswell, Keith Fisher, Addison Pellerano, Travis Rieley (presumed)', '8:59.29', '2005'),
     b('Boys', 'High Jump', 'Cameron Gordon', '5-10.00', '2016'),
     b('Boys', 'Pole Vault', 'Thomas Coolidge', '12-00.00', '2025'),
     b('Boys', 'Long Jump', 'Reece Renwick', '20-06.50', '2025'),

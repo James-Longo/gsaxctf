@@ -124,6 +124,30 @@ def canon_club(raw):
     return c
 
 
+# Names as printed, fixed in two steps at build time. clean_name: what a rule can
+# fix anywhere (an age typed into the name on MileSplit sheets, 'Nick Boutin-15',
+# 'Anna Ellis   15', 'Roxy  (15) Withers', kept as the row's age; a tripled letter;
+# all caps). Then
+# NAME_FIXES: one kid's spellings, by club, each settled by evidence (the spelling
+# the kid's school results print, or the commonest one in the summer results).
+NAME_FIXES = os.path.join(SUMMER, 'name_fixes.json')
+AGE_IN_NAME = re.compile(r'\s*\((\d{1,2})\)\s*|\s*-\s*(\d{1,2})?$|\s+(\d{1,2})$')
+
+
+def clean_name(name):
+    """-> (name, age printed in it or None)"""
+    age = None
+    m = AGE_IN_NAME.search(name)
+    if m:
+        age = next((int(g) for g in m.groups() if g), None)
+        name = name[:m.start()] + (' ' if m.group(1) else '') + name[m.end():]
+    name = re.sub(r'(?<=[a-z])\d+$', '', name)          # digits run into the name ('Ezra Sweeting07'): not an age
+    name = re.sub(r'([a-z])\1\1', r'\1\1', re.sub(r'\s+', ' ', name).strip())
+    if name.isupper() and len(name) > 3:
+        name = name.title()
+    return name, age
+
+
 def canon_event(event):
     """One name per event across sources, in athletic.net's spelling ('100 Meters', '80m Hurdles',
     '800m Racewalk', '4x100 Relay', 'Javelin'); None for exhibition races."""
@@ -424,9 +448,15 @@ def build():
             ev = canon_event(e['event'])
             if ev is None:
                 continue
+            points = re.fullmatch(r'(?i)(tri|pent|hept|dec)athlon', ev)   # a total, not a leg
             for r in e['results']:
                 if r.get('value') is None:
                     continue           # DNS / DQ / NM
+                if points:             # the score, higher is better (sub5 parses read it as inches)
+                    x = re.fullmatch(r'(\d+)\.?', r['mark'].strip())
+                    if not x:
+                        continue
+                    r['value'] = float(x.group(1))
                 if re.match(r'^\d', r['club'] or ''):
                     continue           # a team-score line read as a row
                 if re.match(r"^'[A-Z]'", r['club'] or ''):
@@ -465,6 +495,22 @@ def build():
             merge[c] = merge.get(target, target)
     for r in rows:
         r[6] = merge.get(r[6], r[6])
+    fixes = json.load(open(NAME_FIXES)) if os.path.exists(NAME_FIXES) else {}
+    renamed = 0
+    fix = lambda club, name: (lambda n: fixes.get(club, {}).get(n, n))(clean_name(name)[0])
+    for r in rows:
+        if r[11]:              # relay legs: the same runners
+            legs = ', '.join(fix(r[6], leg) for leg in r[11].split(', '))
+            renamed += legs != r[11]
+            r[11] = legs
+        if not r[5]:
+            continue
+        name, age = clean_name(r[5])
+        name = fixes.get(r[6], {}).get(name, name)
+        if r[9] is None and age is not None and 4 <= age <= 19:
+            r[9] = age
+        renamed += name != r[5]
+        r[5] = name
     # clubs that race the Maine series (MileSplit / athletic.net meets) list first on the site
     series = sorted({r[6] for r in rows if r[6] and meets[r[0]]['url'] and 'sub5' not in meets[r[0]]['url']
                      and 'sub5.com' not in (meets[r[0]]['url'] or '')}, key=str.lower)
@@ -474,7 +520,7 @@ def build():
     with gzip.open(OUT, 'wt', encoding='utf-8') as f:
         json.dump(out, f, separators=(',', ':'))
     print(f'{len(meets)} meets, {len(rows)} rows -> {os.path.relpath(OUT, ROOT)}; '
-          f'{len(merge)} truncated club names merged; {dropped} misfiled relay rows dropped')
+          f'{len(merge)} truncated club names merged; {renamed} rows renamed; {dropped} misfiled relay rows dropped')
 
 
 if __name__ == '__main__':
