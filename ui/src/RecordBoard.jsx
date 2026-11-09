@@ -6,8 +6,9 @@ import './App.css'
 // A team's record board for the season type in view (Indoor or Outdoor):
 // the best mark ever per event and gender, from the results store, for the
 // events on GSA's official boards. Rules are in records.js; a team with an
-// official board (officialBoards.js) is cross-checked against it. Click an
-// event for its all-time top 10.
+// official board (officialBoards.js) shows the board's mark where it beats
+// these results (e.g. before 2003). The comparison itself is internal:
+// `npm run check:boards`. Click an event for its all-time top 10.
 function RecordBoard({ performances, selectedTeam, manifest, loadTeamData, season, runnerId, athletes, meetLinks }) {
     const [open, setOpen] = useState(new Set())
     useEffect(() => { setOpen(new Set()) }, [selectedTeam, season])
@@ -50,20 +51,12 @@ function RecordBoard({ performances, selectedTeam, manifest, loadTeamData, seaso
     const genders = [...new Set(records.map(r => r.gender))]
     const rulesTitle = [
         `Best mark per event in this site's results${years.length ? ` (${years[0]}–${years[years.length - 1]})` : ''}`,
-        board && `cross-checked against the ${selectedTeam} record board`,
+        board && `the ${selectedTeam} record board fills records these results lack`,
         coops.length > 0 && `includes co-op squads: ${coops.map(t => t.name).join(', ')}`,
         'one entry per runner; DQ/DNF/foul marks excluded; hand times as written; click an event for its top 10',
     ].filter(Boolean).join('; ')
     // a relay whose results print only the school ("George Stevens Academy Relay")
     const noLegs = (e) => e.legs && e.legs.length < 2
-    const fmtEntry = (e) => `${who(e)}, ${e.mark} (${e.date || e.year})`
-    const boardBadge = (r) => {
-        if (!r.board) return null
-        const { row, status, site } = r.board
-        if (status === 'match') return <span className="badge board-badge" title="Matches the record board">✓</span>
-        if (status === 'beats') return <span className="badge board-badge" title={`Record board: ${row.name}, ${row.mark} (${row.year})`}>beats board</span>
-        return <span className="badge board-badge" title={site ? `From the record board; not in these results. Best here: ${fmtEntry(site)}` : 'From the record board; not in these results'}>board</span>
-    }
 
     return (
         <div className="record-board">
@@ -89,7 +82,7 @@ function RecordBoard({ performances, selectedTeam, manifest, loadTeamData, seaso
                                                 {i === 0 && <td rowSpan={r.record.length} className="record-event">
                                                     {r.event}<span className="splits-toggle">{isOpen ? ' ▲' : ' ▼'}</span>
                                                 </td>}
-                                                {i === 0 && <td rowSpan={r.record.length} className="mark-cell">{e.mark}{boardBadge(r)}</td>}
+                                                {i === 0 && <td rowSpan={r.record.length} className="mark-cell">{e.mark}</td>}
                                                 <td>{who(e)}{r.record.length > 1 && i === 0 && <span className="badge">tie</span>}{noLegs(e) && <span className="badge board-badge" title="No result or other source found names the runners">names?</span>}</td>
                                                 <td className="record-date">{e.date}</td>
                                                 <td>{meetCell(e, season)}</td>

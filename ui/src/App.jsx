@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo, useRef, useCallback } from 'react'
-import { isBetter, normalizeEvent, parseMark, isDistanceEvent, asset, gradeLabel } from './utils'
+import { isBetter, normalizeEvent, parseMark, isDistanceEvent, asset, gradeLabel, storeAthleteId } from './utils'
 import PerformanceList from './PerformanceList'
 import PRPopCalculator from './PRPopCalculator'
 import './App.css'
@@ -171,21 +171,6 @@ function App() {
   // enrich them here to the full shape the components expect.
   // chunkKeys limits which season chunks load (null = all seasons the team has);
   // seasonsHint lets callers pass the team's season list before manifest state lands.
-  const slugifyAthlete = (name, team) => {
-    const raw = `${name.toLowerCase()}--${team.toLowerCase()}`;
-    return raw.replace(/[^a-zA-Z0-9_]/g, '-').replace(/-+/g, '-').replace(/^-|-$/g, '');
-  };
-  // backend/json_store.py store_athlete_id: a surname-only or initial name
-  // ("Bonsey", "J Smith") gets one id per season and sex
-  const storeAthleteId = (name, team, year, season, event) => {
-    const id = slugifyAthlete(name, team);
-    const toks = (name || '').replace(/'/g, '').match(/[A-Za-z]+(?:-[A-Za-z]+)*/g) || [];
-    const short = toks.length === 1 ? toks[0].length >= 2
-      : toks.length === 2 && ((toks[0].length === 1) !== (toks[1].length === 1));
-    if (!short || /relay/i.test(event || '')) return id;
-    const g = (event || '').split(' ')[0];
-    return `${id}--${year}-${String(season).toLowerCase()}` + (g === 'Boys' || g === 'Girls' ? `-${g[0].toLowerCase()}` : '');
-  };
   // Chunks are stored gzipped (.json.gz) to fit hosting limits; decompress
   // client-side. Falls back to parsing as plain JSON if the server (or a
   // proxy) already decoded it.
