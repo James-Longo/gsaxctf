@@ -156,6 +156,10 @@ def canonical_event(raw, gender, season=None, level=None, relay=False):
                 name = f'{d.group(1)} {unit} Sprint Medley Relay'
             return gender, name
         if re.search(r'shut+le|shut\s*hurd', s, re.I):
+            # (a 3x55, 4x55, 4x50 and 4x60y shuttle are different races: each its own event)
+            if m:
+                unit = 'Yard' if re.search(r'y(ar)?d|\dy\b', s, re.I) else 'Meter'
+                return gender, f'{m.group(1)}x{m.group(2)} {unit} Shuttle Hurdle Relay'
             return gender, 'Shuttle Hurdle Relay'
         if m:
             legs = m.group(1)    # a 3x55 shuttle or 3x1600 is not a 4x

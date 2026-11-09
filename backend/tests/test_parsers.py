@@ -3194,6 +3194,16 @@ def test_throwers_relay_is_its_own_event():
     assert canonical_event('4x200 Meter Relay', 'Girls') == ('Girls', '4x200 Meter Relay')
 
 
+def test_shuttle_hurdles_are_named_by_legs_and_distance():
+    """Bowdoin prints a 3x55 (39") and a 4x55 (36") shuttle in one meet: they
+    had merged into one 'Shuttle Hurdle Relay' with the 4x50 and 4x60y."""
+    from backend.event_canon import canonical_event
+    assert canonical_event('3x55 Meter Shuttle Hurdle HIGH 39"', 'Boys') == ('Boys', '3x55 Meter Shuttle Hurdle Relay')
+    assert canonical_event('4x55 Meter Shuttle Hurdle INT 36"', 'Boys') == ('Boys', '4x55 Meter Shuttle Hurdle Relay')
+    assert canonical_event('4X50 Shuttle Hurdle Relay (30")', 'Girls') == ('Girls', '4x50 Meter Shuttle Hurdle Relay')
+    assert canonical_event('4x60 Yard Relay Shut Hurdles', 'Girls') == ('Girls', '4x60 Yard Shuttle Hurdle Relay')
+
+
 def test_jump_standing_suffix_is_the_standing_jump():
     """Brunswick-Morse 2021 COVID duals print "Boys Long Jump Standing" and
     "Girls Triple Jump Standing": standing jumps, not the long or triple jump."""
