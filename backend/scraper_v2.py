@@ -2078,7 +2078,7 @@ class Sub5ScraperV2:
             return True
         if re.fullmatch(r"\d{1,3}-\d{1,2}(\.\d+)?", m):       # 33-04.25
             return True
-        if re.fullmatch(r"\d{1,2}'\d{1,2}(\.\d+)?\"?", m):    # 19'9.5"
+        if re.fullmatch(r"\d{1,3}'\s*\d{1,2}(\.\d+)?\"?", m):    # 19'9.5" / 17' 8.75"
             return True
         if re.fullmatch(r"(\d{1,2}:)?\d{1,2}[:.]\d{1,2}(\.\d+)?H?", m):  # 13.5 / 2:31.5 / 1:02:33
             return True
@@ -2094,6 +2094,10 @@ class Sub5ScraperV2:
         Returns (possibly repaired) mark, or None when the mark is physically
         impossible for the event even after repair."""
         ev = event.lower()
+        # (a quoted feet-inches mark, 17' 8.75" -> 17-08.75: one form in the store)
+        q = re.fullmatch(r"(\d{1,3})'\s*(\d{1,2})((?:\.\d+)?)\"?", str(mark).strip())
+        if q:
+            return f'{q.group(1)}-{int(q.group(2)):02d}{q.group(3)}'
         if any(k in ev for k in ('jump', 'put', 'vault', 'discus', 'javelin', 'weight throw', 'hammer')):   # (not 'throw': 'Throwers Relay')
             return mark
         # "12.19.94", "4.13.74": a dot typed for the colon (BucksportMeet.pdf 2016)

@@ -4027,3 +4027,13 @@ def test_milesplit_rows_without_a_place_kept():
     assert ('Owen Elliot', '5.70', 'Prelims', None) in rows
     assert ('Owen Elliot', '5.50', 'Finals', 1) in rows
     assert not any('Meet Manager' in str(a) or 'Licensed' in str(a) for a, *_ in rows)
+
+
+def test_quoted_feet_inches_marks_kept_and_normalized():
+    """ne-usatf-indoor-2018 prints field marks as 17' 8.75": kept, stored as 17-08.75."""
+    import backend.scraper_v2 as s
+    cls = [v for v in vars(s).values() if isinstance(v, type) and hasattr(v, 'repair_mark')][0]
+    o = cls.__new__(cls)
+    for raw, want in (("17' 8.75\"", '17-08.75'), ("5' 5\"", '5-05'), ("19'9.5\"", '19-09.5'), ("120'6\"", '120-06')):
+        assert o.mark_is_valid_format(raw)
+        assert o.repair_mark(raw, 'Boys Long Jump') == want
