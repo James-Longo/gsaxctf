@@ -100,11 +100,10 @@ const dateKey = (p) => (p.date && p.date !== 'Unknown' ? p.date.slice(0, 10) : `
 // (one per runner, relays per performance).
 // nameOf(runner) gives the catalog's name for a runner, so a record shows one
 // name however the meet spelled it.
-export function computeRecords(performances, { season, runnerId = (p) => p.athlete_id, nameOf = () => null, fromYear = null, topN = 10 } = {}) {
+export function computeRecords(performances, { season, runnerId = (p) => p.athlete_id, nameOf = () => null, topN = 10 } = {}) {
   const groups = new Map()
   for (const p of performances) {
     if (season && p.season !== season) continue
-    if (fromYear && +p.year < +fromYear) continue
     const value = markValue(p.mark, p.event)
     if (value == null) continue
     const { gender, event } = splitGender(p.event)
@@ -154,4 +153,37 @@ export function coopTeams(teamName, manifestTeams = []) {
   const esc = short.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
   const re = new RegExp(`^${esc}(?:[A-Z]|/)`)
   return manifestTeams.filter(t => t.name !== teamName && t.level !== 'ms' && re.test(t.name))
+}
+
+// Cross-check a team's records against its official board (officialBoards.js).
+// Each board event gets `board: { row, status }`:
+//   'match' - the results hold the board's mark
+//   'beats' - the results hold a better mark than the board
+//   'board' - the board's mark is better (or the event has no results); the
+//             board's entry becomes the record, the top 10 stays from results
+export function mergeBoard(records, board) {
+  if (!board) return records
+  const out = new Map(records.map(r => [`${r.gender}|${r.event}`, r]))
+  for (const row of board) {
+    const key = `${row.gender}|${row.event}`
+    const bv = markValue(row.mark, row.event)
+    const r = out.get(key)
+    const field = /jump|vault|put|discus|javelin|hammer|weight/i.test(row.event)
+    const sv = r?.record[0]?.value
+    const entry = {
+      name: row.name, mark: row.mark, value: bv, date: row.year, year: row.year, meet: null,
+      legs: isRelay(row.event) ? row.name.split(/\s*,\s*/) : null,
+    }
+    if (sv == null) {
+      out.set(key, { gender: row.gender, event: row.event, record: [entry], top: [], board: { row, status: 'board' } })
+    } else if (Math.abs(sv - bv) < 0.005) {
+      out.set(key, { ...r, board: { row, status: 'match' } })
+    } else if (field ? sv > bv : sv < bv) {
+      out.set(key, { ...r, board: { row, status: 'beats' } })
+    } else {
+      out.set(key, { ...r, record: [entry], board: { row, status: 'board', site: r.record[0] } })
+    }
+  }
+  const gOrder = { Boys: 0, Girls: 1, Mixed: 2, '': 3 }
+  return [...out.values()].sort((a, b) => (gOrder[a.gender] - gOrder[b.gender]) || cmpKeys(eventSortKey(a.event), eventSortKey(b.event)))
 }
