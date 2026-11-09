@@ -15,6 +15,8 @@ const HOME_CLUB = 'Blue Hill Peninsula'   // GSA's summer program
 const FIELD = /jump|vault|put|shot|discus|javelin|throw|turbo|softball|hammer/i
 // throws the school store prints to the whole inch; other field marks to the quarter
 const WHOLE_INCH = /discus|javelin|hammer|turbo|softball/i
+// field marks and multi-event point totals ('Pentathlon'; its legs read as the leg)
+const higher = (e) => FIELD.test(e) || /^(tri|pent|hept|dec)athlon$/i.test(e)
 const SHOW = 2000   // rows rendered for all clubs at once (~140k rows); one club shows all
 // two-year groups, then the older USATF division names (2004-2008 Junior Olympic meets
 // from sub5), then masters ranges ('40-49') last
@@ -191,7 +193,7 @@ export default function SummerTrack({ view }) {
       const key = `${r.age_group}|${r.event}`
       const who = r.legs ? `${r.club}: ${r.legs}` : (r.rid || r.name)
       const b = (boards[key] ||= {})
-      if (!b[who] || (r.field ? r.value > b[who].value : r.value < b[who].value)) b[who] = r
+      if (!b[who] || (higher(r.event) ? r.value > b[who].value : r.value < b[who].value)) b[who] = r
     })
     const keys = Object.keys(boards).sort((a, b) => {
       const [ga, ea] = a.split('|'), [gb, eb] = b.split('|')
@@ -212,8 +214,7 @@ export default function SummerTrack({ view }) {
         {keys.length === 0 && <p>No marks for this selection.</p>}
         {keys.map(k => {
           const [age, ev] = k.split('|')
-          const field = FIELD.test(ev)
-          const list = Object.values(boards[k]).sort((a, b) => field ? b.value - a.value : a.value - b.value).slice(0, 10)
+          const list = Object.values(boards[k]).sort((a, b) => higher(ev) ? b.value - a.value : a.value - b.value).slice(0, 10)
           return (
             <div key={k} className="summer-board">
               <h3>{ev} <span className="summer-age">{age}</span></h3>
