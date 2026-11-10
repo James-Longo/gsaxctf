@@ -4047,3 +4047,9 @@ def test_quoted_feet_inches_marks_kept_and_normalized():
     for raw, want in (("17' 8.75\"", '17-08.75'), ("5' 5\"", '5-05'), ("19'9.5\"", '19-09.5'), ("120'6\"", '120-06')):
         assert o.mark_is_valid_format(raw)
         assert o.repair_mark(raw, 'Boys Long Jump') == want
+
+
+def test_hytek_race_code_3x1_names_a_3x1_mile_relay():
+    from backend.event_canon import canonical_event
+    assert canonical_event('Girls 4x1 Mile Relay Race 3X1', 'Girls')[1] == '3x1 Mile Relay'
+    assert canonical_event('Boys 4x1 Mile Relay', 'Boys')[1] == '4x1 Mile Relay'

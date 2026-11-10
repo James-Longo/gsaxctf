@@ -166,7 +166,9 @@ def canonical_event(raw, gender, season=None, level=None, relay=False):
             leg = m.group(2).replace(' ', '').lower()
             unit = 'Yard' if re.search(r'y(ar)?d|\dy\b', s, re.I) or leg == '880' else 'Meter'
             if 'mile' in leg or leg in ('1', '1mile'):
-                return gender, '3x1 Mile Relay' if s.replace(' ', '').lower().startswith('3x') else '4x1 Mile Relay'
+                # (Bowdoin 2006 heads its 3x1 'Girls 4x1 Mile Relay Race 3X1': the Hy-Tek race code wins)
+                three = s.replace(' ', '').lower().startswith('3x') or re.search(r'\brace\s*3x1\b', s, re.I)
+                return gender, '3x1 Mile Relay' if three else '4x1 Mile Relay'
             if leg == '8':
                 leg = '800'
             # (EMITL's '4x100/4x200 Meter Throwers Relay': its own event, not the sprint relay)
