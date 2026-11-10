@@ -902,12 +902,33 @@
   "by": "re-check 2026-10-28: re-parsed only for the team-rank fix (ranks 10+ were stored as 0-9)",
   "evidence": "scratch re-parse compared with the signed parse: result rows identical, only team_rankings ranks changed"
  },
+ "backend/data/parsed_results/2004/Indoor/bboys.json": {
+  "parse_sha": "4875482059ec483c",
+  "source_sha": "95c5777f3b7240db",
+  "date": "2026-11-10",
+  "by": "rev04a",
+  "evidence": "rev04a: 2 Sonnet reviewers vs source; WMC class years 04-07/JU/SE read as grades, codes stripped from relay legs; Lin Acad -> Lincoln Academy, R. W. Traip -> Traip; SMAA girls hand-transcribed (121 rows); USM boys 4x200 Waterville B and C both 1:53.90 nameless: store keeps one (known)"
+ },
  "backend/data/parsed_results/2004/Indoor/bbrelays.json": {
   "parse_sha": "01e26acf337e3b3b",
   "source_sha": "58f07f2aefb62483",
   "date": "2026-11-09",
   "by": "gsa-relay-legs",
   "evidence": "Only change: legs added to nameless GSA relay rows (athletes + warnings citing the source): MileSplit live results, athletic.net, BDN results via Internet Archive, the Mixed SMR section of the same file, or exact field-relay sums from the meet's field file. git diff shows only those lines; resync 0 rows lost"
+ },
+ "backend/data/parsed_results/2004/Indoor/bbrelaysfield.json": {
+  "parse_sha": "cbef7da77a92a330",
+  "source_sha": "740bb669750b6b1f",
+  "date": "2026-11-10",
+  "by": "rev04a",
+  "evidence": "rev04a: 2 Sonnet reviewers vs source; WMC class years 04-07/JU/SE read as grades, codes stripped from relay legs; Lin Acad -> Lincoln Academy, R. W. Traip -> Traip; SMAA girls hand-transcribed (121 rows); USM boys 4x200 Waterville B and C both 1:53.90 nameless: store keeps one (known)"
+ },
+ "backend/data/parsed_results/2004/Indoor/bgirls.json": {
+  "parse_sha": "233862d07e8352ac",
+  "source_sha": "03c303411070ca40",
+  "date": "2026-11-10",
+  "by": "rev04a",
+  "evidence": "rev04a: 2 Sonnet reviewers vs source; WMC class years 04-07/JU/SE read as grades, codes stripped from relay legs; Lin Acad -> Lincoln Academy, R. W. Traip -> Traip; SMAA girls hand-transcribed (121 rows); USM boys 4x200 Waterville B and C both 1:53.90 nameless: store keeps one (known)"
  },
  "backend/data/parsed_results/2004/Indoor/emitlboys.json": {
   "parse_sha": "296cd08d4e889722",
@@ -923,12 +944,61 @@
   "by": "re-check 2026-10-28: re-parsed only for the team-rank fix (ranks 10+ were stored as 0-9)",
   "evidence": "scratch re-parse compared with the signed parse: result rows identical, only team_rankings ranks changed"
  },
+ "backend/data/parsed_results/2004/Indoor/kvacboys.json": {
+  "parse_sha": "907c28365d0f4138",
+  "source_sha": "7c70229a3e220879",
+  "date": "2026-11-10",
+  "by": "rev04a",
+  "evidence": "rev04a: 2 Sonnet reviewers vs source; WMC class years 04-07/JU/SE read as grades, codes stripped from relay legs; Lin Acad -> Lincoln Academy, R. W. Traip -> Traip; SMAA girls hand-transcribed (121 rows); USM boys 4x200 Waterville B and C both 1:53.90 nameless: store keeps one (known)"
+ },
  "backend/data/parsed_results/2004/Indoor/kvacgirls.json": {
   "parse_sha": "35404dd05c732fb0",
   "source_sha": "ae5517fa2081ebf9",
   "date": "2026-10-28",
   "by": "re-check 2026-10-28: re-parsed only for the team-rank fix (ranks 10+ were stored as 0-9)",
   "evidence": "scratch re-parse compared with the signed parse: result rows identical, only team_rankings ranks changed"
+ },
+ "backend/data/parsed_results/2004/Indoor/smaaboys.json": {
+  "parse_sha": "becd42263c2e32e5",
+  "source_sha": "777d68585799c83c",
+  "date": "2026-11-10",
+  "by": "rev04a",
+  "evidence": "rev04a: unlabeled place matrix, three division blocks per sprint/hurdle/300/600 event cannot be named; 7 inferable events stored (41 rows incl. Karrer Md = Marshwood); Moon prints no school; rest unrecoverable"
+ },
+ "backend/data/parsed_results/2004/Indoor/smaagirls.json": {
+  "parse_sha": "e926c0d2250fd52c",
+  "source_sha": "ad8dcdbe1ced342f",
+  "date": "2026-11-10",
+  "by": "rev04a",
+  "evidence": "rev04a: 2 Sonnet reviewers vs source; WMC class years 04-07/JU/SE read as grades, codes stripped from relay legs; Lin Acad -> Lincoln Academy, R. W. Traip -> Traip; SMAA girls hand-transcribed (121 rows); USM boys 4x200 Waterville B and C both 1:53.90 nameless: store keeps one (known)"
+ },
+ "backend/data/parsed_results/2004/Indoor/usmrelaysboys.json": {
+  "parse_sha": "eab10ff8ceeb6538",
+  "source_sha": "2f5c3edb5c978a77",
+  "date": "2026-11-10",
+  "by": "rev04a",
+  "evidence": "rev04a: 2 Sonnet reviewers vs source; WMC class years 04-07/JU/SE read as grades, codes stripped from relay legs; Lin Acad -> Lincoln Academy, R. W. Traip -> Traip; SMAA girls hand-transcribed (121 rows); USM boys 4x200 Waterville B and C both 1:53.90 nameless: store keeps one (known)"
+ },
+ "backend/data/parsed_results/2004/Indoor/usmrelaysgirls.json": {
+  "parse_sha": "078a388f1871f0c2",
+  "source_sha": "024ee98e89269849",
+  "date": "2026-11-10",
+  "by": "rev04a",
+  "evidence": "rev04a: 2 Sonnet reviewers vs source; WMC class years 04-07/JU/SE read as grades, codes stripped from relay legs; Lin Acad -> Lincoln Academy, R. W. Traip -> Traip; SMAA girls hand-transcribed (121 rows); USM boys 4x200 Waterville B and C both 1:53.90 nameless: store keeps one (known)"
+ },
+ "backend/data/parsed_results/2004/Indoor/wmcboys.json": {
+  "parse_sha": "bc8177ef7ee41de4",
+  "source_sha": "fb278993b7e3257d",
+  "date": "2026-11-10",
+  "by": "rev04a",
+  "evidence": "rev04a: 2 Sonnet reviewers vs source; WMC class years 04-07/JU/SE read as grades, codes stripped from relay legs; Lin Acad -> Lincoln Academy, R. W. Traip -> Traip; SMAA girls hand-transcribed (121 rows); USM boys 4x200 Waterville B and C both 1:53.90 nameless: store keeps one (known)"
+ },
+ "backend/data/parsed_results/2004/Indoor/wmcgirls.json": {
+  "parse_sha": "3420cc8e6eb6b1bb",
+  "source_sha": "05aaa669c17c99ff",
+  "date": "2026-11-10",
+  "by": "rev04a",
+  "evidence": "rev04a: 2 Sonnet reviewers vs source; WMC class years 04-07/JU/SE read as grades, codes stripped from relay legs; Lin Acad -> Lincoln Academy, R. W. Traip -> Traip; SMAA girls hand-transcribed (121 rows); USM boys 4x200 Waterville B and C both 1:53.90 nameless: store keeps one (known)"
  },
  "backend/data/parsed_results/2004/Outdoor/ban7may04.json": {
   "parse_sha": "d6a37249e8ed8ccb",
