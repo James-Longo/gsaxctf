@@ -1,7 +1,7 @@
 {
     "events": [
         {
-            "event": "4x400 Meter Relay",
+            "event": "3x1 Mile Relay",
             "gender": "Girls",
             "is_relay": true,
             "results": [
@@ -15,13 +15,6 @@
                 {
                     "school": "Greely",
                     "result": "18:48.28",
-                    "athletes": [],
-                    "grade": "",
-                    "type": "Finals"
-                },
-                {
-                    "school": "Waterville",
-                    "result": "19:93.79",
                     "athletes": [],
                     "grade": "",
                     "type": "Finals"
@@ -61,10 +54,14 @@
                     "grade": "",
                     "type": "Finals"
                 }
+            ],
+            "note": "printed 'One Mile Relay' (3x1 mile: winning times 16:08.66 girls / 14:35.33 boys; Bowdoin's later sheets name it 3X1 / 3x1 Mile Relay)",
+            "warnings": [
+                "Waterville A, 3rd, printed 19:93.79 (impossible seconds; between 18:48.28 and 19:21.90): not stored"
             ]
         },
         {
-            "event": "4x400 Meter Relay",
+            "event": "3x1 Mile Relay",
             "gender": "Boys",
             "is_relay": true,
             "results": [
@@ -117,7 +114,8 @@
                     "grade": "",
                     "type": "Finals"
                 }
-            ]
+            ],
+            "note": "printed 'One Mile Relay' (3x1 mile: winning times 16:08.66 girls / 14:35.33 boys; Bowdoin's later sheets name it 3X1 / 3x1 Mile Relay)"
         },
         {
             "event": "Sprint Medley Relay",
@@ -323,7 +321,7 @@
             ]
         },
         {
-            "event": "Throwers Relay",
+            "event": "4x100 Meter Throwers Relay",
             "gender": "Girls",
             "is_relay": true,
             "results": [
@@ -369,10 +367,11 @@
                     "grade": "",
                     "type": "Finals"
                 }
-            ]
+            ],
+            "note": "printed 'Throwers Relay' (Bowdoin names it 4x100 Meter Throwers Relay from 2006)"
         },
         {
-            "event": "Throwers Relay",
+            "event": "4x100 Meter Throwers Relay",
             "gender": "Boys",
             "is_relay": true,
             "results": [
@@ -446,40 +445,57 @@
                     "grade": "",
                     "type": "Finals"
                 }
-            ]
+            ],
+            "note": "printed 'Throwers Relay' (Bowdoin names it 4x100 Meter Throwers Relay from 2006)"
         },
         {
             "event": "3x55 Meter Shuttle Hurdle (39\")",
             "gender": "Boys",
-            "is_relay": false,
+            "is_relay": true,
             "results": [
                 {
-                    "athlete": "1 Waterville",
-                    "school": "A",
+                    "school": "Waterville",
                     "result": "24.24",
+                    "athletes": [],
                     "grade": "",
-                    "type": "Finals"
+                    "type": "Finals",
+                    "place": 1,
+                    "warnings": [
+                        "printed '1 Waterville A': place, school and team letter (parsed as athlete/school)"
+                    ]
                 },
                 {
-                    "athlete": "2 Greely",
-                    "school": "A",
+                    "school": "Greely",
                     "result": "27.64",
+                    "athletes": [],
                     "grade": "",
-                    "type": "Finals"
+                    "type": "Finals",
+                    "place": 2,
+                    "warnings": [
+                        "printed '2 Greely A': place, school and team letter (parsed as athlete/school)"
+                    ]
                 },
                 {
-                    "athlete": "3 Waterville",
-                    "school": "C",
+                    "school": "Waterville",
                     "result": "28.64",
+                    "athletes": [],
                     "grade": "",
-                    "type": "Finals"
+                    "type": "Finals",
+                    "place": 3,
+                    "warnings": [
+                        "printed '3 Waterville C': place, school and team letter (parsed as athlete/school)"
+                    ]
                 },
                 {
-                    "athlete": "4 Waterville",
-                    "school": "B",
+                    "school": "Waterville",
                     "result": "34.74",
+                    "athletes": [],
                     "grade": "",
-                    "type": "Finals"
+                    "type": "Finals",
+                    "place": 4,
+                    "warnings": [
+                        "printed '4 Waterville B': place, school and team letter (parsed as athlete/school)"
+                    ]
                 }
             ],
             "note": "printed \"3 X Shuttle High Hurdle (39\")\"; Bowdoin Relays 2007-2016 run the 3x55 (39\") and 4x55 (30\"/36\") shuttles in these times"
@@ -1577,8 +1593,8 @@
             ]
         },
         {
-            "event": "CO-ED Relay",
-            "gender": "Girls",
+            "event": "1800 Sprint Medley COED 6-3-3-6",
+            "gender": "Mixed",
             "is_relay": true,
             "results": [
                 {
@@ -1630,7 +1646,8 @@
                     "grade": "",
                     "type": "Finals"
                 }
-            ]
+            ],
+            "note": "printed 'CO-ED Relay'; times 4:54-5:47 match Bowdoin's 1800 Sprint Medley COED 6-3-3-6 of 2007-2013"
         },
         {
             "event": "4 X 800 Relay",
