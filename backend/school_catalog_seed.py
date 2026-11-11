@@ -2576,7 +2576,27 @@ FILE_RULES += [
      'coop-it-cony-halldale-winthrop'),
     # Baryiames, Boynton: Portsmouth NH 2026 outdoor; McAllister Portsmouth NH at the 2025 USM meet
     (['Portsmouth'], 'Indoor', (2026, 2026), r'^NYI-results$', 'oos-auto-nh-portsmouth'),
-    (['BER'], 'Indoor', (2026, 2026), r'^smaa-4-1$', 'me-hs-berwick'),   # Mikhail El-Badry, Berwick Academy 2025-26
+    (['BER'], 'Indoor', (2026, 2026), r'^smaa-4-1$', 'me-hs-berwick'),
+    # pins 2026-11-11: resolutions the athlete-continuity evidence carried until new data shifted it
+    # (catalog rebuild of 2026-11-11 left them unresolved or sent them elsewhere)
+    (['Lincoln'], 'Indoor', (2003, 2003), r'^classbresults$', 'me-hs-lincoln-academy'),     # not Lincoln RI: Class B state meet
+    (['Lin Acad'], 'Indoor', (2004, 2004), r'^kvacboys$', 'me-hs-lincoln-academy'),
+    (['Md'], 'Indoor', (2004, 2004), r'^smaaboys$', 'me-hs-marshwood'),
+    (['Bid'], 'Indoor', (2004, 2004), r'^smaagirls$', 'me-hs-biddeford'),
+    (['C'], 'Indoor', (2004, 2004), r'^smaagirls$', 'me-hs-cheverus'),
+    (['D'], 'Indoor', (2004, 2004), r'^smaagirls$', 'me-hs-deering'),
+    (['Mar'], 'Indoor', (2004, 2004), r'^smaagirls$', 'me-hs-marshwood'),      # SMAA; Maranacook is KVAC
+    (['McA'], 'Indoor', (2004, 2004), r'^smaagirls$', 'me-hs-mcauley'),
+    (['P'], 'Indoor', (2004, 2004), r'^smaagirls$', 'me-hs-portland'),
+    (['Sc'], 'Indoor', (2004, 2004), r'^smaagirls$', 'me-hs-scarborough'),
+    (['We'], 'Indoor', (2004, 2004), r'^smaagirls$', 'me-hs-westbrook'),
+    (['Wi'], 'Indoor', (2004, 2004), r'^smaagirls$', 'me-hs-windham'),
+    (['Rams'], 'Indoor', (2009, 2009), r'^(SMAAboys3week4|smaaboysmeet3_jan17|smaaboysweek2meet4)$', 'me-hs-deering'),
+    (['Fhsindoor09'], 'Indoor', (2009, 2009), r'^(wmcmeet1_jan16|wmcmeet1_jan9|wmcweek5meet2)$', 'me-hs-freeport'),
+    (['Bulldogs'], 'Indoor', (2010, 2010), r'^smaachampsboys$', 'me-hs-portland'),
+    (['N.Yarmth Ac.- ME'], 'Indoor', (2011, 2011), r'^2011NewEnglandResults$', 'me-hs-nya'),   # Hannah Hearn, NYA all 2010-11
+    (['South Porltand'], 'Indoor', (2010, 2010), r'^ms-smaa-hurdle-qualifers-2010$', 'me-hs-south-portland'),   # sheet typo
+  # Mikhail El-Badry, Berwick Academy 2025-26
     # 'Hawks' at the 2017 Troy Howard MS meet is North Haven (Beverage, Dunn, Bernard, Sandelin: North Haven at every
     # other 2016-19 meet), not Marshwood (also the Hawks)
     (['Hawks'], 'Outdoor', (2017, 2017), r'^Troy-Howard-boys$', 'me-hs-north-haven'),

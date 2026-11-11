@@ -45,6 +45,16 @@ def test_partly_held_meet_keeps_new_events_and_drops_held_relay():
     assert mb.track_event_homes(new, 1998, 'Outdoor') == ['held', 'held', None]
 
 
+def test_entries_and_converted_pages_are_not_results():
+    """2011 SMAA Southwesterns: the Boys Entries list (seed marks) and the Converted postings were read as results."""
+    from backend.milesplit import NOT_RESULTS
+    for t in ('SMAA Southwestern Championship 2011 - Boys Entries (Raw)', 'Girls Coverted (Raw)',
+              'Converted Boys', 'Meet Program', 'Psych Sheet'):
+        assert NOT_RESULTS.search(t), t
+    for t in ('SMAA Southwestern Championship 2011 - Boys (Raw)', 'Results', 'Girls Results', 'Boys Varsity'):
+        assert not NOT_RESULTS.search(t), t
+
+
 if __name__ == '__main__':
     for name, fn in list(globals().items()):
         if name.startswith('test_'):

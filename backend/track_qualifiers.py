@@ -29,6 +29,7 @@ import sys
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from backend import track_postseason as tp  # noqa: E402
+from backend import school_catalog as sc  # noqa: E402
 
 
 # state event -> the regular-season events that show the same ability
@@ -62,6 +63,14 @@ def _equiv(b, alt, ev, d):
     return any(_before(b.get(e, ([],))[0], d) or _before(alt.get(e, []), d) for e in EQUIV.get(ev, ()))
 
 
+def _members(unit, year, season, gender):
+    """The member schools that compete as this co-op that season ([] for a school)."""
+    if not (unit or '').startswith('coop-'):
+        return []
+    c = sc.info(unit) or {}
+    return [m for m in c.get('members', []) if sc.team_unit(m, str(year), season, gender) == unit]
+
+
 def gaps(store, champs, truth):
     """[row] for every state entrant, with its class ('ok' when a mark is on file)."""
     by_name = collections.defaultdict(set)
@@ -79,10 +88,13 @@ def gaps(store, champs, truth):
                 rec = dict(champ=c['id'], year=c['year'], season=c['season'], gender=c['gender'],
                            event=ev, place=place, unit=r['unit'], name=r['name'], mark=r['mark'], relay=relay)
                 if relay:
-                    b = store.relays.get((r['unit'], c['gender']), {}).get(blk, {})
-                    alt = store.alt_relays.get((r['unit'], c['gender']), {}).get(blk, {})
-                    rec['cls'] = ('ok' if _before(b.get(ev, ([],))[0], d) else
-                                  'equivalent event' if _equiv(b, alt, ev, d) else 'team no relay mark')
+                    # (a co-op's regular-season relays print its host or member schools)
+                    us = [r['unit']] + _members(r['unit'], c['year'], c['season'], c['gender'])
+                    bs = [store.relays.get((u, c['gender']), {}).get(blk, {}) for u in us]
+                    alts = [store.alt_relays.get((u, c['gender']), {}).get(blk, {}) for u in us]
+                    rec['cls'] = ('ok' if any(_before(b.get(ev, ([],))[0], d) for b in bs) else
+                                  'equivalent event' if any(_equiv(b, a, ev, d) for b, a in zip(bs, alts))
+                                  else 'team no relay mark')
                 elif r['aid'] is None:
                     rec['cls'] = 'entrant not matched'
                 else:

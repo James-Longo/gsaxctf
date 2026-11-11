@@ -1237,6 +1237,9 @@ def superseded(files):
         return re.sub(r'[^a-z]+', ' ', n.lower()).strip()
     upd = {base(f['name']) for f in files if re.search(r'(?i)\b(updated|revised|corrected)\b', f['name'])}
     return [f for f in files if re.search(r'(?i)\b(updated|revised|corrected)\b', f['name']) or base(f['name']) not in upd]
+NOT_RESULTS = re.compile(r'(?i)\bentries\b|\bentry list\b|\bco[n]?verted\b|\bmeet program\b|\bheat sheet\b|\bpsych sheet\b')
+
+
 def main():
     cmd, slug = sys.argv[1], sys.argv[2]
     if cmd == 'list':
@@ -1253,6 +1256,11 @@ def main():
         if str(f['id']) in os.environ.get('EXCLUDE','').split(','): continue
         u='https://%s/meets/%s/results/%s/raw'%(HOST,slug,f['id'])
         raw=get(u,'%s-%s.html'%(slug,f['id']))
+        # not results: an entry list or meet program (seed marks), or a 'Converted' posting (yard-era
+        # times turned into metric equivalents: 2011 SMAA Southwesterns, Expo weeks) beside the raw one
+        ptitle=html.unescape((re.search(r'<title>(.*?)</title>',raw,re.S) or [None,''])[1] if re.search(r'<title>',raw) else '')
+        if NOT_RESULTS.search(f['name'] or '') or NOT_RESULTS.search(ptitle) or re.search(r'^\s*Meet Program\s*$',raw[:4000],re.M):
+            print('not results, skipped:',f['name'],'|',ptitle[:80]); continue
         pre=re.findall(r'<pre[^>]*>(.*?)</pre>',raw,re.S)
         if not pre:   # results typed into a spreadsheet are shown as a table, one row per line: read it as a tab sheet
             body=re.search(r'id="meetResultsBody"[^>]*>(.*?)</div>',raw,re.S)

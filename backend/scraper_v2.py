@@ -588,6 +588,35 @@ _MS_MEET_TITLE = re.compile(
     r'\bjh\b|elementary|\bgrades?\s+[5-8]\b|\b[5-8]th\s+grade', re.I)
 
 
+def dup_row_key(p):
+    """The key the double-ingest check compares rows by. XC: athlete, event, time.
+    Track: surname, first initial, event and the parsed mark (to 0.1), so a sub5
+    file printed with initials ('Allaire, D', 'R Publicover') and a MileSplit copy
+    with full names and other mark formatting ('31-04.00' / '31-4') still match;
+    relays by team."""
+    if p['season'] == 'XC':
+        return (p['athlete_id'], p['event'], p['mark'])
+    from backend.json_store import parse_mark_value
+    v, _ = parse_mark_value(str(p.get('mark') or ''), p['event'])
+    v = round(v, 1) if v else str(p.get('mark'))
+    name = (p.get('athlete_name') or '').strip()
+    if 'relay' in p['event'].lower() or name.endswith(' Relay'):
+        return (p.get('team'), p['event'], v)
+    if ',' in name:
+        last, first = [x.strip() for x in name.split(',', 1)]
+    else:
+        parts = name.split()
+        first, last = (parts[0], parts[-1]) if len(parts) > 1 else ('', name)
+    return (re.sub('[^a-z]', '', last.lower()), first[:1].lower(), p['event'], v)
+
+
+def initial_only(name):
+    """'R Publicover', 'Allaire, D', 'D. Allaire': a first name cut to its initial."""
+    name = (name or '').strip()
+    first = name.split(',', 1)[1].strip() if ',' in name else (name.split() or [''])[0]
+    return len(first.rstrip('.')) == 1
+
+
 class _MostRowsParser:
     """Run several parsers, keep the result with the most rows (the first
     parser wins ties)."""
@@ -2926,7 +2955,7 @@ class Sub5ScraperV2:
                 # "ms-<slug>": a MileSplit transcription's file prefix, not "middle school"
                 low = re.sub(r'[-_.]+', ' ', re.sub(r'^ms-(?=[a-z0-9])', '', f"{filename} {meet_name}").lower())
                 low = re.sub(r'\bst\.? doms?\b', 'st dominic', low)   # "St. Doms" is a school, not an MS code
-                if re.search(r'\bms\b|\bjh\b|middle school|junior high|elementary|middle(?!ton|bury|sex|boro)|^jh|xcjh|juniorhigh|jh(?:xc|cc|boys|girls|champ|meet)|[a-z]ms(\b|\d)', low):
+                if re.search(r'\bms\b|\bjh\b|middle school|junior high|elementary|middle(?!ton|bury|sex|boro)|^jh|xcjh|juniorhigh|jh(?:xc|cc|boys|girls|champ|meet)|[a-z](?<!tea)(?<!ra)ms(\b|\d)', low):
                     meet_level = 'ms'
                 elif re.search(r'\bcollege\b|university|collegiate|gnac|nescac', low):
                     meet_level = 'college'
@@ -3324,8 +3353,7 @@ class Sub5ScraperV2:
                     continue
                 for p in enrich_rows(team, key, _load_json(os.path.join(full, chunk), [])):
                     out.setdefault(chunk_keys[key], {}).setdefault(
-                        p.get('meet_name'), set()).add(
-                        (p['athlete_id'], p['event'], p['mark']))
+                        p.get('meet_name'), set()).add(dup_row_key(p))
         return out
 
     def run_full_scrape(self, wipe=False, seasons=None, download=True, parse=True):
@@ -3401,10 +3429,14 @@ class Sub5ScraperV2:
         # (Results.htm + Results-1.htm, corrected_* reposts, boys/girls copies
         # of a combined file) shares most rows — keep the larger file.
         meet_rows = {}
+        meet_initials = collections.Counter()
+        meet_fine = collections.Counter()      # marks printed to hundredths (FAT)
         for perfs in collector.values():
             for p in perfs:
                 key = (p['year'], p['season'], p['meet_name'])
-                meet_rows.setdefault(key, set()).add((p['athlete_id'], p['event'], p['mark']))
+                meet_rows.setdefault(key, set()).add(dup_row_key(p))
+                meet_initials[key] += initial_only(p.get('athlete_name'))
+                meet_fine[key] += bool(re.search(r'\.\d\d$', str(p.get('mark') or '')))
         by_season = {}
         for key, rows in meet_rows.items():
             if len(rows) >= 20:
@@ -3443,8 +3475,11 @@ class Sub5ScraperV2:
                         continue
                     smaller = min(len(r1), len(r2))
                     if smaller and len(r1 & r2) / smaller >= 0.6:
-                        loser = k1 if len(r1) < len(r2) or \
-                            (len(r1) == len(r2) and k1[2] < k2[2]) else k2
+                        # (the larger file wins; a tie goes to the copy with full names,
+                        # then to the one with hundredths over a rounded repost)
+                        t1 = (len(r1), -meet_initials[k1], meet_fine[k1], k1[2])
+                        t2 = (len(r2), -meet_initials[k2], meet_fine[k2], k2[2])
+                        loser = k1 if t1 < t2 else k2
                         drop_meets.add(loser)
         for m in drop_meets:
             SYNC_DROPS[(f'{m[0]}_{m[1]}_{m[2]}', 'meet posted twice (other copy kept)')] += \
