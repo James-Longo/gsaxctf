@@ -1,6 +1,48 @@
-import { useState, useMemo, useEffect } from 'react'
+import { Fragment, useState, useMemo, useEffect } from 'react'
 import { parseMark, normalizeEvent, isDistanceEvent, asset, fetchGz } from './utils'
 import './App.css'
+
+// Typical championship mark vs the mean of an athlete's two best marks that season, as a
+// log-scale spread by event family: robust SD of the misses over 164 PVC/EMITL and state
+// championships 2003-2026, x1.25 (the scale with the best top-3 Brier score in that backtest).
+const CHAMP_SPREAD = {
+    sprint: 1.25 * 0.0164, hurdles: 1.25 * 0.0249, distance: 1.25 * 0.0247, relay: 1.25 * 0.0235,
+    jumps: 1.25 * 0.0416, throws: 1.25 * 0.0647, walk: 1.25 * 0.0383,
+}
+const SIMS = 2000
+
+function eventFamily(event) {
+    const e = (event || '').toLowerCase()
+    if (e.includes('relay')) return 'relay'
+    if (e.includes('hurdle')) return 'hurdles'
+    if (e.includes('jump') || e.includes('vault')) return 'jumps'
+    if (e.includes('shot') || e.includes('discus') || e.includes('javelin')) return 'throws'
+    if (e.includes('walk')) return 'walk'
+    if (/\b(55|100|200|400)m dash/.test(e)) return 'sprint'
+    return 'distance'
+}
+
+// A mark on a log scale where lower is better (times as they are, distances negated).
+function logMark(mark, event) {
+    const p = parseMark(mark, isDistanceEvent(event))
+    if (!p.valid || !(p.value > 0)) return null
+    return p.isTime ? Math.log(p.value) : -Math.log(p.value)
+}
+
+// Chances as the XC page shows them.
+const PLACES = ['1st', '2nd', '3rd', '4th+']
+const pct = (x) => x == null ? '' : x >= 0.995 ? '>99%' : x > 0 && x < 0.005 ? '<1%' : `${Math.round(x * 100)}%`
+const pctCls = (x) => x == null ? '' : x >= 0.5 ? 'xs-hi' : x < 0.02 ? 'xs-lo' : ''
+
+// Small seeded generator, so the same page shows the same chances.
+function mulberry32(a) {
+    return () => {
+        a |= 0; a = (a + 0x6D2B79F5) | 0
+        let t = Math.imul(a ^ (a >>> 15), 1 | a)
+        t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t
+        return ((t ^ (t >>> 14)) >>> 0) / 4294967296
+    }
+}
 
 function PostseasonSimulator({ performances, isBetter, manifest, loadTeamData, season }) {
     // Derive the current season and year from today's date.
@@ -25,7 +67,10 @@ function PostseasonSimulator({ performances, isBetter, manifest, loadTeamData, s
     useEffect(() => { if (season) setFilterSeason(season) }, [season])
     const [filterEvent, setFilterEvent] = useState('All')
     const [scoreMethod, setScoreMethod] = useState('PR')
-    const [expandedTeams, setExpandedTeams] = useState({}) 
+    const [expandedTeams, setExpandedTeams] = useState({})
+    const [gender, setGender] = useState('Boys')
+    const g = gender.toLowerCase()
+    const ofGender = (event) => (event || '').startsWith(gender)
     const [targetTeam, setTargetTeam] = useState('George Stevens Academy')
     const [competitionType, setCompetitionType] = useState('PVC');
     const [view, setView] = useState('meet');
@@ -151,9 +196,9 @@ function PostseasonSimulator({ performances, isBetter, manifest, loadTeamData, s
 
     // This competition's championship per gender: the PVC (indoor: EMITL) small-school
     // meet, or the state meet of the team being optimized (else the class most listed schools ran in).
-    const champs = useMemo(() => {
-        if (!champFile || !baseSchools || scoreMethod === 'Seeds') return null
-        const out = {}
+    const champIds = useMemo(() => {
+        if (!champFile || !baseSchools || scoreMethod === 'Seeds') return ''
+        const ids = []
         for (const g of ['Boys', 'Girls']) {
             const cs = champFile.champs.filter(c => c.gender === g && (competitionType === 'PVC'
                 ? c.kind === 'conf' && /small|all/i.test(c.division || '')
@@ -161,10 +206,16 @@ function PostseasonSimulator({ performances, isBetter, manifest, loadTeamData, s
             const count = c => c.teams.filter(t => schoolOf(t.team, baseSchools)).length
             const ranIn = c => c.teams.some(t => schoolOf(t.team, baseSchools) === targetTeam)
             cs.sort((a, b) => (ranIn(b) - ranIn(a)) || (count(b) - count(a)))
-            if (cs.length) out[g] = cs[0]
+            if (cs.length) ids.push(cs[0].id)
         }
-        return Object.keys(out).length ? out : null
+        return ids.join(',')
     }, [champFile, baseSchools, competitionType, targetTeam, scoreMethod])
+    // (keyed by id, so picking another team in the same class recomputes nothing)
+    const champs = useMemo(() => {
+        if (!champIds) return null
+        const ids = champIds.split(',')
+        return Object.fromEntries(champFile.champs.filter(c => ids.includes(c.id)).map(c => [c.gender, c]))
+    }, [champFile, champIds])
 
     // The schools in the competition: the listed ones plus anyone else who scored at the meet.
     const activeSchools = useMemo(() => {
@@ -378,7 +429,6 @@ function PostseasonSimulator({ performances, isBetter, manifest, loadTeamData, s
         });
 
         // Now resolve each groupKey -> athleteKey to a single performance record
-        const useMedian = scoreMethod === 'Median';
         Object.entries(rawGrouped).forEach(([groupKey, meta]) => {
             groups[groupKey] = {
                 items: {},
@@ -391,27 +441,11 @@ function PostseasonSimulator({ performances, isBetter, manifest, loadTeamData, s
                 if (perfs.length === 0) return;
 
                 let selectedPerf = null;
-                if (useMedian) {
-                    const parsed = perfs.map(p => {
-                        const isDist = isDistanceEvent(p.event);
-                        return {
-                            perf: p,
-                            parsed: parseMark(p.mark, isDist)
-                        };
-                    }).filter(x => x.parsed.valid);
-
-                    if (parsed.length > 0) {
-                        parsed.sort((a, b) => a.parsed.value - b.parsed.value);
-                        const mid = Math.floor(parsed.length / 2);
-                        selectedPerf = parsed[mid].perf;
+                perfs.forEach(p => {
+                    if (!selectedPerf || isBetter(p.mark, selectedPerf.mark, meta.canonicalName)) {
+                        selectedPerf = p;
                     }
-                } else {
-                    perfs.forEach(p => {
-                        if (!selectedPerf || isBetter(p.mark, selectedPerf.mark, meta.canonicalName)) {
-                            selectedPerf = p;
-                        }
-                    });
-                }
+                });
 
                 if (selectedPerf) {
                     groups[groupKey].items[athleteKey] = {
@@ -712,12 +746,83 @@ function PostseasonSimulator({ performances, isBetter, manifest, loadTeamData, s
         };
     }, [optimizedData, filterYear, filterSeason]);
 
+    // Each athlete's marks this season, on a log scale where lower is better.
+    const seasonMarks = useMemo(() => {
+        const out = {}
+        if (scoreMethod === 'Seeds') return out
+        filteredData.forEach(p => {
+            const v = logMark(p.mark, p.event)
+            if (v == null) return
+            const k = `${normalizeEvent(p.event, filterSeason)}|${p.isRelay ? p.pvcTeam : `${p.athlete_id}|${p.pvcTeam}`}`;
+            (out[k] = out[k] || []).push(v)
+        })
+        return out
+    }, [filteredData, filterSeason, scoreMethod])
+
+    // Each team's chance of finishing 1st, 2nd, 3rd and 4th or lower: the predicted entries'
+    // meet run SIMS times, each mark drawn around the mean of the athlete's two best marks
+    // with the event family's championship-day spread (CHAMP_SPREAD).
+    const placeOdds = useMemo(() => {
+        const out = { boys: {}, girls: {} }
+        if (loadingState.isLoading) return out   // once, when every team's results are in
+        const rand = mulberry32(1)
+        const gauss = () => Math.sqrt(-2 * Math.log(1 - rand())) * Math.cos(2 * Math.PI * rand())
+        const events = []
+        Object.values(optimizedData).forEach(results => {
+            if (!results.length) return
+            const eg = (results[0].event || '').startsWith('Girls') ? 'girls' : 'boys'
+            if (eg !== g) return
+            const sd = CHAMP_SPREAD[eventFamily(results[0].event)]
+            const rows = results.map(r => {
+                const own = (seasonMarks[`${r.event}|${r.isRelay ? r.pvcTeam : `${r.athlete_id}|${r.pvcTeam}`}`] || []).slice().sort((a, b) => a - b)
+                const best = own.length ? own.slice(0, 2) : [logMark(r.mark, r.event)]
+                return best[0] == null ? null : { team: r.pvcTeam, mu: (best[0] + (best[1] ?? best[0])) / 2 }
+            }).filter(Boolean)
+            if (rows.length) events.push({ sd, rows })
+        })
+        const K = SCORING_RULES.length
+        {
+            const teams = [...new Set(events.flatMap(e => e.rows.map(r => r.team)))]
+            const ti = new Map(teams.map((t, i) => [t, i]))
+            const evs = events.map(e => ({ sd: e.sd, mu: Float64Array.from(e.rows, r => r.mu), team: Int32Array.from(e.rows, r => ti.get(r.team)) }))
+            const counts = teams.map(() => [0, 0, 0, 0])
+            const pts = new Float64Array(teams.length)
+            const topV = new Float64Array(K), topT = new Int32Array(K)
+            for (let s = 0; s < SIMS; s++) {
+                pts.fill(0)
+                for (const { sd, mu, team } of evs) {
+                    // the K best draws, kept sorted by insertion
+                    let n = 0
+                    for (let i = 0; i < mu.length; i++) {
+                        const v = mu[i] + sd * gauss()
+                        if (n === K && v >= topV[K - 1]) continue
+                        let j = n < K ? n++ : K - 1
+                        while (j > 0 && topV[j - 1] > v) { topV[j] = topV[j - 1]; topT[j] = topT[j - 1]; j-- }
+                        topV[j] = v; topT[j] = team[i]
+                    }
+                    for (let p = 0; p < n; p++) pts[topT[p]] += SCORING_RULES[p]
+                }
+                // top three teams this sim
+                let a = -1, b = -1, c = -1
+                for (let t = 0; t < teams.length; t++) {
+                    if (a < 0 || pts[t] > pts[a]) { c = b; b = a; a = t }
+                    else if (b < 0 || pts[t] > pts[b]) { c = b; b = t }
+                    else if (c < 0 || pts[t] > pts[c]) c = t
+                }
+                for (let t = 0; t < teams.length; t++) counts[t][t === a ? 0 : t === b ? 1 : t === c ? 2 : 3]++
+            }
+            teams.forEach((t, i) => { out[g][t] = counts[i].map(n => n / SIMS) })
+        }
+        return out
+    }, [optimizedData, seasonMarks, SCORING_RULES, loadingState.isLoading, g])
+
     const entryDecisions = useMemo(() => {
         if (!targetTeam || Object.keys(groupedData).length === 0) return null;
 
         const teamAthletes = {};
 
         Object.entries(groupedData).forEach(([groupTitle, results]) => {
+            if (!ofGender(results[0]?.event)) return;
             let rankPos = 0;
 
             for (let i = 0; i < results.length; i++) {
@@ -809,7 +914,7 @@ function PostseasonSimulator({ performances, isBetter, manifest, loadTeamData, s
             decisionAthletes: decisionAthletes.sort((a, b) => b.scorableCount - a.scorableCount || b.scoringEvents.length - a.scoringEvents.length),
             straightforwardAthletes: straightforwardAthletes.sort((a, b) => b.scorableCount - a.scorableCount || b.scoringEvents.length - a.scoringEvents.length)
         };
-    }, [groupedData, targetTeam, SCORING_RULES, SCORING_EVENTS, EVENT_LIMIT]);
+    }, [groupedData, targetTeam, SCORING_RULES, SCORING_EVENTS, EVENT_LIMIT, gender]);
 
     // What happened at the championship, in the simulator's names: per gender the
     // team order and each event's places, keyed like the event sections ('Girls 55m Hurdles').
@@ -924,10 +1029,17 @@ function PostseasonSimulator({ performances, isBetter, manifest, loadTeamData, s
                 </div>
             )}
 
-            <div className="xs-seg ps-tabs">
-                <button className={view === 'meet' ? 'active' : ''} onClick={() => setView('meet')}>Meet</button>
-                <button className={view === 'entries' ? 'active' : ''} onClick={() => setView('entries')}
-                    title={`${targetTeam}: athletes with more than ${EVENT_LIMIT} scoring events or adjacent track events`}>Entry decisions</button>
+            <div className="xs-bar ps-tabs">
+                <div className="xs-seg" role="group" aria-label="View">
+                    <button className={view === 'meet' ? 'active' : ''} onClick={() => setView('meet')}>Meet</button>
+                    <button className={view === 'entries' ? 'active' : ''} onClick={() => setView('entries')}
+                        title={`${targetTeam}: athletes with more than ${EVENT_LIMIT} scoring events or adjacent track events`}>Entry decisions</button>
+                </div>
+                <div className="xs-seg" role="group" aria-label="Gender">
+                    {['Boys', 'Girls'].map(x => (
+                        <button key={x} className={x === gender ? 'active' : ''} onClick={() => setGender(x)}>{x}</button>
+                    ))}
+                </div>
             </div>
 
             <div className="analyzer-controls">
@@ -967,7 +1079,6 @@ function PostseasonSimulator({ performances, isBetter, manifest, loadTeamData, s
                         <label>Scoring Basis</label>
                         <select value={scoreMethod} onChange={e => setScoreMethod(e.target.value)}>
                             <option value="PR">Season Best (SB)</option>
-                            <option value="Median">Median Result</option>
                             <option value="Seeds">Actual Seeds (5/29)</option>
                         </select>
                     </div>
@@ -1080,130 +1191,69 @@ function PostseasonSimulator({ performances, isBetter, manifest, loadTeamData, s
             )}
 
             {view === 'meet' && <>
-            {optimizedTeamScores && (
-                <div className="simulation-overlay">
-                    {optimizedTeamScores.incomplete ? (
-                        <div className="meet-leaderboard warn">
-                            <p>Please select a specific Year and Season to view the Meet Simulation.</p>
+            {optimizedTeamScores && !optimizedTeamScores.incomplete && (() => {
+                const pts = Object.fromEntries(optimizedTeamScores[g].map(t => [t.team, t]))
+                const odds = placeOdds[g]
+                // season-best points order; teams with entries but no points after them
+                const teams = [...optimizedTeamScores[g].map(t => t.team),
+                    ...Object.keys(odds).filter(t => !pts[t]).sort((a, b) => (odds[a][3] - odds[b][3]))]
+                const scoringKey = n => /^1[01]0m Hurdles$/.test(n) ? '100m/110m Hurdles' : n
+                const have = new Set(Object.values(optimizedData).filter(rs => rs.length && ofGender(rs[0].event)).map(rs => scoringKey(rs[0].originalCanonical)))
+                const missing = SCORING_EVENTS.filter(ev => !have.has(ev))
+                return (
+                    <div className="ps-standings">
+                        {missing.length > 0 && <p className="xs-note ps-missing">No results for: {missing.join(', ')}</p>}
+                        <div className="table-container">
+                            <table className="performance-table xs-table">
+                                <thead>
+                                    <tr>
+                                        <th className="num">#</th><th>Team</th>
+                                        {PLACES.map(p => <th key={p} className="num" title={`Share of ${SIMS} simulated meets, marks varying as at past championships`}>{p}</th>)}
+                                        <th className="num" title="Points with each team's predicted entries at their season bests">Pts</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {teams.length === 0 && <tr><td colSpan={7} className="xs-empty">No results.</td></tr>}
+                                    {teams.map((team, i) => {
+                                        const key = `${team}-${g}`
+                                        const o = odds[team]
+                                        return (
+                                            <Fragment key={team}>
+                                                <tr className={`xs-team ${team === targetTeam ? 'xs-follow' : ''} ${expandedTeams[key] ? 'xs-sel' : ''}`}
+                                                    onClick={() => setExpandedTeams(prev => ({ ...prev, [key]: !prev[key] }))}>
+                                                    <td className="num">{i + 1}</td>
+                                                    <td>{team}</td>
+                                                    {[0, 1, 2, 3].map(k => <td key={k} className={`num ${k < 3 ? pctCls(o?.[k]) : 'xs-plain'}`}>{o ? pct(o[k]) : ''}</td>)}
+                                                    <td className="num">{(pts[team]?.pts ?? 0).toFixed(1)}</td>
+                                                </tr>
+                                                {expandedTeams[key] && pts[team] && (
+                                                    <tr className="ps-breakdown"><td colSpan={7}>
+                                                        {pts[team].breakdown.map((item, j) => (
+                                                            <div key={j} className="breakdown-row">
+                                                                <span className="b-event clickable-event" onClick={(e) => { e.stopPropagation(); scrollToEvent(item.groupTitle) }}>{item.event}</span>
+                                                                <span className="b-athlete">{item.athlete}</span>
+                                                                <span className="b-pts">+{item.pts.toFixed(1)}</span>
+                                                            </div>
+                                                        ))}
+                                                    </td></tr>
+                                                )}
+                                            </Fragment>
+                                        )
+                                    })}
+                                </tbody>
+                            </table>
                         </div>
-                    ) : (
-                        <div className="leaderboards-container">
-                            {(() => {
-                                const activeCanonicalNames = new Set();
-                                Object.values(optimizedData).forEach(results => {
-                                    if (results.length > 0 && results[0].originalCanonical) {
-                                        const name = results[0].originalCanonical;
-                                        // normalizeEvent splits hurdles by gender; map back to combined key for this check
-                                        const scoringKey = (name === '100m Hurdles' || name === '110m Hurdles')
-                                            ? '100m/110m Hurdles'
-                                            : name;
-                                        activeCanonicalNames.add(scoringKey);
-                                    }
-                                });
-
-                                const missingEvents = SCORING_EVENTS.filter(canonical => {
-                                    return !activeCanonicalNames.has(canonical);
-                                });
-
-                                if (missingEvents.length > 0) {
-                                    return (
-                                        <div className="missing-events-warning" style={{ gridColumn: '1 / -1', marginBottom: '1rem', padding: '1rem', background: '#fff3cd', borderRadius: '8px', border: '1px solid #ffeeba', color: '#856404' }}>
-                                            Missing Events: No results found for: {missingEvents.join(', ')}.
-                                        </div>
-                                    );
-                                }
-                                return null;
-                            })()}
-                            <div className="meet-leaderboard boys">
-                                <h3>Boys Team Standings</h3>
-                                <div className="leaderboard-grid">
-                                    {optimizedTeamScores.boys.map((ts, idx) => (
-                                        <div key={ts.team} className="leaderboard-wrapper">
-                                            <div
-                                                className={`leaderboard-item rank-${idx + 1} ${expandedTeams[`${ts.team}-boys`] ? 'expanded' : ''}`}
-                                                onClick={() => setExpandedTeams(prev => ({ ...prev, [`${ts.team}-boys`]: !expandedTeams[`${ts.team}-boys`] }))}
-                                            >
-                                                <span className="team-rank">{idx + 1}</span>
-                                                <span className="team-name">{ts.team}</span>
-                                                <span className="team-points">{ts.pts.toFixed(1)}</span>
-                                                <span className="expand-icon">{expandedTeams[`${ts.team}-boys`] ? 'v' : '>'}</span>
-                                            </div>
-                                            {expandedTeams[`${ts.team}-boys`] && (
-                                                <div className="team-breakdown">
-                                                    {ts.breakdown.map((item, i) => (
-                                                        <div key={i} className="breakdown-row">
-                                                            <span
-                                                                className="b-event clickable-event"
-                                                                onClick={(e) => {
-                                                                    e.stopPropagation();
-                                                                    scrollToEvent(item.groupTitle);
-                                                                }}
-                                                                title={`Click to view results for ${item.event}`}
-                                                            >
-                                                                {item.event}
-                                                            </span>
-                                                            <span className="b-athlete">{item.athlete}</span>
-                                                            <span className="b-pts">+{item.pts.toFixed(1)}</span>
-                                                        </div>
-                                                    ))}
-                                                </div>
-                                            )}
-                                        </div>
-                                    ))}
-                                    {optimizedTeamScores.boys.length === 0 && <p className="empty-scores">No results.</p>}
-                                </div>
-                            </div>
-                            <div className="meet-leaderboard girls">
-                                <h3>Girls Team Standings</h3>
-                                <div className="leaderboard-grid">
-                                    {optimizedTeamScores.girls.map((ts, idx) => (
-                                        <div key={ts.team} className="leaderboard-wrapper">
-                                            <div
-                                                className={`leaderboard-item rank-${idx + 1} ${expandedTeams[`${ts.team}-girls`] ? 'expanded' : ''}`}
-                                                onClick={() => setExpandedTeams(prev => ({ ...prev, [`${ts.team}-girls`]: !expandedTeams[`${ts.team}-girls`] }))}
-                                            >
-                                                <span className="team-rank">{idx + 1}</span>
-                                                <span className="team-name">{ts.team}</span>
-                                                <span className="team-points">{ts.pts.toFixed(1)}</span>
-                                                <span className="expand-icon">{expandedTeams[`${ts.team}-girls`] ? 'v' : '>'}</span>
-                                            </div>
-                                            {expandedTeams[`${ts.team}-girls`] && (
-                                                <div className="team-breakdown">
-                                                    {ts.breakdown.map((item, i) => (
-                                                        <div key={i} className="breakdown-row">
-                                                            <span
-                                                                className="b-event clickable-event"
-                                                                onClick={(e) => {
-                                                                    e.stopPropagation();
-                                                                    scrollToEvent(item.groupTitle);
-                                                                }}
-                                                                title={`Click to view results for ${item.event}`}
-                                                            >
-                                                                {item.event}
-                                                            </span>
-                                                            <span className="b-athlete">{item.athlete}</span>
-                                                            <span className="b-pts">+{item.pts.toFixed(1)}</span>
-                                                        </div>
-                                                    ))}
-                                                </div>
-                                            )}
-                                        </div>
-                                    ))}
-                                    {optimizedTeamScores.girls.length === 0 && <p className="empty-scores">No results.</p>}
-                                </div>
-                            </div>
-                        </div>
-                    )}
-                </div>
-            )}
+                    </div>
+                )
+            })()}
 
             {actual && optimizedTeamScores && !optimizedTeamScores.incomplete && (
-                <TrackResultPanel actual={actual} predicted={optimizedTeamScores} targetTeam={targetTeam} meet={champCutoff?.meet} />
+                <TrackResultPanel actual={actual} predicted={optimizedTeamScores} odds={placeOdds} gender={g} targetTeam={targetTeam} meet={champCutoff?.meet} />
             )}
 
             <div className="analyzer-results">
                 {Object.keys(optimizedData).length > 0 ? (
-                    Object.entries(optimizedData).map(([groupTitle, results]) => {
+                    Object.entries(optimizedData).filter(([, results]) => ofGender(results[0]?.event)).map(([groupTitle, results]) => {
                         const { rows, act } = eventRows(results)
                         return (
                         <div key={groupTitle} id={`event-${groupTitle.replace(/[^a-z0-9]/gi, '-')}`} className="event-section">
@@ -1258,12 +1308,14 @@ function PostseasonSimulator({ performances, isBetter, manifest, loadTeamData, s
 }
 
 /** The simulated standings against the championship's real team scores. */
-function TrackResultPanel({ actual, predicted, targetTeam, meet }) {
+const top3 = (o) => o ? o[0] + o[1] + o[2] : null
+
+function TrackResultPanel({ actual, predicted, odds, gender, targetTeam, meet }) {
     return (
         <div className="xs-result ps-result">
             <h3 className="xs-h" title={meet}>Predicted vs result</h3>
             <div className="ps-result-grid">
-                {['girls', 'boys'].map(g => {
+                {[gender].map(g => {
                     const a = actual[g]
                     if (!a) return null
                     const pred = (predicted?.[g] || []).map(t => t.team)
@@ -1274,7 +1326,6 @@ function TrackResultPanel({ actual, predicted, targetTeam, meet }) {
                     return (
                         <div key={g} className="xs-panel">
                             <div className="xs-sum-row ps-sum">
-                                <span className="xs-sum-div">{g}</span>
                                 <span><b>{winner ? '✓' : '✗'}</b> winner {winner ? 'called' : 'missed'}</span>
                                 <span><b>{podium} of 3</b> podium teams picked{exact ? `, ${exact} in the exact place` : ''}</span>
                             </div>
@@ -1285,6 +1336,7 @@ function TrackResultPanel({ actual, predicted, targetTeam, meet }) {
                                             <th className="num">Place</th><th>Team</th><th className="num">Score</th>
                                             <th className="num" title="Place in the simulated standings">Predicted<br />place</th>
                                             <th className="num" title="Simulated score">Pred.<br />score</th>
+                                            <th className="num" title="Share of simulated meets in which the team finished top 3">Top 3<br />chance</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -1298,6 +1350,7 @@ function TrackResultPanel({ actual, predicted, targetTeam, meet }) {
                                                     <td className="num">{+t.score.toFixed(2)}</td>
                                                     <td className="num">{pp ?? '–'}{off ? <span className="xs-dim"> ({off > 0 ? '+' : '−'}{Math.abs(off)})</span> : null}</td>
                                                     <td className="num">{pPts[t.team] != null ? pPts[t.team].toFixed(1) : '–'}</td>
+                                                    <td className={`num ${pctCls(top3(odds[g][t.team]))}`}>{odds[g][t.team] ? pct(top3(odds[g][t.team])) : '–'}</td>
                                                 </tr>
                                             )
                                         })}
