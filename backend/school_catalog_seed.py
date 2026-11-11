@@ -405,7 +405,6 @@ ME_HS = [
     ('me-hs-upper-kennebec', 'Upper Kennebec Valley Junior-Senior High School', 'Bingham', None,
      ['Upper Kennebec Valley', 'Upper Kennebec', 'Upper Kenneb'], [], [],
      {'successor': 'me-hs-valley', 'middle_grades': 'me-ms-upper-kennebec'}),
-    ('me-hs-st-thomas', 'Saint Thomas Aquinas', 'Dover-Foxcroft', None, [], [], [], {}),
     ('me-hs-elan', 'Elan School', 'Poland', None,
      ['Elan', 'Elan School', 'The Elan School', 'ELAN School'], ['ELAN'], [],
      {'years': [None, 2010], 'notes': 'Elan School, Poland ME (residential; closed April 2011). Track 2003-2011 '
@@ -2571,6 +2570,10 @@ FILE_RULES += [
     # Oxford Hills or a college
     (['Milford', 'Blue Hills', 'Green Mountain', 'Framingham', 'Fitchburg', 'Sacred Heart', "Saint John's", 'Oxford'],
      'Outdoor', (2026, 2026), r'^NE-(boys|girls)-results$', '?'),
+    # 'Milford' at the New England championships is Milford NH or MA, never the Lewis Libby middle school (2026-11-11)
+    (['Milford'], 'Outdoor', (2003, 2024), r'^(newengland\w*|ResultsNewEngland\w*|NE-results-(boys|girls))$', '?'),
+    (['Milford'], 'Indoor', (2003, 2026), r'^(2011NewEnglandResults|2023-New-England-Indoor-Track-Results|ne-\S+)$', '?'),
+    (['Milford'], 'XC', (2003, 2026), r'^newengland(boys|girls)(\.txt)?$', '?'),
     # Cony/Hall-Dale/Winthrop indoor co-op: Winthrop runners printed 'Cony High Sc', its relays 'Cony High School'
     (['Cony High Sc', 'Cony High School'], 'Indoor', (2026, 2026), r'^(Marathon-Elite-boys-results-1|NYI-results)$',
      'coop-it-cony-halldale-winthrop'),
