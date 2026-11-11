@@ -1,6 +1,51 @@
 import { useState, useMemo, useEffect } from 'react'
-import { parseMark, normalizeEvent, asset, fetchGz } from './utils'
+import { parseMark, normalizeEvent, isDistanceEvent, asset, fetchGz } from './utils'
 import './App.css'
+
+// Typical championship mark vs the mean of an athlete's two best marks that season, as a
+// log-scale spread by event family: robust SD of the misses over 164 PVC/EMITL and state
+// championships 2003-2026, x1.25 (the scale with the best top-3 Brier score in that backtest).
+const CHAMP_SPREAD = {
+    sprint: 1.25 * 0.0164, hurdles: 1.25 * 0.0249, distance: 1.25 * 0.0247, relay: 1.25 * 0.0235,
+    jumps: 1.25 * 0.0416, throws: 1.25 * 0.0647, walk: 1.25 * 0.0383,
+}
+const SIMS = 2000
+
+function eventFamily(event) {
+    const e = (event || '').toLowerCase()
+    if (e.includes('relay')) return 'relay'
+    if (e.includes('hurdle')) return 'hurdles'
+    if (e.includes('jump') || e.includes('vault')) return 'jumps'
+    if (e.includes('shot') || e.includes('discus') || e.includes('javelin')) return 'throws'
+    if (e.includes('walk')) return 'walk'
+    if (/\b(55|100|200|400)m dash/.test(e)) return 'sprint'
+    return 'distance'
+}
+
+// A mark on a log scale where lower is better (times as they are, distances negated).
+function logMark(mark, event) {
+    const p = parseMark(mark, isDistanceEvent(event))
+    if (!p.valid || !(p.value > 0)) return null
+    return p.isTime ? Math.log(p.value) : -Math.log(p.value)
+}
+
+// A chance as shown: '<1%' and '>99%' rather than a promise of 0 or 100.
+function pctLabel(p) {
+    if (p == null) return ''
+    if (p < 0.005) return '<1%'
+    if (p > 0.995) return '>99%'
+    return `${Math.round(p * 100)}%`
+}
+
+// Small seeded generator, so the same page shows the same chances.
+function mulberry32(a) {
+    return () => {
+        a |= 0; a = (a + 0x6D2B79F5) | 0
+        let t = Math.imul(a ^ (a >>> 15), 1 | a)
+        t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t
+        return ((t ^ (t >>> 14)) >>> 0) / 4294967296
+    }
+}
 
 function PostseasonSimulator({ performances, isBetter, manifest, loadTeamData, season }) {
     // Derive the current season and year from today's date.
@@ -151,9 +196,9 @@ function PostseasonSimulator({ performances, isBetter, manifest, loadTeamData, s
 
     // This competition's championship per gender: the PVC (indoor: EMITL) small-school
     // meet, or the state meet of the team being optimized (else the class most listed schools ran in).
-    const champs = useMemo(() => {
-        if (!champFile || !baseSchools || scoreMethod === 'Seeds') return null
-        const out = {}
+    const champIds = useMemo(() => {
+        if (!champFile || !baseSchools || scoreMethod === 'Seeds') return ''
+        const ids = []
         for (const g of ['Boys', 'Girls']) {
             const cs = champFile.champs.filter(c => c.gender === g && (competitionType === 'PVC'
                 ? c.kind === 'conf' && /small|all/i.test(c.division || '')
@@ -161,10 +206,16 @@ function PostseasonSimulator({ performances, isBetter, manifest, loadTeamData, s
             const count = c => c.teams.filter(t => schoolOf(t.team, baseSchools)).length
             const ranIn = c => c.teams.some(t => schoolOf(t.team, baseSchools) === targetTeam)
             cs.sort((a, b) => (ranIn(b) - ranIn(a)) || (count(b) - count(a)))
-            if (cs.length) out[g] = cs[0]
+            if (cs.length) ids.push(cs[0].id)
         }
-        return Object.keys(out).length ? out : null
+        return ids.join(',')
     }, [champFile, baseSchools, competitionType, targetTeam, scoreMethod])
+    // (keyed by id, so picking another team in the same class recomputes nothing)
+    const champs = useMemo(() => {
+        if (!champIds) return null
+        const ids = champIds.split(',')
+        return Object.fromEntries(champFile.champs.filter(c => ids.includes(c.id)).map(c => [c.gender, c]))
+    }, [champFile, champIds])
 
     // The schools in the competition: the listed ones plus anyone else who scored at the meet.
     const activeSchools = useMemo(() => {
@@ -695,6 +746,76 @@ function PostseasonSimulator({ performances, isBetter, manifest, loadTeamData, s
         };
     }, [optimizedData, filterYear, filterSeason]);
 
+    // Each athlete's marks this season, on a log scale where lower is better.
+    const seasonMarks = useMemo(() => {
+        const out = {}
+        if (scoreMethod === 'Seeds') return out
+        filteredData.forEach(p => {
+            const v = logMark(p.mark, p.event)
+            if (v == null) return
+            const k = `${normalizeEvent(p.event, filterSeason)}|${p.isRelay ? p.pvcTeam : `${p.athlete_id}|${p.pvcTeam}`}`;
+            (out[k] = out[k] || []).push(v)
+        })
+        return out
+    }, [filteredData, filterSeason, scoreMethod])
+
+    // Chance of a top-3 team finish: the predicted entries' meet run SIMS times, each mark
+    // drawn around the mean of the athlete's two best marks with the event family's
+    // championship-day spread (CHAMP_SPREAD).
+    const top3Chance = useMemo(() => {
+        const out = { boys: {}, girls: {} }
+        if (loadingState.isLoading) return out   // once, when every team's results are in
+        const rand = mulberry32(1)
+        const gauss = () => Math.sqrt(-2 * Math.log(1 - rand())) * Math.cos(2 * Math.PI * rand())
+        const events = { boys: [], girls: [] }
+        Object.values(optimizedData).forEach(results => {
+            if (!results.length) return
+            const g = (results[0].event || '').startsWith('Girls') ? 'girls' : 'boys'
+            const sd = CHAMP_SPREAD[eventFamily(results[0].event)]
+            const rows = results.map(r => {
+                const own = (seasonMarks[`${r.event}|${r.isRelay ? r.pvcTeam : `${r.athlete_id}|${r.pvcTeam}`}`] || []).slice().sort((a, b) => a - b)
+                const best = own.length ? own.slice(0, 2) : [logMark(r.mark, r.event)]
+                return best[0] == null ? null : { team: r.pvcTeam, mu: (best[0] + (best[1] ?? best[0])) / 2 }
+            }).filter(Boolean)
+            if (rows.length) events[g].push({ sd, rows })
+        })
+        const K = SCORING_RULES.length
+        for (const g of ['boys', 'girls']) {
+            const teams = [...new Set(events[g].flatMap(e => e.rows.map(r => r.team)))]
+            if (!teams.length) continue
+            const ti = new Map(teams.map((t, i) => [t, i]))
+            const evs = events[g].map(e => ({ sd: e.sd, mu: Float64Array.from(e.rows, r => r.mu), team: Int32Array.from(e.rows, r => ti.get(r.team)) }))
+            const counts = new Float64Array(teams.length)
+            const pts = new Float64Array(teams.length)
+            const topV = new Float64Array(K), topT = new Int32Array(K)
+            for (let s = 0; s < SIMS; s++) {
+                pts.fill(0)
+                for (const { sd, mu, team } of evs) {
+                    // the K best draws, kept sorted by insertion
+                    let n = 0
+                    for (let i = 0; i < mu.length; i++) {
+                        const v = mu[i] + sd * gauss()
+                        if (n === K && v >= topV[K - 1]) continue
+                        let j = n < K ? n++ : K - 1
+                        while (j > 0 && topV[j - 1] > v) { topV[j] = topV[j - 1]; topT[j] = topT[j - 1]; j-- }
+                        topV[j] = v; topT[j] = team[i]
+                    }
+                    for (let p = 0; p < n; p++) pts[topT[p]] += SCORING_RULES[p]
+                }
+                // top three teams this sim
+                let a = -1, b = -1, c = -1
+                for (let t = 0; t < teams.length; t++) {
+                    if (a < 0 || pts[t] > pts[a]) { c = b; b = a; a = t }
+                    else if (b < 0 || pts[t] > pts[b]) { c = b; b = t }
+                    else if (c < 0 || pts[t] > pts[c]) c = t
+                }
+                for (const t of [a, b, c]) if (t >= 0) counts[t]++
+            }
+            teams.forEach((t, i) => { out[g][t] = counts[i] / SIMS })
+        }
+        return out
+    }, [optimizedData, seasonMarks, SCORING_RULES, loadingState.isLoading])
+
     const entryDecisions = useMemo(() => {
         if (!targetTeam || Object.keys(groupedData).length === 0) return null;
 
@@ -1097,7 +1218,7 @@ function PostseasonSimulator({ performances, isBetter, manifest, loadTeamData, s
                                 return null;
                             })()}
                             <div className="meet-leaderboard boys">
-                                <h3>Boys Team Standings</h3>
+                                <h3>Boys Team Standings<span className="lb-key" title={`Points with each team's predicted entries at their season bests; share of ${SIMS} simulated meets, marks varying as at past championships, in which the team finished top 3`}>pts · top 3</span></h3>
                                 <div className="leaderboard-grid">
                                     {optimizedTeamScores.boys.map((ts, idx) => (
                                         <div key={ts.team} className="leaderboard-wrapper">
@@ -1108,6 +1229,7 @@ function PostseasonSimulator({ performances, isBetter, manifest, loadTeamData, s
                                                 <span className="team-rank">{idx + 1}</span>
                                                 <span className="team-name">{ts.team}</span>
                                                 <span className="team-points">{ts.pts.toFixed(1)}</span>
+                                                <span className="team-chance" title={`Top 3 in ${Math.round((top3Chance.boys[ts.team] || 0) * 100)}% of ${SIMS} simulated meets`}>{pctLabel(top3Chance.boys[ts.team])}</span>
                                                 <span className="expand-icon">{expandedTeams[`${ts.team}-boys`] ? 'v' : '>'}</span>
                                             </div>
                                             {expandedTeams[`${ts.team}-boys`] && (
@@ -1136,7 +1258,7 @@ function PostseasonSimulator({ performances, isBetter, manifest, loadTeamData, s
                                 </div>
                             </div>
                             <div className="meet-leaderboard girls">
-                                <h3>Girls Team Standings</h3>
+                                <h3>Girls Team Standings<span className="lb-key" title={`Points with each team's predicted entries at their season bests; share of ${SIMS} simulated meets, marks varying as at past championships, in which the team finished top 3`}>pts · top 3</span></h3>
                                 <div className="leaderboard-grid">
                                     {optimizedTeamScores.girls.map((ts, idx) => (
                                         <div key={ts.team} className="leaderboard-wrapper">
@@ -1147,6 +1269,7 @@ function PostseasonSimulator({ performances, isBetter, manifest, loadTeamData, s
                                                 <span className="team-rank">{idx + 1}</span>
                                                 <span className="team-name">{ts.team}</span>
                                                 <span className="team-points">{ts.pts.toFixed(1)}</span>
+                                                <span className="team-chance" title={`Top 3 in ${Math.round((top3Chance.girls[ts.team] || 0) * 100)}% of ${SIMS} simulated meets`}>{pctLabel(top3Chance.girls[ts.team])}</span>
                                                 <span className="expand-icon">{expandedTeams[`${ts.team}-girls`] ? 'v' : '>'}</span>
                                             </div>
                                             {expandedTeams[`${ts.team}-girls`] && (
@@ -1180,7 +1303,7 @@ function PostseasonSimulator({ performances, isBetter, manifest, loadTeamData, s
             )}
 
             {actual && optimizedTeamScores && !optimizedTeamScores.incomplete && (
-                <TrackResultPanel actual={actual} predicted={optimizedTeamScores} targetTeam={targetTeam} meet={champCutoff?.meet} />
+                <TrackResultPanel actual={actual} predicted={optimizedTeamScores} chance={top3Chance} targetTeam={targetTeam} meet={champCutoff?.meet} />
             )}
 
             <div className="analyzer-results">
@@ -1240,7 +1363,7 @@ function PostseasonSimulator({ performances, isBetter, manifest, loadTeamData, s
 }
 
 /** The simulated standings against the championship's real team scores. */
-function TrackResultPanel({ actual, predicted, targetTeam, meet }) {
+function TrackResultPanel({ actual, predicted, chance, targetTeam, meet }) {
     return (
         <div className="xs-result ps-result">
             <h3 className="xs-h" title={meet}>Predicted vs result</h3>
@@ -1267,6 +1390,7 @@ function TrackResultPanel({ actual, predicted, targetTeam, meet }) {
                                             <th className="num">Place</th><th>Team</th><th className="num">Score</th>
                                             <th className="num" title="Place in the simulated standings">Predicted<br />place</th>
                                             <th className="num" title="Simulated score">Pred.<br />score</th>
+                                            <th className="num" title="Share of simulated meets in which the team finished top 3">Top 3<br />chance</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -1280,6 +1404,7 @@ function TrackResultPanel({ actual, predicted, targetTeam, meet }) {
                                                     <td className="num">{+t.score.toFixed(2)}</td>
                                                     <td className="num">{pp ?? '–'}{off ? <span className="xs-dim"> ({off > 0 ? '+' : '−'}{Math.abs(off)})</span> : null}</td>
                                                     <td className="num">{pPts[t.team] != null ? pPts[t.team].toFixed(1) : '–'}</td>
+                                                    <td className="num">{chance[g][t.team] != null ? pctLabel(chance[g][t.team]) : '–'}</td>
                                                 </tr>
                                             )
                                         })}
