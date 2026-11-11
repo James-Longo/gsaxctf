@@ -22,6 +22,16 @@ def test_initial_key_drops_suffix_and_needs_two_names():
     assert tp.initial_key('') is None
 
 
+def test_squad_letter_dropped_from_surname():
+    import types
+    from backend.scraper_v2 import Sub5ScraperV2 as RS
+    me = types.SimpleNamespace(manual_fixes={})
+    assert RS.normalize_athlete_name(me, 'Wilcox - A, Jessie') == 'Jessie Wilcox'
+    assert RS.normalize_athlete_name(me, 'Landry -B, Moneca') == 'Moneca Landry'
+    assert RS.normalize_athlete_name(me, 'Handcock - A-C, A') == 'A Handcock'
+    assert RS.normalize_athlete_name(me, 'Smith-Jones, Ann') == 'Ann Smith-Jones'
+
+
 if __name__ == '__main__':
     for k, f in list(globals().items()):
         if k.startswith('test_'):

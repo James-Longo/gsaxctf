@@ -2484,6 +2484,8 @@ class Sub5ScraperV2:
                 last_name, first_name = parts[0], parts[1]
                 # Remove leftover commas in names
                 last_name = last_name.replace(',', '').strip()
+                # ('Wilcox - A, Jessie': a relay-meet squad letter, 2004 Bowdoin Relays, 2018 Tripp)
+                last_name = re.sub(r'\s*-\s*[A-D](?:-[A-D])?$', '', last_name)
                 first_name = first_name.replace(',', '').strip()
                 # ('Antonelli, Alexis.': a stray period after the first name, 2018 WMC Poland rows;
                 # an initial keeps its period)

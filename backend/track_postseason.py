@@ -680,6 +680,16 @@ def _unit_of(raw_school, year, season, gender, file):
     return sc.team_unit(sid, str(year), season, gender) or sid
 
 
+def _misspelled(store, cands, name, unit, d):
+    """The one athlete of this school with the row's mark that day whose surname is
+    spelled nearly the same ('Carngie' for Carnegie, 2006 Class A), or None."""
+    import difflib
+    last = (name.split(',')[0] if ',' in (name or '') else (name or ' ').split()[-1]).lower()
+    hits = {a for a in cands if store.unit_at(a, d + '~')[0] == unit and
+            difflib.SequenceMatcher(None, last, (store.name.get(a) or ' ').split()[-1].lower()).ratio() >= 0.75}
+    return hits.pop() if len(hits) == 1 else None
+
+
 def champ_results(champ, store):
     """What happened: per event the scored order, plus team totals.
 
@@ -725,7 +735,8 @@ def champ_results(champ, store):
                 who = ('relay', unit)
             else:
                 who = ids.get((name_key(r.get('athlete') or ''), ev)) or ids.get(name_key(r.get('athlete') or '')) \
-                    or ids.get(('mark', ev, round(p, 5))) or ids.get(('init', initial_key(r.get('athlete'))))
+                    or ids.get(('mark', ev, round(p, 5))) or ids.get(('init', initial_key(r.get('athlete')))) \
+                    or _misspelled(store, ids.get(('marks', ev, round(p, 5)), ()), r.get('athlete'), unit, champ['date'])
             rows.append(dict(unit=unit, aid=who, p=p, mark=r.get('result'), final=in_final or not finals,
                              name=r.get('athlete') or '', grade=r.get('grade')))
         # finalists ahead of everyone else, each group by mark
@@ -801,6 +812,7 @@ def _meet_ids(store, champ):
                     if dd == d:
                         mk = ('mark', ev, round(v, 5))
                         out[mk] = aid if mk not in out else None
+                        out.setdefault(('marks', ev, round(v, 5)), []).append(aid)
     _IDS_CACHE[k] = out
     return out
 
