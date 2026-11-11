@@ -129,6 +129,11 @@ export const EVENT_MAP = {
     "4x200m Relay": ["4x200m Relay", "4 x 200m Relay", "4x200m", "4x200 Meter", "4x200", "4 x 200", "4 x 200m"],
     "4x400m Relay": ["4x400m Relay", "4 x 400m Relay", "4x400m", "4x400 Meter", "4x400", "4 x 400", "4 x 400m"],
     "4x800m Relay": ["4x800m Relay", "4 x 800m Relay", "4x800m", "4x800 Meter", "4x800", "4 x 800", "4 x 800m"],
+    // Hurdles before the dashes: "55 Meter" would match inside "55 Meter Hurdles"
+    "55m Hurdles": ["55m Hurdles", "55 Meter Hurdles", "55m High Hurdle", "55m Hurdle", "55 Meter Hurdle", "55m H. Hurdle"],
+    "100m Hurdles": ["100m Hurdles", "100 Meter Hurdles", "100m H. Hurdle", "100m Hurdle", "100 Meter Hurdle"],
+    "110m Hurdles": ["110m Hurdles", "110 Meter Hurdles", "110m H. Hurdle", "110m Hurdle", "110 Meter Hurdle"],
+    "300m Hurdles": ["300m Hurdles", "300 Meter Hurdles", "300m Low Hurdle", "300m Int. Hurdle", "300m Hurdle", "300 Meter Hurdle"],
     // Individual running events
     "55m Dash": ["55m Dash", "55 Meter Dash", "55 Dash", "55m", "55 Meter"],
     "100m Dash": ["100m Dash", "100 Meter Dash", "100 Dash"],
@@ -144,11 +149,6 @@ export const EVENT_MAP = {
     "3200m Run": ["3200m Run", "3200 Meter Run"],
     // NOTE: No bare "1600 Meter" alias — too broad, would match "1600 Meter Race Walk".
     "1600m Run": ["1600m Run", "1600 Meter Run"],
-    // Hurdles
-    "55m Hurdles": ["55m Hurdles", "55 Meter Hurdles", "55m High Hurdle", "55m Hurdle", "55 Meter Hurdle", "55m H. Hurdle"],
-    "100m Hurdles": ["100m Hurdles", "100 Meter Hurdles", "100m H. Hurdle", "100m Hurdle", "100 Meter Hurdle"],
-    "110m Hurdles": ["110m Hurdles", "110 Meter Hurdles", "110m H. Hurdle", "110m Hurdle", "110 Meter Hurdle"],
-    "300m Hurdles": ["300m Hurdles", "300 Meter Hurdles", "300m Low Hurdle", "300m Int. Hurdle", "300m Hurdle", "300 Meter Hurdle"],
     // Field events
     "High Jump": ["High Jump"],
     "Pole Vault": ["Pole Vault"],

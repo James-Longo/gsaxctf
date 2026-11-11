@@ -1021,39 +1021,6 @@ input:checked+.slider:before {
   cursor: not-allowed;
 }
 
-.simulate-btn {
-  background: white;
-  color: #800000;
-  border: 2px solid #800000;
-  padding: 8px 20px;
-  border-radius: 8px;
-  font-weight: 700;
-  cursor: pointer;
-  transition: all 0.2s;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  white-space: nowrap;
-}
-
-.simulate-btn:hover {
-  background: #fff5f5;
-  transform: translateY(-1px);
-}
-
-.simulate-btn.active {
-  background: #800000;
-  color: white;
-  box-shadow: 0 4px 6px -1px rgba(128, 0, 0, 0.4);
-}
-
-.simulation-actions {
-  display: flex;
-  align-items: center;
-  margin-left: auto;
-  gap: 12px;
-}
-
 /* PR Pop Calculator Styles */
 .pr-pop-container {
   padding: 24px;
@@ -2483,3 +2450,11 @@ body {
 .pr-progression { margin-top: 8px; }
 .pr-progression h4 { margin: 0 0 6px; font-size: 0.95rem; color: #2d3748; }
 .pr-progression .performance-table td.pr-gain { color: #2f855a; font-variant-numeric: tabular-nums; }
+
+/* Track postseason simulator */
+.ps-tabs { margin: 4px 0 12px; align-self: flex-start; width: fit-content; }
+.ps-result { margin: 16px 0; }
+.ps-result-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(360px, 100%), 1fr)); gap: 18px; }
+.ps-sum { margin-bottom: 8px; font-size: 0.88rem; }
+.ps-act { border-left: 2px solid #e2e8f0; }
+.ps-unpredicted td { color: #718096; }
