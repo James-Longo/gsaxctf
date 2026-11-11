@@ -190,6 +190,24 @@ function PostseasonSimulator({ performances, isBetter, manifest, loadTeamData, s
         return () => { live = false }
     }, [filterYear, filterSeason])
 
+    // The postseason predictor's predictions (backend/track_champ_predict.py): entry chances,
+    // predicted marks and place chances per championship. Past meets: predicted the day before
+    // by models fitted on the other seasons.
+    const [predFile, setPredFile] = useState(null)
+    const [predIndex, setPredIndex] = useState(null)
+    useEffect(() => {
+        fetch(asset('/data/track_preds/index.json')).then(r => r.json()).then(setPredIndex).catch(() => setPredIndex([]))
+    }, [])
+    useEffect(() => {
+        setPredFile(null)
+        if (!(predIndex || []).includes(`${filterYear}_${filterSeason}`)) return
+        let live = true
+        fetchGz(asset(`/data/track_preds/${filterYear}_${filterSeason}.json.gz`))
+            .then(d => { if (live) setPredFile(d) })
+            .catch(() => {})
+        return () => { live = false }
+    }, [filterYear, filterSeason, predIndex])
+
     const baseSchools = useMemo(() => competitionType === 'Everyone' ? null
         : competitionType === 'PVC' ? getPVCSchools(filterYear, filterSeason) : getStateSchools(filterYear, filterSeason),
         [competitionType, filterYear, filterSeason])
@@ -197,10 +215,11 @@ function PostseasonSimulator({ performances, isBetter, manifest, loadTeamData, s
     // This competition's championship per gender: the PVC (indoor: EMITL) small-school
     // meet, or the state meet of the team being optimized (else the class most listed schools ran in).
     const champIds = useMemo(() => {
-        if (!champFile || !baseSchools || scoreMethod === 'Seeds') return ''
+        const src = champFile || predFile
+        if (!src || !baseSchools || scoreMethod === 'Seeds') return ''
         const ids = []
         for (const g of ['Boys', 'Girls']) {
-            const cs = champFile.champs.filter(c => c.gender === g && (competitionType === 'PVC'
+            const cs = src.champs.filter(c => c.gender === g && (competitionType === 'PVC'
                 ? c.kind === 'conf' && /small|all/i.test(c.division || '')
                 : c.kind === 'state'))
             const count = c => c.teams.filter(t => schoolOf(t.team, baseSchools)).length
@@ -209,13 +228,20 @@ function PostseasonSimulator({ performances, isBetter, manifest, loadTeamData, s
             if (cs.length) ids.push(cs[0].id)
         }
         return ids.join(',')
-    }, [champFile, baseSchools, competitionType, targetTeam, scoreMethod])
+    }, [champFile, predFile, baseSchools, competitionType, targetTeam, scoreMethod])
     // (keyed by id, so picking another team in the same class recomputes nothing)
     const champs = useMemo(() => {
-        if (!champIds) return null
+        if (!champIds || !champFile) return null
         const ids = champIds.split(',')
         return Object.fromEntries(champFile.champs.filter(c => ids.includes(c.id)).map(c => [c.gender, c]))
     }, [champFile, champIds])
+    // a prediction is on file for this season but not loaded yet: show neither it nor the fallback
+    const predPending = (predIndex || []).includes(`${filterYear}_${filterSeason}`) && !predFile
+    const preds = useMemo(() => {
+        if (!champIds || !predFile) return null
+        const ids = champIds.split(',')
+        return Object.fromEntries(predFile.champs.filter(c => ids.includes(c.id)).map(c => [c.gender, c]))
+    }, [predFile, champIds])
 
     // The schools in the competition: the listed ones plus anyone else who scored at the meet.
     const activeSchools = useMemo(() => {
@@ -226,6 +252,7 @@ function PostseasonSimulator({ performances, isBetter, manifest, loadTeamData, s
         }))
         return out
     }, [baseSchools, champs])
+
 
     // A championship is predicted from results before it, never after.
     const champCutoff = useMemo(() => {
@@ -343,14 +370,18 @@ function PostseasonSimulator({ performances, isBetter, manifest, loadTeamData, s
         };
     }, [performances, filterYear, filterSeason, filterEvent, activeSchools, champCutoff]);
 
-    // the latest season on file when the chosen one has no results (the season about to start)
+    // seasons with results, and a season about to start once it is predicted
+    const yearOptions = useMemo(() => [...new Set([...years, ...(predIndex || [])
+        .filter(k => k.endsWith(`_${filterSeason}`)).map(k => k.split('_')[0])])].sort((a, b) => b - a),
+        [years, predIndex, filterSeason])
+    // the latest of those when the chosen one has neither
     useEffect(() => {
-        if (years.length && !years.includes(filterYear)) setFilterYear(years[0])
-    }, [years, filterYear])
+        if (predIndex && yearOptions.length && !yearOptions.includes(filterYear)) setFilterYear(yearOptions[0])
+    }, [yearOptions, filterYear, predIndex])
 
     // Places scored: the championship's own table; else PVC six, states eight.
-    const SCORING_RULES = useMemo(() => Object.values(champs || {})[0]?.table
-        || (competitionType === 'States' ? [10, 8, 6, 5, 4, 3, 2, 1] : [10, 8, 6, 4, 2, 1]), [champs, competitionType]);
+    const SCORING_RULES = useMemo(() => Object.values(champs || {})[0]?.table || Object.values(preds || {})[0]?.table
+        || (competitionType === 'States' ? [10, 8, 6, 5, 4, 3, 2, 1] : [10, 8, 6, 4, 2, 1]), [champs, preds, competitionType]);
 
     // Treat Indoor/Outdoor differently: 4 event limit for Outdoor, 3 for Indoor.
     const EVENT_LIMIT = (scoreMethod !== 'Seeds' && filterSeason && filterSeason.toLowerCase().includes('indoor')) ? 3 : 4;
@@ -382,6 +413,26 @@ function PostseasonSimulator({ performances, isBetter, manifest, loadTeamData, s
         if (scoreMethod === 'Seeds' || filterSeason === 'Outdoor') return outdoor;
         return indoor;
     }, [filterSeason, scoreMethod]);
+
+    // The predictor's meet for the selected gender, in the page's team and event names.
+    const predicted = useMemo(() => {
+        const p = preds?.[gender]
+        if (!p || scoreMethod === 'Seeds') return null
+        const teamOf = t => (activeSchools && schoolOf(t, activeSchools)) || t
+        const teams = p.teams.map(t => ({ team: teamOf(t.team), pts: t.pts,
+            odds: [...t.p, Math.max(0, 1 - t.p[0] - t.p[1] - t.p[2])] }))
+        const byTeam = {}
+        const base = k => { const b = k.replace(/^(Boys|Girls) /, ''); return /^1[01]0m Hurdles$/.test(b) ? '100m/110m Hurdles' : b }
+        const order = k => { const i = SCORING_EVENTS.indexOf(base(k)); return i < 0 ? 99 : i }
+        const events = Object.entries(p.events).map(([ev, rows]) => {
+            const key = normalizeEvent(`${gender} ${ev}`, filterSeason)
+            const out = rows.map(r => ({ ...r, team: teamOf(r.t) }))
+            out.forEach(r => { if (r.x >= 0.5) (byTeam[r.team] = byTeam[r.team] || []).push({ key, ...r }) })
+            return { key, rows: out }
+        }).sort((a, b) => order(a.key) - order(b.key))
+        Object.values(byTeam).forEach(rs => rs.sort((a, b) => b.x - a.x))
+        return { teams, events, byTeam, cutoff: p.cutoff }
+    }, [preds, gender, activeSchools, filterSeason, scoreMethod, SCORING_EVENTS])
 
     const groupedData = useMemo(() => {
         const groups = {};
@@ -764,7 +815,7 @@ function PostseasonSimulator({ performances, isBetter, manifest, loadTeamData, s
     // with the event family's championship-day spread (CHAMP_SPREAD).
     const placeOdds = useMemo(() => {
         const out = { boys: {}, girls: {} }
-        if (loadingState.isLoading) return out   // once, when every team's results are in
+        if (loadingState.isLoading || predicted) return out   // once, when every team's results are in
         const rand = mulberry32(1)
         const gauss = () => Math.sqrt(-2 * Math.log(1 - rand())) * Math.cos(2 * Math.PI * rand())
         const events = []
@@ -814,7 +865,7 @@ function PostseasonSimulator({ performances, isBetter, manifest, loadTeamData, s
             teams.forEach((t, i) => { out[g][t] = counts[i].map(n => n / SIMS) })
         }
         return out
-    }, [optimizedData, seasonMarks, SCORING_RULES, loadingState.isLoading, g])
+    }, [optimizedData, seasonMarks, SCORING_RULES, loadingState.isLoading, g, predicted])
 
     const entryDecisions = useMemo(() => {
         if (!targetTeam || Object.keys(groupedData).length === 0) return null;
@@ -1047,7 +1098,7 @@ function PostseasonSimulator({ performances, isBetter, manifest, loadTeamData, s
                     <div className="filter-group">
                         <label>Year</label>
                         <select value={filterYear} onChange={e => setFilterYear(e.target.value)}>
-                            {years.map(y => <option key={y} value={y}>{y}</option>)}
+                            {yearOptions.map(y => <option key={y} value={y}>{y}</option>)}
                         </select>
                     </div>
                     {!season && (
@@ -1191,7 +1242,50 @@ function PostseasonSimulator({ performances, isBetter, manifest, loadTeamData, s
             )}
 
             {view === 'meet' && <>
-            {optimizedTeamScores && !optimizedTeamScores.incomplete && (() => {
+            {predicted && (
+                <div className="ps-standings">
+                    <div className="table-container">
+                        <table className="performance-table xs-table">
+                            <thead>
+                                <tr>
+                                    <th className="num">#</th><th>Team</th>
+                                    {PLACES.map(p => <th key={p} className="num" title="Share of simulated meets: entries drawn from each athlete's entry chance, marks varying as at past championships">{p}</th>)}
+                                    <th className="num" title="Expected points">Pts</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {predicted.teams.map((t, i) => {
+                                    const key = `${t.team}-${g}`
+                                    const mine = predicted.byTeam[t.team] || []
+                                    return (
+                                        <Fragment key={i}>
+                                            <tr className={`xs-team ${t.team === targetTeam ? 'xs-follow' : ''} ${expandedTeams[key] ? 'xs-sel' : ''}`}
+                                                onClick={() => setExpandedTeams(prev => ({ ...prev, [key]: !prev[key] }))}>
+                                                <td className="num">{i + 1}</td>
+                                                <td>{t.team}</td>
+                                                {t.odds.map((o, k) => <td key={k} className={`num ${k < 3 ? pctCls(o) : 'xs-plain'}`}>{pct(o)}</td>)}
+                                                <td className="num">{t.pts.toFixed(1)}</td>
+                                            </tr>
+                                            {expandedTeams[key] && mine.length > 0 && (
+                                                <tr className="ps-breakdown"><td colSpan={7}>
+                                                    {mine.map((r, j) => (
+                                                        <div key={j} className="breakdown-row">
+                                                            <span className="b-event clickable-event" onClick={(e) => { e.stopPropagation(); scrollToEvent(r.key) }}>{r.key}</span>
+                                                            <span className="b-athlete">{r.n || 'Relay'}</span>
+                                                            <span className="b-pts" title="Expected points">+{r.x.toFixed(1)}</span>
+                                                        </div>
+                                                    ))}
+                                                </td></tr>
+                                            )}
+                                        </Fragment>
+                                    )
+                                })}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            )}
+            {!predicted && !predPending && optimizedTeamScores && !optimizedTeamScores.incomplete && (() => {
                 const pts = Object.fromEntries(optimizedTeamScores[g].map(t => [t.team, t]))
                 const odds = placeOdds[g]
                 // season-best points order; teams with entries but no points after them
@@ -1247,11 +1341,78 @@ function PostseasonSimulator({ performances, isBetter, manifest, loadTeamData, s
                 )
             })()}
 
-            {actual && optimizedTeamScores && !optimizedTeamScores.incomplete && (
+            {actual && predicted && (
+                <TrackResultPanel actual={actual} predicted={{ [g]: predicted.teams }} gender={g} targetTeam={targetTeam} meet={champCutoff?.meet}
+                    odds={{ [g]: Object.fromEntries(predicted.teams.map(t => [t.team, t.odds])) }} />
+            )}
+            {actual && !predicted && !predPending && optimizedTeamScores && !optimizedTeamScores.incomplete && (
                 <TrackResultPanel actual={actual} predicted={optimizedTeamScores} odds={placeOdds} gender={g} targetTeam={targetTeam} meet={champCutoff?.meet} />
             )}
 
-            <div className="analyzer-results">
+            {predicted && (
+                <div className="analyzer-results">
+                    {predicted.events.map(({ key, rows }) => {
+                        const act = actual?.[g]?.events[key]
+                        const shown = rows.filter(r => r.x >= 0.1 || r.p >= 0.5 || (r.pl && r.pl <= SCORING_RULES.length))
+                        const placed = new Set(shown.map(r => r.pl).filter(Boolean))
+                        const missed = (act || []).filter(a => a.pts && !placed.has(a.pl))
+                        const byPl = new Map((act || []).map(a => [a.pl, a]))
+                        return (
+                            <div key={key} id={`event-${key.replace(/[^a-z0-9]/gi, '-')}`} className="event-section">
+                                <h3 className="event-title">{key}</h3>
+                                <div className="table-container">
+                                    <table className="performance-table">
+                                        <thead>
+                                            <tr>
+                                                <th title="Rank by expected points">Pred.</th>
+                                                <th>Name</th>
+                                                <th>Team</th>
+                                                <th title="Predicted mark">Mark</th>
+                                                <th className="num" title="Chance of entering this event">Entry</th>
+                                                <th title="Expected points">Points</th>
+                                                {act && <th className="ps-act" title={`Place at ${champCutoff?.meet || 'the championship'}`}>Place</th>}
+                                                {act && <th title="Mark at the championship">Result</th>}
+                                                {act && <th title="Points scored">Pts</th>}
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {shown.map((r, i) => {
+                                                const a = r.pl ? byPl.get(r.pl) : null
+                                                return (
+                                                    <tr key={i} className={r.team === targetTeam ? 'xs-follow' : ''}>
+                                                        <td>{i + 1}</td>
+                                                        <td className="athlete-name-cell">{r.n || 'Relay'}</td>
+                                                        <td>{r.team}</td>
+                                                        <td className="mark-cell">{r.m}</td>
+                                                        <td className={`num ${pctCls(r.p)}`}>{pct(r.p)}</td>
+                                                        <td className="points-cell">{r.x >= 0.05 ? `+${r.x.toFixed(1)}` : '-'}</td>
+                                                        {act && <td className="ps-act" title={a ? '' : 'Did not compete in this event at the championship'}>{a ? a.pl : '–'}</td>}
+                                                        {act && <td className="mark-cell">{a ? a.m : ''}</td>}
+                                                        {act && <td className="points-cell">{a?.pts ? `+${a.pts}` : ''}</td>}
+                                                    </tr>
+                                                )
+                                            })}
+                                            {missed.map((a, i) => (
+                                                <tr key={`m${i}`} className="ps-unpredicted">
+                                                    <td>–</td>
+                                                    <td className="athlete-name-cell">{a.n}<span className="xs-chip" title="Scored, but not among the predicted entries">not predicted</span></td>
+                                                    <td>{a.team}</td>
+                                                    <td></td><td></td><td></td>
+                                                    <td className="ps-act">{a.pl}</td>
+                                                    <td className="mark-cell">{a.m}</td>
+                                                    <td className="points-cell">{a.pts ? `+${a.pts}` : ''}</td>
+                                                </tr>
+                                            ))}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        )
+                    })}
+                </div>
+            )}
+
+            {!predicted && !predPending && <div className="analyzer-results">
                 {Object.keys(optimizedData).length > 0 ? (
                     Object.entries(optimizedData).filter(([, results]) => ofGender(results[0]?.event)).map(([groupTitle, results]) => {
                         const { rows, act } = eventRows(results)
@@ -1301,7 +1462,7 @@ function PostseasonSimulator({ performances, isBetter, manifest, loadTeamData, s
                         <p>No results match your filters.</p>
                     </div>
                 )}
-            </div>
+            </div>}
             </>}
         </div>
     );

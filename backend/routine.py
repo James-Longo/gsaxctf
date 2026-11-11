@@ -211,13 +211,19 @@ def mark_reported():
 
 
 def sims():
-    """Publish this season's XC postseason predictions while they are due. Track
-    predictions are computed in the browser; the championships' results they are
-    compared with are written here for the track seasons in progress."""
+    """Publish this season's XC postseason predictions while they are due, and for
+    the track seasons in progress the championships' results and the track
+    postseason predictor's predictions as of today (backend/track_champ_predict.py)."""
+    track_years = []
     for year, season in current_seasons():
         if season in ('Indoor', 'Outdoor'):
             subprocess.run([sys.executable, '-m', 'backend.track_champ_results', '--year', year,
                             '--season', season], cwd=BASE, check=True)
+            if year not in track_years:
+                track_years.append(year)
+    for year in track_years:
+        subprocess.run([sys.executable, '-m', 'backend.track_champ_predict', '--year', year],
+                       cwd=BASE, check=True)
     due, why = xc_sim_due()
     # (past seasons' predictions follow corrections to older data: rebuilt by that work, not here)
     print(json.dumps(dict(xc_postseason=dict(current=due, why=why))))
