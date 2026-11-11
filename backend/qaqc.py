@@ -1554,7 +1554,7 @@ def check_meet_scoring():
                         yield year, season, fn
         for jp_ in sorted(glob.glob(os.path.join(PARSED_BASE, '*', '*', '*.json'))):
             year, season, fn = jp_.split(os.sep)[-3:]
-            if not fn.startswith(('ms-', 'ne-', 'cr-')):
+            if not fn.startswith(('ms-', 'ne-', 'cr-', 'pph-')):
                 continue
             try:
                 manual = str(json.load(open(jp_, encoding='utf-8')).get('parser', '')).endswith('-manual')

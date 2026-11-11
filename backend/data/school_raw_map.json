@@ -1,13 +1,13 @@
 {
 "_meta": {
 "methods_by_rows": {
-"exact/alias": 2047101,
+"exact/alias": 2047203,
 "code": 260162,
 "truncation": 123510,
 "athlete-continuity": 53626,
 "mascot": 28807,
 "bare name + level context": 28372,
-"manual (file rule)": 18515,
+"manual (file rule)": 18517,
 "unresolved": 17313,
 "co-op label": 15102,
 "state-tagged (auto entry)": 10450,
@@ -203,9 +203,9 @@
 "how": "bare name + level context"
 },
 "Scarborough": {
-"rows": 19833,
+"rows": 19840,
 "seasons": {
-"Indoor": 9272,
+"Indoor": 9279,
 "XC": 3356,
 "Outdoor": 7205
 },
@@ -216,7 +216,7 @@
 "id": "me-hs-scarborough",
 "method": "exact",
 "by_id": {
-"me-hs-scarborough": 17779,
+"me-hs-scarborough": 17786,
 "me-ms-scarborough": 2054
 },
 "context_dependent": true,
@@ -347,9 +347,9 @@
 "how": "exact/alias"
 },
 "Thornton": {
-"rows": 17061,
+"rows": 17063,
 "seasons": {
-"Indoor": 8951,
+"Indoor": 8953,
 "Outdoor": 7799,
 "XC": 311
 },
@@ -360,7 +360,7 @@
 "id": "me-hs-thornton",
 "method": "exact",
 "by_id": {
-"me-hs-thornton": 17050,
+"me-hs-thornton": 17052,
 "me-ms-thornton": 11
 },
 "context_dependent": true,
@@ -508,9 +508,9 @@
 "how": "exact/alias"
 },
 "Bonny Eagle": {
-"rows": 15942,
+"rows": 15951,
 "seasons": {
-"Indoor": 7098,
+"Indoor": 7107,
 "Outdoor": 5993,
 "XC": 2851
 },
@@ -521,7 +521,7 @@
 "id": "me-hs-bonny-eagle",
 "method": "exact",
 "by_id": {
-"me-hs-bonny-eagle": 14321,
+"me-hs-bonny-eagle": 14330,
 "me-ms-bonny-eagle": 1621
 },
 "context_dependent": true,
@@ -694,9 +694,9 @@
 "how": "exact/alias"
 },
 "South Portland": {
-"rows": 14340,
+"rows": 14350,
 "seasons": {
-"Indoor": 6933,
+"Indoor": 6943,
 "Outdoor": 5076,
 "XC": 2331
 },
@@ -707,7 +707,7 @@
 "id": "me-hs-south-portland",
 "method": "exact",
 "by_id": {
-"me-hs-south-portland": 14228,
+"me-hs-south-portland": 14238,
 "me-ms-south-portland": 112
 },
 "context_dependent": true,
@@ -718,9 +718,9 @@
 "how": "exact/alias"
 },
 "Thornton Academy": {
-"rows": 13959,
+"rows": 13970,
 "seasons": {
-"Indoor": 4144,
+"Indoor": 4155,
 "Outdoor": 5629,
 "XC": 4186
 },
@@ -731,13 +731,37 @@
 "id": "me-hs-thornton",
 "method": "exact",
 "by_id": {
-"me-hs-thornton": 13587,
+"me-hs-thornton": 13598,
 "me-ms-thornton": 372
 },
 "context_dependent": true,
 "by_level": {
 "hs": "me-hs-thornton",
 "ms": "me-ms-thornton"
+},
+"how": "exact/alias"
+},
+"Windham": {
+"rows": 13948,
+"seasons": {
+"Indoor": 5768,
+"Outdoor": 6321,
+"XC": 1859
+},
+"years": [
+2003,
+2025
+],
+"id": "me-hs-windham",
+"method": "exact",
+"by_id": {
+"me-hs-windham": 12800,
+"me-ms-windham": 1148
+},
+"context_dependent": true,
+"by_level": {
+"hs": "me-hs-windham",
+"ms": "me-ms-windham"
 },
 "how": "exact/alias"
 },
@@ -754,30 +778,6 @@
 ],
 "id": "me-hs-york",
 "method": "exact",
-"how": "exact/alias"
-},
-"Windham": {
-"rows": 13945,
-"seasons": {
-"Indoor": 5765,
-"Outdoor": 6321,
-"XC": 1859
-},
-"years": [
-2003,
-2025
-],
-"id": "me-hs-windham",
-"method": "exact",
-"by_id": {
-"me-hs-windham": 12797,
-"me-ms-windham": 1148
-},
-"context_dependent": true,
-"by_level": {
-"hs": "me-hs-windham",
-"ms": "me-ms-windham"
-},
 "how": "exact/alias"
 },
 "South Portland High School": {
@@ -885,9 +885,9 @@
 "how": "exact/alias"
 },
 "Cheverus": {
-"rows": 11270,
+"rows": 11273,
 "seasons": {
-"Indoor": 4170,
+"Indoor": 4173,
 "Outdoor": 4547,
 "XC": 2553
 },
@@ -945,9 +945,9 @@
 "how": "exact/alias"
 },
 "Westbrook": {
-"rows": 10706,
+"rows": 10712,
 "seasons": {
-"Indoor": 5204,
+"Indoor": 5210,
 "Outdoor": 3880,
 "XC": 1622
 },
@@ -958,7 +958,7 @@
 "id": "me-hs-westbrook",
 "method": "exact",
 "by_id": {
-"me-hs-westbrook": 10021,
+"me-hs-westbrook": 10027,
 "me-ms-westbrook": 685
 },
 "context_dependent": true,
@@ -966,6 +966,21 @@
 "hs": "me-hs-westbrook",
 "ms": "me-ms-westbrook"
 },
+"how": "exact/alias"
+},
+"Deering": {
+"rows": 10616,
+"seasons": {
+"Indoor": 5765,
+"Outdoor": 3831,
+"XC": 1020
+},
+"years": [
+2003,
+2026
+],
+"id": "me-hs-deering",
+"method": "exact",
 "how": "exact/alias"
 },
 "Oxford Hills": {
@@ -994,21 +1009,6 @@
 "athletes contradict name match (me-hs-oxford-hills -> me-ms-oxford-hills, 42/43)",
 "athletes contradict name match (me-ms-oxford-hills -> me-hs-oxford-hills, 14/43)"
 ],
-"how": "exact/alias"
-},
-"Deering": {
-"rows": 10589,
-"seasons": {
-"Indoor": 5738,
-"Outdoor": 3831,
-"XC": 1020
-},
-"years": [
-2003,
-2026
-],
-"id": "me-hs-deering",
-"method": "exact",
 "how": "exact/alias"
 },
 "WTVL": {
@@ -1203,6 +1203,30 @@
 ],
 "how": "exact/alias"
 },
+"Biddeford": {
+"rows": 9610,
+"seasons": {
+"Indoor": 5283,
+"Outdoor": 2915,
+"XC": 1412
+},
+"years": [
+2003,
+2026
+],
+"id": "me-hs-biddeford",
+"method": "exact",
+"by_id": {
+"me-hs-biddeford": 9266,
+"me-ms-biddeford": 344
+},
+"context_dependent": true,
+"by_level": {
+"hs": "me-hs-biddeford",
+"ms": "me-ms-biddeford"
+},
+"how": "exact/alias"
+},
 "Erskine": {
 "rows": 9602,
 "seasons": {
@@ -1216,30 +1240,6 @@
 ],
 "id": "me-hs-erskine",
 "method": "exact",
-"how": "exact/alias"
-},
-"Biddeford": {
-"rows": 9595,
-"seasons": {
-"Indoor": 5268,
-"Outdoor": 2915,
-"XC": 1412
-},
-"years": [
-2003,
-2026
-],
-"id": "me-hs-biddeford",
-"method": "exact",
-"by_id": {
-"me-hs-biddeford": 9251,
-"me-ms-biddeford": 344
-},
-"context_dependent": true,
-"by_level": {
-"hs": "me-hs-biddeford",
-"ms": "me-ms-biddeford"
-},
 "how": "exact/alias"
 },
 "Scarboro": {
@@ -1736,9 +1736,9 @@
 "how": "exact/alias"
 },
 "Portland": {
-"rows": 7264,
+"rows": 7273,
 "seasons": {
-"Indoor": 3408,
+"Indoor": 3417,
 "Outdoor": 1938,
 "XC": 1918
 },
@@ -34197,6 +34197,28 @@
 "method": "exact",
 "how": "exact/alias"
 },
+"Md": {
+"rows": 48,
+"seasons": {
+"Indoor": 3,
+"Outdoor": 19,
+"XC": 26
+},
+"years": [
+2004,
+2015
+],
+"id": "me-hs-marshwood",
+"method": "athlete-continuity",
+"by_id": {
+"me-hs-marshwood": 25,
+"None": 19,
+"me-ms-marshwood": 4
+},
+"context_dependent": true,
+"unresolved_rows": 19,
+"how": "athlete-continuity"
+},
 "NashuaPALCrusers": {
 "rows": 48,
 "seasons": {
@@ -34801,28 +34823,6 @@
 "flags": [
 "athletes contradict name match (me-ms-hermon -> me-ms-harrison, 20/20)"
 ],
-"how": "athlete-continuity"
-},
-"Md": {
-"rows": 46,
-"seasons": {
-"Indoor": 1,
-"Outdoor": 19,
-"XC": 26
-},
-"years": [
-2004,
-2015
-],
-"id": "me-hs-marshwood",
-"method": "athlete-continuity",
-"by_id": {
-"me-hs-marshwood": 23,
-"None": 19,
-"me-ms-marshwood": 4
-},
-"context_dependent": true,
-"unresolved_rows": 19,
 "how": "athlete-continuity"
 },
 "Mt. Valley": {
@@ -163715,6 +163715,10 @@
 "2003/Indoor/ne-stormin-norman-2002": {
 "Falmouth": "me-hs-falmouth"
 },
+"2003/Indoor/pph-smaa-championship-2003": {
+"South Portland": "me-hs-south-portland",
+"Thornton Academy": "me-hs-thornton"
+},
 "2003/Outdoor/18april03": {
 "Brewer": "me-hs-brewer",
 "Central": "me-hs-central",
@@ -164985,8 +164989,10 @@
 "Md": "me-hs-marshwood",
 "Scarborough": "me-hs-scarborough",
 "South Portland": "me-hs-south-portland",
+"Thornton": "me-hs-thornton",
 "Thornton Academy": "me-hs-thornton",
-"Westbrook": "me-hs-westbrook"
+"Westbrook": "me-hs-westbrook",
+"Windham": "me-hs-windham"
 },
 "2004/Indoor/smaagirls": {
 "BE": "me-hs-bonny-eagle",

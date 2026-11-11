@@ -58,6 +58,8 @@ def source_of(stem, doc):
         return 'new-england'
     if p == 'coolrunning-manual':
         return 'coolrunning'
+    if p == 'pph-manual':
+        return 'press-herald'
     if stem.startswith('fiveks-'):
         return 'fiveksport'
     return 'sub5'
