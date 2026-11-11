@@ -46,9 +46,10 @@ SHEET = ('https://docs.google.com/spreadsheets/d/'
          '1fql3yYQs_9OZZmS8-KHDliEPTKl__ZFZ592E8dkZD7Q/export?format=csv')
 TEAM = 'George Stevens Academy'
 # sheet first name -> store name, where the first name alone is ambiguous
-NAMES = {'Owen': 'Owen Hughes', 'Noah': 'Noah Williams'}
+NAMES = {'Owen': 'Owen Hughes', 'Noah': 'Noah Williams', 'Amelie': 'Amelie Kneisel'}
 # athletes who practice with GSA but race for another school
-OTHER_TEAMS = {'Noah Williams': 'Deer IsleStonington High School'}
+OTHER_TEAMS = {'Noah Williams': 'Deer IsleStonington High School',
+               'Amelie Kneisel': 'Blue Hill Consolidated School'}
 EVENTS = ['55 Meter Dash', '100 Meter Dash', '200 Meter Dash', '400 Meter Dash',
           '55 Meter Hurdles', '100 Meter Hurdles', '110 Meter Hurdles',
           '300 Meter Hurdles', '800 Meter Run']
