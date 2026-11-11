@@ -15,7 +15,8 @@ girls/boys term and a hand-timing term, so the ratio is all there is. The
 +/- printed is the held-out error (about 68% of athletes land inside).
 
 Sheet names are first names only: a name maps to the one GSA athlete of
-that first name with a track season that spring; NAMES settles the rest.
+that first name with a track season that spring; NAMES settles the rest,
+and OTHER_TEAMS adds athletes who practice with GSA but race elsewhere.
 
 Usage
   python3 -m backend.fly_predict                 # everyone, latest season
@@ -45,7 +46,9 @@ SHEET = ('https://docs.google.com/spreadsheets/d/'
          '1fql3yYQs_9OZZmS8-KHDliEPTKl__ZFZ592E8dkZD7Q/export?format=csv')
 TEAM = 'George Stevens Academy'
 # sheet first name -> store name, where the first name alone is ambiguous
-NAMES = {'Owen': 'Owen Hughes'}
+NAMES = {'Owen': 'Owen Hughes', 'Noah': 'Noah Williams'}
+# athletes who practice with GSA but race for another school
+OTHER_TEAMS = {'Noah Williams': 'Deer IsleStonington High School'}
 EVENTS = ['55 Meter Dash', '100 Meter Dash', '200 Meter Dash', '400 Meter Dash',
           '55 Meter Hurdles', '100 Meter Hurdles', '110 Meter Hurdles',
           '300 Meter Hurdles', '800 Meter Run']
@@ -107,7 +110,10 @@ def season_bests():
     """(store name, year) -> {event: best seconds}, plus gender by name."""
     sb = collections.defaultdict(dict)
     gender = {}
-    for r in js.load_team(TEAM):
+    rows = js.load_team(TEAM)
+    for team in sorted(set(OTHER_TEAMS.values())):
+        rows += [r for r in js.load_team(team) if OTHER_TEAMS.get(r.get('athlete_name')) == team]
+    for r in rows:
         n = r.get('athlete_name') or ''
         if ',' in n or r.get('season') not in ('Indoor', 'Outdoor'):
             continue
