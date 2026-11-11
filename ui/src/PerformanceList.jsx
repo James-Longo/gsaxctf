@@ -25,7 +25,6 @@ function PostseasonSimulator({ performances, isBetter, manifest, loadTeamData, s
     useEffect(() => { if (season) setFilterSeason(season) }, [season])
     const [filterEvent, setFilterEvent] = useState('All')
     const [scoreMethod, setScoreMethod] = useState('PR')
-    const [showSimulation, setShowSimulation] = useState(false)
     const [expandedTeams, setExpandedTeams] = useState({}) 
     const [targetTeam, setTargetTeam] = useState('George Stevens Academy')
     const [competitionType, setCompetitionType] = useState('PVC');
@@ -277,7 +276,7 @@ function PostseasonSimulator({ performances, isBetter, manifest, loadTeamData, s
                 (event === 'All' || p.event === event);
         };
 
-        const avYears = Array.from(new Set(processed.map(p => p.derivedYear))).sort((a, b) => b - a);
+        const avYears = Array.from(new Set(processed.filter(p => p.derivedType === filterSeason).map(p => p.derivedYear))).sort((a, b) => b - a);
         const avSeasons = Array.from(new Set(processed.map(p => p.derivedType))).sort();
         const avEvents = Array.from(new Set(processed.map(p => p.event))).sort();
 
@@ -292,6 +291,11 @@ function PostseasonSimulator({ performances, isBetter, manifest, loadTeamData, s
             events: avEvents
         };
     }, [performances, filterYear, filterSeason, filterEvent, activeSchools, champCutoff]);
+
+    // the latest season on file when the chosen one has no results (the season about to start)
+    useEffect(() => {
+        if (years.length && !years.includes(filterYear)) setFilterYear(years[0])
+    }, [years, filterYear])
 
     // Places scored: the championship's own table; else PVC six, states eight.
     const SCORING_RULES = useMemo(() => Object.values(champs || {})[0]?.table
@@ -458,7 +462,7 @@ function PostseasonSimulator({ performances, isBetter, manifest, loadTeamData, s
 
     const optimizedData = useMemo(() => {
         const bypassYearSeasonCheck = scoreMethod === 'Seeds';
-        if (!showSimulation || (!bypassYearSeasonCheck && (filterYear === 'All' || filterSeason === 'All')) || Object.keys(groupedData).length === 0) {
+        if ((!bypassYearSeasonCheck && (filterYear === 'All' || filterSeason === 'All')) || Object.keys(groupedData).length === 0) {
             return groupedData;
         }
 
@@ -665,10 +669,9 @@ function PostseasonSimulator({ performances, isBetter, manifest, loadTeamData, s
 
         Object.keys(finalGroups).forEach(k => { if (!finalGroups[k].length) delete finalGroups[k] });
         return finalGroups;
-    }, [groupedData, showSimulation, filterYear, filterSeason, isBetter, EVENT_LIMIT, SCORING_RULES]);
+    }, [groupedData, filterYear, filterSeason, isBetter, EVENT_LIMIT, SCORING_RULES]);
 
     const optimizedTeamScores = useMemo(() => {
-        if (!showSimulation) return null;
         if (scoreMethod !== 'Seeds' && (filterYear === 'All' || filterSeason === 'All')) return { incomplete: true };
 
         const scores = { boys: {}, girls: {} };
@@ -707,7 +710,7 @@ function PostseasonSimulator({ performances, isBetter, manifest, loadTeamData, s
             boys: formatScores(scores.boys),
             girls: formatScores(scores.girls)
         };
-    }, [optimizedData, showSimulation, filterYear, filterSeason]);
+    }, [optimizedData, filterYear, filterSeason]);
 
     const entryDecisions = useMemo(() => {
         if (!targetTeam || Object.keys(groupedData).length === 0) return null;
@@ -932,7 +935,6 @@ function PostseasonSimulator({ performances, isBetter, manifest, loadTeamData, s
                     <div className="filter-group">
                         <label>Year</label>
                         <select value={filterYear} onChange={e => setFilterYear(e.target.value)}>
-                            <option value="All">All Years</option>
                             {years.map(y => <option key={y} value={y}>{y}</option>)}
                         </select>
                     </div>
@@ -953,12 +955,6 @@ function PostseasonSimulator({ performances, isBetter, manifest, loadTeamData, s
                             <option value="Everyone">Everyone</option>
                         </select>
                     </div>
-                    {champCutoff && scoreMethod !== 'Seeds' && (
-                    <div className="filter-group sim-cutoff-note">
-                        <label>Results used</label>
-                        <span>before {champCutoff.date} ({champCutoff.meet})</span>
-                    </div>
-                    )}
                     <div className="filter-group">
                         <label>Optimize For</label>
                         <select value={targetTeam} onChange={e => setTargetTeam(e.target.value)}>
@@ -974,14 +970,6 @@ function PostseasonSimulator({ performances, isBetter, manifest, loadTeamData, s
                             <option value="Median">Median Result</option>
                             <option value="Seeds">Actual Seeds (5/29)</option>
                         </select>
-                    </div>
-                    <div className="simulation-actions">
-                        <button
-                            className={`simulate-btn ${showSimulation ? 'active' : ''}`}
-                            onClick={() => setShowSimulation(!showSimulation)}
-                        >
-                            {showSimulation ? 'Reset' : 'Simulate'}
-                        </button>
                     </div>
                     <div className="record-count">{scoreMethod === 'Seeds' ? `${seedPerfs.length} Seeds` : `${filteredData.length} Results`}</div>
                 </div>
@@ -1092,7 +1080,7 @@ function PostseasonSimulator({ performances, isBetter, manifest, loadTeamData, s
             )}
 
             {view === 'meet' && <>
-            {showSimulation && optimizedTeamScores && (
+            {optimizedTeamScores && (
                 <div className="simulation-overlay">
                     {optimizedTeamScores.incomplete ? (
                         <div className="meet-leaderboard warn">
@@ -1209,7 +1197,7 @@ function PostseasonSimulator({ performances, isBetter, manifest, loadTeamData, s
                 </div>
             )}
 
-            {showSimulation && actual && optimizedTeamScores && !optimizedTeamScores.incomplete && (
+            {actual && optimizedTeamScores && !optimizedTeamScores.incomplete && (
                 <TrackResultPanel actual={actual} predicted={optimizedTeamScores} targetTeam={targetTeam} meet={champCutoff?.meet} />
             )}
 
@@ -1231,7 +1219,7 @@ function PostseasonSimulator({ performances, isBetter, manifest, loadTeamData, s
                                         <th>Name</th>
                                         <th>Team</th>
                                         <th>Mark</th>
-                                        {showSimulation && <th title="Predicted points">Points</th>}
+                                        <th title="Predicted points">Points</th>
                                         {act && <th className="ps-act" title={`Place at ${champCutoff?.meet || 'the championship'}`}>Place</th>}
                                         {act && <th title="Mark at the championship">Result</th>}
                                         {act && <th title="Points scored">Pts</th>}
@@ -1245,11 +1233,9 @@ function PostseasonSimulator({ performances, isBetter, manifest, loadTeamData, s
                                                 {!res && <span className="xs-chip" title="Scored, but not among the predicted entries">not predicted</span>}</td>
                                             <td>{res ? res.pvcTeam : a.team}</td>
                                             <td className="mark-cell">{res ? res.mark : ''}</td>
-                                            {showSimulation && (
-                                                <td className="points-cell">
-                                                    {res && res.optimizedPts > 0 ? `+${res.optimizedPts.toFixed(1)}` : '-'}
-                                                </td>
-                                            )}
+                                            <td className="points-cell">
+                                                {res && res.optimizedPts > 0 ? `+${res.optimizedPts.toFixed(1)}` : '-'}
+                                            </td>
                                             {act && <td className="ps-act" title={a ? '' : 'Did not compete in this event at the championship'}>{a ? a.pl : '–'}</td>}
                                             {act && <td className="mark-cell">{a ? a.m : ''}</td>}
                                             {act && <td className="points-cell">{a?.pts ? `+${a.pts}` : ''}</td>}
