@@ -651,56 +651,12 @@ input:checked+.slider:before {
   border-radius: 50%;
 }
 
-/* Leaderboards Layout */
-.leaderboards-container {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
-  gap: 24px;
-  margin-top: 10px;
-}
 
-/* Leaderboard Styles */
-.meet-leaderboard {
-  margin: 12px 0;
-  background: white;
-  border: 1px solid #e2e8f0;
-  border-radius: 12px;
-  padding: 24px;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
-}
 
-.meet-leaderboard.boys {
-  border-top: 4px solid #3182ce;
-}
 
-.meet-leaderboard.girls {
-  border-top: 4px solid #d53f8c;
-}
 
-.meet-leaderboard.warn {
-  background: #fffaf0;
-  border: 1px solid #f6ad55;
-  color: #c05621;
-  text-align: center;
-}
 
-.empty-scores {
-  color: #a0aec0;
-  font-style: italic;
-  font-size: 0.875rem;
-  padding: 20px;
-  text-align: center;
-}
 
-.meet-leaderboard h3 {
-  margin-top: 0;
-  margin-bottom: 20px;
-  font-size: 1.125rem;
-  color: #1a202c;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
 
 .boys h3 {
   color: #2b6cb0 !important;
@@ -710,84 +666,16 @@ input:checked+.slider:before {
   color: #d53f8c !important;
 }
 
-.leaderboard-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: 16px;
-}
 
-.leaderboard-item {
-  display: flex;
-  align-items: center;
-  padding: 12px 16px;
-  background: #f8fafc;
-  border-radius: 8px;
-  border-left: 4px solid #cbd5e0;
-  transition: all 0.2s;
-  cursor: pointer;
-  user-select: none;
-}
 
-.team-rank {
-  width: 28px;
-  height: 28px;
-  background: #edf2f7;
-  color: #4a5568;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: 800;
-  font-size: 0.875rem;
-  margin-right: 12px;
-}
 
-.team-name {
-  flex: 1;
-  font-weight: 600;
-  color: #2d3748;
-}
 
-.team-points {
-  font-weight: 800;
-  font-size: 1.125rem;
-}
 
-.boys .team-points {
-  color: #3182ce;
-}
 
-.girls .team-points {
-  color: #d53f8c;
-}
 
-.leaderboard-item:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-}
 
-.leaderboard-item.expanded {
-  border-bottom-left-radius: 0;
-  border-bottom-right-radius: 0;
-  background: white;
-}
 
-.expand-icon {
-  margin-left: 12px;
-  font-size: 0.75rem;
-  color: #a0aec0;
-  transition: transform 0.2s;
-}
 
-.team-breakdown {
-  background: white;
-  border: 1px solid #e2e8f0;
-  border-top: none;
-  border-bottom-left-radius: 8px;
-  border-bottom-right-radius: 8px;
-  padding: 8px 12px;
-  margin-bottom: 12px;
-}
 
 .breakdown-row {
   display: flex;
@@ -832,23 +720,9 @@ input:checked+.slider:before {
   text-align: right;
 }
 
-.leaderboard-item.rank-1 {
-  border-left-color: #ecc94b;
-  background: #fffff0;
-}
 
-.leaderboard-item.rank-1 .team-rank {
-  background: #ecc94b;
-  color: #744210;
-}
 
-.leaderboard-item.rank-2 {
-  border-left-color: #a0aec0;
-}
 
-.leaderboard-item.rank-3 {
-  border-left-color: #ed8936;
-}
 
 .points-cell {
   font-weight: 700;
@@ -1170,14 +1044,6 @@ body {
   /* Force dark text */
 }
 
-/* Ensure leaderboards don't overflow on small screens */
-.leaderboards-container {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  /* Changed from 400px to 280px */
-  gap: 24px;
-  margin-top: 10px;
-}
 
 /* Mobile Responsiveness */
 @media (max-width: 768px) {
@@ -1215,13 +1081,7 @@ body {
     color: #38a169;
   }
 
-  .boys .team-points {
-    color: #3182ce;
-  }
 
-  .girls .team-points {
-    color: #d53f8c;
-  }
 
   .pop-delta {
     color: #38a169;
@@ -1282,23 +1142,8 @@ body {
     min-width: 0;
   }
 
-  /* Team Leaderboards */
-  .leaderboards-container {
-    grid-template-columns: 1fr;
-    /* Stack boys/girls vertically */
-    gap: 16px;
-  }
 
-  .meet-leaderboard {
-    padding: 16px;
-    width: 100%;
-    box-sizing: border-box;
-  }
 
-  .leaderboard-grid {
-    grid-template-columns: 1fr;
-    /* Teams take full width */
-  }
 
   /* Simulation toggle adjustments */
   .simulation-toggle {
@@ -2452,11 +2297,12 @@ body {
 .pr-progression .performance-table td.pr-gain { color: #2f855a; font-variant-numeric: tabular-nums; }
 
 /* Track postseason simulator */
-.ps-tabs { margin: 4px 0 12px; align-self: flex-start; width: fit-content; }
+.ps-tabs { margin: 4px 0 12px; gap: 10px; }
 .ps-result { margin: 16px 0; }
 .ps-result-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(360px, 100%), 1fr)); gap: 18px; }
 .ps-sum { margin-bottom: 8px; font-size: 0.88rem; }
 .ps-act { border-left: 2px solid #e2e8f0; }
 .ps-unpredicted td { color: #718096; }
-.team-chance { width: 48px; text-align: right; font-size: 0.8rem; color: #718096; font-variant-numeric: tabular-nums; margin-left: 10px; }
-.lb-key { margin-left: auto; font-size: 0.72rem; font-weight: 600; color: #a0aec0; text-transform: none; letter-spacing: 0; margin-top: 4px; }
+.ps-standings { margin: 12px 0 4px; }
+.ps-missing { margin: 0 0 8px; }
+.ps-breakdown td { background: #fafafa; padding: 6px 12px 10px 40px !important; }
