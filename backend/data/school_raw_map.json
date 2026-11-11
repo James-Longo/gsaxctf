@@ -1,10 +1,10 @@
 {
 "_meta": {
 "methods_by_rows": {
-"exact/alias": 2046979,
+"exact/alias": 2047101,
 "code": 260162,
 "truncation": 123510,
-"athlete-continuity": 53589,
+"athlete-continuity": 53626,
 "mascot": 28807,
 "bare name + level context": 28372,
 "manual (file rule)": 18515,
@@ -22,14 +22,14 @@
 "co-op label -> host (co-op not active)": 183
 },
 "methods_by_strings": {
-"exact/alias": 4147,
+"exact/alias": 4161,
 "unresolved": 2123,
 "state-tagged (auto entry)": 1569,
 "debris-salvage": 914,
 "debris": 713,
 "code": 702,
 "truncation": 534,
-"athlete-continuity": 462,
+"athlete-continuity": 470,
 "spelling (fuzzy)": 289,
 "manual (file rule)": 188,
 "bare name + level context": 78,
@@ -39,7 +39,7 @@
 "file-expansion": 13,
 "later-hs": 2
 },
-"distinct_strings": 11879,
+"distinct_strings": 11901,
 "note": "'raw' keys are whitespace-collapsed school strings exactly as printed. 'overrides' are per-file answers (year/season/file-stem) that differ from the string's global id."
 },
 "raw": {
@@ -997,9 +997,9 @@
 "how": "exact/alias"
 },
 "Deering": {
-"rows": 10584,
+"rows": 10589,
 "seasons": {
-"Indoor": 5733,
+"Indoor": 5738,
 "Outdoor": 3831,
 "XC": 1020
 },
@@ -1696,6 +1696,21 @@
 "method": "exact",
 "how": "exact/alias"
 },
+"Deering High School": {
+"rows": 7376,
+"seasons": {
+"Indoor": 2489,
+"Outdoor": 2824,
+"XC": 2063
+},
+"years": [
+2003,
+2026
+],
+"id": "me-hs-deering",
+"method": "exact",
+"how": "exact/alias"
+},
 "Kennebunk": {
 "rows": 7375,
 "seasons": {
@@ -1718,21 +1733,6 @@
 "hs": "me-hs-kennebunk",
 "ms": "me-ms-kennebunk"
 },
-"how": "exact/alias"
-},
-"Deering High School": {
-"rows": 7369,
-"seasons": {
-"Indoor": 2482,
-"Outdoor": 2824,
-"XC": 2063
-},
-"years": [
-2003,
-2026
-],
-"id": "me-hs-deering",
-"method": "exact",
 "how": "exact/alias"
 },
 "Portland": {
@@ -5228,7 +5228,7 @@
 "athletes contradict name match (me-hs-scarborough -> me-hs-marshwood, 4/7)",
 "athletes disagree with file rule (me-hs-north-haven -> me-ms-north-haven, 4/4)",
 "athletes disagree with file rule (me-ms-hermon -> club-hermon-hawks-tc, 14/23)",
-"company: me-hs-hermon (0.09) -> me-hs-marshwood (1.48)"
+"company: me-hs-hermon (0.09) -> me-hs-marshwood (1.47)"
 ],
 "how": "athlete-continuity"
 },
@@ -9218,6 +9218,20 @@
 "method": "code",
 "how": "code"
 },
+"Mount Desert Island HS": {
+"rows": 934,
+"seasons": {
+"Indoor": 224,
+"Outdoor": 710
+},
+"years": [
+2003,
+2019
+],
+"id": "me-hs-mdi",
+"method": "exact",
+"how": "exact/alias"
+},
 "S": {
 "rows": 934,
 "seasons": {
@@ -9257,20 +9271,6 @@
 2026
 ],
 "id": "me-hs-winthrop",
-"method": "exact",
-"how": "exact/alias"
-},
-"Mount Desert Island HS": {
-"rows": 933,
-"seasons": {
-"Indoor": 223,
-"Outdoor": 710
-},
-"years": [
-2003,
-2019
-],
-"id": "me-hs-mdi",
 "method": "exact",
 "how": "exact/alias"
 },
@@ -10161,6 +10161,20 @@
 "unresolved_rows": 215,
 "how": "athlete-continuity"
 },
+"Deering High Sch": {
+"rows": 783,
+"seasons": {
+"Indoor": 775,
+"Outdoor": 8
+},
+"years": [
+2004,
+2015
+],
+"id": "me-hs-deering",
+"method": "exact",
+"how": "exact/alias"
+},
 "Holbrook School": {
 "rows": 782,
 "seasons": {
@@ -10425,20 +10439,6 @@
 "id": "me-hs-brunswick",
 "method": "code",
 "how": "code"
-},
-"Deering High Sch": {
-"rows": 719,
-"seasons": {
-"Outdoor": 8,
-"Indoor": 711
-},
-"years": [
-2005,
-2015
-],
-"id": "me-hs-deering",
-"method": "exact",
-"how": "exact/alias"
 },
 "Brunswick Jr. High": {
 "rows": 717,
@@ -25255,6 +25255,20 @@
 "context_dependent": true,
 "how": "exact/alias"
 },
+"HAMPDEN ACADEMY": {
+"rows": 103,
+"seasons": {
+"Indoor": 7,
+"Outdoor": 96
+},
+"years": [
+2003,
+2023
+],
+"id": "me-hs-hampden",
+"method": "exact",
+"how": "exact/alias"
+},
 "Medomak Valley HS": {
 "rows": 103,
 "seasons": {
@@ -25986,19 +26000,6 @@
 2019
 ],
 "id": "me-hs-wells",
-"method": "exact",
-"how": "exact/alias"
-},
-"HAMPDEN ACADEMY": {
-"rows": 96,
-"seasons": {
-"Outdoor": 96
-},
-"years": [
-2003,
-2023
-],
-"id": "me-hs-hampden",
 "method": "exact",
 "how": "exact/alias"
 },
@@ -34181,6 +34182,21 @@
 "method": "exact",
 "how": "exact/alias"
 },
+"Marshwood HS": {
+"rows": 48,
+"seasons": {
+"Indoor": 9,
+"Outdoor": 30,
+"XC": 9
+},
+"years": [
+2003,
+2024
+],
+"id": "me-hs-marshwood",
+"method": "exact",
+"how": "exact/alias"
+},
 "NashuaPALCrusers": {
 "rows": 48,
 "seasons": {
@@ -34414,21 +34430,6 @@
 2024
 ],
 "id": "me-hs-south-portland",
-"method": "exact",
-"how": "exact/alias"
-},
-"Marshwood HS": {
-"rows": 47,
-"seasons": {
-"Indoor": 8,
-"Outdoor": 30,
-"XC": 9
-},
-"years": [
-2003,
-2024
-],
-"id": "me-hs-marshwood",
 "method": "exact",
 "how": "exact/alias"
 },
@@ -39064,6 +39065,20 @@
 "method": "exact",
 "how": "exact/alias"
 },
+"YORK HS": {
+"rows": 35,
+"seasons": {
+"Indoor": 2,
+"XC": 33
+},
+"years": [
+2003,
+2024
+],
+"id": "me-hs-york",
+"method": "exact",
+"how": "exact/alias"
+},
 "Fry": {
 "rows": 35,
 "seasons": {
@@ -40507,19 +40522,6 @@
 2024
 ],
 "id": "me-ms-york",
-"method": "exact",
-"how": "exact/alias"
-},
-"YORK HS": {
-"rows": 33,
-"seasons": {
-"XC": 33
-},
-"years": [
-2024,
-2024
-],
-"id": "me-hs-york",
 "method": "exact",
 "how": "exact/alias"
 },
@@ -55183,6 +55185,19 @@
 "method": "exact",
 "how": "exact/alias"
 },
+"DEERING HS -PORTLAND": {
+"rows": 14,
+"seasons": {
+"Indoor": 14
+},
+"years": [
+2003,
+2003
+],
+"id": "me-hs-deering",
+"method": "athlete-continuity",
+"how": "athlete-continuity"
+},
 "Searsport District HS": {
 "rows": 14,
 "seasons": {
@@ -66724,6 +66739,19 @@
 "method": "exact",
 "how": "exact/alias"
 },
+"Sumner HS": {
+"rows": 8,
+"seasons": {
+"Indoor": 8
+},
+"years": [
+2003,
+2009
+],
+"id": "me-hs-sumner",
+"method": "exact",
+"how": "exact/alias"
+},
 "Whirlaway Racing": {
 "rows": 8,
 "seasons": {
@@ -70300,19 +70328,6 @@
 "method": "exact",
 "how": "exact/alias"
 },
-"Sumner HS": {
-"rows": 7,
-"seasons": {
-"Indoor": 7
-},
-"years": [
-2009,
-2009
-],
-"id": "me-hs-sumner",
-"method": "exact",
-"how": "exact/alias"
-},
 "S Shore Fireb": {
 "rows": 7,
 "seasons": {
@@ -72836,6 +72851,19 @@
 "id": "me-hs-gray-ng",
 "method": "exact+deglue",
 "how": "exact/alias"
+},
+"THORNTON ACAD.-SACO": {
+"rows": 6,
+"seasons": {
+"Indoor": 6
+},
+"years": [
+2003,
+2003
+],
+"id": "me-hs-thornton",
+"method": "athlete-continuity",
+"how": "athlete-continuity"
 },
 "York High School Outdoor 2003": {
 "rows": 6,
@@ -76708,6 +76736,45 @@
 "id": "me-hs-mdi",
 "method": "exact",
 "how": "exact/alias"
+},
+"SOUTH PORTLAND HS": {
+"rows": 5,
+"seasons": {
+"Indoor": 5
+},
+"years": [
+2003,
+2003
+],
+"id": "me-hs-south-portland",
+"method": "exact",
+"how": "exact/alias"
+},
+"FALMOUTH HS": {
+"rows": 5,
+"seasons": {
+"Indoor": 5
+},
+"years": [
+2003,
+2003
+],
+"id": "me-hs-falmouth",
+"method": "exact",
+"how": "exact/alias"
+},
+"GREELY HS -CUMBERLAND": {
+"rows": 5,
+"seasons": {
+"Indoor": 5
+},
+"years": [
+2003,
+2003
+],
+"id": "me-hs-greely",
+"method": "athlete-continuity",
+"how": "athlete-continuity"
 },
 "MT. Desert Island HS": {
 "rows": 5,
@@ -81779,6 +81846,19 @@
 "id": "me-hs-mattanawcook",
 "method": "fuzzy",
 "how": "spelling (fuzzy)"
+},
+"OLD TOWN HS": {
+"rows": 4,
+"seasons": {
+"Indoor": 4
+},
+"years": [
+2003,
+2003
+],
+"id": "me-hs-old-town",
+"method": "exact",
+"how": "exact/alias"
 },
 "Rockland District HS": {
 "rows": 4,
@@ -88360,6 +88440,71 @@
 2004
 ],
 "id": "me-hs-south-portland",
+"method": "exact",
+"how": "exact/alias"
+},
+"BREWER HS": {
+"rows": 3,
+"seasons": {
+"Indoor": 3
+},
+"years": [
+2003,
+2003
+],
+"id": "me-hs-brewer",
+"method": "exact",
+"how": "exact/alias"
+},
+"PORTLAND HS": {
+"rows": 3,
+"seasons": {
+"Indoor": 3
+},
+"years": [
+2003,
+2003
+],
+"id": "me-hs-portland",
+"method": "exact",
+"how": "exact/alias"
+},
+"Mt. ARARAT HS-TOPSHAM": {
+"rows": 3,
+"seasons": {
+"Indoor": 3
+},
+"years": [
+2003,
+2003
+],
+"id": "me-hs-mt-ararat",
+"method": "athlete-continuity",
+"how": "athlete-continuity"
+},
+"EDWARD LITTLE-AUBURN": {
+"rows": 3,
+"seasons": {
+"Indoor": 3
+},
+"years": [
+2003,
+2003
+],
+"id": "me-hs-edward-little",
+"method": "athlete-continuity",
+"how": "athlete-continuity"
+},
+"WELLS HS": {
+"rows": 3,
+"seasons": {
+"Indoor": 3
+},
+"years": [
+2003,
+2003
+],
+"id": "me-hs-wells",
 "method": "exact",
 "how": "exact/alias"
 },
@@ -96677,6 +96822,84 @@
 "id": "me-hs-brewer",
 "method": "exact+state-tail",
 "how": "exact/alias"
+},
+"BONNY EAGLE-STANDISH": {
+"rows": 2,
+"seasons": {
+"Indoor": 2
+},
+"years": [
+2003,
+2003
+],
+"id": "me-hs-bonny-eagle",
+"method": "athlete-continuity",
+"how": "athlete-continuity"
+},
+"NORTH YARMOUTH ACAD.": {
+"rows": 2,
+"seasons": {
+"Indoor": 2
+},
+"years": [
+2003,
+2003
+],
+"id": "me-hs-nya",
+"method": "exact",
+"how": "exact/alias"
+},
+"CHEVERUS HS-PORTLAND": {
+"rows": 2,
+"seasons": {
+"Indoor": 2
+},
+"years": [
+2003,
+2003
+],
+"id": "me-hs-cheverus",
+"method": "athlete-continuity",
+"how": "athlete-continuity"
+},
+"BRUNSWICK HS": {
+"rows": 2,
+"seasons": {
+"Indoor": 2
+},
+"years": [
+2003,
+2003
+],
+"id": "me-hs-brunswick",
+"method": "exact",
+"how": "exact/alias"
+},
+"GORHAM HS": {
+"rows": 2,
+"seasons": {
+"Indoor": 2
+},
+"years": [
+2003,
+2003
+],
+"id": "me-hs-gorham",
+"method": "exact",
+"how": "exact/alias"
+},
+"LAWRENCE HS-FAIRFIELD": {
+"rows": 2,
+"seasons": {
+"Indoor": 2
+},
+"years": [
+2003,
+2003
+],
+"id": "me-hs-lawrence",
+"method": "athlete-continuity",
+"how": "athlete-continuity"
 },
 "Nashua Pal": {
 "rows": 2,
@@ -112806,6 +113029,71 @@
 2003
 ],
 "id": "me-hs-nya",
+"method": "exact",
+"how": "exact/alias"
+},
+"SCARBOROUGH HS": {
+"rows": 1,
+"seasons": {
+"Indoor": 1
+},
+"years": [
+2003,
+2003
+],
+"id": "me-hs-scarborough",
+"method": "exact",
+"how": "exact/alias"
+},
+"MADISON HS": {
+"rows": 1,
+"seasons": {
+"Indoor": 1
+},
+"years": [
+2003,
+2003
+],
+"id": "me-hs-madison",
+"method": "exact",
+"how": "exact/alias"
+},
+"BUCKSPORT HS": {
+"rows": 1,
+"seasons": {
+"Indoor": 1
+},
+"years": [
+2003,
+2003
+],
+"id": "me-hs-bucksport",
+"method": "exact",
+"how": "exact/alias"
+},
+"WATERVILLE HS": {
+"rows": 1,
+"seasons": {
+"Indoor": 1
+},
+"years": [
+2003,
+2003
+],
+"id": "me-hs-waterville",
+"method": "exact",
+"how": "exact/alias"
+},
+"BANGOR HS": {
+"rows": 1,
+"seasons": {
+"Indoor": 1
+},
+"years": [
+2003,
+2003
+],
+"id": "me-hs-bangor",
 "method": "exact",
 "how": "exact/alias"
 },
