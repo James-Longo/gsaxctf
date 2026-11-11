@@ -178,6 +178,10 @@ class Store:
         self.ms_link = {}        # middle-school aid -> high-school aid
         self.feeder = {}         # middle-school unit -> {hs unit: share}
         self.champ_dates = {}
+        # events outside FAMILY (yard races, medleys, ...): dates only, for
+        # the qualifier check (backend/track_qualifiers.py)
+        self.alt = {}            # aid -> {(ay, typ): {event: [dates]}}
+        self.alt_relays = {}     # (unit, gender) -> same
 
     # -- queries -----------------------------------------------------------
     def best(self, aid, block, event, cutoff):
@@ -279,7 +283,7 @@ def load_store(use_cache=True, quiet=False):
         try:
             with open(path, 'rb') as f:
                 s = pickle.load(f)
-            if getattr(s, 'stamp', None) == stamp:
+            if getattr(s, 'stamp', None) == stamp and hasattr(s, 'alt'):
                 return s
         except Exception:  # noqa: BLE001 - rebuild
             pass
@@ -303,6 +307,13 @@ def load_store(use_cache=True, quiet=False):
             continue
         ev = event[len(g) + 1:]
         if ev not in FAMILY:
+            if season != 'XC' and perf(mark, ev) is not None:
+                dd = d if re.match(r'^\d{4}-\d\d-\d\d$', d or '') else block_end(ay_of(year, season), SEASON_OF[season])
+                blk = (ay_of(year, season), SEASON_OF[season])
+                if is_relay_event(ev):
+                    s.alt_relays.setdefault((unit, g), {}).setdefault(blk, {}).setdefault(ev, []).append(dd)
+                else:
+                    s.alt.setdefault(res(store_aid), {}).setdefault(blk, {}).setdefault(ev, []).append(dd)
             continue
         p = perf(mark, ev)
         if p is None:
@@ -1749,6 +1760,16 @@ def main(argv=None):
     a = ap.parse_args(argv)
     if a.cmd == 'champs':
         champs = build_champs() + build_conf_champs()
+        # the store files a meet under its sub5 index date where that and the
+        # sheet's title disagree (2006 Class A: index 6/3, title 6/10); the
+        # champ takes the store's date so its athletes join and the eve
+        # cutoff falls before the meet's own marks
+        synced = json.load(open(os.path.join(DATA, 'scrape_state.json'))).get('synced_meets', {})
+        for c in champs:
+            k = f"{c['year']}_{c['season']}_{c['file']}"
+            d = synced.get(k)
+            if d and re.match(r'^\d{4}-\d\d-\d\d$', d) and d != c['date']:
+                c['sheet_date'], c['date'] = c['date'], d
         with open(CHAMPS_PATH, 'w', encoding='utf-8') as f:
             json.dump({'_doc': 'MPA state track meets by class and gender, found by '
                                'backend/track_postseason.py build_champs; edit by hand only to fix a pick.',
