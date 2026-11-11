@@ -117,6 +117,21 @@ def name_key(name):
     return ' '.join(sorted(re.findall(r'[a-z]+', (name or '').lower())))
 
 
+def initial_key(name):
+    """First initial + last name ('Needleman, Grace' and 'G Needleman' -> 'g needleman')."""
+    name = name or ''
+    if ',' in name:
+        last, first = name.split(',', 1)
+        first, last = re.findall(r'[a-z]+', first.lower()), re.findall(r'[a-z]+', last.lower())
+    else:
+        toks = re.findall(r'[a-z]+', name.lower())
+        first, last = toks[:1], toks[1:]
+    last = [t for t in last if t not in ('jr', 'sr', 'ii', 'iii', 'iv')]
+    if not first or not last:
+        return None
+    return f'{first[0][0]} {last[-1]}'
+
+
 def full_key(name):
     """First + last name tokens, order-free, for joining middle school to high school."""
     toks = [t for t in re.findall(r'[a-z]+', (name or '').lower())
@@ -710,7 +725,7 @@ def champ_results(champ, store):
                 who = ('relay', unit)
             else:
                 who = ids.get((name_key(r.get('athlete') or ''), ev)) or ids.get(name_key(r.get('athlete') or '')) \
-                    or ids.get(('mark', ev, round(p, 5)))
+                    or ids.get(('mark', ev, round(p, 5))) or ids.get(('init', initial_key(r.get('athlete'))))
             rows.append(dict(unit=unit, aid=who, p=p, mark=r.get('result'), final=in_final or not finals,
                              name=r.get('athlete') or '', grade=r.get('grade')))
         # finalists ahead of everyone else, each group by mark
@@ -776,12 +791,16 @@ def _meet_ids(store, champ):
                 nk = name_key(store.name.get(aid))
                 out[(nk, ev)] = aid
                 out.setdefault(nk, aid)
+                # a store name kept as an initial ('G Needleman' for 'Needleman, Grace')
+                ik = ('init', initial_key(store.name.get(aid)))
+                if ik[1]:
+                    out[ik] = aid if out.get(ik, aid) == aid else None
                 # a name printed differently in the store ('King-Ofsiany')
                 # still has the same mark on the same day
                 for dd, v in zip(dates, vals):
                     if dd == d:
-                        k = ('mark', ev, round(v, 5))
-                        out[k] = aid if k not in out else None
+                        mk = ('mark', ev, round(v, 5))
+                        out[mk] = aid if mk not in out else None
     _IDS_CACHE[k] = out
     return out
 
