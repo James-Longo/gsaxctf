@@ -56,6 +56,8 @@ def source_of(stem, doc):
         return 'milesplit'
     if p == 'ne-manual':
         return 'new-england'
+    if p == 'coolrunning-manual':
+        return 'coolrunning'
     if stem.startswith('fiveks-'):
         return 'fiveksport'
     return 'sub5'

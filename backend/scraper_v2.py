@@ -2007,10 +2007,10 @@ def write_meet_links(url_mapping=None):
             year = path.split(os.sep)[-3]
             out.setdefault(f'{year}_XC', {})[os.path.splitext(os.path.basename(path))[0]] = url
     # hand transcriptions link to where they were read: MileSplit "ms-" files to the
-    # meet's results page, New England "ne-" files to their official source
+    # meet's results page, New England "ne-" and CoolRunning "cr-" files to their source
     for path in glob.glob(os.path.join(base, 'backend', 'data', 'parsed_results', '*', '*', '*.json')):
         fn = os.path.basename(path)
-        if not fn.startswith(('ms-', 'ne-')):
+        if not fn.startswith(('ms-', 'ne-', 'cr-')):
             continue
         try:
             with open(path, encoding='utf-8') as f:
