@@ -1261,6 +1261,7 @@ def apply(catalog=None, quiet=False):
                                                 year, path, i))
     # pass 2: flags per key, the same rules as json_store.recalculate_prs
     flags = {}
+    season_pr = {}                           # key -> (best mark, its row)
     for k, lst in refs.items():
         lst.sort(key=lambda r: r[0])
         best, sb = None, {}
@@ -1278,6 +1279,14 @@ def apply(catalog=None, quiet=False):
             flags[(path, i)] = f
         if last_pr:
             flags[last_pr]['is_pr'] = True
+            season_pr[k] = (best, last_pr)
+    # an Indoor or Outdoor PR the other track season beats is only that
+    # season's PR (the UI's PR-sub-i / PR-sub-o); the overall best is plain PR
+    beaten = set()
+    for (cid, ev, season), (mark, row) in season_pr.items():
+        other = season_pr.get((cid, ev, {'Indoor': 'Outdoor', 'Outdoor': 'Indoor'}.get(season)))
+        if other and js.is_better(other[0], mark, ev):
+            beaten.add(row)
     changed = 0
     for path, (team, key, rows) in chunks.items():
         dirty = False
@@ -1285,6 +1294,12 @@ def apply(catalog=None, quiet=False):
             f = flags.get((path, i))
             if f and any(bool(p.get(x)) != f[x] for x in f):
                 p.update(f)
+                dirty = True
+            if ((path, i) in beaten) != bool(p.get('pr_season_only')):
+                if (path, i) in beaten:
+                    p['pr_season_only'] = True
+                else:
+                    p.pop('pr_season_only', None)
                 dirty = True
             g = est.get((path, i))
             if p.get('grade_est') != g:

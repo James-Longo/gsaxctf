@@ -639,7 +639,9 @@ function App() {
                                     {isExpanded ? ' ▲' : ' ▼'}
                                   </span>
                                 )}
-                                {showPR && <span className="badge pr">{p.season === 'Indoor' ? 'PRᵢ' : p.season === 'Outdoor' ? 'PRₒ' : 'PR'}</span>}
+                                {showPR && (p.pr_season_only
+                                  ? <span className="badge pr" title={`${p.season} PR; better mark ${p.season === 'Indoor' ? 'outdoors' : 'indoors'}`}>{p.season === 'Indoor' ? 'PRᵢ' : 'PRₒ'}</span>
+                                  : <span className="badge pr">PR</span>)}
                               </td>
                               <td>
                                 {meetLinks[`${p.year}_${p.season}`]?.[p.meet_name]
