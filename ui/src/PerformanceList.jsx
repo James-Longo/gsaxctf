@@ -1,5 +1,5 @@
 import { useState, useMemo, useEffect } from 'react'
-import { parseMark, normalizeEvent, isDistanceEvent, asset, fetchGz } from './utils'
+import { parseMark, normalizeEvent, asset, fetchGz } from './utils'
 import './App.css'
 
 function PostseasonSimulator({ performances, isBetter, manifest, loadTeamData, season }) {
@@ -378,7 +378,6 @@ function PostseasonSimulator({ performances, isBetter, manifest, loadTeamData, s
         });
 
         // Now resolve each groupKey -> athleteKey to a single performance record
-        const useMedian = scoreMethod === 'Median';
         Object.entries(rawGrouped).forEach(([groupKey, meta]) => {
             groups[groupKey] = {
                 items: {},
@@ -391,27 +390,11 @@ function PostseasonSimulator({ performances, isBetter, manifest, loadTeamData, s
                 if (perfs.length === 0) return;
 
                 let selectedPerf = null;
-                if (useMedian) {
-                    const parsed = perfs.map(p => {
-                        const isDist = isDistanceEvent(p.event);
-                        return {
-                            perf: p,
-                            parsed: parseMark(p.mark, isDist)
-                        };
-                    }).filter(x => x.parsed.valid);
-
-                    if (parsed.length > 0) {
-                        parsed.sort((a, b) => a.parsed.value - b.parsed.value);
-                        const mid = Math.floor(parsed.length / 2);
-                        selectedPerf = parsed[mid].perf;
+                perfs.forEach(p => {
+                    if (!selectedPerf || isBetter(p.mark, selectedPerf.mark, meta.canonicalName)) {
+                        selectedPerf = p;
                     }
-                } else {
-                    perfs.forEach(p => {
-                        if (!selectedPerf || isBetter(p.mark, selectedPerf.mark, meta.canonicalName)) {
-                            selectedPerf = p;
-                        }
-                    });
-                }
+                });
 
                 if (selectedPerf) {
                     groups[groupKey].items[athleteKey] = {
@@ -967,7 +950,6 @@ function PostseasonSimulator({ performances, isBetter, manifest, loadTeamData, s
                         <label>Scoring Basis</label>
                         <select value={scoreMethod} onChange={e => setScoreMethod(e.target.value)}>
                             <option value="PR">Season Best (SB)</option>
-                            <option value="Median">Median Result</option>
                             <option value="Seeds">Actual Seeds (5/29)</option>
                         </select>
                     </div>
