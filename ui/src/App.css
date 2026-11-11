@@ -2483,3 +2483,11 @@ body {
 .pr-progression { margin-top: 8px; }
 .pr-progression h4 { margin: 0 0 6px; font-size: 0.95rem; color: #2d3748; }
 .pr-progression .performance-table td.pr-gain { color: #2f855a; font-variant-numeric: tabular-nums; }
+
+/* Track postseason simulator */
+.ps-tabs { margin: 4px 0 12px; align-self: flex-start; width: fit-content; }
+.ps-result { margin: 16px 0; }
+.ps-result-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(360px, 100%), 1fr)); gap: 18px; }
+.ps-sum { margin-bottom: 8px; font-size: 0.88rem; }
+.ps-act { border-left: 2px solid #e2e8f0; }
+.ps-unpredicted td { color: #718096; }

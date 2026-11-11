@@ -1,5 +1,5 @@
 import { useState, useMemo, useEffect } from 'react'
-import { parseMark, normalizeEvent, isDistanceEvent, asset } from './utils'
+import { parseMark, normalizeEvent, isDistanceEvent, asset, fetchGz } from './utils'
 import './App.css'
 
 function PostseasonSimulator({ performances, isBetter, manifest, loadTeamData, season }) {
@@ -27,14 +27,9 @@ function PostseasonSimulator({ performances, isBetter, manifest, loadTeamData, s
     const [scoreMethod, setScoreMethod] = useState('PR')
     const [showSimulation, setShowSimulation] = useState(false)
     const [expandedTeams, setExpandedTeams] = useState({}) 
-    const [robustSimResults, setRobustSimResults] = useState(null)
-    const [isRobustLoading, setIsRobustLoading] = useState(false)
     const [targetTeam, setTargetTeam] = useState('George Stevens Academy')
-    const [simProgress, setSimProgress] = useState(0);
-    const [simIterations, setSimIterations] = useState(50);
-    const [strategicLog, setStrategicLog] = useState([]);
     const [competitionType, setCompetitionType] = useState('PVC');
-    const [isDashboardCollapsed, setIsDashboardCollapsed] = useState(false);
+    const [view, setView] = useState('meet');
     const [seedData, setSeedData] = useState(null);
 
     useEffect(() => {
@@ -139,41 +134,83 @@ function PostseasonSimulator({ performances, isBetter, manifest, loadTeamData, s
         };
     };
 
+    // The championship as it happened (backend/track_champ_results.py), one file per season.
+    const [champFile, setChampFile] = useState(null)
+    useEffect(() => {
+        setChampFile(null)
+        if (filterYear === 'All' || !['Indoor', 'Outdoor'].includes(filterSeason)) return
+        let live = true
+        fetchGz(asset(`/data/track_champs/${filterYear}_${filterSeason}.json.gz`))
+            .then(d => { if (live) setChampFile(d) })
+            .catch(() => {})
+        return () => { live = false }
+    }, [filterYear, filterSeason])
+
+    const baseSchools = useMemo(() => competitionType === 'Everyone' ? null
+        : competitionType === 'PVC' ? getPVCSchools(filterYear, filterSeason) : getStateSchools(filterYear, filterSeason),
+        [competitionType, filterYear, filterSeason])
+
+    // This competition's championship per gender: the PVC (indoor: EMITL) small-school
+    // meet, or the state meet of the team being optimized (else the class most listed schools ran in).
+    const champs = useMemo(() => {
+        if (!champFile || !baseSchools || scoreMethod === 'Seeds') return null
+        const out = {}
+        for (const g of ['Boys', 'Girls']) {
+            const cs = champFile.champs.filter(c => c.gender === g && (competitionType === 'PVC'
+                ? c.kind === 'conf' && /small|all/i.test(c.division || '')
+                : c.kind === 'state'))
+            const count = c => c.teams.filter(t => schoolOf(t.team, baseSchools)).length
+            const ranIn = c => c.teams.some(t => schoolOf(t.team, baseSchools) === targetTeam)
+            cs.sort((a, b) => (ranIn(b) - ranIn(a)) || (count(b) - count(a)))
+            if (cs.length) out[g] = cs[0]
+        }
+        return Object.keys(out).length ? out : null
+    }, [champFile, baseSchools, competitionType, targetTeam, scoreMethod])
+
+    // The schools in the competition: the listed ones plus anyone else who scored at the meet.
+    const activeSchools = useMemo(() => {
+        if (!baseSchools) return null
+        const out = { ...baseSchools }
+        Object.values(champs || {}).forEach(c => c.teams.forEach(t => {
+            if (!schoolOf(t.team, out)) out[t.team] = t.team
+        }))
+        return out
+    }, [baseSchools, champs])
+
+    // A championship is predicted from results before it, never after.
+    const champCutoff = useMemo(() => {
+        const cs = Object.values(champs || {})
+        if (!cs.length) return null
+        const first = cs.reduce((a, b) => (a.date <= b.date ? a : b))
+        return { date: first.date, meet: first.file }
+    }, [champs])
+
     const loadingState = useMemo(() => {
         if (!manifest || !manifest.teams || filterYear === 'All' || filterSeason === 'All') {
             return { isLoading: false, expectedCount: 0, loadedCount: 0, loadingTeams: [], percent: 100 };
         }
-        
+
         const seasonKey = `${filterYear}_${filterSeason}`.replace(' ', '_');
-        let activeSchools = null;
-        if (competitionType !== 'Everyone') {
-            activeSchools = competitionType === 'PVC' ? getPVCSchools(filterYear, filterSeason) : getStateSchools(filterYear, filterSeason);
-        }
-        
-        // Find which teams in manifest belong to the expected activeSchools AND participate in this season
+
+        // Find which teams in manifest belong to the competition AND participate in this season
         const expectedTeams = (manifest.teams || []).filter(t => {
             const participates = t.seasons && t.seasons.includes(seasonKey);
             if (!participates) return false;
-            
-            if (competitionType === 'Everyone') return true;
-
+            if (!activeSchools) return true;
             return schoolOf(t.name, activeSchools) !== null;
         });
-        
-        // Find which expected team slugs are loaded
-        const loadedSlugs = new Set();
+
+        // Teams with this season's results in hand
+        const loadedNames = new Set();
         (performances || []).forEach(p => {
-            const teamObj = manifest.teams.find(t => t.name === p.team);
-            if (teamObj) {
-                loadedSlugs.add(teamObj.slug);
-            }
+            if (String(p.year) === String(filterYear) && p.season === filterSeason) loadedNames.add(p.team);
         });
-        
-        const loadingTeams = expectedTeams.filter(t => !loadedSlugs.has(t.slug));
+
+        const loadingTeams = expectedTeams.filter(t => !loadedNames.has(t.name));
         const expectedCount = expectedTeams.length;
         const loadedCount = expectedCount - loadingTeams.length;
         const percent = expectedCount > 0 ? Math.round((loadedCount / expectedCount) * 100) : 100;
-        
+
         return {
             isLoading: loadingTeams.length > 0,
             expectedCount,
@@ -181,15 +218,15 @@ function PostseasonSimulator({ performances, isBetter, manifest, loadTeamData, s
             loadingTeams,
             percent
         };
-    }, [manifest, performances, filterYear, filterSeason, competitionType]);
+    }, [manifest, performances, filterYear, filterSeason, activeSchools]);
 
     useEffect(() => {
         if (!loadTeamData) return;
         
-        if (loadingState.loadingTeams && loadingState.loadingTeams.length > 0) {
-            loadingState.loadingTeams.forEach(t => loadTeamData(t.slug));
-        }
-    }, [loadingState.loadingTeams, loadTeamData]);
+        // only the season being simulated, not each team's whole history
+        const key = `${filterYear}_${filterSeason}`
+        loadingState.loadingTeams.forEach(t => loadTeamData(t.slug, [key]));
+    }, [loadingState.loadingTeams, loadTeamData, filterYear, filterSeason]);
 
     const { filteredData, years, seasons, events } = useMemo(() => {
         if (!performances) return { filteredData: [], years: [], seasons: [], events: [] };
@@ -216,12 +253,6 @@ function PostseasonSimulator({ performances, isBetter, manifest, loadTeamData, s
             }
         }
 
-        // 3. Get the specific team list for this context
-        let activeSchools = null;
-        if (competitionType !== 'Everyone') {
-            activeSchools = competitionType === 'PVC' ? getPVCSchools(filterYear, filterSeason) : getStateSchools(filterYear, filterSeason);
-        }
-
         const processed = performances.map(p => {
             let year = p.year;
             let type = p.season;
@@ -230,41 +261,11 @@ function PostseasonSimulator({ performances, isBetter, manifest, loadTeamData, s
                 year = m[1];
                 type = m[2];
             }
-
-            // Detect PVC Team based on ACTIVE list
-            let pvcTeam = null;
-            if (competitionType === 'Everyone') {
-                pvcTeam = p.team;
-            } else {
-                for (const [key, val] of Object.entries(activeSchools)) {
-                    // Check against key (short) and val (long)
-                    // (punctuation dropped: the store's "HallDale High School"
-                    // is the list's "Hall-Dale")
-                    const teamLower = squash(p.team);
-                    const filterKey = squash(key);
-
-                    // Specific fix for "Central" to avoid matching "Maine Central Institute"
-                    if (key === "Central" && teamLower.includes("maine")) {
-                        continue;
-                    }
-
-                    if (teamLower.includes(filterKey) || teamLower === squash(val)) {
-                        pvcTeam = val;
-                        break;
-                    }
-                }
-
-                // Special check for PCHS acronym
-                if (!pvcTeam && activeSchools["PCHS"] && (p.team === "PCHS" || p.team.includes("Piscataquis"))) {
-                    pvcTeam = activeSchools["PCHS"];
-                }
-            }
-
             return {
                 ...p,
                 derivedYear: year,
                 derivedType: type,
-                pvcTeam: pvcTeam,
+                pvcTeam: activeSchools ? schoolOf(p.team, activeSchools) : p.team,
                 isRelay: p.event.toLowerCase().includes('relay') || p.event.toLowerCase().includes('4x')
             };
         }).filter(p => p.pvcTeam); // Only include valid schools for THIS season
@@ -280,7 +281,9 @@ function PostseasonSimulator({ performances, isBetter, manifest, loadTeamData, s
         const avSeasons = Array.from(new Set(processed.map(p => p.derivedType))).sort();
         const avEvents = Array.from(new Set(processed.map(p => p.event))).sort();
 
-        const filtered = processed.filter(p => matches(p, { year: filterYear, season: filterSeason, event: filterEvent }));
+        // results from the championship's day on are left out
+        const filtered = processed.filter(p => matches(p, { year: filterYear, season: filterSeason, event: filterEvent })
+            && !(champCutoff && (p.date || '').slice(0, 10) >= champCutoff.date));
 
         return {
             filteredData: filtered,
@@ -288,750 +291,14 @@ function PostseasonSimulator({ performances, isBetter, manifest, loadTeamData, s
             seasons: avSeasons,
             events: avEvents
         };
-    }, [performances, filterYear, filterSeason, filterEvent, competitionType]);
+    }, [performances, filterYear, filterSeason, filterEvent, activeSchools, champCutoff]);
 
-    // A championship is simulated from results before it, never after: for a season whose
-    // championship is already in the data, results from its date on are left out.
-    const champCutoff = useMemo(() => {
-        if (!filteredData || filterYear === 'All' || filterSeason === 'All' || competitionType === 'Everyone') return null;
-        // championship file names: pvcsmall / pvclarge / pvc_sm_sch / pvcl / pvcls / PVC Small School /
-        // pvcemitl ... champ; state: classa / class_c_... / state_c / Class C State meet. Regular-season
-        // PVC meets ('week', 'meet 2', school lists), JV / freshman meets, KVAC class meets, college
-        // and USATF state meets are not the championship.
-        const rx = competitionType === 'States'
-            ? /class[\s_-]*[abc](?![a-z])|class[abc]|state[\s_-]*[abc](?![a-z])|^state[abc]|class.*state|state.*class/i
-            : /pvc[\s_-]*(small|sm(?![a-z])|sm[\s_-]|smboys|smgirl|large|lg|l\b|ls\b|l\d|lgboys|lggirls)|pvc.*(small|large)[\s_-]*sch|pvc.*champ/i;
-        let first = null;
-        filteredData.forEach(p => {
-            const m = p.meet_name || '';
-            if (!rx.test(m) || /jv|frosh|fresh|junior varsity|middle|week|kvac|college|usatf|^ms-pvc-(?!.*champ)/i.test(m)) return;
-            if (/meet[\s_-]*\d/i.test(m) && !/champ/i.test(m)) return;   // a numbered regular-season meet
-            const d = (p.date || '').slice(0, 10);
-            if (/^\d{4}-\d{2}-\d{2}$/.test(d) && (!first || d < first.date)) first = { date: d, meet: m };
-        });
-        return first;
-    }, [filteredData, filterYear, filterSeason, competitionType]);
+    // Places scored: the championship's own table; else PVC six, states eight.
+    const SCORING_RULES = useMemo(() => Object.values(champs || {})[0]?.table
+        || (competitionType === 'States' ? [10, 8, 6, 5, 4, 3, 2, 1] : [10, 8, 6, 4, 2, 1]), [champs, competitionType]);
 
-    const teamPools = useMemo(() => {
-        const pools = {};
-        if (!performances) return pools;
-
-        // Seeds mode: build pools directly from seed data (one entry per athlete/event)
-        if (scoreMethod === 'Seeds') {
-            seedPerfs.forEach(p => {
-                const team = p.pvcTeam;
-                if (!pools[team]) pools[team] = {};
-                const athleteKey = p.isRelay ? `relay_${p.event}` : p.athlete_id;
-                if (!pools[team][athleteKey]) pools[team][athleteKey] = [];
-                pools[team][athleteKey].push(p);
-            });
-            return pools;
-        }
-
-        // Group all valid performances by team -> athleteKey -> event
-        const grouped = {};
-        (filteredData || []).forEach(p => {
-            const markUpper = (p.mark || "").toUpperCase();
-            if (['DQ', 'DNF', 'NH', 'DNS', 'NM', 'FOUL', 'SCR', 'ND', 'NT', 'X', 'NWI'].includes(markUpper)) return;
-            if (champCutoff && (p.date || '').slice(0, 10) >= champCutoff.date) return;
-
-            const team = p.pvcTeam;
-            if (!grouped[team]) grouped[team] = {};
-
-            const isRelay = p.isRelay;
-            const athleteKey = isRelay ? `relay_${p.event}` : p.athlete_id;
-
-            if (!grouped[team][athleteKey]) grouped[team][athleteKey] = {};
-            if (!grouped[team][athleteKey][p.event]) grouped[team][athleteKey][p.event] = [];
-
-            grouped[team][athleteKey][p.event].push(p);
-        });
-
-        // Resolve to either PR or Median
-        const useMedian = scoreMethod === 'Median';
-        Object.entries(grouped).forEach(([team, athletes]) => {
-            pools[team] = {};
-            Object.entries(athletes).forEach(([athleteKey, events]) => {
-                pools[team][athleteKey] = [];
-                Object.entries(events).forEach(([eventName, perfs]) => {
-                    if (perfs.length === 0) return;
-
-                    let selectedPerf = null;
-                    if (useMedian) {
-                        const parsed = perfs.map(p => {
-                            const isDist = isDistanceEvent(p.event);
-                            return {
-                                perf: p,
-                                parsed: parseMark(p.mark, isDist)
-                            };
-                        }).filter(x => x.parsed.valid);
-
-                        if (parsed.length > 0) {
-                            // Sort by parsed numeric value ascending
-                            parsed.sort((a, b) => a.parsed.value - b.parsed.value);
-                            const mid = Math.floor(parsed.length / 2);
-                            selectedPerf = parsed[mid].perf;
-                        }
-                    } else {
-                        perfs.forEach(p => {
-                            if (!selectedPerf || isBetter(p.mark, selectedPerf.mark, p.event)) {
-                                selectedPerf = p;
-                            }
-                        });
-                    }
-
-                    if (selectedPerf) {
-                        pools[team][athleteKey].push(selectedPerf);
-                    }
-                });
-            });
-        });
-
-        return pools;
-    }, [filteredData, isBetter, scoreMethod, seedPerfs, champCutoff]);
-
-    // Simulation Helpers and Core Logic
-    const SCORING_RULES = [10, 8, 6, 4, 2, 1];
-    
     // Treat Indoor/Outdoor differently: 4 event limit for Outdoor, 3 for Indoor.
     const EVENT_LIMIT = (scoreMethod !== 'Seeds' && filterSeason && filterSeason.toLowerCase().includes('indoor')) ? 3 : 4;
-
-    const getMembers = (p) => {
-        const name = p.athlete_name || "";
-        if (p.isRelay) {
-            // Relays often list members separated by commas or slashes
-            return name.split(/[,/]/).map(n => n.trim()).filter(n => n && !n.toLowerCase().includes('relay'));
-        }
-        return [name];
-    };
-
-    const simulateSingleMeet = (allEntries, divideRelays = false) => {
-        const eventGroups = {};
-        allEntries.forEach(e => {
-            if (!eventGroups[e.event]) eventGroups[e.event] = [];
-            eventGroups[e.event].push(e);
-        });
-
-        const scores = {};
-        Object.entries(eventGroups).forEach(([event, entries]) => {
-            entries.sort((a, b) => isBetter(a.mark, b.mark, a.event) ? -1 : isBetter(b.mark, a.mark, a.event) ? 1 : 0);
-
-            let scoringIndex = 0;
-            const isRelayEvent = event.toLowerCase().includes('relay') || event.toLowerCase().includes('4x');
-
-            for (let i = 0; i < entries.length; i++) {
-                if (scoringIndex >= SCORING_RULES.length) break;
-
-                const entry = entries[i];
-                const team = entry.pvcTeam;
-
-                // Any athlete can score as long as there is room on the podium (top 6)
-                // Removed per-team entry limits as requested.
-                let pts = SCORING_RULES[scoringIndex];
-                if (divideRelays && isRelayEvent) pts /= 4;
-                
-                scores[team] = (scores[team] || 0) + pts;
-                scoringIndex++;
-            }
-        });
-        return scores;
-    };
-
-
-
-    const getGreedyEntries = (pool) => {
-        const entries = [];
-        const memberCounts = {};
-        
-        // Basic heuristic for getGreedyEntries without full opponent baseline:
-        // Rank by mark quality relative to typical standards, but since we just want a rough greedy sort,
-        // we'll sort relays lower if they share members. Actually, we shouldn't rely on isBetter for different events.
-        // Let's just group by event, rank within event, and assign points.
-        const groups = {};
-        Object.values(pool).flat().forEach(e => {
-            if (!groups[e.event]) groups[e.event] = [];
-            groups[e.event].push(e);
-        });
-        
-        const scored = [];
-        Object.values(groups).forEach(evEntries => {
-            evEntries.sort((a, b) => isBetter(a.mark, b.mark, a.event) ? -1 : isBetter(b.mark, a.mark, a.event) ? 1 : 0);
-            evEntries.forEach((e, idx) => {
-                let pts = idx < SCORING_RULES.length ? SCORING_RULES[idx] : 0.1; // 0.1 for participation
-                const isRelayEvent = e.event.toLowerCase().includes('relay') || e.event.toLowerCase().includes('4x');
-                if (isRelayEvent) pts /= 4;
-                scored.push({ e, pts });
-            });
-        });
-        
-        scored.sort((a, b) => b.pts - a.pts);
-
-        scored.forEach(({ e }) => {
-            const members = getMembers(e);
-            if (members.every(m => (memberCounts[m] || 0) < EVENT_LIMIT)) {
-                entries.push(e);
-                members.forEach(m => memberCounts[m] = (memberCounts[m] || 0) + 1);
-            }
-        });
-        return entries;
-    };
-
-    // Core Optimization Logic (Nash Equilibrium Hill Climbing)
-    const optimizeTeamStrategy = async ({
-        teamName,
-        gender,
-        progressStart,
-        progressRange,
-        fixedOpponentLineups = null
-    }) => {
-        const isGender = (p) => {
-            const g = p.event.toLowerCase().includes('girls');
-            return gender === 'girls' ? g : !g;
-        };
-
-        const genderTeamPools = {};
-        Object.entries(teamPools).forEach(([team, pool]) => {
-            const newPool = {};
-            Object.entries(pool).forEach(([key, athPerfs]) => {
-                const valid = athPerfs.filter(isGender);
-                if (valid.length > 0) newPool[key] = valid;
-            });
-            if (Object.keys(newPool).length > 0) genderTeamPools[team] = newPool;
-        });
-
-        const genderTargetPool = genderTeamPools[teamName] || {};
-        const genderOpponentPools = { ...genderTeamPools };
-        delete genderOpponentPools[teamName];
-
-        const genderPossibleEntries = Object.values(genderTargetPool).flat();
-        if (genderPossibleEntries.length === 0) return { avg: 0, entries: [], stats: [], scenarios: [] };
-
-        // Generate Scenarios
-        let scenarios = [];
-        if (fixedOpponentLineups) {
-            const sc = {};
-            Object.entries(fixedOpponentLineups).forEach(([t, entries]) => {
-                if (t !== teamName) {
-                    sc[t] = entries.filter(isGender);
-                }
-            });
-            scenarios = [sc];
-        } else {
-            for (let i = 0; i < simIterations; i++) {
-                if (i % 10 === 0) {
-                    setSimProgress(progressStart + Math.floor((i / simIterations) * (progressRange * 0.2)));
-                    await new Promise(r => setTimeout(r, 0));
-                }
-                const sc = {};
-                Object.entries(genderOpponentPools).forEach(([team, pool]) => {
-                    const entries = [];
-                    Object.values(pool).forEach(athPerfs => {
-                        const sorted = [...athPerfs].sort((a, b) => isBetter(a.mark, b.mark, a.event) ? -1 : 1);
-                        const topX = sorted.slice(0, 5);
-                        for (let j = 0; j < EVENT_LIMIT && topX.length > 0; j++) {
-                            const idx = Math.floor(Math.random() * topX.length);
-                            entries.push(topX.splice(idx, 1)[0]);
-                        }
-                    });
-                    sc[team] = entries;
-                });
-                scenarios.push(sc);
-            }
-        }
-
-        const evaluateLineup = (lineup, divideRelays = false) => {
-            const res = [];
-            scenarios.forEach(oppEntries => {
-                const fullMeet = [...lineup];
-                Object.values(oppEntries).forEach(opps => fullMeet.push(...opps));
-                res.push(simulateSingleMeet(fullMeet, divideRelays));
-            });
-            // Return average score for target team
-            return res.reduce((s, r) => s + (r[teamName] || 0), 0) / scenarios.length;
-        };
-
-        // --- Robust Nash Equilibrium Hill Climbing (Cross-Relay Constraints) ---
-
-        // 1. Initial Ranking (Greedy Score Estimate)
-        const getBaselinePerformance = () => {
-            const sc = {};
-            Object.entries(genderTeamPools).forEach(([t, pool]) => {
-                if (t === teamName) return;
-                const poolEntries = Object.values(pool).flat();
-                const groups = {};
-                poolEntries.forEach(e => {
-                    if (!groups[e.event]) groups[e.event] = [];
-                    groups[e.event].push(e);
-                });
-                const topEntries = [];
-                Object.entries(groups).forEach(([event, entries]) => {
-                    const isRelayEvent = event.toLowerCase().includes('relay') || event.toLowerCase().includes('4x');
-                    const sorted = [...entries].sort((a, b) => isBetter(a.mark, b.mark, a.event) ? -1 : 1);
-                    topEntries.push(...sorted.slice(0, isRelayEvent ? 6 : 6));
-                });
-                sc[t] = topEntries;
-            });
-            return sc;
-        };
-        const baselineOpponents = getBaselinePerformance();
-
-        const getEntryValue = (e) => {
-            // How many points would this entry get against baseline opponents?
-            const eventEntries = [e];
-            Object.values(baselineOpponents).forEach(opps => {
-                opps.forEach(o => { if (o.event === e.event) eventEntries.push(o); });
-            });
-            eventEntries.sort((a, b) => isBetter(a.mark, b.mark, a.event) ? -1 : isBetter(b.mark, a.mark, a.event) ? 1 : 0);
-            const rank = eventEntries.indexOf(e);
-            let points = rank < SCORING_RULES.length ? SCORING_RULES[rank] : 0;
-            const isRelayEvent = e.event.toLowerCase().includes('relay') || e.event.toLowerCase().includes('4x');
-            return isRelayEvent ? points / 4 : points;
-        };
-
-        const sortedPossible = [...genderPossibleEntries].sort((a, b) => getEntryValue(b) - getEntryValue(a));
-
-        // 2. Greedy Start with Constraints
-        let currentLineupList = [];
-        let memberCounts = {};
-
-        sortedPossible.forEach(e => {
-            const members = getMembers(e);
-            const canAdd = members.every(m => (memberCounts[m] || 0) < EVENT_LIMIT);
-            if (canAdd) {
-                currentLineupList.push(e);
-                members.forEach(m => memberCounts[m] = (memberCounts[m] || 0) + 1);
-            }
-        });
-
-        let currentScore = evaluateLineup(currentLineupList, true);
-
-        // 3. Hill Climbing with Swap Logic
-        let improved = true;
-        let loops = 0;
-        const maxLoops = 20;
-
-        while (improved && loops < maxLoops) {
-            improved = false;
-            loops++;
-
-            for (const toAdd of sortedPossible) {
-                if (currentLineupList.includes(toAdd)) continue;
-
-                // To add 'toAdd', we might need to remove its members' existing events
-                const members = getMembers(toAdd);
-                const conflicting = currentLineupList.filter(e => {
-                    const eMembers = getMembers(e);
-                    return members.some(m => eMembers.includes(m));
-                });
-
-                // Strategy: Try replacing each conflicting entry, or subsets if necessary
-                // Simplest: Try removing ALL conflicting entries and see if score improves
-                // More advanced: Try every combination? Too slow. 
-                // Let's try: Remove minimum required to free up members in 'toAdd'.
-
-                // For each member in toAdd that is at limit, we MUST remove one of their events.
-                const membersAtLimit = members.filter(m => (memberCounts[m] || 0) >= EVENT_LIMIT);
-
-                if (membersAtLimit.length === 0) {
-                    const trialLineup = [...currentLineupList, toAdd];
-                    const newScore = evaluateLineup(trialLineup, true);
-
-                    if (newScore > currentScore + 0.01 || (Math.abs(newScore - currentScore) < 0.01 && !JSON.stringify(currentLineupList).includes(JSON.stringify(toAdd)))) {
-                        currentLineupList = trialLineup;
-                        currentScore = newScore;
-                        memberCounts = {};
-                        currentLineupList.forEach(le => getMembers(le).forEach(m => memberCounts[m] = (memberCounts[m] || 0) + 1));
-                        improved = true;
-                        break;
-                    }
-                } else {
-                    let bestSwapScore = currentScore;
-                    let bestSwapLineup = null;
-
-                    const normToAddMembers = membersAtLimit.map(m => m.toLowerCase().trim());
-                    const conflictingEntries = currentLineupList.filter(e => {
-                        const em = getMembers(e).map(m => m.toLowerCase().trim());
-                        return normToAddMembers.some(m => em.includes(m));
-                    });
-
-                    // 1-for-1 swaps
-                    for (const toRemove of conflictingEntries) {
-                        const trialLineup = currentLineupList.filter(e => e !== toRemove);
-                        trialLineup.push(toAdd);
-
-                        const trialCounts = {};
-                        let valid = true;
-                        trialLineup.forEach(le => {
-                            getMembers(le).forEach(m => {
-                                const nm = m.toLowerCase().trim();
-                                trialCounts[nm] = (trialCounts[nm] || 0) + 1;
-                                if (trialCounts[nm] > EVENT_LIMIT) valid = false;
-                            });
-                        });
-
-                        if (valid) {
-                            const newScore = evaluateLineup(trialLineup, true);
-                            if (newScore > bestSwapScore + 0.01 || Math.abs(newScore - bestSwapScore) < 0.01) {
-                                bestSwapScore = newScore;
-                                bestSwapLineup = trialLineup;
-                            }
-                        }
-                    }
-
-                    // Option C: Joint Surgical Swap (Drop exactly 1 lowest event per member-at-limit)
-                    // This specifically solves the "Relay Deadlock" where multiple members are full.
-                    const isR = (e) => e.event.toLowerCase().includes('relay') || e.event.toLowerCase().includes('4x');
-                    if (isR(toAdd)) {
-                        const jointToRemove = new Set();
-                        for (const m of getMembers(toAdd).map(nm => nm.toLowerCase().trim())) {
-                            if ((memberCounts[m] || 0) >= EVENT_LIMIT) {
-                                const mEntries = currentLineupList.filter(e => {
-                                    const em = getMembers(e).map(nm => nm.toLowerCase().trim());
-                                    return em.includes(m);
-                                });
-                                // Sacrifice the lowest value entry for this member
-                                if (mEntries.length > 0) {
-                                    mEntries.sort((a, b) => getEntryValue(a) - getEntryValue(b));
-                                    jointToRemove.add(mEntries[0]);
-                                }
-                            }
-                        }
-
-                        if (jointToRemove.size > 0 && jointToRemove.size < 4) { // don't drop everything
-                            const trialLineup = currentLineupList.filter(e => !jointToRemove.has(e));
-                            trialLineup.push(toAdd);
-
-                            const trialCounts = {};
-                            let valid = true;
-                            trialLineup.forEach(le => {
-                                getMembers(le).forEach(m => {
-                                    const nm = m.toLowerCase().trim();
-                                    trialCounts[nm] = (trialCounts[nm] || 0) + 1;
-                                    if (trialCounts[nm] > EVENT_LIMIT) valid = false;
-                                });
-                            });
-
-                            if (valid) {
-                                const newScore = evaluateLineup(trialLineup, true);
-                                // For relays, we are slightly more lenient on lateral moves to favor participation
-                                if (newScore > bestSwapScore + 0.01 || Math.abs(newScore - bestSwapScore) < 0.01) {
-                                    bestSwapScore = newScore;
-                                    bestSwapLineup = trialLineup;
-                                }
-                            }
-                        }
-                    }
-
-                    if (bestSwapLineup && JSON.stringify(bestSwapLineup) !== JSON.stringify(currentLineupList)) {
-                        currentLineupList = bestSwapLineup;
-                        currentScore = bestSwapScore;
-                        memberCounts = {};
-                        currentLineupList.forEach(le => getMembers(le).forEach(m => memberCounts[m] = (memberCounts[m] || 0) + 1));
-                        improved = true;
-                        break;
-                    }
-                }
-            }
-
-            if (!fixedOpponentLineups) {
-                setSimProgress(progressStart + (progressRange * 0.2) + Math.floor((loops / maxLoops) * (progressRange * 0.6)));
-                await new Promise(r => setTimeout(r, 0));
-            }
-        }
-
-        const bestRes = { avg: currentScore, entries: currentLineupList };
-
-        // Identify what changed if we had a baseline
-        let changeSummary = null;
-        if (fixedOpponentLineups) {
-            const oldList = fixedOpponentLineups[teamName] ? fixedOpponentLineups[teamName].filter(isGender) : [];
-            const oldKeys = oldList.map(e => `${e.event}|${e.athlete_id}`).sort();
-            const newKeys = currentLineupList.map(e => `${e.event}|${e.athlete_id}`).sort();
-
-            const added = currentLineupList.filter(e => !oldKeys.includes(`${e.event}|${e.athlete_id}`));
-            const removed = oldList.filter(e => !newKeys.includes(`${e.event}|${e.athlete_id}`));
-
-            if (added.length > 0 || removed.length > 0) {
-                changeSummary = {
-                    added: added.map(e => ({ name: e.athlete_name, event: e.event })),
-                    removed: removed.map(e => ({ name: e.athlete_name, event: e.event }))
-                };
-            }
-        }
-
-        // Calculate Stats
-        if (!fixedOpponentLineups) {
-            setSimProgress(progressStart + progressRange * 0.9);
-            await new Promise(r => setTimeout(r, 0));
-        }
-
-        const statsByTeam = {};
-        const entryScoresMap = new Map();
-        bestRes.entries.forEach(e => entryScoresMap.set(e, []));
-
-        scenarios.forEach((oppEntries, i) => {
-            const fullMeet = [...bestRes.entries];
-            Object.values(oppEntries).forEach(opps => fullMeet.push(...opps));
-            const meetScores = simulateSingleMeet(fullMeet);
-            Object.entries(meetScores).forEach(([team, score]) => {
-                if (!statsByTeam[team]) statsByTeam[team] = [];
-                statsByTeam[team].push(score);
-            });
-
-            const eventGroups = {};
-            fullMeet.forEach(e => {
-                if (!eventGroups[e.event]) eventGroups[e.event] = [];
-                eventGroups[e.event].push(e);
-            });
-
-            const scoredEntries = new Set();
-            Object.values(eventGroups).forEach(entries => {
-                entries.sort((a, b) => isBetter(a.mark, b.mark, a.event) ? -1 : isBetter(b.mark, a.mark, a.event) ? 1 : 0);
-                for (let r = 0; r < Math.min(entries.length, SCORING_RULES.length); r++) {
-                    const entry = entries[r];
-                    if (entryScoresMap.has(entry)) {
-                        const pts = SCORING_RULES[r];
-                        entryScoresMap.get(entry).push(pts);
-                        scoredEntries.add(entry);
-                    }
-                }
-            });
-
-            bestRes.entries.forEach(e => {
-                if (!scoredEntries.has(e)) {
-                    entryScoresMap.get(e).push(0);
-                }
-            });
-        });
-
-        const enhancedEntries = bestRes.entries.map(e => {
-            const scores = entryScoresMap.get(e) || [];
-            if (scores.length === 0) return { ...e, pointsAvg: 0, pointsMin: 0, pointsMax: 0 };
-            const sorted = [...scores].sort((a, b) => a - b);
-            return {
-                ...e,
-                pointsAvg: sorted.reduce((a, b) => a + b, 0) / scores.length,
-                pointsMin: sorted[0],
-                pointsMax: sorted[sorted.length - 1]
-            };
-        });
-
-        const finalStats = Object.entries(statsByTeam).map(([name, scores]) => {
-            const sorted = scores.sort((a, b) => a - b);
-            return {
-                name,
-                avg: sorted.reduce((a, b) => a + b, 0) / scenarios.length,
-                min: sorted[0],
-                max: sorted[sorted.length - 1],
-                scores: sorted
-            };
-        }).sort((a, b) => b.avg - a.avg);
-
-        return { avg: bestRes.avg, entries: enhancedEntries, stats: finalStats, changeSummary };
-    };
-
-    // Wrapper
-    const optimizeForGender = async (gender, progressStart, progressRange) => {
-        return optimizeTeamStrategy({
-            teamName: targetTeam,
-            gender,
-            progressStart,
-            progressRange
-        });
-    };
-
-    const runRobustSimulation = async () => {
-        if (scoreMethod !== 'Seeds' && (filterYear === 'All' || filterSeason === 'All')) {
-            alert("Please select a Year and Season first.");
-            return;
-        }
-        setIsRobustLoading(true);
-
-        // Run in a timeout to allow UI to show loading state
-        setTimeout(async () => {
-            try {
-                // 1. Run Optimization for Boys and Girls
-                const boysRes = await optimizeForGender('boys', 0, 50);
-                const girlsRes = await optimizeForGender('girls', 50, 50);
-
-                setSimProgress(100);
-
-                setRobustSimResults({
-                    boys: boysRes,
-                    girls: girlsRes
-                });
-
-            } catch (err) {
-                console.error("Robust sim failed:", err);
-                alert("An error occurred during simulation.");
-            } finally {
-                setIsRobustLoading(false);
-            }
-        }, 100);
-    };
-
-    const runStrategicSimulation = async () => {
-        setIsRobustLoading(true);
-        setStrategicLog([]);
-        setSimProgress(0);
-
-        setTimeout(async () => {
-            try {
-                // Initial Greedy Setup
-                const initialLineups = {};
-                Object.entries(teamPools).forEach(([team, pool]) => {
-                    initialLineups[team] = getGreedyEntries(pool);
-                });
-
-                let currentLineups = JSON.parse(JSON.stringify(initialLineups));
-                const log = [];
-
-                // Helper to get score of a lineup state for THE CURRENT GENDER
-                const getScoresForGender = (lineups, targetGender) => {
-                    const isGen = (e) => (targetGender === 'girls' ? e.event.toLowerCase().includes('girls') : !e.event.toLowerCase().includes('girls'));
-                    const allEntries = Object.values(lineups).flat().filter(isGen);
-                    return simulateSingleMeet(allEntries);
-                };
-
-                const getLeaderboardString = (lineups, targetGender) => {
-                    const scores = getScoresForGender(lineups, targetGender);
-                    return Object.entries(scores)
-                        .filter(([_, s]) => s > 0)
-                        .sort((a, b) => b[1] - a[1])
-                        .map(([t, s]) => `${t}: ${s.toFixed(0)}`)
-                        .join(' | ');
-                };
-
-                // Split by gender for independent optimization
-                const genders = ['boys', 'girls'];
-                const finalResults = { boys: null, girls: null };
-
-                for (const gender of genders) {
-                    setSimProgress(gender === 'boys' ? 10 : 60);
-                    await new Promise(r => setTimeout(r, 0));
-
-                    const isGender = (e) => (gender === 'girls' ? e.event.toLowerCase().includes('girls') : !e.event.toLowerCase().includes('girls'));
-
-                    // Optimization Loop: King of the Hill / Cascading
-                    const maxGlobalRounds = 10;
-                    let globalStable = false;
-
-                    for (let globalRound = 1; globalRound <= maxGlobalRounds; globalRound++) {
-                        if (globalStable) break;
-
-                        const standings = getScoresForGender(currentLineups, gender);
-                        const sortedTeams = Object.entries(standings)
-                            .sort((a, b) => b[1] - a[1])
-                            .map(x => x[0]);
-
-                        const initialOrder = [...sortedTeams];
-                        let roundLineupsSnapshot = JSON.stringify(currentLineups);
-                        let rankingChanged = false;
-                        let roundChanges = 0;
-
-                        // Iterate down the ladder: 2nd vs 1st, 3rd vs 2nd...
-                        for (let i = 0; i < sortedTeams.length - 1; i++) {
-                            const defender = sortedTeams[i];
-                            const challenger = sortedTeams[i + 1];
-
-                            // Battle Logic: Challenger vs Defender (Static Background)
-                            let battleStable = false;
-                            let battleRounds = 0;
-
-                            while (!battleStable && battleRounds < 5) {
-                                battleRounds++;
-                                let battleChanges = 0;
-
-                                for (const team of [challenger, defender]) {
-                                    const otherTeam = team === challenger ? defender : challenger;
-
-                                    // Build static background
-                                    const staticOpponents = {};
-                                    Object.keys(currentLineups).forEach(t => {
-                                        if (t !== challenger && t !== defender) {
-                                            staticOpponents[t] = currentLineups[t];
-                                        } else if (t === otherTeam) {
-                                            staticOpponents[t] = currentLineups[t];
-                                        }
-                                    });
-
-                                    const oldScore = getScoresForGender(currentLineups, gender)[team] || 0;
-                                    const res = await optimizeTeamStrategy({
-                                        teamName: team, gender, progressStart: 0, progressRange: 0,
-                                        fixedOpponentLineups: { ...staticOpponents, [team]: currentLineups[team] }
-                                    });
-
-                                    const oldDef = JSON.stringify(currentLineups[team].filter(isGender).map(e => (e.event + e.athlete_id)).sort());
-                                    const newDef = JSON.stringify(res.entries.map(e => (e.event + e.athlete_id)).sort());
-
-                                    if (oldDef !== newDef) {
-                                        const otherGenderEntries = currentLineups[team].filter(e => !isGender(e));
-                                        currentLineups[team] = [...otherGenderEntries, ...res.entries];
-                                        const newScore = getScoresForGender(currentLineups, gender)[team] || 0;
-
-                                        if (Math.abs(newScore - oldScore) > 0.1) {
-                                            const type = team === challenger ? "Title Match" : "Hold the Line";
-                                            const leader = getLeaderboardString(currentLineups, gender);
-                                            let detail = "";
-                                            if (res.changeSummary) {
-                                                const addStr = res.changeSummary.added.map(e => `+${e.name}(${e.event})`).join(', ');
-                                                const remStr = res.changeSummary.removed.map(e => `-${e.name}(${e.event})`).join(', ');
-                                                detail = ` [${addStr}${remStr ? ' | ' + remStr : ''}]`;
-                                            }
-                                            log.push(`[${gender.toUpperCase()} G${globalRound}] ${team} (${type}) vs ${otherTeam}.${detail} Leaderboard: ${leader}`);
-                                            battleChanges++;
-                                            roundChanges++;
-                                        }
-                                    }
-                                }
-                                if (battleChanges === 0) battleStable = true;
-                            }
-
-                            // Check if rank flipped
-                            const currentStandings = getScoresForGender(currentLineups, gender);
-                            const currentSorted = Object.entries(currentStandings)
-                                .sort((a, b) => b[1] - a[1])
-                                .map(x => x[0]);
-
-                            if (JSON.stringify(currentSorted) !== JSON.stringify(initialOrder)) {
-                                log.push(`[${gender.toUpperCase()} G${globalRound}] !!! RANKING CHANGE DETECTED !!! Restarting cascade...`);
-                                rankingChanged = true;
-                                break;
-                            }
-                            await new Promise(r => setTimeout(r, 0));
-                        }
-
-                        if (!rankingChanged) {
-                            if (roundChanges === 0) {
-                                log.push(`[${gender.toUpperCase()}] No further tactical adjustments possible. Equilibrium reached.`);
-                                globalStable = true;
-                            }
-                        }
-                    }
-
-                    // Final Stats for Target Team
-                    const finalRes = await optimizeTeamStrategy({
-                        teamName: targetTeam,
-                        gender: gender,
-                        progressStart: (gender === 'boys' ? 40 : 90),
-                        progressRange: 10,
-                        fixedOpponentLineups: currentLineups
-                    });
-                    finalResults[gender] = finalRes;
-                }
-
-                setStrategicLog(log);
-                setSimProgress(100);
-                setRobustSimResults(finalResults);
-
-            } catch (err) {
-                console.error("Strategic sim failed:", err);
-                alert("Error in Nash Equilibrium Mode");
-            } finally {
-                setIsRobustLoading(false);
-            }
-        }, 100);
-    };
 
     const scrollToEvent = (groupTitle) => {
         const targetId = `event-${groupTitle.replace(/[^a-z0-9]/gi, '-')}`;
@@ -1195,7 +462,7 @@ function PostseasonSimulator({ performances, isBetter, manifest, loadTeamData, s
             return groupedData;
         }
 
-        const scoringRules = [10, 8, 6, 4, 2, 1];
+        const scoringRules = SCORING_RULES;
 
         // 1. Extract all entries
         let individualEntries = [];
@@ -1335,6 +602,7 @@ function PostseasonSimulator({ performances, isBetter, manifest, loadTeamData, s
         // 4. Re-rank based on optimized selections
         const finalEntries = [...activeIndividualChoices, ...activeRelayChoices];
         const finalGroups = {};
+        Object.keys(groupedData).forEach(k => { finalGroups[k] = [] });   // meet order
         finalEntries.forEach(e => {
             if (!finalGroups[e.groupTitle]) finalGroups[e.groupTitle] = [];
             finalGroups[e.groupTitle].push(e);
@@ -1395,8 +663,9 @@ function PostseasonSimulator({ performances, isBetter, manifest, loadTeamData, s
             }
         });
 
+        Object.keys(finalGroups).forEach(k => { if (!finalGroups[k].length) delete finalGroups[k] });
         return finalGroups;
-    }, [groupedData, showSimulation, filterYear, filterSeason, isBetter, EVENT_LIMIT]);
+    }, [groupedData, showSimulation, filterYear, filterSeason, isBetter, EVENT_LIMIT, SCORING_RULES]);
 
     const optimizedTeamScores = useMemo(() => {
         if (!showSimulation) return null;
@@ -1537,7 +806,51 @@ function PostseasonSimulator({ performances, isBetter, manifest, loadTeamData, s
             decisionAthletes: decisionAthletes.sort((a, b) => b.scorableCount - a.scorableCount || b.scoringEvents.length - a.scoringEvents.length),
             straightforwardAthletes: straightforwardAthletes.sort((a, b) => b.scorableCount - a.scorableCount || b.scoringEvents.length - a.scoringEvents.length)
         };
-    }, [groupedData, targetTeam]);
+    }, [groupedData, targetTeam, SCORING_RULES, SCORING_EVENTS, EVENT_LIMIT]);
+
+    // What happened at the championship, in the simulator's names: per gender the
+    // team order and each event's places, keyed like the event sections ('Girls 55m Hurdles').
+    const actual = useMemo(() => {
+        if (!champs) return null
+        const teamOf = t => (activeSchools && schoolOf(t, activeSchools)) || t
+        const out = {}
+        Object.entries(champs).forEach(([g, c]) => {
+            const totals = {}
+            c.teams.forEach(t => { const k = teamOf(t.team); totals[k] = (totals[k] || 0) + (t.official ?? t.score) })
+            const scores = Object.values(totals)
+            const teams = Object.entries(totals).sort((a, b) => b[1] - a[1])
+                .map(([team, score]) => ({ team, score, place: 1 + scores.filter(x => x > score).length }))
+            const events = {}
+            Object.entries(c.events).forEach(([ev, rows]) => {
+                events[normalizeEvent(`${g} ${ev}`, filterSeason)] = rows.map(r => ({ ...r, team: teamOf(r.t) }))
+            })
+            out[g.toLowerCase()] = { champ: c, teams, events }
+        })
+        return out
+    }, [champs, activeSchools, filterSeason])
+
+    const rowKey = (name, team, isRelay) => isRelay ? `relay|${team}` : `${squash(name)}|${team}`
+
+    // One event: the predicted entries beside their result, then scorers the prediction left out.
+    const eventRows = (results) => {
+        const g = (results[0].event || '').startsWith('Girls') ? 'girls' : 'boys'
+        const act = actual?.[g]?.events[results[0].event]
+        if (!act) return { rows: results.map(r => ({ pred: r })), act: null }
+        const isRelay = !!results[0].isRelay
+        const byKey = new Map(act.map(a => [rowKey(a.n, a.team, isRelay), a]))
+        const used = new Set()
+        const rows = results.map(r => {
+            const k = rowKey(r.athlete_name, r.pvcTeam, isRelay)
+            const a = byKey.get(k)
+            if (a) used.add(k)
+            return { pred: r, act: a }
+        })
+        act.forEach(a => {
+            const k = rowKey(a.n, a.team, isRelay)
+            if (a.pts && !used.has(k)) rows.push({ act: a })
+        })
+        return { rows, act }
+    }
 
     return (
         <div className="analyzer-container">
@@ -1608,6 +921,12 @@ function PostseasonSimulator({ performances, isBetter, manifest, loadTeamData, s
                 </div>
             )}
 
+            <div className="xs-seg ps-tabs">
+                <button className={view === 'meet' ? 'active' : ''} onClick={() => setView('meet')}>Meet</button>
+                <button className={view === 'entries' ? 'active' : ''} onClick={() => setView('entries')}
+                    title={`${targetTeam}: athletes with more than ${EVENT_LIMIT} scoring events or adjacent track events`}>Entry decisions</button>
+            </div>
+
             <div className="analyzer-controls">
                 <div className="filter-bar analyzer-filters">
                     <div className="filter-group">
@@ -1630,7 +949,7 @@ function PostseasonSimulator({ performances, isBetter, manifest, loadTeamData, s
                         <label>Competition</label>
                         <select value={competitionType} onChange={e => setCompetitionType(e.target.value)}>
                             <option value="PVC">PVC Small Schools</option>
-                            <option value="States">Class C States</option>
+                            <option value="States" title="The state meet of the team being optimized">State meet</option>
                             <option value="Everyone">Everyone</option>
                         </select>
                     </div>
@@ -1643,7 +962,7 @@ function PostseasonSimulator({ performances, isBetter, manifest, loadTeamData, s
                     <div className="filter-group">
                         <label>Optimize For</label>
                         <select value={targetTeam} onChange={e => setTargetTeam(e.target.value)}>
-                            {Object.values(competitionType === 'PVC' ? getPVCSchools(filterYear, filterSeason) : getStateSchools(filterYear, filterSeason)).map(t => (
+                            {[...new Set(Object.values(activeSchools || getStateSchools(filterYear, filterSeason)))].map(t => (
                                 <option key={t} value={t}>{t}</option>
                             ))}
                         </select>
@@ -1668,38 +987,9 @@ function PostseasonSimulator({ performances, isBetter, manifest, loadTeamData, s
                 </div>
             </div>
 
-            {entryDecisions && (entryDecisions.decisionAthletes.length > 0 || entryDecisions.straightforwardAthletes.length > 0) && (
-                <div className="entry-decisions-dashboard" style={{ marginTop: '20px' }}>
-                    <div className="dashboard-section-header" style={{ 
-                        marginBottom: '16px', 
-                        display: 'flex', 
-                        alignItems: 'center', 
-                        justifyContent: 'space-between',
-                        padding: '12px 16px',
-                        background: '#f8fafc',
-                        borderRadius: '8px',
-                        border: '1px solid #e2e8f0'
-                    }}>
-                        <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                            <h3 style={{ margin: 0, fontSize: '1.1rem', color: '#1a202c' }}>Entry Decisions: {targetTeam}</h3>
-                            <span className="record-count" style={{ fontSize: '0.7rem' }}>Simple Performance Ranking</span>
-                        </div>
-                        <button 
-                            onClick={() => setIsDashboardCollapsed(!isDashboardCollapsed)}
-                            className="toggle-btn"
-                            style={{ 
-                                padding: '4px 12px', 
-                                background: 'white', 
-                                border: '1px solid #cbd5e0',
-                                color: '#4a5568'
-                            }}
-                        >
-                            {isDashboardCollapsed ? 'Expand Decisions' : 'Collapse Dashboard'}
-                        </button>
-                    </div>
-
-                    {!isDashboardCollapsed && (
-                        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(400px, 1fr))', gap: '20px' }}>
+            {view === 'entries' && entryDecisions && (entryDecisions.decisionAthletes.length > 0 || entryDecisions.straightforwardAthletes.length > 0) && (
+                <div className="entry-decisions-dashboard" style={{ marginTop: '12px' }}>
+                        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(400px, 100%), 1fr))', gap: '20px' }}>
                         {entryDecisions.decisionAthletes.length > 0 && (
                             <div className="decision-card" style={{ background: '#fff5f5', border: '1px solid #feb2b2', borderRadius: '12px', padding: '20px' }}>
                                 <h4 style={{ margin: '0 0 12px 0', color: '#c53030', display: 'flex', alignItems: 'center', gap: '8px' }}>
@@ -1798,175 +1088,10 @@ function PostseasonSimulator({ performances, isBetter, manifest, loadTeamData, s
                             </div>
                         )}
                     </div>
-                    )}
                 </div>
             )}
 
-            {robustSimResults && (
-                <div className="robust-results-overlay">
-                    <div className="robust-card">
-                        <div className="robust-header">
-                            <h3>{strategicLog && strategicLog.length > 0 ? "Nash Equilibrium Report" : `Optimal Strategy: ${targetTeam}`}</h3>
-                            <button className="close-btn" onClick={() => setRobustSimResults(null)}>X</button>
-                        </div>
-
-                        {strategicLog && strategicLog.length > 0 && (
-                            <div className="strategic-log" style={{ background: '#1e293b', color: '#cbd5e1', padding: '12px', borderRadius: '6px', marginBottom: '20px', maxHeight: '350px', overflowY: 'auto', fontSize: '0.85rem', fontFamily: 'monospace' }}>
-                                {strategicLog.map((entry, i) => (
-                                    <div key={i} style={{ marginBottom: '4px' }}>{entry}</div>
-                                ))}
-                                <div style={{ color: '#4ade80', marginTop: '8px' }}>Nash Equilibrium Established</div>
-                            </div>
-                        )}
-
-                        <div className="robust-stats" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '24px', marginBottom: '24px' }}>
-                            {['boys', 'girls'].map(gender => {
-                                const res = robustSimResults[gender];
-                                const genderColor = gender === 'boys' ? '#3b82f6' : '#ec4899';
-                                return (
-                                    <div key={gender} style={{ padding: '16px', background: '#f8fafc', borderRadius: '8px', borderTop: `4px solid ${genderColor}` }}>
-                                        <h4 style={{ margin: '0 0 12px 0', textTransform: 'capitalize', color: genderColor }}>{gender} Team</h4>
-                                        <div className="stat-item">
-                                            <span className="stat-label">Expected Score</span>
-                                            <span className="stat-val" style={{ fontSize: '1.8rem' }}>{res ? res.avg.toFixed(1) : '-'}</span>
-                                        </div>
-                                    </div>
-                                );
-                            })}
-                        </div>
-
-                        <div className="robust-recommendations" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '24px' }}>
-                            {['boys', 'girls'].map(gender => {
-                                const res = robustSimResults[gender];
-                                return (
-                                    <div key={gender}>
-                                        <h4 style={{ borderBottom: '1px solid #eee', paddingBottom: '8px', marginBottom: '12px', textTransform: 'capitalize' }}>{gender} Strategy</h4>
-                                        <div className="rec-grid">
-                                            {res && res.entries.sort((a, b) => a.athlete_name.localeCompare(b.athlete_name)).map((en, i) => (
-                                                <div key={i} className="rec-item">
-                                                    <span className="rec-name">{en.athlete_name}</span>
-                                                    <span className="rec-event">{en.event}</span>
-                                                    <span className="rec-mark">{en.mark}</span>
-                                                    <span className="rec-points" style={{ fontSize: '0.8rem', color: '#64748b', marginLeft: '16px' }}>
-                                                        {en.pointsAvg ? `${en.pointsAvg.toFixed(1)} pts (${en.pointsMin}-${en.pointsMax})` : ''}
-                                                    </span>
-                                                </div>
-                                            ))}
-                                        </div>
-                                    </div>
-                                );
-                            })}
-                        </div>
-
-                        <div className="robust-distributions" style={{ marginTop: '24px' }}>
-                            {['boys', 'girls'].map(gender => {
-                                const stats = robustSimResults[gender]?.stats;
-                                if (!stats || stats.length === 0) return null;
-
-                                const genderDisplay = gender === 'boys' ? 'Boys' : 'Girls';
-                                const genderColor = gender === 'boys' ? '#3b82f6' : '#ec4899';
-                                const genderBg = gender === 'boys' ? '#eff6ff' : '#fdf2f8';
-                                const globalMax = Math.max(...stats.map(t => t.max), 1);
-
-                                return (
-                                    <div key={gender} style={{ marginBottom: '32px' }}>
-                                        <h4 style={{ borderBottom: `2px solid ${genderColor}`, paddingBottom: '8px', marginBottom: '16px', color: genderColor }}>
-                                            {genderDisplay} Championship Distributions
-                                        </h4>
-
-                                        <div className="histogram-container" style={{ padding: '0 10px' }}>
-                                            <div style={{ display: 'flex', marginBottom: '8px', fontSize: '0.7rem', color: '#94a3b8', borderBottom: '1px solid #f1f5f9', paddingBottom: '4px' }}>
-                                                <div style={{ width: '130px' }}></div>
-                                                <div style={{ flex: 1, position: 'relative', height: '15px' }}>
-                                                    {[0, 0.25, 0.5, 0.75, 1].map(p => (
-                                                        <span key={p} style={{ position: 'absolute', left: `${p * 100}%`, transform: 'translateX(-50%)' }}>
-                                                            {(p * globalMax).toFixed(0)}
-                                                        </span>
-                                                    ))}
-                                                </div>
-                                            </div>
-
-                                            {stats.slice(0, 8).map(stat => {
-                                                const binCount = 50;
-                                                const bins = Array(binCount).fill(0);
-                                                const range = globalMax || 1;
-
-                                                stat.scores.forEach(s => {
-                                                    const binIdx = Math.min(Math.floor((s / range) * binCount), binCount - 1);
-                                                    bins[binIdx]++;
-                                                });
-
-                                                const maxFreq = Math.max(...bins) || 1;
-                                                const isTarget = stat.name === targetTeam;
-
-                                                return (
-                                                    <div key={stat.name} style={{ display: 'flex', alignItems: 'center', marginBottom: '8px', height: '30px' }}>
-                                                        <div style={{
-                                                            width: '130px',
-                                                            fontSize: '0.75rem',
-                                                            fontWeight: isTarget ? '700' : '500',
-                                                            color: isTarget ? '#1e293b' : '#64748b',
-                                                            whiteSpace: 'nowrap',
-                                                            overflow: 'hidden',
-                                                            textOverflow: 'ellipsis',
-                                                            paddingRight: '12px'
-                                                        }}>
-                                                            {stat.name}
-                                                        </div>
-                                                        <div style={{
-                                                            flex: 1,
-                                                            height: '100%',
-                                                            background: isTarget ? genderBg : '#f8fafc',
-                                                            borderRadius: '4px',
-                                                            position: 'relative',
-                                                            display: 'flex',
-                                                            alignItems: 'center',
-                                                            border: isTarget ? `1px solid ${genderColor}44` : '1px solid #f1f5f9'
-                                                        }}>
-                                                            <div style={{
-                                                                display: 'flex',
-                                                                width: '100%',
-                                                                height: '100%',
-                                                                alignItems: 'flex-end',
-                                                                opacity: isTarget ? 0.9 : 0.4,
-                                                                padding: '0 2px'
-                                                            }}>
-                                                                {bins.map((f, i) => (
-                                                                    <div key={i} style={{
-                                                                        flex: 1,
-                                                                        height: `${(f / maxFreq) * 100}%`,
-                                                                        background: genderColor,
-                                                                        margin: '0 0.5px',
-                                                                        borderRadius: '2px 2px 0 0'
-                                                                    }} />
-                                                                ))}
-                                                            </div>
-                                                            <div style={{
-                                                                position: 'absolute',
-                                                                left: `${(stat.avg / globalMax) * 100}%`,
-                                                                width: '3px',
-                                                                height: '110%',
-                                                                top: '-5%',
-                                                                background: isTarget ? '#1e293b' : genderColor,
-                                                                zIndex: 2,
-                                                                borderRadius: '2px'
-                                                            }} />
-                                                        </div>
-                                                        <div style={{ width: '40px', fontSize: '0.75rem', fontWeight: '700', textAlign: 'right', color: isTarget ? '#1e293b' : '#64748b', marginLeft: '8px' }}>
-                                                            {stat.avg.toFixed(0)}
-                                                        </div>
-                                                    </div>
-                                                );
-                                            })}
-                                        </div>
-                                    </div>
-                                );
-                            })}
-                        </div>
-                    </div>
-                </div>
-            )}
-
+            {view === 'meet' && <>
             {showSimulation && optimizedTeamScores && (
                 <div className="simulation-overlay">
                     {optimizedTeamScores.incomplete ? (
@@ -2084,50 +1209,121 @@ function PostseasonSimulator({ performances, isBetter, manifest, loadTeamData, s
                 </div>
             )}
 
+            {showSimulation && actual && optimizedTeamScores && !optimizedTeamScores.incomplete && (
+                <TrackResultPanel actual={actual} predicted={optimizedTeamScores} targetTeam={targetTeam} meet={champCutoff?.meet} />
+            )}
+
             <div className="analyzer-results">
                 {Object.keys(optimizedData).length > 0 ? (
-                    Object.entries(optimizedData).map(([groupTitle, results]) => (
+                    Object.entries(optimizedData).map(([groupTitle, results]) => {
+                        const { rows, act } = eventRows(results)
+                        return (
                         <div key={groupTitle} id={`event-${groupTitle.replace(/[^a-z0-9]/gi, '-')}`} className="event-section">
                             <h3 className="event-title">
                                 {results[0].event}
                                 <span className="event-meta">{results[0].derivedType} {results[0].derivedYear}</span>
                             </h3>
+                            <div className="table-container">
                             <table className="performance-table">
                                 <thead>
                                     <tr>
-                                        <th>Rank</th>
+                                        <th title="Rank by the scoring basis">{act ? 'Pred.' : 'Rank'}</th>
                                         <th>Name</th>
                                         <th>Team</th>
                                         <th>Mark</th>
-                                        {showSimulation && <th>Points</th>}
+                                        {showSimulation && <th title="Predicted points">Points</th>}
+                                        {act && <th className="ps-act" title={`Place at ${champCutoff?.meet || 'the championship'}`}>Place</th>}
+                                        {act && <th title="Mark at the championship">Result</th>}
+                                        {act && <th title="Points scored">Pts</th>}
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {results.map((res, idx) => (
-                                        <tr key={idx}>
-                                            <td>{res.calculatedRank}</td>
-                                            <td className="athlete-name-cell">{res.athlete_name}</td>
-                                            <td>{res.pvcTeam}</td>
-                                            <td className="mark-cell">{res.mark}</td>
+                                    {rows.map(({ pred: res, act: a }, idx) => (
+                                        <tr key={idx} className={res ? '' : 'ps-unpredicted'}>
+                                            <td>{res ? res.calculatedRank : '–'}</td>
+                                            <td className="athlete-name-cell">{res ? res.athlete_name : a.n}
+                                                {!res && <span className="xs-chip" title="Scored, but not among the predicted entries">not predicted</span>}</td>
+                                            <td>{res ? res.pvcTeam : a.team}</td>
+                                            <td className="mark-cell">{res ? res.mark : ''}</td>
                                             {showSimulation && (
                                                 <td className="points-cell">
-                                                    {res.optimizedPts > 0 ? `+${res.optimizedPts.toFixed(1)}` : '-'}
+                                                    {res && res.optimizedPts > 0 ? `+${res.optimizedPts.toFixed(1)}` : '-'}
                                                 </td>
                                             )}
+                                            {act && <td className="ps-act" title={a ? '' : 'Did not compete in this event at the championship'}>{a ? a.pl : '–'}</td>}
+                                            {act && <td className="mark-cell">{a ? a.m : ''}</td>}
+                                            {act && <td className="points-cell">{a?.pts ? `+${a.pts}` : ''}</td>}
                                         </tr>
                                     ))}
                                 </tbody>
                             </table>
+                            </div>
                         </div>
-                    ))
+                    )})
                 ) : (
                     <div className="empty-state">
                         <p>No results match your filters.</p>
                     </div>
                 )}
             </div>
+            </>}
         </div>
     );
+}
+
+/** The simulated standings against the championship's real team scores. */
+function TrackResultPanel({ actual, predicted, targetTeam, meet }) {
+    return (
+        <div className="xs-result ps-result">
+            <h3 className="xs-h" title={meet}>Predicted vs result</h3>
+            <div className="ps-result-grid">
+                {['girls', 'boys'].map(g => {
+                    const a = actual[g]
+                    if (!a) return null
+                    const pred = (predicted?.[g] || []).map(t => t.team)
+                    const pPts = Object.fromEntries((predicted?.[g] || []).map(t => [t.team, t.pts]))
+                    const winner = pred.length > 0 && a.teams[0] && pred[0] === a.teams[0].team
+                    const podium = a.teams.slice(0, 3).filter(t => pred.slice(0, 3).includes(t.team)).length
+                    const exact = a.teams.slice(0, 3).filter((t, i) => pred[i] === t.team).length
+                    return (
+                        <div key={g} className="xs-panel">
+                            <div className="xs-sum-row ps-sum">
+                                <span className="xs-sum-div">{g}</span>
+                                <span><b>{winner ? '✓' : '✗'}</b> winner {winner ? 'called' : 'missed'}</span>
+                                <span><b>{podium} of 3</b> podium teams picked{exact ? `, ${exact} in the exact place` : ''}</span>
+                            </div>
+                            <div className="table-container">
+                                <table className="performance-table xs-table">
+                                    <thead>
+                                        <tr>
+                                            <th className="num">Place</th><th>Team</th><th className="num">Score</th>
+                                            <th className="num" title="Place in the simulated standings">Predicted<br />place</th>
+                                            <th className="num" title="Simulated score">Pred.<br />score</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {a.teams.map(t => {
+                                            const pp = pred.indexOf(t.team) + 1 || null
+                                            const off = pp ? pp - t.place : 0
+                                            return (
+                                                <tr key={t.team} className={t.team === targetTeam ? 'xs-follow' : ''}>
+                                                    <td className="num">{t.place}</td>
+                                                    <td>{t.team}</td>
+                                                    <td className="num">{+t.score.toFixed(2)}</td>
+                                                    <td className="num">{pp ?? '–'}{off ? <span className="xs-dim"> ({off > 0 ? '+' : '−'}{Math.abs(off)})</span> : null}</td>
+                                                    <td className="num">{pPts[t.team] != null ? pPts[t.team].toFixed(1) : '–'}</td>
+                                                </tr>
+                                            )
+                                        })}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    )
+                })}
+            </div>
+        </div>
+    )
 }
 
 export default PostseasonSimulator;
