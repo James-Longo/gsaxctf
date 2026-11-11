@@ -271,6 +271,81 @@ def _names(doc):
     return {k[0] for r in rows for k in [_runner_key(r)] if k}
 
 
+def _mark_keys(doc):
+    """(runner, event, mark) of every row: a track meet is the same meet only with the same marks (weekly
+    meets two days apart share schools and runners; a throwers-only meet has no m:ss times to compare)."""
+    from backend.event_canon import canonical_event
+    from backend.json_store import parse_mark_value
+    out = set()
+    for e in doc.get('events', []):
+        c = canonical_event(e.get('event') or '', e.get('gender'))
+        ev = c[1] if c else re.sub(r'[^a-z0-9]+', ' ', (e.get('event') or '').lower()).strip()
+        for r in e.get('results', []):
+            relay = 'relay' in ev.lower() or e.get('is_relay')
+            n = (r.get('school') or '') if relay else (r.get('athlete') or '')
+            n = re.sub(r'\b(high school|academy|hs|school)\b', ' ', n.lower()) if relay else \
+                re.sub(r'^([^,]+),\s*(.+)$', r'\2 \1', n.lower())
+            v, _ = parse_mark_value(str(r.get('result') or ''), ev)
+            if n and v:
+                out.add((' '.join(sorted(re.findall(r'[a-z]+', n))), ev, round(v, 1)))
+    return out
+
+
+_HELD_MARKS = {}
+
+
+def held_marks(year, season, stems):
+    out = set()
+    for st in stems:
+        k = (year, season, st)
+        if k not in _HELD_MARKS:
+            try:
+                _HELD_MARKS[k] = _mark_keys(json.load(open(os.path.join(DATA, 'parsed_results', str(year), season, st + '.json'))))
+            except Exception:  # noqa: BLE001
+                _HELD_MARKS[k] = set()
+        out |= _HELD_MARKS[k]
+    return out
+
+
+_SEASON_MARKS = {}
+
+
+def season_marks(year, season):
+    """{(runner, event, mark): stem} over every file held for the season (Indoor: the neighbouring
+    winters too -- a December meet sits under either year depending on the source)."""
+    if (year, season) not in _SEASON_MARKS:
+        out = {}
+        years = (year - 1, year, year + 1) if season == 'Indoor' else (year,)
+        for y in years:
+            for p in glob.glob(os.path.join(DATA, 'parsed_results', str(y), season, '*.json')):
+                try:
+                    keys = _mark_keys(json.load(open(p)))
+                except Exception:  # noqa: BLE001
+                    continue
+                st = os.path.splitext(os.path.basename(p))[0]
+                for k in keys:
+                    out.setdefault(k, st)
+        _SEASON_MARKS[(year, season)] = out
+    return _SEASON_MARKS[(year, season)]
+
+
+def track_event_homes(doc, year, season):
+    """Per event of a staged track meet: the held file with half or more of its marks (the same
+    runners -- relays: teams -- at the same marks), else None; events of fewer than 3 marks: the
+    file holding any of them, else 'small'."""
+    held = season_marks(year, season)
+    out = []
+    for e in doc.get('events', []):
+        ks = _mark_keys(dict(events=[e]))
+        if len(ks) < 3:   # (a two-team relay: held if any of its marks is)
+            hit = next((held[k] for k in ks if k in held), None)
+            out.append(hit or 'small')
+            continue
+        hits = collections.Counter(held[k] for k in ks if k in held)
+        out.append(hits.most_common(1)[0][0] if hits and sum(hits.values()) >= 0.5 * len(ks) else None)
+    return out
+
+
 def held_names(year, season, stems):
     """First and last names of the runners in the held files `stems` (read from disk, cached)."""
     out = set()
@@ -360,16 +435,22 @@ def stage_one(year, season, lst, held, cache):
     maine = maine_share(doc, year, season, cache, os.path.basename(path))
     d = day(doc.get('date')) or day(lst.get('date') or '')
     mine = _names(doc)
+    marks = _mark_keys(doc) if season != 'XC' else set()
     for stem, hids, hday, stems in held:
         # (same day, same schools -- and the same runners: a middle-school festival and the
         # conference championship two days later share every school, no runner)
         hn = held_names(year, season, stems) if mine else set()
         # (a held meet with no runners is a team-scores sheet: its results are still missing)
-        if same_meet(ids, d, hids, hday) and (not mine or (hn and len(mine & hn) >= 0.5 * min(len(mine), len(hn)))):
+        if season != 'XC':
+            same = same_meet(ids, d, hids, hday) and bool(marks) and \
+                len(marks & held_marks(year, season, stems)) >= 0.5 * len(marks)
+        else:
+            same = same_meet(ids, d, hids, hday) and (not mine or (hn and len(mine & hn) >= 0.5 * min(len(mine), len(hn))))
+        if same:
             os.remove(path)
             set_listing_match(year, season, lst['id'], stem, 'auto (milesplit_bulk): same date and schools as the meet we hold')
             return dict(status='duplicate', match=stem)
-    homes = race_homes(doc, year, season)
+    homes = race_homes(doc, year, season) if season == 'XC' else track_event_homes(doc, year, season)
     real = [h for h in homes if h != 'small']
     if real and all(real):   # every race already held (the same runners at their times), whatever the dates say
         os.remove(path)
@@ -417,6 +498,9 @@ def stage_one(year, season, lst, held, cache):
     shutil.move(path, dest)
     held.append((os.path.splitext(os.path.basename(dest))[0], ids, d, [os.path.splitext(os.path.basename(dest))[0]]))
     held_runners(year, season)[os.path.splitext(os.path.basename(dest))[0]] = _near(doc)
+    if (year, season) in _SEASON_MARKS:
+        for k in _mark_keys(doc):
+            _SEASON_MARKS[(year, season)].setdefault(k, os.path.splitext(os.path.basename(dest))[0])
     return dict(status='accepted', file=os.path.relpath(dest, ROOT), rows=nrows)
 
 
