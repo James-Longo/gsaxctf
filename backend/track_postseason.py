@@ -938,6 +938,7 @@ class Featurizer:
         self.rconv = rconv_table
         self.entries = champ_entries     # aid -> {(ay, typ): set(families)}
         self.relay_entries = None
+        self.early = {}                  # (ay, typ, team unit) -> [(date, {aid: events entered})]
         self.norms = norms               # (gender, key) -> (mu, sd)
         self.by_unit = collections.defaultdict(set)
         for aid, w in store.where.items():
@@ -1038,6 +1039,10 @@ class Featurizer:
             cur_events = len(srcs[0])
             _, lv, last = s.unit_at(aid, cutoff)
             prev = self.entries.get(aid, {})
+            # championships earlier this season the athlete's team was at
+            # (conference meets before the state meet): what the athlete ran
+            seen = [by.get(str(aid), set()) for d, by in self.early.get((y, typ, tu), ()) if d < cutoff]
+            early_evs = set().union(*seen) if seen else None
             for ev in events:
                 if is_relay_event(ev):
                     continue
@@ -1081,6 +1086,8 @@ class Featurizer:
                 f['prev_same_fam'] = 1.0 if fam in same_prev else (0.0 if same_prev else np.nan)
                 f['prev_other_fam'] = 1.0 if fam in other_prev else (0.0 if other_prev else np.nan)
                 f['prev_n_events'] = len(same_prev | other_prev)
+                f['early_ev'] = np.nan if early_evs is None else float(ev in early_evs)
+                f['early_n'] = np.nan if early_evs is None else float(len(early_evs))
                 rows.append(f)
         _ranks(rows)
         return rows
@@ -1217,9 +1224,17 @@ def setup(store=None, champs=None):
     entries = collections.defaultdict(lambda: collections.defaultdict(set))
     rentries = collections.defaultdict(lambda: collections.defaultdict(set))
     vals = collections.defaultdict(list)
+    early = collections.defaultdict(list)   # (year, typ, unit) -> [(date, {aid: events})]
     for c in champs:
         t = tr[c['id']]
         typ = SEASON_OF[c['season']]
+        by_aid = collections.defaultdict(set)
+        for ev, rows in t['events'].items():
+            for r in rows:
+                if r['aid'] and r['unit'] and not is_relay_event(ev):
+                    by_aid[str(r['aid'])].add(ev)
+        for u in champ_units(t):
+            early[(c['year'], typ, u)].append((c['date'], by_aid))
         for ev, rows in t['events'].items():
             for i, r in enumerate(rows):
                 if is_relay_event(ev):
@@ -1232,6 +1247,7 @@ def setup(store=None, champs=None):
     norms = {k: (float(np.mean(v)), float(np.std(v)) or 0.05) for k, v in vals.items() if len(v) >= 20}
     fz = Featurizer(store, conv, rconv, {k: dict(v) for k, v in entries.items()}, norms)
     fz.relay_entries = {k: dict(v) for k, v in rentries.items()}
+    fz.early = dict(early)
     return fz, champs, tr
 
 
@@ -1317,9 +1333,17 @@ SLOT_FEATS = [f'{n}_{k}' for n in SLOT_NAMES for k in ('d', 'sig', 'n')]
 ATH_FEATS = ['anchor_z', 'anchor_slot', 'grade', 'ms_last', 'days_left', 'cur_all', 'cur_events',
              'days_since_last', 'cur_same_n', 'cur_last_d', 'cur_med_d', 'cur_share',
              'prev_same_fam', 'prev_other_fam', 'prev_n_events', 'field_rank', 'team_rank',
-             'field_gap', 'ev_code', 'typ', 'boys', 'is_state', 'std_gap', 'std_gap_any'] + SLOT_FEATS
+             'field_gap', 'ev_code', 'typ', 'boys', 'is_state', 'std_gap', 'std_gap_any',
+             'team_gap', 'team_min', 'ath_nq', 'ath_ev_rank', 'ath_nc', 'ath_best_gap', 'ath_fr_rank',
+             'team_nq_ev', 'early_ev', 'early_n'] + SLOT_FEATS
 REL_FEATS = ['anchor_z', 'anchor_slot', 'days_left', 'legs_d', 'legs_n', 'legs_ev', 'prev_same_fam',
              'field_rank', 'field_gap', 'ev_code', 'typ', 'boys', 'is_state'] + SLOT_FEATS[:15]
+# team_gap: days the athlete has sat out while the team kept racing (absent,
+# hurt); ath_*: the athlete's other candidate events at this meet (how many
+# clear the line, where this one ranks, the best margin: event choice under
+# the cap); team_nq_ev: teammates over the line in this event; early_*: what
+# the athlete entered at a championship earlier this season (2026-11-11:
+# state entry Brier -0.006 to -0.007, entrant recall +1.5 to +2 pts)
 # std_gap / std_gap_any: the qualifying line, how this season's mark stands
 # against the marks that got athletes into the same meet the two seasons
 # before (state meets enter by qualifying standard)
@@ -1362,6 +1386,33 @@ def _std_cols(df):
     return df
 
 
+def _athlete_cols(df):
+    """Columns over each championship-day's candidate rows (the top 50 per
+    event, as a live prediction has them): team absence, the athlete's other
+    events, teammates over the line."""
+    import pandas as pd
+    top = df['in_top'].astype(bool) if 'in_top' in df else pd.Series(True, index=df.index)
+    t = df[top]
+    day = [t.champ, t.cutoff]
+    tmin = t.groupby(day + [t.team]).days_since_last.transform('min')
+    q = (t.std_gap < 0).astype(float)
+    cols = dict(team_min=tmin, team_gap=t.days_since_last - tmin,
+                ath_nq=q.groupby(day + [t.aid]).transform('sum'),
+                ath_ev_rank=t.groupby(day + [t.aid]).std_gap.rank(method='first'),
+                ath_nc=t.groupby(day + [t.aid]).event.transform('size').astype(float),
+                ath_best_gap=t.groupby(day + [t.aid]).std_gap.transform('min'),
+                ath_fr_rank=t.groupby(day + [t.aid]).field_rank.rank(method='first'),
+                team_nq_ev=q.groupby(day + [t.team, t.event]).transform('sum'))
+    for k, v in cols.items():
+        df[k] = np.nan
+        df.loc[top, k] = v.values
+    # rows outside the top 50 (kept for known entries) take their athlete's / team's values
+    for k, keys in (('team_min', ['team']), ('ath_nq', ['aid']), ('ath_nc', ['aid']), ('ath_best_gap', ['aid'])):
+        df[k] = df.groupby(['champ', 'cutoff'] + keys)[k].transform('max')
+    df['team_gap'] = df['days_since_last'] - df['team_min']
+    return df
+
+
 def add_columns(df):
     """Columns the models need that the featurizer leaves implicit."""
     df = df.copy()
@@ -1373,6 +1424,8 @@ def add_columns(df):
     df['y'] = (df['p_true'] - df['anchor']).clip(-Y_CLIP, Y_CLIP)
     if len(df) and 'cur_sig' in df:
         df = _std_cols(df)
+        if 'days_since_last' in df:
+            df = _athlete_cols(df)
     for c in ATH_FEATS + REL_FEATS:
         if c not in df.columns:
             df[c] = np.nan
@@ -1547,6 +1600,7 @@ def team_summary(pts, teams):
         out.append(dict(team=t, mean=float(pts[:, j].mean()), p10=float(np.percentile(pts[:, j], 10)),
                         p90=float(np.percentile(pts[:, j], 90)),
                         win=float((rank[:, j] == 0).mean()), top3=float((rank[:, j] < 3).mean()),
+                        places=[float((rank[:, j] == k).mean()) for k in range(3)],
                         exp_place=float(rank[:, j].mean() + 1)))
     out.sort(key=lambda r: -r['mean'])
     return out

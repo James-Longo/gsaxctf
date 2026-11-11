@@ -154,8 +154,12 @@ decisions with `class-import`, then `build` and `apply` again. Report the
 the season's championship meets (backend/data/xc_groups.json) are still
 ahead, and once more the Monday after the last one: a meet that has been run
 shows its result beside its prediction. Past seasons' predictions are not
-rebuilt here (they follow corrections to older data). Track predictions are
-computed in the browser and need nothing here.
+rebuilt here (they follow corrections to older data). For the track seasons in
+progress it also writes the championships' results (backend/track_champ_results.py)
+and the track postseason predictor's predictions as of today
+(`backend/track_champ_predict.py --year`, ~3 min; it first rebuilds the
+predictor's training dataset when that is over 28 days old, ~10 min, 4 processes).
+Past track seasons' predictions (`--past`) are rebuilt by the older-data work.
 Owen's Predictor is rebuilt by the resync and by `athlete_catalog apply`;
 check it as listed in the "What new data feeds" table.
 
