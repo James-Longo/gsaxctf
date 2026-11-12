@@ -158,15 +158,26 @@ def champ_out(champ, pred, z, table, names, cutoff, legs=None, truth=None):
                 entries=dict(entries), legs=dict(leg_out))
 
 
+def drop(year, season):
+    path = os.path.join(OUT_DIR, f'{year}_{season}.json.gz')
+    if os.path.exists(path):
+        os.remove(path)
+    _write_index()
+
+
+def _write_index():
+    index = sorted(f[:-len('.json.gz')] for f in os.listdir(OUT_DIR) if f.endswith('.json.gz'))
+    with open(os.path.join(OUT_DIR, 'index.json'), 'w', encoding='utf-8') as f:
+        json.dump(index, f, indent=1)
+
+
 def write(year, season, champs, asof):
     os.makedirs(OUT_DIR, exist_ok=True)
     raw = json.dumps(dict(year=year, season=season, asof=asof, champs=champs), separators=(',', ':'),
                      default=lambda o: o.item())   # numpy scalars
     with gzip.open(os.path.join(OUT_DIR, f'{year}_{season}.json.gz'), 'wb', compresslevel=9) as f:
         f.write(raw.encode('utf-8'))
-    index = sorted(f[:-len('.json.gz')] for f in os.listdir(OUT_DIR) if f.endswith('.json.gz'))
-    with open(os.path.join(OUT_DIR, 'index.json'), 'w', encoding='utf-8') as f:
-        json.dump(index, f, indent=1)
+    _write_index()
 
 
 _SHARED = {}
@@ -238,9 +249,13 @@ def live(year, asof):
         c = o['champ']
         pred = o['pred'].drop(columns=['win', 'top3', 'exp_pts', 'entered'], errors='ignore')
         by[c['season']].append(champ_out(c, pred, model.z_for(c['id']), o['table'], names, o['cutoff'], o.get('legs')))
-    for season, champs in by.items():
-        write(year, season, champs, asof)
-        print(f'{year} {season}: {len(champs)} championships as of {asof}', file=sys.stderr)
+    for season in ('Indoor', 'Outdoor'):
+        if by.get(season):
+            write(year, season, by[season], asof)
+        else:
+            # not started (no meet on file yet): no prediction, and none left from earlier runs
+            drop(year, season)
+        print(f'{year} {season}: {len(by.get(season, []))} championships as of {asof}', file=sys.stderr)
 
 
 def main(argv=None):

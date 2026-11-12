@@ -46,7 +46,7 @@ LABEL_ORDER = {'Indoor': ['Nov 30', 'Dec 20', 'Jan 10', 'Jan 25', 'Feb 5', 'eve'
                'Outdoor': ['Nov 30', 'Jan 15', 'Mar 1', 'Apr 25', 'May 10', 'May 24', 'eve']}
 
 
-def load():
+def load(legs=True):
     A0 = pd.read_pickle(os.path.join(tp.CACHE_DIR, 'athletes.pkl'))
     tp.set_lines(A0)
     A = tp.add_columns(A0)
@@ -54,7 +54,7 @@ def load():
     with open(os.path.join(tp.CACHE_DIR, 'truths.pkl'), 'rb') as f:
         tr = pickle.load(f)
     L = None
-    if os.path.exists(os.path.join(tp.CACHE_DIR, 'legs.pkl')):
+    if legs and os.path.exists(os.path.join(tp.CACHE_DIR, 'legs.pkl')):
         L = tp.leg_columns(pd.read_pickle(os.path.join(tp.CACHE_DIR, 'legs.pkl')))
     return _slim(A), _slim(R), tr, L
 
@@ -217,9 +217,15 @@ FIT_DIR = os.path.join(tp.CACHE_DIR, 'cv_fits')
 def _fit_stamp():
     """What a season's saved fit depends on: the dataset files and the feature lists."""
     import hashlib
-    files = [os.path.join(tp.CACHE_DIR, f) for f in ('athletes.pkl', 'relays.pkl', 'legs.pkl', 'truths.pkl')]
-    key = repr([os.path.getmtime(f) if os.path.exists(f) else 0 for f in files]
-               + [tp.ATH_FEATS, tp.REL_FEATS, tp.LEG_FEATS])
+    files = [os.path.join(tp.CACHE_DIR, f) for f in ('athletes.pkl', 'relays.pkl', 'truths.pkl')]
+    key = repr([os.path.getmtime(f) if os.path.exists(f) else 0 for f in files] + [tp.ATH_FEATS, tp.REL_FEATS])
+    return hashlib.sha1(key.encode()).hexdigest()[:12]
+
+
+def _leg_stamp():
+    import hashlib
+    f = os.path.join(tp.CACHE_DIR, 'legs.pkl')
+    key = repr([os.path.getmtime(f) if os.path.exists(f) else 0, tp.LEG_FEATS])
     return hashlib.sha1(key.encode()).hexdigest()[:12]
 
 
@@ -227,13 +233,16 @@ def _fit_path(year):
     return os.path.join(FIT_DIR, f'{year}_{_fit_stamp()}.pkl')
 
 
+def _leg_path(year):
+    return os.path.join(FIT_DIR, f'legs_{year}_{_leg_stamp()}.pkl')
+
+
 def fit_year(year):
     """Fit the models without one season and save its predictions (every
     candidate row and cutoff, leg chances, residual pools, the season-bests
     baseline) so simulation variants can be scored without refitting."""
-    A, R, L = (_SHARED[k] for k in ('A', 'R', 'L'))
-    model = tp.Model().fit(A[A.year != year], R[R.year != year], None if L is None else L[L.year != year])
-    lp = model.predict_legs(None if L is None else L[L.year == year])
+    A, R = _SHARED['A'], _SHARED['R']
+    model = tp.Model().fit(A[A.year != year], R[R.year != year])
     # entrants outside the top 50 are only needed when the entries are known
     At = A[(A.year == year) & (A.in_top | (A.entered == 1))]
     Rt = R[R.year == year]
@@ -247,8 +256,20 @@ def fit_year(year):
     os.makedirs(FIT_DIR, exist_ok=True)
     tmp = _fit_path(year) + '.tmp'
     with open(tmp, 'wb') as f:
-        pickle.dump(dict(pred=pred, lp=lp, z=z, base=base), f, protocol=pickle.HIGHEST_PROTOCOL)
+        pickle.dump(dict(pred=pred, z=z, base=base), f, protocol=pickle.HIGHEST_PROTOCOL)
     os.replace(tmp, _fit_path(year))
+    return year
+
+
+def fit_legs_year(year):
+    """The leg model without one season, and that season's leg chances (saved apart
+    from the other models, so a leg-model change refits only this)."""
+    L = _SHARED['L']
+    lp = tp.Model().fit_legs(L[L.year != year]).predict_legs(L[L.year == year])
+    tmp = _leg_path(year) + '.tmp'
+    with open(tmp, 'wb') as f:
+        pickle.dump(lp, f, protocol=pickle.HIGHEST_PROTOCOL)
+    os.replace(tmp, _leg_path(year))
     return year
 
 
@@ -319,24 +340,36 @@ def ensure_fits(years, fit_procs=2):
     """Fit and save every season in `years` that has no saved fit."""
     import gc
     import multiprocessing as mp
-    todo = [y for y in years if not os.path.exists(_fit_path(y))]
-    if not todo:
-        return
     os.environ['OMP_NUM_THREADS'] = '2'
-    A, R, _, L = load()
-    _SHARED.update(A=A, R=R, L=L)
-    with mp.get_context('fork').Pool(fit_procs) as pool:
-        for y in pool.imap_unordered(fit_year, todo):
-            print(f'  year {y} fitted', flush=True)
-    for k in ('A', 'R', 'L'):
-        _SHARED.pop(k, None)
-    del A, R, L
-    gc.collect()
+    todo = [y for y in years if not os.path.exists(_fit_path(y))]
+    if todo:
+        A, R, _, _ = load(legs=False)
+        _SHARED.update(A=A, R=R)
+        with mp.get_context('fork').Pool(fit_procs) as pool:
+            for y in pool.imap_unordered(fit_year, todo):
+                print(f'  year {y} fitted', flush=True)
+        for k in ('A', 'R'):
+            _SHARED.pop(k, None)
+        del A, R
+        gc.collect()
+    todo = [y for y in years if not os.path.exists(_leg_path(y))]
+    if todo:
+        L = tp.leg_columns(pd.read_pickle(os.path.join(tp.CACHE_DIR, 'legs.pkl')))
+        _SHARED['L'] = L
+        with mp.get_context('fork').Pool(fit_procs) as pool:
+            for y in pool.imap_unordered(fit_legs_year, todo):
+                print(f'  year {y} leg model fitted', flush=True)
+        _SHARED.pop('L', None)
+        del L
+        gc.collect()
 
 
 def load_fit(year):
     with open(_fit_path(year), 'rb') as f:
-        return pickle.load(f)
+        fit = pickle.load(f)
+    with open(_leg_path(year), 'rb') as f:
+        fit['lp'] = pickle.load(f)
+    return fit
 
 
 def run(years=None, sims=1000, procs=4, modes=('unknown', 'known'), labels=None, fit_procs=2):

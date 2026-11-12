@@ -708,6 +708,54 @@ def load_champs():
 
 
 # ---------------------------------------------------------------------------
+# Running order (James 2026-11-12: athletes rarely double in back-to-back events)
+# ---------------------------------------------------------------------------
+
+# the Maine championship order, in every schedule-order results file 2003-2026
+# but two (those ran the 200 after the 100); for meets with no file in that order
+STD_ORDER = {'Indoor': ['4x800 Meter Relay', 'HURDLES', '55 Meter Dash', '1 Mile Run', '400 Meter Dash',
+                        '800 Meter Run', '200 Meter Dash', '2 Mile Run', '4x200 Meter Relay'],
+             'Outdoor': ['4x800 Meter Relay', 'HURDLES', '100 Meter Dash', '1600 Meter Race Walk', '1600 Meter Run',
+                         '4x100 Meter Relay', '400 Meter Dash', '300 Meter Hurdles', '800 Meter Run',
+                         '200 Meter Dash', '3200 Meter Run', '4x400 Meter Relay']}
+FIELD_FAMS = {'HJ', 'LJ', 'TJ', 'PV', 'SP', 'DT', 'JT'}
+_ORDER = {}
+
+
+def _file_order(c):
+    """Running events in the order a results file prints them, when that is
+    the meet's schedule (it opens with a relay); None for files sorted by
+    event (dashes first)."""
+    j = _read_parsed(c['year'], c['season'], c['file']) or {}
+    seq = []
+    for e in j.get('events', []):
+        if e.get('gender') != c['gender']:
+            continue
+        ev = canonical(e.get('event', ''), c['gender'])
+        if ev and FAMILY.get(ev) not in FIELD_FAMS and ev not in seq:
+            seq.append(ev)
+    return seq if seq and 'Relay' in seq[0] else None
+
+
+def event_order(champ_id):
+    """{running event: slot in the schedule} for a championship: its own
+    results file's order, else the latest earlier edition's that prints one
+    (the order can change), else STD_ORDER."""
+    if champ_id in _ORDER:
+        return _ORDER[champ_id]
+    year, key = int(champ_id[:4]), champ_id[5:]
+    eds = sorted((c for c in load_champs() if c['id'][5:] == key and c['year'] <= year),
+                 key=lambda c: -c['year'])
+    seq = next((o for o in map(_file_order, eds) if o), None)
+    if seq is None:
+        season, g = key.split('-')[0], key.split('-')[-1]
+        hurdles = {'Indoor': '55 Meter Hurdles', 'Outdoor': '110 Meter Hurdles' if g == 'Boys' else '100 Meter Hurdles'}[season]
+        seq = [hurdles if e == 'HURDLES' else e for e in STD_ORDER[season]]
+    _ORDER[champ_id] = {e: i for i, e in enumerate(seq)}
+    return _ORDER[champ_id]
+
+
+# ---------------------------------------------------------------------------
 # Championship results (truth)
 # ---------------------------------------------------------------------------
 
@@ -1228,6 +1276,7 @@ class Featurizer:
         for r in athlete_rows:
             ind[r['team']][str(r['aid'])][r['event']] = r
         out = []
+        active = {}
         for tu in {r['team'] for r in relay_rows}:
             races = collections.defaultdict(list)      # event -> [(date, value, legs)] this season
             before = collections.Counter()             # (aid, event) -> races last block
@@ -1259,6 +1308,8 @@ class Featurizer:
                 leg_rank = {a: k + 1 for k, (_, a) in enumerate(legs)}
                 depth = sum(1 for a in pool if on_n[a] or any_n[a])
                 for a in pool:
+                    if a not in active:
+                        active[a] = self._season_activity(a, cur, cutoff)
                     evs = team_ind.get(a, {})
                     lr = evs.get(leg_ev) if leg_ev else None
                     frs = [r['field_rank'] for e, r in evs.items()]
@@ -1273,8 +1324,20 @@ class Featurizer:
                         ind_n=float(len(evs)), ind_n8=float(sum(f <= 8 for f in frs)),
                         ind_n16=float(sum(f <= 16 for f in frs)), ind_best=float(min(frs)) if frs else np.nan,
                         grade=float(next(iter(evs.values()))['grade']) if evs else np.nan,
-                        depth=float(depth), rel_fr=float(rr['field_rank'])))
+                        depth=float(depth), rel_fr=float(rr['field_rank']),
+                        cur_races=active[a][0], since_last=active[a][1]))
         return out
+
+    def _season_activity(self, aid, blk, cutoff):
+        """(results this season before the cutoff, days since the last one)."""
+        b = self.s.marks.get(aid, {}).get(blk)
+        n, last = 0, None
+        for dates, _, _ in (b or {}).values():
+            i = bisect.bisect_left(dates, cutoff)
+            n += i
+            if i and (last is None or dates[i - 1] > last):
+                last = dates[i - 1]
+        return float(n), float(_days(last, cutoff)) if last else np.nan
 
 
 def _ranks(rows):
@@ -1464,7 +1527,7 @@ ATH_FEATS = ['anchor_z', 'anchor_slot', 'grade', 'ms_last', 'days_left', 'cur_al
              'prev_same_fam', 'prev_other_fam', 'prev_n_events', 'field_rank', 'team_rank',
              'field_gap', 'ev_code', 'typ', 'boys', 'is_state', 'std_gap', 'std_gap_any',
              'team_gap', 'team_min', 'ath_nq', 'ath_ev_rank', 'ath_nc', 'ath_best_gap', 'ath_fr_rank',
-             'team_nq_ev', 'early_ev', 'early_n'] + SLOT_FEATS
+             'team_nq_ev', 'early_ev', 'early_n', 'adj_fr', 'adj_gap'] + SLOT_FEATS
 REL_FEATS = ['anchor_z', 'anchor_slot', 'days_left', 'legs_d', 'legs_n', 'legs_ev', 'prev_same_fam',
              'field_rank', 'field_gap', 'ev_code', 'typ', 'boys', 'is_state'] + SLOT_FEATS[:15]
 # team_gap: days the athlete has sat out while the team kept racing (absent,
@@ -1478,7 +1541,7 @@ REL_FEATS = ['anchor_z', 'anchor_slot', 'days_left', 'legs_d', 'legs_n', 'legs_e
 # before (state meets enter by qualifying standard)
 LEG_FEATS = ['ev_code', 'days_left', 'on_n', 'rel_n', 'on_frac', 'on_fast', 'on_last', 'on_other',
              'on_prev', 'on_prev_any', 'leg_rank', 'leg_gap', 'leg_fr', 'ind_n', 'ind_n8', 'ind_n16',
-             'ind_best', 'grade', 'depth', 'rel_fr', 'typ', 'boys', 'is_state']
+             'ind_best', 'grade', 'depth', 'rel_fr', 'typ', 'boys', 'is_state', 'cur_races', 'since_last']
 # leg model: P(runner on the relay | the relay runs), from leg_rows
 EVENT_CODES = {ev: i for i, ev in enumerate(sorted(FAMILY))}
 Y_CLIP = 0.25
@@ -1539,6 +1602,28 @@ def _athlete_cols(df):
     for k, v in cols.items():
         df[k] = np.nan
         df.loc[top, k] = v.values
+    # the athlete's standing in the events just before and after this one in the
+    # meet's running order (doubling back-to-back is rare: 400/800, mile/400, 400/300H)
+    pos = np.array([event_order(c).get(e, np.nan) for c, e in zip(t.champ.values, t.event.values)])
+    fr = t.field_rank.values.astype(float)
+    gap = t.std_gap.values.astype(float)
+    adj_fr = np.full(len(t), np.nan)
+    adj_gap = np.full(len(t), np.nan)
+    for idx in t.groupby(day + [t.aid]).indices.values():
+        if len(idx) < 2:
+            continue
+        for i in idx:
+            if np.isnan(pos[i]):
+                continue
+            nb = [j for j in idx if j != i and abs(pos[j] - pos[i]) == 1]
+            if nb:
+                adj_fr[i] = min(fr[j] for j in nb)
+                g = [gap[j] for j in nb if gap[j] == gap[j]]
+                adj_gap[i] = min(g) if g else np.nan
+    df['adj_fr'] = np.nan
+    df['adj_gap'] = np.nan
+    df.loc[top, 'adj_fr'] = adj_fr
+    df.loc[top, 'adj_gap'] = adj_gap
     # rows outside the top 50 (kept for known entries) take their athlete's / team's values
     for k, keys in (('team_min', ['team']), ('ath_nq', ['aid']), ('ath_nc', ['aid']), ('ath_best_gap', ['aid'])):
         df[k] = df.groupby(['champ', 'cutoff'] + keys)[k].transform('max')
@@ -1631,6 +1716,10 @@ class Model:
         self.ath = Part(ATH_FEATS).fit(sa)
         self.rel = Part(REL_FEATS).fit(sr)
         self.conf = (Part(ATH_FEATS).fit(A), Part(REL_FEATS).fit(R)) if (A.is_state == 0).any() else None
+        self.fit_legs(L)
+        return self
+
+    def fit_legs(self, L):
         self.legs = None
         if L is not None and len(L):
             self.legs = _hgb('clf', categorical_features=[LEG_FEATS.index('ev_code')]).fit(L[LEG_FEATS], L.on)
@@ -1754,6 +1843,16 @@ def _cap_entries(pred, entered, cap, legs, rng, pleg=None):
 
 
 CAL_SIMS, CAL_ROUNDS = 600, 3
+
+# Tried and rejected 2026-11-12 (paired eve CV, 2006-2026):
+# - conference relay marks moved by how many of the season's fastest four the
+#   drawn lineup kept (real: championship relay vs prediction 0 kept +4.1%,
+#   1 +3.6%, 2 +1.0%, 3 0, 4 -0.6% at conference meets, none at states):
+#   conference indoor top-3 Brier +0.0006+/-0.0004, winners -2.8+/-2.9 pts.
+# - back-to-back events drawn anti-correlated (Gaussian chain along the
+#   running order, rho -0.8; doubling in adjacent events is 28% indoor /
+#   27% outdoor vs 36% / 34% drawn independently): podiums and winners
+#   unchanged, top-3 Brier tied or worse. The adj_* entry features stay.
 
 
 def _calibrate(pred, cap, legs, seed):
@@ -2062,7 +2161,8 @@ def predict_season(year, asof, sims=5000, quiet=False, entries=None):
                         keep=ent.keys() if ent else ())
         if ent is None:
             a = [x for x in a if x['in_top']]
-        if not a:
+        # no meet of this season yet among its teams: the roster is unknown, no prediction (James 2026-11-12)
+        if not a or (ent is None and not any(x.get('cur_all', 0) for x in a)):
             continue
         Adf = add_columns(pd.DataFrame(a).assign(aid=lambda d: d.aid.astype(str)))
         Rdf = add_columns(pd.DataFrame(r).assign(aid=lambda d: d.aid.astype(str))) if r else Adf.iloc[:0]
