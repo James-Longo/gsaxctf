@@ -316,6 +316,9 @@ def load_store(use_cache=True, quiet=False):
         # would be a separate athlete, silently
         raise RuntimeError(f'{ac.CATALOG_PATH} missing: copy it in (a fresh worktree has none)')
     res = ac.resolver()
+    cat = ac.load_catalog()
+    # the catalog places each relay's legs on its runners (relay id -> legs)
+    cat_legs = {r['id']: (r.get('legs'), r.get('leg_names')) for r in cat.get('relays', [])}
     man = json.load(open(os.path.join(js.DATA_DIR, 'manifest.json')))
     folder_level = {t['slug']: t.get('level') for t in man['teams']}
     s = Store()
@@ -356,6 +359,9 @@ def load_store(use_cache=True, quiet=False):
             # legs when the file prints them, else only the team ("Orono Relay");
             # resolved to athletes once the rosters are known
             legs = tuple(ac.relay_leg_names(nm)) if ',' in nm else ()
+            got = cat_legs.get(res(store_aid))
+            if legs and got and got[0] and len(got[0]) == len(legs):
+                legs = tuple(zip(got[0], legs))       # (catalog runner or None, printed name)
             rraw[(unit, g)][(ay, typ)][ev].append((dd, p, legs))
             continue
         aid = res(store_aid)
@@ -385,8 +391,13 @@ def load_store(use_cache=True, quiet=False):
                 pref = list(np.minimum.accumulate(vals))
                 out[blk][ev] = (dates, pref, vals)
         s.marks[aid] = out
-    s.roster = dict(roster)
     s.spell = {aid: {' '.join(ac.clean_name(x)) for x in c} for aid, c in names.items()}
+    for a in cat.get('athletes', []):
+        if a.get('relay_only'):              # runners the catalog knows only from relay legs
+            s.spell[a['id']] = {' '.join(ac.clean_name(x)) for x in [a['name']] + a.get('aka', [])}
+            for y in range(a['years'][0], a['years'][1] + 1):
+                roster[(a['unit'], a['gender'], y)].add(a['id'])
+    s.roster = dict(roster)
     n_legs = n_res = 0
     for key, blocks in rraw.items():
         out = {}
@@ -394,10 +405,11 @@ def load_store(use_cache=True, quiet=False):
             out[blk] = {}
             for ev, lst in evs.items():
                 for i, (dd, p, legs) in enumerate(lst):
-                    ids = [s.leg_id(x, key[0], key[1], blk[0]) for x in legs]
+                    ids = [x[0] if isinstance(x, tuple) else s.leg_id(x, key[0], key[1], blk[0]) for x in legs]
+                    raw_names = [x[1] if isinstance(x, tuple) else x for x in legs]
                     n_legs += len(ids)
                     n_res += sum(a is not None for a in ids)
-                    lst[i] = (dd, p, tuple(sorted(a or '?' + name_key(x) for a, x in zip(ids, legs))))
+                    lst[i] = (dd, p, tuple(sorted(a or '?' + name_key(x) for a, x in zip(ids, raw_names))))
                 lst.sort()
                 out[blk][ev] = ([a for a, _, _ in lst], list(np.minimum.accumulate([b for _, b, _ in lst])),
                                 [b for _, b, _ in lst], [c for _, _, c in lst])
@@ -408,6 +420,7 @@ def load_store(use_cache=True, quiet=False):
         w.sort()
         s.where[aid] = w
     s.name = {aid: c.most_common(1)[0][0] for aid, c in names.items()}
+    s.name.update({a['id']: a['name'] for a in cat.get('athletes', []) if a.get('relay_only')})
     _link_middle_school(s, quiet=quiet)
     if not quiet:
         print(f'store: {n} marks, {len(s.marks)} athletes, {len(s.relays)} relay teams, '

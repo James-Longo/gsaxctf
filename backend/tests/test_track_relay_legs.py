@@ -54,3 +54,25 @@ def test_relay_leg_names_last_first():
     assert relay_leg_names('Saucier, Taylor, Stivers, Harrison, McGhie, Ian, Merrill, Zach') == \
         ['Taylor Saucier', 'Harrison Stivers', 'Ian McGhie', 'Zach Merrill']
     assert relay_leg_names('A Bee, C Dee, E Eff, G Gee') == ['A Bee', 'C Dee', 'E Eff', 'G Gee']
+
+
+def test_catalog_relays_link_runners():
+    from collections import Counter
+    from backend.athlete_catalog import resolve_relays
+    ents = {'r': dict(members=Counter({'ripley-gsa': 9}), toks=['ripley', 'king', 'ofsiany'], ays=[2025], unit='gsa', g='Girls'),
+            'c': dict(members=Counter({'cadence-gsa': 9}), toks=['cadence', 'pert'], ays=[2025], unit='gsa', g='Girls')}
+    groups = [['r'], ['c']]
+    athletes = [dict(id='ripley-gsa', name='Ripley King-Ofsiany', rows=9), dict(id='cadence-gsa', name='Cadence Pert', rows=9)]
+    def relay(sid, names):
+        return dict(unit='gsa', gender='Girls', events=Counter({'Girls 4x400 Meter Relay': 1}), members=Counter({sid: 1}),
+                    names=Counter({names: 1}), teams=Counter({'GSA': 1}), seasons={'Outdoor'}, ays={2025})
+    relays = {'a': relay('rel-a', 'Ripley King-Ofsiani, Cadence Pert, Ava Vardaros, Lu Mo'),
+              'b': relay('rel-b', 'Ripley King-Ofsiany, Cadence Pert, Ava Vardaros, Lu Mo')}
+    member_of = {}
+    out, n, placed = resolve_relays(relays, groups, ents, athletes, member_of)
+    assert len(out) == 1                                  # one team: the spellings are one runner
+    assert sorted(out[0]['members']) == ['rel-a', 'rel-b']
+    ava = next(a for a in athletes if a['name'] == 'Ava Vardaros')
+    assert ava['relay_only'] and ava['relays'] == [out[0]['id']]
+    assert athletes[0]['relays'] == [out[0]['id']]
+    assert placed == n == 8

@@ -328,8 +328,10 @@ function App() {
       if (selectedTeam === 'All') return allPerformances
       return allPerformances.filter(p => p.team === selectedTeam)
     }
-    // Filter by athlete_id across ALL loaded data (handles transfers if they exist in loaded files)
-    return allPerformances.filter(p => runnerId(p) === selectedAthlete.id)
+    // Filter by athlete_id across ALL loaded data (handles transfers if they exist in loaded files);
+    // a runner's relays (the catalog places each printed leg on its runner) come with them
+    const relays = new Set(selectedAthlete.relays || [])
+    return allPerformances.filter(p => { const r = runnerId(p); return r === selectedAthlete.id || relays.has(r) })
   }, [allPerformances, selectedAthlete, selectedTeam, dataLoaded, runnerId])
 
   // Rest of the logic (Stats, filtering, sorting) is the same...

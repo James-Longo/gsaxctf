@@ -1201,7 +1201,8 @@ def resolve_relays(relays, groups, ents, athletes, member_of):
     other event), one relay team is one school, gender and set of RUNNERS
     (so 'Ripley King-Ofsiani' and 'Ripley King-Ofsiany' on otherwise the same
     four are one team), each relay lists its legs and each runner its relays.
-    Returns (relay entries, legs, legs placed)."""
+    A runner who only ever ran relays becomes a runner too (relay_only, no
+    store rows). Returns (relay entries, legs, legs placed)."""
     cid_of = {}
     for keys in groups:
         sids = collections.Counter()
@@ -1218,7 +1219,8 @@ def resolve_relays(relays, groups, ents, athletes, member_of):
         spell[c].add(' '.join(e['toks']))
         for ay in e['ays']:
             roster[(e['unit'], e['g'], ay)].add(c)
-    merged, n_legs, n_placed = {}, 0, 0
+    # 1. the team's runner that season, or the season before or after
+    resolved = {}
     for k, r in relays.items():
         names = relay_leg_names(r['names'].most_common(1)[0][0])
         legs = []
@@ -1226,6 +1228,82 @@ def resolve_relays(relays, groups, ents, athletes, member_of):
             got = {match_leg(x, r['unit'], r['gender'], ay, roster, spell) for ay in sorted(r['ays'], reverse=True)}
             got.discard(None)
             legs.append(got.pop() if len(got) == 1 else None)
+        resolved[k] = (names, legs)
+    # 2. the same full spelling on the team within four seasons (a relay in a
+    # season the runner ran no individual event)
+    near_years = range(-4, 5)
+    for k, (names, legs) in resolved.items():
+        r = relays[k]
+        for i, (x, c) in enumerate(zip(names, legs)):
+            toks = clean_name(x)
+            if c is not None or len(toks) < 2:
+                continue
+            key = ' '.join(toks)
+            hit = {a for ay in r['ays'] for d in near_years
+                   for a in roster.get((r['unit'], r['gender'], ay + d), ()) if key in spell.get(a, ())}
+            if len(hit) == 1:
+                legs[i] = hit.pop()
+    # 3. relay-only runners (never in an individual event): one runner per
+    # team, gender and full spelling, spellings one slip apart joined when
+    # only one other fits; a surname alone stays unplaced
+    only = collections.defaultdict(lambda: dict(names=collections.Counter(), teams=collections.Counter(),
+                                                seasons=set(), ays=set()))
+    for k, (names, legs) in resolved.items():
+        r = relays[k]
+        for x, c in zip(names, legs):
+            toks = clean_name(x)
+            if c is None and len(toks) >= 2 and not is_team_label(x, r['teams'].most_common(1)[0][0]) \
+                    and not re.search(r'\bathlete\b|\btrack\b', x, re.I):
+                o = only[(r['unit'], r['gender'], ' '.join(toks))]
+                o['names'][tidy(x)] += 1
+                o['teams'].update(r['teams'])
+                o['seasons'] |= r['seasons']
+                o['ays'] |= r['ays']
+    parent = {k: k for k in only}
+    def find(x):
+        while parent[x] != x:
+            parent[x] = parent[parent[x]]
+            x = parent[x]
+        return x
+    by_team = collections.defaultdict(list)
+    for k in only:
+        by_team[k[:2]].append(k)
+    for ks in by_team.values():
+        for k in ks:
+            near = [j for j in ks if j != k and (leg_near(k[2].split(), j[2].split()) or leg_near(j[2].split(), k[2].split()))
+                    and any(abs(a - b) <= 1 for a in only[k]['ays'] for b in only[j]['ays'])]
+            if len(near) == 1:
+                parent[find(k)] = find(near[0])
+    taken = {a['id'] for a in athletes}
+    runner_of = {}
+    for root in {find(k) for k in only}:
+        ks = [k for k in only if find(k) == root]
+        names, teams, seasons, ays = collections.Counter(), collections.Counter(), set(), set()
+        for k in ks:
+            names.update(only[k]['names']); teams.update(only[k]['teams'])
+            seasons |= only[k]['seasons']; ays |= only[k]['ays']
+        name, team = display_name(names), teams.most_common(1)[0][0]
+        rid = js.slugify_athlete(name, team)
+        if rid in taken:
+            rid += '--relay'
+        taken.add(rid)
+        a = dict(id=rid, name=name, gender=root[1], unit=root[0], class_of=None, primary_team=team,
+                 teams=sorted(teams), sports=sorted(seasons), rows=0, relay_only=True,
+                 years=[min(ays), max(ays)])
+        aka = sorted({n for n in names if n.lower() != name.lower()})
+        if aka:
+            a['aka'] = aka
+        athletes.append(a)
+        for k in ks:
+            runner_of[k] = rid
+    for k, (names, legs) in resolved.items():
+        r = relays[k]
+        for i, (x, c) in enumerate(zip(names, legs)):
+            if c is None:
+                legs[i] = runner_of.get((r['unit'], r['gender'], ' '.join(clean_name(x))))
+    merged, n_legs, n_placed = {}, 0, 0
+    for k, r in relays.items():
+        names, legs = resolved[k]
         n_legs += len(legs)
         n_placed += sum(c is not None for c in legs)
         key = (r['unit'], r['gender'], tuple(sorted(c or '?' + ' '.join(clean_name(x)) for c, x in zip(legs, names))))
