@@ -229,6 +229,12 @@ class Store:
         j = min(range(i), key=lambda k: vals[k])
         return pref[i - 1], i, legs[j]
 
+    def leg_id(self, name, unit, gender, ay):
+        """The athlete a printed relay leg is (athlete_catalog.match_leg over
+        this store's rosters and spellings), or None."""
+        from backend.athlete_catalog import match_leg
+        return match_leg(name, unit, gender, ay, self.roster, self.spell)
+
     def unit_at(self, aid, cutoff):
         """(unit, level, date) of the athlete's last result before cutoff."""
         w = self.where.get(aid)
@@ -293,7 +299,10 @@ def load_store(use_cache=True, quiet=False):
     """Build (or read the cached) Store from the team store."""
     os.makedirs(CACHE_DIR, exist_ok=True)
     path = os.path.join(CACHE_DIR, 'store.pkl')
-    stamp = os.path.getmtime(os.path.join(js.DATA_DIR, 'manifest.json'))
+    from backend import athlete_catalog as ac
+    # the store depends on the data and on the athlete catalog's merges
+    stamp = (os.path.getmtime(os.path.join(js.DATA_DIR, 'manifest.json')),
+             os.path.getmtime(ac.CATALOG_PATH) if os.path.exists(ac.CATALOG_PATH) else None)
     if use_cache and os.path.exists(path):
         try:
             with open(path, 'rb') as f:
@@ -302,7 +311,10 @@ def load_store(use_cache=True, quiet=False):
                 return s
         except Exception:  # noqa: BLE001 - rebuild
             pass
-    from backend import athlete_catalog as ac
+    if not os.path.exists(ac.CATALOG_PATH):
+        # the catalog is gitignored: without it every spelling of a runner
+        # would be a separate athlete, silently
+        raise RuntimeError(f'{ac.CATALOG_PATH} missing: copy it in (a fresh worktree has none)')
     res = ac.resolver()
     man = json.load(open(os.path.join(js.DATA_DIR, 'manifest.json')))
     folder_level = {t['slug']: t.get('level') for t in man['teams']}
@@ -313,6 +325,7 @@ def load_store(use_cache=True, quiet=False):
     grades = collections.defaultdict(list)
     where = collections.defaultdict(list)
     names = collections.defaultdict(collections.Counter)
+    roster = collections.defaultdict(set)      # (unit, gender, ay) -> athletes
     n = 0
     for (folder, team, unit, year, season, _ay, nm, store_aid, event, mark, grade, meet, d) in ac.load_rows():
         if season == 'XC':
@@ -340,14 +353,16 @@ def load_store(use_cache=True, quiet=False):
         if lv == 'college':
             continue
         if is_relay_event(ev):
-            # legs when the file prints them, else only the team ("Orono Relay")
-            legs = tuple(sorted(name_key(x) for x in nm.split(',') if name_key(x))) if ',' in nm else ()
+            # legs when the file prints them, else only the team ("Orono Relay");
+            # resolved to athletes once the rosters are known
+            legs = tuple(ac.relay_leg_names(nm)) if ',' in nm else ()
             rraw[(unit, g)][(ay, typ)][ev].append((dd, p, legs))
             continue
         aid = res(store_aid)
         raw[aid][(ay, typ)][ev].append((dd, p))
         s.gender.setdefault(aid, g)
         names[aid][nm] += 1
+        roster[(unit, g, ay)].add(aid)
         where[aid].append((dd, unit, lv))
         if grade is not None and 6 <= grade <= 12:
             grades[aid].append(ay + 12 - grade)
@@ -370,11 +385,19 @@ def load_store(use_cache=True, quiet=False):
                 pref = list(np.minimum.accumulate(vals))
                 out[blk][ev] = (dates, pref, vals)
         s.marks[aid] = out
+    s.roster = dict(roster)
+    s.spell = {aid: {' '.join(ac.clean_name(x)) for x in c} for aid, c in names.items()}
+    n_legs = n_res = 0
     for key, blocks in rraw.items():
         out = {}
         for blk, evs in blocks.items():
             out[blk] = {}
             for ev, lst in evs.items():
+                for i, (dd, p, legs) in enumerate(lst):
+                    ids = [s.leg_id(x, key[0], key[1], blk[0]) for x in legs]
+                    n_legs += len(ids)
+                    n_res += sum(a is not None for a in ids)
+                    lst[i] = (dd, p, tuple(sorted(a or '?' + name_key(x) for a, x in zip(ids, legs))))
                 lst.sort()
                 out[blk][ev] = ([a for a, _, _ in lst], list(np.minimum.accumulate([b for _, b, _ in lst])),
                                 [b for _, b, _ in lst], [c for _, _, c in lst])
@@ -388,7 +411,7 @@ def load_store(use_cache=True, quiet=False):
     _link_middle_school(s, quiet=quiet)
     if not quiet:
         print(f'store: {n} marks, {len(s.marks)} athletes, {len(s.relays)} relay teams, '
-              f'{len(s.ms_link)} middle-school joins')
+              f'{len(s.ms_link)} middle-school joins, relay legs placed {n_res}/{n_legs}')
     with open(path, 'wb') as f:
         pickle.dump(s, f, protocol=pickle.HIGHEST_PROTOCOL)
     return s
@@ -731,14 +754,18 @@ def champ_results(champ, store):
             unit = _unit_of(r.get('school') or '', y, season, g, file)
             if only is not None and unit not in only:
                 continue          # the other division of a two-division file
+            legs = None
             if is_relay_event(ev):
                 who = ('relay', unit)
+                # the legs as athletes ('?name' where no runner on the team fits)
+                legs = tuple(store.leg_id(x, unit, g, ay_of(y, season)) or '?' + name_key(x)
+                             for x in (r.get('athletes') or []) if name_key(x)) or None
             else:
                 who = ids.get((name_key(r.get('athlete') or ''), ev)) or ids.get(name_key(r.get('athlete') or '')) \
                     or ids.get(('mark', ev, round(p, 5))) or ids.get(('init', initial_key(r.get('athlete')))) \
                     or _misspelled(store, ids.get(('marks', ev, round(p, 5)), ()), r.get('athlete'), unit, champ['date'])
             rows.append(dict(unit=unit, aid=who, p=p, mark=r.get('result'), final=in_final or not finals,
-                             name=r.get('athlete') or '', grade=r.get('grade')))
+                             name=r.get('athlete') or '', grade=r.get('grade'), legs=legs))
         # finalists ahead of everyone else, each group by mark
         rows.sort(key=lambda r: (not r['final'], r['p']))
         events[ev] = rows

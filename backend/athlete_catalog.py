@@ -369,6 +369,58 @@ def relay_key(unit, gender, name):
     return f'relay|{unit}|{gender}|' + ';'.join(legs)
 
 
+def relay_leg_names(name):
+    """The printed legs of a relay row ('A B, C D, ...'); a file that prints
+    them last name first ('Saucier, Taylor, Stivers, Harrison, ...') gives
+    eight one-word pieces, read in pairs."""
+    legs = [x.strip() for x in (name or '').split(',') if clean_name(x)]
+    if len(legs) == 8 and all(len(x.split()) == 1 for x in legs):
+        legs = [f'{legs[i + 1]} {legs[i]}' for i in range(0, 8, 2)]
+    return legs
+
+
+def leg_near(a, b):
+    """A printed name a is a spelling b (token lists from clean_name): same
+    first name and a surname one or two slips apart ('King-Ofsiani' /
+    'King-Ofsiany', 'Kingofsiany'), the same surname and a first name one
+    slip apart ('Zac' / 'Zach') or an initial, or a surname printed alone."""
+    if len(a) < len(b) and b[-len(a):] == a:
+        return len(''.join(a)) >= 4      # the leg printed as a surname alone
+    if len(b) < len(a) and a[-len(b):] == b:
+        return False                     # a surname-alone spelling never claims a full name
+    if len(a) < 2 or len(b) < 2:
+        return False
+    fa, la, fb, lb = a[0], ''.join(a[1:]), b[0], ''.join(b[1:])
+    if fa == fb:
+        return len(la) >= 4 and osa(la, lb) <= (1 if len(la) < 7 else 2)
+    if la == lb and len(la) >= 3:
+        return (min(len(fa), len(fb)) == 1 and fa[0] == fb[0]) or (min(len(fa), len(fb)) >= 3 and osa(fa, fb) <= 1)
+    return False
+
+
+def match_leg(name, unit, gender, ay, roster, spell):
+    """The runner a printed relay leg is: on the team's roster that season,
+    else the season before or after (roster: (unit, gender, ay) -> ids;
+    spell: id -> cleaned spellings). The exact spelling in any of the three
+    seasons wins over a near one ('Jenn Adams' a season away beats 'Kristen
+    Adams' this season); None when no runner, or more than one, fits."""
+    if ',' in name:          # 'Saucier, Taylor'
+        last, first = name.split(',', 1)
+        name = f'{first} {last}'
+    toks = clean_name(name)
+    if not toks:
+        return None
+    key = ' '.join(toks)
+    for test in (lambda sp: sp == key, lambda sp: leg_near(toks, sp.split())):
+        for y in (ay, ay - 1, ay + 1):
+            hit = [a for a in roster.get((unit, gender, y), ()) if any(test(sp) for sp in spell.get(a, ()))]
+            if len(hit) == 1:
+                return hit[0]
+            if hit:
+                return None
+    return None
+
+
 def _two_in_one_race(e):
     """A surname or initial printed twice in one XC race at different times (more than a second
     apart): two runners under one printed name."""
@@ -396,12 +448,13 @@ def build_entities(rows):
             k = relay_key(unit, gender, name)
             r = relays.setdefault(k, dict(unit=unit, gender=gender, events=collections.Counter(),
                                           members=collections.Counter(), names=collections.Counter(),
-                                          teams=collections.Counter(), seasons=set()))
+                                          teams=collections.Counter(), seasons=set(), ays=set()))
             r['events'][event] += 1
             r['members'][aid] += 1
             r['names'][name] += 1
             r['teams'][team] += 1
             r['seasons'].add(season)
+            r['ays'].add(ay)
             continue
         if is_team_label(name, team):
             continue
@@ -458,6 +511,7 @@ def build_entities(rows):
         for f in ('events', 'members', 'names', 'teams'):
             relays[into][f].update(t[f])
         relays[into]['seasons'] |= t['seasons']
+        relays[into]['ays'] |= t['ays']
         for sid in t['members']:
             owner[sid] = into
     for e in ents.values():
@@ -1121,23 +1175,15 @@ def build(rows=None, quiet=False):
         athletes.append(a)
         for sid in store_ids:
             member_of[sid] = cid
-    relay_out = []
-    for k, r in relays.items():
-        cid = r['members'].most_common(1)[0][0]
-        relay_out.append(dict(id=f'relay--{cid}', key=k, name=tidy(r['names'].most_common(1)[0][0]),
-                              gender=r['gender'], event=r['events'].most_common(1)[0][0],
-                              events=sorted(r['events']), kind='relay',
-                              primary_team=r['teams'].most_common(1)[0][0],
-                              sports=sorted(r['seasons']), members=sorted(r['members'])))
-        for sid in r['members']:
-            member_of[sid] = f'relay--{cid}'
+    relay_out, n_legs, n_placed = resolve_relays(relays, groups, ents, athletes, member_of)
+    say(f'{len(relay_out):,} relay teams; relay legs placed {n_placed:,}/{n_legs:,}')
 
     stats = dict(
         built=date.today().isoformat(), builder_version=BUILDER_VERSION, rows=len(rows),
         entities=len(ents), athletes=len(athletes),
         merged_athletes=sum(1 for a in athletes if 'entities' in a),
         entities_merged=sum(len(a.get('entities', [])) for a in athletes),
-        relay_teams=len(relay_out), pairs=dict(labels), decisions=len(decisions), refused=len(refused),
+        relay_teams=len(relay_out), relay_legs=n_legs, relay_legs_placed=n_placed, pairs=dict(labels), decisions=len(decisions), refused=len(refused),
         gender_conflicts=len(gender_conflicts),
         class_settled=sum(1 for a in athletes if a.get('class_years')),
         class_issues=dict(collections.Counter(a['class_issue'] for a in athletes if a.get('class_issue'))))
@@ -1147,6 +1193,71 @@ def build(rows=None, quiet=False):
                    gender_conflicts=sorted(gender_conflicts, key=lambda c: -sum(c['rows'].values())))
     _write_gz(CATALOG_PATH, catalog)
     return catalog, ents, pairs
+
+
+def resolve_relays(relays, groups, ents, athletes, member_of):
+    """Relay legs are runners: each printed leg goes to the catalog runner it
+    is (match_leg over the team's roster, the same spelling grouping as every
+    other event), one relay team is one school, gender and set of RUNNERS
+    (so 'Ripley King-Ofsiani' and 'Ripley King-Ofsiany' on otherwise the same
+    four are one team), each relay lists its legs and each runner its relays.
+    Returns (relay entries, legs, legs placed)."""
+    cid_of = {}
+    for keys in groups:
+        sids = collections.Counter()
+        for k in keys:
+            sids.update(ents[k]['members'])
+        cid = sids.most_common(1)[0][0]
+        for k in keys:
+            cid_of[k] = cid
+    roster, spell = collections.defaultdict(set), collections.defaultdict(set)
+    for k, e in ents.items():
+        c = cid_of.get(k)
+        if c is None:
+            continue
+        spell[c].add(' '.join(e['toks']))
+        for ay in e['ays']:
+            roster[(e['unit'], e['g'], ay)].add(c)
+    merged, n_legs, n_placed = {}, 0, 0
+    for k, r in relays.items():
+        names = relay_leg_names(r['names'].most_common(1)[0][0])
+        legs = []
+        for x in names:
+            got = {match_leg(x, r['unit'], r['gender'], ay, roster, spell) for ay in sorted(r['ays'], reverse=True)}
+            got.discard(None)
+            legs.append(got.pop() if len(got) == 1 else None)
+        n_legs += len(legs)
+        n_placed += sum(c is not None for c in legs)
+        key = (r['unit'], r['gender'], tuple(sorted(c or '?' + ' '.join(clean_name(x)) for c, x in zip(legs, names))))
+        m = merged.get(key)
+        if m is None:
+            merged[key] = dict(r, legs=legs, leg_names=names)
+            continue
+        for f in ('events', 'members', 'names', 'teams'):
+            m[f] = m[f] + r[f]
+        m['seasons'] = m['seasons'] | r['seasons']
+        m['ays'] = m['ays'] | r['ays']
+    by_id = {a['id']: a for a in athletes}
+    out = []
+    for key, r in merged.items():
+        rid = f"relay--{r['members'].most_common(1)[0][0]}"
+        out.append(dict(id=rid, key='relay|%s|%s|%s' % (r['unit'], r['gender'], ';'.join(key[2])),
+                        name=tidy(r['names'].most_common(1)[0][0]),
+                        gender=r['gender'], event=r['events'].most_common(1)[0][0],
+                        events=sorted(r['events']), kind='relay',
+                        primary_team=r['teams'].most_common(1)[0][0],
+                        sports=sorted(r['seasons']), members=sorted(r['members']),
+                        legs=r['legs'], leg_names=[tidy(x) for x in r['leg_names']]))
+        for sid in r['members']:
+            member_of[sid] = rid
+        for c in set(r['legs']) - {None}:
+            a = by_id.get(c)
+            if a is not None:
+                a.setdefault('relays', []).append(rid)
+    for a in athletes:
+        if a.get('relays'):
+            a['relays'] = sorted(set(a['relays']))
+    return out, n_legs, n_placed
 
 
 def _write_gz(path, obj):
@@ -1393,10 +1504,15 @@ def _write_registry(catalog):
             e['aka'] = a['aka']
         if len(a.get('teams', [])) > 1:
             e['teams'] = a['teams']
+        if a.get('relays'):
+            e['relays'] = a['relays']
         out.append(e)
     for r in catalog.get('relays', []):
-        out.append(dict(id=r['id'], name=r['name'], primary_team=r['primary_team'],
-                        sports=r['sports'], kind='relay', members=r['members']))
+        e = dict(id=r['id'], name=r['name'], primary_team=r['primary_team'],
+                 sports=r['sports'], kind='relay', members=r['members'])
+        if any(r.get('legs') or ()):
+            e['legs'] = r['legs']
+        out.append(e)
     out.sort(key=lambda e: (e.get('kind') == 'relay', e['name']))
     js._atomic_write(js.ATHLETES_PATH, out)
 

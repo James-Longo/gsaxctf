@@ -116,8 +116,12 @@ DATASET_DAYS = 28   # the training dataset (past seasons) is rebuilt when older 
 
 
 def _dataset_ok():
+    """The dataset is recent and built from the current store (a new athlete
+    catalog or relay-leg resolution rebuilds the store, then this)."""
     path = os.path.join(tp.CACHE_DIR, 'athletes.pkl')
-    return os.path.exists(path) and (date.today() - date.fromtimestamp(os.path.getmtime(path))).days <= DATASET_DAYS
+    tp.load_store(quiet=True)            # rebuilds store.pkl when the data or catalog changed
+    return (os.path.exists(path) and (date.today() - date.fromtimestamp(os.path.getmtime(path))).days <= DATASET_DAYS
+            and os.path.getmtime(path) > os.path.getmtime(os.path.join(tp.CACHE_DIR, 'store.pkl')))
 
 
 def live(year, asof):
