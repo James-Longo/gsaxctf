@@ -25,6 +25,7 @@ import gzip
 import json
 import multiprocessing as mp
 import os
+import pickle
 import sys
 from datetime import date
 
@@ -40,9 +41,10 @@ SIMS = 4000
 MIN_ROW = 0.05     # rows below this entry chance and expected points are left out
 
 
-def champ_out(champ, pred, model, table, names, cutoff):
-    pts, teams, st = tp.simulate(pred, table, *model.z_for(champ['id']), sims=SIMS, seed=1,
-                                 max_events=tp.max_events_for(champ['id']))
+def champ_out(champ, pred, z, table, names, cutoff, legs=None):
+    """z: the (athlete, relay) residual pools for this kind of meet."""
+    pts, teams, st = tp.simulate(pred, table, *z, sims=SIMS, seed=1,
+                                 max_events=tp.max_events_for(champ['id']), legs=legs)
     summ = tp.team_summary(pts, teams)
     pred = pred.assign(**st)
     events = {}
@@ -80,13 +82,14 @@ _SHARED = {}
 
 
 def _past_year(year):
-    A, R, tr, champs, names = (_SHARED[k] for k in ('A', 'R', 'tr', 'champs', 'names'))
-    model = tp.Model().fit(A[A.year != year], R[R.year != year])
-    At = A[(A.year == year) & (A.label == 'eve') & A.in_top.astype(bool)]
-    Rt = R[(R.year == year) & (R.label == 'eve')]
-    pred = model.predict(At, Rt)
-    pred = pred.merge(pd.concat([At[['champ', 'aid', 'event', 'place']], Rt[['champ', 'aid', 'event', 'place']]]),
-                      on=['champ', 'aid', 'event'], how='left')
+    """One season from the backtest's saved fit (models fitted without it)."""
+    from backend import track_postseason_cv as cv
+    tr, champs, names = (_SHARED[k] for k in ('tr', 'champs', 'names'))
+    fit = cv.load_fit(year)
+    pred = fit['pred']
+    pred = pred[(pred.label == 'eve') & pred.in_top.astype(bool)]
+    lp = fit['lp']
+    lp = lp[lp.label == 'eve'] if lp is not None else None
     out = collections.defaultdict(list)
     for c in champs:
         if c['year'] != year:
@@ -94,18 +97,32 @@ def _past_year(year):
         rows = pred[pred.champ == c['id']].reset_index(drop=True)
         if not len(rows):
             continue
-        out[c['season']].append(champ_out(c, rows, model, tr[c['id']]['table'], names, rows.cutoff.iloc[0]))
+        # the place each athlete or relay took, for a meet already run
+        place = {}
+        for ev, rs in tr[c['id']]['events'].items():
+            for i, r in enumerate(rs):
+                if r['aid']:
+                    place.setdefault((str(r['aid']), ev), i + 1)
+        rows['place'] = [place.get(k, np.nan) for k in zip(rows.aid.values, rows.event.values)]
+        lg = lp[lp.champ == c['id']] if lp is not None else None
+        z = fit['z']['state' if '-state-' in c['id'] else 'conf']
+        out[c['season']].append(champ_out(c, rows, z, tr[c['id']]['table'], names, rows.cutoff.iloc[0], lg))
     for season, cs in out.items():
         write(year, season, cs, None)
     return year, {k: len(v) for k, v in out.items()}
 
 
 def past(years=None, procs=4):
+    """Every season from the backtest's saved fits (fitted first where
+    missing, 2 workers), then simulated (light)."""
     from backend import track_postseason_cv as cv
-    A, R, tr = cv.load()
+    with open(os.path.join(tp.CACHE_DIR, 'truths.pkl'), 'rb') as f:
+        tr = pickle.load(f)
+    champs = tp.load_champs()
+    years = years or sorted({c['year'] for c in champs if c['year'] >= 2006})
+    cv.ensure_fits(years)
     store = tp.load_store(quiet=True)
-    _SHARED.update(A=A, R=R, tr=tr, champs=tp.load_champs(), names={str(k): v for k, v in store.name.items()})
-    years = years or sorted(A.year.unique())
+    _SHARED.update(tr=tr, champs=champs, names={str(k): v for k, v in store.name.items()})
     os.environ['OMP_NUM_THREADS'] = '2'
     with mp.get_context('fork').Pool(procs) as pool:
         for year, by in pool.imap_unordered(_past_year, years):
@@ -119,7 +136,9 @@ def _dataset_ok():
     """The dataset is recent and built from the current store (a new athlete
     catalog or relay-leg resolution rebuilds the store, then this)."""
     path = os.path.join(tp.CACHE_DIR, 'athletes.pkl')
-    tp.load_store(quiet=True)            # rebuilds store.pkl when the data or catalog changed
+    tp.load_store(quiet=True)
+    if not os.path.exists(os.path.join(tp.CACHE_DIR, 'legs.pkl')):
+        return False            # rebuilds store.pkl when the data or catalog changed
     return (os.path.exists(path) and (date.today() - date.fromtimestamp(os.path.getmtime(path))).days <= DATASET_DAYS
             and os.path.getmtime(path) > os.path.getmtime(os.path.join(tp.CACHE_DIR, 'store.pkl')))
 
@@ -133,7 +152,7 @@ def live(year, asof):
     for o in out:
         c = o['champ']
         pred = o['pred'].drop(columns=['win', 'top3', 'exp_pts'], errors='ignore')
-        by[c['season']].append(champ_out(c, pred, model, o['table'], names, o['cutoff']))
+        by[c['season']].append(champ_out(c, pred, model.z_for(c['id']), o['table'], names, o['cutoff'], o.get('legs')))
     for season, champs in by.items():
         write(year, season, champs, asof)
         print(f'{year} {season}: {len(champs)} championships as of {asof}', file=sys.stderr)

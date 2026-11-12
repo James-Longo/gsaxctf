@@ -32,6 +32,7 @@ import json
 import os
 import pickle
 import sys
+import zlib
 
 import numpy as np
 import pandas as pd
@@ -40,6 +41,7 @@ sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from backend import track_postseason as tp  # noqa: E402
 
 OUT = os.environ.get('TRACK_CV_OUT') or os.path.join(tp.CACHE_DIR, 'cv_results.pkl')
+USE_LEGS = os.environ.get('TRACK_LEGS', '1') != '0'     # relay legs drawn and counted toward the cap (scoring only)
 LABEL_ORDER = {'Indoor': ['Nov 30', 'Dec 20', 'Jan 10', 'Jan 25', 'Feb 5', 'eve'],
                'Outdoor': ['Nov 30', 'Jan 15', 'Mar 1', 'Apr 25', 'May 10', 'May 24', 'eve']}
 
@@ -51,7 +53,10 @@ def load():
     R = tp.add_columns(pd.read_pickle(os.path.join(tp.CACHE_DIR, 'relays.pkl')))
     with open(os.path.join(tp.CACHE_DIR, 'truths.pkl'), 'rb') as f:
         tr = pickle.load(f)
-    return _slim(A), _slim(R), tr
+    L = None
+    if os.path.exists(os.path.join(tp.CACHE_DIR, 'legs.pkl')):
+        L = tp.leg_columns(pd.read_pickle(os.path.join(tp.CACHE_DIR, 'legs.pkl')))
+    return _slim(A), _slim(R), tr, L
 
 
 def _slim(df):
@@ -182,10 +187,10 @@ METHODS = ('model', 'season bests', 'model, known entries', 'season bests, known
 _SHARED = {}   # set before the workers fork, so they share it instead of each getting a copy
 
 
-def _score(rows, method, champ, label, year, truth, actual, z, sims, max_events, results, team_rows):
+def _score(rows, method, champ, label, year, truth, actual, z, sims, max_events, results, team_rows, legs=None):
     """Simulate one championship-day's rows and record the team and event metrics."""
-    pts, teams, st = tp.simulate(rows, truth['table'], *z, sims=sims, seed=hash(champ) % 1000,
-                                 max_events=max_events)
+    pts, teams, st = tp.simulate(rows, truth['table'], *z, sims=sims, seed=zlib.crc32(champ.encode()) % 100000,
+                                 max_events=max_events, legs=legs)
     summ = tp.team_summary(pts, teams)
     m = dict(champ=champ, label=label, year=year, season=champ.split('-')[1], method=method)
     if sims > 1:
@@ -206,13 +211,29 @@ def _score(rows, method, champ, label, year, truth, actual, z, sims, max_events,
                                   actual=act_pts.get(s['team'], 0.0), rank=act_rank.get(s['team'], 99)))
 
 
-def evaluate_year(args):
-    """One held-out season, both ways: entries unknown (the entry model
-    guesses who runs what) and entries known (exactly who competed runs,
-    see tp.apply_entries); each against the season-bests baseline."""
-    year, sims, modes = args
-    A, R, tr, last_year = (_SHARED[k] for k in ('A', 'R', 'tr', 'last_year'))
-    model = tp.Model().fit(A[A.year != year], R[R.year != year])
+FIT_DIR = os.path.join(tp.CACHE_DIR, 'cv_fits')
+
+
+def _fit_stamp():
+    """What a season's saved fit depends on: the dataset files and the feature lists."""
+    import hashlib
+    files = [os.path.join(tp.CACHE_DIR, f) for f in ('athletes.pkl', 'relays.pkl', 'legs.pkl', 'truths.pkl')]
+    key = repr([os.path.getmtime(f) if os.path.exists(f) else 0 for f in files]
+               + [tp.ATH_FEATS, tp.REL_FEATS, tp.LEG_FEATS])
+    return hashlib.sha1(key.encode()).hexdigest()[:12]
+
+
+def _fit_path(year):
+    return os.path.join(FIT_DIR, f'{year}_{_fit_stamp()}.pkl')
+
+
+def fit_year(year):
+    """Fit the models without one season and save its predictions (every
+    candidate row and cutoff, leg chances, residual pools, the season-bests
+    baseline) so simulation variants can be scored without refitting."""
+    A, R, L = (_SHARED[k] for k in ('A', 'R', 'L'))
+    model = tp.Model().fit(A[A.year != year], R[R.year != year], None if L is None else L[L.year != year])
+    lp = model.predict_legs(None if L is None else L[L.year == year])
     # entrants outside the top 50 are only needed when the entries are known
     At = A[(A.year == year) & (A.in_top | (A.entered == 1))]
     Rt = R[R.year == year]
@@ -222,17 +243,39 @@ def evaluate_year(args):
                       on=['champ', 'cutoff', 'aid', 'event'], how='left')
     base = pd.concat([baseline_rows(At), baseline_relays(Rt)], ignore_index=True)
     base['relay'] = base['aid'].str.startswith("('relay'")
+    z = dict(state=model.z_for('x-state-x'), conf=model.z_for('x-conf-x'))
+    os.makedirs(FIT_DIR, exist_ok=True)
+    tmp = _fit_path(year) + '.tmp'
+    with open(tmp, 'wb') as f:
+        pickle.dump(dict(pred=pred, lp=lp, z=z, base=base), f, protocol=pickle.HIGHEST_PROTOCOL)
+    os.replace(tmp, _fit_path(year))
+    return year
+
+
+def evaluate_year(args):
+    """One held-out season, both ways: entries unknown (the entry model
+    guesses who runs what) and entries known (exactly who competed runs,
+    see tp.apply_entries); each against the season-bests baseline.
+    Reads the season's saved fit (fit_year); labels: cutoffs to score."""
+    year, sims, modes, labels = args
+    tr, last_year = _SHARED['tr'], _SHARED['last_year']
+    fit = load_fit(year)
+    pred, lp, base = fit['pred'], fit['lp'], fit['base']
+    if labels:
+        pred = pred[pred.label.isin(labels)]
+    lp_by = dict(iter(lp.groupby(['champ', 'label']))) if lp is not None and USE_LEGS else {}
     results, marks, team_rows, ents = [], [], [], []
     for (champ, label), rows in pred.groupby(['champ', 'label']):
         truth = tr[champ]
         actual = actual_order(truth)
         rows = rows.reset_index(drop=True)
-        z = model.z_for(champ)
+        z = fit['z']['state' if '-state-' in champ else 'conf']
         b = base[(base.champ == champ) & (base.label == label)].reset_index(drop=True)
         if 'unknown' in modes:
             top = rows[rows.in_top.astype(bool)].reset_index(drop=True)
             ents.extend(entry_metrics(top, truth, champ, label, year, 'model'))
-            _score(top, 'model', champ, label, year, truth, actual, z, sims, tp.max_events_for(champ), results, team_rows)
+            _score(top, 'model', champ, label, year, truth, actual, z, sims, tp.max_events_for(champ), results, team_rows,
+                   legs=lp_by.get((champ, label)))
             bt = b[b.in_top.astype(bool)].reset_index(drop=True)
             if len(bt):
                 ents.extend(entry_metrics(bt, truth, champ, label, year, 'season bests'))
@@ -272,14 +315,43 @@ def last_year_orders(tr, champs):
     return out
 
 
-def run(years=None, sims=1000, procs=4, modes=('unknown', 'known')):
+def ensure_fits(years, fit_procs=2):
+    """Fit and save every season in `years` that has no saved fit."""
+    import gc
     import multiprocessing as mp
-    A, R, tr = load()
+    todo = [y for y in years if not os.path.exists(_fit_path(y))]
+    if not todo:
+        return
+    os.environ['OMP_NUM_THREADS'] = '2'
+    A, R, _, L = load()
+    _SHARED.update(A=A, R=R, L=L)
+    with mp.get_context('fork').Pool(fit_procs) as pool:
+        for y in pool.imap_unordered(fit_year, todo):
+            print(f'  year {y} fitted', flush=True)
+    for k in ('A', 'R', 'L'):
+        _SHARED.pop(k, None)
+    del A, R, L
+    gc.collect()
+
+
+def load_fit(year):
+    with open(_fit_path(year), 'rb') as f:
+        return pickle.load(f)
+
+
+def run(years=None, sims=1000, procs=4, modes=('unknown', 'known'), labels=None, fit_procs=2):
+    """Fits seasons that have no saved fit (fit_procs workers: each holds a
+    copy of the training rows, ~7 GB; more ran the machine out of memory
+    2026-11-12), then scores every season from its saved fit (light)."""
+    import multiprocessing as mp
+    with open(os.path.join(tp.CACHE_DIR, 'truths.pkl'), 'rb') as f:
+        tr = pickle.load(f)
     champs = tp.load_champs()
-    years = years or sorted(y for y in A.year.unique() if y >= 2008)
-    ly = last_year_orders(tr, champs)
-    _SHARED.update(A=A, R=R, tr=tr, last_year=ly)
-    jobs = [(y, sims, modes) for y in years]
+    years = years or sorted({c['year'] for c in champs if c['year'] >= 2008})
+    os.environ['OMP_NUM_THREADS'] = '2'
+    ensure_fits(years, fit_procs)
+    _SHARED.update(tr=tr, last_year=last_year_orders(tr, champs))
+    jobs = [(y, sims, modes, labels) for y in years]
     res, marks, teams, ents = [], [], [], []
     os.environ['OMP_NUM_THREADS'] = '2'
     with mp.get_context('fork').Pool(procs) as pool:
@@ -436,6 +508,8 @@ def main(argv=None):
                     help='simulate with entries unknown (predicted), known (who competed), or both')
     ap.add_argument('--compare', nargs=2, metavar=('A', 'B'), help='paired differences of two result files')
     ap.add_argument('--method', default='model')
+    ap.add_argument('--labels', nargs='*', help='score only these cutoffs (eve, ...)')
+    ap.add_argument('--fit-procs', type=int, default=2)
     a = ap.parse_args(argv)
     if a.compare:
         compare(*a.compare, method=a.method)
@@ -444,7 +518,7 @@ def main(argv=None):
         report()
         return
     modes = ('unknown', 'known') if a.entries == 'both' else (a.entries,)
-    out = run(a.years, a.sims, a.procs, modes)
+    out = run(a.years, a.sims, a.procs, modes, a.labels, a.fit_procs)
     report(out)
 
 
