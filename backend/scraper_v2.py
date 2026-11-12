@@ -2026,6 +2026,14 @@ def write_meet_links(url_mapping=None):
             url = m.group(1) + '/results'
         year, season = path.split(os.sep)[-3:-1]
         out.setdefault(f'{year}_{season}', {})[os.path.splitext(fn)[0]] = url
+    # hand-added performances (manual_fixes performance_corrections) link to where they were read
+    try:
+        with open(os.path.join(base, 'backend', 'manual_fixes.json'), encoding='utf-8') as f:
+            for pc in json.load(f).get('performance_corrections', []):
+                if pc.get('meet_url') and pc.get('meet_name'):
+                    out.setdefault(f"{pc['year']}_{pc['season']}", {})[pc['meet_name']] = pc['meet_url']
+    except (OSError, ValueError):
+        pass
     # sub5 files recovered from the Internet Archive link to the archived copy
     rec = os.path.join(base, 'backend', 'data', 'archive_recovered.txt')
     if os.path.exists(rec):

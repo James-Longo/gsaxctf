@@ -398,6 +398,19 @@ def leg_near(a, b):
     return False
 
 
+def leg_genders(gender):
+    """The rosters a relay's legs come from: a mixed relay's legs are the
+    team's boys and girls (never a separate 'Mixed' runner)."""
+    return (gender,) if gender in ('Boys', 'Girls') else ('Boys', 'Girls')
+
+
+def other_genders(gender):
+    """Where else a leg can be: a coed relay printed under a boys' or girls'
+    event (or a sheet that files a relay under the wrong gender) has legs of
+    the other gender; tried only when no runner of the relay's gender fits."""
+    return {'Boys': ('Girls',), 'Girls': ('Boys',)}.get(gender, ())
+
+
 def match_leg(name, unit, gender, ay, roster, spell):
     """The runner a printed relay leg is: on the team's roster that season,
     else the season before or after (roster: (unit, gender, ay) -> ids;
@@ -939,7 +952,10 @@ def cluster(ents, pairs, decisions):
                 refused.append((a, b, why, 'reviewed as different'))
                 return
         ra_races = set().union(*(ents[x]['races'] for x in ma))
-        if any(ra_races & ents[y]['races'] for y in mb):
+        # (one store id under one name in two cases, 'NIck Marcelino' and
+        # 'Nick Marcelino', is one runner even when a race lists him twice)
+        same_name = why == 'store id' and ents[a]['toks'] == ents[b]['toks']
+        if not same_name and any(ra_races & ents[y]['races'] for y in mb):
             refused.append((a, b, why, 'same race'))
             return
         if why in ('auto', 'roster') and any(_short_form(ents[x]) and _two_in_one_race(ents[x]) for x in ma | mb):
@@ -1225,8 +1241,12 @@ def resolve_relays(relays, groups, ents, athletes, member_of):
         names = relay_leg_names(r['names'].most_common(1)[0][0])
         legs = []
         for x in names:
-            got = {match_leg(x, r['unit'], r['gender'], ay, roster, spell) for ay in sorted(r['ays'], reverse=True)}
-            got.discard(None)
+            for gs in (leg_genders(r['gender']), other_genders(r['gender'])):
+                got = {match_leg(x, r['unit'], g, ay, roster, spell)
+                       for g in gs for ay in sorted(r['ays'], reverse=True)}
+                got.discard(None)
+                if got:
+                    break
             legs.append(got.pop() if len(got) == 1 else None)
         resolved[k] = (names, legs)
     # 2. the same full spelling on the team within four seasons (a relay in a
@@ -1239,14 +1259,18 @@ def resolve_relays(relays, groups, ents, athletes, member_of):
             if c is not None or len(toks) < 2:
                 continue
             key = ' '.join(toks)
-            hit = {a for ay in r['ays'] for d in near_years
-                   for a in roster.get((r['unit'], r['gender'], ay + d), ()) if key in spell.get(a, ())}
+            for gs in (leg_genders(r['gender']), other_genders(r['gender'])):
+                hit = {a for ay in r['ays'] for d in near_years for g in gs
+                       for a in roster.get((r['unit'], g, ay + d), ()) if key in spell.get(a, ())}
+                if hit:
+                    break
             if len(hit) == 1:
                 legs[i] = hit.pop()
     # 3. relay-only runners (never in an individual event): one runner per
     # team, gender and full spelling, spellings one slip apart joined when
     # only one other fits; a surname alone stays unplaced
     only = collections.defaultdict(lambda: dict(names=collections.Counter(), teams=collections.Counter(),
+                                                genders=collections.Counter(),
                                                 seasons=set(), ays=set()))
     for k, (names, legs) in resolved.items():
         r = relays[k]
@@ -1254,7 +1278,10 @@ def resolve_relays(relays, groups, ents, athletes, member_of):
             toks = clean_name(x)
             if c is None and len(toks) >= 2 and not is_team_label(x, r['teams'].most_common(1)[0][0]) \
                     and not re.search(r'\bathlete\b|\btrack\b', x, re.I):
-                o = only[(r['unit'], r['gender'], ' '.join(toks))]
+                # (keyed without gender: the same name on the team's boys',
+                # girls' and coed relays is one runner)
+                o = only[(r['unit'], '', ' '.join(toks))]
+                o['genders'][r['gender']] += 1
                 o['names'][tidy(x)] += 1
                 o['teams'].update(r['teams'])
                 o['seasons'] |= r['seasons']
@@ -1279,15 +1306,21 @@ def resolve_relays(relays, groups, ents, athletes, member_of):
     for root in {find(k) for k in only}:
         ks = [k for k in only if find(k) == root]
         names, teams, seasons, ays = collections.Counter(), collections.Counter(), set(), set()
+        genders = collections.Counter()
         for k in ks:
             names.update(only[k]['names']); teams.update(only[k]['teams'])
             seasons |= only[k]['seasons']; ays |= only[k]['ays']
+            genders.update(only[k]['genders'])
+        # (a runner's gender from the boys' or girls' relays; Mixed only when
+        # every relay is coed)
+        bg = [g for g, _ in genders.most_common() if g in ('Boys', 'Girls')]
+        gender = bg[0] if bg else genders.most_common(1)[0][0]
         name, team = display_name(names), teams.most_common(1)[0][0]
         rid = js.slugify_athlete(name, team)
         if rid in taken:
             rid += '--relay'
         taken.add(rid)
-        a = dict(id=rid, name=name, gender=root[1], unit=root[0], class_of=None, primary_team=team,
+        a = dict(id=rid, name=name, gender=gender, unit=root[0], class_of=None, primary_team=team,
                  teams=sorted(teams), sports=sorted(seasons), rows=0, relay_only=True,
                  years=[min(ays), max(ays)])
         aka = sorted({n for n in names if n.lower() != name.lower()})
@@ -1300,7 +1333,7 @@ def resolve_relays(relays, groups, ents, athletes, member_of):
         r = relays[k]
         for i, (x, c) in enumerate(zip(names, legs)):
             if c is None:
-                legs[i] = runner_of.get((r['unit'], r['gender'], ' '.join(clean_name(x))))
+                legs[i] = runner_of.get((r['unit'], '', ' '.join(clean_name(x))))
     merged, n_legs, n_placed = {}, 0, 0
     for k, r in relays.items():
         names, legs = resolved[k]

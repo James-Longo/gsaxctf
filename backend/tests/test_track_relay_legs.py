@@ -76,3 +76,45 @@ def test_catalog_relays_link_runners():
     assert ava['relay_only'] and ava['relays'] == [out[0]['id']]
     assert athletes[0]['relays'] == [out[0]['id']]
     assert placed == n == 8
+
+
+def test_mixed_relay_legs_are_the_teams_boys_and_girls():
+    from collections import Counter
+    from backend.athlete_catalog import resolve_relays
+    ents = {'c': dict(members=Counter({'caleb-gsa': 9}), toks=['caleb', 'hale'], ays=[2006], unit='gsa', g='Boys'),
+            'm': dict(members=Counter({'molly-gsa': 9}), toks=['molly', 'doherty'], ays=[2006], unit='gsa', g='Girls')}
+    athletes = [dict(id='caleb-gsa', name='Caleb Hale', rows=9), dict(id='molly-gsa', name='Molly Doherty', rows=9)]
+    relays = {'x': dict(unit='gsa', gender='Mixed', events=Counter({'Mixed 1320 Yard Sprint Medley Relay': 1}),
+                        members=Counter({'rel-x': 1}), names=Counter({'Molly Doherty, Caleb Hale': 1}),
+                        teams=Counter({'GSA': 1}), seasons={'Indoor'}, ays={2006})}
+    out, n, placed = resolve_relays(relays, [['c'], ['m']], ents, athletes, {})
+    assert placed == n == 2
+    assert len(athletes) == 2                             # no relay-only copies of either runner
+
+
+def test_coed_relay_under_a_boys_event_finds_its_girls():
+    from collections import Counter
+    from backend.athlete_catalog import resolve_relays
+    ents = {'c': dict(members=Counter({'cam-gsa': 9}), toks=['cameron', 'gordon'], ays=[2017], unit='gsa', g='Boys'),
+            'h': dict(members=Counter({'hanna-gsa': 9}), toks=['hanna', 'jordan'], ays=[2017], unit='gsa', g='Girls')}
+    athletes = [dict(id='cam-gsa', name='Cameron Gordon', rows=9), dict(id='hanna-gsa', name='Hanna Jordan', rows=9)]
+    relays = {'x': dict(unit='gsa', gender='Girls', events=Counter({'Girls 1600 Meter Sprint Medley Relay': 1}),
+                        members=Counter({'rel-x': 1}), names=Counter({'Cameron Gordon, Hanna Jordan': 1}),
+                        teams=Counter({'GSA': 1}), seasons={'Indoor'}, ays={2017})}
+    out, n, placed = resolve_relays(relays, [['c'], ['h']], ents, athletes, {})
+    assert placed == n == 2 and len(athletes) == 2
+
+
+def test_relay_only_runner_on_boys_and_coed_relays_is_one_runner():
+    from collections import Counter
+    from backend.athlete_catalog import resolve_relays
+    athletes = []
+    def relay(sid, gender, names):
+        return dict(unit='gsa', gender=gender, events=Counter({f'{gender} 1200 Meter Sprint Medley Relay': 1}),
+                    members=Counter({sid: 1}), names=Counter({names: 1}), teams=Counter({'GSA': 1}),
+                    seasons={'Indoor'}, ays={2017})
+    relays = {'a': relay('rel-a', 'Boys', 'Brendan Penfold, Trevor Cochrane'),
+              'b': relay('rel-b', 'Mixed', 'Brendan Penfold, Laura Liu')}
+    resolve_relays(relays, [], {}, athletes, {})
+    penfold = [a for a in athletes if a['name'] == 'Brendan Penfold']
+    assert len(penfold) == 1 and penfold[0]['gender'] == 'Boys' and len(penfold[0]['relays']) == 2

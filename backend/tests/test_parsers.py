@@ -4053,3 +4053,10 @@ def test_hytek_race_code_3x1_names_a_3x1_mile_relay():
     from backend.event_canon import canonical_event
     assert canonical_event('Girls 4x1 Mile Relay Race 3X1', 'Girls')[1] == '3x1 Mile Relay'
     assert canonical_event('Boys 4x1 Mile Relay', 'Boys')[1] == '4x1 Mile Relay'
+
+
+def test_smaa_55_yard_hurdle_qualifier_is_55_meters():
+    from backend.event_canon import canonical_event
+    assert canonical_event('55 Yard Hurdles qualifier Open Division', 'Boys', 'Indoor') == ('Boys', '55 Meter Hurdles')
+    assert canonical_event('55 Yard Hurdles', 'Boys', 'Indoor') == ('Boys', '55 Meter Hurdles')
+    assert canonical_event('45 Yard Hurdles', 'Girls', 'Indoor') == ('Girls', '45 Yard Hurdles')

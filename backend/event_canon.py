@@ -219,6 +219,12 @@ def canonical_event(raw, gender, season=None, level=None, relay=False):
     if TYPE_STEEPLE.search(s):
         return gender, f'{dist} {unit} Steeplechase'
     if TYPE_HURDLES.search(s):
+        if dist == 55 and unit == 'Yard':
+            # (SMAA sheets 2016-2026 print the boys' 55m hurdle qualifier heat
+            # as '55 Yard Hurdles'; its times sit at the runners' 55m marks,
+            # half a second slower than 55 yards would be. No Maine meet ran
+            # a 55-yard hurdles.)
+            unit = 'Meter'
         return gender, f'{dist} {unit} Hurdles'
 
     suffix = adaptive
