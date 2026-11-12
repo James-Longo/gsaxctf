@@ -389,20 +389,26 @@ function PostseasonSimulator({ performances, isBetter, manifest, loadTeamData, s
         const p = preds?.[gender]
         if (!p) return null
         const teamOf = t => (activeSchools && schoolOf(t, activeSchools)) || t
-        const teams = p.teams.map(t => ({ team: teamOf(t.team), pts: t.pts,
-            odds: [...t.p, Math.max(0, 1 - t.p[0] - t.p[1] - t.p[2])] }))
         const byTeam = {}
+        const placePts = {}   // points for each row's predicted place, summed by team
         const base = k => { const b = k.replace(/^(Boys|Girls) /, ''); return /^1[01]0m Hurdles$/.test(b) ? '100m/110m Hurdles' : b }
         const order = k => { const i = SCORING_EVENTS.indexOf(base(k)); return i < 0 ? 99 : i }
         const events = Object.entries(p.events).map(([ev, rows]) => {
             const key = normalizeEvent(`${gender} ${ev}`, filterSeason)
-            const out = rows.map(r => ({ ...r, team: teamOf(r.t) }))
-            out.forEach(r => { if (r.x >= 0.5) (byTeam[r.team] = byTeam[r.team] || []).push({ key, ...r }) })
+            // rows come ordered by expected points: that order is the predicted place
+            const out = rows.map((r, i) => ({ ...r, team: teamOf(r.t), pp: SCORING_RULES[i] || 0 }))
+            out.forEach(r => {
+                if (r.pp) placePts[r.team] = (placePts[r.team] || 0) + r.pp
+                if (r.pp || r.x >= 0.5) (byTeam[r.team] = byTeam[r.team] || []).push({ key, ...r })
+            })
             return { key, rows: out }
         }).sort((a, b) => order(a.key) - order(b.key))
-        Object.values(byTeam).forEach(rs => rs.sort((a, b) => b.x - a.x))
+        Object.values(byTeam).forEach(rs => rs.sort((a, b) => b.pp - a.pp || b.x - a.x))
+        // team totals stay expected points (ranking teams by predicted-place totals did worse: 2026-11-12)
+        const teams = p.teams.map(t => ({ team: teamOf(t.team), pts: Math.round(t.pts), op: placePts[teamOf(t.team)] || 0,
+            odds: [...t.p, Math.max(0, 1 - t.p[0] - t.p[1] - t.p[2])] }))
         return { teams, events, byTeam, cutoff: p.cutoff, basis: p.basis || 'predicted' }
-    }, [preds, gender, activeSchools, filterSeason, SCORING_EVENTS])
+    }, [preds, gender, activeSchools, filterSeason, SCORING_EVENTS, SCORING_RULES])
     const pageTeam = t => (activeSchools && schoolOf(t, activeSchools)) || t
     const eventOrder = key => {
         const b = key.replace(/^(Boys|Girls) /, '')
@@ -1034,7 +1040,7 @@ function PostseasonSimulator({ performances, isBetter, manifest, loadTeamData, s
                                                 <td className="num">{i + 1}</td>
                                                 <td>{t.team}</td>
                                                 {t.odds.map((o, k) => <td key={k} className={`num ${k < 3 ? pctCls(o) : 'xs-plain'}`}>{pct(o)}</td>)}
-                                                <td className="num">{t.pts.toFixed(1)}</td>
+                                                <td className="num" title={`${t.op} from the predicted places`}>{t.pts}</td>
                                             </tr>
                                             {expandedTeams[key] && mine.length > 0 && (
                                                 <tr className="ps-breakdown"><td colSpan={7}>
@@ -1042,7 +1048,7 @@ function PostseasonSimulator({ performances, isBetter, manifest, loadTeamData, s
                                                         <div key={j} className="breakdown-row">
                                                             <span className="b-event clickable-event" onClick={(e) => { e.stopPropagation(); scrollToEvent(r.key) }}>{r.key}</span>
                                                             <span className="b-athlete">{r.n || 'Relay'}</span>
-                                                            <span className="b-pts" title="Expected points">+{r.x.toFixed(1)}</span>
+                                                            <span className="b-pts" title={`Expected ${r.x.toFixed(1)}`}>{r.pp ? `+${r.pp}` : '–'}</span>
                                                         </div>
                                                     ))}
                                                 </td></tr>
@@ -1134,12 +1140,12 @@ function PostseasonSimulator({ performances, isBetter, manifest, loadTeamData, s
                                     <table className="performance-table">
                                         <thead>
                                             <tr>
-                                                <th title="Rank by expected points">Pred.</th>
+                                                <th title="Predicted place (by expected points)">Pred.</th>
                                                 <th>Name</th>
                                                 <th>Team</th>
                                                 <th title="Predicted mark">Mark</th>
                                                 {predicted.basis !== 'entered' && <th className="num" title="Chance of entering this event">Entry</th>}
-                                                <th title="Expected points">Points</th>
+                                                <th title="Points for the predicted place">Points</th>
                                                 {act && <th className="ps-act" title={`Place at ${champCutoff?.meet || 'the championship'}`}>Place</th>}
                                                 {act && <th title="Mark at the championship">Result</th>}
                                                 {act && <th title="Points scored">Pts</th>}
@@ -1155,7 +1161,7 @@ function PostseasonSimulator({ performances, isBetter, manifest, loadTeamData, s
                                                         <td>{r.team}</td>
                                                         <td className="mark-cell">{r.m}</td>
                                                         {predicted.basis !== 'entered' && <td className={`num ${pctCls(r.p)}`}>{pct(r.p)}</td>}
-                                                        <td className="points-cell">{r.x >= 0.05 ? `+${r.x.toFixed(1)}` : '-'}</td>
+                                                        <td className="points-cell" title={`Expected ${r.x.toFixed(1)}`}>{r.pp ? `+${r.pp}` : '-'}</td>
                                                         {act && <td className="ps-act" title={a ? '' : 'Did not compete in this event at the championship'}>{a ? a.pl : '–'}</td>}
                                                         {act && <td className="mark-cell">{a ? a.m : ''}</td>}
                                                         {act && <td className="points-cell">{a?.pts ? `+${a.pts}` : ''}</td>}
@@ -1375,7 +1381,7 @@ function TrackResultPanel({ actual, predicted, odds, gender, targetTeam, meet })
                                         <tr>
                                             <th className="num">Place</th><th>Team</th><th className="num">Score</th>
                                             <th className="num" title="Place in the simulated standings">Predicted<br />place</th>
-                                            <th className="num" title="Simulated score">Pred.<br />score</th>
+                                            <th className="num" title="Predicted score">Pred.<br />score</th>
                                             <th className="num" title="Share of simulated meets in which the team finished top 3">Top 3<br />chance</th>
                                         </tr>
                                     </thead>
@@ -1389,7 +1395,7 @@ function TrackResultPanel({ actual, predicted, odds, gender, targetTeam, meet })
                                                     <td>{t.team}</td>
                                                     <td className="num">{+t.score.toFixed(2)}</td>
                                                     <td className="num">{pp ?? '–'}{off ? <span className="xs-dim"> ({off > 0 ? '+' : '−'}{Math.abs(off)})</span> : null}</td>
-                                                    <td className="num">{pPts[t.team] != null ? pPts[t.team].toFixed(1) : '–'}</td>
+                                                    <td className="num">{pPts[t.team] != null ? +pPts[t.team].toFixed(1) : '–'}</td>
                                                     <td className={`num ${pctCls(top3(odds[g][t.team]))}`}>{odds[g][t.team] ? pct(top3(odds[g][t.team])) : '–'}</td>
                                                 </tr>
                                             )
