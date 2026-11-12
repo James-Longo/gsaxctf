@@ -50,7 +50,13 @@ PENT_FIELD = np.array([0.0060, 0.0052, 0.0045, 0.0019, 0.0004, -0.0026])
 LINEUP_SLOPE = 0.8
 MEASURED_SLOPE = {'4x200 Meter Relay': 0.29, '4x800 Meter Relay': 0.4, '4x100 Meter Relay': 0.11,
                   '4x400 Meter Relay': 0.03}
-MISSING_LEG_GAP = 0.03      # a runner with no leg-event mark: this much slower than the team's slowest
+# a runner with no leg-event mark (relay-only): the likely legs' mean (leg chances
+# as weights) plus 1%. Relays run with one or two such legs came in 0.05% / 0.33%
+# slower than the model, so they are about average for the relay, not its slowest;
+# guessing 'slowest + 3%' made benching them look like 1.35 of the 1.68 points per
+# team the optimizer found in leg swaps.
+UNKNOWN_LEG = 0.01
+REGULAR_LEG = 0.2         # leg chance that makes a runner with no leg-event mark a relay choice
 
 
 def pent_adj(pent, events):
@@ -144,14 +150,18 @@ class Meet:
         self.legs = legs
         # per (team, relay event): leg candidates with their gap to the team's 4th best,
         # and the expected lineup's mean gap (leg chances as weights): the relay's mark is that lineup's
-        self.leg_gap, self.expected = {}, {}
+        # leg_pool: runners the optimizer may put on a relay - a leg-event mark, or
+        # no mark but likely on it already (a regular); a runner with neither (a
+        # thrower, a jumper who never runs relays) is not a choice
+        self.leg_gap, self.expected, self.leg_pool = {}, {}, {}
         for (t, e), g in legs.groupby(['team', 'event']):
             gaps = g.leg_gap.values
-            known = np.sort(gaps[np.isfinite(gaps)])
-            worst = known.max() if len(known) else 0.0
-            filled = np.where(np.isfinite(gaps), gaps, max(worst, 0) + MISSING_LEG_GAP)
-            self.leg_gap[(t, e)] = dict(zip(g.aid.values, filled))
             w = np.nan_to_num(g.pleg.values.astype(float))
+            ok = np.isfinite(gaps)
+            likely = float((w[ok] * gaps[ok]).sum() / w[ok].sum()) if ok.any() and w[ok].sum() > 0 else 0.0
+            filled = np.where(ok, gaps, likely + UNKNOWN_LEG)
+            self.leg_gap[(t, e)] = dict(zip(g.aid.values, filled))
+            self.leg_pool[(t, e)] = {a: v for a, v, k, p in zip(g.aid.values, filled, ok, w) if k or p >= REGULAR_LEG}
             self.expected[(t, e)] = float((w * filled).sum() / w.sum()) if w.sum() > 0 else np.nan
         # the meet's limits
         per = collections.Counter()
@@ -354,7 +364,7 @@ class Optimizer:
         self.elig = {a: [e for e in m.events if m.eligible(a, e)] for a in self.ath}
         self.relays = [] if fix_relays else \
             [e for e in m.events if tp.is_relay_event(e) and (str(('relay', field.focal)), e) in m.ix]
-        self.pool = {e: {a: g for a, g in m.leg_gap.get((field.focal, e), {}).items() if ok(a)} for e in self.relays}
+        self.pool = {e: {a: g for a, g in m.leg_pool.get((field.focal, e), {}).items() if ok(a)} for e in self.relays}
         self.n_eval = 0
 
     def score(self, plan):
