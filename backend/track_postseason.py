@@ -38,8 +38,11 @@ Model (see build_dataset / fit / simulate below)
     simple anchor (the most informative single estimate) and another its
     spread; a classifier predicts whether the athlete enters the event;
   * relays are team candidates with relay history and the legs' estimates;
-  * each simulation draws entries and marks, scores the meet with its
-    scoring table, and counts places.
+  * a leg classifier gives each runner's chance of being on each relay
+    (this season's lineups, rank in the leg event, their own events);
+  * each simulation draws entries, relay legs and marks, holds every
+    athlete to the meet's event limit with legs included, scores the meet
+    with its scoring table, and counts places.
 
 Everything is validated by predicting each past season with models fitted
 on the other seasons (track_postseason_cv.py).
@@ -705,6 +708,54 @@ def load_champs():
 
 
 # ---------------------------------------------------------------------------
+# Running order (James 2026-11-12: athletes rarely double in back-to-back events)
+# ---------------------------------------------------------------------------
+
+# the Maine championship order, in every schedule-order results file 2003-2026
+# but two (those ran the 200 after the 100); for meets with no file in that order
+STD_ORDER = {'Indoor': ['4x800 Meter Relay', 'HURDLES', '55 Meter Dash', '1 Mile Run', '400 Meter Dash',
+                        '800 Meter Run', '200 Meter Dash', '2 Mile Run', '4x200 Meter Relay'],
+             'Outdoor': ['4x800 Meter Relay', 'HURDLES', '100 Meter Dash', '1600 Meter Race Walk', '1600 Meter Run',
+                         '4x100 Meter Relay', '400 Meter Dash', '300 Meter Hurdles', '800 Meter Run',
+                         '200 Meter Dash', '3200 Meter Run', '4x400 Meter Relay']}
+FIELD_FAMS = {'HJ', 'LJ', 'TJ', 'PV', 'SP', 'DT', 'JT'}
+_ORDER = {}
+
+
+def _file_order(c):
+    """Running events in the order a results file prints them, when that is
+    the meet's schedule (it opens with a relay); None for files sorted by
+    event (dashes first)."""
+    j = _read_parsed(c['year'], c['season'], c['file']) or {}
+    seq = []
+    for e in j.get('events', []):
+        if e.get('gender') != c['gender']:
+            continue
+        ev = canonical(e.get('event', ''), c['gender'])
+        if ev and FAMILY.get(ev) not in FIELD_FAMS and ev not in seq:
+            seq.append(ev)
+    return seq if seq and 'Relay' in seq[0] else None
+
+
+def event_order(champ_id):
+    """{running event: slot in the schedule} for a championship: its own
+    results file's order, else the latest earlier edition's that prints one
+    (the order can change), else STD_ORDER."""
+    if champ_id in _ORDER:
+        return _ORDER[champ_id]
+    year, key = int(champ_id[:4]), champ_id[5:]
+    eds = sorted((c for c in load_champs() if c['id'][5:] == key and c['year'] <= year),
+                 key=lambda c: -c['year'])
+    seq = next((o for o in map(_file_order, eds) if o), None)
+    if seq is None:
+        season, g = key.split('-')[0], key.split('-')[-1]
+        hurdles = {'Indoor': '55 Meter Hurdles', 'Outdoor': '110 Meter Hurdles' if g == 'Boys' else '100 Meter Hurdles'}[season]
+        seq = [hurdles if e == 'HURDLES' else e for e in STD_ORDER[season]]
+    _ORDER[champ_id] = {e: i for i, e in enumerate(seq)}
+    return _ORDER[champ_id]
+
+
+# ---------------------------------------------------------------------------
 # Championship results (truth)
 # ---------------------------------------------------------------------------
 
@@ -1204,6 +1255,90 @@ class Featurizer:
         _ranks(rows)
         return rows
 
+    # -- relay legs ----------------------------------------------------------
+    def leg_rows(self, champ, units, cutoff, athlete_rows, relay_rows):
+        """Who may run each candidate relay's legs: the team's athlete
+        candidates and everyone on its relays this season, with their relay
+        history (this relay's races, its fastest and latest lineups, the
+        other relays) and where they stand in the leg event and their own
+        events. One row per (relay, runner)."""
+        s = self.s
+        y, season, g = champ['year'], champ['season'], champ['gender']
+        typ = SEASON_OF[season]
+        cur, prev = slots_for(y, typ)[:2]
+        team_keys = collections.defaultdict(list)
+        for (u, gg) in s.relays:
+            if gg == g:
+                tu = self.team(u, y, season, g)
+                if tu in units:
+                    team_keys[tu].append(u)
+        ind = collections.defaultdict(lambda: collections.defaultdict(dict))   # team -> aid -> event -> row
+        for r in athlete_rows:
+            ind[r['team']][str(r['aid'])][r['event']] = r
+        out = []
+        active = {}
+        for tu in {r['team'] for r in relay_rows}:
+            races = collections.defaultdict(list)      # event -> [(date, value, legs)] this season
+            before = collections.Counter()             # (aid, event) -> races last block
+            for u in team_keys.get(tu, ()):
+                for blk, dst in ((cur, races), (prev, None)):
+                    for ev, (dates, _, vals, legs) in s.relays.get((u, g), {}).get(blk, {}).items():
+                        i = bisect.bisect_left(dates, cutoff)
+                        for d, v, ls in zip(dates[:i], vals[:i], legs[:i]):
+                            if len(ls) < 3:
+                                continue
+                            if dst is None:
+                                before.update((a, ev) for a in ls)
+                            else:
+                                dst[ev].append((d, v, ls))
+            any_n = collections.Counter(a for lst in races.values() for _, _, ls in lst for a in ls)
+            team_ind = ind.get(tu, {})
+            pool = set(team_ind) | set(any_n)
+            for rr in relay_rows:
+                if rr['team'] != tu:
+                    continue
+                ev = rr['event']
+                lst = races.get(ev, [])
+                on_n = collections.Counter(a for _, _, ls in lst for a in ls)
+                fast = set(min(lst, key=lambda x: x[1])[2]) if lst else set()
+                last = set(max(lst, key=lambda x: x[0])[2]) if lst else set()
+                leg_ev = next((le for le in RELAY_LEGS[ev] if any(le in e for e in team_ind.values())), None)
+                legs = sorted((e[leg_ev]['anchor'], a) for a, e in team_ind.items() if leg_ev in e) if leg_ev else []
+                fourth = legs[min(3, len(legs) - 1)][0] if legs else np.nan
+                leg_rank = {a: k + 1 for k, (_, a) in enumerate(legs)}
+                depth = sum(1 for a in pool if on_n[a] or any_n[a])
+                for a in pool:
+                    if a not in active:
+                        active[a] = self._season_activity(a, cur, cutoff)
+                    evs = team_ind.get(a, {})
+                    lr = evs.get(leg_ev) if leg_ev else None
+                    frs = [r['field_rank'] for e, r in evs.items()]
+                    out.append(dict(
+                        aid=a, team=tu, event=ev, ev_code=float(EVENT_CODES[ev]), days_left=_days(cutoff, champ['date']),
+                        on_n=float(on_n[a]), rel_n=float(len(lst)), on_frac=on_n[a] / len(lst) if lst else np.nan,
+                        on_fast=float(a in fast) if lst else np.nan, on_last=float(a in last) if lst else np.nan,
+                        on_other=float(any_n[a] - on_n[a]), on_prev=float(before[(a, ev)]),
+                        on_prev_any=float(sum(n for (b, _), n in before.items() if b == a)),
+                        leg_rank=float(leg_rank.get(a, np.nan)), leg_gap=lr['anchor'] - fourth if lr else np.nan,
+                        leg_fr=float(lr['field_rank']) if lr else np.nan,
+                        ind_n=float(len(evs)), ind_n8=float(sum(f <= 8 for f in frs)),
+                        ind_n16=float(sum(f <= 16 for f in frs)), ind_best=float(min(frs)) if frs else np.nan,
+                        grade=float(next(iter(evs.values()))['grade']) if evs else np.nan,
+                        depth=float(depth), rel_fr=float(rr['field_rank']),
+                        cur_races=active[a][0], since_last=active[a][1]))
+        return out
+
+    def _season_activity(self, aid, blk, cutoff):
+        """(results this season before the cutoff, days since the last one)."""
+        b = self.s.marks.get(aid, {}).get(blk)
+        n, last = 0, None
+        for dates, _, _ in (b or {}).values():
+            i = bisect.bisect_left(dates, cutoff)
+            n += i
+            if i and (last is None or dates[i - 1] > last):
+                last = dates[i - 1]
+        return float(n), float(_days(last, cutoff)) if last else np.nan
+
 
 def _ranks(rows):
     """Rank of each row's anchor within its team and the whole field, per event."""
@@ -1304,13 +1439,18 @@ def rows_for(champ, cutoff, label, truth, units=None, events=None, keep=()):
     events = events if events is not None else sorted(truth['events'])
     ath = fz.athlete_rows(champ, units, cutoff, events)
     rel = fz.relay_rows(champ, units, cutoff, events, ath)
+    legs = fz.leg_rows(champ, units, cutoff, ath, rel)
     got = {}
+    lineup = {}
     if truth:
         for ev, rows in truth['events'].items():
             for place, r in enumerate(rows):
                 k = (r['aid'], ev)
                 if r['aid'] and k not in got:
                     got[k] = (r['p'], place + 1)
+                if is_relay_event(ev) and r['unit'] and r.get('legs') and len(r['legs']) >= 4 \
+                        and (r['unit'], ev) not in lineup:
+                    lineup[(r['unit'], ev)] = set(r['legs'])
     keep_a = []
     by_ev = collections.defaultdict(list)
     for r in ath:
@@ -1331,7 +1471,13 @@ def rows_for(champ, cutoff, label, truth, units=None, events=None, keep=()):
         r['cutoff'] = cutoff
         r['label'] = label
         r.setdefault('in_top', True)
-    return keep_a, rel
+    for r in legs:
+        ls = lineup.get((r['team'], r['event']))
+        r['on'] = (1.0 if r['aid'] in ls else 0.0) if ls is not None else np.nan
+        r['champ'] = champ['id']
+        r['cutoff'] = cutoff
+        r['label'] = label
+    return keep_a, rel, legs
 
 
 def _job(args):
@@ -1347,11 +1493,12 @@ def build_dataset(first=2006, procs=10, quiet=False):
     fz, champs, tr = setup()
     _G.update(fz=fz, tr=tr)
     jobs = [(c, lab, d) for c in champs if c['year'] >= first for lab, d in cutoffs_for(c)]
-    ath, rel = [], []
+    ath, rel, legs = [], [], []
     with mp.get_context('fork').Pool(procs) as pool:
-        for i, (a, r) in enumerate(pool.imap_unordered(_job, jobs, chunksize=4)):
+        for i, (a, r, lg) in enumerate(pool.imap_unordered(_job, jobs, chunksize=4)):
             ath.extend(a)
             rel.extend(r)
+            legs.extend(x for x in lg if x['on'] == x['on'])      # lineups on file only: the leg model's rows
             if not quiet and i % 100 == 0:
                 print(f'  {i}/{len(jobs)} championship-days', flush=True)
     A = pd.DataFrame(ath)
@@ -1360,6 +1507,11 @@ def build_dataset(first=2006, procs=10, quiet=False):
     R['aid'] = R['aid'].astype(str)
     A.to_pickle(os.path.join(CACHE_DIR, 'athletes.pkl'))
     R.to_pickle(os.path.join(CACHE_DIR, 'relays.pkl'))
+    L = pd.DataFrame(legs)
+    for c in L.columns:
+        if L[c].dtype == np.float64:
+            L[c] = L[c].astype(np.float32)
+    L.to_pickle(os.path.join(CACHE_DIR, 'legs.pkl'))
     if not quiet:
         print(f'{len(A)} athlete rows ({int(A.entered.sum())} entered), {len(R)} relay rows')
     return A, R
@@ -1375,7 +1527,7 @@ ATH_FEATS = ['anchor_z', 'anchor_slot', 'grade', 'ms_last', 'days_left', 'cur_al
              'prev_same_fam', 'prev_other_fam', 'prev_n_events', 'field_rank', 'team_rank',
              'field_gap', 'ev_code', 'typ', 'boys', 'is_state', 'std_gap', 'std_gap_any',
              'team_gap', 'team_min', 'ath_nq', 'ath_ev_rank', 'ath_nc', 'ath_best_gap', 'ath_fr_rank',
-             'team_nq_ev', 'early_ev', 'early_n'] + SLOT_FEATS
+             'team_nq_ev', 'early_ev', 'early_n', 'adj_fr', 'adj_gap'] + SLOT_FEATS
 REL_FEATS = ['anchor_z', 'anchor_slot', 'days_left', 'legs_d', 'legs_n', 'legs_ev', 'prev_same_fam',
              'field_rank', 'field_gap', 'ev_code', 'typ', 'boys', 'is_state'] + SLOT_FEATS[:15]
 # team_gap: days the athlete has sat out while the team kept racing (absent,
@@ -1387,6 +1539,10 @@ REL_FEATS = ['anchor_z', 'anchor_slot', 'days_left', 'legs_d', 'legs_n', 'legs_e
 # std_gap / std_gap_any: the qualifying line, how this season's mark stands
 # against the marks that got athletes into the same meet the two seasons
 # before (state meets enter by qualifying standard)
+LEG_FEATS = ['ev_code', 'days_left', 'on_n', 'rel_n', 'on_frac', 'on_fast', 'on_last', 'on_other',
+             'on_prev', 'on_prev_any', 'leg_rank', 'leg_gap', 'leg_fr', 'ind_n', 'ind_n8', 'ind_n16',
+             'ind_best', 'grade', 'depth', 'rel_fr', 'typ', 'boys', 'is_state', 'cur_races', 'since_last']
+# leg model: P(runner on the relay | the relay runs), from leg_rows
 EVENT_CODES = {ev: i for i, ev in enumerate(sorted(FAMILY))}
 Y_CLIP = 0.25
 _LINES = {}
@@ -1446,6 +1602,28 @@ def _athlete_cols(df):
     for k, v in cols.items():
         df[k] = np.nan
         df.loc[top, k] = v.values
+    # the athlete's standing in the events just before and after this one in the
+    # meet's running order (doubling back-to-back is rare: 400/800, mile/400, 400/300H)
+    pos = np.array([event_order(c).get(e, np.nan) for c, e in zip(t.champ.values, t.event.values)])
+    fr = t.field_rank.values.astype(float)
+    gap = t.std_gap.values.astype(float)
+    adj_fr = np.full(len(t), np.nan)
+    adj_gap = np.full(len(t), np.nan)
+    for idx in t.groupby(day + [t.aid]).indices.values():
+        if len(idx) < 2:
+            continue
+        for i in idx:
+            if np.isnan(pos[i]):
+                continue
+            nb = [j for j in idx if j != i and abs(pos[j] - pos[i]) == 1]
+            if nb:
+                adj_fr[i] = min(fr[j] for j in nb)
+                g = [gap[j] for j in nb if gap[j] == gap[j]]
+                adj_gap[i] = min(g) if g else np.nan
+    df['adj_fr'] = np.nan
+    df['adj_gap'] = np.nan
+    df.loc[top, 'adj_fr'] = adj_fr
+    df.loc[top, 'adj_gap'] = adj_gap
     # rows outside the top 50 (kept for known entries) take their athlete's / team's values
     for k, keys in (('team_min', ['team']), ('ath_nq', ['aid']), ('ath_nc', ['aid']), ('ath_best_gap', ['aid'])):
         df[k] = df.groupby(['champ', 'cutoff'] + keys)[k].transform('max')
@@ -1469,6 +1647,15 @@ def add_columns(df):
     for c in ATH_FEATS + REL_FEATS:
         if c not in df.columns:
             df[c] = np.nan
+    return df
+
+
+def leg_columns(df):
+    df = df.copy()
+    df['typ'] = df['champ'].str.contains('-Outdoor-').astype(np.float32)
+    df['boys'] = df['champ'].str.endswith('-Boys').astype(np.float32)
+    df['is_state'] = df['champ'].str.contains('-state-').astype(np.float32)
+    df['year'] = df['champ'].str[:4].astype(int)
     return df
 
 
@@ -1521,14 +1708,30 @@ class Part:
 class Model:
     """State meets are predicted by models fitted on state meets only: adding
     the conference meets to their training made state podiums worse (-0.7 to
-    -1.1 pts, 2026-10-23). Conference meets use models fitted on both."""
+    -1.1 pts, 2026-10-23). Conference meets use models fitted on both.
+    The leg model (who runs a relay's legs) is fitted on every meet."""
 
-    def fit(self, A, R):
+    def fit(self, A, R, L=None):
         sa, sr = A[A.is_state == 1], R[R.is_state == 1]
         self.ath = Part(ATH_FEATS).fit(sa)
         self.rel = Part(REL_FEATS).fit(sr)
         self.conf = (Part(ATH_FEATS).fit(A), Part(REL_FEATS).fit(R)) if (A.is_state == 0).any() else None
+        self.fit_legs(L)
         return self
+
+    def fit_legs(self, L):
+        self.legs = None
+        if L is not None and len(L):
+            self.legs = _hgb('clf', categorical_features=[LEG_FEATS.index('ev_code')]).fit(L[LEG_FEATS], L.on)
+        return self
+
+    def predict_legs(self, L):
+        """leg rows with pleg, the chance each runner is on the relay if it runs."""
+        if self.legs is None or L is None or not len(L):
+            return None
+        out = L[['champ', 'cutoff', 'label', 'team', 'event', 'aid']].copy()
+        out['pleg'] = self.legs.predict_proba(L[LEG_FEATS])[:, 1]
+        return out
 
     def predict(self, A, R):
         import pandas as pd
@@ -1561,8 +1764,14 @@ class Model:
 # (2026-10-23), so it is off.
 PROGRAM_ICC = 0.0
 
-# individual events an athlete may enter: no state meet on file has an indoor
-# athlete in more than 3, outdoor athletes run up to 4 (423 cases)
+# events an athlete may enter, relay legs included (MPA rule; on file: no
+# indoor athlete in more than 3 at a state or conference meet, outdoor up to 4).
+# Relay legs count when the sim has leg chances (Model.legs); measured
+# 2026-11-12 (eve, 19 seasons, paired): podiums and winners tie the
+# individual-only cap, state top-3 Brier -0.0002; legs drawn without
+# calibration (_calibrate) cut stars short, and relay marks moved by the
+# drawn lineup (slope 0.85 indoor / 0.53 outdoor vs the expected lineup's
+# leg-event gap) made state winners worse (-2.8 +/- 1.9 pts indoor).
 MAX_EVENTS = {'Indoor': 3, 'Outdoor': 4}
 
 
@@ -1570,39 +1779,146 @@ def max_events_for(champ_id):
     return MAX_EVENTS['Indoor' if '-Indoor-' in champ_id else 'Outdoor']
 
 
-def simulate(pred, table, z_ath, z_rel, sims=2000, seed=0, max_events=4, icc=PROGRAM_ICC):
+def _cap_entries(pred, entered, cap, legs, rng, pleg=None):
+    """An athlete enters at most `cap` events, relay legs included: when a
+    draw gives more, the likeliest are kept (an individual event by its
+    entry chance, a leg by the relay's chance times the leg chance). A leg
+    given up goes to the next runner in that relay's draw with room.
+    Modifies `entered` in place; returns {relay row: (aids, legs drawn)}."""
+    sims = entered.shape[0]
+    pent = pred.pent.values
+    pleg = legs.pleg.values if pleg is None and legs is not None else pleg
+    items = collections.defaultdict(list)      # aid -> [(priority, kind, ref)]
+    for i, (a, r) in enumerate(zip(pred.aid.values, pred.relay.values)):
+        if not r:
+            items[a].append((pent[i], 0, i))
+    drawn = {}
+    if legs is not None and len(legs):
+        rel_row = {(t, e): i for i, (t, e, r) in enumerate(zip(pred.team.values, pred.event.values,
+                                                             pred.relay.values)) if r}
+        for (t, e), li in legs.groupby(['team', 'event']).indices.items():
+            i = rel_row.get((t, e))
+            if i is None:
+                continue
+            aids = legs.aid.values[li]
+            p = np.clip(pleg[li].astype(float), 1e-4, 1 - 1e-4)
+            # four legs without replacement: Gumbel top-4 on the log odds
+            keys = np.log(p / (1 - p))[None, :] + rng.gumbel(size=(sims, len(li)))
+            order = np.argsort(-keys, axis=1)
+            sel = np.zeros((sims, len(li)), bool)
+            np.put_along_axis(sel, order[:, :4], True, axis=1)
+            sel &= entered[:, i][:, None]
+            drawn[i] = (aids, sel, order, li)
+            pr = legs.pleg.values[li]                 # priority by the model's chance, not the draw's
+            for k, a in enumerate(aids):
+                items[a].append((pent[i] * pr[k], 1, (i, k)))
+    count = {}
+    for a, its in items.items():
+        if len(its) <= cap:
+            continue
+        its.sort(key=lambda x: -x[0])
+        ind = np.stack([entered[:, ref] if kind == 0 else drawn[ref[0]][1][:, ref[1]] for _, kind, ref in its], 1)
+        keep = ind & (np.cumsum(ind, axis=1) <= cap)
+        for j, (_, kind, ref) in enumerate(its):
+            if kind == 0:
+                entered[:, ref] = keep[:, j]
+            else:
+                drawn[ref[0]][1][:, ref[1]] = keep[:, j]
+        count[a] = keep.sum(1)
+    # refill legs given up, from the rest of each relay's draw order
+    for i, (aids, sel, order, _) in drawn.items():
+        need = entered[:, i] & (sel.sum(1) < min(4, len(aids)))
+        if not need.any():
+            continue
+        for s_ in np.flatnonzero(need):
+            for k in order[s_, 4:]:
+                if sel[s_].sum() >= 4:
+                    break
+                c = count.get(aids[k])       # None: too few events to reach the cap
+                if c is None or c[s_] < cap:
+                    sel[s_, k] = True
+                    if c is not None:
+                        c[s_] += 1
+    return drawn
+
+
+CAL_SIMS, CAL_ROUNDS = 600, 3
+
+# Tried and rejected 2026-11-12 (paired eve CV, 2006-2026):
+# - conference relay marks moved by how many of the season's fastest four the
+#   drawn lineup kept (real: championship relay vs prediction 0 kept +4.1%,
+#   1 +3.6%, 2 +1.0%, 3 0, 4 -0.6% at conference meets, none at states):
+#   conference indoor top-3 Brier +0.0006+/-0.0004, winners -2.8+/-2.9 pts.
+# - back-to-back events drawn anti-correlated (Gaussian chain along the
+#   running order, rho -0.8; doubling in adjacent events is 28% indoor /
+#   27% outdoor vs 36% / 34% drawn independently): podiums and winners
+#   unchanged, top-3 Brier tied or worse. The adj_* entry features stay.
+
+
+def _calibrate(pred, cap, legs, seed):
+    """Draw chances that keep the models' chances after the cap. The entry
+    and leg models learned from meets where the cap already applied, so
+    their chances are the after-cap ones; capping draws made from them would
+    count stars short. A pilot run (the same random numbers each round)
+    raises each capped athlete's chances, and their relays' leg chances, by
+    target / pilot result. Returns (entry chances, leg chances)."""
+    pent = pred.pent.values.astype(float)
+    pl0 = legs.pleg.values.astype(float)
+    q, ql = pent.copy(), pl0.copy()
+    # only athletes with more candidate events and legs than the cap
+    n_items = collections.Counter(a for a, r in zip(pred.aid.values, pred.relay.values) if not r)
+    n_items.update(legs.aid.values)
+    capped = {a for a, k in n_items.items() if k > cap}
+    rows = np.array([(not r) and a in capped for a, r in zip(pred.aid.values, pred.relay.values)])
+    leg_rows = np.isin(legs.aid.values, list(capped))
+    if not rows.any() and not leg_rows.any():
+        return q, None
+    u = np.random.default_rng(seed + 7).random((CAL_SIMS, len(pred)))
+    for _ in range(CAL_ROUNDS):
+        ent = u < q[None, :]
+        drawn = _cap_entries(pred, ent, cap, legs, np.random.default_rng(seed + 11), ql)
+        got = ent.mean(0)
+        q[rows] = np.clip(q[rows] * pent[rows] / np.maximum(got[rows], 1e-3), 0, 1)
+        for i, (aids, sel, _, li) in drawn.items():
+            runs = ent[:, i]
+            if runs.sum() < 20:
+                continue
+            k = leg_rows[li]
+            if k.any():
+                g = sel[runs].mean(0)[k]
+                ql[li[k]] = np.clip(ql[li[k]] * pl0[li[k]] / np.maximum(g, 1e-3), 1e-4, 1 - 1e-4)
+    return q, ql
+
+
+def simulate(pred, table, z_ath, z_rel, sims=2000, seed=0, max_events=4, icc=PROGRAM_ICC, legs=None):
     """Monte Carlo meets from one championship-day's predictions.
 
     pred: DataFrame rows (aid, team, event, mean, scale, pent, relay).
+    legs: optional DataFrame (team, event, aid, pleg): each relay that runs
+    draws its four legs from these, and legs count toward the runners'
+    `max_events` like individual events.
     Returns (team_points [sims x teams], teams, per-row stats dict).
     """
-    rng = np.random.default_rng(seed)
+    # separate streams for entries, legs and marks: a change to one part
+    # leaves the others' draws as they were (paired backtests)
+    rng, rng_legs, rng_z = (np.random.default_rng(x) for x in np.random.SeedSequence(seed).spawn(3))
     teams = sorted(set(pred.team))
     tix = {t: i for i, t in enumerate(teams)}
     pts = np.zeros((sims, len(teams)))
     n = len(pred)
-    entered = rng.random((sims, n)) < pred.pent.values[None, :]
-    # an athlete enters at most `max_events` individual events: keep the most
-    # likely ones when a draw gives more
     ath = ~pred.relay.values
-    if max_events:
-        by_aid = collections.defaultdict(list)
-        for i, (a, r) in enumerate(zip(pred.aid.values, pred.relay.values)):
-            if not r:
-                by_aid[a].append(i)
-        for a, idx in by_aid.items():
-            if len(idx) <= max_events:
-                continue
-            idx = sorted(idx, key=lambda i: -pred.pent.values[i])
-            cnt = np.cumsum(entered[:, idx], axis=1)
-            entered[:, idx] &= cnt <= max_events
-    za = rng.choice(z_ath, size=(sims, n))
-    zr = rng.choice(z_rel, size=(sims, n)) if len(z_rel) else za
+    q, ql = (pred.pent.values, None)
+    if max_events and legs is not None and len(legs):
+        q, ql = _calibrate(pred, max_events, legs, seed)
+    entered = rng.random((sims, n)) < q[None, :]
+    drawn = _cap_entries(pred, entered, max_events, legs, rng_legs, ql) if max_events else {}
+    za = rng_z.choice(z_ath, size=(sims, n))
+    zr = rng_z.choice(z_rel, size=(sims, n)) if len(z_rel) else za
     z = np.where(ath[None, :], za, zr)
     team_idx = np.array([tix[t] for t in pred.team.values])
     if icc:
         # a program's good or bad day moves all its athletes together
-        day = rng.standard_normal((sims, len(teams)))
+        day = rng_z.standard_normal((sims, len(teams)))
         z = math.sqrt(1 - icc) * z + math.sqrt(icc) * day[:, team_idx]
     marks = pred['mean'].values[None, :] + pred.scale.values[None, :] * z
     marks = np.where(entered, marks, np.inf)
@@ -1625,7 +1941,11 @@ def simulate(pred, table, z_ath, z_rel, sims=2000, seed=0, max_events=4, icc=PRO
                 np.add.at(win, rows[ok], 1)
             if place < 3:
                 np.add.at(top3, rows[ok], 1)
-    stats = dict(win=win / sims, top3=top3 / sims, exp_pts=exp_pts / sims)
+    # entered: each row's chance of running after the event limit; legs:
+    # (relay row, runner, chance of running a leg of it)
+    stats = dict(win=win / sims, top3=top3 / sims, exp_pts=exp_pts / sims, entered=entered.mean(0),
+                 legs=[(i, a, float(sel[:, k].mean())) for i, (aids, sel, _, _) in drawn.items()
+                       for k, a in enumerate(aids)])
     return pts, teams, stats
 
 
@@ -1823,7 +2143,8 @@ def predict_season(year, asof, sims=5000, quiet=False, entries=None):
     set_lines(A0)
     A = add_columns(A0)
     R = add_columns(pd.read_pickle(os.path.join(CACHE_DIR, 'relays.pkl')))
-    model = Model().fit(A[A.year < year], R[R.year < year])
+    L = leg_columns(pd.read_pickle(os.path.join(CACHE_DIR, 'legs.pkl')))
+    model = Model().fit(A[A.year < year], R[R.year < year], L[L.year < year])
     out = []
     for champ, last_truth, held in targets:
         cutoff = min(asof, (date.fromisoformat(champ['date']) - timedelta(days=1)).isoformat())
@@ -1836,22 +2157,26 @@ def predict_season(year, asof, sims=5000, quiet=False, entries=None):
             ent = entries_from_list(rows_, champ, fz.s, cutoff)
             units = units | set(ent.teams.values())
             events = sorted(set(events) | {ev for _, ev in ent.items})
-        a, r = rows_for(champ, cutoff, 'live', None, units=units, events=events,
+        a, r, lg = rows_for(champ, cutoff, 'live', None, units=units, events=events,
                         keep=ent.keys() if ent else ())
         if ent is None:
             a = [x for x in a if x['in_top']]
-        if not a:
+        # no meet of this season yet among its teams: the roster is unknown, no prediction (James 2026-11-12)
+        if not a or (ent is None and not any(x.get('cur_all', 0) for x in a)):
             continue
         Adf = add_columns(pd.DataFrame(a).assign(aid=lambda d: d.aid.astype(str)))
         Rdf = add_columns(pd.DataFrame(r).assign(aid=lambda d: d.aid.astype(str))) if r else Adf.iloc[:0]
         pred = model.predict(Adf, Rdf)
+        lp = model.predict_legs(leg_columns(pd.DataFrame(lg)).assign(aid=lambda d: d.aid.astype(str))) if lg else None
         dropped = 0
         if ent is not None:
             pred, dropped = apply_entries(pred, ent)
         table = (tr[champ['id']] if held else last_truth)['table']
         pts, teams, st = simulate(pred, table, *model.z_for(champ['id']), sims=sims, seed=1,
-                                  max_events=None if ent else max_events_for(champ['id']))
-        out.append(dict(champ=champ, cutoff=cutoff, held=held, pred=pred.assign(**{k: v for k, v in st.items()}),
+                                  max_events=None if ent else max_events_for(champ['id']),
+                                  legs=None if ent else lp)
+        out.append(dict(champ=champ, cutoff=cutoff, held=held, pred=pred.assign(**{k: v for k, v in st.items() if k != 'legs'}),
+                        legs=None if ent else lp,
                         teams=team_summary(pts, teams), table=table,
                         entries='known' if ent else 'unknown',
                         entry_stats=dict(listed=len(ent), unmatched=ent.unmatched,
