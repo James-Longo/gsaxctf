@@ -1812,8 +1812,7 @@ def simulate(pred, table, z_ath, z_rel, sims=2000, seed=0, max_events=4, icc=PRO
     if max_events and legs is not None and len(legs):
         q, ql = _calibrate(pred, max_events, legs, seed)
     entered = rng.random((sims, n)) < q[None, :]
-    if max_events:
-        _cap_entries(pred, entered, max_events, legs, rng_legs, ql)
+    drawn = _cap_entries(pred, entered, max_events, legs, rng_legs, ql) if max_events else {}
     za = rng_z.choice(z_ath, size=(sims, n))
     zr = rng_z.choice(z_rel, size=(sims, n)) if len(z_rel) else za
     z = np.where(ath[None, :], za, zr)
@@ -1843,7 +1842,11 @@ def simulate(pred, table, z_ath, z_rel, sims=2000, seed=0, max_events=4, icc=PRO
                 np.add.at(win, rows[ok], 1)
             if place < 3:
                 np.add.at(top3, rows[ok], 1)
-    stats = dict(win=win / sims, top3=top3 / sims, exp_pts=exp_pts / sims)
+    # entered: each row's chance of running after the event limit; legs:
+    # (relay row, runner, chance of running a leg of it)
+    stats = dict(win=win / sims, top3=top3 / sims, exp_pts=exp_pts / sims, entered=entered.mean(0),
+                 legs=[(i, a, float(sel[:, k].mean())) for i, (aids, sel, _, _) in drawn.items()
+                       for k, a in enumerate(aids)])
     return pts, teams, stats
 
 
@@ -2072,7 +2075,7 @@ def predict_season(year, asof, sims=5000, quiet=False, entries=None):
         pts, teams, st = simulate(pred, table, *model.z_for(champ['id']), sims=sims, seed=1,
                                   max_events=None if ent else max_events_for(champ['id']),
                                   legs=None if ent else lp)
-        out.append(dict(champ=champ, cutoff=cutoff, held=held, pred=pred.assign(**{k: v for k, v in st.items()}),
+        out.append(dict(champ=champ, cutoff=cutoff, held=held, pred=pred.assign(**{k: v for k, v in st.items() if k != 'legs'}),
                         legs=None if ent else lp,
                         teams=team_summary(pts, teams), table=table,
                         entries='known' if ent else 'unknown',

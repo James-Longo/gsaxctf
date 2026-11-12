@@ -66,43 +66,13 @@ function PostseasonSimulator({ performances, isBetter, manifest, loadTeamData, s
     const [filterSeason, setFilterSeason] = useState(season || defaultSeason)
     useEffect(() => { if (season) setFilterSeason(season) }, [season])
     const [filterEvent, setFilterEvent] = useState('All')
-    const [scoreMethod, setScoreMethod] = useState('PR')
     const [expandedTeams, setExpandedTeams] = useState({})
     const [gender, setGender] = useState('Boys')
     const g = gender.toLowerCase()
     const ofGender = (event) => (event || '').startsWith(gender)
     const [targetTeam, setTargetTeam] = useState('George Stevens Academy')
     const [competitionType, setCompetitionType] = useState('PVC');
-    const [view, setView] = useState('meet');
-    const [seedData, setSeedData] = useState(null);
-
-    useEffect(() => {
-        if (scoreMethod === 'Seeds') {
-            const file = competitionType === 'States' ? 'states_2026_outdoor.json' : 'pvc_2026_outdoor.json';
-            const fetchUrl = asset(`/data/seeds/${file}`);
-            
-            fetch(fetchUrl)
-                .then(r => r.json())
-                .then(d => setSeedData(d))
-                .catch(err => console.error('Failed to load seed data', err));
-        }
-    }, [scoreMethod, competitionType]);
-
-    // Convert seed entries into perf-like objects compatible with groupedData / teamPools
-    const seedPerfs = useMemo(() => {
-        if (!seedData) return [];
-        return seedData.entries.map(entry => ({
-            event: normalizeEvent(entry.event, 'Outdoor'),
-            mark: entry.mark,
-            pvcTeam: entry.team,
-            isRelay: entry.isRelay,
-            athlete_id: entry.isRelay ? `relay_${entry.event}_${entry.team}` : (entry.athleteId || ''),
-            athlete_name: entry.isRelay ? (entry.members || []).join(', ') : (entry.name || ''),
-            derivedYear: seedData.meta.year,
-            derivedType: seedData.meta.season,
-        }));
-    }, [seedData]);
-
+    const [view, setView] = useState('entries')
     const squash = (s) => (s || '').toLowerCase().replace(/[^a-z0-9]/g, '');
     // A store team belongs to a listed school when its name contains the
     // school's short key ("Central/Dexter (indoor track)" is Central and
@@ -216,7 +186,7 @@ function PostseasonSimulator({ performances, isBetter, manifest, loadTeamData, s
     // meet, or the state meet of the team being optimized (else the class most listed schools ran in).
     const champIds = useMemo(() => {
         const src = champFile || predFile
-        if (!src || !baseSchools || scoreMethod === 'Seeds') return ''
+        if (!src || !baseSchools) return ''
         const ids = []
         for (const g of ['Boys', 'Girls']) {
             const cs = src.champs.filter(c => c.gender === g && (competitionType === 'PVC'
@@ -228,7 +198,7 @@ function PostseasonSimulator({ performances, isBetter, manifest, loadTeamData, s
             if (cs.length) ids.push(cs[0].id)
         }
         return ids.join(',')
-    }, [champFile, predFile, baseSchools, competitionType, targetTeam, scoreMethod])
+    }, [champFile, predFile, baseSchools, competitionType, targetTeam])
     // (keyed by id, so picking another team in the same class recomputes nothing)
     const champs = useMemo(() => {
         if (!champIds || !champFile) return null
@@ -384,7 +354,7 @@ function PostseasonSimulator({ performances, isBetter, manifest, loadTeamData, s
         || (competitionType === 'States' ? [10, 8, 6, 5, 4, 3, 2, 1] : [10, 8, 6, 4, 2, 1]), [champs, preds, competitionType]);
 
     // Treat Indoor/Outdoor differently: 4 event limit for Outdoor, 3 for Indoor.
-    const EVENT_LIMIT = (scoreMethod !== 'Seeds' && filterSeason && filterSeason.toLowerCase().includes('indoor')) ? 3 : 4;
+    const EVENT_LIMIT = (filterSeason && filterSeason.toLowerCase().includes('indoor')) ? 3 : 4;
 
     const scrollToEvent = (groupTitle) => {
         const targetId = `event-${groupTitle.replace(/[^a-z0-9]/gi, '-')}`;
@@ -410,14 +380,14 @@ function PostseasonSimulator({ performances, isBetter, manifest, loadTeamData, s
             "High Jump", "Pole Vault", "Long Jump", "Triple Jump", "Shot Put", "Discus", "Javelin"
         ];
 
-        if (scoreMethod === 'Seeds' || filterSeason === 'Outdoor') return outdoor;
+        if (filterSeason === 'Outdoor') return outdoor;
         return indoor;
-    }, [filterSeason, scoreMethod]);
+    }, [filterSeason]);
 
     // The predictor's meet for the selected gender, in the page's team and event names.
     const predicted = useMemo(() => {
         const p = preds?.[gender]
-        if (!p || scoreMethod === 'Seeds') return null
+        if (!p) return null
         const teamOf = t => (activeSchools && schoolOf(t, activeSchools)) || t
         const teams = p.teams.map(t => ({ team: teamOf(t.team), pts: t.pts,
             odds: [...t.p, Math.max(0, 1 - t.p[0] - t.p[1] - t.p[2])] }))
@@ -431,8 +401,14 @@ function PostseasonSimulator({ performances, isBetter, manifest, loadTeamData, s
             return { key, rows: out }
         }).sort((a, b) => order(a.key) - order(b.key))
         Object.values(byTeam).forEach(rs => rs.sort((a, b) => b.x - a.x))
-        return { teams, events, byTeam, cutoff: p.cutoff }
-    }, [preds, gender, activeSchools, filterSeason, scoreMethod, SCORING_EVENTS])
+        return { teams, events, byTeam, cutoff: p.cutoff, basis: p.basis || 'predicted' }
+    }, [preds, gender, activeSchools, filterSeason, SCORING_EVENTS])
+    const pageTeam = t => (activeSchools && schoolOf(t, activeSchools)) || t
+    const eventOrder = key => {
+        const b = key.replace(/^(Boys|Girls) /, '')
+        const i = SCORING_EVENTS.indexOf(/^1[01]0m Hurdles$/.test(b) ? '100m/110m Hurdles' : b)
+        return i < 0 ? 99 : i
+    }
 
     const groupedData = useMemo(() => {
         const groups = {};
@@ -440,9 +416,8 @@ function PostseasonSimulator({ performances, isBetter, manifest, loadTeamData, s
         // First group all performances by groupKey -> athleteKey
         const rawGrouped = {};
 
-        // Seeds mode uses seed entries; other modes use historical filtered data
-        const sourceData = scoreMethod === 'Seeds' ? seedPerfs : filteredData;
-        const activeSeason = scoreMethod === 'Seeds' ? 'Outdoor' : filterSeason;
+        const sourceData = filteredData;
+        const activeSeason = filterSeason;
 
         sourceData.forEach(curr => {
             const markUpper = (curr.mark || "").toUpperCase();
@@ -543,11 +518,10 @@ function PostseasonSimulator({ performances, isBetter, manifest, loadTeamData, s
         });
 
         return finalGroups;
-    }, [filteredData, seedPerfs, isBetter, SCORING_EVENTS, scoreMethod]);
+    }, [filteredData, isBetter, SCORING_EVENTS, filterSeason]);
 
     const optimizedData = useMemo(() => {
-        const bypassYearSeasonCheck = scoreMethod === 'Seeds';
-        if ((!bypassYearSeasonCheck && (filterYear === 'All' || filterSeason === 'All')) || Object.keys(groupedData).length === 0) {
+        if (filterYear === 'All' || filterSeason === 'All' || Object.keys(groupedData).length === 0) {
             return groupedData;
         }
 
@@ -757,7 +731,7 @@ function PostseasonSimulator({ performances, isBetter, manifest, loadTeamData, s
     }, [groupedData, filterYear, filterSeason, isBetter, EVENT_LIMIT, SCORING_RULES]);
 
     const optimizedTeamScores = useMemo(() => {
-        if (scoreMethod !== 'Seeds' && (filterYear === 'All' || filterSeason === 'All')) return { incomplete: true };
+        if (filterYear === 'All' || filterSeason === 'All') return { incomplete: true };
 
         const scores = { boys: {}, girls: {} };
 
@@ -800,7 +774,6 @@ function PostseasonSimulator({ performances, isBetter, manifest, loadTeamData, s
     // Each athlete's marks this season, on a log scale where lower is better.
     const seasonMarks = useMemo(() => {
         const out = {}
-        if (scoreMethod === 'Seeds') return out
         filteredData.forEach(p => {
             const v = logMark(p.mark, p.event)
             if (v == null) return
@@ -808,7 +781,7 @@ function PostseasonSimulator({ performances, isBetter, manifest, loadTeamData, s
             (out[k] = out[k] || []).push(v)
         })
         return out
-    }, [filteredData, filterSeason, scoreMethod])
+    }, [filteredData, filterSeason])
 
     // Each team's chance of finishing 1st, 2nd, 3rd and 4th or lower: the predicted entries'
     // meet run SIMS times, each mark drawn around the mean of the athlete's two best marks
@@ -866,106 +839,6 @@ function PostseasonSimulator({ performances, isBetter, manifest, loadTeamData, s
         }
         return out
     }, [optimizedData, seasonMarks, SCORING_RULES, loadingState.isLoading, g, predicted])
-
-    const entryDecisions = useMemo(() => {
-        if (!targetTeam || Object.keys(groupedData).length === 0) return null;
-
-        const teamAthletes = {};
-
-        Object.entries(groupedData).forEach(([groupTitle, results]) => {
-            if (!ofGender(results[0]?.event)) return;
-            let rankPos = 0;
-
-            for (let i = 0; i < results.length; i++) {
-                const res = results[i];
-                const team = res.pvcTeam;
-                const isRelay = res.isRelay;
-                // Every athlete counts towards the rank if they have a valid performance
-                rankPos++;
-
-                if (team === targetTeam) {
-                    const nameStr = res.athlete_name || "";
-                    let names = [nameStr];
-                    if (isRelay) {
-                        names = nameStr.split(',').map(n => n.trim()).filter(n => n && !n.toLowerCase().includes('school') && !n.toLowerCase().includes('relay'));
-                    }
-
-                    names.forEach(name => {
-                        if (!teamAthletes[name]) teamAthletes[name] = { scoringEvents: [] };
-                        
-                        let pts = rankPos <= SCORING_RULES.length ? SCORING_RULES[rankPos - 1] : 0;
-                        if (isRelay) pts /= 4;
-
-                        teamAthletes[name].scoringEvents.push({
-                            event: res.event,
-                            rank: rankPos,
-                            expectedPoints: pts,
-                            mark: res.mark,
-                            isRelay: isRelay,
-                            isScorable: rankPos <= SCORING_RULES.length,
-                            originalCanonical: res.originalCanonical
-                        });
-                    });
-                }
-            }
-        });
-
-        const decisionAthletes = [];
-        const straightforwardAthletes = [];
-
-        const getEventIndex = (scoringEvent) => {
-            return SCORING_EVENTS.indexOf(scoringEvent.originalCanonical);
-        };
-
-        Object.entries(teamAthletes).forEach(([name, data]) => {
-            if (name === "Relay") return;
-
-            // Deduplicate by event name (keep best rank)
-            const bestEvs = {};
-            data.scoringEvents.forEach(sev => {
-                if (!bestEvs[sev.event] || sev.rank < bestEvs[sev.event].rank) {
-                    bestEvs[sev.event] = sev;
-                }
-            });
-            data.scoringEvents = Object.values(bestEvs).sort((a, b) => {
-                if (b.expectedPoints !== a.expectedPoints) {
-                    return b.expectedPoints - a.expectedPoints;
-                }
-                return a.rank - b.rank;
-            });
-
-            const scorableEvents = data.scoringEvents.filter(e => e.isScorable);
-            const trackIndices = [...new Set(scorableEvents.map(e => getEventIndex(e.event)).filter(idx => idx >= 0))].sort((a, b) => a - b);
-            let hasAdjacency = false;
-            for (let i = 0; i < trackIndices.length - 1; i++) {
-                if (trackIndices[i + 1] - trackIndices[i] === 1) {
-                    hasAdjacency = true;
-                    break;
-                }
-            }
-
-            if (scorableEvents.length > EVENT_LIMIT || hasAdjacency) {
-                decisionAthletes.push({
-                    name,
-                    scoringEvents: data.scoringEvents,
-                    isAdjacent: hasAdjacency,
-                    isVolume: scorableEvents.length > EVENT_LIMIT,
-                    scorableCount: scorableEvents.length
-                });
-            } else if (data.scoringEvents.length > 0) {
-                straightforwardAthletes.push({
-                    name,
-                    scoringEvents: data.scoringEvents,
-                    scorableCount: scorableEvents.length
-                });
-            }
-        });
-
-        return {
-            decisionAthletes: decisionAthletes.sort((a, b) => b.scorableCount - a.scorableCount || b.scoringEvents.length - a.scoringEvents.length),
-            straightforwardAthletes: straightforwardAthletes.sort((a, b) => b.scorableCount - a.scorableCount || b.scoringEvents.length - a.scoringEvents.length)
-        };
-    }, [groupedData, targetTeam, SCORING_RULES, SCORING_EVENTS, EVENT_LIMIT, gender]);
 
     // What happened at the championship, in the simulator's names: per gender the
     // team order and each event's places, keyed like the event sections ('Girls 55m Hurdles').
@@ -1082,9 +955,10 @@ function PostseasonSimulator({ performances, isBetter, manifest, loadTeamData, s
 
             <div className="xs-bar ps-tabs">
                 <div className="xs-seg" role="group" aria-label="View">
-                    <button className={view === 'meet' ? 'active' : ''} onClick={() => setView('meet')}>Meet</button>
                     <button className={view === 'entries' ? 'active' : ''} onClick={() => setView('entries')}
-                        title={`${targetTeam}: athletes with more than ${EVENT_LIMIT} scoring events or adjacent track events`}>Entry decisions</button>
+                        title={`Each athlete's chance of entering each event, relay legs included (${EVENT_LIMIT} events at most)`}>Entries</button>
+                    <button className={view === 'outcomes' ? 'active' : ''} onClick={() => setView('outcomes')}
+                        title="Team and event results simulated from the entries: the actual entries once a meet is run, else the predicted ones">Outcomes</button>
                 </div>
                 <div className="xs-seg" role="group" aria-label="Gender">
                     {['Boys', 'Girls'].map(x => (
@@ -1126,122 +1000,16 @@ function PostseasonSimulator({ performances, isBetter, manifest, loadTeamData, s
                             ))}
                         </select>
                     </div>
-                    <div className="filter-group">
-                        <label>Scoring Basis</label>
-                        <select value={scoreMethod} onChange={e => setScoreMethod(e.target.value)}>
-                            <option value="PR">Season Best (SB)</option>
-                            <option value="Seeds">Actual Seeds (5/29)</option>
-                        </select>
-                    </div>
-                    <div className="record-count">{scoreMethod === 'Seeds' ? `${seedPerfs.length} Seeds` : `${filteredData.length} Results`}</div>
+                    <div className="record-count">{`${filteredData.length} Results`}</div>
                 </div>
             </div>
 
-            {view === 'entries' && entryDecisions && (entryDecisions.decisionAthletes.length > 0 || entryDecisions.straightforwardAthletes.length > 0) && (
-                <div className="entry-decisions-dashboard" style={{ marginTop: '12px' }}>
-                        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(400px, 100%), 1fr))', gap: '20px' }}>
-                        {entryDecisions.decisionAthletes.length > 0 && (
-                            <div className="decision-card" style={{ background: '#fff5f5', border: '1px solid #feb2b2', borderRadius: '12px', padding: '20px' }}>
-                                <h4 style={{ margin: '0 0 12px 0', color: '#c53030', display: 'flex', alignItems: 'center', gap: '8px' }}>
-                                    Decision Athletes (&gt;{EVENT_LIMIT} events or adjacent track)
-                                </h4>
-                                <div className="decisions-list" style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-                                    {entryDecisions.decisionAthletes.map(ath => (
-                                        <div key={ath.name} style={{ background: 'white', padding: '12px', borderRadius: '8px', boxShadow: '0 1px 3px rgba(0,0,0,0.1)' }}>
-                                            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '6px' }}>
-                                                <div style={{ fontWeight: 700, color: '#2d3748' }}>{ath.name}</div>
-                                                <div style={{ display: 'flex', gap: '4px' }}>
-                                                    {ath.isVolume && <span style={{ fontSize: '0.65rem', background: '#fed7d7', color: '#9b2c2c', padding: '1px 6px', borderRadius: '10px', fontWeight: 700 }}>VOLUME</span>}
-                                                    {ath.isAdjacent && <span style={{ fontSize: '0.65rem', background: '#fffaf0', color: '#9c4221', padding: '1px 6px', borderRadius: '10px', fontWeight: 700, border: '1px solid #feebc8' }}>ADJACENT</span>}
-                                                </div>
-                                            </div>
-                                            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px' }}>
-                                                {ath.scoringEvents.map((ev, idx) => {
-                                                    const isTop3Opportunity = ev.isScorable && idx < EVENT_LIMIT;
-                                                    const isScoring = ev.isScorable;
+            {view === 'entries' && (preds?.[gender]
+                ? <EntryPanel key={preds[gender].id} champ={preds[gender]} gender={gender} season={filterSeason} teamOf={pageTeam}
+                    targetTeam={targetTeam} order={eventOrder} meet={champCutoff?.meet} />
+                : !predPending && <div className="empty-state"><p>No entry prediction for this meet.</p></div>)}
 
-                                                    let badgeStyle = {
-                                                        fontSize: '0.75rem',
-                                                        padding: '2px 8px',
-                                                        borderRadius: '4px',
-                                                        fontWeight: isScoring ? 600 : 400,
-                                                        display: 'flex',
-                                                        alignItems: 'center',
-                                                        gap: '4px'
-                                                    };
-
-                                                    if (isTop3Opportunity) {
-                                                        badgeStyle = { ...badgeStyle, background: '#c6f6d5', color: '#22543d', border: '1px solid #9ae6b4' };
-                                                    } else if (isScoring) {
-                                                        badgeStyle = { ...badgeStyle, background: '#edf2f7', color: '#4a5568', border: '1px solid #e2e8f0' };
-                                                    } else {
-                                                        badgeStyle = { ...badgeStyle, background: 'white', color: '#718096', border: '1px solid #f1f5f9' };
-                                                    }
-
-                                                    return (
-                                                        <span key={ev.event} style={badgeStyle}>
-                                                            {ev.isRelay && <span style={{ opacity: 0.8 }}></span>}
-                                                            {ev.event} (<span style={{ fontWeight: 700 }}>#{ev.rank}</span>)
-                                                        </span>
-                                                    );
-                                                })}
-                                            </div>
-                                        </div>
-                                    ))}
-                                </div>
-                            </div>
-                        )}
-
-                        {entryDecisions.straightforwardAthletes.length > 0 && (
-                            <div className="straightforward-card" style={{ background: '#f0fff4', border: '1px solid #9ae6b4', borderRadius: '12px', padding: '20px' }}>
-                                <h4 style={{ margin: '0 0 12px 0', color: '#2f855a', display: 'flex', alignItems: 'center', gap: '8px' }}>
-                                    Straightforward Entries (&lt;={EVENT_LIMIT} Scoring Events)
-                                </h4>
-                                <div className="decisions-list" style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-                                    {entryDecisions.straightforwardAthletes.map(ath => (
-                                        <div key={ath.name} style={{ background: 'white', padding: '12px', borderRadius: '8px', boxShadow: '0 1px 3px rgba(0,0,0,0.1)' }}>
-                                            <div style={{ fontWeight: 600, marginBottom: '6px', color: '#4a5568', fontSize: '0.9rem' }}>{ath.name}</div>
-                                            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px' }}>
-                                                {ath.scoringEvents.map((ev, idx) => {
-                                                    const isTop3Opportunity = ev.isScorable && idx < EVENT_LIMIT;
-                                                    const isScoring = ev.isScorable;
-
-                                                    let badgeStyle = {
-                                                        fontSize: '0.7rem',
-                                                        padding: '2px 6px',
-                                                        borderRadius: '4px',
-                                                        fontWeight: isScoring ? 600 : 400,
-                                                        display: 'flex',
-                                                        alignItems: 'center',
-                                                        gap: '3px'
-                                                    };
-
-                                                    if (isTop3Opportunity) {
-                                                        badgeStyle = { ...badgeStyle, background: '#c6f6d5', color: '#22543d', border: '1px solid #9ae6b4' };
-                                                    } else if (isScoring) {
-                                                        badgeStyle = { ...badgeStyle, background: '#edf2f7', color: '#4a5568', border: '1px solid #e2e8f0' };
-                                                    } else {
-                                                        badgeStyle = { ...badgeStyle, background: 'white', color: '#718096', border: '1px solid #f1f5f9' };
-                                                    }
-
-                                                    return (
-                                                        <span key={ev.event} style={badgeStyle}>
-                                                            {ev.isRelay && <span style={{ fontSize: '0.6rem' }}></span>}
-                                                            {ev.event} (<span style={{ fontWeight: 600 }}>#{ev.rank}</span>)
-                                                        </span>
-                                                    );
-                                                })}
-                                            </div>
-                                        </div>
-                                    ))}
-                                </div>
-                            </div>
-                        )}
-                    </div>
-                </div>
-            )}
-
-            {view === 'meet' && <>
+            {view === 'outcomes' && <>
             {predicted && (
                 <div className="ps-standings">
                     <div className="table-container">
@@ -1249,7 +1017,9 @@ function PostseasonSimulator({ performances, isBetter, manifest, loadTeamData, s
                             <thead>
                                 <tr>
                                     <th className="num">#</th><th>Team</th>
-                                    {PLACES.map(p => <th key={p} className="num" title="Share of simulated meets: entries drawn from each athlete's entry chance, marks varying as at past championships">{p}</th>)}
+                                    {PLACES.map(p => <th key={p} className="num" title={predicted.basis === 'entered'
+                                        ? 'Share of simulated meets run with the actual entries, marks varying as at past championships'
+                                        : "Share of simulated meets: entries drawn from each athlete's entry chance, marks varying as at past championships"}>{p}</th>)}
                                     <th className="num" title="Expected points">Pts</th>
                                 </tr>
                             </thead>
@@ -1368,7 +1138,7 @@ function PostseasonSimulator({ performances, isBetter, manifest, loadTeamData, s
                                                 <th>Name</th>
                                                 <th>Team</th>
                                                 <th title="Predicted mark">Mark</th>
-                                                <th className="num" title="Chance of entering this event">Entry</th>
+                                                {predicted.basis !== 'entered' && <th className="num" title="Chance of entering this event">Entry</th>}
                                                 <th title="Expected points">Points</th>
                                                 {act && <th className="ps-act" title={`Place at ${champCutoff?.meet || 'the championship'}`}>Place</th>}
                                                 {act && <th title="Mark at the championship">Result</th>}
@@ -1384,7 +1154,7 @@ function PostseasonSimulator({ performances, isBetter, manifest, loadTeamData, s
                                                         <td className="athlete-name-cell">{r.n || 'Relay'}</td>
                                                         <td>{r.team}</td>
                                                         <td className="mark-cell">{r.m}</td>
-                                                        <td className={`num ${pctCls(r.p)}`}>{pct(r.p)}</td>
+                                                        {predicted.basis !== 'entered' && <td className={`num ${pctCls(r.p)}`}>{pct(r.p)}</td>}
                                                         <td className="points-cell">{r.x >= 0.05 ? `+${r.x.toFixed(1)}` : '-'}</td>
                                                         {act && <td className="ps-act" title={a ? '' : 'Did not compete in this event at the championship'}>{a ? a.pl : '–'}</td>}
                                                         {act && <td className="mark-cell">{a ? a.m : ''}</td>}
@@ -1395,9 +1165,9 @@ function PostseasonSimulator({ performances, isBetter, manifest, loadTeamData, s
                                             {missed.map((a, i) => (
                                                 <tr key={`m${i}`} className="ps-unpredicted">
                                                     <td>–</td>
-                                                    <td className="athlete-name-cell">{a.n}<span className="xs-chip" title="Scored, but not among the predicted entries">not predicted</span></td>
+                                                    <td className="athlete-name-cell">{a.n}<span className="xs-chip" title="Scored, but the model had no mark for them in this event">not predicted</span></td>
                                                     <td>{a.team}</td>
-                                                    <td></td><td></td><td></td>
+                                                    <td></td>{predicted.basis !== 'entered' && <td></td>}<td></td>
                                                     <td className="ps-act">{a.pl}</td>
                                                     <td className="mark-cell">{a.m}</td>
                                                     <td className="points-cell">{a.pts ? `+${a.pts}` : ''}</td>
@@ -1466,6 +1236,115 @@ function PostseasonSimulator({ performances, isBetter, manifest, loadTeamData, s
             </>}
         </div>
     );
+}
+
+/** Entry chances for one team at one championship: every athlete and event
+ * (relay legs included, after the event limit), or one athlete's events;
+ * for a meet already run, who entered. */
+function EntryPanel({ champ, gender, season, teamOf, targetTeam, order, meet }) {
+    const ran = champ.basis === 'entered'
+    const key = ev => normalizeEvent(`${gender} ${ev}`, season)
+    const short = ev => key(ev).replace(/^(Boys|Girls) /, '')
+    // (small: one meet's rows, so recomputed each render)
+    const rank = new Map(champ.teams.map((t, i) => [teamOf(t.team), i]))
+    const teams = [...new Set(Object.values(champ.entries || {}).flatMap(rs => rs.map(r => teamOf(r.t))))]
+        .sort((a, b) => (rank.get(a) ?? 999) - (rank.get(b) ?? 999) || a.localeCompare(b))
+    const [pick, setPick] = useState(null)
+    const team = pick && teams.includes(pick) ? pick : teams.includes(targetTeam) ? targetTeam : teams[0]
+    const [ath, setAth] = useState('')
+    const grid = (() => {
+        const athletes = {}, relay = {}
+        const cell = (n, ev, r) => { ((athletes[n] = athletes[n] || {}))[ev] = r }
+        Object.entries(champ.entries || {}).forEach(([ev, rs]) => rs.forEach(r => {
+            if (teamOf(r.t) !== team) return
+            if (/Relay/.test(ev)) relay[ev] = r
+            else if (r.n) cell(r.n, ev, r)
+        }))
+        Object.entries(champ.legs || {}).forEach(([ev, rs]) => rs.forEach(r => {
+            if (teamOf(r.t) === team && r.n) cell(r.n, ev, r)
+        }))
+        const events = [...new Set([...Object.keys(relay), ...Object.values(athletes).flatMap(Object.keys)])]
+            .sort((a, b) => order(key(a)) - order(key(b)))
+        const sum = evs => Object.values(evs).reduce((t, r) => t + r.p, 0)
+        const names = Object.keys(athletes).sort((a, b) => sum(athletes[b]) - sum(athletes[a]))
+        return { athletes, relay, events, names }
+    })()
+    const who = grid.names.includes(ath) ? ath : ''
+    const cells = Object.values(grid.athletes).flatMap(Object.values)
+    const entered = cells.filter(r => r.e)
+    const mark = r => ran && r ? (r.e ? ' ✓' : '') : ''
+    const tip = r => !r ? (ran ? 'Did not enter' : '') : ran ? (r.e ? 'Entered' : 'Did not enter') : ''
+    return (
+        <div className="ps-entries">
+            <div className="filter-bar analyzer-filters">
+                <div className="filter-group">
+                    <label>Team</label>
+                    <select value={team || ''} onChange={e => { setPick(e.target.value); setAth('') }}>
+                        {teams.map(t => <option key={t} value={t}>{t}</option>)}
+                    </select>
+                </div>
+                <div className="filter-group">
+                    <label>Athlete</label>
+                    <select value={who} onChange={e => setAth(e.target.value)}>
+                        <option value="">All athletes</option>
+                        {grid.names.map(n => <option key={n} value={n}>{n}</option>)}
+                    </select>
+                </div>
+                {ran && <div className="record-count" title={`Entries at ${meet || 'the championship'}, relay legs included`}>
+                    <span title="Sum of the entry chances">{cells.reduce((t, r) => t + r.p, 0).toFixed(1)} expected</span>
+                    {' · '}<span>{entered.length} entered</span>
+                    {' · '}<span title="Entries that had a chance of 50% or more">{entered.filter(r => r.p >= 0.5).length} called</span>
+                </div>}
+            </div>
+            {who ? (
+                <div className="table-container">
+                    <table className="performance-table xs-table ps-entry-one">
+                        <thead><tr><th>Event</th><th className="num" title="Chance of entering (relays: of running a leg)">Chance</th>
+                            {ran && <th className="ps-act" title={`At ${meet || 'the championship'}`}>Entered</th>}</tr></thead>
+                        <tbody>
+                            {grid.events.filter(ev => grid.athletes[who][ev]).map(ev => {
+                                const r = grid.athletes[who][ev]
+                                return (
+                                    <tr key={ev}>
+                                        <td>{short(ev)}</td>
+                                        <td className={`num ${pctCls(r.p)}`}>{pct(r.p)}</td>
+                                        {ran && <td className="ps-act">{r.e ? '✓' : '–'}</td>}
+                                    </tr>
+                                )
+                            })}
+                        </tbody>
+                    </table>
+                </div>
+            ) : (
+                <div className="table-container">
+                    <table className="performance-table xs-table ps-entry-grid">
+                        <thead><tr><th>Athlete</th>{grid.events.map(ev => <th key={ev} className="num">{short(ev)}</th>)}</tr></thead>
+                        <tbody>
+                            {Object.keys(grid.relay).length > 0 && (
+                                <tr className="ps-relay-row">
+                                    <td title="The team's chance of entering the relay">Relay team</td>
+                                    {grid.events.map(ev => {
+                                        const r = grid.relay[ev]
+                                        return <td key={ev} className={`num ${r ? pctCls(r.p) : ''}`} title={tip(r)}>{r ? pct(r.p) : ''}{mark(r)}</td>
+                                    })}
+                                </tr>
+                            )}
+                            {grid.names.map(n => (
+                                <tr key={n} className="ps-click" onClick={() => setAth(n)}>
+                                    <td className="athlete-name-cell">{n}</td>
+                                    {grid.events.map(ev => {
+                                        const r = grid.athletes[n][ev]
+                                        return <td key={ev} className={`num ${r ? pctCls(r.p) : ''} ${r?.e ? 'ps-in' : ''}`} title={tip(r)}>
+                                            {r && (r.p >= 0.005 || !r.e) ? pct(r.p) : ''}{mark(r)}</td>
+                                    })}
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                </div>
+            )}
+        </div>
+    )
 }
 
 /** The simulated standings against the championship's real team scores. */
