@@ -28,7 +28,12 @@ def test_squad_letter_dropped_from_surname():
     me = types.SimpleNamespace(manual_fixes={})
     assert RS.normalize_athlete_name(me, 'Wilcox - A, Jessie') == 'Jessie Wilcox'
     assert RS.normalize_athlete_name(me, 'Landry -B, Moneca') == 'Moneca Landry'
-    assert RS.normalize_athlete_name(me, 'Handcock - A-C, A') == 'A Handcock'
+    # the squad letter typed again as the first name: no first name was entered
+    assert RS.normalize_athlete_name(me, 'Handcock - A-C, A') == 'Handcock'
+    assert RS.normalize_athlete_name(me, 'Floster - A, A') == 'Floster'
+    assert RS.normalize_athlete_name(me, 'Sweeney - A-C, AC') == 'Sweeney'
+    assert RS.normalize_athlete_name(me, 'Hunter - A, Cynthia') == 'Cynthia Hunter'
+    assert RS.normalize_athlete_name(me, 'Penney -, Bobby') == 'Bobby Penney'
     assert RS.normalize_athlete_name(me, 'Smith-Jones, Ann') == 'Ann Smith-Jones'
 
 

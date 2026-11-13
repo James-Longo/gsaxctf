@@ -986,12 +986,19 @@
   "by": "re-check 2026-10-28: re-parsed only for the team-rank fix (ranks 10+ were stored as 0-9)",
   "evidence": "scratch re-parse compared with the signed parse: result rows identical, only team_rankings ranks changed"
  },
+ "backend/data/parsed_results/2004/Indoor/ne-interscholastic-indoor-2004.json": {
+  "parse_sha": "ee63cde5a473997c",
+  "source_sha": "274503ecf9b69b0e",
+  "date": "2026-11-13",
+  "by": "indoor double-check 2026-11-13",
+  "evidence": "Maine rows of the MileSplit copy of the CNESSPA Hy-Tek sheet: every row the sheet tags ME (plus untagged Maine schools whose runners are in our data), each school resolved, marks checked for format (feet; 2019 converted from the meter column), every runner checked against their season's other results (2 misprinted schools corrected, 6 sheet spellings joined)"
+ },
  "backend/data/parsed_results/2004/Indoor/smaaboys.json": {
-  "parse_sha": "becd42263c2e32e5",
+  "parse_sha": "3529181edfbffc62",
   "source_sha": "777d68585799c83c",
-  "date": "2026-11-10",
-  "by": "rev04a",
-  "evidence": "rev04a: unlabeled place matrix, three division blocks per sprint/hurdle/300/600 event cannot be named; 7 inferable events stored (41 rows incl. Karrer Md = Marshwood); Moon prints no school; rest unrecoverable"
+  "date": "2026-11-13",
+  "by": "indoor double-check 2026-11-13",
+  "evidence": "only changes since the prior sign-off are f9ea14867 (Indoor QA: impossible marks dropped, printed values kept in warnings) and 48afac102 (2004 smaaboys re-transcribed from the sub5 grid); diffs read"
  },
  "backend/data/parsed_results/2004/Indoor/smaagirls.json": {
   "parse_sha": "e926c0d2250fd52c",
@@ -2631,6 +2638,13 @@
   "by": "rev05a",
   "evidence": "2 Sonnet reviewers compared every row to the sheet; fixes: Bates mini 1/5 field events + girls hurdles added (+25), USM jump 1/5 hand-transcribed (+15); team-score mismatches explained (SMAA 5-3-2-1 per division, Black Bear girls coed half points)"
  },
+ "backend/data/parsed_results/2005/Indoor/bowdoin.json": {
+  "parse_sha": "c3b5b0bdfdb48f44",
+  "source_sha": "3e9e54a7918822a5",
+  "date": "2026-11-13",
+  "by": "indoor double-check 2026-11-13",
+  "evidence": "736 parse rows = 736 placed lines on the sheet; 173 squad-letter placeholder first names ('Floster - A, A') stored as surname only; shuttle hurdle relays are the sheet's own events"
+ },
  "backend/data/parsed_results/2005/Indoor/classaboys.json": {
   "parse_sha": "e5f8399ab0c26d48",
   "source_sha": "d6912acd9ff7c479",
@@ -2742,6 +2756,13 @@
   "date": "2026-11-10",
   "by": "rev05b",
   "evidence": "2 Sonnet reviewers compared every row to the sheet (rows in file = rows stored); fixes: Hy-Tek '- 2' marker stripped, lost O'/D' restored, Bizier/Hustus-Raven/stray-v names, kvac2b dated 1/7, Gng High School relays -> GNG HS"
+ },
+ "backend/data/parsed_results/2005/Indoor/ne-interscholastic-indoor-2005.json": {
+  "parse_sha": "c37e0b20770dde5b",
+  "source_sha": "510d61835a8c51ef",
+  "date": "2026-11-13",
+  "by": "indoor double-check 2026-11-13",
+  "evidence": "Maine rows of the MileSplit copy of the CNESSPA Hy-Tek sheet: every row the sheet tags ME (plus untagged Maine schools whose runners are in our data), each school resolved, marks checked for format (feet; 2019 converted from the meter column), every runner checked against their season's other results (2 misprinted schools corrected, 6 sheet spellings joined)"
  },
  "backend/data/parsed_results/2005/Indoor/smaa1Ab.json": {
   "parse_sha": "1316cb81ee8163c7",
@@ -4926,6 +4947,13 @@
   "date": "2026-11-09",
   "by": "rev06c",
   "evidence": "2 Sonnet reviewers compared every row to the sheet; fixes: clipped relay schools restored, Hornets=Leavitt, SMAA girls meet 4 dated 1/7"
+ },
+ "backend/data/parsed_results/2006/Indoor/ne-interscholastic-indoor-2006.json": {
+  "parse_sha": "978658903beb73e1",
+  "source_sha": "577e36b0b5229eb3",
+  "date": "2026-11-13",
+  "by": "indoor double-check 2026-11-13",
+  "evidence": "Maine rows of the MileSplit copy of the CNESSPA Hy-Tek sheet: every row the sheet tags ME (plus untagged Maine schools whose runners are in our data), each school resolved, marks checked for format (feet; 2019 converted from the meter column), every runner checked against their season's other results (2 misprinted schools corrected, 6 sheet spellings joined)"
  },
  "backend/data/parsed_results/2006/Indoor/pentathlonboys.json": {
   "parse_sha": "04f5f15bb3d3ebbb",
@@ -7306,6 +7334,13 @@
   "date": "2026-11-09",
   "by": "rev07a-sonnet-x2",
   "evidence": "rev07a 2 Sonnet reviewers 2026-11-09: every row checked against the sheet; fixed usmjump1_3 2 HJ rows, blackbearboys2 field-relay totals dropped, Greely FOUL grades, Rams->Deering, Scarborough division tags and Sanford SANF tags; kvac3a 'Hwmkailn, SamSam' garbled on the sheet, kept as printed"
+ },
+ "backend/data/parsed_results/2007/Indoor/ne-interscholastic-indoor-2007.json": {
+  "parse_sha": "245fbe02ffa9e207",
+  "source_sha": "833be824590d0231",
+  "date": "2026-11-13",
+  "by": "indoor double-check 2026-11-13",
+  "evidence": "Maine rows of the MileSplit copy of the CNESSPA Hy-Tek sheet: every row the sheet tags ME (plus untagged Maine schools whose runners are in our data), each school resolved, marks checked for format (feet; 2019 converted from the meter column), every runner checked against their season's other results (2 misprinted schools corrected, 6 sheet spellings joined)"
  },
  "backend/data/parsed_results/2007/Indoor/ned3women.json": {
   "parse_sha": "cbe2ce90537f1756",
@@ -9966,6 +10001,13 @@
   "date": "2026-11-09",
   "by": "rev08b-sonnet-x2",
   "evidence": "rev08b 2 Sonnet reviewers 2026-11-09: every row checked against the sheet; fixed smaainvite Torrance/Tinkham TIGERS->Massabesic, Greely/NYA class years 08-11 -> SR-FR in Bowdoin/USM files"
+ },
+ "backend/data/parsed_results/2008/Indoor/ne-interscholastic-indoor-2008.json": {
+  "parse_sha": "96de10c64d483dcc",
+  "source_sha": "a89374b5c27de5e3",
+  "date": "2026-11-13",
+  "by": "indoor double-check 2026-11-13",
+  "evidence": "Maine rows of the MileSplit copy of the CNESSPA Hy-Tek sheet: every row the sheet tags ME (plus untagged Maine schools whose runners are in our data), each school resolved, marks checked for format (feet; 2019 converted from the meter column), every runner checked against their season's other results (2 misprinted schools corrected, 6 sheet spellings joined)"
  },
  "backend/data/parsed_results/2008/Indoor/smaaResultsB1.json": {
   "parse_sha": "df72943e53302b87",
@@ -12823,6 +12865,20 @@
   "by": "rev09d",
   "evidence": "2 Sonnet reviewers rev09d + fixes verified on resync"
  },
+ "backend/data/parsed_results/2009/Indoor/ne-interscholastic-indoor-2009.json": {
+  "parse_sha": "b8519f900113eaaf",
+  "source_sha": "9c5a99ed4a956fac",
+  "date": "2026-11-13",
+  "by": "indoor double-check 2026-11-13",
+  "evidence": "Maine rows of the MileSplit copy of the CNESSPA Hy-Tek sheet: every row the sheet tags ME (plus untagged Maine schools whose runners are in our data), each school resolved, marks checked for format (feet; 2019 converted from the meter column), every runner checked against their season's other results (2 misprinted schools corrected, 6 sheet spellings joined)"
+ },
+ "backend/data/parsed_results/2009/Indoor/pentathlon.json": {
+  "parse_sha": "e5cefbdefc81e7c8",
+  "source_sha": "172d7ff28f3602ed",
+  "date": "2026-11-13",
+  "by": "indoor double-check 2026-11-13",
+  "evidence": "22 athletes; each athlete's five event points sum to the printed total; marks match the PDF"
+ },
  "backend/data/parsed_results/2009/Indoor/pentathlongirls.json": {
   "parse_sha": "1678083bdb1297eb",
   "source_sha": "265cf66feac2ad2c",
@@ -15533,11 +15589,11 @@
   "evidence": "2 Sonnet reviewers vs source 2026-11-09; fixes: SMAA week 1 dated 1/2 (titles + MileSplit 61362/61364), Bowdoin girls coed copy removed, unplaced Saco 4x140 added, Thortnon mapped to Thornton; rest clean"
  },
  "backend/data/parsed_results/2010/Indoor/bb_relays_girls_results_1.16.10.json": {
-  "parse_sha": "d564fc98c78c84a7",
+  "parse_sha": "58d8ca288535df38",
   "source_sha": "0d09452a613c667f",
-  "date": "2026-11-08",
-  "by": "rev10c",
-  "evidence": "2 Sonnet reviewers vs source 2026-11-09; 18 clean; fixes: Colby meet 1 'Indoor Track' relay (unidentifiable school) left out, Morgan Copp (Poland Regional HS printed in a 6th-grade race) filed under Poland MS; York B exhibition relay equal to A collapses by design"
+  "date": "2026-11-13",
+  "by": "indoor double-check 2026-11-13",
+  "evidence": "only changes since the prior sign-off are f9ea14867 (Indoor QA: impossible marks dropped, printed values kept in warnings) and 48afac102 (2004 smaaboys re-transcribed from the sub5 grid); diffs read"
  },
  "backend/data/parsed_results/2010/Indoor/bowdoinboysfield.json": {
   "parse_sha": "d87566e4239f6df9",
@@ -16063,6 +16119,13 @@
   "date": "2026-11-08",
   "by": "rev10d",
   "evidence": "2 Sonnet reviewers vs source 2026-11-09; 19 clean; Triple C Biddeford/Cape/Poland/Yarmouth re-dated 2/27 (MileSplit page; 2/26 print stamp) and its 'SMC' relay filed under the SMC combined team"
+ },
+ "backend/data/parsed_results/2010/Indoor/ne-interscholastic-indoor-2010.json": {
+  "parse_sha": "7bbaa3d7820613dc",
+  "source_sha": "04fd4072b909b957",
+  "date": "2026-11-13",
+  "by": "indoor double-check 2026-11-13",
+  "evidence": "Maine rows of the MileSplit copy of the CNESSPA Hy-Tek sheet: every row the sheet tags ME (plus untagged Maine schools whose runners are in our data), each school resolved, marks checked for format (feet; 2019 converted from the meter column), every runner checked against their season's other results (2 misprinted schools corrected, 6 sheet spellings joined)"
  },
  "backend/data/parsed_results/2010/Indoor/ne-usatf-indoor-2010.json": {
   "parse_sha": "3e66b9f31aefd752",
@@ -19474,18 +19537,18 @@
   "evidence": "rev11c: 2 Sonnet reviewers, every row checked against the source; 20 clean; jump meets jan19/jan27 (two-column PDFs, unstored) transcribed by hand"
  },
  "backend/data/parsed_results/2011/Indoor/ms-smaa-thornton-south-portland-westbrook-2011.json": {
-  "parse_sha": "fcf0b784829d5f12",
-  "source_sha": "42b9f69dc3aa7f3b",
-  "date": "2026-11-08",
-  "by": "sonnet-review-rev11c",
-  "evidence": "rev11c: 2 Sonnet reviewers, every row checked against the source; 20 clean; jump meets jan19/jan27 (two-column PDFs, unstored) transcribed by hand"
+  "parse_sha": "b8b9b0636adfa059",
+  "source_sha": "c47ce903b1013636",
+  "date": "2026-11-13",
+  "by": "indoor double-check 2026-11-13",
+  "evidence": "only changes since the prior sign-off are f9ea14867 (Indoor QA: impossible marks dropped, printed values kept in warnings) and 48afac102 (2004 smaaboys re-transcribed from the sub5 grid); diffs read"
  },
  "backend/data/parsed_results/2011/Indoor/ms-smc-ms-biddeford-cape-elizabeth-poland-yarmouth-2011.json": {
-  "parse_sha": "48ea22afa5458b8a",
-  "source_sha": "5366f5fbb595ec76",
-  "date": "2026-11-08",
-  "by": "sonnet-review-rev11e",
-  "evidence": "rev11e: 2 Sonnet reviewers, every row checked against the source; fixes applied (New England school overrides, MS prelim duplicates, Gerken place-contradicting mark, Bennett Hebron rows)"
+  "parse_sha": "d1cf4d9ab2e8f738",
+  "source_sha": "07a796f858fe8607",
+  "date": "2026-11-13",
+  "by": "indoor double-check 2026-11-13",
+  "evidence": "only changes since the prior sign-off are f9ea14867 (Indoor QA: impossible marks dropped, printed values kept in warnings) and 48afac102 (2004 smaaboys re-transcribed from the sub5 grid); diffs read"
  },
  "backend/data/parsed_results/2011/Indoor/ms-smc-ms-biddeford-falmouth-andsmc-2011.json": {
   "parse_sha": "55f3cf2a5fedb197",
@@ -19558,18 +19621,18 @@
   "evidence": "g11a random sample: an earlier 'Top 6' printing merged with the corrected 'Complete' page; 11 superseded rows removed, each checked against both pages"
  },
  "backend/data/parsed_results/2011/Indoor/ms-smc-ms-greely-st-james-smc-2011.json": {
-  "parse_sha": "1f6ab90294957752",
-  "source_sha": "5248bedf914dd8fa",
-  "date": "2026-11-08",
-  "by": "sonnet-review-rev11e",
-  "evidence": "rev11e: 2 Sonnet reviewers, every row checked against the source; fixes applied (New England school overrides, MS prelim duplicates, Gerken place-contradicting mark, Bennett Hebron rows)"
+  "parse_sha": "1bbfe5edfe683046",
+  "source_sha": "a81d8a5617a472f2",
+  "date": "2026-11-13",
+  "by": "indoor double-check 2026-11-13",
+  "evidence": "only changes since the prior sign-off are f9ea14867 (Indoor QA: impossible marks dropped, printed values kept in warnings) and 48afac102 (2004 smaaboys re-transcribed from the sub5 grid); diffs read"
  },
  "backend/data/parsed_results/2011/Indoor/ms-smc-ms-saco-smc-yarmouth-2011.json": {
-  "parse_sha": "46ca3fd04b77b833",
-  "source_sha": "73139b2f87a73a1b",
-  "date": "2026-11-08",
-  "by": "sonnet-review-rev11e",
-  "evidence": "rev11e: 2 Sonnet reviewers, every row checked against the source; fixes applied (New England school overrides, MS prelim duplicates, Gerken place-contradicting mark, Bennett Hebron rows)"
+  "parse_sha": "60d062b46de21a0d",
+  "source_sha": "67eb523e8e580ab9",
+  "date": "2026-11-13",
+  "by": "indoor double-check 2026-11-13",
+  "evidence": "only changes since the prior sign-off are f9ea14867 (Indoor QA: impossible marks dropped, printed values kept in warnings) and 48afac102 (2004 smaaboys re-transcribed from the sub5 grid); diffs read"
  },
  "backend/data/parsed_results/2011/Indoor/ms-smc-ms-st-james-scarborough-thornton-yarmouth-2011.json": {
   "parse_sha": "967d18c784001d98",
@@ -23240,11 +23303,11 @@
   "evidence": ""
  },
  "backend/data/parsed_results/2012/Indoor/ms-smmsac-biddeford-cape-poland-yarmouth-2012.json": {
-  "parse_sha": "2b123e5287949e24",
-  "source_sha": "f9ee3ec79e689ca0",
-  "date": "2026-11-08",
-  "by": "rev12d",
-  "evidence": "two Sonnet reviewers compared every MileSplit page row with the stored rows (2026-11-08); template date fixed, two h:mm:ss typo marks resolved by place"
+  "parse_sha": "c58856c0ee2bdd25",
+  "source_sha": "2b8463a6c9387674",
+  "date": "2026-11-13",
+  "by": "indoor double-check 2026-11-13",
+  "evidence": "only changes since the prior sign-off are f9ea14867 (Indoor QA: impossible marks dropped, printed values kept in warnings) and 48afac102 (2004 smaaboys re-transcribed from the sub5 grid); diffs read"
  },
  "backend/data/parsed_results/2012/Indoor/ms-smmsac-biddeford-falmouth-and-smc-2012.json": {
   "parse_sha": "7e91c996f100cf94",
@@ -23282,11 +23345,11 @@
   "evidence": "two Sonnet reviewers compared every MileSplit page row with the stored rows (2026-11-08); template date fixed, two h:mm:ss typo marks resolved by place"
  },
  "backend/data/parsed_results/2012/Indoor/ms-smmsac-cape-greely-saco-poland-2012.json": {
-  "parse_sha": "1c14235b41c818a8",
-  "source_sha": "1c8d113074625d18",
-  "date": "2026-11-08",
-  "by": "rev12d",
-  "evidence": "two Sonnet reviewers compared every MileSplit page row with the stored rows (2026-11-08); template date fixed, two h:mm:ss typo marks resolved by place"
+  "parse_sha": "007c36fd2cf6e53c",
+  "source_sha": "058a81bb69ba9a14",
+  "date": "2026-11-13",
+  "by": "indoor double-check 2026-11-13",
+  "evidence": "only changes since the prior sign-off are f9ea14867 (Indoor QA: impossible marks dropped, printed values kept in warnings) and 48afac102 (2004 smaaboys re-transcribed from the sub5 grid); diffs read"
  },
  "backend/data/parsed_results/2012/Indoor/ms-smmsac-cape-scarborough-smc-2012.json": {
   "parse_sha": "0ccd6c86d1eb05bf",
@@ -23336,6 +23399,13 @@
   "date": "2026-11-08",
   "by": "rev12d",
   "evidence": "two Sonnet reviewers compared every MileSplit page row with the stored rows (2026-11-08); template date fixed, two h:mm:ss typo marks resolved by place"
+ },
+ "backend/data/parsed_results/2012/Indoor/ne-interscholastic-indoor-2012.json": {
+  "parse_sha": "b8184241971c9300",
+  "source_sha": "71754b48b6cc2f1b",
+  "date": "2026-11-13",
+  "by": "indoor double-check 2026-11-13",
+  "evidence": "Maine rows of the MileSplit copy of the CNESSPA Hy-Tek sheet: every row the sheet tags ME (plus untagged Maine schools whose runners are in our data), each school resolved, marks checked for format (feet; 2019 converted from the meter column), every runner checked against their season's other results (2 misprinted schools corrected, 6 sheet spellings joined)"
  },
  "backend/data/parsed_results/2012/Indoor/ne-usatf-indoor-2012.json": {
   "parse_sha": "6b2cf4d4896898a9",
@@ -27048,11 +27118,11 @@
   "evidence": ""
  },
  "backend/data/parsed_results/2013/Indoor/ms-smmsac-bidd-fal-smc-and-freeportdurham-2013.json": {
-  "parse_sha": "793f0b2a0b8ed544",
-  "source_sha": "b708103077304f03",
-  "date": "2026-11-07",
-  "by": "sonnet-reviewers-rev13b",
-  "evidence": "2 Sonnet reviewers matched every row with the sub5 source sheets (and MileSplit cache 135903 for the SMMSAC meet); store re-checked after resync: 0 rows lost, only prelims equal to finals stored once; KVAC 12/8 and 12/21 meets already carry posting dates on the site"
+  "parse_sha": "804b4eb8c178c27d",
+  "source_sha": "14a31c037eb1f9ba",
+  "date": "2026-11-13",
+  "by": "indoor double-check 2026-11-13",
+  "evidence": "only changes since the prior sign-off are f9ea14867 (Indoor QA: impossible marks dropped, printed values kept in warnings) and 48afac102 (2004 smaaboys re-transcribed from the sub5 grid); diffs read"
  },
  "backend/data/parsed_results/2013/Indoor/ms-smmsac-biddedford-cape-poland-and-yarmouth-2013.json": {
   "parse_sha": "2b69119f1746faf9",
@@ -27125,11 +27195,11 @@
   "evidence": "only change since sign-off: printed Yr 9-12 on middle-school SMMSAC sheets blanked (not middle-school grades; printed value kept in warnings); rows, marks, schools unchanged (resync 0 rows lost)"
  },
  "backend/data/parsed_results/2013/Indoor/ms-smmsac-greely-st-james-smc-and-thornton-2013.json": {
-  "parse_sha": "14af263ab31e6f24",
-  "source_sha": "8db2f9aa8e7d4f62",
-  "date": "2026-11-08",
-  "by": "loop-grade-fix",
-  "evidence": "only change since sign-off: printed Yr 9-12 on middle-school SMMSAC sheets blanked (not middle-school grades; printed value kept in warnings); rows, marks, schools unchanged (resync 0 rows lost)"
+  "parse_sha": "9c7c6d8ee1f4cfca",
+  "source_sha": "c64d797263a3b93d",
+  "date": "2026-11-13",
+  "by": "indoor double-check 2026-11-13",
+  "evidence": "only changes since the prior sign-off are f9ea14867 (Indoor QA: impossible marks dropped, printed values kept in warnings) and 48afac102 (2004 smaaboys re-transcribed from the sub5 grid); diffs read"
  },
  "backend/data/parsed_results/2013/Indoor/ms-smmsac-st-james-scarborough-ta-and-yarmouth-2013.json": {
   "parse_sha": "de8f97e1dfdf25e1",
@@ -27144,6 +27214,13 @@
   "date": "2026-11-07",
   "by": "loop-verified",
   "evidence": "girls half of WMC 1/11/2013 read from the cached MileSplit raw page 230472; re-scored 10-8-6-4-2-1 it reproduces the sub5 scores sheet wmcScoresmeet1_jan11 (Falmouth 148, Freeport 65, Lake Region 43, GNG 59 exact; York/Cape/Traip within 2 = ties)"
+ },
+ "backend/data/parsed_results/2013/Indoor/ne-interscholastic-indoor-2013.json": {
+  "parse_sha": "f580c6357e736249",
+  "source_sha": "7d76a49cb7cf40bb",
+  "date": "2026-11-13",
+  "by": "indoor double-check 2026-11-13",
+  "evidence": "Maine rows of the MileSplit copy of the CNESSPA Hy-Tek sheet: every row the sheet tags ME (plus untagged Maine schools whose runners are in our data), each school resolved, marks checked for format (feet; 2019 converted from the meter column), every runner checked against their season's other results (2 misprinted schools corrected, 6 sheet spellings joined)"
  },
  "backend/data/parsed_results/2013/Indoor/ne-usatf-indoor-2013.json": {
   "parse_sha": "81b277e3a917ecd9",
@@ -29743,11 +29820,11 @@
   "evidence": "2 Sonnet reviewers matched every row with the cached MileSplit raw pages; USM Relays race walks stored once (1600 Meter, the latest print's name); 2 Triple C 150y rows printed 24:02/26:08 left out (unknowable)"
  },
  "backend/data/parsed_results/2014/Indoor/ms-triple-c-week-3-meet-1-2014.json": {
-  "parse_sha": "4b5027bdbf1235f9",
-  "source_sha": "c97795093f5abc33",
-  "date": "2026-11-07",
-  "by": "sonnet-reviewers-rev14c",
-  "evidence": "2 Sonnet reviewers matched every row with the cached MileSplit raw pages; USM Relays race walks stored once (1600 Meter, the latest print's name); 2 Triple C 150y rows printed 24:02/26:08 left out (unknowable)"
+  "parse_sha": "a6de36c5ea5acf89",
+  "source_sha": "884b1362a4cdd01c",
+  "date": "2026-11-13",
+  "by": "indoor double-check 2026-11-13",
+  "evidence": "only changes since the prior sign-off are f9ea14867 (Indoor QA: impossible marks dropped, printed values kept in warnings) and 48afac102 (2004 smaaboys re-transcribed from the sub5 grid); diffs read"
  },
  "backend/data/parsed_results/2014/Indoor/ms-triple-c-week-3-meet-2-2014.json": {
   "parse_sha": "d91cb2a6f2be3668",
@@ -29778,11 +29855,11 @@
   "evidence": "2 Sonnet reviewers matched every row with the cached MileSplit raw pages; USM Relays race walks stored once (1600 Meter, the latest print's name); 2 Triple C 150y rows printed 24:02/26:08 left out (unknowable)"
  },
  "backend/data/parsed_results/2014/Indoor/ms-triple-c-week-4-meet-3-2014.json": {
-  "parse_sha": "29128d579fd487ab",
-  "source_sha": "56efc5b9094079a1",
-  "date": "2026-11-07",
-  "by": "sonnet-reviewers-rev14c",
-  "evidence": "2 Sonnet reviewers matched every row with the cached MileSplit raw pages; USM Relays race walks stored once (1600 Meter, the latest print's name); 2 Triple C 150y rows printed 24:02/26:08 left out (unknowable)"
+  "parse_sha": "15edaf735889ae5f",
+  "source_sha": "95d5c7442ce07f3c",
+  "date": "2026-11-13",
+  "by": "indoor double-check 2026-11-13",
+  "evidence": "only changes since the prior sign-off are f9ea14867 (Indoor QA: impossible marks dropped, printed values kept in warnings) and 48afac102 (2004 smaaboys re-transcribed from the sub5 grid); diffs read"
  },
  "backend/data/parsed_results/2014/Indoor/ms-usm-relays-2014.json": {
   "parse_sha": "fd3ed37c7f423df5",
@@ -29853,6 +29930,13 @@
   "date": "2026-11-07",
   "by": "sonnet-reviewers-rev14c",
   "evidence": "2 Sonnet reviewers matched every row with the cached MileSplit raw pages; USM Relays race walks stored once (1600 Meter, the latest print's name); 2 Triple C 150y rows printed 24:02/26:08 left out (unknowable)"
+ },
+ "backend/data/parsed_results/2014/Indoor/ne-interscholastic-indoor-2014.json": {
+  "parse_sha": "528b74828d9cc367",
+  "source_sha": "b49fee2c3a56a5cb",
+  "date": "2026-11-13",
+  "by": "indoor double-check 2026-11-13",
+  "evidence": "Maine rows of the MileSplit copy of the CNESSPA Hy-Tek sheet: every row the sheet tags ME (plus untagged Maine schools whose runners are in our data), each school resolved, marks checked for format (feet; 2019 converted from the meter column), every runner checked against their season's other results (2 misprinted schools corrected, 6 sheet spellings joined)"
  },
  "backend/data/parsed_results/2014/Indoor/ne-usatf-indoor-2014.json": {
   "parse_sha": "7cacec958228e06d",
@@ -31820,6 +31904,13 @@
   "date": "2026-11-07",
   "by": "sonnet-reviewers-rev15c",
   "evidence": "2 Sonnet reviewers (rev15c A/B) compared every stored row to the cached MileSplit pages: 23 clean; SMAA Cheverus-Marshwood-TA 'Boys 55H-36' (2 rows) was stored as 55 Meter Dash, fixed to 55 Meter Hurdles"
+ },
+ "backend/data/parsed_results/2015/Indoor/ne-interscholastic-indoor-2015.json": {
+  "parse_sha": "b85e4237c550eb3b",
+  "source_sha": "ecd0610ac15a7f04",
+  "date": "2026-11-13",
+  "by": "indoor double-check 2026-11-13",
+  "evidence": "Maine rows of the MileSplit copy of the CNESSPA Hy-Tek sheet: every row the sheet tags ME (plus untagged Maine schools whose runners are in our data), each school resolved, marks checked for format (feet; 2019 converted from the meter column), every runner checked against their season's other results (2 misprinted schools corrected, 6 sheet spellings joined)"
  },
  "backend/data/parsed_results/2015/Indoor/ne-usatf-indoor-2015.json": {
   "parse_sha": "fbf407205b4eedfe",
@@ -34391,11 +34482,11 @@
   "evidence": "2 Sonnet reviewers compared every row against the sub5 sheet (rev16a 2026-11-07): rows, names, schools, marks, dates match; differences only by-design (prelim=final once, DQ rows)"
  },
  "backend/data/parsed_results/2016/Indoor/ResultsMEET4.json": {
-  "parse_sha": "a0491e6880815b69",
+  "parse_sha": "be2754f799141c88",
   "source_sha": "c10a3c202eb67270",
-  "date": "2026-11-07",
-  "by": "sonnet review rev16a",
-  "evidence": "2 Sonnet reviewers compared every row against the sub5 sheet (rev16a 2026-11-07): rows, names, schools, marks, dates match; differences only by-design (prelim=final once, DQ rows)"
+  "date": "2026-11-13",
+  "by": "indoor double-check 2026-11-13",
+  "evidence": "only changes since the prior sign-off are f9ea14867 (Indoor QA: impossible marks dropped, printed values kept in warnings) and 48afac102 (2004 smaaboys re-transcribed from the sub5 grid); diffs read"
  },
  "backend/data/parsed_results/2016/Indoor/Resultsclassaboys.json": {
   "parse_sha": "89f2a00205163459",
@@ -34741,11 +34832,11 @@
   "evidence": "2 Sonnet reviewers compared every row against the sheet or cached MileSplit page (rev16d 2026-11-07): 21 clean; SMC Jr/Int 4x140 same-time relays collapse by the division merge; York 200m garbled 0:47:12 clock marks dropped (no time printed)"
  },
  "backend/data/parsed_results/2016/Indoor/ms-smmsac-greely-smc-poland-and-ta-2016.json": {
-  "parse_sha": "6bf728aac4ac0cbc",
-  "source_sha": "c091ffa4dd211c99",
-  "date": "2026-11-07",
-  "by": "sonnet review rev16d",
-  "evidence": "2 Sonnet reviewers compared every row against the sheet or cached MileSplit page (rev16d 2026-11-07): 21 clean; SMC Jr/Int 4x140 same-time relays collapse by the division merge; York 200m garbled 0:47:12 clock marks dropped (no time printed)"
+  "parse_sha": "8ac7516d7397bb14",
+  "source_sha": "a516dc1ad5d2696d",
+  "date": "2026-11-13",
+  "by": "indoor double-check 2026-11-13",
+  "evidence": "only changes since the prior sign-off are f9ea14867 (Indoor QA: impossible marks dropped, printed values kept in warnings) and 48afac102 (2004 smaaboys re-transcribed from the sub5 grid); diffs read"
  },
  "backend/data/parsed_results/2016/Indoor/ms-smmsac-poland-freeport-smc-and-st-james-2016.json": {
   "parse_sha": "b1fbaab228a41f01",
@@ -34809,6 +34900,13 @@
   "date": "2026-11-07",
   "by": "sonnet review rev16d",
   "evidence": "2 Sonnet reviewers compared every row against the sheet or cached MileSplit page (rev16d 2026-11-07): 21 clean; SMC Jr/Int 4x140 same-time relays collapse by the division merge; York 200m garbled 0:47:12 clock marks dropped (no time printed)"
+ },
+ "backend/data/parsed_results/2016/Indoor/ne-interscholastic-indoor-2016.json": {
+  "parse_sha": "c82839a5eadeca4e",
+  "source_sha": "dfb514a5f5d8f8e1",
+  "date": "2026-11-13",
+  "by": "indoor double-check 2026-11-13",
+  "evidence": "Maine rows of the MileSplit copy of the CNESSPA Hy-Tek sheet: every row the sheet tags ME (plus untagged Maine schools whose runners are in our data), each school resolved, marks checked for format (feet; 2019 converted from the meter column), every runner checked against their season's other results (2 misprinted schools corrected, 6 sheet spellings joined)"
  },
  "backend/data/parsed_results/2016/Indoor/ne-usatf-indoor-2016.json": {
   "parse_sha": "1846b76487d2433a",
@@ -38604,6 +38702,13 @@
   "by": "rev17a Sonnet review (2 readers) against the cached MileSplit pages; fixes: heat numbers read as marks (Sr Boys 40yd prelims 3/11), template header date (TA/St James meet -> 3/4)",
   "evidence": "scratchpad rev17a findings.json"
  },
+ "backend/data/parsed_results/2017/Indoor/ne-interscholastic-indoor-2017.json": {
+  "parse_sha": "cba2e90bb6bb7c4e",
+  "source_sha": "754d0b15bb735d21",
+  "date": "2026-11-13",
+  "by": "indoor double-check 2026-11-13",
+  "evidence": "Maine rows of the MileSplit copy of the CNESSPA Hy-Tek sheet: every row the sheet tags ME (plus untagged Maine schools whose runners are in our data), each school resolved, marks checked for format (feet; 2019 converted from the meter column), every runner checked against their season's other results (2 misprinted schools corrected, 6 sheet spellings joined)"
+ },
  "backend/data/parsed_results/2017/Indoor/smaa4.json": {
   "parse_sha": "359e3cfa5235d8bc",
   "source_sha": "b7a1a2b705272c83",
@@ -42315,18 +42420,18 @@
   "evidence": "every row vs cached MileSplit page; gaps are only NH/ND status rows and prelim marks equal to the final; one unstorable row (Triple C 1 Mile 'Lindea', no school or grade on the sheet); school folders checked (St. James School, Noble MS, Frank H Harrison MS, Bruce M Whittier MS, SMC)"
  },
  "backend/data/parsed_results/2018/Indoor/ms-triple-c-biddeford-cape-poland-and-ta-2018.json": {
-  "parse_sha": "327d4c9270f8170a",
-  "source_sha": "c6097b16a9208bd5",
-  "date": "2026-11-06",
-  "by": "sonnet audit rev18a A/B 2026-11-06",
-  "evidence": "every row vs cached MileSplit page; gaps are only NH/ND status rows and prelim marks equal to the final; one unstorable row (Triple C 1 Mile 'Lindea', no school or grade on the sheet); school folders checked (St. James School, Noble MS, Frank H Harrison MS, Bruce M Whittier MS, SMC)"
+  "parse_sha": "2177cdf0eaf67c34",
+  "source_sha": "10d548ee01afe44e",
+  "date": "2026-11-13",
+  "by": "indoor double-check 2026-11-13",
+  "evidence": "only changes since the prior sign-off are f9ea14867 (Indoor QA: impossible marks dropped, printed values kept in warnings) and 48afac102 (2004 smaaboys re-transcribed from the sub5 grid); diffs read"
  },
  "backend/data/parsed_results/2018/Indoor/ms-triple-c-biddeford-saco-st-james-ta-2018.json": {
-  "parse_sha": "25a184d208d58b81",
-  "source_sha": "c6a1e97f94bed2d6",
-  "date": "2026-11-06",
-  "by": "sonnet audit rev18a A/B 2026-11-06",
-  "evidence": "every row vs cached MileSplit page; gaps are only NH/ND status rows and prelim marks equal to the final; one unstorable row (Triple C 1 Mile 'Lindea', no school or grade on the sheet); school folders checked (St. James School, Noble MS, Frank H Harrison MS, Bruce M Whittier MS, SMC)"
+  "parse_sha": "3fa82551c095caec",
+  "source_sha": "0bbc313b05b9dabb",
+  "date": "2026-11-13",
+  "by": "indoor double-check 2026-11-13",
+  "evidence": "only changes since the prior sign-off are f9ea14867 (Indoor QA: impossible marks dropped, printed values kept in warnings) and 48afac102 (2004 smaaboys re-transcribed from the sub5 grid); diffs read"
  },
  "backend/data/parsed_results/2018/Indoor/ms-triple-c-biddeford-smc-poland-and-falmouth-2018.json": {
   "parse_sha": "3a0320624a0ea2a9",
@@ -42418,6 +42523,13 @@
   "date": "2026-11-06",
   "by": "re-signed 2026-11-06 after a reviewed fix: stray-period names in MileSplit copies (Alexis. Antonelli -> Alexis Antonelli; Wagg. Nick -> Nick Wagg) or the meet date from the title line instead of the print stamp",
   "evidence": "rev18f findings; title lines checked"
+ },
+ "backend/data/parsed_results/2018/Indoor/ne-interscholastic-indoor-2018.json": {
+  "parse_sha": "2b350c41c07d416b",
+  "source_sha": "942e4ba735437976",
+  "date": "2026-11-13",
+  "by": "indoor double-check 2026-11-13",
+  "evidence": "Maine rows of the MileSplit copy of the CNESSPA Hy-Tek sheet: every row the sheet tags ME (plus untagged Maine schools whose runners are in our data), each school resolved, marks checked for format (feet; 2019 converted from the meter column), every runner checked against their season's other results (2 misprinted schools corrected, 6 sheet spellings joined)"
  },
  "backend/data/parsed_results/2018/Indoor/phillips_exeter_indoor_meet_2.14.18.json": {
   "parse_sha": "6088a832d620bbb3",
@@ -45478,6 +45590,13 @@
   "by": "sonnet audit (second read, 2026-11-02) (audit: confirmed)",
   "evidence": "KVAC high-school indoor meet (colleges only host the venue; no college teams). Checked every row against the source by script (place, name, school string, Finals-column mark, status/x rows, relay legs, event/gender headers, event and row counts) with no difference. Printed team scores (both genders, tie '6) Maine Central Institute 23 / 6) CONY 2018 23') equal team_rankings. 'Cony 2018' resolves to me-hs-cony (warning 'School name contains numbers' is just that); 'Indoor' = Leavitt (relay 'Leavitt Indoor'); boys '1 Meter Run Wheelchair' is the printed event name (single entrant Schomaker 10:54.33, which scores 1 point in the printed Men total, as known). Date 1/5/2019 (KVAC Meet #11) matches. Ledger warning = only unsigned."
  },
+ "backend/data/parsed_results/2019/Indoor/KVACmeetResults-12-29.json": {
+  "parse_sha": "ff8f5f47427774ff",
+  "source_sha": "c2eacfbc685576e9",
+  "date": "2026-11-13",
+  "by": "indoor double-check 2026-11-13",
+  "evidence": "score mismatch is the checker: Leavitt's runners print school 'Indoor' (39 rows), the store resolves all 41 to Leavitt Area HS; every other team adds up"
+ },
  "backend/data/parsed_results/2019/Indoor/Maine-Quad-meet-results.json": {
   "parse_sha": "b5f65dc3e55dbc5f",
   "source_sha": "1cb4820f1e7a1bb9",
@@ -45640,11 +45759,11 @@
   "evidence": "Compared every section/row/relay leg of the Hy-Tek text source with the parse by script and by eye on mismatches: 41 events, same order, same place, name, school string, mark, status (DNS/SCR/X exhibition kept), relay legs; event/gender from the header, JR/SR/OPEN DIVISION sections stay separate events. Schools resolve (Lake Region, GNG, Yarmouth, Fryeburg, CAPE, FREE, Lisb/St,Doms). No wind printed. Ledger warning 'unverified' only (never read). Gender-bleed qaqc flag is a name collision with another meet's athlete, not in this file. DATE CONFLICT: file title 'WESTERN MAINE CONFERENCE INDOOR TRACK - 2/1/2019 / WEEK 5 MEET 1', Hy-Tek stamp 2/1/2019 06:46 PM; the sub5 index lists ResultsWMC1.htm as 'WMC Week 1 Meet 1' (January 4). sub5 reused the file name: the archive file holds Week 5 Meet 1 (its teams and date differ from the week-1 index entry), so the file is right."
  },
  "backend/data/parsed_results/2019/Indoor/ResultsWMC2-1.json": {
-  "parse_sha": "bd46a06f16147d91",
+  "parse_sha": "bb2c227e7b67894c",
   "source_sha": "28723ec92348d8b7",
-  "date": "2026-11-02",
-  "by": "sonnet audit (second read, 2026-11-02) (audit: source-error)",
-  "evidence": "Compared every section/row/relay leg of the Hy-Tek text source with the parse by script and by eye on mismatches: 42 events, same order, same place, name, school string, mark, status (DNS/SCR/X exhibition kept), relay legs; event/gender from the header, JR/SR/OPEN DIVISION sections stay separate events. Schools resolve (Lake Region, York, Gree, CAPE, NYA, Lisb/St,Doms, Boothbay Region). No wind printed. Ledger warning 'unverified' only (never read). Gender-bleed qaqc flag is a name collision with another meet's athlete, not in this file. One source typo behind the ledger/qaqc flag: Girls Shot Put SR DIVISION line '  1 Searfoss, Amelia   NYA   18-00.25  144-10.50' (seed 18-00.25, rest of the event 19-05.00 to 31-04.25; her other 2019 marks 17-06.75 to 20-00.00). The parse matches the source; the mark is impossible and the real value cannot be told (14-10.50 would be last, 44-10.50 is unrealistic). Row left as printed."
+  "date": "2026-11-13",
+  "by": "indoor double-check 2026-11-13",
+  "evidence": "only changes since the prior sign-off are f9ea14867 (Indoor QA: impossible marks dropped, printed values kept in warnings) and 48afac102 (2004 smaaboys re-transcribed from the sub5 grid); diffs read"
  },
  "backend/data/parsed_results/2019/Indoor/ResultsWMC2-2.json": {
   "parse_sha": "55dafa9d28e39543",
@@ -46086,6 +46205,13 @@
   "date": "2026-11-06",
   "by": "sonnet audit rev19 A/B 2026-11-06",
   "evidence": "every row vs source (sub5 htm/pdf, MileSplit cache); only finding: FS rows stored with the seed mark, fixed in milesplit.py and patched (Sjostedt, Awad, Hay); 'Indoor Track' = Yarmouth by runners' other results"
+ },
+ "backend/data/parsed_results/2019/Indoor/ne-interscholastic-indoor-2019.json": {
+  "parse_sha": "a75b3e57745496e8",
+  "source_sha": "877f0b05a8dece30",
+  "date": "2026-11-13",
+  "by": "indoor double-check 2026-11-13",
+  "evidence": "Maine rows of the MileSplit copy of the CNESSPA Hy-Tek sheet: every row the sheet tags ME (plus untagged Maine schools whose runners are in our data), each school resolved, marks checked for format (feet; 2019 converted from the meter column), every runner checked against their season's other results (2 misprinted schools corrected, 6 sheet spellings joined)"
  },
  "backend/data/parsed_results/2019/Indoor/womens_results_umaine_invitational_track_2.10.19.json": {
   "parse_sha": "efab98a4e26e0747",
@@ -49420,11 +49546,11 @@
   "evidence": ""
  },
  "backend/data/parsed_results/2020/Indoor/week4meet2girlsresults.json": {
-  "parse_sha": "fb36f20cb3fac75b",
+  "parse_sha": "b81ddea03d461737",
   "source_sha": "3ca9d831d80235c2",
-  "date": "2026-11-02",
-  "by": "second read t12 (Sonnet reviewer, row-by-row vs source)",
-  "evidence": "verdicts in scratchpad t12_0*_verdicts.json; overrides re-parsed and rebuilt"
+  "date": "2026-11-13",
+  "by": "indoor double-check 2026-11-13",
+  "evidence": "only changes since the prior sign-off are f9ea14867 (Indoor QA: impossible marks dropped, printed values kept in warnings) and 48afac102 (2004 smaaboys re-transcribed from the sub5 grid); diffs read"
  },
  "backend/data/parsed_results/2020/Indoor/wmc1-1.json": {
   "parse_sha": "7f250dbe9c1d51ed",
@@ -54292,11 +54418,11 @@
   "evidence": "every row compared to MileSplit raw pages; all 9 clean"
  },
  "backend/data/parsed_results/2022/Indoor/ms-wmcpoland-yarmouth-wells-st-domslisbon-york-greely-2022.json": {
-  "parse_sha": "8e47ab0a6fbb7875",
-  "source_sha": "1d7f199e21f32b1f",
-  "date": "2026-11-06",
-  "by": "rev22 (2 Sonnet reviewers, 2026-11-06)",
-  "evidence": "every row compared to MileSplit raw pages; all 9 clean"
+  "parse_sha": "6021a74f14b10c11",
+  "source_sha": "1ec5c2c5330e5ad7",
+  "date": "2026-11-13",
+  "by": "indoor double-check 2026-11-13",
+  "evidence": "only changes since the prior sign-off are f9ea14867 (Indoor QA: impossible marks dropped, printed values kept in warnings) and 48afac102 (2004 smaaboys re-transcribed from the sub5 grid); diffs read"
  },
  "backend/data/parsed_results/2022/Indoor/ne-interscholastic-indoor-2022.json": {
   "parse_sha": "4246677ed50339f6",
@@ -56805,11 +56931,11 @@
   "evidence": "Ledger 'unverified: never read' resolved by this read. WMC Indoor Track Championship, USM, 2/10/2023 (index February 10, 2023). Hy-Tek text compared row by row with scripts over the source (event, gender, place incl. ties and '--', name, school string, grade, mark with q/J/R/x flags, X/x B/C relay marks = exhibition, heat/points columns, relay school and printed legs, status rows; every school string against the parse): 50 events / 665 rows (6 relay events, legs equal), event sequence identical, no differences. wmc-scores.pdf (Female/Male Team Scores, 14 teams each: Freeport 145, Greely 120, York 112 ...; York 131, Freeport 71 ...) equals the sum of the row points per sex and school (0 differences). Schools resolve to me-hs entries except North Yarmouth: the individual rows print 'North Yarmou' (-> coop-nya-maine-coast-waldorf) while the 3 relay row(s) print 'North Yarmouth Academy' (-> me-hs-nya) in the same meet and the printed team scores list one 'North Yarmouth Academy' (Female 11, Male 5); SCHOOL RULE below, same decision as the 2024 NYA files (ResultsWMC, ResultsWMC2, Resultsmeet-1-3). Other schools York High Sc, Freeport Hig, Greely High, Yarmouth Hig, Gray New Glo, Poland Regio, St. Dominic, Cape Elizabe, Traip Academ, Sacopee Vall, Lake Region, Wells High S, Fryeburg Aca resolve to me-hs entries."
  },
  "backend/data/parsed_results/2023/Indoor/Resultswmc1.json": {
-  "parse_sha": "b4ae2db2d2943366",
+  "parse_sha": "a8b61d98af5c4327",
   "source_sha": "782644cabca8d5d1",
-  "date": "2026-10-31",
-  "by": "sonnet audit (second read, Indoor sec) (audit: confirmed)",
-  "evidence": "Ledger 'unverified: never read' resolved by this read. WMC Week 3 Meet 1, USM, 1/24/2023 (Hy-Tek title 'WMC WEEK 3 MEET 1 - 1/24/2023', teams Poland-Wells-Cape-Greely-Lake Region-NYA-St Doms-Mt Valley-Boothbay-Sacopee; index date equals it). Hy-Tek text compared row by row with scripts over the source (event, gender, place incl. ties and '--', name, school string, grade, mark with q/J/R/x flags, X/x B/C relay marks = exhibition, heat/points columns, relay school and printed legs, status rows; every school string against the parse): 41 events / 341 rows (5 relay events), event sequence identical, no differences. ScoresWMC1-1.htm 'Team Rankings - Through Event 42' (9 teams per sex) equals the sum of the row points per sex and school (0 differences). Schools resolve to me-hs entries except North Yarmouth: the individual rows print 'North Yarmou' (-> coop-nya-maine-coast-waldorf) while the 2 relay row(s) print 'North Yarmouth Academy' (-> me-hs-nya) in the same meet and the printed team scores list one 'North Yarmouth Academy' (NYA); SCHOOL RULE below, same decision as the 2024 NYA files (ResultsWMC, ResultsWMC2, Resultsmeet-1-3). Boothbay/Wis(ca) -> coop-boothbay-wiscasset (individual and relay strings agree). Other schools Greely High, St. Dominic, Cape Elizabe, Poland Regio, Lake Region, Sacopee Vall, Mountain Val resolve to me-hs entries."
+  "date": "2026-11-13",
+  "by": "indoor double-check 2026-11-13",
+  "evidence": "only changes since the prior sign-off are f9ea14867 (Indoor QA: impossible marks dropped, printed values kept in warnings) and 48afac102 (2004 smaaboys re-transcribed from the sub5 grid); diffs read"
  },
  "backend/data/parsed_results/2023/Indoor/Resultswmc2.json": {
   "parse_sha": "3f7bf555eb8e99c1",
@@ -60319,11 +60445,11 @@
   "evidence": "untitled MS relay sections (header 'Girls  JR GIRLS', no event name) filed as 4x140yd (JR/INT) / 4x210yd (SR): the same GPC/SMMSAC sheets print those names in 2025 and every time fits; 2024 counts match both reviewers' missing rows; all other rows unchanged"
  },
  "backend/data/parsed_results/2024/Indoor/ms-cape-eizabeth-greely-thornton-academy-saco-2024.json": {
-  "parse_sha": "9fa67c93883e0182",
-  "source_sha": "c1584ff64f891993",
-  "date": "2026-11-05",
-  "by": "2 Sonnet reviewers (2024 batch 4) + loop",
-  "evidence": "untitled MS relay sections (header 'Girls  JR GIRLS', no event name) filed as 4x140yd (JR/INT) / 4x210yd (SR): the same GPC/SMMSAC sheets print those names in 2025 and every time fits; 2024 counts match both reviewers' missing rows; all other rows unchanged"
+  "parse_sha": "e72e6ed7cf638144",
+  "source_sha": "8a0ff8ab2adbece4",
+  "date": "2026-11-13",
+  "by": "indoor double-check 2026-11-13",
+  "evidence": "only changes since the prior sign-off are f9ea14867 (Indoor QA: impossible marks dropped, printed values kept in warnings) and 48afac102 (2004 smaaboys re-transcribed from the sub5 grid); diffs read"
  },
  "backend/data/parsed_results/2024/Indoor/ms-cape-eizabeth-loranger-noble-saco-massabesic-2024.json": {
   "parse_sha": "4ef6dc1636382573",
@@ -60431,11 +60557,11 @@
   "evidence": "every row matches the MileSplit sheet (row counts equal)"
  },
  "backend/data/parsed_results/2024/Indoor/ms-smmsac-festival-so-maine-conference-2024.json": {
-  "parse_sha": "9604b067e5cdc6bc",
-  "source_sha": "376fcdadaa552a00",
-  "date": "2026-11-05",
-  "by": "2 Sonnet reviewers (2024 batch 4) + loop",
-  "evidence": "untitled MS relay sections (header 'Girls  JR GIRLS', no event name) filed as 4x140yd (JR/INT) / 4x210yd (SR): the same GPC/SMMSAC sheets print those names in 2025 and every time fits; 2024 counts match both reviewers' missing rows; all other rows unchanged"
+  "parse_sha": "6afde9e80b47b7f8",
+  "source_sha": "9ce62d07d9ac8631",
+  "date": "2026-11-13",
+  "by": "indoor double-check 2026-11-13",
+  "evidence": "only changes since the prior sign-off are f9ea14867 (Indoor QA: impossible marks dropped, printed values kept in warnings) and 48afac102 (2004 smaaboys re-transcribed from the sub5 grid); diffs read"
  },
  "backend/data/parsed_results/2024/Indoor/ms-wmc-greely-poland-fryeburg-yarmouth-wells-nya-st-doms-2024.json": {
   "parse_sha": "e3a71c049d7dda7e",
@@ -60445,11 +60571,11 @@
   "evidence": "every row matches the MileSplit sheet (row counts equal)"
  },
  "backend/data/parsed_results/2024/Indoor/ms-wmc-york-cape-gng-freeport-traip-mt-val-booth-wisc-yarm-2024.json": {
-  "parse_sha": "ad722cae9c7a996c",
-  "source_sha": "b63238b5f9ecb61b",
-  "date": "2026-11-05",
-  "by": "2 Sonnet reviewers (2024 batch 4)",
-  "evidence": "every row matches the MileSplit sheet (row counts equal)"
+  "parse_sha": "f0d388cd80f43dd1",
+  "source_sha": "23bb573df6ed1326",
+  "date": "2026-11-13",
+  "by": "indoor double-check 2026-11-13",
+  "evidence": "only changes since the prior sign-off are f9ea14867 (Indoor QA: impossible marks dropped, printed values kept in warnings) and 48afac102 (2004 smaaboys re-transcribed from the sub5 grid); diffs read"
  },
  "backend/data/parsed_results/2024/Indoor/usmrelays2023.json": {
   "parse_sha": "eb63bb964e34ff7d",

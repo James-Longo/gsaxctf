@@ -2493,7 +2493,16 @@ class Sub5ScraperV2:
                 # Remove leftover commas in names
                 last_name = last_name.replace(',', '').strip()
                 # ('Wilcox - A, Jessie': a relay-meet squad letter, 2004 Bowdoin Relays, 2018 Tripp)
-                last_name = re.sub(r'\s*-\s*[A-D](?:-[A-D])?$', '', last_name)
+                # (and a bare dash where the squad letter is missing: 'Penney -, Bobby', 2005 Bowdoin)
+                sq = re.search(r'\s*-\s*([A-D](?:-[A-D])?)?$', last_name)
+                if sq:
+                    last_name = last_name[:sq.start()]
+                    # (the squad letter typed again as the first name, 'Floster - A, A', 'Sweeney - A-C, AC':
+                    # no first name was entered, so the runner is the surname alone)
+                    if sq.group(1) and re.fullmatch(r'[A-D]{1,2}', first_name.strip()) and \
+                            set(first_name.strip()) <= set(sq.group(1).replace('-', '')):
+                        first_name = ''
+                        name = last_name
                 first_name = first_name.replace(',', '').strip()
                 # ('Antonelli, Alexis.': a stray period after the first name, 2018 WMC Poland rows;
                 # an initial keeps its period)
