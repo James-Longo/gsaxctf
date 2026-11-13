@@ -18,3 +18,67 @@ body {
   min-width: 320px;
   min-height: 100vh;
 }
+
+/* Tip (src/Tip.jsx): hover/focus/long-press hints. The trigger is a button
+   that looks like the text it wraps; component classes (.badge, .xs-chip, ...)
+   come later in App.css and win where they set the same property. */
+.tip {
+  font: inherit;
+  color: inherit;
+  letter-spacing: inherit;
+  text-transform: inherit;
+  text-align: inherit;
+  background: none;
+  border: 0;
+  padding: 0;
+  margin: 0;
+  cursor: help;
+}
+/* the button is inline-block: keep a chip's background as tall as the span's was */
+.tip:is(.badge, .xs-chip) { line-height: normal; }
+.tip:focus-visible,
+.sort-btn:focus-visible,
+.splits-toggle:focus-visible {
+  outline: 2px solid #800000;
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+.tip-pop {
+  /* set every inherited text property: the hint sits inside headings and cells */
+  max-width: min(280px, calc(100vw - 16px));
+  padding: 5px 8px;
+  border: 0;
+  border-radius: 4px;
+  background: #2d3748;
+  color: #fff;
+  font: 400 0.78rem/1.4 'Inter', system-ui, sans-serif;
+  letter-spacing: normal;
+  text-align: left;
+  text-transform: none;
+  white-space: pre-line;
+  overflow-wrap: break-word;
+  word-break: normal;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+@supports (position-area: block-start) {
+  .tip-pop {
+    inset: auto;
+    /* a gap from the trigger whichever side it opens on; clear of the screen edge */
+    margin: 6px 8px;
+    position-area: block-start;
+    position-try-fallbacks: flip-block;
+  }
+}
+
+/* Sortable table headers: a button fills the cell and takes its padding */
+.sort-btn {
+  font: inherit;
+  color: inherit;
+  text-align: inherit;
+  background: none;
+  border: 0;
+  margin: 0;
+  padding: 0;
+  cursor: pointer;
+  min-height: 24px;
+}

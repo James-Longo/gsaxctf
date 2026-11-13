@@ -1,7 +1,10 @@
-import React, { useState, useEffect, useMemo } from 'react'
+import React, { useState, useEffect, useMemo, lazy, Suspense } from 'react'
 import { asset, fetchGz } from './utils'
-import AthleteProfile from './AthleteProfile'
 import SearchSelect from './SearchSelect'
+import Tip from './Tip'
+
+// charts (recharts) load when a profile is first opened
+const AthleteProfile = lazy(() => import('./AthleteProfile'))
 
 /**
  * Summer track: the USATF Maine Youth Developmental Summer Series (14 & under).
@@ -56,9 +59,10 @@ function feet(r) {
   return [r.mark, r.value != null ? r.value / 0.0254 : null]
 }
 
-// the age group, like the grade beside a school result; the printed age on hover
-const Age = ({ r }) => r.age_group
-  ? <span className="xs-gr" title={r.age ? `age ${r.age}` : undefined}> {r.age_group}</span> : null
+// the age group, like the grade beside a school result; the printed age on
+// hover. The hint covers the whole cell so the cell wraps as plain text.
+const Age = ({ r }) => r.age_group ? <span className="xs-gr"> {r.age_group}</span> : null
+const ageTip = (r) => r.age_group && r.age ? `age ${r.age}` : ''
 
 export default function SummerTrack({ view }) {
   const [data, setData] = useState(null)
@@ -181,7 +185,7 @@ export default function SummerTrack({ view }) {
           {clubPicker}
           {athletePicker(false, cur?.id ?? '')}
         </div>
-        {cur ? <AthleteProfile performances={perfs} selectedAthlete={cur} />
+        {cur ? <Suspense fallback={null}><AthleteProfile performances={perfs} selectedAthlete={cur} /></Suspense>
           : <p>No athletes for this club.</p>}
       </div>
     )
@@ -257,6 +261,8 @@ export default function SummerTrack({ view }) {
     else if (a.value != null && b.value != null) d = a.field ? a.value - b.value : b.value - a.value
     return sortDir === 'asc' ? d : -d
   })
+  // aria-sort on the sorted column's header only
+  const ariaSort = (f) => sortField === f ? (sortDir === 'asc' ? 'ascending' : 'descending') : undefined
   const sortBy = (f) => {
     if (sortField === f) setSortDir(d => d === 'asc' ? 'desc' : 'asc')
     else { setSortField(f); setSortDir('desc') }
@@ -284,7 +290,7 @@ export default function SummerTrack({ view }) {
           </select>
         </div>
         <div className="filter-group">
-          <label title="USATF age group">Age group</label>
+          <label><Tip tip="USATF age group">Age group</Tip></label>
           <select value={ageGroup} onChange={e => setAgeGroup(e.target.value)}>
             <option value="All">All Ages</option>
             {ages.map(a => <option key={a} value={a}>{a}</option>)}
@@ -303,18 +309,18 @@ export default function SummerTrack({ view }) {
         <table className="performance-table">
           <thead>
             <tr>
-              <th onClick={() => sortBy('date')}>Date</th>
-              {all && <th>Athlete</th>}
-              <th>Event</th>
-              <th onClick={() => sortBy('mark')}>Result</th>
-              <th>Meet</th>
+              <th scope="col" aria-sort={ariaSort('date')}><button type="button" className="sort-btn" onClick={() => sortBy('date')}>Date</button></th>
+              {all && <th scope="col">Athlete</th>}
+              <th scope="col">Event</th>
+              <th scope="col" aria-sort={ariaSort('mark')}><button type="button" className="sort-btn" onClick={() => sortBy('mark')}>Result</button></th>
+              <th scope="col">Meet</th>
             </tr>
           </thead>
           <tbody>
             {shown.slice(0, cap).map(r => (
               <tr key={r.i} className={r.isPr ? 'pr-row' : ''}>
-                <td>{r.date}{!all && <Age r={r} />}</td>
-                {all && <td title={r.club}>{who(r)}<Age r={r} /></td>}
+                <td>{all ? r.date : <Tip tip={ageTip(r)}>{r.date}<Age r={r} /></Tip>}</td>
+                {all && <td><Tip tip={[r.club, ageTip(r)].filter(Boolean).join('\n')}>{who(r)}<Age r={r} /></Tip></td>}
                 <td>{r.ev}</td>
                 <td>{r.mark}{r.isPr && <span className="badge pr">PR</span>}</td>
                 <td>{r.url
@@ -325,8 +331,8 @@ export default function SummerTrack({ view }) {
           </tbody>
         </table>
       </div>
-      {shown.length > cap && <p className="summer-note" title="Pick a club, athlete, year or event to narrow the list">
-        {SHOW.toLocaleString()} of {shown.length.toLocaleString()}</p>}
+      {shown.length > cap && <p className="summer-note"><Tip tip="Pick a club, athlete, year or event to narrow the list">
+        {SHOW.toLocaleString()} of {shown.length.toLocaleString()}</Tip></p>}
     </div>
   )
 }

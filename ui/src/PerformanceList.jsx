@@ -1,6 +1,7 @@
 import { Fragment, useState, useMemo, useEffect } from 'react'
 import { parseMark, normalizeEvent, isDistanceEvent, asset, fetchGz } from './utils'
 import './App.css'
+import Tip from './Tip'
 
 // Typical championship mark vs the mean of an athlete's two best marks that season, as a
 // log-scale spread by event family: robust SD of the misses over 164 PVC/EMITL and state
@@ -961,10 +962,10 @@ function PostseasonSimulator({ performances, isBetter, manifest, loadTeamData, s
 
             <div className="xs-bar ps-tabs">
                 <div className="xs-seg" role="group" aria-label="View">
-                    <button className={view === 'entries' ? 'active' : ''} onClick={() => setView('entries')}
-                        title={`Each athlete's chance of entering each event, relay legs included (${EVENT_LIMIT} events at most)`}>Entries</button>
-                    <button className={view === 'outcomes' ? 'active' : ''} onClick={() => setView('outcomes')}
-                        title="Team and event results simulated from the entries: the actual entries once a meet is run, else the predicted ones">Outcomes</button>
+                    <Tip styled className={view === 'entries' ? 'active' : ''} onClick={() => setView('entries')}
+                        tip={`Each athlete's chance of entering each event, relay legs included (${EVENT_LIMIT} events at most)`}>Entries</Tip>
+                    <Tip styled className={view === 'outcomes' ? 'active' : ''} onClick={() => setView('outcomes')}
+                        tip="Team and event results simulated from the entries: the actual entries once a meet is run, else the predicted ones">Outcomes</Tip>
                 </div>
                 <div className="xs-seg" role="group" aria-label="Gender">
                     {['Boys', 'Girls'].map(x => (
@@ -991,10 +992,10 @@ function PostseasonSimulator({ performances, isBetter, manifest, loadTeamData, s
                     </div>
                     )}
                     <div className="filter-group">
-                        <label>Competition</label>
+                        <label><Tip tip="State meet: The state meet of the team being optimized">Competition</Tip></label>
                         <select value={competitionType} onChange={e => setCompetitionType(e.target.value)}>
                             <option value="PVC">PVC Small Schools</option>
-                            <option value="States" title="The state meet of the team being optimized">State meet</option>
+                            <option value="States">State meet</option>
                             <option value="Everyone">Everyone</option>
                         </select>
                     </div>
@@ -1023,10 +1024,10 @@ function PostseasonSimulator({ performances, isBetter, manifest, loadTeamData, s
                             <thead>
                                 <tr>
                                     <th className="num">#</th><th>Team</th>
-                                    {PLACES.map(p => <th key={p} className="num" title={predicted.basis === 'entered'
+                                    {PLACES.map(p => <th key={p} className="num"><Tip tip={predicted.basis === 'entered'
                                         ? 'Share of simulated meets run with the actual entries, marks varying as at past championships'
-                                        : "Share of simulated meets: entries drawn from each athlete's entry chance, marks varying as at past championships"}>{p}</th>)}
-                                    <th className="num" title="Expected points">Pts</th>
+                                        : "Share of simulated meets: entries drawn from each athlete's entry chance, marks varying as at past championships"}>{p}</Tip></th>)}
+                                    <th className="num"><Tip tip="Expected points">Pts</Tip></th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -1040,7 +1041,7 @@ function PostseasonSimulator({ performances, isBetter, manifest, loadTeamData, s
                                                 <td className="num">{i + 1}</td>
                                                 <td>{t.team}</td>
                                                 {t.odds.map((o, k) => <td key={k} className={`num ${k < 3 ? pctCls(o) : 'xs-plain'}`}>{pct(o)}</td>)}
-                                                <td className="num" title={`${t.op} from the predicted places`}>{t.pts}</td>
+                                                <td className="num"><Tip tip={`${t.op} from the predicted places`}>{t.pts}</Tip></td>
                                             </tr>
                                             {expandedTeams[key] && mine.length > 0 && (
                                                 <tr className="ps-breakdown"><td colSpan={7}>
@@ -1048,7 +1049,7 @@ function PostseasonSimulator({ performances, isBetter, manifest, loadTeamData, s
                                                         <div key={j} className="breakdown-row">
                                                             <span className="b-event clickable-event" onClick={(e) => { e.stopPropagation(); scrollToEvent(r.key) }}>{r.key}</span>
                                                             <span className="b-athlete">{r.n || 'Relay'}</span>
-                                                            <span className="b-pts" title={`Expected ${r.x.toFixed(1)}`}>{r.pp ? `+${r.pp}` : '–'}</span>
+                                                            <Tip className="b-pts" tip={`Expected ${r.x.toFixed(1)}`}>{r.pp ? `+${r.pp}` : '–'}</Tip>
                                                         </div>
                                                     ))}
                                                 </td></tr>
@@ -1078,8 +1079,8 @@ function PostseasonSimulator({ performances, isBetter, manifest, loadTeamData, s
                                 <thead>
                                     <tr>
                                         <th className="num">#</th><th>Team</th>
-                                        {PLACES.map(p => <th key={p} className="num" title={`Share of ${SIMS} simulated meets, marks varying as at past championships`}>{p}</th>)}
-                                        <th className="num" title="Points with each team's predicted entries at their season bests">Pts</th>
+                                        {PLACES.map(p => <th key={p} className="num"><Tip tip={`Share of ${SIMS} simulated meets, marks varying as at past championships`}>{p}</Tip></th>)}
+                                        <th className="num"><Tip tip="Points with each team's predicted entries at their season bests">Pts</Tip></th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -1140,15 +1141,15 @@ function PostseasonSimulator({ performances, isBetter, manifest, loadTeamData, s
                                     <table className="performance-table">
                                         <thead>
                                             <tr>
-                                                <th title="Predicted place (by expected points)">Pred.</th>
+                                                <th><Tip tip="Predicted place (by expected points)">Pred.</Tip></th>
                                                 <th>Name</th>
                                                 <th>Team</th>
-                                                <th title="Predicted mark">Mark</th>
-                                                {predicted.basis !== 'entered' && <th className="num" title="Chance of entering this event">Entry</th>}
-                                                <th title="Points for the predicted place">Points</th>
-                                                {act && <th className="ps-act" title={`Place at ${champCutoff?.meet || 'the championship'}`}>Place</th>}
-                                                {act && <th title="Mark at the championship">Result</th>}
-                                                {act && <th title="Points scored">Pts</th>}
+                                                <th><Tip tip="Predicted mark">Mark</Tip></th>
+                                                {predicted.basis !== 'entered' && <th className="num"><Tip tip="Chance of entering this event">Entry</Tip></th>}
+                                                <th><Tip tip="Points for the predicted place">Points</Tip></th>
+                                                {act && <th className="ps-act"><Tip tip={`Place at ${champCutoff?.meet || 'the championship'}`}>Place</Tip></th>}
+                                                {act && <th><Tip tip="Mark at the championship">Result</Tip></th>}
+                                                {act && <th><Tip tip="Points scored">Pts</Tip></th>}
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -1161,8 +1162,8 @@ function PostseasonSimulator({ performances, isBetter, manifest, loadTeamData, s
                                                         <td>{r.team}</td>
                                                         <td className="mark-cell">{r.m}</td>
                                                         {predicted.basis !== 'entered' && <td className={`num ${pctCls(r.p)}`}>{pct(r.p)}</td>}
-                                                        <td className="points-cell" title={`Expected ${r.x.toFixed(1)}`}>{r.pp ? `+${r.pp}` : '-'}</td>
-                                                        {act && <td className="ps-act" title={a ? '' : 'Did not compete in this event at the championship'}>{a ? a.pl : '–'}</td>}
+                                                        <td className="points-cell"><Tip tip={`Expected ${r.x.toFixed(1)}`}>{r.pp ? `+${r.pp}` : '-'}</Tip></td>
+                                                        {act && <td className="ps-act"><Tip tip={a ? '' : 'Did not compete in this event at the championship'}>{a ? a.pl : '–'}</Tip></td>}
                                                         {act && <td className="mark-cell">{a ? a.m : ''}</td>}
                                                         {act && <td className="points-cell">{a?.pts ? `+${a.pts}` : ''}</td>}
                                                     </tr>
@@ -1171,7 +1172,7 @@ function PostseasonSimulator({ performances, isBetter, manifest, loadTeamData, s
                                             {missed.map((a, i) => (
                                                 <tr key={`m${i}`} className="ps-unpredicted">
                                                     <td>–</td>
-                                                    <td className="athlete-name-cell">{a.n}<span className="xs-chip" title="Scored, but the model had no mark for them in this event">not predicted</span></td>
+                                                    <td className="athlete-name-cell">{a.n}<Tip glue className="xs-chip" tip="Scored, but the model had no mark for them in this event">not predicted</Tip></td>
                                                     <td>{a.team}</td>
                                                     <td></td>{predicted.basis !== 'entered' && <td></td>}<td></td>
                                                     <td className="ps-act">{a.pl}</td>
@@ -1202,14 +1203,14 @@ function PostseasonSimulator({ performances, isBetter, manifest, loadTeamData, s
                             <table className="performance-table">
                                 <thead>
                                     <tr>
-                                        <th title="Rank by the scoring basis">{act ? 'Pred.' : 'Rank'}</th>
+                                        <th><Tip tip="Rank by the scoring basis">{act ? 'Pred.' : 'Rank'}</Tip></th>
                                         <th>Name</th>
                                         <th>Team</th>
                                         <th>Mark</th>
-                                        <th title="Predicted points">Points</th>
-                                        {act && <th className="ps-act" title={`Place at ${champCutoff?.meet || 'the championship'}`}>Place</th>}
-                                        {act && <th title="Mark at the championship">Result</th>}
-                                        {act && <th title="Points scored">Pts</th>}
+                                        <th><Tip tip="Predicted points">Points</Tip></th>
+                                        {act && <th className="ps-act"><Tip tip={`Place at ${champCutoff?.meet || 'the championship'}`}>Place</Tip></th>}
+                                        {act && <th><Tip tip="Mark at the championship">Result</Tip></th>}
+                                        {act && <th><Tip tip="Points scored">Pts</Tip></th>}
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -1217,13 +1218,13 @@ function PostseasonSimulator({ performances, isBetter, manifest, loadTeamData, s
                                         <tr key={idx} className={res ? '' : 'ps-unpredicted'}>
                                             <td>{res ? res.calculatedRank : '–'}</td>
                                             <td className="athlete-name-cell">{res ? res.athlete_name : a.n}
-                                                {!res && <span className="xs-chip" title="Scored, but not among the predicted entries">not predicted</span>}</td>
+                                                {!res && <Tip glue className="xs-chip" tip="Scored, but not among the predicted entries">not predicted</Tip>}</td>
                                             <td>{res ? res.pvcTeam : a.team}</td>
                                             <td className="mark-cell">{res ? res.mark : ''}</td>
                                             <td className="points-cell">
                                                 {res && res.optimizedPts > 0 ? `+${res.optimizedPts.toFixed(1)}` : '-'}
                                             </td>
-                                            {act && <td className="ps-act" title={a ? '' : 'Did not compete in this event at the championship'}>{a ? a.pl : '–'}</td>}
+                                            {act && <td className="ps-act"><Tip tip={a ? '' : 'Did not compete in this event at the championship'}>{a ? a.pl : '–'}</Tip></td>}
                                             {act && <td className="mark-cell">{a ? a.m : ''}</td>}
                                             {act && <td className="points-cell">{a?.pts ? `+${a.pts}` : ''}</td>}
                                         </tr>
@@ -1296,17 +1297,17 @@ function EntryPanel({ champ, gender, season, teamOf, targetTeam, order, meet }) 
                         {grid.names.map(n => <option key={n} value={n}>{n}</option>)}
                     </select>
                 </div>
-                {ran && <div className="record-count" title={`Entries at ${meet || 'the championship'}, relay legs included`}>
-                    <span title="Sum of the entry chances">{cells.reduce((t, r) => t + r.p, 0).toFixed(1)} expected</span>
-                    {' · '}<span>{entered.length} entered</span>
-                    {' · '}<span title="Entries that had a chance of 50% or more">{entered.filter(r => r.p >= 0.5).length} called</span>
+                {ran && <div className="record-count">
+                    <Tip tip="Sum of the entry chances">{cells.reduce((t, r) => t + r.p, 0).toFixed(1)} expected</Tip>
+                    {' · '}<Tip tip={`Entries at ${meet || 'the championship'}, relay legs included`}>{entered.length} entered</Tip>
+                    {' · '}<Tip tip="Entries that had a chance of 50% or more">{entered.filter(r => r.p >= 0.5).length} called</Tip>
                 </div>}
             </div>
             {who ? (
                 <div className="table-container">
                     <table className="performance-table xs-table ps-entry-one">
-                        <thead><tr><th>Event</th><th className="num" title="Chance of entering (relays: of running a leg)">Chance</th>
-                            {ran && <th className="ps-act" title={`At ${meet || 'the championship'}`}>Entered</th>}</tr></thead>
+                        <thead><tr><th>Event</th><th className="num"><Tip tip="Chance of entering (relays: of running a leg)">Chance</Tip></th>
+                            {ran && <th className="ps-act"><Tip tip={`At ${meet || 'the championship'}`}>Entered</Tip></th>}</tr></thead>
                         <tbody>
                             {grid.events.filter(ev => grid.athletes[who][ev]).map(ev => {
                                 const r = grid.athletes[who][ev]
@@ -1328,10 +1329,10 @@ function EntryPanel({ champ, gender, season, teamOf, targetTeam, order, meet }) 
                         <tbody>
                             {Object.keys(grid.relay).length > 0 && (
                                 <tr className="ps-relay-row">
-                                    <td title="The team's chance of entering the relay">Relay team</td>
+                                    <td><Tip tip="The team's chance of entering the relay">Relay team</Tip></td>
                                     {grid.events.map(ev => {
                                         const r = grid.relay[ev]
-                                        return <td key={ev} className={`num ${r ? pctCls(r.p) : ''}`} title={tip(r)}>{r ? pct(r.p) : ''}{mark(r)}</td>
+                                        return <td key={ev} className={`num ${r ? pctCls(r.p) : ''}`}><Tip tip={tip(r)}>{r ? pct(r.p) : ''}{mark(r)}</Tip></td>
                                     })}
                                 </tr>
                             )}
@@ -1340,8 +1341,8 @@ function EntryPanel({ champ, gender, season, teamOf, targetTeam, order, meet }) 
                                     <td className="athlete-name-cell">{n}</td>
                                     {grid.events.map(ev => {
                                         const r = grid.athletes[n][ev]
-                                        return <td key={ev} className={`num ${r ? pctCls(r.p) : ''} ${r?.e ? 'ps-in' : ''}`} title={tip(r)}>
-                                            {r && (r.p >= 0.005 || !r.e) ? pct(r.p) : ''}{mark(r)}</td>
+                                        return <td key={ev} className={`num ${r ? pctCls(r.p) : ''} ${r?.e ? 'ps-in' : ''}`}><Tip tip={tip(r)}>
+                                            {r && (r.p >= 0.005 || !r.e) ? pct(r.p) : ''}{mark(r)}</Tip></td>
                                     })}
                                 </tr>
                             ))}
@@ -1359,7 +1360,7 @@ const top3 = (o) => o ? o[0] + o[1] + o[2] : null
 function TrackResultPanel({ actual, predicted, odds, gender, targetTeam, meet }) {
     return (
         <div className="xs-result ps-result">
-            <h3 className="xs-h" title={meet}>Predicted vs result</h3>
+            <h3 className="xs-h"><Tip tip={meet}>Predicted vs result</Tip></h3>
             <div className="ps-result-grid">
                 {[gender].map(g => {
                     const a = actual[g]
@@ -1380,9 +1381,9 @@ function TrackResultPanel({ actual, predicted, odds, gender, targetTeam, meet })
                                     <thead>
                                         <tr>
                                             <th className="num">Place</th><th>Team</th><th className="num">Score</th>
-                                            <th className="num" title="Place in the simulated standings">Predicted<br />place</th>
-                                            <th className="num" title="Predicted score">Pred.<br />score</th>
-                                            <th className="num" title="Share of simulated meets in which the team finished top 3">Top 3<br />chance</th>
+                                            <th className="num"><Tip tip="Place in the simulated standings">Predicted<br />place</Tip></th>
+                                            <th className="num"><Tip tip="Predicted score">Pred.<br />score</Tip></th>
+                                            <th className="num"><Tip tip="Share of simulated meets in which the team finished top 3">Top 3<br />chance</Tip></th>
                                         </tr>
                                     </thead>
                                     <tbody>

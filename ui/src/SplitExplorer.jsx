@@ -1,5 +1,6 @@
 import React, { useState, useMemo } from 'react';
 import { parseMark, normalizeEvent } from './utils';
+import Tip from './Tip'
 
 function mean(arr) {
     return arr.reduce((a, b) => a + b, 0) / arr.length;
@@ -160,7 +161,7 @@ const SplitExplorer = ({ performances, loading }) => {
                                     <span className="profile-label">{label}</span>
                                     <div className="profile-bar-track">
                                         {ratios.map((ratio, i) => (
-                                            <div
+                                            <Tip
                                                 key={i}
                                                 className="profile-segment"
                                                 style={{
@@ -168,12 +169,12 @@ const SplitExplorer = ({ performances, loading }) => {
                                                     backgroundColor: SEGMENT_COLORS[i % SEGMENT_COLORS.length],
                                                     opacity: fast ? 1 : 0.55,
                                                 }}
-                                                title={`${lapLabel(i + 1)}: ${(ratio * 100).toFixed(2)}%`}
+                                                tip={`${lapLabel(i + 1)}: ${(ratio * 100).toFixed(2)}%`}
                                             >
                                                 {ratio > 0.07 && (
                                                     <span className="profile-segment-label">{(ratio * 100).toFixed(1)}%</span>
                                                 )}
-                                            </div>
+                                            </Tip>
                                         ))}
                                     </div>
                                 </div>
@@ -202,18 +203,18 @@ const SplitExplorer = ({ performances, loading }) => {
                                                 const hex = SEGMENT_COLORS[i % SEGMENT_COLORS.length];
                                                 const bg = `rgba(${hexToRgb(hex)}, ${0.15 + intensity * 0.85})`;
                                                 return (
-                                                    <div
+                                                    <Tip
                                                         key={i}
                                                         className="profile-segment"
                                                         style={{ width: `${widthPercent}%`, backgroundColor: bg }}
-                                                        title={`${lapLabel(i + 1)}: ${g >= 0 ? '+' : ''}${(g * 100).toFixed(2)}%`}
+                                                        tip={`${lapLabel(i + 1)}: ${g >= 0 ? '+' : ''}${(g * 100).toFixed(2)}%`}
                                                     >
                                                         {widthPercent > 7 && (
                                                             <span className="profile-segment-label">
                                                                 {g >= 0 ? '+' : ''}{(g * 100).toFixed(1)}%
                                                             </span>
                                                         )}
-                                                    </div>
+                                                    </Tip>
                                                 );
                                             })}
                                         </div>

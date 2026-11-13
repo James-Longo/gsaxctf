@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useMemo } from 'react'
 import { asset, fetchGz } from './utils'
 import SearchSelect from './SearchSelect'
+import Tip from './Tip'
 
 /**
  * XC Course Explorer - course equivalence built from athletes who raced
@@ -136,12 +137,13 @@ export default function XCCourseExplorer() {
       <table className="performance-table">
         <thead>
           <tr>
-            <th>#</th><th>Course</th>
-            <th className="sortable active" onClick={() => setSortAsc(a => !a)}
-                title="Sort by rating">
-              Rating* {sortAsc ? '▲' : '▼'}
+            <th scope="col">#</th><th scope="col">Course</th>
+            <th scope="col" className="sortable active" aria-sort={sortAsc ? 'ascending' : 'descending'}>
+              <Tip styled className="sort-btn" onClick={() => setSortAsc(a => !a)} tip="Sort by rating">
+                Rating* <span aria-hidden="true">{sortAsc ? '▲' : '▼'}</span>
+              </Tip>
             </th>
-            <th>Median time</th>
+            <th scope="col">Median time</th>
           </tr>
         </thead>
         <tbody>
