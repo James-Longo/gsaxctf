@@ -496,29 +496,38 @@ function App() {
 
   return (
     <div className="container">
-      <h1 className="no-print">GSAXCTF</h1>
-      <div className="sport-switch no-print" role="tablist" aria-label="Sport">
-        {Object.entries(SPORTS).map(([key, sp]) => (
-          <button key={key} role="tab" aria-selected={sport === key}
-            className={sport === key ? 'active' : ''} onClick={() => switchSport(key)}>{sp.label}</button>
-        ))}
-      </div>
+      {/* the hash is the route, so the skip link moves focus instead of following its href */}
+      <a href="#content" className="skip-link"
+        onClick={e => { e.preventDefault(); document.getElementById('content')?.focus() }}>Skip to content</a>
+      <header>
+        <h1 className="no-print">GSAXCTF</h1>
+        {/* sport and page are links to their #sport/tab routes; the hashchange listener applies them */}
+        <nav className="sport-switch no-print" aria-label="Sport">
+          {Object.entries(SPORTS).map(([key, sp]) => (
+            <a key={key} href={`#${key}/${sportTabs(key).includes(activeTab) ? activeTab : 'history'}`}
+              aria-current={sport === key ? 'page' : undefined}
+              className={sport === key ? 'active' : ''} onClick={() => switchSport(key)}>{sp.label}</a>
+          ))}
+        </nav>
+      </header>
 
       <div className="dashboard-layout">
         <div className="sidebar">
-          <div className="nav-buttons">
+          <nav className="nav-buttons" aria-label="Pages">
             {SPORTS[sport].tabs.map(t => (
-              <button key={t} onClick={() => setActiveTab(t)} className={`nav-btn ${activeTab === t ? 'active' : ''}`}>{TAB_LABELS[t]}</button>
+              <a key={t} href={`#${sport}/${t}`} aria-current={activeTab === t ? 'page' : undefined}
+                className={`nav-btn ${activeTab === t ? 'active' : ''}`}>{TAB_LABELS[t]}</a>
             ))}
             {SPORTS[sport].team.length > 0 && <hr className="nav-divider" />}
             {SPORTS[sport].team.map(t => (
-              <button key={t} onClick={() => setActiveTab(t)} className={`nav-btn ${activeTab === t ? 'active' : ''}`}>{TAB_LABELS[t]}</button>
+              <a key={t} href={`#${sport}/${t}`} aria-current={activeTab === t ? 'page' : undefined}
+                className={`nav-btn ${activeTab === t ? 'active' : ''}`}>{TAB_LABELS[t]}</a>
             ))}
-          </div>
+          </nav>
 
         </div>
 
-        <div className="main-content">
+        <main className="main-content" id="content" tabIndex={-1}>
           {!dataLoaded ? (
             <div className="loading-state">
               <div className="loading-spinner"></div>
@@ -558,8 +567,9 @@ function App() {
             <>
               <div className="filter-bar">
                 <div className="filter-group">
-                  <label>Team</label>
+                  <label htmlFor="pick-team">Team</label>
                   <SearchSelect
+                    id="pick-team"
                     value={selectedTeam}
                     onChange={setSelectedTeam}
                     options={teamOptions}
@@ -568,8 +578,9 @@ function App() {
                 </div>
 
                 {activeTab !== 'records' && <div className="filter-group">
-                  <label>Athlete</label>
+                  <label htmlFor="pick-athlete">Athlete</label>
                   <SearchSelect
+                    id="pick-athlete"
                     value={selectedAthlete.id}
                     onChange={(val) => {
                       if (val === 'all') setSelectedAthlete(ALL_ATHLETES)
@@ -694,7 +705,7 @@ function App() {
           )}
           </>
           )}
-        </div>
+        </main>
       </div>
     </div>
   )

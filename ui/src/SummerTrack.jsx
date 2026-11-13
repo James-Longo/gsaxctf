@@ -152,14 +152,14 @@ export default function SummerTrack({ view }) {
   const pickAthlete = (a) => { setAthlete(a); setYear('All'); setEvent('All'); setAgeGroup('All') }
   const clubPicker = (
     <div className="filter-group">
-      <label>Club</label>
-      <SearchSelect value={club} onChange={pickClub} options={clubOptions} placeholder="Search clubs..." />
+      <label htmlFor="pick-club">Club</label>
+      <SearchSelect id="pick-club" value={club} onChange={pickClub} options={clubOptions} placeholder="Search clubs..." />
     </div>
   )
   const athletePicker = (withAll, value) => (
     <div className="filter-group">
-      <label>Athlete</label>
-      <SearchSelect value={value} onChange={pickAthlete}
+      <label htmlFor="pick-summer-athlete">Athlete</label>
+      <SearchSelect id="pick-summer-athlete" value={value} onChange={pickAthlete}
         options={[...(withAll ? [{ value: 'all', label: 'All Athletes' }] : []),
           ...clubRunners.map(a => ({ value: a.id, label: a.name,
             secondary: club === 'All' ? [...a.clubs].join(', ') : `${a.rows.length}` }))]}

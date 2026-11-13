@@ -361,7 +361,8 @@ function PostseasonSimulator({ performances, isBetter, manifest, loadTeamData, s
         const targetId = `event-${groupTitle.replace(/[^a-z0-9]/gi, '-')}`;
         const element = document.getElementById(targetId);
         if (element) {
-            element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            const still = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+            element.scrollIntoView({ behavior: still ? 'auto' : 'smooth', block: 'start' });
         }
     };
 
@@ -914,14 +915,13 @@ function PostseasonSimulator({ performances, isBetter, manifest, loadTeamData, s
                 }}>
                     <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                         <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                            <span className="spinner" style={{
+                            <span className="spinner ps-spinner" style={{
                                 width: '14px',
                                 height: '14px',
                                 border: '2px solid rgba(128, 0, 0, 0.2)',
                                 borderTop: '2px solid #800000',
                                 borderRadius: '50%',
-                                display: 'inline-block',
-                                animation: 'spin 0.8s linear infinite'
+                                display: 'inline-block'
                             }} />
                             <span>Loading postseason team results...</span>
                         </div>
@@ -1039,7 +1039,8 @@ function PostseasonSimulator({ performances, isBetter, manifest, loadTeamData, s
                                             <tr className={`xs-team ${t.team === targetTeam ? 'xs-follow' : ''} ${expandedTeams[key] ? 'xs-sel' : ''}`}
                                                 onClick={() => setExpandedTeams(prev => ({ ...prev, [key]: !prev[key] }))}>
                                                 <td className="num">{i + 1}</td>
-                                                <td>{t.team}</td>
+                                                <td><button type="button" className="text-btn" aria-expanded={!!expandedTeams[key]}
+                                                    onClick={(e) => { e.stopPropagation(); setExpandedTeams(prev => ({ ...prev, [key]: !prev[key] })) }}>{t.team}</button></td>
                                                 {t.odds.map((o, k) => <td key={k} className={`num ${k < 3 ? pctCls(o) : 'xs-plain'}`}>{pct(o)}</td>)}
                                                 <td className="num"><Tip tip={`${t.op} from the predicted places`}>{t.pts}</Tip></td>
                                             </tr>
@@ -1047,7 +1048,7 @@ function PostseasonSimulator({ performances, isBetter, manifest, loadTeamData, s
                                                 <tr className="ps-breakdown"><td colSpan={7}>
                                                     {mine.map((r, j) => (
                                                         <div key={j} className="breakdown-row">
-                                                            <span className="b-event clickable-event" onClick={(e) => { e.stopPropagation(); scrollToEvent(r.key) }}>{r.key}</span>
+                                                            <button type="button" className="text-btn b-event clickable-event" onClick={(e) => { e.stopPropagation(); scrollToEvent(r.key) }}>{r.key}</button>
                                                             <span className="b-athlete">{r.n || 'Relay'}</span>
                                                             <Tip className="b-pts" tip={`Expected ${r.x.toFixed(1)}`}>{r.pp ? `+${r.pp}` : '–'}</Tip>
                                                         </div>
@@ -1093,7 +1094,8 @@ function PostseasonSimulator({ performances, isBetter, manifest, loadTeamData, s
                                                 <tr className={`xs-team ${team === targetTeam ? 'xs-follow' : ''} ${expandedTeams[key] ? 'xs-sel' : ''}`}
                                                     onClick={() => setExpandedTeams(prev => ({ ...prev, [key]: !prev[key] }))}>
                                                     <td className="num">{i + 1}</td>
-                                                    <td>{team}</td>
+                                                    <td><button type="button" className="text-btn" aria-expanded={!!expandedTeams[key]}
+                                                        onClick={(e) => { e.stopPropagation(); setExpandedTeams(prev => ({ ...prev, [key]: !prev[key] })) }}>{team}</button></td>
                                                     {[0, 1, 2, 3].map(k => <td key={k} className={`num ${k < 3 ? pctCls(o?.[k]) : 'xs-plain'}`}>{o ? pct(o[k]) : ''}</td>)}
                                                     <td className="num">{(pts[team]?.pts ?? 0).toFixed(1)}</td>
                                                 </tr>
@@ -1101,7 +1103,7 @@ function PostseasonSimulator({ performances, isBetter, manifest, loadTeamData, s
                                                     <tr className="ps-breakdown"><td colSpan={7}>
                                                         {pts[team].breakdown.map((item, j) => (
                                                             <div key={j} className="breakdown-row">
-                                                                <span className="b-event clickable-event" onClick={(e) => { e.stopPropagation(); scrollToEvent(item.groupTitle) }}>{item.event}</span>
+                                                                <button type="button" className="text-btn b-event clickable-event" onClick={(e) => { e.stopPropagation(); scrollToEvent(item.groupTitle) }}>{item.event}</button>
                                                                 <span className="b-athlete">{item.athlete}</span>
                                                                 <span className="b-pts">+{item.pts.toFixed(1)}</span>
                                                             </div>
@@ -1338,7 +1340,8 @@ function EntryPanel({ champ, gender, season, teamOf, targetTeam, order, meet }) 
                             )}
                             {grid.names.map(n => (
                                 <tr key={n} className="ps-click" onClick={() => setAth(n)}>
-                                    <td className="athlete-name-cell">{n}</td>
+                                    <td className="athlete-name-cell"><button type="button" className="text-btn"
+                                        onClick={(e) => { e.stopPropagation(); setAth(n) }}>{n}</button></td>
                                     {grid.events.map(ev => {
                                         const r = grid.athletes[n][ev]
                                         return <td key={ev} className={`num ${r ? pctCls(r.p) : ''} ${r?.e ? 'ps-in' : ''}`}><Tip tip={tip(r)}>

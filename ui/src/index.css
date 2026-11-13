@@ -36,6 +36,21 @@ body {
 }
 /* the button is inline-block: keep a chip's background as tall as the span's was */
 .tip:is(.badge, .xs-chip) { line-height: normal; }
+/* A button that looks like the text it wraps: the keyboard way into rows and
+   names that also act on a mouse click */
+.text-btn {
+  font: inherit;
+  color: inherit;
+  letter-spacing: inherit;
+  text-transform: inherit;
+  text-align: inherit;
+  background: none;
+  border: 0;
+  padding: 0;
+  margin: 0;
+  cursor: pointer;
+}
+.text-btn:focus-visible,
 .tip:focus-visible,
 .sort-btn:focus-visible,
 .splits-toggle:focus-visible {
@@ -81,4 +96,26 @@ body {
   padding: 0;
   cursor: pointer;
   min-height: 24px;
+}
+
+/* Skip link: off screen until focused */
+.skip-link:not(:focus) {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+.skip-link:focus {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  z-index: 10;
+  padding: 8px 12px;
+  border-radius: 6px;
+  background: #800000;
+  color: #fff;
+  font-weight: 600;
+  text-decoration: none;
 }

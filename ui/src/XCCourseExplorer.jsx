@@ -106,13 +106,13 @@ export default function XCCourseExplorer() {
                    onChange={e => setTimeInput(e.target.value)} placeholder="19:00" />
           </div>
           <div className="filter-group">
-            <label>On course</label>
-            <SearchSelect value={fromCourse} onChange={setFromCourse}
+            <label htmlFor="pick-from-course">On course</label>
+            <SearchSelect id="pick-from-course" value={fromCourse} onChange={setFromCourse}
                           options={options} placeholder="Search courses..." />
           </div>
           <div className="filter-group">
-            <label>Equivalent on</label>
-            <SearchSelect value={toCourse} onChange={setToCourse}
+            <label htmlFor="pick-to-course">Equivalent on</label>
+            <SearchSelect id="pick-to-course" value={toCourse} onChange={setToCourse}
                           options={options} placeholder="Search courses..." />
           </div>
           <div className="filter-group">

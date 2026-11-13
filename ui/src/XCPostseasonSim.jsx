@@ -180,7 +180,8 @@ export default function XCPostseasonSim({ followTeam }) {
                     <tr className={`xs-team ${followed(t) ? 'xs-follow' : ''} ${team === t.team ? 'xs-sel' : ''}`}
                       onClick={() => setTeam(team === t.team ? null : t.team)}>
                       <td className="num">{rank}</td>
-                      <td>{t.team}{t.appear < 0.9 && <Tip glue className="xs-chip" tip="Qualifies for this meet as a team in this share of simulations">{pct(t.appear)} qualify</Tip>}</td>
+                      <td><button type="button" className="text-btn" aria-pressed={team === t.team}
+                        onClick={(e) => { e.stopPropagation(); setTeam(team === t.team ? null : t.team) }}>{t.team}</button>{t.appear < 0.9 && <Tip glue className="xs-chip" tip="Qualifies for this meet as a team in this share of simulations">{pct(t.appear)} qualify</Tip>}</td>
                       {t.odds.map((p, i) => <td key={i} className={`num ${i < 3 ? pctCls(p) : 'xs-plain'}`}>{pct(p)}</td>)}
                       {isReg && <td className={`num ${pctCls(t.qual)}`}>{pct(t.qual)}</td>}
                       <td className="num">{t.score}</td>
@@ -305,7 +306,8 @@ function ResultPanel({ actual, div, team, setTeam, query, followTeam, followedSc
                     <tr className={`xs-team ${followTeam && t.store === followTeam ? 'xs-follow' : ''} ${team === t.team ? 'xs-sel' : ''}`}
                       onClick={() => setTeam(team === t.team ? null : t.team)}>
                       <td className="num">{t.place ?? '–'}</td>
-                      <td>{t.team}{t.place == null && <Tip glue className="xs-chip" tip="Fewer than five runners finished">no team score</Tip>}</td>
+                      <td><button type="button" className="text-btn" aria-pressed={team === t.team}
+                        onClick={(e) => { e.stopPropagation(); setTeam(team === t.team ? null : t.team) }}>{t.team}</button>{t.place == null && <Tip glue className="xs-chip" tip="Fewer than five runners finished">no team score</Tip>}</td>
                       <td className="num">{t.score ?? '–'}</td>
                       <td className="num">{t.pred ?? '–'}{off ? <span className="xs-dim"> ({off > 0 ? '+' : '−'}{Math.abs(off)})</span> : null}</td>
                       <td className="num">{t.pscore ?? '–'}</td>

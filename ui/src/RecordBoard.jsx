@@ -81,7 +81,10 @@ function RecordBoard({ performances, selectedTeam, manifest, loadTeamData, seaso
                                         {r.record.map((e, i) => (
                                             <tr key={i} className="record-row" onClick={() => toggle(k)}>
                                                 {i === 0 && <td rowSpan={r.record.length} className="record-event">
-                                                    {r.event}<span className="splits-toggle">{isOpen ? ' ▲' : ' ▼'}</span>
+                                                    <button type="button" className="text-btn" aria-expanded={isOpen}
+                                                        onClick={(ev) => { ev.stopPropagation(); toggle(k) }}>
+                                                        {r.event}<span className="splits-toggle" aria-hidden="true">{isOpen ? ' ▲' : ' ▼'}</span>
+                                                    </button>
                                                 </td>}
                                                 {i === 0 && <td rowSpan={r.record.length} className="mark-cell">{e.mark}</td>}
                                                 <td>{who(e)}{r.record.length > 1 && i === 0 && <span className="badge">tie</span>}{noLegs(e) && <Tip glue className="badge board-badge" tip="No result or other source found names the runners">names?</Tip>}</td>
