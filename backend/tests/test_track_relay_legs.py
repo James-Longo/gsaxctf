@@ -135,3 +135,25 @@ def test_leg_matches_the_spelling_printed_for_that_team_first():
     out, n, placed = resolve_relays(relays, [['s1', 's2'], ['h']], ents, athletes, {})
     assert 'sarah-ehs' in out[0]['legs']
     assert not any(a['id'].endswith('--relay') for a in athletes)
+
+
+def test_two_runners_of_one_name_split_by_the_legs_printing():
+    # Edward Little 2007: 'Josh Martin 12' (a senior) and 'Josh Martin' (a sophomore); both clean to
+    # 'josh martin', and each relay leg goes to the runner its own printing is filed under
+    from collections import Counter
+    from backend.athlete_catalog import resolve_relays
+    ents = {'o': dict(members=Counter({'josh-martin-12-edward-little-high-school': 9}), toks=['josh', 'martin'],
+                      ays=[2007], unit='el', g='Boys'),
+            'y': dict(members=Counter({'josh-martin-edward-little-high-school': 9}), toks=['josh', 'martin'],
+                      ays=[2007], unit='el', g='Boys')}
+    athletes = [dict(id='josh-martin-12-edward-little-high-school', name='Josh Martin 12', rows=9),
+                dict(id='josh-martin-edward-little-high-school', name='Josh Martin', rows=9)]
+    def relay(sid, names):
+        return dict(unit='el', gender='Boys', events=Counter({'Boys 4x100 Meter Relay': 1}), members=Counter({sid: 1}),
+                    names=Counter({names: 1}), teams=Counter({'Edward Little High School': 1}),
+                    seasons={'Outdoor'}, ays={2007})
+    relays = {'a': relay('rel-a', 'Josh Martin 12, Jon Demers'), 'b': relay('rel-b', 'Josh Martin, Troy Bradley')}
+    out, n, placed = resolve_relays(relays, [['o'], ['y']], ents, athletes, {})
+    assert sorted(o['legs'][0] for o in out) == ['josh-martin-12-edward-little-high-school',
+                                                 'josh-martin-edward-little-high-school']
+    assert not any(a['id'].endswith('--relay') for a in athletes)

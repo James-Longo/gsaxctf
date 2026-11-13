@@ -3228,6 +3228,11 @@ class Sub5ScraperV2:
                             SYNC_DROPS[(meet_key, 'shared school code unplaced')] += 1
                             SYNC_DROP_WHAT[('school', season, school[:80])] += 1
                             continue
+                        if not unit and re.search(r'\balumni\b', school, re.I):
+                            # graduates' exhibition races at a school meet ('Brewer High Alumni',
+                            # 'Alumni'): adults, not the high school's team
+                            SYNC_DROPS[(meet_key, 'alumni (not a school team)')] += 1
+                            continue
                         if team_norm is None:
                             team_norm = self.normalize_team_name(school, all_teams=all_known_teams, level=meet_level)
                         # (a school the catalog placed is a school, whatever its

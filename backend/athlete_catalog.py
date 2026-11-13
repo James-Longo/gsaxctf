@@ -411,7 +411,7 @@ def other_genders(gender):
     return {'Boys': ('Girls',), 'Girls': ('Boys',)}.get(gender, ())
 
 
-def match_leg(name, unit, gender, ay, roster, spell):
+def match_leg(name, unit, gender, ay, roster, spell, prefer=None):
     """The runner a printed relay leg is: on the team's roster that season,
     else the season before or after (roster: (unit, gender, ay) -> ids;
     spell: id -> cleaned spellings). The exact spelling in any of the three
@@ -430,7 +430,9 @@ def match_leg(name, unit, gender, ay, roster, spell):
             if len(hit) == 1:
                 return hit[0]
             if hit:
-                return None
+                # two runners of one name: the one the leg's own printing is filed under
+                # (Edward Little's 'Josh Martin 12' and plain 'Josh Martin', 2007)
+                return prefer if prefer in hit else None
     return None
 
 
@@ -1229,10 +1231,13 @@ def resolve_relays(relays, groups, ents, athletes, member_of):
             cid_of[k] = cid
     roster, spell = collections.defaultdict(set), collections.defaultdict(set)
     spell_at = collections.defaultdict(lambda: collections.defaultdict(set))   # unit -> id -> spellings there
+    runner_of_sid = {}                                                          # store id -> runner
     for k, e in ents.items():
         c = cid_of.get(k)
         if c is None:
             continue
+        for sid in e['members']:
+            runner_of_sid[sid] = c
         spell[c].add(' '.join(e['toks']))
         spell_at[e['unit']][c].add(' '.join(e['toks']))
         for ay in e['ays']:
@@ -1247,8 +1252,10 @@ def resolve_relays(relays, groups, ents, athletes, member_of):
         for x in names:
             for gs in (leg_genders(r['gender']), other_genders(r['gender'])):
                 got = set()
+                prefer = next((runner_of_sid[s] for s in (js.slugify_athlete(x, t) for t in r['teams'])
+                               if s in runner_of_sid), None)
                 for sp in (spell_at[r['unit']], spell):
-                    got = {match_leg(x, r['unit'], g, ay, roster, sp)
+                    got = {match_leg(x, r['unit'], g, ay, roster, sp, prefer)
                            for g in gs for ay in sorted(r['ays'], reverse=True)}
                     got.discard(None)
                     if got:
