@@ -2,9 +2,10 @@
 
 The entry model (track_postseason) predicts what coaches will enter; this
 decides what one team (the focal team) should enter - individual events and
-relay lineups - under the meet's rules, against the other teams' entries
-as known (an entry list, or what they actually entered; drawing them from
-the entry model for a live meet is not built yet). Marks come from the predictor's held-out model with three measured
+relay lineups - under the meet's rules, against the other teams' entries:
+known (an entry list, or what they actually entered), or, for a meet not yet
+entered, drawn in every simulated meet from the entry model the way the
+postseason predictor draws them (`suggest` below). Marks come from the predictor's held-out model with three measured
 adjustments (2026-11-12, eve of every championship 2006-2026):
 
   fatigue  - a race costs ~1.3% per 1000 m the athlete has already run that
@@ -18,6 +19,15 @@ adjustments (2026-11-12, eve of every championship 2006-2026):
              model's mark (0.3% running, 0.6% field below a 10% chance).
   lineup   - a relay moves by SLOPE x the change in its legs' mean
              leg-event mark against the expected lineup's (see LINEUP_SLOPE).
+
+Live mode backtest (2026-11-13; contenders - each meet's top four - 2006-2026,
+relays free, judged against rivals as they entered on fresh simulated meets):
+entries chosen against drawn rivals gain +6.7 expected points at conference
+meets and +3.5 at states over the coaches' entries (2012+), 95% of what knowing
+the rivals' entries gains (+7.0 / +3.6); win chance +4.9 / +4.0 points, close
+meets (20-80%) 0.46 -> 0.58. The gain the tool claims matches the one found
+(+6.9 claimed / +6.7 found conference, +3.7 / +3.5 state). The entry model's
+likeliest entries on their own score 0.8-2.8 points below the coaches'.
 
 Rules: an athlete enters at most MAX_EVENTS events, relay legs included;
 per team per event no more entrants than any team had at that meet; only
@@ -120,15 +130,20 @@ class Meet:
     """One championship: every candidate row (all teams), leg candidates,
     the points table, residual draws shared by every entry set tried."""
 
-    def __init__(self, champ_id, rows, legs, truth, z_ath, z_rel, sims=500, seed=0, avg_load=None, slope=None):
+    def __init__(self, champ_id, rows, legs, truth, z_ath, z_rel, sims=500, seed=0, avg_load=None, slope=None,
+                 events=None, table=None, limit=None, line=None):
+        """truth: the meet's results (a backtest), or None for a meet not yet
+        run - then events and table are given, and limit ({event: entrants
+        per team}) and line ({event: state meet line}) from its last edition."""
         self.id = champ_id
+        self.seed = seed
         self.slope = slope if slope is not None else LINEUP_SLOPE   # a number, or {relay event: slope}
         self.season = 'Indoor' if '-Indoor-' in champ_id else 'Outdoor'
         self.state = '-state-' in champ_id
         self.cap = tp.MAX_EVENTS[self.season]
         self.order = tp.event_order(champ_id)
-        self.table = np.array(truth['table'], float)
-        self.events = sorted(truth['events'])
+        self.table = np.array(truth['table'] if table is None else table, float)
+        self.events = sorted(truth['events'] if events is None else events)
         self.sims = sims
         self.avg_load = avg_load or {}
         rows = rows[rows.event.isin(self.events)].reset_index(drop=True)
@@ -144,7 +159,8 @@ class Meet:
         self.base = rows['mean'].values + np.where(rel, 0.0, pent_adj(rows.pent.values, rows.event.values))
         self.noise = rows.scale.values[None, :] * Z
         self.truth = truth
-        self.ind_true, self.rel_true = truth_entries(truth)
+        self.ind_true, self.rel_true = truth_entries(truth) if truth else ({}, {})
+        self._drawn = None
         legs = legs.copy()
         legs['aid'] = legs.aid.astype(str)
         self.legs = legs
@@ -163,6 +179,10 @@ class Meet:
             self.leg_gap[(t, e)] = dict(zip(g.aid.values, filled))
             self.leg_pool[(t, e)] = {a: v for a, v, k, p in zip(g.aid.values, filled, ok, w) if k or p >= REGULAR_LEG}
             self.expected[(t, e)] = float((w * filled).sum() / w.sum()) if w.sum() > 0 else np.nan
+        if truth is None:
+            self.limit = collections.defaultdict(lambda: 1, limit or {})
+            self.line = dict(line or {}) if self.state else {}
+            return
         # the meet's limits
         per = collections.Counter()
         for a, evs in self.ind_true.items():
@@ -182,6 +202,18 @@ class Meet:
                 sbs = [v for v in sbs if v == v]
                 if sbs:
                     self.line[e] = float(np.quantile(sbs, 0.95))
+
+    def drawn(self):
+        """sims x rows: entered or not in each simulated meet, drawn from the
+        entry model with the event limit applied (tp.simulate's draws)."""
+        if self._drawn is None:
+            r, lg = self.rows, self.legs
+            lg = lg if 'pleg' in lg and len(lg) else None
+            q, ql = tp._calibrate(r, self.cap, lg, self.seed) if lg is not None else (r.pent.values, None)
+            ent = np.random.default_rng(self.seed + 101).random((self.sims, len(r))) < q[None, :]
+            tp._cap_entries(r, ent, self.cap, lg, np.random.default_rng(self.seed + 102), ql)
+            self._drawn = ent
+        return self._drawn
 
     # -- what an athlete may enter -----------------------------------------
     def eligible(self, aid, ev):
@@ -244,10 +276,23 @@ class Field:
 
     def __init__(self, meet, focal, opp_entries=None):
         """opp_entries: (ind, rel) for the other teams (default: what they
-        actually entered); a relay's lineup may be () when unknown."""
+        actually entered); a relay's lineup may be () when unknown. 'drawn':
+        drawn from the entry model in each simulated meet."""
         self.m = meet
         self.focal = focal
         self.fi = meet.tix[focal]
+        self.cache = {}
+        if isinstance(opp_entries, str) and opp_entries == 'drawn':
+            ent = meet.drawn()
+            team = meet.rows.team.values
+            self.opp = {}
+            for e, idx in meet.rows.groupby('event').indices.items():
+                idx = idx[team[idx] != focal]
+                marks = np.where(ent[:, idx], meet.base[idx][None, :] + meet.noise[:, idx], np.inf)
+                self.opp[e] = (marks, np.array([meet.tix.get(team[i], -1) for i in idx], int))
+            for e in meet.events:
+                self.opp.setdefault(e, (np.zeros((meet.sims, 0)), np.zeros(0, int)))
+            return
         ind, rel = opp_entries or (meet.ind_true, meet.rel_true)
         rows = meet.rows
         team = rows.team.values
@@ -280,7 +325,6 @@ class Field:
             marks = meet.base[idx][None, :] + np.array(shift)[None, :] + meet.noise[:, idx] if len(idx) \
                 else np.zeros((meet.sims, 0))
             self.opp[e] = (marks, np.array([meet.tix.get(team[i], -1) for i in idx], int))
-        self.cache = {}
 
     def focal_marks(self, plan, e):
         m = self.m
@@ -316,7 +360,8 @@ class Field:
             ar = np.arange(sims)
             for p in range(L):
                 col = order[:, p]
-                np.add.at(pts, (ar, tid[col]), self.m.table[p])     # -1 (no team) lands in the last column
+                ok = np.isfinite(marks[ar, col])                      # inf: not entered in that sim
+                np.add.at(pts, (ar[ok], tid[col[ok]]), self.m.table[p])     # -1 (no team) lands in the last column
         pts = pts[:, :-1]
         if len(self.cache) > 20000:
             self.cache.clear()
@@ -349,9 +394,12 @@ def objective(pts, fi, kind='points'):
 class Optimizer:
     """Best-improvement local search over a team's entries."""
 
-    def __init__(self, field, kind='points', eps=0.02, available=None, fix_relays=False):
+    def __init__(self, field, kind='points', eps=0.02, available=None, fix_relays=False, force=(), forbid=()):
         """available: athletes who may be entered (default: anyone with a row);
-        fix_relays: keep the starting plan's relays and lineups as they are."""
+        fix_relays: keep the starting plan's relays and lineups as they are;
+        force / forbid: (athlete, event) pairs that must / must not be in the
+        plan (a relay event: on its lineup)."""
+        self.force, self.forbid = set(force), set(forbid)
         self.f = field
         self.m = field.m
         self.kind = kind
@@ -376,12 +424,15 @@ class Optimizer:
         cnt = collections.Counter(e for evs in plan.ind.values() for e in evs)
         if any(k > m.limit[e] for e, k in cnt.items()):
             return False
+        if any(e in plan.events_of(a) for a, e in self.forbid) or \
+                any(e not in plan.events_of(a) for a, e in self.force):
+            return False
         return all(plan.load(a) <= m.cap for a in plan.athletes())
 
     def best_lineup(self, plan, e, exclude=()):
         """Fastest four by leg gap among runners with room."""
         cands = sorted((g, a) for a, g in self.pool[e].items()
-                       if a not in exclude and plan.load(a) < self.m.cap)
+                       if a not in exclude and (a, e) not in self.forbid and plan.load(a) < self.m.cap)
         return tuple(a for _, a in cands[:4]) if len(cands) >= 4 else None
 
     def moves(self, plan):
@@ -447,6 +498,44 @@ class Optimizer:
         return cur, cur_s, hist
 
 
+def likely_plan(meet, focal, available=None):
+    """The entry model's likeliest entries for a team: each relay it more
+    likely runs than not, on it the four likeliest legs; then each athlete's
+    likelier-than-not events, likeliest first, while under the cap and the
+    event limit."""
+    r = meet.rows
+    ok = (lambda a: True) if available is None else (lambda a: a in available)
+    plan = Plan()
+    for i in np.flatnonzero((r.team.values == focal) & r.relay.values.astype(bool) & (r.pent.values >= 0.5)):
+        e = r.event.values[i]
+        lg = meet.legs[(meet.legs.team == focal) & (meet.legs.event == e)].sort_values('pleg', ascending=False)
+        lu = tuple(a for a in lg.aid.values if ok(a) and not a.startswith('?')
+                   and plan.load(a) < meet.cap)[:4]
+        if len(lu) == 4:
+            plan.rel[e] = lu
+    cnt = collections.Counter()
+    ind = r[(r.team.values == focal) & ~r.relay.values.astype(bool) & (r.pent.values >= 0.5)]
+    for a, e in zip(*[ind.sort_values('pent', ascending=False)[c].values for c in ('aid', 'event')]):
+        if ok(a) and plan.load(a) < meet.cap and cnt[e] < meet.limit[e]:
+            plan.ind.setdefault(a, set()).add(e)
+            cnt[e] += 1
+    return plan
+
+
+def limits_of(truth):
+    """{event: the most entrants any one team had} at a meet."""
+    per = collections.Counter()
+    for ev, rs in truth['events'].items():
+        if not tp.is_relay_event(ev):
+            for r in rs:
+                if r['unit'] and r['aid']:
+                    per[(r['unit'], ev)] += 1
+    out = collections.defaultdict(lambda: 1)
+    for (u, e), k in per.items():
+        out[e] = max(out[e], k)
+    return dict(out)
+
+
 def actual_plan(meet, focal):
     team = meet.rows.team.values
     ind = {}
@@ -456,3 +545,389 @@ def actual_plan(meet, focal):
             ind[a] = mine
     rel = {e: lu for (u, e), lu in meet.rel_true.items() if u == focal and lu}
     return Plan(ind, rel)
+
+
+# ---------------------------------------------------------------------------
+# Live: suggested entries for a coming meet
+# ---------------------------------------------------------------------------
+#
+#   python3 backend/track_entries.py meets --year 2027
+#   python3 backend/track_entries.py suggest --meet 2027-Indoor-state-B-Girls [--plan entries.txt]
+#        [--scratch NAME ...] [--force NAME=EVENT ...] [--forbid NAME=EVENT ...] [--relays-fixed]
+#
+# A plan file is one line per athlete or relay, '#' starts a comment:
+#   Jane Doe: 55, 200, LJ
+#   4x200: Jane Doe, Amy Smith, Kay Lee, Bo Diaz
+# Events can be short (55, 55H, mile, 2 mile, 4x8, HJ, shot); names are
+# matched to the team's athletes (full name, else a unique last or first name).
+
+import os
+import pickle
+import re
+import sys
+
+TEAM = 'me-hs-gsa'
+LIVE_DIR = os.path.join(tp.CACHE_DIR, 'entries')
+LIVE_SIMS, CHECK_SIMS = 1500, 4000
+
+
+def _stamp():
+    p = os.path.join(tp.CACHE_DIR, 'athletes.pkl')
+    return f'{int(os.path.getmtime(p))}' if os.path.exists(p) else '0'
+
+
+def live_inputs(meet_id, asof, quiet=False):
+    """The predictor's rows for one coming meet (results before asof), cached
+    by meet, day and dataset: {pred, legs, table, events, lines, limits, z,
+    names, cutoff, avg_load}."""
+    os.makedirs(LIVE_DIR, exist_ok=True)
+    path = os.path.join(LIVE_DIR, f'{meet_id}_{asof}_{_stamp()}.pkl')
+    if os.path.exists(path):
+        with open(path, 'rb') as f:
+            return pickle.load(f)
+    year = int(meet_id[:4])
+    if not quiet:
+        print(f'predicting {meet_id} from results before {asof} (a few minutes; cached after)', file=sys.stderr)
+    out, model = tp.predict_season(year, asof, sims=1, quiet=True, only={meet_id})
+    if not out:
+        raise SystemExit(f'no prediction for {meet_id} as of {asof}: not a coming championship, '
+                         f'or no meet of the season yet among its teams')
+    o = out[0]
+    fz, tr = tp._G['fz'], tp._G['tr']
+    nm = {str(k): v for k, v in fz.s.name.items()}
+    pred = o['pred'].drop(columns=['win', 'top3', 'exp_pts', 'entered'], errors='ignore')
+    pred['aid'] = pred.aid.astype(str)
+    legs = o['legs'].copy() if o['legs'] is not None else None
+    if legs is not None:
+        legs['aid'] = legs.aid.astype(str)
+    limits = limits_of(o['last_truth'])
+    if o['held']:
+        for e, k in limits_of(tr[meet_id]).items():
+            limits[e] = max(limits.get(e, 1), k)
+    d = dict(pred=pred, legs=legs, table=o['table'], events=sorted(set(pred.event)), lines=o['lines'],
+             limits=limits, z=model.z_for(meet_id), cutoff=o['cutoff'],
+             names={a: nm.get(a, a) for a in set(pred.aid) | (set(legs.aid) if legs is not None else set())},
+             avg_load=mean_load(tr, tp.event_order))
+    with open(path, 'wb') as f:
+        pickle.dump(d, f, protocol=pickle.HIGHEST_PROTOCOL)
+    return d
+
+
+def live_meet(meet_id, d, sims, seed):
+    return Meet(meet_id, d['pred'], d['legs'] if d['legs'] is not None else d['pred'].iloc[:0][['team', 'event', 'aid']],
+                None, *d['z'], sims=sims, seed=seed, avg_load=d['avg_load'],
+                events=d['events'], table=d['table'], limit=d['limits'], line=d['lines'])
+
+
+# -- reading what a coach types ---------------------------------------------
+
+def _squash(t):
+    return re.sub(r'[^a-z0-9]', '', t.lower())
+
+
+def event_aliases(events):
+    al = {}
+    hurdles = [e for e in events if 'Hurdles' in e]
+    for e in events:
+        el = e.lower()
+        al[_squash(e)] = e
+        m = re.match(r'4x(\d+)', el)
+        if m:
+            for k in (f'4x{m.group(1)}', f'4x{m.group(1)[0]}', f'{m.group(1)}relay'):
+                al[k] = e
+            continue
+        m = re.match(r'(\d+) meter (dash|run|race walk)', el)
+        if m:
+            al[m.group(1) + ('walk' if 'walk' in el else '')] = e
+        m = re.match(r'(\d+) meter hurdles', el)
+        if m:
+            for k in (f'{m.group(1)}h', f'{m.group(1)}mh', f'{m.group(1)}hurdles'):
+                al[k] = e
+            if len(hurdles) == 1:
+                al['hurdles'] = al['h'] = e
+        if el == '1 mile run':
+            for k in ('mile', '1mile', 'onemile', '1600'):
+                al.setdefault(k, e)
+        if el == '2 mile run':
+            for k in ('2mile', 'twomile', '3200'):
+                al.setdefault(k, e)
+        if tp.is_field(e):
+            w = el.split()
+            al[w[0][0] + w[1][0]] = e          # hj, lj, tj, pv, sp, dt, jt
+            al[w[0]] = e                        # high, long, triple, pole, shot, discus, javelin
+    return al
+
+
+def parse_event(text, aliases):
+    e = aliases.get(_squash(text))
+    if e is None:
+        raise SystemExit(f"event '{text}' is not one of this meet's (try 55, 55H, mile, 4x8, HJ, shot)")
+    return e
+
+
+class Roster:
+    """The focal team's athletes, matched by name."""
+
+    def __init__(self, aids, names):
+        self.names = {a: names.get(a, a) for a in aids}
+        self.by_key = collections.defaultdict(list)
+        for a, n in self.names.items():
+            w = re.findall(r'[a-z]+', (n or '').lower())
+            self.by_key[('full', tp.name_key(n))].append(a)
+            if w:
+                self.by_key[('last', w[-1])].append(a)
+                self.by_key[('first', w[0])].append(a)
+
+    def find(self, text):
+        w = re.findall(r'[a-z]+', text.lower())
+        for k in (('full', tp.name_key(text)), ('last', w[-1] if w else ''), ('first', w[0] if w else '')):
+            hit = self.by_key.get(k, [])
+            if len(hit) == 1:
+                return hit[0]
+            if len(hit) > 1 and k[0] == 'full':
+                break
+        raise SystemExit(f"no single athlete on the team matches '{text}'")
+
+    def name(self, a):
+        return self.names.get(a, a)
+
+
+def read_plan(path, roster, aliases):
+    plan = Plan()
+    for raw in open(path, encoding='utf-8'):
+        line = raw.split('#', 1)[0].strip()
+        if not line:
+            continue
+        if ':' not in line:
+            raise SystemExit(f"plan line without 'name: events': {line}")
+        head, rest = (x.strip() for x in line.split(':', 1))
+        items = [x.strip() for x in re.split(r'[,;]', rest) if x.strip()]
+        ev = aliases.get(_squash(head))
+        if ev and tp.is_relay_event(ev):
+            plan.rel[ev] = tuple(roster.find(x) for x in items)
+        else:
+            plan.ind.setdefault(roster.find(head), set()).update(parse_event(x, aliases) for x in items)
+    return plan
+
+
+def pairs(specs, roster, aliases):
+    out = []
+    for s in specs or ():
+        if '=' not in s:
+            raise SystemExit(f"'{s}': write NAME=EVENT")
+        n, e = s.split('=', 1)
+        out.append((roster.find(n), parse_event(e, aliases)))
+    return out
+
+
+# -- the advice ------------------------------------------------------------
+
+def entrant_points(field, plan, e):
+    """[(focal entrant: athlete id or 'relay', expected points)] in event e."""
+    m = field.m
+    om, ot = field.opp[e]
+    fm = field.focal_marks(plan, e)
+    who = ['relay'] if tp.is_relay_event(e) else [a for a, evs in plan.ind.items() if e in evs]
+    if not fm.shape[1]:
+        return []
+    marks = np.concatenate([om, fm], 1)
+    sims = marks.shape[0]
+    pts = np.zeros((sims, fm.shape[1]))
+    order = np.argsort(marks, axis=1)[:, :min(len(m.table), marks.shape[1])]
+    ar = np.arange(sims)
+    for p in range(order.shape[1]):
+        col = order[:, p]
+        ok = np.isfinite(marks[ar, col]) & (col >= om.shape[1])
+        np.add.at(pts, (ar[ok], col[ok] - om.shape[1]), m.table[p])
+    return list(zip(who, pts.mean(0)))
+
+
+def fit_constraints(plan, meet, force, forbid):
+    """The plan with forbidden entries out and forced ones in (an athlete
+    over the cap gives up their likeliest-to-be-dropped other event)."""
+    p = plan.copy()
+    for a, e in forbid:
+        if tp.is_relay_event(e) and a in p.rel.get(e, ()):
+            p.rel.pop(e)
+        p.ind.get(a, set()).discard(e)
+    for a, e in force:
+        if tp.is_relay_event(e):
+            if a not in p.rel.get(e, ()):
+                lu = list(p.rel.get(e, ()))
+                p.rel[e] = tuple(lu[:3] + [a]) if len(lu) >= 4 else tuple(lu + [a])
+        else:
+            p.ind.setdefault(a, set()).add(e)
+        while p.load(a) > meet.cap:
+            other = [x for x in p.ind.get(a, ()) if (a, x) not in force]
+            if not other:
+                break
+            p.ind[a].discard(min(other, key=lambda x: meet.rows.pent.values[meet.ix[(a, x)]]))
+    return p
+
+
+def describe_move(mv, name):
+    k = mv[0]
+    if k == 'add':
+        return f'add {name(mv[1])} to the {mv[2]}'
+    if k == 'drop':
+        return f'take {name(mv[1])} out of the {mv[2]}'
+    if k == 'swap':
+        return f'{name(mv[1])}: {mv[2]} -> {mv[3]}'
+    if k == 'leg':
+        return f'{mv[1]}: {name(mv[3])} runs for {name(mv[2])}'
+    if k == 'event->leg':
+        return f'{mv[1]}: {name(mv[3])} runs for {name(mv[2])} (gives up the {mv[4]})'
+    if k == 'leg->event':
+        return f'{mv[1]}: {name(mv[3])} runs for {name(mv[2])}, who enters the {mv[4]}'
+    if k == 'add relay':
+        return f'enter the {mv[1]}'
+    if k == 'drop relay':
+        return f'scratch the {mv[1]}'
+    return str(mv)
+
+
+def summary(field, plan):
+    p = field.total(plan)
+    fi = field.fi
+    noise = np.random.default_rng(1).random(p.shape) * 1e-6
+    rank = (-(p + noise)).argsort(1).argsort(1)[:, fi]
+    return dict(pts=p[:, fi].mean(), p10=np.percentile(p[:, fi], 10), p90=np.percentile(p[:, fi], 90),
+                win=(rank == 0).mean(), top3=(rank < 3).mean(), all=p.mean(0))
+
+
+def suggest(meet_id, team=TEAM, asof=None, plan_path=None, scratch=(), force=(), forbid=(), fix_relays=False,
+            kind='points', out=sys.stdout):
+    from datetime import date
+    asof = asof or date.today().isoformat()
+    d = live_inputs(meet_id, asof)
+    m = live_meet(meet_id, d, LIVE_SIMS, seed=5)
+    if team not in m.tix:
+        raise SystemExit(f'{team} has no athletes in the prediction for {meet_id}')
+    rows = m.rows
+    mine = rows[(rows.team == team) & ~rows.relay.astype(bool)]
+    legs_mine = m.legs[m.legs.team == team] if len(m.legs) else m.legs
+    roster = Roster(set(mine.aid) | set(legs_mine.aid), d['names'])
+    al = event_aliases(m.events)
+    out_ = {roster.find(n) for n in scratch or ()}
+    force, forbid = pairs(force, roster, al), pairs(forbid, roster, al)
+    avail = set(roster.names) - out_
+    f = Field(m, team, 'drawn')
+    starts = {'likely': likely_plan(m, team, available=avail)}
+    if plan_path:
+        starts['yours'] = read_plan(plan_path, roster, al)
+        bad = [(a, e) for a, evs in starts['yours'].ind.items() for e in evs if (a, e) not in m.ix]
+        for a, e in bad:
+            print(f'note: {roster.name(a)} has no {e} mark to go on; left out of your plan', file=out)
+            starts['yours'].ind[a].discard(e)
+    best = None
+    for nm, st in starts.items():
+        st = fit_constraints(st, m, force, forbid)
+        starts[nm] = st
+        opt = Optimizer(f, kind=kind, available=avail, fix_relays=fix_relays, force=force, forbid=forbid)
+        plan, s, hist = opt.run(st)
+        if best is None or s > best[1] + 1e-9:
+            best = (plan, s, hist, nm)
+    plan, _, hist, start_name = best
+    base_name = 'yours' if plan_path else 'likely'
+    if start_name != base_name:
+        # the moves from the coach's plan: run again from it, then list what differs
+        opt = Optimizer(f, kind=kind, available=avail, fix_relays=fix_relays, force=force, forbid=forbid)
+        _, _, hist = opt.run(starts[base_name])
+    # judged on fresh simulated meets (rivals and marks drawn anew)
+    chk = live_meet(meet_id, d, CHECK_SIMS, seed=77)
+    fc = Field(chk, team, 'drawn')
+    s_base, s_best = summary(fc, starts[base_name]), summary(fc, plan)
+    name = roster.name
+    w = lambda *a: print(*a, file=out)  # noqa: E731
+    w(f"{meet_id}  {team}  results before {d['cutoff']}  (rivals' entries drawn from the entry model)")
+    lbl = 'your plan' if plan_path else 'likely entries'
+    w(f"  {lbl:16} {s_base['pts']:5.1f} pts (80%: {s_base['p10']:.0f}-{s_base['p90']:.0f})  "
+      f"win {100 * s_base['win']:3.0f}%  top 3 {100 * s_base['top3']:3.0f}%")
+    w(f"  {'suggested':16} {s_best['pts']:5.1f} pts (80%: {s_best['p10']:.0f}-{s_best['p90']:.0f})  "
+      f"win {100 * s_best['win']:3.0f}%  top 3 {100 * s_best['top3']:3.0f}%")
+    riv = sorted(((v, t) for t, v in zip(chk.teams, s_best['all']) if t != team), reverse=True)[:4]
+    w('  rivals: ' + ', '.join(f"{t.replace('me-hs-', '')} {v:.0f}" for v, t in riv))
+    if hist:
+        w(f'\nchanges from {lbl}, expected points each (on the optimizer\'s own simulated meets):')
+        prev = Optimizer(f, kind=kind).score(starts[base_name])
+        for mv, s in hist:
+            w(f'  {s - prev:+5.2f}  {describe_move(mv, name)}')
+            prev = s
+    else:
+        w(f'\nno change to {lbl} gains {Optimizer(f).eps:.2f}+ points')
+    w('\nsuggested entries (predicted mark, expected points):')
+    base = starts[base_name]
+    for e in sorted(m.events, key=lambda x: m.order.get(x, 99)):
+        ep = dict(entrant_points(fc, plan, e))
+        if tp.is_relay_event(e):
+            lu = plan.rel.get(e)
+            was = base.rel.get(e)
+            if not lu and not was:
+                continue
+            i = m.ix.get((str(('relay', team)), e))
+            mk = tp.mark_str(m.base[i] + m.relay_shift(team, e, lu, {a: load_cost(plan.events_of(a), m.order) for a in lu}), e) \
+                if lu and i is not None else ''
+            txt = ', '.join(name(a) for a in lu) if lu else '(not entered)'
+            chg = '' if tuple(lu or ()) == tuple(was or ()) else '   was: ' + (', '.join(name(a) for a in was) if was else 'not entered')
+            w(f"  {e:20} {txt}  {mk}  {ep.get('relay', 0):.1f}{chg}")
+            continue
+        now = sorted(a for a, evs in plan.ind.items() if e in evs)
+        was = sorted(a for a, evs in base.ind.items() if e in evs)
+        if not now and not was:
+            continue
+        parts = []
+        for a in now:
+            i = m.ix[(a, e)]
+            c = load_cost(plan.events_of(a), m.order)[e] - m.avg_load.get(e, 0.0)
+            parts.append(f"{'+' if a not in was else ''}{name(a)} {tp.mark_str(m.base[i] + c, e)} ({ep.get(a, 0):.1f})")
+        parts += [f'-{name(a)}' for a in was if a not in now]
+        w(f"  {e:20} " + '; '.join(parts))
+    w('\nper athlete: ' + '; '.join(f"{name(a)} {len(plan.events_of(a))}" for a in sorted(plan.athletes(), key=name)))
+    return plan, s_base, s_best
+
+
+def coming_meets(year, team=TEAM):
+    """The championships the team went to at their last edition, named for `year`."""
+    with open(os.path.join(tp.CACHE_DIR, 'truths.pkl'), 'rb') as f:
+        tr = pickle.load(f)
+    latest = {}
+    for c in tp.load_champs():
+        k = (c['season'], c['kind'], c.get('conference'), c['division'], c['gender'])
+        if c['year'] < year and (k not in latest or c['year'] > latest[k]['year']):
+            latest[k] = c
+    out = []
+    for c in latest.values():
+        if c['year'] >= year - 2 and team in tp.champ_units(tr[c['id']]):
+            out.append(tp.next_edition(c, year))
+    return sorted(out, key=lambda c: c['date'])
+
+
+def main(argv=None):
+    import argparse
+    ap = argparse.ArgumentParser(description='Suggested championship entries for a team.')
+    sub = ap.add_subparsers(dest='cmd')
+    mp_ = sub.add_parser('meets', help="the team's coming championships")
+    mp_.add_argument('--year', type=int, required=True, help='academic year, named by its spring (2027)')
+    mp_.add_argument('--team', default=TEAM)
+    sp = sub.add_parser('suggest', help='suggested entries for one meet')
+    sp.add_argument('--meet', required=True, help='championship id, e.g. 2027-Indoor-state-B-Girls')
+    sp.add_argument('--team', default=TEAM)
+    sp.add_argument('--asof', help='use results before this day (default today)')
+    sp.add_argument('--plan', help='your entries, to check and improve (see the file header)')
+    sp.add_argument('--scratch', nargs='*', default=[], metavar='NAME', help='not available')
+    sp.add_argument('--force', nargs='*', default=[], metavar='NAME=EVENT', help='must be entered')
+    sp.add_argument('--forbid', nargs='*', default=[], metavar='NAME=EVENT', help='must not be entered')
+    sp.add_argument('--relays-fixed', action='store_true', help='keep relays and lineups as in the plan')
+    sp.add_argument('--goal', default='points', choices=['points', 'win', 'top3'])
+    a = ap.parse_args(argv)
+    if a.cmd == 'meets':
+        for c in coming_meets(a.year, a.team):
+            print(f"{c['id']:34} {c['date']}{' (date estimated)' if c.get('estimated_date') else ''}")
+    elif a.cmd == 'suggest':
+        suggest(a.meet, a.team, a.asof, a.plan, a.scratch, a.force, a.forbid, a.relays_fixed, a.goal)
+    else:
+        ap.print_help()
+
+
+if __name__ == '__main__':
+    main()
