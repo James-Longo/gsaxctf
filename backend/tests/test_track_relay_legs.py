@@ -118,3 +118,20 @@ def test_relay_only_runner_on_boys_and_coed_relays_is_one_runner():
     resolve_relays(relays, [], {}, athletes, {})
     penfold = [a for a in athletes if a['name'] == 'Brendan Penfold']
     assert len(penfold) == 1 and penfold[0]['gender'] == 'Boys' and len(penfold[0]['relays']) == 2
+
+
+def test_leg_matches_the_spelling_printed_for_that_team_first():
+    # Ellsworth 2019: freshman Sarah Shea, and Sara Shea (a junior) whom the middle school
+    # printed 'Sarah'; the high-school leg 'Sarah Shea' is the freshman
+    from collections import Counter
+    from backend.athlete_catalog import resolve_relays
+    ents = {'s1': dict(members=Counter({'sara-ehs': 9}), toks=['sara', 'shea'], ays=[2019], unit='ehs', g='Girls'),
+            's2': dict(members=Counter({'sara-ehs': 3}), toks=['sarah', 'shea'], ays=[2016], unit='ems', g='Girls'),
+            'h': dict(members=Counter({'sarah-ehs': 1}), toks=['sarah', 'shea'], ays=[2019], unit='ehs', g='Girls')}
+    athletes = [dict(id='sara-ehs', name='Sara Shea', rows=12), dict(id='sarah-ehs', name='Sarah Shea', rows=1)]
+    relays = {'x': dict(unit='ehs', gender='Girls', events=Counter({'Girls 4x800 Meter Relay': 1}),
+                        members=Counter({'rel-x': 1}), names=Counter({'Amie Lupo, Sarah Shea': 1}),
+                        teams=Counter({'EHS': 1}), seasons={'Outdoor'}, ays={2019})}
+    out, n, placed = resolve_relays(relays, [['s1', 's2'], ['h']], ents, athletes, {})
+    assert 'sarah-ehs' in out[0]['legs']
+    assert not any(a['id'].endswith('--relay') for a in athletes)
