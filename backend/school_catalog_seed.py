@@ -2528,6 +2528,12 @@ FILE_CODES = {
     # Community School in 2015/2016 XC (Durham kids run with Freeport MS indoors, RSU 5's combined team). Pinned
     # 2026-11-07 after the 2016 SMMSAC Indoor meets made the athlete-continuity reading ambiguous.
     ('Outdoor', 2016, 'Results'): {'DUR': 'me-ms-durham'},
+    # Warriors Track Club (the 2016 PVMS meet's team scores print 'Warriors Track Club'): the Nokomis-area club, kept
+    # apart from Nokomis MS though the same children run for both
+    ('Outdoor', 2016, 'PCMS-meet-boys'): {'War': 'club-warrior-tc'},
+    ('Outdoor', 2010, 'foxcroftmiddlegirls_may13'): {'WTC': 'club-warrior-tc'},
+    # 'Ma' Pierce at the 2006 TA invitational is Massabesic (the sheet's relays print 'Massabesic'), not Mattanawcook
+    ('Outdoor', 2006, 'TAACIgirls'): {'Ma': 'me-hs-massabesic'},
 }
 
 # Out-of-state schools printed 'Town, ST' at the Festival of Champions (2004-05 festival heats, 2022 FOC). The resolver reads
@@ -2603,6 +2609,24 @@ FILE_RULES += [
     # 'Hawks' at the 2017 Troy Howard MS meet is North Haven (Beverage, Dunn, Bernard, Sandelin: North Haven at every
     # other 2016-19 meet), not Marshwood (also the Hawks)
     (['Hawks'], 'Outdoor', (2017, 2017), r'^Troy-Howard-boys$', 'me-hs-north-haven'),
+    # Maine towns printed bare that the town-name matcher sent out of state (the runners are at the Maine school
+    # in other seasons): 'Newport' at 2009-16 Eastern Maine middle-school meets is Nokomis MS (Guesman, Choiniere,
+    # Orcutt, Paige, Tucker, Eastman all Nokomis HS a year or two later); 'Lincoln' at KVAC-area meets and the
+    # Class B state meets is Lincoln Academy (the same sheets print 'Lincoln Academy' too); 'Scarborough,MA, MA'
+    # is a state typo (no Scarborough in Massachusetts; the sheets also print 'Scarborough,ME, ME'); 'Gardner' at
+    # the 2013 Class B girls meet is Gardiner; 'Litchfield' at Kennebec middle-school XC is Carrie Ricker MS
+    (['Newport'], 'Outdoor', (2009, 2016),
+     r'^(almquist(boys|girls)|ellsworthmiddle(boys|girls)_may18|Bucksport-MS-(boys|girls)|Reeds?-Brook-(boys|girls))$',
+     'me-ms-nokomis'),
+    (['Lincoln'], 'Outdoor', (2003, 2012),
+     r'^(classb03|kvacb31may03|kvacb04[bg]|classb(boys|girls)|cony5_1|edwardlittle4_20|kvacclassb|watervillerelays|'
+     r'updated_class_b_girls_results_6\.2\.12)$', 'me-hs-lincoln-academy'),
+    (['Lincoln'], 'Indoor', (2005, 2008), r'^(kvac4bb|classb\.txt|classbboys)$', 'me-hs-lincoln-academy'),
+    (['Scarborough,MA, MA'], 'Outdoor', (2015, 2016), r'^(Results-2015|CentralMaineFreshmenresults)$', 'me-hs-scarborough'),
+    (['Gardner'], 'Indoor', (2013, 2013), r'^class_b_girls_results_2\.18\.13$', 'me-hs-gardiner'),
+    (['Litchfield'], 'XC', (2007, 2009),
+     r'^(Monmouth(Boys|Girls)10-4|richmondmiddle(boys|girls)9_15|MonmouthMS(Boys_0ct1|Girls_oct1)|maranacookms(boys|girls)_oct8)$',
+     'me-ms-carrie-ricker'),
 ]
 
 FILE_RULES += [([raw], season, (year, year), '^' + _re.escape(stem) + '$', sid)

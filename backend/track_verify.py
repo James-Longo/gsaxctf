@@ -70,8 +70,9 @@ class Teams:
     def __call__(self, raw, gender=None):
         # Hy-Tek team accounts: "YORK HIGH SCHOOL OUTDOOR 2", "Gorham High
         # School indoor", "Winslow high school track", "Cheverus Stags"
+        # (a school printed as the account word alone, 'Indoor' = Leavitt at the 2019 KVAC 12/29 meet, keeps it)
         raw = re.sub(r'(?i)\b(?:outdoor|indoor|itrack|otrack|track(?:\s*(?:&|and)\s*field)?|t\s*&\s*f|'
-                     r'xc|girls|boys|men|women)\b', ' ', raw or '').strip(' -')
+                     r'xc|girls|boys|men|women)\b', ' ', raw or '').strip(' -') or (raw or '').strip()
         k = (raw, gender)
         if k not in self.cache:
             u = None
@@ -296,15 +297,22 @@ def verify(parsed, year, season, stem, results=None):
         return dict(status='rankings_other_gender')
     blocks = _merge_divisions(blocks, teams)
     candidates = []
-    pp = score_printed(races, teams)
-    if pp is not None:
-        candidates.append(('printed', pp))
-    for name, tab in TABLES:
-        for lim in (None, 3):
-            rel_tabs = RELAY_TABLES.get(name, [tab])
-            for rt in rel_tabs:
-                label = f'{name}{"/3" if lim else ""}{"/relay " + "-".join(map(str, rt)) if rt != tab else ""}'
-                candidates.append((label, score_table(races, teams, tab, rt, lim)))
+    # (a meet may leave its wheelchair events out of the team scores: 2019 KVAC 12/29 scores
+    # Leavitt 52 without the wheelchair mile's 10; both readings are tried)
+    race_sets = [('', races)]
+    if any(re.search(r'(?i)wheelchair', str(k[1])) for k in races):
+        race_sets.append((' no wheelchair', collections.OrderedDict(
+            (k, v) for k, v in races.items() if not re.search(r'(?i)wheelchair', str(k[1])))))
+    for suffix, rs in race_sets:
+        pp = score_printed(rs, teams)
+        if pp is not None:
+            candidates.append(('printed' + suffix, pp))
+        for name, tab in TABLES:
+            for lim in (None, 3):
+                rel_tabs = RELAY_TABLES.get(name, [tab])
+                for rt in rel_tabs:
+                    label = f'{name}{"/3" if lim else ""}{"/relay " + "-".join(map(str, rt)) if rt != tab else ""}'
+                    candidates.append((label + suffix, score_table(rs, teams, tab, rt, lim)))
     best = None
     for label, comp in candidates:
         total, rows = compare(blocks, comp, teams)

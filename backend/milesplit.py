@@ -186,8 +186,9 @@ def parse(text):
         ms_own = bool(re.match(r'\s*NAME\s+YR\s+TEAM\s+MARK', ln))   # one header for every event, relays included
         if ms_own:
             ln = ln.replace('NAME', 'Name').replace('YR', 'Yr').replace('TEAM', 'Team').replace('MARK', 'Mark')
-        if re.match(r'\s*(Name|School|Team)\s', ln) and re.search(r'Finals|Prelims|Mark|Time|Result|Points',ln):   # relay tables headed "Team ... Finals" (2014-15 MS meets)
-            hdr = ln; cur['is_relay']=(cur['is_relay'] and ms_own) or not re.match(r'\s*Name',ln); i+=1
+        # (a bib column heads the table: "Comp#  Name  Year School  Finals", 2019 New England Indoor)
+        if re.match(r'\s*(?:Comp#\s+)?(Name|School|Team)\s', ln) and re.search(r'Finals|Prelims|Mark|Time|Result|Points',ln):   # relay tables headed "Team ... Finals" (2014-15 MS meets)
+            hdr = ln; cur['is_relay']=(cur['is_relay'] and ms_own) or not re.match(r'\s*(?:Comp#\s+)?Name',ln); i+=1
             if 'Prelim' in ln and 'Finals' not in ln: sec='Prelims'
             continue
         rm = re.match(r'\s*(\d+|--)\s+(\S.*)$', ln)
@@ -231,6 +232,10 @@ def parse(text):
         ac=re.search(r'\bAge\b',hdr[:sc]) if yc<0 and sc>0 else None   # an age column, not a grade ("Roy, Ben  17 Lake Region", WMC 2014)
         if ac: yc=ac.start()
         if yc<0: yc=sc
+        if yc<sc:   # a grade printed one character left of its header ("Nyagoa Bayak       SR Westbrook" under "Year", 2019 NE Indoor)
+            j=yc
+            while j>0 and ln[j-1:j].strip() and ln[j:j+1].strip(): j-=1
+            if j<yc and re.fullmatch(r'(FR|SO|JR|SR|\d{1,2})', (ln[j:].split() or [''])[0]): yc=j
         k=sc
         while k>0 and ln[k-1:k].strip() and ln[k:k+1].strip(): k-=1
         if k<sc and not re.fullmatch(r'(FR|SO|JR|SR|\d{1,2})',ln[k:sc]) and (yc==sc or k>yc):   # school printed left of its header column ("enter Drive Sch", "ng" for King: 2014 Piscataquis, SMMSAC)

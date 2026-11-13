@@ -4060,3 +4060,31 @@ def test_smaa_55_yard_hurdle_qualifier_is_55_meters():
     assert canonical_event('55 Yard Hurdles qualifier Open Division', 'Boys', 'Indoor') == ('Boys', '55 Meter Hurdles')
     assert canonical_event('55 Yard Hurdles', 'Boys', 'Indoor') == ('Boys', '55 Meter Hurdles')
     assert canonical_event('45 Yard Hurdles', 'Girls', 'Indoor') == ('Girls', '45 Yard Hurdles')
+
+
+def test_milesplit_track_bib_header_and_grade_left_of_header():
+    # 2019 New England Indoor (MileSplit 335645): the table header starts "Comp#", and the grade sits one
+    # character left of its "Year" header; records lines come between the event and the header
+    from backend import milesplit as ms
+    text = '\n'.join([
+        'Event 21  Girls High Jump',
+        '=' * 74,
+        '   N.E. Best: *    6-00  2/18/2019   Nyagoa Bayak, Westbrook, ME          ',
+        '    Comp#  Name                Year School                  Finals           ',
+        '=' * 74,
+        'Finals                                                                    ',
+        '  1 #  656 Nyagoa Bayak       SR Westbrook HS ME        5-09.00      1.75m',
+        '  3 #  616 Tianna St. Louis   11 Tolland HS - CT        5-05.00      1.65m',
+        '',
+        'Event 9  Boys 1 Mile Run',
+        '=' * 74,
+        '    Comp#  Name                Year School                  Finals  H#',
+        '=' * 74,
+        ' 10 #  872 Alec Troxell       SR Deering- ME            4:22.36   2',
+    ])
+    events, _ = ms.parse(text)
+    rows = {(e['event'], r['athlete'], r['grade'], r['school'], r['result']) for e in events for r in e['results']}
+    assert ('Girls High Jump', 'Nyagoa Bayak', 'SR', 'Westbrook HS ME', '5-09.00') in rows
+    assert ('Girls High Jump', 'Tianna St. Louis', '11', 'Tolland HS - CT', '5-05.00') in rows
+    assert ('Boys 1 Mile Run', 'Alec Troxell', 'SR', 'Deering- ME', '4:22.36') in rows
+    assert not any(e['is_relay'] for e in events)

@@ -118,6 +118,13 @@
   "by": "re-check 2026-10-28: re-parsed only for the team-rank fix (ranks 10+ were stored as 0-9)",
   "evidence": "scratch re-parse compared with the signed parse: result rows identical, only team_rankings ranks changed"
  },
+ "backend/data/parsed_results/2003/Indoor/ne-interscholastic-indoor-2003.json": {
+  "parse_sha": "e8915ccdc4b07595",
+  "source_sha": "f820db6e15ab0418",
+  "date": "2026-11-13",
+  "by": "NE championships ingest 2026-11-13",
+  "evidence": "running events from CoolRunning (every ME-tagged row); HJ/LJ/SP added from the MileSplit copy of the same Hy-Tek sheet, Maine schools only, runners checked against our data (Ashland, Windham left out: also MA/CT schools); no Maine 4x400"
+ },
  "backend/data/parsed_results/2003/Outdoor/18april03.json": {
   "parse_sha": "14167ca6462dd834",
   "source_sha": "513e69ba24e5dd1d",
@@ -271,6 +278,13 @@
   "date": "2026-10-16",
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
+ },
+ "backend/data/parsed_results/2003/Outdoor/ne-interscholastic-outdoor-2003.json": {
+  "parse_sha": "c7eb0b64d6ca22f8",
+  "source_sha": "1c09b16ff86d018f",
+  "date": "2026-11-13",
+  "by": "NE championships ingest 2026-11-13",
+  "evidence": "Maine rows of the MileSplit copy of the New England sheet: every row the sheet tags ME, untagged rows only when the school is Maine and the runner (or 3+ teammates) is in our data that year; each school resolved to the catalog; checked against the sheet that no ME-tagged row is missing"
  },
  "backend/data/parsed_results/2003/Outdoor/orono20may03.json": {
   "parse_sha": "128d62c393ff9b0c",
@@ -544,6 +558,13 @@
   "date": "2026-10-18",
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
+ },
+ "backend/data/parsed_results/2003/XC/ne-xc-championship-2003.json": {
+  "parse_sha": "3cf7abddd014141a",
+  "source_sha": "67e717cc37a7bbd1",
+  "date": "2026-11-13",
+  "by": "NE championships ingest 2026-11-13",
+  "evidence": "Maine rows of the MileSplit copy of the New England sheet: every row the sheet tags ME, untagged rows only when the school is Maine and the runner (or 3+ teammates) is in our data that year; each school resolved to the catalog; checked against the sheet that no ME-tagged row is missing"
  },
  "backend/data/parsed_results/2003/XC/pendale03bjv.json": {
   "parse_sha": "0ea74b59e5b70edb",
@@ -2639,11 +2660,11 @@
   "evidence": "2 Sonnet reviewers compared every row to the sheet; fixes: Bates mini 1/5 field events + girls hurdles added (+25), USM jump 1/5 hand-transcribed (+15); team-score mismatches explained (SMAA 5-3-2-1 per division, Black Bear girls coed half points)"
  },
  "backend/data/parsed_results/2005/Indoor/bowdoin.json": {
-  "parse_sha": "c3b5b0bdfdb48f44",
+  "parse_sha": "5489c1ccee95728d",
   "source_sha": "3e9e54a7918822a5",
   "date": "2026-11-13",
   "by": "indoor double-check 2026-11-13",
-  "evidence": "736 parse rows = 736 placed lines on the sheet; 173 squad-letter placeholder first names ('Floster - A, A') stored as surname only; shuttle hurdle relays are the sheet's own events"
+  "evidence": "shuttle-hurdle relay labels corrected to 4x55 / 3x55 Meter Shuttle Hurdle Relay; team scores still verify exactly"
  },
  "backend/data/parsed_results/2005/Indoor/classaboys.json": {
   "parse_sha": "e5f8399ab0c26d48",
@@ -3890,6 +3911,13 @@
   "date": "2026-10-27",
   "by": "sonnet audit (second read, 2026-10-27) (audit: confirmed)",
   "evidence": "54 rows match the source (place, name, time, team). No team scores printed. Date Sept. 21, 2005 from the index."
+ },
+ "backend/data/parsed_results/2005/XC/ne-xc-championship-2005.json": {
+  "parse_sha": "99f5d01ed98ba3ea",
+  "source_sha": "efd26ef96c6a1801",
+  "date": "2026-11-13",
+  "by": "NE championships ingest 2026-11-13",
+  "evidence": "Maine rows of the MileSplit copy of the New England sheet: every row the sheet tags ME, untagged rows only when the school is Maine and the runner (or 3+ teammates) is in our data that year; each school resolved to the catalog; checked against the sheet that no ME-tagged row is missing"
  },
  "backend/data/parsed_results/2005/XC/orono9_21B.json": {
   "parse_sha": "7bd3a971e730796a",
@@ -5410,6 +5438,13 @@
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
  },
+ "backend/data/parsed_results/2006/Outdoor/ne-interscholastic-outdoor-2006.json": {
+  "parse_sha": "836eaa615ed9d27f",
+  "source_sha": "3a7c6fb1a99b91b5",
+  "date": "2026-11-13",
+  "by": "NE championships ingest 2026-11-13",
+  "evidence": "Maine rows of the MileSplit copy of the New England sheet: every row the sheet tags ME, untagged rows only when the school is Maine and the runner (or 3+ teammates) is in our data that year; each school resolved to the catalog; checked against the sheet that no ME-tagged row is missing"
+ },
  "backend/data/parsed_results/2006/Outdoor/presqueisleboys5_20.json": {
   "parse_sha": "675a8d2625b1bb50",
   "source_sha": "41a5c97962831a99",
@@ -6410,6 +6445,13 @@
   "date": "2026-10-27",
   "by": "sonnet audit (second read, 2026-10-27) (audit: confirmed)",
   "evidence": "Existing override: 133 rows match the source place for place (name, school, time); 'Hannah West?' mojibake printed as Hannah West."
+ },
+ "backend/data/parsed_results/2006/XC/ne-xc-championship-2006.json": {
+  "parse_sha": "530a58c2c11c032b",
+  "source_sha": "504aab313651eaa6",
+  "date": "2026-11-13",
+  "by": "NE championships ingest 2026-11-13",
+  "evidence": "Maine rows of the MileSplit copy of the New England sheet: every row the sheet tags ME, untagged rows only when the school is Maine and the runner (or 3+ teammates) is in our data that year; each school resolved to the catalog; checked against the sheet that no ME-tagged row is missing"
  },
  "backend/data/parsed_results/2006/XC/orono_boys_xc_results_9.5.06.json": {
   "parse_sha": "728c6dac4cc619f6",
@@ -7985,6 +8027,13 @@
   "date": "2026-11-05",
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
+ },
+ "backend/data/parsed_results/2007/Outdoor/ne-interscholastic-outdoor-2007.json": {
+  "parse_sha": "5ce6336ece6f6125",
+  "source_sha": "b144c6dcf9ba6f8f",
+  "date": "2026-11-13",
+  "by": "NE championships ingest 2026-11-13",
+  "evidence": "Maine rows of the MileSplit copy of the New England sheet: every row the sheet tags ME, untagged rows only when the school is Maine and the runner (or 3+ teammates) is in our data that year; each school resolved to the catalog; checked against the sheet that no ME-tagged row is missing"
  },
  "backend/data/parsed_results/2007/Outdoor/presqueisle5_5.json": {
   "parse_sha": "d8aadef83809b86f",
@@ -10555,6 +10604,13 @@
   "by": "re-check 2026-10-28: re-parsed only for the team-rank fix (ranks 10+ were stored as 0-9)",
   "evidence": "scratch re-parse compared with the signed parse: result rows identical, only team_rankings ranks changed"
  },
+ "backend/data/parsed_results/2008/Outdoor/ne-interscholastic-outdoor-2008.json": {
+  "parse_sha": "dfc97706da259807",
+  "source_sha": "f589ac334362672b",
+  "date": "2026-11-13",
+  "by": "NE championships ingest 2026-11-13",
+  "evidence": "Maine rows of the MileSplit copy of the New England sheet: every row the sheet tags ME, untagged rows only when the school is Maine and the runner (or 3+ teammates) is in our data that year; each school resolved to the catalog; checked against the sheet that no ME-tagged row is missing"
+ },
  "backend/data/parsed_results/2008/Outdoor/orono_girls_results_5.24.08.json": {
   "parse_sha": "36b5b7f8952c62a3",
   "source_sha": "117e194bc0725bca",
@@ -11765,6 +11821,13 @@
   "date": "2026-10-26",
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
+ },
+ "backend/data/parsed_results/2008/XC/ne-xc-championship-2008.json": {
+  "parse_sha": "b5ee50c0ba5af03f",
+  "source_sha": "441679a12ef7454c",
+  "date": "2026-11-13",
+  "by": "NE championships ingest 2026-11-13",
+  "evidence": "Maine rows of the MileSplit copy of the New England sheet: every row the sheet tags ME, untagged rows only when the school is Maine and the runner (or 3+ teammates) is in our data that year; each school resolved to the catalog; checked against the sheet that no ME-tagged row is missing"
  },
  "backend/data/parsed_results/2008/XC/noble9_24.json": {
   "parse_sha": "a2eb7f666a9bdff2",
@@ -14901,6 +14964,13 @@
   "date": "2026-10-23",
   "by": "sonnet audit (score mismatch, 2026-10-23) (audit: source-error)",
   "evidence": "Parse matches the rows (37 boys, 30 girls; Joshia White L DNF has no place). Girls all reproduce with a cap of 7 per team: MB 1,3,4,6,7=21; Mess 2,9,10,13,15=49; L 5,12,14,16,17=64. Boys: MB 1,3,5,7,8=24, L 2,12,13,15,17=59, Mess 4,16,18,19,20=77 reproduce, but Skowhegan's scorers (printed places 6,11,17,29,30) come out 6,11,14,23,24=78, printed 76 (Skowhegan would also be 3rd below Messalonskee 77, not above it). No cap value gives 76. The source's boys Skowhegan total does not follow from its own rows."
+ },
+ "backend/data/parsed_results/2009/XC/ne-xc-championship-2009.json": {
+  "parse_sha": "1e0cc3762f452750",
+  "source_sha": "f998a8868818d9b1",
+  "date": "2026-11-13",
+  "by": "NE championships ingest 2026-11-13",
+  "evidence": "Maine rows of the MileSplit copy of the New England sheet: every row the sheet tags ME, untagged rows only when the school is Maine and the runner (or 3+ teammates) is in our data that year; each school resolved to the catalog; checked against the sheet that no ME-tagged row is missing"
  },
  "backend/data/parsed_results/2009/XC/nobleboys_oct16.json": {
   "parse_sha": "ad050f67be5ceaa7",
@@ -18289,6 +18359,13 @@
   "date": "2026-10-28",
   "by": "second read (fixed): override written from the source",
   "evidence": "reader compared every row with the source; no printed team scores, or scores verified"
+ },
+ "backend/data/parsed_results/2010/XC/ne-xc-championship-2010.json": {
+  "parse_sha": "57e83b6e34496bc2",
+  "source_sha": "1a3fa6d505ca8bb6",
+  "date": "2026-11-13",
+  "by": "NE championships ingest 2026-11-13",
+  "evidence": "Maine rows of the MileSplit copy of the New England sheet: every row the sheet tags ME, untagged rows only when the school is Maine and the runner (or 3+ teammates) is in our data that year; each school resolved to the catalog; checked against the sheet that no ME-tagged row is missing"
  },
  "backend/data/parsed_results/2010/XC/nequalifiersboys.txt.json": {
   "parse_sha": "6d6839437087283a",
@@ -29203,6 +29280,13 @@
   "by": "second read (fixed): override written from the source",
   "evidence": "reader compared every row with the source; no printed team scores, or scores verified"
  },
+ "backend/data/parsed_results/2013/XC/ne-xc-championship-2013.json": {
+  "parse_sha": "34029f3977c42a4e",
+  "source_sha": "ff849edb0295e6d6",
+  "date": "2026-11-13",
+  "by": "NE championships ingest 2026-11-13",
+  "evidence": "Maine rows of the MileSplit copy of the New England sheet: every row the sheet tags ME, untagged rows only when the school is Maine and the runner (or 3+ teammates) is in our data that year; each school resolved to the catalog; checked against the sheet that no ME-tagged row is missing"
+ },
  "backend/data/parsed_results/2013/XC/nobleboys_sept27.json": {
   "parse_sha": "62e1f2534b19f269",
   "source_sha": "d0a06515da674e17",
@@ -31316,6 +31400,13 @@
   "date": "2026-11-06",
   "by": "re-signed 2026-11-06 after a reviewed fix: stray-period names in MileSplit copies (Alexis. Antonelli -> Alexis Antonelli; Wagg. Nick -> Nick Wagg) or the meet date from the title line instead of the print stamp",
   "evidence": "rev18f findings; title lines checked"
+ },
+ "backend/data/parsed_results/2014/XC/ne-xc-championship-2014.json": {
+  "parse_sha": "705b279f082df9cc",
+  "source_sha": "a43176e9d033af1f",
+  "date": "2026-11-13",
+  "by": "NE championships ingest 2026-11-13",
+  "evidence": "Maine rows of the MileSplit copy of the New England sheet: every row the sheet tags ME, untagged rows only when the school is Maine and the runner (or 3+ teammates) is in our data that year; each school resolved to the catalog; checked against the sheet that no ME-tagged row is missing"
  },
  "backend/data/parsed_results/2014/XC/oronoboys.json": {
   "parse_sha": "9ee7fadd37d3f1ff",
@@ -33857,6 +33948,13 @@
   "date": "2026-10-28",
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
+ },
+ "backend/data/parsed_results/2015/XC/ne-xc-championship-2015.json": {
+  "parse_sha": "f6fde38c46a982a1",
+  "source_sha": "d28544c97b4f9832",
+  "date": "2026-11-13",
+  "by": "NE championships ingest 2026-11-13",
+  "evidence": "Maine rows of the MileSplit copy of the New England sheet: every row the sheet tags ME, untagged rows only when the school is Maine and the runner (or 3+ teammates) is in our data that year; each school resolved to the catalog; checked against the sheet that no ME-tagged row is missing"
  },
  "backend/data/parsed_results/2015/XC/nmaboys.txt.json": {
   "parse_sha": "ddb2f3a84d95128e",
@@ -37651,6 +37749,13 @@
   "date": "2026-10-24",
   "by": "sonnet audit (second read, 2026-10-24) (audit: confirmed)",
   "evidence": "Girls Mt. Blue Relays 2016: 113 finishers match the source rows. All rows checked by script against the HTML cells: place, name, school, time agree. The parse's meet_name is junk (read from the DNR list) but the pipeline names the meet from the file stem and the index mapping, so it is unused; no date printed (index gives October 7, 2016). Event has no distance (Mt. Blue Relays legs), so the implausible-time flags are the unknown-distance check, the marks are the printed ones; DNR/blank rows correctly left out."
+ },
+ "backend/data/parsed_results/2016/XC/ne-xc-championship-2016.json": {
+  "parse_sha": "4656d41e544055cb",
+  "source_sha": "5f0bfb091588c1bb",
+  "date": "2026-11-13",
+  "by": "NE championships ingest 2026-11-13",
+  "evidence": "Maine rows of the MileSplit copy of the New England sheet: every row the sheet tags ME, untagged rows only when the school is Maine and the runner (or 3+ teammates) is in our data that year; each school resolved to the catalog; checked against the sheet that no ME-tagged row is missing"
  },
  "backend/data/parsed_results/2016/XC/northboyscombined.txt.json": {
   "parse_sha": "24da63321d66496a",
@@ -45163,6 +45268,13 @@
   "by": "second read (fixed): override written from the source",
   "evidence": "reader compared every row with the source; no printed team scores, or scores verified"
  },
+ "backend/data/parsed_results/2018/XC/ne-xc-championship-2018.json": {
+  "parse_sha": "e99889405cc4464c",
+  "source_sha": "7885825d9fd94bdc",
+  "date": "2026-11-13",
+  "by": "NE championships ingest 2026-11-13",
+  "evidence": "Maine rows of the MileSplit copy of the New England sheet: every row the sheet tags ME, untagged rows only when the school is Maine and the runner (or 3+ teammates) is in our data that year; each school resolved to the catalog; checked against the sheet that no ME-tagged row is missing"
+ },
  "backend/data/parsed_results/2018/XC/orrington-boys.txt.json": {
   "parse_sha": "59bed2c9152605ac",
   "source_sha": "f85a629663a29734",
@@ -48438,6 +48550,13 @@
   "date": "2026-10-24",
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
+ },
+ "backend/data/parsed_results/2019/XC/ne-xc-championship-2019.json": {
+  "parse_sha": "b555b848e191fadc",
+  "source_sha": "66095f9576096007",
+  "date": "2026-11-13",
+  "by": "NE championships ingest 2026-11-13",
+  "evidence": "Maine rows of the MileSplit copy of the New England sheet: every row the sheet tags ME, untagged rows only when the school is Maine and the runner (or 3+ teammates) is in our data that year; each school resolved to the catalog; checked against the sheet that no ME-tagged row is missing"
  },
  "backend/data/parsed_results/2019/XC/oakhillboys_oct15.txt.json": {
   "parse_sha": "09032be8f6b05a20",
@@ -53395,6 +53514,13 @@
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
  },
+ "backend/data/parsed_results/2021/XC/ne-xc-championship-2021.json": {
+  "parse_sha": "9ceb3d158055614b",
+  "source_sha": "8e5197369d089ef9",
+  "date": "2026-11-13",
+  "by": "NE championships ingest 2026-11-13",
+  "evidence": "Maine rows of the MileSplit copy of the New England sheet: every row the sheet tags ME, untagged rows only when the school is Maine and the runner (or 3+ teammates) is in our data that year; each school resolved to the catalog; checked against the sheet that no ME-tagged row is missing"
+ },
  "backend/data/parsed_results/2021/XC/north-class-b-boys.txt.json": {
   "parse_sha": "6c350c46a77b3e68",
   "source_sha": "cab163ff590968c1",
@@ -56348,6 +56474,13 @@
   "date": "2026-10-28",
   "by": "second read (fixed): override written from the source",
   "evidence": "reader compared every row with the source; no printed team scores, or scores verified"
+ },
+ "backend/data/parsed_results/2022/XC/ne-xc-championship-2022.json": {
+  "parse_sha": "d6efe5b405349cdc",
+  "source_sha": "30771a8f14ca4a59",
+  "date": "2026-11-13",
+  "by": "NE championships ingest 2026-11-13",
+  "evidence": "Maine rows of the MileSplit copy of the New England sheet: every row the sheet tags ME, untagged rows only when the school is Maine and the runner (or 3+ teammates) is in our data that year; each school resolved to the catalog; checked against the sheet that no ME-tagged row is missing"
  },
  "backend/data/parsed_results/2022/XC/panther-boys.txt.json": {
   "parse_sha": "bc4c5ca8bba93287",
@@ -63097,6 +63230,13 @@
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
  },
+ "backend/data/parsed_results/2024/XC/ne-xc-championship-2024.json": {
+  "parse_sha": "83f30517a93f4d37",
+  "source_sha": "4f2f60b820b8c2fc",
+  "date": "2026-11-13",
+  "by": "NE championships ingest 2026-11-13",
+  "evidence": "Maine rows of the MileSplit copy of the New England sheet: every row the sheet tags ME, untagged rows only when the school is Maine and the runner (or 3+ teammates) is in our data that year; each school resolved to the catalog; checked against the sheet that no ME-tagged row is missing"
+ },
  "backend/data/parsed_results/2024/XC/neboyqual2024.txt.json": {
   "parse_sha": "56e1909d57625405",
   "source_sha": "98febb4507b8bf29",
@@ -66442,6 +66582,13 @@
   "date": "2026-10-16",
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
+ },
+ "backend/data/parsed_results/2025/XC/ne-xc-championship-2025.json": {
+  "parse_sha": "85ea22b3c1e2e24f",
+  "source_sha": "319a8c6e75a118c4",
+  "date": "2026-11-13",
+  "by": "NE championships ingest 2026-11-13",
+  "evidence": "Maine rows of the MileSplit copy of the New England sheet: every row the sheet tags ME, untagged rows only when the school is Maine and the runner (or 3+ teammates) is in our data that year; each school resolved to the catalog; checked against the sheet that no ME-tagged row is missing"
  },
  "backend/data/parsed_results/2025/XC/neboyscombined.txt.json": {
   "parse_sha": "642d9a57f35a7248",

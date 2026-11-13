@@ -3202,6 +3202,25 @@ class Sub5ScraperV2:
                                 continue
                             if unit:
                                 team_norm = school_catalog.store_name(unit)
+                        # (a New England championship stored whole: only Maine schools stay, meet_scope 'maine_only')
+                        maine_only = meet_key in self.meet_scope.get('maine_only', {})
+                        if maine_only and not unit and school and re.search(r'(?:^|[\s,\-(])ME\)?\s*$', school):
+                            # a Maine row the catalog does not know with its town and state printed:
+                            # 'Cheverus HS - Portland, ME', 'Messalonskee HS Oaklnd, ME', 'Scarborough, ME'
+                            base = re.sub(r'[\s,\-(]*ME\)?\s*$', '', school).strip(' ,-')
+                            base = re.sub(r'^ME\s*', 'Maine ', base)   # 'ME GirlsAcad'
+                            for v in (base, re.split(r'\s+-\s*|\s*-\s+|,', base)[0],
+                                      re.sub(r'\s+(HS|H\.S\.)\b.*$', '', base),
+                                      base.split('-')[0]):   # 'Noble-Berwk', 'Greely-Cumberlnd'
+                                u = school_catalog.store_unit(v.strip(), year=str(year), season=season, gender=gender,
+                                                              meet_name=filename, grade=r.get('grade'))
+                                if u and u.startswith(('me-', 'coop-')):
+                                    unit, team_norm = u, school_catalog.store_name(u)
+                                    break
+                        if maine_only and not (unit and unit.startswith(('me-', 'coop-', 'club-'))):
+                            SYNC_DROPS[(meet_key, 'not a Maine school (Maine-only meet)')] += 1
+                            SYNC_DROP_WHAT[('maine-only', season, str(school)[:80])] += 1
+                            continue
                         if team_norm is None and school.strip().lower() in school_catalog.shared_codes():
                             # a code two schools print ('BRHS', 'FA', 'OHS') that this meet's evidence
                             # did not place: never guessed (the fuzzy matcher made Foxcroft of

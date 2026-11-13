@@ -1,5 +1,5 @@
 {
- "_doc": "Meets on sub5 that are not MPA school track. \"summer\": written to backend/data/summer/<year>/sub5-<meet>.json (backend/sub5_summer.py) and kept out of the school store. \"excluded\": kept out of the store entirely. Keys are <year>_<season>_<file stem>; each value says why.",
+ "_doc": "Meets on sub5 that are not MPA school track. \"summer\": written to backend/data/summer/<year>/sub5-<meet>.json (backend/sub5_summer.py) and kept out of the school store. \"excluded\": kept out of the store entirely. Keys are <year>_<season>_<file stem>; each value says why. \"maine_only\": a meet of every New England state stored with its Maine schools only (rows whose school the catalog places in Maine, a Maine co-op or club); the parse stays whole for team-score checks.",
  "summer": {
   "2003_Outdoor_region103": "USATF Junior Olympic meet (age divisions, club athletes), not an MPA school meet; Region I championship, Worcester MA",
   "2004_Outdoor_meusatf19june04": "USATF Maine Junior Olympic championship (Bantam/Midget/Youth/Intermediate/Young divisions)",
@@ -256,5 +256,36 @@
   "2011_Indoor_women_results_maine_hc_2.5.11": "college dual meet (UMaine vs Holy Cross): college athletes only; College of the Holy Cross rows had been filed under Holy Cross School (coach read 2012, 2026-11-08)",
   "2012_Indoor_maine_holy_cross_mens_2.4.12": "college dual meet (UMaine vs Holy Cross): college athletes only; College of the Holy Cross rows had been filed under Holy Cross School (coach read 2012, 2026-11-08)",
   "2012_Indoor_maine_holy_cross_womens_2.4.12": "college dual meet (UMaine vs Holy Cross): college athletes only; College of the Holy Cross rows had been filed under Holy Cross School (coach read 2012, 2026-11-08)"
+ },
+ "maine_only": {
+  "2005_Outdoor_60th_New_England_Interscholastic_Outdoor_Track_and_Field_Championship_Meet": "New England championship copied whole (every state); only Maine schools are kept",
+  "2005_Outdoor_newengland05boys": "New England championship copied whole (every state); only Maine schools are kept",
+  "2005_Outdoor_newengland05girls": "New England championship copied whole (every state); only Maine schools are kept",
+  "2007_XC_newenglandboys.txt": "New England championship copied whole (every state); only Maine schools are kept",
+  "2007_XC_newenglandgirls.txt": "New England championship copied whole (every state); only Maine schools are kept",
+  "2011_Indoor_2011NewEnglandResults": "New England championship copied whole (every state); only Maine schools are kept",
+  "2011_XC_ne%20hs%20xc%20boys%20tresults": "New England championship copied whole (every state); only Maine schools are kept",
+  "2011_XC_ne%20hs%20xc%20girls%20results": "New England championship copied whole (every state); only Maine schools are kept",
+  "2012_Outdoor_newenglandboys": "New England championship copied whole (every state); only Maine schools are kept",
+  "2012_Outdoor_newenglandgirls": "New England championship copied whole (every state); only Maine schools are kept",
+  "2012_XC_New%20England%20HS%20XC%20boys%20results.txt": "New England championship copied whole (every state); only Maine schools are kept",
+  "2012_XC_New%20England%20HS%20XC%20girls%20results.txt": "New England championship copied whole (every state); only Maine schools are kept",
+  "2015_Outdoor_ResultsNewEngland151": "New England championship copied whole (every state); only Maine schools are kept",
+  "2017_Outdoor_Results6-10-2017-1": "New England championship copied whole (every state); only Maine schools are kept",
+  "2017_XC_neboysxc2017.txt": "New England championship copied whole (every state); only Maine schools are kept",
+  "2017_XC_nexcgirls2017.txt": "New England championship copied whole (every state); only Maine schools are kept",
+  "2019_Outdoor_NE-results-boys": "New England championship copied whole (every state); only Maine schools are kept",
+  "2019_Outdoor_NE-results-girls": "New England championship copied whole (every state); only Maine schools are kept",
+  "2022_Outdoor_newengland22": "New England championship copied whole (every state); only Maine schools are kept",
+  "2023_Indoor_2023-New-England-Indoor-Track-Results": "New England championship copied whole (every state); only Maine schools are kept",
+  "2023_Outdoor_neboys2023": "New England championship copied whole (every state); only Maine schools are kept",
+  "2023_Outdoor_negirls2023": "New England championship copied whole (every state); only Maine schools are kept",
+  "2023_XC_nexcboys2023.txt": "New England championship copied whole (every state); only Maine schools are kept",
+  "2023_XC_nexcgirls2023.txt": "New England championship copied whole (every state); only Maine schools are kept",
+  "2024_Indoor_2024neindoor": "New England championship copied whole (every state); only Maine schools are kept",
+  "2025_Indoor_neresults2025": "New England championship copied whole (every state); only Maine schools are kept",
+  "2025_Outdoor_neresults": "New England championship copied whole (every state); only Maine schools are kept",
+  "2026_Outdoor_NE-boys-results": "New England championship copied whole (every state); only Maine schools are kept",
+  "2026_Outdoor_NE-girls-results": "New England championship copied whole (every state); only Maine schools are kept"
  }
 }
