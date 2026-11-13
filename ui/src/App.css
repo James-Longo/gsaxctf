@@ -14,8 +14,20 @@
   border: 4px solid #edf2f7;
   border-top: 4px solid #800000;
   border-radius: 50%;
-  animation: spin 1s linear infinite;
   margin-bottom: 20px;
+  animation: spin 1s linear infinite;
+  /* still turns (it says "loading"), slowly */
+  @media (prefers-reduced-motion: reduce) {
+    animation-duration: 3s;
+  }
+}
+
+/* the small spinner on the postseason loading banner */
+.ps-spinner {
+  animation: spin 0.8s linear infinite;
+  @media (prefers-reduced-motion: reduce) {
+    animation-duration: 3s;
+  }
 }
 
 @keyframes spin {
@@ -111,6 +123,9 @@ select option {
 }
 
 .nav-btn {
+  font: -webkit-small-control;
+  font: -moz-button;
+  text-decoration: none;
   padding: 10px 14px;
   border-radius: 8px;
   border: 1px solid #cbd5e0;
@@ -131,7 +146,9 @@ select option {
 .nav-btn:hover:not(.active) {
   background: #f8fafc;
   border-color: #800000;
-  transform: translateX(4px);
+  @media (prefers-reduced-motion: no-preference) {
+    transform: translateX(4px);
+  }
 }
 
 .nav-btn.active {
@@ -294,6 +311,12 @@ select option {
   color: #2d3748;
 }
 
+/* keyboard focus: an outline (box-shadows vanish in forced-colors mode) */
+.filter-group select:focus-visible {
+  outline: 2px solid #800000;
+  outline-offset: 2px;
+}
+
 .filter-group select:focus {
   border-color: #800000;
   box-shadow: 0 0 0 1px #800000;
@@ -321,11 +344,18 @@ select option {
 }
 
 .download-btn:active {
-  transform: translateY(1px);
+  @media (prefers-reduced-motion: no-preference) {
+    transform: translateY(1px);
+  }
 }
 
 .table-container {
   overflow-x: auto;
+}
+/* focusable when it scrolls sideways (src/scrollRegions.js) */
+.table-container:focus-visible {
+  outline: 2px solid #800000;
+  outline-offset: -2px;
 }
 
 .performance-table {
@@ -413,6 +443,10 @@ select option {
   cursor: pointer;
   user-select: none;
 }
+
+/* sort headers: the button takes the cell's padding so the whole cell is the target */
+.performance-table th:has(> .sort-btn) { padding: 0; }
+.performance-table th > .sort-btn { display: block; width: 100%; padding: 14px 16px; }
 
 .performance-table th.sortable:hover {
   background-color: #edf2f7;
@@ -781,6 +815,12 @@ input:checked+.slider:before {
   background-size: 16px;
 }
 
+/* keyboard focus: an outline (box-shadows vanish in forced-colors mode) */
+.team-dropdown:focus-visible {
+  outline: 2px solid #800000;
+  outline-offset: 2px;
+}
+
 .team-dropdown:focus {
   border-color: #800000;
   box-shadow: 0 0 0 3px rgba(128, 0, 0, 0.1);
@@ -966,7 +1006,9 @@ input:checked+.slider:before {
 }
 
 .pop-card:hover {
-  transform: translateY(-3px);
+  @media (prefers-reduced-motion: no-preference) {
+    transform: translateY(-3px);
+  }
 }
 
 .pop-athlete {
@@ -1167,6 +1209,8 @@ body {
     padding: 10px 12px;
     font-size: 0.8rem;
   }
+  .performance-table th > .sort-btn { padding: 10px 12px; }
+  .tip-glue { display: none; }
 
   /* Analyzer specific */
   .analyzer-header h2 {
@@ -1224,6 +1268,11 @@ body {
 }
 
 .splits-toggle {
+  background: none;
+  border: 0;
+  padding: 0;
+  font-family: inherit;
+  line-height: inherit;
   color: #800000;
   font-size: 0.65rem;
   cursor: pointer;
@@ -1367,6 +1416,12 @@ body {
   cursor: pointer;
   outline: none;
   min-width: 200px;
+}
+
+/* keyboard focus: an outline (box-shadows vanish in forced-colors mode) */
+.season-select:focus-visible {
+  outline: 2px solid #800000;
+  outline-offset: 2px;
 }
 
 .season-select:focus {
@@ -1811,7 +1866,9 @@ body {
 }
 
 .album-card:hover {
-  transform: translateY(-4px);
+  @media (prefers-reduced-motion: no-preference) {
+    transform: translateY(-4px);
+  }
   box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
   border-color: #cbd5e0;
 }
@@ -1872,7 +1929,9 @@ body {
 }
 
 .album-card:hover .action-arrow {
-  transform: translateX(4px);
+  @media (prefers-reduced-motion: no-preference) {
+    transform: translateX(4px);
+  }
 }
 /* ── Split Explorer ─────────────────────────────────────────────────────── */
 
@@ -2133,7 +2192,16 @@ body {
   width: fit-content;
   max-width: 100%;
 }
-.sport-switch button {
+.sport-switch a {
+  /* links drawn as the buttons they replaced: the control font, centred */
+  font: -webkit-small-control;
+  font: -moz-button;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  text-decoration: none;
+  box-sizing: border-box;
   padding: 8px 18px;
   border: none;
   border-radius: 7px;
@@ -2143,8 +2211,8 @@ body {
   font-size: 0.95rem;
   cursor: pointer;
 }
-.sport-switch button:hover:not(.active) { color: #800000; }
-.sport-switch button.active {
+.sport-switch a:hover:not(.active) { color: #800000; }
+.sport-switch a.active {
   background: #800000;
   color: white;
   box-shadow: 0 2px 4px rgba(128, 0, 0, 0.25);
@@ -2163,7 +2231,7 @@ body {
   padding: 7px 16px; border: none; background: white; color: #2d3748;
   font-weight: 600; cursor: pointer;
 }
-.xs-seg button + button { border-left: 1px solid #cbd5e0; }
+.xs-seg button ~ button { border-left: 1px solid #cbd5e0; }
 .xs-seg button.active { background: #800000; color: white; }
 .xs-meets { display: flex; gap: 14px; flex-wrap: wrap; flex: 1; min-width: 0; }
 .xs-day { display: flex; flex-direction: column; gap: 4px; }
@@ -2240,8 +2308,8 @@ body {
   .xs-bar { flex-direction: column; gap: 10px; }
   .xs-meets { gap: 10px; }
   .xs-table th, .xs-table td { padding: 6px 6px; font-size: 0.8rem; }
-  .sport-switch button { padding: 8px 12px; font-size: 0.88rem; }
-  .sport-switch button.active, .xs-seg button.active, .xs-day-btns button.active, .xs-clear:not(.ghost) { color: white; }
+  .sport-switch a { padding: 8px 12px; font-size: 0.88rem; }
+  .sport-switch a.active, .xs-seg button.active, .xs-day-btns button.active, .xs-clear:not(.ghost) { color: white; }
   .xs-hi { color: #800000; }
   .xs-lo { color: #a0aec0; }
 }

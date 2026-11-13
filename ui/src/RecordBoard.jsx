@@ -2,6 +2,7 @@ import React, { useState, useMemo, useEffect } from 'react'
 import { computeRecords, coopTeams, mergeBoard } from './records.js'
 import { OFFICIAL_BOARDS, BOARD_EVENTS } from './officialBoards.js'
 import './App.css'
+import Tip from './Tip'
 
 // A team's record board for the season type in view (Indoor or Outdoor):
 // the best mark ever per event and gender, from the results store, for the
@@ -61,7 +62,7 @@ function RecordBoard({ performances, selectedTeam, manifest, loadTeamData, seaso
     return (
         <div className="record-board">
             <div className="header-row">
-                <h2 title={rulesTitle}>{selectedTeam} {season} Records</h2>
+                <h2><Tip tip={rulesTitle}>{selectedTeam} {season} Records</Tip></h2>
             </div>
             {!records.length && <div className="empty-state"><p>No {season.toLowerCase()} results loaded for this team yet.</p></div>}
             {genders.map(g => (
@@ -80,10 +81,13 @@ function RecordBoard({ performances, selectedTeam, manifest, loadTeamData, seaso
                                         {r.record.map((e, i) => (
                                             <tr key={i} className="record-row" onClick={() => toggle(k)}>
                                                 {i === 0 && <td rowSpan={r.record.length} className="record-event">
-                                                    {r.event}<span className="splits-toggle">{isOpen ? ' ▲' : ' ▼'}</span>
+                                                    <button type="button" className="text-btn" aria-expanded={isOpen}
+                                                        onClick={(ev) => { ev.stopPropagation(); toggle(k) }}>
+                                                        {r.event}<span className="splits-toggle" aria-hidden="true">{isOpen ? ' ▲' : ' ▼'}</span>
+                                                    </button>
                                                 </td>}
                                                 {i === 0 && <td rowSpan={r.record.length} className="mark-cell">{e.mark}</td>}
-                                                <td>{who(e)}{r.record.length > 1 && i === 0 && <span className="badge">tie</span>}{noLegs(e) && <span className="badge board-badge" title="No result or other source found names the runners">names?</span>}</td>
+                                                <td>{who(e)}{r.record.length > 1 && i === 0 && <span className="badge">tie</span>}{noLegs(e) && <Tip glue className="badge board-badge" tip="No result or other source found names the runners">names?</Tip>}</td>
                                                 <td className="record-date">{e.date}</td>
                                                 <td>{meetCell(e, season)}</td>
                                             </tr>

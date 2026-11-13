@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect, useMemo } from 'react'
+import React, { useState, useRef, useEffect, useMemo, useId } from 'react'
 
 /**
  * SearchSelect - type-ahead replacement for long <select> lists.
@@ -8,13 +8,20 @@ import React, { useState, useRef, useEffect, useMemo } from 'react'
  *   secondary - dim text right of the label (e.g. team name, result count)
  *   search    - extra text the query also matches (e.g. other spellings)
  * minSearch  - require N typed chars before listing (for huge option sets)
+ * id         - input id, for the <label htmlFor> beside it
+ *
+ * Keyboard and screen readers: ARIA 1.2 combobox (input) + listbox; the
+ * highlighted option is announced through aria-activedescendant.
  */
-export default function SearchSelect({ value, onChange, options, placeholder = 'Search...', minSearch = 0 }) {
+export default function SearchSelect({ value, onChange, options, placeholder = 'Search...', minSearch = 0, id }) {
   const [open, setOpen] = useState(false)
   const [query, setQuery] = useState('')
   const [hi, setHi] = useState(0)
   const rootRef = useRef(null)
   const listRef = useRef(null)
+  const uid = useId()
+  const listId = `${uid}-list`
+  const optId = (i) => `${uid}-opt-${i}`
 
   const selected = options.find(o => String(o.value) === String(value))
 
@@ -66,11 +73,12 @@ export default function SearchSelect({ value, onChange, options, placeholder = '
   let lastGroup = null
   filtered.forEach((o, i) => {
     if (o.group && o.group !== lastGroup) {
-      rows.push(<li key={`g-${o.group}`} className="ss-group">{o.group}</li>)
+      rows.push(<li key={`g-${o.group}`} className="ss-group" role="presentation">{o.group}</li>)
       lastGroup = o.group
     }
     rows.push(
-      <li key={o.value}
+      <li key={o.value} id={optId(i)} role="option"
+          aria-selected={String(o.value) === String(value)}
           className={`ss-opt${i === hi ? ' ss-hi' : ''}${String(o.value) === String(value) ? ' ss-sel' : ''}`}
           onMouseDown={(e) => { e.preventDefault(); pick(o) }}
           onMouseEnter={() => setHi(i)}>
@@ -83,17 +91,25 @@ export default function SearchSelect({ value, onChange, options, placeholder = '
   return (
     <div className="searchselect" ref={rootRef}>
       <input
+        id={id}
+        role="combobox"
+        aria-autocomplete="list"
+        aria-expanded={open}
+        aria-controls={listId}
+        aria-activedescendant={open && filtered[hi] ? optId(hi) : undefined}
         value={open ? query : (selected ? selected.label : '')}
         placeholder={selected ? selected.label : placeholder}
         onChange={e => { setQuery(e.target.value); if (!open) setOpen(true) }}
         onFocus={() => { setOpen(true); setQuery('') }}
         onKeyDown={onKey}
+        onBlur={() => { setOpen(false); setQuery('') }}
       />
-      <span className="ss-caret">▾</span>
+      <span className="ss-caret" aria-hidden="true">▾</span>
       {open && (
-        <ul className="ss-list" ref={listRef}>
+        <ul className="ss-list" ref={listRef} id={listId} role="listbox"
+            onMouseDown={(e) => e.preventDefault()}>
           {rows.length ? rows : (
-            <li className="ss-empty">
+            <li className="ss-empty" role="option" aria-selected="false" aria-disabled="true">
               {query.trim().length < minSearch
                 ? `Type ${minSearch}+ characters to search`
                 : 'No matches'}

@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useMemo } from 'react'
 import { asset, fetchGz, gradeLabel } from './utils'
+import Tip from './Tip'
 
 /**
  * XC postseason predictions: conference, regional and state meets simulated
@@ -137,11 +138,11 @@ export default function XCPostseasonSim({ followTeam }) {
                   if (!r) return null
                   const t = r.teams.find(followed)
                   return (
-                    <button key={m.id} onClick={() => setMeetId(m.id)}
+                    <Tip styled key={m.id} onClick={() => setMeetId(m.id)}
                       className={`${m.id === meetId ? 'active' : ''} ${t ? 'has-follow' : ''}`}
-                      title={(t ? `${t.team}: ${pct(m.id.startsWith('reg') ? t.qual : t.win)} ${m.id.startsWith('reg') ? 'to states' : 'win'}` : m.venue || '') + (r.actual ? ' · result in' : '')}>
+                      tip={(t ? `${t.team}: ${pct(m.id.startsWith('reg') ? t.qual : t.win)} ${m.id.startsWith('reg') ? 'to states' : 'win'}` : m.venue || '') + (r.actual ? ' · result in' : '')}>
                       {shortName(m)}{r.actual && <span className="xs-done" aria-label="result in"> ✓</span>}
-                    </button>
+                    </Tip>
                   )
                 })}
               </div>
@@ -153,7 +154,7 @@ export default function XCPostseasonSim({ followTeam }) {
       <div className="xs-meta">
         <strong>{meet.name}</strong> · {gender} · {fmtDate(meet.date)}{meet.venue ? ` · ${meet.venue}` : ''}
         {meet.asof && <> · predicted from results through {fmtDate(meet.asof)}</>}
-        {pastSeason && <span className="xs-note" title={`Model refit without ${data.year}; each meet predicted from results before it`}>Backtest</span>}
+        {pastSeason && <Tip className="xs-note" tip={`Model refit without ${data.year}; each meet predicted from results before it`}>Backtest</Tip>}
       </div>
 
       <div className="xs-grid">
@@ -164,7 +165,7 @@ export default function XCPostseasonSim({ followTeam }) {
                 <th className="num">#</th><th>Team</th>
                 {PLACES.map(p => <th key={p} className="num">{p}</th>)}
                 {isReg && <th className="num">States</th>}
-                <th className="num" title="Median simulated score">Score</th>
+                <th className="num"><Tip tip="Median simulated score">Score</Tip></th>
               </tr>
             </thead>
             <tbody>
@@ -179,7 +180,8 @@ export default function XCPostseasonSim({ followTeam }) {
                     <tr className={`xs-team ${followed(t) ? 'xs-follow' : ''} ${team === t.team ? 'xs-sel' : ''}`}
                       onClick={() => setTeam(team === t.team ? null : t.team)}>
                       <td className="num">{rank}</td>
-                      <td>{t.team}{t.appear < 0.9 && <span className="xs-chip" title="Qualifies for this meet as a team in this share of simulations">{pct(t.appear)} qualify</span>}</td>
+                      <td><button type="button" className="text-btn" aria-pressed={team === t.team}
+                        onClick={(e) => { e.stopPropagation(); setTeam(team === t.team ? null : t.team) }}>{t.team}</button>{t.appear < 0.9 && <Tip glue className="xs-chip" tip="Qualifies for this meet as a team in this share of simulations">{pct(t.appear)} qualify</Tip>}</td>
                       {t.odds.map((p, i) => <td key={i} className={`num ${i < 3 ? pctCls(p) : 'xs-plain'}`}>{pct(p)}</td>)}
                       {isReg && <td className={`num ${pctCls(t.qual)}`}>{pct(t.qual)}</td>}
                       <td className="num">{t.score}</td>
@@ -202,8 +204,8 @@ export default function XCPostseasonSim({ followTeam }) {
               <thead>
                 <tr>
                   <th className="num">#</th><th>Runner</th><th>Team</th>
-                  <th className="num" title={race.course_known === false ? 'Expected time on the Belfast course (no factor for this course yet), typical conditions' : `Expected time on this meet's course${meet.venue ? ` (${meet.venue})` : ''}, typical conditions`}>Expected</th>
-                  <th className="num" title="Finishing place in 80% of simulations (10th to 90th percentile)">Range</th>
+                  <th className="num"><Tip tip={race.course_known === false ? 'Expected time on the Belfast course (no factor for this course yet), typical conditions' : `Expected time on this meet's course${meet.venue ? ` (${meet.venue})` : ''}, typical conditions`}>Expected</Tip></th>
+                  <th className="num"><Tip tip="Finishing place in 80% of simulations (10th to 90th percentile)">Range</Tip></th>
                   <th className="num">Top 10</th>
                   {isReg && <th className="num">States</th>}
                 </tr>
@@ -220,10 +222,10 @@ export default function XCPostseasonSim({ followTeam }) {
                     <td className="num">{rankOf.get(a)}</td>
                     <td>
                       {a.name}{a.grade ? <span className="xs-gr"> {gradeLabel(a.grade)}</span> : null}
-                      {a.n === 0 && <span className="xs-chip" title="No race this season on file: rated from last season">prior</span>}
+                      {a.n === 0 && <Tip glue className="xs-chip" tip="No race this season on file: rated from last season">prior</Tip>}
                     </td>
                     <td className="xs-school">{a.school}</td>
-                    <td className="num" title={a.races.length ? a.races.map(r => `${r[0]}  ${r[1]}`).join('\n') : 'Rated from last season'}>{a.t}</td>
+                    <td className="num"><Tip tip={a.races.length ? a.races.map(r => `${r[0]}  ${r[1]}`).join('\n') : 'Rated from last season'}>{a.t}</Tip></td>
                     <td className="num xs-range">{a.p10 === a.p90 ? a.p10 : `${a.p10}–${a.p90}`}</td>
                     <td className={`num ${pctCls(a.top10)}`}>{pct(a.top10)}</td>
                     {isReg && <td className={`num ${pctCls(a.qual)}`}>{pct(a.qual)}</td>}
@@ -272,7 +274,7 @@ function ResultPanel({ actual, div, team, setTeam, query, followTeam, followedSc
             {s.podium != null && <span><b>{s.podium} of 3</b> podium teams picked{s.order ? `, ${s.order} in the exact place` : ''}</span>}
             {s.in_range != null && <span><b>{pct(s.in_range)}</b> of {s.runners} runners inside their range <span className="xs-dim">(80% expected)</span></span>}
             {s.place_err != null && <span>typical place miss <b>{Math.round(s.place_err)}</b></span>}
-            {s.time_err != null && <span title="After removing the whole field's shift that day">typical time miss <b>{s.time_err} s</b></span>}
+            {s.time_err != null && <Tip tip="After removing the whole field's shift that day">typical time miss <b>{s.time_err} s</b></Tip>}
           </div>
         ))}
         {actual.day != null && (
@@ -288,9 +290,9 @@ function ResultPanel({ actual, div, team, setTeam, query, followTeam, followedSc
             <thead>
               <tr>
                 <th className="num">Place</th><th>Team</th><th className="num">Score</th>
-                <th className="num" title="Place in the predicted order">Predicted<br />place</th>
-                <th className="num" title="Median simulated score">Pred.<br />score</th>
-                <th className="num" title="Share of simulations in which the team finished in exactly this place">Chance</th>
+                <th className="num"><Tip tip="Place in the predicted order">Predicted<br />place</Tip></th>
+                <th className="num"><Tip tip="Median simulated score">Pred.<br />score</Tip></th>
+                <th className="num"><Tip tip="Share of simulations in which the team finished in exactly this place">Chance</Tip></th>
               </tr>
             </thead>
             <tbody>
@@ -304,7 +306,8 @@ function ResultPanel({ actual, div, team, setTeam, query, followTeam, followedSc
                     <tr className={`xs-team ${followTeam && t.store === followTeam ? 'xs-follow' : ''} ${team === t.team ? 'xs-sel' : ''}`}
                       onClick={() => setTeam(team === t.team ? null : t.team)}>
                       <td className="num">{t.place ?? '–'}</td>
-                      <td>{t.team}{t.place == null && <span className="xs-chip" title="Fewer than five runners finished">no team score</span>}</td>
+                      <td><button type="button" className="text-btn" aria-pressed={team === t.team}
+                        onClick={(e) => { e.stopPropagation(); setTeam(team === t.team ? null : t.team) }}>{t.team}</button>{t.place == null && <Tip glue className="xs-chip" tip="Fewer than five runners finished">no team score</Tip>}</td>
                       <td className="num">{t.score ?? '–'}</td>
                       <td className="num">{t.pred ?? '–'}{off ? <span className="xs-dim"> ({off > 0 ? '+' : '−'}{Math.abs(off)})</span> : null}</td>
                       <td className="num">{t.pscore ?? '–'}</td>
@@ -323,12 +326,12 @@ function ResultPanel({ actual, div, team, setTeam, query, followTeam, followedSc
               <thead>
                 <tr>
                   <th className="num">Place</th>
-                  <th className="num" title="Place in the predicted order">Predicted<br />place</th>
+                  <th className="num"><Tip tip="Place in the predicted order">Predicted<br />place</Tip></th>
                   <th>Runner</th><th className="xs-col-team">Team</th>
                   <th className="num">Time</th>
-                  <th className="num" title="Expected time on this course, typical conditions">Predicted<br />time</th>
-                  <th className="num" title="Actual minus predicted time">Diff</th>
-                  <th className="num" title="Predicted finishing place in 80% of simulations">Range</th>
+                  <th className="num"><Tip tip="Expected time on this course, typical conditions">Predicted<br />time</Tip></th>
+                  <th className="num"><Tip tip="Actual minus predicted time">Diff</Tip></th>
+                  <th className="num"><Tip tip="Predicted finishing place in 80% of simulations">Range</Tip></th>
                 </tr>
               </thead>
               <tbody>
@@ -344,7 +347,7 @@ function ResultPanel({ actual, div, team, setTeam, query, followTeam, followedSc
                         <td className="num">{a.place}</td>
                         <td className="num">{a.pr ?? ''}</td>
                         <td>{a.name}{a.grade ? <span className="xs-gr"> {gradeLabel(a.grade)}</span> : null}
-                          {a.p10 == null && <span className="xs-chip" title="Not in the predictions (no rated race before the meet, or outside the team's top seven)">not predicted</span>}
+                          {a.p10 == null && <Tip glue className="xs-chip" tip="Not in the predictions (no rated race before the meet, or outside the team's top seven)">not predicted</Tip>}
                           <div className="xs-sub-school">{a.school}</div></td>
                         <td className="xs-school xs-col-team">{a.school}</td>
                         <td className="num">{a.t}</td>

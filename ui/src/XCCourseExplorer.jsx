@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useMemo } from 'react'
 import { asset, fetchGz } from './utils'
 import SearchSelect from './SearchSelect'
+import Tip from './Tip'
 
 /**
  * XC Course Explorer - course equivalence built from athletes who raced
@@ -105,13 +106,13 @@ export default function XCCourseExplorer() {
                    onChange={e => setTimeInput(e.target.value)} placeholder="19:00" />
           </div>
           <div className="filter-group">
-            <label>On course</label>
-            <SearchSelect value={fromCourse} onChange={setFromCourse}
+            <label htmlFor="pick-from-course">On course</label>
+            <SearchSelect id="pick-from-course" value={fromCourse} onChange={setFromCourse}
                           options={options} placeholder="Search courses..." />
           </div>
           <div className="filter-group">
-            <label>Equivalent on</label>
-            <SearchSelect value={toCourse} onChange={setToCourse}
+            <label htmlFor="pick-to-course">Equivalent on</label>
+            <SearchSelect id="pick-to-course" value={toCourse} onChange={setToCourse}
                           options={options} placeholder="Search courses..." />
           </div>
           <div className="filter-group">
@@ -136,12 +137,13 @@ export default function XCCourseExplorer() {
       <table className="performance-table">
         <thead>
           <tr>
-            <th>#</th><th>Course</th>
-            <th className="sortable active" onClick={() => setSortAsc(a => !a)}
-                title="Sort by rating">
-              Rating* {sortAsc ? '▲' : '▼'}
+            <th scope="col">#</th><th scope="col">Course</th>
+            <th scope="col" className="sortable active" aria-sort={sortAsc ? 'ascending' : 'descending'}>
+              <Tip styled className="sort-btn" onClick={() => setSortAsc(a => !a)} tip="Sort by rating">
+                Rating* <span aria-hidden="true">{sortAsc ? '▲' : '▼'}</span>
+              </Tip>
             </th>
-            <th>Median time</th>
+            <th scope="col">Median time</th>
           </tr>
         </thead>
         <tbody>

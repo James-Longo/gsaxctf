@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo, useRef, useCallback } from 'react'
+import React, { useState, useEffect, useMemo, useRef, useCallback, lazy, Suspense } from 'react'
 import { isBetter, normalizeEvent, parseMark, isDistanceEvent, asset, gradeLabel, storeAthleteId } from './utils'
 import PerformanceList from './PerformanceList'
 import PRPopCalculator from './PRPopCalculator'
@@ -12,16 +12,18 @@ const ATHLETE_PROFILE = { id: 'athlete-profile', name: 'Athlete Profile' }
 const PRACTICE_RESULTS = { id: 'practice', name: 'Practice Results' }
 
 import MeetSheet from './MeetSheet'
-import AthleteProfile from './AthleteProfile'
 import PracticeResults from './PracticeResults'
-import ResultPredictor from './ResultPredictor'
 import Footage from './Footage'
 import SplitExplorer from './SplitExplorer'
 import SearchSelect from './SearchSelect'
+import Tip from './Tip'
 import XCCourseExplorer from './XCCourseExplorer'
 import SummerTrack from './SummerTrack'
 import XCPostseasonSim from './XCPostseasonSim'
 import RecordBoard from './RecordBoard'
+// the two chart views (recharts) load when first opened, not with the page
+const AthleteProfile = lazy(() => import('./AthleteProfile'))
+const ResultPredictor = lazy(() => import('./ResultPredictor'))
 
 // The site is split by sport. Each sport has its own tabs, and every view's
 // season filter is pinned to it. `team` tabs (track team tools) sit below a
@@ -82,7 +84,7 @@ const GRADES = ['5', '6', '7', '8', 'MS', '9', '10', '11', '12']
 // A row's grade: as printed, else estimated from the runner's other years.
 function Grade({ p }) {
   if (p.grade) return <span className="xs-gr"> {gradeLabel(p.grade)}</span>
-  if (p.grade_est) return <span className="xs-gr" title="Estimated from other years"> {gradeLabel(p.grade_est)}</span>
+  if (p.grade_est) return <span className="xs-gr"> <Tip tip="Estimated from other years">{gradeLabel(p.grade_est)}</Tip></span>
   return null
 }
 
@@ -139,18 +141,21 @@ function App() {
   const sportPerformances = (perfs) => perfs.filter(p => p.season === SPORTS[sport].season)
 
 
-  // 1. Initial Load: Manifest and Athlete Registry
+  // 1. Initial Load: the manifest, then the default team's data (its chunk
+  // names come from the manifest). The athlete registry and meet links start
+  // at the same time, at low priority, and land when they land: the team
+  // table renders without them.
   useEffect(() => {
+    fetchJsonGz(asset('/data/athletes.json.gz'), { priority: 'low' })
+      .then(setAllAthletes).catch(err => console.error('Athlete registry load failed:', err));
+    // links to each meet's full results; the table works without them
+    fetchJsonGz(asset('/data/meet_links.json.gz'), { priority: 'low' }).then(setMeetLinks).catch(() => {});
     const loadInitial = async () => {
       try {
-        const manifestRes = await fetch(asset('/data/manifest.json'));
+        const manifestRes = await fetch(asset('/data/manifest.json'), { priority: 'high' });
         const manifestData = await manifestRes.json();
-        const athletesData = await fetchJsonGz(asset('/data/athletes.json.gz'));
-        
+
         setManifest(manifestData);
-        setAllAthletes(athletesData);
-        // links to each meet's full results; the table works without them
-        fetchJsonGz(asset('/data/meet_links.json.gz')).then(setMeetLinks).catch(() => {});
         // open on the sport that's in season by the data's own season dates
         // (unless the URL already chose one)
         seasonWindows.current = manifestData.season_windows || null;
@@ -181,8 +186,8 @@ function App() {
   // Chunks are stored gzipped (.json.gz) to fit hosting limits; decompress
   // client-side. Falls back to parsing as plain JSON if the server (or a
   // proxy) already decoded it.
-  const fetchJsonGz = async (url) => {
-    const res = await fetch(url);
+  const fetchJsonGz = async (url, init) => {
+    const res = await fetch(url, init);
     if (!res.ok) throw new Error(`HTTP ${res.status} for ${url}`);
     if (url.endsWith('.gz')) {
       const buf = await res.arrayBuffer();
@@ -478,6 +483,9 @@ function App() {
     else { setSortField(field); setSortDirection('desc') }
   }
 
+  // aria-sort on the sorted column's header only
+  const ariaSort = (field) => sortField === field ? (sortDirection === 'asc' ? 'ascending' : 'descending') : undefined
+
   const toggleSplits = (id) => {
     setExpandedSplits(prev => {
       const next = new Set(prev)
@@ -488,29 +496,38 @@ function App() {
 
   return (
     <div className="container">
-      <h1 className="no-print">GSAXCTF</h1>
-      <div className="sport-switch no-print" role="tablist" aria-label="Sport">
-        {Object.entries(SPORTS).map(([key, sp]) => (
-          <button key={key} role="tab" aria-selected={sport === key}
-            className={sport === key ? 'active' : ''} onClick={() => switchSport(key)}>{sp.label}</button>
-        ))}
-      </div>
+      {/* the hash is the route, so the skip link moves focus instead of following its href */}
+      <a href="#content" className="skip-link"
+        onClick={e => { e.preventDefault(); document.getElementById('content')?.focus() }}>Skip to content</a>
+      <header>
+        <h1 className="no-print">GSAXCTF</h1>
+        {/* sport and page are links to their #sport/tab routes; the hashchange listener applies them */}
+        <nav className="sport-switch no-print" aria-label="Sport">
+          {Object.entries(SPORTS).map(([key, sp]) => (
+            <a key={key} href={`#${key}/${sportTabs(key).includes(activeTab) ? activeTab : 'history'}`}
+              aria-current={sport === key ? 'page' : undefined}
+              className={sport === key ? 'active' : ''} onClick={() => switchSport(key)}>{sp.label}</a>
+          ))}
+        </nav>
+      </header>
 
       <div className="dashboard-layout">
         <div className="sidebar">
-          <div className="nav-buttons">
+          <nav className="nav-buttons" aria-label="Pages">
             {SPORTS[sport].tabs.map(t => (
-              <button key={t} onClick={() => setActiveTab(t)} className={`nav-btn ${activeTab === t ? 'active' : ''}`}>{TAB_LABELS[t]}</button>
+              <a key={t} href={`#${sport}/${t}`} aria-current={activeTab === t ? 'page' : undefined}
+                className={`nav-btn ${activeTab === t ? 'active' : ''}`}>{TAB_LABELS[t]}</a>
             ))}
             {SPORTS[sport].team.length > 0 && <hr className="nav-divider" />}
             {SPORTS[sport].team.map(t => (
-              <button key={t} onClick={() => setActiveTab(t)} className={`nav-btn ${activeTab === t ? 'active' : ''}`}>{TAB_LABELS[t]}</button>
+              <a key={t} href={`#${sport}/${t}`} aria-current={activeTab === t ? 'page' : undefined}
+                className={`nav-btn ${activeTab === t ? 'active' : ''}`}>{TAB_LABELS[t]}</a>
             ))}
-          </div>
+          </nav>
 
         </div>
 
-        <div className="main-content">
+        <main className="main-content" id="content" tabIndex={-1}>
           {!dataLoaded ? (
             <div className="loading-state">
               <div className="loading-spinner"></div>
@@ -540,7 +557,7 @@ function App() {
           ) : activeTab === 'xc-courses' ? (
             <XCCourseExplorer />
           ) : activeTab === 'predictor' ? (
-            <ResultPredictor />
+            <Suspense fallback={null}><ResultPredictor /></Suspense>
           ) : activeTab === 'splits' ? (
             <SplitExplorer
               performances={allPerformances}
@@ -550,8 +567,9 @@ function App() {
             <>
               <div className="filter-bar">
                 <div className="filter-group">
-                  <label>Team</label>
+                  <label htmlFor="pick-team">Team</label>
                   <SearchSelect
+                    id="pick-team"
                     value={selectedTeam}
                     onChange={setSelectedTeam}
                     options={teamOptions}
@@ -560,8 +578,9 @@ function App() {
                 </div>
 
                 {activeTab !== 'records' && <div className="filter-group">
-                  <label>Athlete</label>
+                  <label htmlFor="pick-athlete">Athlete</label>
                   <SearchSelect
+                    id="pick-athlete"
                     value={selectedAthlete.id}
                     onChange={(val) => {
                       if (val === 'all') setSelectedAthlete(ALL_ATHLETES)
@@ -587,12 +606,12 @@ function App() {
                       </select>
                     </div>
                     <div className="filter-group">
-                      <label title="As printed, else estimated from the runner's other years">Grade</label>
+                      <label><Tip tip={"As printed, else estimated from the runner's other years\nMS: Middle school, grade not printed"}>Grade</Tip></label>
                       <select value={filterGrade} onChange={e => setFilterGrade(e.target.value)}>
                         <option value="All">All Grades</option>
                         {/* the chosen grade stays listed when another team has none */}
                         {GRADES.filter(g => grades.includes(g) || g === filterGrade).map(g =>
-                          <option key={g} value={g} title={g === 'MS' ? 'Middle school, grade not printed' : undefined}>{gradeLabel(g)}</option>)}
+                          <option key={g} value={g}>{gradeLabel(g)}</option>)}
                       </select>
                     </div>
                     <div className="filter-group">
@@ -615,11 +634,11 @@ function App() {
                   <table className="performance-table">
                     <thead>
                       <tr>
-                        <th onClick={() => handleSort('date')}>Date</th>
-                        {selectedAthlete.id === 'all' && <th>Athlete</th>}
-                        {!isXC && <th>Event</th>}
-                        <th onClick={() => handleSort('mark')}>Result</th>
-                        <th>Meet</th>
+                        <th scope="col" aria-sort={ariaSort('date')}><button type="button" className="sort-btn" onClick={() => handleSort('date')}>Date</button></th>
+                        {selectedAthlete.id === 'all' && <th scope="col">Athlete</th>}
+                        {!isXC && <th scope="col">Event</th>}
+                        <th scope="col" aria-sort={ariaSort('mark')}><button type="button" className="sort-btn" onClick={() => handleSort('mark')}>Result</button></th>
+                        <th scope="col">Meet</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -637,12 +656,13 @@ function App() {
                               <td>
                                 {p.mark}
                                 {hasSplits && (
-                                  <span className="splits-toggle" onClick={() => toggleSplits(p.id)}>
-                                    {isExpanded ? ' ▲' : ' ▼'}
-                                  </span>
+                                  <button type="button" className="splits-toggle" aria-label="Splits" aria-expanded={isExpanded}
+                                    onClick={() => toggleSplits(p.id)}>
+                                    {isExpanded ? '\u00a0▲' : '\u00a0▼'}
+                                  </button>
                                 )}
                                 {showPR && (p.pr_season_only
-                                  ? <span className="badge pr" title={`${p.season} PR; better mark ${p.season === 'Indoor' ? 'outdoors' : 'indoors'}`}>{p.season === 'Indoor' ? 'PRᵢ' : 'PRₒ'}</span>
+                                  ? <Tip glue className="badge pr" tip={`${p.season} PR; better mark ${p.season === 'Indoor' ? 'outdoors' : 'indoors'}`}>{p.season === 'Indoor' ? 'PRᵢ' : 'PRₒ'}</Tip>
                                   : <span className="badge pr">PR</span>)}
                               </td>
                               <td>
@@ -677,13 +697,15 @@ function App() {
                 <RecordBoard performances={allPerformances} selectedTeam={selectedTeam} manifest={manifest}
                   loadTeamData={loadTeamData} season={SPORTS[sport].season} runnerId={runnerId} athletes={allAthletes} meetLinks={meetLinks} />
               ) : (
-                <AthleteProfile performances={sportPerformances(performances)} selectedAthlete={selectedAthlete} />
+                <Suspense fallback={null}>
+                  <AthleteProfile performances={sportPerformances(performances)} selectedAthlete={selectedAthlete} />
+                </Suspense>
               )}
             </>
           )}
           </>
           )}
-        </div>
+        </main>
       </div>
     </div>
   )

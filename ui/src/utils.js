@@ -159,8 +159,19 @@ export const EVENT_MAP = {
     "Javelin": ["Javelin", "Javelin Throw"],
 };
 
+// Both are pure and called several times per row on every filter change
+// (~20 µs each, mostly building regexes), over a few hundred distinct event
+// names: cache the answers.
+const normalizedCache = new Map()
 export function normalizeEvent(event, season = '') {
     if (!event) return "Unknown";
+    const key = `${event}\u0000${season}`;
+    let hit = normalizedCache.get(key);
+    if (hit === undefined) normalizedCache.set(key, hit = normalizeEventUncached(event, season));
+    return hit;
+}
+
+function normalizeEventUncached(event, season) {
     
     // 1. Gender Swap
     let normalized = event.replace(/\bMen\b/gi, 'Boys').replace(/\bWomen\b/gi, 'Girls');
@@ -199,8 +210,15 @@ export function normalizeEvent(event, season = '') {
     return normalized;
 }
 
+const distanceCache = new Map()
 export function isDistanceEvent(event) {
     if (!event) return false;
+    let hit = distanceCache.get(event);
+    if (hit === undefined) distanceCache.set(event, hit = isDistanceEventUncached(event));
+    return hit;
+}
+
+function isDistanceEventUncached(event) {
     // a combined event's standings ("Indoor Pentathlon") are points, higher
     // is better; its legs ("Indoor Pentathlon: High Jump") read as the leg
     const multi = /triathlon|pentathlon|heptathlon|decathlon/i;

@@ -13,6 +13,7 @@ import {
 } from 'recharts';
 import { parseMark, isDistanceEvent, normalizeEvent, gradeLabel } from './utils';
 import './App.css';
+import Tip from './Tip'
 
 const AthleteProfile = ({ performances, selectedAthlete }) => {
     const eventGroups = useMemo(() => {
@@ -280,7 +281,7 @@ const AthleteProfile = ({ performances, selectedAthlete }) => {
                             <h4>PR progression</h4>
                             <table className="performance-table">
                                 <thead>
-                                    <tr><th>Date</th><th>Result</th><th title="Gain on the previous PR">+/−</th><th>Meet</th></tr>
+                                    <tr><th>Date</th><th>Result</th><th><Tip tip="Gain on the previous PR">+/−</Tip></th><th>Meet</th></tr>
                                 </thead>
                                 <tbody>
                                     {group.progression.map(p => (
