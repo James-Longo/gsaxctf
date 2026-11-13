@@ -60,3 +60,20 @@ if __name__ == '__main__':
         if name.startswith('test_'):
             fn()
             print('ok', name)
+
+
+def test_date_conflict_cleared_by_the_runners_year():
+    # a 2026 meet posted with a reused file's title 'GRAY - 5/10/2024': its runners first appear in 2026
+    from backend import milesplit_bulk as mb
+    names = [f'Runner {i}' for i in range(30)]
+    idx = {n.lower(): {2026} for n in names[:20]}
+    idx.update({n.lower(): {2025, 2026} for n in names[20:29]})
+    idx[names[29].lower()] = {2024}   # one gone before
+    mb._RUNNER_YEARS[('Outdoor', 2026)] = idx
+    doc = {'events': [{'is_relay': False, 'results': [{'athlete': n} for n in names]}],
+           'date_conflict': 'result sheet dated 2024, MileSplit lists 2026-05-08'}
+    why = [w for w in mb.check(doc, 'Outdoor', 2026) if 'dated' in w]
+    assert not why and 'date_conflict' not in doc and '20 of its 30 runners first appear' in doc['notes']
+    mb._RUNNER_YEARS[('Outdoor', 2025)] = {n.lower(): {2021, 2022} for n in names}   # all gone: the conflict stands
+    doc = {'events': [{'is_relay': False, 'results': [{'athlete': n} for n in names]}], 'date_conflict': 'x'}
+    assert 'x' in mb.check(doc, 'Outdoor', 2025)

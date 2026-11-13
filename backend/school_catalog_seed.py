@@ -290,7 +290,7 @@ ME_HS = [
     ('me-hs-winthrop', 'Winthrop High School', 'Winthrop', 'Winthrop',
      ['Winthrop', 'Winthrop HS', 'Winthrop High'], ['WINT', 'WHS'], ['Ramblers'], {}),
     ('me-hs-mt-abram', 'Mt. Abram High School', 'Salem Township', 'Mt. Abram',
-     ['Mt. Abram', 'Mount Abram', 'Mt Abram', 'Mt. Abrams', 'Mt Abrams'], ['MTAB'], ['Roadrunners'], {}),
+     ['Mt. Abram', 'Mount Abram', 'Mt Abram', 'Mt. Abrams', 'Mt Abrams', 'MTA Road Runners', 'Mt. Abram Road Runners'], ['MTAB'], ['Roadrunners'], {}),
     ('me-hs-old-orchard', 'Old Orchard Beach High School', 'Old Orchard Beach', 'Old Orchard',
      ['Old Orchard Beach', 'Old Orchard', 'Old Orchard Beach HS'], ['OOB'], ['Seagulls'], {}),
     ('me-hs-carrabec', 'Carrabec High School', 'North Anson', 'Carrabec',

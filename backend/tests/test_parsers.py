@@ -4088,3 +4088,124 @@ def test_milesplit_track_bib_header_and_grade_left_of_header():
     assert ('Girls High Jump', 'Tianna St. Louis', '11', 'Tolland HS - CT', '5-05.00') in rows
     assert ('Boys 1 Mile Run', 'Alec Troxell', 'SR', 'Deering- ME', '4:22.36') in rows
     assert not any(e['is_relay'] for e in events)
+
+
+def test_milesplit_track_pl_bib_header_glued_team_and_mixed_relay():
+    # KVAC 2021 @ Brunswick: headers start "Pl  Bib"; KVAC 2021 @ Leavitt: a row with no grade runs its team
+    # into the name column; Kennebunk 2024: a 'Mixed 4x400' relay and its 'Mixed Team Scores' block
+    from backend import milesplit as ms
+    text = '\n'.join([
+        'Girls 4x800 Meter Relay',
+        '=' * 90,
+        'Pl           Team                                                      Mark      Pace      Score',
+        '=' * 90,
+        '1            Eagles A                                                  11:06.28  5',
+        '',
+        'Girls 100 Meter Hurdles',
+        '=' * 90,
+        'Pl     Bib   Name                   Yr   Team                          Mark      Score',
+        '=' * 90,
+        '1            Ophelia Ladner         11   Brunswick                     17.01     5',
+        '',
+        'Girls 100 Meter Dash',
+        '=' * 90,
+        '       Name                        Yr    Team                               Mark',
+        '=' * 90,
+        '3      Sarah Gray Eagles                15.58',
+        '4      Tameeka Blauvelt            FR    Mt Blue                            14.84',
+        '',
+        'Mixed 4x400 Meter Relay  ',
+        'Finals',
+        '=' * 90,
+        '      NAME                          YR   TEAM                               MARK           H#',
+        '=' * 90,
+        '1                                        York High School                   4:00.37        2     ',
+        '',
+        'Mixed Team Scores',
+        '      TEAM                               SCORE',
+        '=' * 50,
+        '1     York High School                   8',
+    ])
+    events, _ = ms.parse(text)
+    ev = {e['event']: e for e in events}
+    assert ev['Girls 4x800 Meter Relay']['is_relay'] and ev['Girls 4x800 Meter Relay']['results'][0]['school'] == 'Eagles A'
+    assert not ev['Girls 100 Meter Hurdles']['is_relay']
+    assert ev['Girls 100 Meter Hurdles']['results'][0]['athlete'] == 'Ophelia Ladner'
+    rows = {(r['athlete'], r['school'], r['result']) for r in ev['Girls 100 Meter Dash']['results']}
+    assert ('Sarah Gray', 'Eagles', '15.58') in rows and ('Tameeka Blauvelt', 'Mt Blue', '14.84') in rows
+    mx = ev['Mixed 4x400 Meter Relay']
+    assert mx['gender'] == 'Mixed' and mx['is_relay'] and [r['school'] for r in mx['results']] == ['York High School']
+
+
+def test_milesplit_ms_own_header_without_year_column():
+    # 2025 Lewiston-Edward Little javelin meet: MileSplit's own sheet heads the table "NAME  TEAM  MARK" (no YR)
+    from backend import milesplit as ms
+    text = '\n'.join([
+        'Event 31  Girls Javelin Throw',
+        'Finals',
+        '=' * 100,
+        '    NAME                         TEAM                     MARK          ',
+        '=' * 100,
+        'Finals',
+        '  1 Kayliana Madore              Edward Littl             80-09   10   ',
+    ])
+    events, _ = ms.parse(text)
+    assert [(r['athlete'], r['school'], r['result']) for e in events for r in e['results']] == [('Kayliana Madore', 'Edward Littl', '80-09')]
+
+
+def test_milesplit_spreadsheet_tables_and_one_cell_per_line():
+    # MAISAD 2021-22, CCC 2024: results typed into a spreadsheet, shown as a table (an empty row-number column,
+    # '1)' places, "Girls' 80 meter hurdles", rows run together in one or two cells, rows without a place);
+    # MAISAD 2021 Kents Hill-Hyde: the sheet pasted one cell per line
+    from backend import milesplit as ms
+    assert ms.tab_row('\t1\tNaomi McGadney\tKents Hill\t13.7') == '1\tNaomi McGadney\tKents Hill\t13.7'
+    assert ms.tab_row('1)\tElena Owen\tHarrison MS\t14.74\t1\t8') == '1\tElena Owen\tHarrison MS\t14.74\t1\t8'
+    assert ms.tab_row("\tGirls' 80 meter hurdles\t\t\t\t") == 'Girls 80 meter hurdles'
+    assert ms.tab_row('1 Amanda Morgan\tHyde 27-05') == '1\tAmanda Morgan\tHyde\t27-05'
+    assert ms.tab_row('2 Elizabeth Madden Hebron 57-07') == '2\tElizabeth Madden\tHebron\t57-07'
+    text = 'x\n' + '\n'.join(ms.tab_row(l) for l in [
+        'Girls 100 Meter Dash', '1\tAlanna Bachelder KH\t15.84', '2\tMaja Mulley\tHeb\t16.94',
+        'Boys 800 Meter Run', 'Brayden Cole\tHyde\t2:35.34', 'Forest Pelletier Heb\t3:01.04',
+        'Girls 4x100 Meter Relay', '1\tMcGadney, Williams, Bachelder, Jenkins\tKH\t56.64'])
+    events, _ = ms.parse_tab(text)
+    rows = {(e['event'], r.get('place'), r.get('athlete'), r['school'], r['result']) for e in events for r in e['results']}
+    assert ('Girls 100 Meter Dash', 1, 'Alanna Bachelder', 'KH', '15.84') in rows
+    assert ('Boys 800 Meter Run', None, 'Brayden Cole', 'Hyde', '2:35.34') in rows
+    assert ('Boys 800 Meter Run', None, 'Forest Pelletier', 'Heb', '3:01.04') in rows
+    assert ('Girls 4x100 Meter Relay', 1, None, 'KH', '56.64') in rows
+    cells = ms.cells_to_tab('Girls 100M Dash\n1\nAshley Baez\nHyde\n13.74\n2\nNaomi McGadney\nKH\n13.94\n\n'
+                            'Girls 4x100M Relay\n1\nMcGadney, Williams, Bachelder, Jenkins\nKH\n55.74')
+    assert cells.split('\n') == ['Girls 100M Dash', '1\tAshley Baez\tHyde\t13.74', '2\tNaomi McGadney\tKH\t13.94',
+                                 'Girls 4x100M Relay', '1\tKH\t55.74']
+
+
+def test_milesplit_race_posted_twice_with_times_rounded_differently():
+    """A meet's second posting repeats a race with times 0.01 off (2026 So. Portland MS: 16.95 / 16.94):
+    those rows are the same marks. A runner whose time is 0.01 off in a race that is NOT a repeat
+    (a final after the prelims) keeps it."""
+    from backend.milesplit import drop_reposted
+    first = [dict(event='Girls 100 meter Dash 7th grade', results=[
+        dict(place=1, athlete='Janet Yuma', result='16.95'), dict(place=2, athlete='Ella Doan', result='17.40')])]
+    again = [dict(event='Girls 100 Meter Dash 7th grade', results=[
+        dict(place=1, athlete='Janet Yuma', result='16.94'), dict(place=2, athlete='Ella Doan', result='17.39')])]
+    assert drop_reposted(first, again) == []
+    final = [dict(event='Girls 100 meter Dash 7th grade', results=[
+        dict(place=1, athlete='Janet Yuma', result='16.96'), dict(place=2, athlete='Mia Ross', result='17.10'),
+        dict(place=3, athlete='Ava Lee', result='17.20')])]
+    assert [len(ev['results']) for ev in drop_reposted(first, final)] == [3]
+    exact = [dict(event='Girls 100 meter Dash 7th grade', results=[dict(place=2, athlete='Ella Doan', result='17.40')])]
+    assert drop_reposted(first, exact) == []
+    prelim = [dict(event='Boys 100', results=[dict(place=i, athlete='Runner %s' % 'ABCDEFGH'[i - 1], result='11.%d' % (10 + i)) for i in range(1, 9)])]
+    final8 = [dict(event='Boys 100', results=[dict(place=9 - i, athlete='Runner %s' % 'ABCDEFGH'[i - 1], result='11.%d' % (11 + i)) for i in range(1, 9)])]
+    assert len(drop_reposted(prelim, final8)[0]['results']) == 8
+    same_places = [dict(event='Boys 100', results=[dict(r, result='11.%d' % (11 + r['place']), type='Finals') for r in prelim[0]['results']])]
+    for r in prelim[0]['results']: r['type'] = 'Prelims'
+    assert len(drop_reposted(prelim, same_places)[0]['results']) == 8   # KVAC 2014: finals in prelim order, 0.01 faster
+
+
+def test_milesplit_high_jump_miss_note_after_name():
+    """CCC opener 2024 types the jump-off note after the name: "Elena Owen (1 miss at 4-4)"."""
+    from backend.milesplit import MISSES, drop_nickname
+    assert [drop_nickname(MISSES.sub('', a).strip()) for a in
+            ["Elena Owen (1 miss at 4-4)", "Justin Williams(1 miss at 3'10)", "Lydia Tanguay ( no misses)"]] == \
+        ['Elena Owen', 'Justin Williams', 'Lydia Tanguay']

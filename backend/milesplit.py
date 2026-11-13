@@ -36,6 +36,7 @@ Reads Hy-Tek fixed-width, tab-delimited, RaceTab and "Last, First" layouts; a
 new layout prints NO EVENTS or ROW? on stderr.
 """
 import sys, re, json, html, time, subprocess, os
+import datetime as dt
 from collections import defaultdict
 
 
@@ -108,7 +109,7 @@ def parse(text):
         while nx < len(lines) and nx < i+3 and not lines[nx].strip(): nx += 1   # a blank line before the ruler (2014 Almquist, Southern Maine MS)
         if nx < len(lines) and re.fullmatch(r'\s*(Finals|Prelims|Preliminaries)\s*', lines[nx]) and nx+1 < len(lines) and re.match(r'\s*=+\s*$', lines[nx+1]):
             nx += 1   # MileSplit's own sheet: "Girls 55 meter Hurdles" / "Finals" / ruler / "NAME  YR  TEAM  MARK  H#  WIND"
-        if not m and nx < len(lines) and re.match(r'\s*=+\s*$',lines[nx]) and re.match(r'\s*(Varsity\s+|Middle School\s+|[5-8]th Grade\s+(?=(?:Boys|Girls)\s)|(?:Junior|Senior|Intermediate|Open|Jr|Int|Sr|JUNIOR|SENIOR|INTERMEDIATE|OPEN|JR|INT|SR)\.?\s+(?=(?:Boys|Girls)\s))?(Boys|Girls|Men|Women)\s+\S',ln) and 'Team Rank' not in ln and 'Team Scores' not in ln and not re.match(r'\s*JV\s',ln): m = re.match(r'\s*(?:Varsity\s+|Middle School\s+)?(.*?)\s*$', ln)
+        if not m and nx < len(lines) and re.match(r'\s*=+\s*$',lines[nx]) and re.match(r'\s*(Varsity\s+|Middle School\s+|[5-8]th Grade\s+(?=(?:Boys|Girls)\s)|(?:Junior|Senior|Intermediate|Open|Jr|Int|Sr|JUNIOR|SENIOR|INTERMEDIATE|OPEN|JR|INT|SR)\.?\s+(?=(?:Boys|Girls)\s))?(Boys|Girls|Men|Women|Mixed)\s+\S',ln) and 'Team Rank' not in ln and 'Team Scores' not in ln and not re.match(r'\s*JV\s',ln): m = re.match(r'\s*(?:Varsity\s+|Middle School\s+)?(.*?)\s*$', ln)
         if not m and nx < len(lines) and re.match(r'\s*=+\s*$', lines[nx]):
             # a combined-event leg: "Indoor Pentathlon: #5 Boys 1000 Meter Run Indoor Pentathlon"
             # (USM Relays 2014) -> "Boys Indoor Pentathlon: 1000 Meter Run"
@@ -130,8 +131,8 @@ def parse(text):
                 d1 = {'Jr': 'Junior', 'Int': 'Intermediate', 'Sr': 'Senior'}.get(dv.group(1).title(), dv.group(1).title())   # SMMSAC 2013 prints 'SR Boys Shot Put'
                 if 'Grade' in dv.group(1): d1 = dv.group(1)
                 nm = f'{dv.group(2)} {dv.group(3)} {d1} Division'
-            g = re.match(r'(Boys|Girls|Men|Women)\s+(.*)', nm)
-            gender = {'Boys':'Boys','Men':'Boys','Girls':'Girls','Women':'Girls'}[g.group(1)] if g else ''
+            g = re.match(r'(Boys|Girls|Men|Women|Mixed)\s+(.*)', nm)
+            gender = {'Boys':'Boys','Men':'Boys','Girls':'Girls','Women':'Girls','Mixed':'Mixed'}[g.group(1)] if g else ''
             ev = g.group(2) if g else nm
             ev = re.sub(r'\bRace Walk\b','Race Walk',ev)
             ud = re.fullmatch(r'(JR|INT|SR|OPEN)\s+(BOYS|GIRLS)', ev.strip())
@@ -148,7 +149,8 @@ def parse(text):
             cur = {'event': (gender+' '+norm_event(ev)).strip(), 'gender': gender,
                    'is_relay': bool(re.search(r'Relay|Medley|Shuttle|Carousel|\dx\d',ev)), 'results': []}
             events.append(cur); sec='Prelims' if dv and dv.group(4) in ('Prelims', 'Semis') else 'Finals'; hdr=None; i+=1; continue
-        mts=re.match(r'\s*(?:[5-8]th Grade\s+|Middle School\s+)?(Female|Male|Women|Men|Girls|Boys)\s+(?:[A-Za-z]+\s+(?:DIVISION|BOYS|GIRLS|Division)\s+)?Team Scores',ln)   # "Girls JR DIVISION  Team Scores" (WMC 2026), "Boys JR BOYS  Team Scores" (GPC/SMMSAC MS 2026)
+        if re.match(r'\s*Mixed Team Scores\s*$',ln): cur=None; i+=1; continue   # a mixed relay's team points (Kennebunk 2024): not a race, not stored
+        mts=re.match(r'\s*(?:[5-8]th Grade\s+|Middle School\s+)?(Female|Male|Women|Men|Girls|Boys)\s+(?:[A-Za-z]+\s+(?:DIVISION|BOYS|GIRLS|Division)\s+|[5-8]th\s+[Gg]rade\s+)?Team Scores',ln)   # "Girls JR DIVISION  Team Scores" (WMC 2026), "Boys JR BOYS  Team Scores" (GPC/SMMSAC MS 2026), "Men 6th grade Team Scores" (SMAA MS 2024-26)
         if mts:
             g='Girls' if mts.group(1) in ('Female','Women','Girls') else 'Boys'
             teams=[]; i+=1
@@ -183,12 +185,13 @@ def parse(text):
         s = ln.strip()
         if re.fullmatch(r'(Preliminaries|Prelims?|Finals|Semi-?finals?|Final|Timed Finals.*|Section.*|Flight.*|Heat.*)', s, re.I) and not re.match(r'\s*\d',ln):
             sec = 'Prelims' if re.match(r'Prelim',s,re.I) else ('Finals' if re.match(r'(Final|Timed|Section|Flight|Heat)',s,re.I) else sec); i+=1; continue
-        ms_own = bool(re.match(r'\s*NAME\s+YR\s+TEAM\s+MARK', ln))   # one header for every event, relays included
+        ms_own = bool(re.match(r'\s*NAME\s+(?:YR\s+)?TEAM\s+MARK', ln))   # one header for every event, relays included (no YR: 2025 Lewiston-EL javelin)
         if ms_own:
             ln = ln.replace('NAME', 'Name').replace('YR', 'Yr').replace('TEAM', 'Team').replace('MARK', 'Mark')
         # (a bib column heads the table: "Comp#  Name  Year School  Finals", 2019 New England Indoor)
-        if re.match(r'\s*(?:Comp#\s+)?(Name|School|Team)\s', ln) and re.search(r'Finals|Prelims|Mark|Time|Result|Points',ln):   # relay tables headed "Team ... Finals" (2014-15 MS meets)
-            hdr = ln; cur['is_relay']=(cur['is_relay'] and ms_own) or not re.match(r'\s*(?:Comp#\s+)?Name',ln); i+=1
+        # (a place and bib column ahead: "Pl     Bib   Name   Yr   Team   Mark   Score", KVAC 2021 Brunswick)
+        if re.match(r'\s*(?:Pl\s+(?:Bib\s+)?)?(?:Comp#\s+)?(Name|School|Team)\s', ln) and re.search(r'Finals|Prelims|Mark|Time|Result|Points',ln):   # relay tables headed "Team ... Finals" (2014-15 MS meets)
+            hdr = ln; cur['is_relay']=(cur['is_relay'] and ms_own) or not re.match(r'\s*(?:Pl\s+(?:Bib\s+)?)?(?:Comp#\s+)?Name',ln); i+=1
             if 'Prelim' in ln and 'Finals' not in ln: sec='Prelims'
             continue
         rm = re.match(r'\s*(\d+|--)\s+(\S.*)$', ln)
@@ -248,7 +251,12 @@ def parse(text):
         if ac and re.fullmatch(r'\d{1,2}',yr): yr=''   # an age is not a grade
         fe=max(hdr.find('Finals')+6, hdr.find('Prelims')+7, hdr.find('Mark')+4, hdr.find('Time')+4)
         ms=[(mt.start()+sc,mt.end()+sc,mt.group(0)) for mt in re.finditer(r'(?<![\w.:-])(%s)(?![\w.:-])'%MARK, rest)]
-        if not ms: note('ROW?',ln); i+=1; continue
+        if not ms:
+            sg=re.split(r'\s{2,}',re.sub(r'^\s*(?:\d+|--)\s+','',ln).strip())
+            if len(sg) in (2,3) and re.fullmatch(MARK,sg[1]) and len(sg[0].split())>=3 and not re.search(r'(?i)\b(school|academy|high|ms|middle|hs)$',sg[0]) and not re.fullmatch(r'\d+',sg[1]):   # the glued-team row below, its mark left of the Team column
+                nm_,sch_=sg[0].rsplit(' ',1); mk=clean_mark(sg[1])
+                cur['results'].append({'place':place if mk not in STAT else None,'athlete':nm_,'school':sch_,'grade':'','result':mk,'type':sec}); i+=1; continue
+            note('ROW?',ln); i+=1; continue
         best=min(ms,key=lambda x:abs(x[1]-fe))
         if re.fullmatch(r'\d{1,2}',best[2]):   # a heat or points number nearer the header's Time than the time itself
             real=[x for x in ms if re.search(r'[.:]',x[2])]   # (SMMSAC 2017 "Time         H#": header 10 columns right)
@@ -260,6 +268,10 @@ def parse(text):
         if not re.fullmatch(r'(FR|SO|JR|SR|\d{0,2})',yr) or re.match(r'(FR|SO|JR|SR)\b',school) or len(school)<3 or school[:1].islower():
             m2=re.match(r'\s*(?:\d+|--)\s+(?:\d+\s+)?(.+?)\s+(FR|SO|JR|SR)\s+(\S.*?)\s{2,}\S',ln)   # columns shifted against the header (bib numbers)
             if m2: name,yr,school=m2.group(1).strip(),m2.group(2),m2.group(3).strip()
+        sg=re.split(r'\s{2,}',re.sub(r'^\s*(?:\d+|--)\s+','',ln).strip())
+        if len(sg) in (2,3) and re.fullmatch(MARK,sg[1]) and len(sg[0].split())>=3 and not re.search(r'(?i)\b(school|academy|high|ms|middle|hs)$',sg[0]) and not re.fullmatch(r'\d+',sg[1]) and (not school or not re.match(r'[A-Za-z]',school)):
+            # no grade printed and the team run into the name column: "3      Sarah Gray Eagles        15.58" (KVAC 2021 Leavitt)
+            name,school=sg[0].rsplit(' ',1); yr=''; raw_mk=sg[1]; ex=raw_mk.startswith(('x','X')); mk=clean_mark(raw_mk)
         r={'place':place if mk not in STAT else None,'athlete':name,'school':school,'grade':yr,'result':mk,'type':sec}
         if ex: r['exhibition']=True
         cur['results'].append(r); i+=1; continue
@@ -376,6 +388,13 @@ def parse_tab(text):
                        'grade':f[cols['GRADE']] if 'GRADE' in cols and f[cols['GRADE']].isdigit() else '','result':mk,'type':sec}
                 if mk_raw.startswith(('x','X')): r['exhibition']=True
                 cur['results'].append(r); continue
+        if not cur['is_relay'] and 2<=len(f)<=3 and re.match(r"[A-Z][\w'.-]+ ",f[0]) and f[-1] and re.fullmatch(MARK,f[-1].split()[0]):
+            # a row printed without its place (MAISAD 2021 boys 800): unplaced, as printed; "Forest Pelletier Heb" name and code in one cell
+            gl=re.fullmatch(r"(.+) ([A-Z][A-Za-z]{1,3})",f[0]) if len(f)==2 else None
+            if len(f)==3 or gl:
+                nm,sch=(f[0],f[1]) if len(f)==3 else (gl.group(1),gl.group(2))
+                mk=clean_mark(f[-1].split()[0])
+                cur['results'].append({'place':None,'athlete':nm,'school':sch,'grade':'','result':mk,'type':sec}); continue
         if len(f)<3 or (len(f)==3 and not (f[0].isdigit() or f[0] in ('---','--'))):
             if re.match(r'\s*(Prelim|Preliminaries)',ln,re.I): sec='Prelims'
             elif re.match(r'\s*Finals?\s*$',ln,re.I): sec='Finals'
@@ -396,6 +415,8 @@ def parse_tab(text):
         raw_mk=f[k].split()[-1] if comb else f[k].split()[0]
         ex=raw_mk.startswith(('x','X')); mk=clean_mark(raw_mk)
         pre=[x for x in f[1:k] if x]+([comb] if comb else [])
+        gl=re.fullmatch(r"([A-Z][\w'.-]+(?: [\w'.-]+)+) ([A-Z][A-Za-z]{1,3})",pre[0]) if len(pre)==1 and not cur['is_relay'] else None
+        if gl: pre=[gl.group(1),gl.group(2)]   # a name and its school code in one cell: "Alanna Bachelder KH" (MAISAD 2021)
         if len(pre)==1 or cur['is_relay']:
             r={'place':place if mk not in STAT else None,'school':pre[-1],'result':mk,'athletes':[],'type':sec}
         elif len(pre)>=2:
@@ -1242,7 +1263,64 @@ def superseded(files):
         return re.sub(r'[^a-z]+', ' ', n.lower()).strip()
     upd = {base(f['name']) for f in files if re.search(r'(?i)\b(updated|revised|corrected)\b', f['name'])}
     return [f for f in files if re.search(r'(?i)\b(updated|revised|corrected)\b', f['name']) or base(f['name']) not in upd]
+MISSES = re.compile(r'(?i)\s*\(\s*(?:no|\d+)\s+miss(?:es)?\b[^)]*\)')
 NOT_RESULTS = re.compile(r'(?i)\bentries\b|\bentry list\b|\bco[n]?verted\b|\bmeet program\b|\bheat sheet\b|\bpsych sheet\b')
+
+
+def drop_reposted(events, e):
+    """One meet posted twice, as MileSplit's own sheet and as the Hy-Tek file (WMC week 5 2026):
+    a row an earlier file (events) already holds (same event, runner, mark) is not a second result.
+    A race the earlier file holds nearly row for row (2026 So. Portland MS) also loses its rows
+    0.01 s off ("16.94" beside "16.95": one posting rounds up, the other cuts). Returns e's races
+    that keep any row."""
+    def _mv(m):   # a mark by value: "16-05.75" is "16-5.75", "1:02.40" is "1:02.4"
+        fm = re.fullmatch(r'(\d+)-(\d+(?:\.\d+)?)', m or '')
+        if fm: return round(int(fm.group(1)) * 12 + float(fm.group(2)), 2)
+        tm = re.fullmatch(r'(?:(\d+):)?(\d+(?:\.\d+)?)', m or '')
+        return round(int(tm.group(1) or 0) * 60 + float(tm.group(2)), 2) if tm else m
+    def _rk(ev, x): return (re.sub(r'\W', '', ev['event'].lower()), ' '.join(sorted(re.sub(r'[^a-z ]', '', (x.get('athlete') or x.get('school') or '').lower().replace(',', ' ')).split())), _mv(x.get('result')))
+    held = defaultdict(list)
+    for ev in events:
+        for x in ev['results']:
+            k = _rk(ev, x); held[(k[0], k[2])].append((k[1], (x.get('place'), x.get('type'))))
+    def _held(ev, x, near):   # near: a time 0.01 off at the same place in the same round ("16.94" beside "16.95": one posting rounds up, the other cuts; a prelim and its final are two rounds)
+        k = _rk(ev, x)
+        if any(same_runner(k[1], n) for n, _ in held[(k[0], k[2])]): return True
+        return near and isinstance(k[2], float) and '-' not in (x.get('result') or '-') and any(
+            same_runner(k[1], n) and p == (x.get('place'), x.get('type')) for m in (round(k[2] - 0.01, 2), round(k[2] + 0.01, 2)) for n, p in held[(k[0], m)])
+    for ev in e:   # a race the earlier posting already holds nearly row for row (2026 So. Portland MS): its 0.01-off times are the same marks
+        near = sum(_held(ev, x, True) for x in ev['results']) >= 0.5 * len(ev['results'])   # (one row is enough: the rest of the race was an exact repeat)
+        ev['results'] = [x for x in ev['results'] if not _held(ev, x, near)]
+    return [ev for ev in e if ev['results']]
+
+
+def cells_to_tab(t):
+    """A spreadsheet pasted one cell per line ("1" / "Ashley Baez" / "Hyde" / "13.74", MAISAD 2021) as tab
+    lines parse_tab reads; relay legs printed as surnames only are left out."""
+    L=[x.strip() for x in t.split('\n')]; out=[]; rel=False; i=0
+    while i<len(L):
+        x=L[i]
+        if re.match(r'(Girls|Boys)\s+\S',x) and not re.fullmatch(MARK,x):
+            out.append(x); rel=bool(re.search(r'Relay|\dx\d',x)); i+=1; continue
+        if re.fullmatch(r'\d{1,3}',x) and i+3<len(L) and re.fullmatch(MARK,L[i+3]) and L[i+1] and L[i+2]:
+            out.append('\t'.join([x,L[i+2],L[i+3]] if rel else [x,L[i+1],L[i+2],L[i+3]])); i+=4; continue
+        i+=1
+    return '\n'.join(out)
+
+
+def tab_row(l):
+    """A spreadsheet row shown as a table, as a tab line parse_tab reads: the empty row-number column and
+    empty trailing cells cut, '1)' places as '1', "Girls' 80 meter hurdles" as a header (MAISAD 2022, CCC 2024)."""
+    l=l.strip('\t ')
+    l=re.sub(r'^(\d+)\)\s*(?=\t)',r'\1',l)
+    l=re.sub(r"^(Girls|Boys)'s?\s",r'\1 ',l)
+    c=l.split('\t')
+    a=re.fullmatch(r"(\d{1,3}) ([A-Z][\w'.-]+(?: [\w'.-]+)+) ([A-Z][A-Za-z]{0,9}) ((?:%s))"%MARK,l) if len(c)==1 else None
+    if a: return '\t'.join(a.groups())   # the whole row in one cell: "1 Rose Jenkins KH 4-10" (MAISAD 2021)
+    if len(c)==2:   # place, name and team, mark run together in two cells: "1 Amanda Morgan" / "Hyde 27-05" (MAISAD 2021)
+        a=re.fullmatch(r'(\d{1,3}) (\S.*)',c[0]); b=re.fullmatch(r'(\S.*?) ((?:%s))'%MARK,c[1])
+        if a and b: l='\t'.join([a.group(1),a.group(2),b.group(1),b.group(2)])
+    return l
 
 
 def main():
@@ -1272,6 +1350,7 @@ def main():
             rows=re.findall(r'<tr[^>]*>(.*?)</tr>',body.group(1),re.S) if body else []
             if rows:
                 lines=['\t'.join(html.unescape(re.sub(r'<[^>]+>','',c)).strip() for c in re.findall(r'<t[dh][^>]*>(.*?)</t[dh]>',r_,re.S)) for r_ in rows]
+                lines=[tab_row(l) for l in lines]
                 pre=[html.escape(f['name']+'\n'+'\n'.join(lines))]
             elif body and re.search(r'\n\s*\d+\.?\s*\S.*\d:\d\d', body.group(1)):   # sheet text straight in the results div, no <pre> (2010-2016 RaceTab/Hy-Tek files, "1. Name Br 12:10" lists)
                 pre=[re.sub(r'^\s*<pre\b(?:[^>\n]*>)?','',body.group(1))]   # an unclosed "<pre" or "<pre>" (2015, 2016 WMC girls) would eat the sheet up to its first '>' or hide it
@@ -1281,6 +1360,7 @@ def main():
         if not pre: print('no <pre> for',f['name'],'- read its formatted view in a browser'); paywalled.append(f['name']+' (no text)'); continue
         t=html.unescape(re.sub(r'<[^>]+>','',pre[0]))
         t=re.sub(r"(?<=[\w.)])((?:Mt\. )?[A-Z][\w.]*(?: [A-Z][\w.]*)* Track Hy-Tek's MEET MANAGER\t)",r'\n\1',t)   # page header glued to the last row/leg before the page break
+        if sys.argv[4]!='XC' and '\t' not in t and len(re.findall(r'(?m)^\d{1,3}\s*$',t))>=10 and len(re.findall(r'(?m)^[ \t]*\d{1,3}[ \t]+\S',t))<3: t=cells_to_tab(t)
         global XC_HINT
         XC_HINT=('Girls' if re.search(r'(?i)girl|women',f['name']) else 'Boys' if re.search(r'(?i)\bboy|\bmen\b',f['name']) else None)
         e,r=(parse_xc_any(t) if sys.argv[4]=='XC' else parse_tab5(t) if '\tEvent\t' in t else parse_tab(t) if t.count('\t')>5 else read_racetab_or_hytek(t));
@@ -1288,22 +1368,9 @@ def main():
         for ev in e:   # Hy-Tek relay legs with bibs ("Alana #70 Heggeman, Adalyn #71 Irish")
             for x in ev['results']:
                 if x.get('athlete') and '#' in x['athlete']: x['athlete'] = re.sub(r'\s*#\s*\d+\b', '', x['athlete']).strip()
-                if x.get('athlete') and '(' in x['athlete']: x['athlete'] = drop_nickname(x['athlete'])
+                if x.get('athlete') and '(' in x['athlete']: x['athlete'] = drop_nickname(MISSES.sub('', x['athlete']).strip())   # "Elena Owen (1 miss at 4-4)": a high-jump note typed after the name (CCC opener 2024)
                 if x.get('athletes'): x['athletes'] = [drop_nickname(re.sub(r'\s*#\s*\d+\b', '', a).strip()) if '(' in a else re.sub(r'\s*#\s*\d+\b', '', a).strip() for a in x['athletes']]
-        # one meet posted twice, as MileSplit's own sheet and as the Hy-Tek file (WMC week 5 2026):
-        # a row an earlier file already holds (same event, runner, mark) is not a second result
-        def _mv(m):   # a mark by value: "16-05.75" is "16-5.75", "1:02.40" is "1:02.4"
-            fm = re.fullmatch(r'(\d+)-(\d+(?:\.\d+)?)', m or '')
-            if fm: return round(int(fm.group(1)) * 12 + float(fm.group(2)), 2)
-            tm = re.fullmatch(r'(?:(\d+):)?(\d+(?:\.\d+)?)', m or '')
-            return round(int(tm.group(1) or 0) * 60 + float(tm.group(2)), 2) if tm else m
-        def _rk(ev, x): return (re.sub(r'\W', '', ev['event'].lower()), ' '.join(sorted(re.sub(r'[^a-z ]', '', (x.get('athlete') or x.get('school') or '').lower().replace(',', ' ')).split())), _mv(x.get('result')))
-        held = defaultdict(list)
-        for ev in events:
-            for x in ev['results']:
-                k = _rk(ev, x); held[(k[0], k[2])].append(k[1])
-        for ev in e: ev['results'] = [x for x in ev['results'] if not any(same_runner(_rk(ev, x)[1], n) for n in held[(_rk(ev, x)[0], _rk(ev, x)[2])])]
-        e = [ev for ev in e if ev['results']]
+        e = drop_reposted(events, e)
         events+=e; rank+=r; urls.append(u)
         cm=re.search(r'Class ([ABC])\b',f['name'])
         if cm and CLASSFILES:
@@ -1313,9 +1380,16 @@ def main():
         for x in r:
             if not x['gender'] and gs: x['gender']=max(set(gs),key=gs.count)
         head=[x.strip() for x in t.strip().split('\n') if x.strip() and not re.match(r'(Licensed to|RaceTab|Results\s*$|Brewer High School - ME)',x.strip())][:2]
-        for hy in re.findall(r'(?:January|February|March|April|May|June|July|August|September|October|November|December)\s+\d{1,2},\s+(\d{4})|\b\d{1,2}/\d{1,2}/(\d{4})\b','\n'.join(x for x in t.strip().split('\n')[:12] if not re.search(r'(?i)\brec(or)?d?\b|\bcrse\b',x))):
+        _hd='\n'.join(x for x in t.strip().split('\n')[:12] if not re.search(r'(?i)\brec(or)?d?\b|\bcrse\b',x))
+        # (a header date within 10 days of the listing confirms it: the other date is the title of a reused
+        # meet file, 'MARSHWOOD-NOBLE - 5/19/2021' printed 5/3/2022, or a wrong computer clock)
+        _near=False
+        for mo,dd,yy in re.findall(r'\b(\d{1,2})/(\d{1,2})/(\d{4})\b',_hd):
+            try: _near=_near or (date and abs((dt.date(int(yy),int(mo),int(dd))-dt.date.fromisoformat(date[:10])).days)<=10)
+            except ValueError: pass
+        for hy in re.findall(r'(?:January|February|March|April|May|June|July|August|September|October|November|December)\s+\d{1,2},\s+(\d{4})|\b\d{1,2}/\d{1,2}/(\d{4})\b',_hd):
             hy=hy[0] or hy[1]
-            if date and hy!=date[:4]: HEADYEARS.add(hy)   # a sheet dated another year than MileSplit's listing: last year's file posted again?
+            if date and hy!=date[:4] and not _near: HEADYEARS.add(hy)   # a sheet dated another year than MileSplit's listing: last year's file posted again?
     names=set(re.sub(r'^Mt\.? ','Mount ',t['team']) for x in rank for t in x['teams'])|set(re.sub(r'^Mt\.? ','Mount ',r['school']) for e in events for r in e['results'])
     names=set(n for n in names if n)
     CODES={'BAN':'Bangor','OT':'Old Town','BRW':'Brewer','PEN':'Penquis','PCHS':'Piscataquis','NAR':'Narraguagus','MDI':'Mount Desert Island','MDIHS':'Mount Desert Island','HAM':'Hampden','CAL':'Calais','SUM':'Sumner','ELL':'Ellsworth','HOUL':'Houlton','GRNV':'Greenville','CAR':'Caribou','PI':'Presque Isle','FK':'Fort Kent','LIM':'Limestone','WSBN':'Woodland','HER':'Hermon','JB':'John Bapst','DEX':'Dexter','CEN':'Central','ORO':'Orono','FOX':'Foxcroft','GSA':'George Stevens','BUC':'Bucksport','MAT':'Mattanawcook','WA':'Washington Academy'}

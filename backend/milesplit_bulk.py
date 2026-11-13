@@ -202,8 +202,16 @@ def check(doc, season, year):
         if secs and (back > max(2, 0.05 * len(secs)) or max(secs) > 5400):
             why.append(f"{e.get('gender')} {e.get('event')}: times out of place order ({back}) or over 90 minutes")
     if doc.get('date_conflict'):
-        why.append(doc['date_conflict'])
-    mixed = [e for e in doc.get('events', []) if e.get('gender') not in ('Boys', 'Girls') and e.get('combined_race') is None and e.get('mixed_race') is None]
+        ok = date_confirmed_by_runners(doc, year, season)
+        if ok:
+            note = f" The sheet's title date ({doc['date_conflict']}) is not the meet's: {ok}."
+            if note not in (doc.get('notes') or ''):
+                doc['notes'] = (doc.get('notes') or '') + note
+            doc.pop('date_conflict')
+        else:
+            why.append(doc['date_conflict'])
+    mixed = [e for e in doc.get('events', []) if e.get('gender') not in ('Boys', 'Girls') and e.get('combined_race') is None and e.get('mixed_race') is None
+             and not (e.get('is_relay') and e.get('gender') == 'Mixed' and str(e.get('event', '')).startswith('Mixed '))]   # (a co-ed relay the sheet names 'Mixed 4x400', stored as sub5's are)
     if mixed:   # a race the sheet names no sex for, whose first names do not settle it (surnames, initials)
         why.append(f"{sum(len(e.get('results', [])) for e in mixed)} rows in a race of unknown sex")
     if season == 'XC':
@@ -218,6 +226,41 @@ def check(doc, season, year):
             why.append(f"team scores {v.get('status')}")
     return why
 
+
+
+_RUNNER_YEARS = {}
+
+
+def runner_years(season, year):
+    """Lowercased athlete name -> the seasons' years they appear in the store (year-4 .. year+1)."""
+    key = (season, year)
+    if key not in _RUNNER_YEARS:
+        import gzip
+        idx = collections.defaultdict(set)
+        for f in glob.glob(os.path.join(ROOT, 'ui', 'public', 'data', 'teams', '*', f'*_{season}.json.gz')):
+            m = re.search(r'/(\d{4})_', f)
+            if not m or not year - 4 <= int(m.group(1)) <= year + 1:
+                continue
+            d = json.load(gzip.open(f))
+            for r in (d if isinstance(d, list) else d.get('performances', [])):
+                idx[(r.get('athlete_name') or '').lower()].add(int(m.group(1)))
+        _RUNNER_YEARS[key] = idx
+    return _RUNNER_YEARS[key]
+
+
+def date_confirmed_by_runners(doc, year, season):
+    """A sheet whose title carries another year than MileSplit's listing (a reused meet file's title,
+    'GRAY - 5/10/2024' on a 2026 meet) is the listing's year when its runners say so: 10+ of them first
+    appear in our data that year (freshmen, sixth graders) and almost none had already left."""
+    idx = runner_years(season, year)
+    names = {(r.get('athlete') or '').lower() for e in doc.get('events', []) if not e.get('is_relay')
+             for r in e.get('results', []) if r.get('athlete')}
+    known = [n for n in names if idx.get(n)]
+    first = sum(1 for n in known if min(idx[n]) == year)
+    gone = sum(1 for n in known if max(idx[n]) < year)
+    if known and first >= 10 and gone <= 0.1 * len(known):
+        return f'{first} of its {len(known)} runners first appear in our data in {year}, {gone} had left before'
+    return None
 
 def printed_points_agree(doc):
     """Every team block that a recount does not reproduce is the sheet's own arithmetic: each official team's

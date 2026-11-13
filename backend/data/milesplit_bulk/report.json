@@ -6531,13 +6531,13 @@
   "year": 2015
  },
  "191951": {
-  "at": "2026-11-07T07:58:43",
+  "at": "2026-11-13T11:38:08",
   "name": "New Hampshire Indoor Track League Meet #1 @ Southern Maine",
   "season": "Indoor",
-  "status": "review",
+  "status": "skipped",
   "url": "https://me.milesplit.com/meets/191951-new-hampshire-indoor-track-league-meet-1-southern-maine-2015",
   "why": [
-   "converter read no events: NO EVENTS [] TABLINE? ' 21 Turgeon, Abby             10 Spaulding             23-02.00  \\r'"
+   "New Hampshire league meet held at USM: every team is a New Hampshire school"
   ],
   "year": 2015
  },
@@ -6560,13 +6560,13 @@
   "year": 2007
  },
  "192783": {
-  "at": "2026-11-07T07:59:35",
+  "at": "2026-11-13T11:38:08",
   "name": "New Hampshire Indoor Track League Meet #2 @ Southern Maine",
   "season": "Indoor",
-  "status": "review",
+  "status": "skipped",
   "url": "https://me.milesplit.com/meets/192783-new-hampshire-indoor-track-league-meet-2-southern-maine-2015",
   "why": [
-   "converter read no events: NO EVENTS [] TABLINE? ' 20 Calise, Sarah             11 Prospect Mou          14-05.00  \\r'"
+   "New Hampshire league meet held at USM: every team is a New Hampshire school"
   ],
   "year": 2015
  },
@@ -7077,7 +7077,6 @@
  },
  "213417": {
   "at": "2026-10-19T19:41:05",
-  "file": "backend/data/milesplit_bulk/staged/2015/XC/ms-wmc-championship-2015.json",
   "name": "WMC Championship",
   "rows": 267,
   "season": "XC",
@@ -7959,14 +7958,14 @@
  },
  "223832": {
   "at": "2026-11-11T08:27:39",
+  "match": "southwestern-championship-meet-results",
   "name": "SMAA Southwesterns Championships",
+  "note": "sub5 holds this meet with initials; the resync drops the MileSplit copy as the same marks",
   "rows": 712,
   "season": "Indoor",
   "status": "duplicate",
   "url": "https://me.milesplit.com/meets/223832-smaa-southwesterns-championships-2016",
-  "year": 2016,
-  "match": "southwestern-championship-meet-results",
-  "note": "sub5 holds this meet with initials; the resync drops the MileSplit copy as the same marks"
+  "year": 2016
  },
  "230832": {
   "at": "2026-11-09T12:15:35",
@@ -11016,14 +11015,14 @@
  },
  "297134": {
   "at": "2026-11-11T08:27:37",
+  "match": "class-a-results",
   "name": "KVAC Championship",
+  "note": "sub5 class-a-results / class-b-results hold the KVAC A and B championships; same marks",
   "rows": 422,
   "season": "Indoor",
   "status": "duplicate",
   "url": "https://me.milesplit.com/meets/297134-kvac-championship-2018",
-  "year": 2018,
-  "match": "class-a-results",
-  "note": "sub5 class-a-results / class-b-results hold the KVAC A and B championships; same marks"
+  "year": 2018
  },
  "307752": {
   "at": "2026-11-06T10:09:04",
@@ -15423,6 +15422,42 @@
   "url": "https://me.milesplit.com/meets/418435-pvchoulpicaribou-2021",
   "year": 2021
  },
+ "418444": {
+  "at": "2026-11-13T11:20:17",
+  "match": "Results-Boys-5.08.21",
+  "name": "PVC:CAR,DEX,GRNV,HAM,MATT@Foxcroft",
+  "season": "Outdoor",
+  "status": "duplicate",
+  "url": "https://me.milesplit.com/meets/418444-pvccardexgrnvhammattfoxcroft-2021",
+  "year": 2021
+ },
+ "418547": {
+  "at": "2026-11-13T11:22:13",
+  "match": "2021-aroostook-league-tf-championships-boys-results",
+  "name": "PVC:HOUL, PI@Caribou",
+  "season": "Outdoor",
+  "status": "duplicate",
+  "url": "https://me.milesplit.com/meets/418547-pvchoul-picaribou-2021",
+  "year": 2021
+ },
+ "418548": {
+  "at": "2026-11-13T11:22:02",
+  "match": "Results-Boys-5.21.21",
+  "name": "PVC:GRNV,MATT,PCHS,PEN@Foxcroft",
+  "season": "Outdoor",
+  "status": "duplicate",
+  "url": "https://me.milesplit.com/meets/418548-pvcgrnvmattpchspenfoxcroft-2021",
+  "year": 2021
+ },
+ "418552": {
+  "at": "2026-11-13T11:23:53",
+  "match": "pvcfrosh2021",
+  "name": "PVC Freshman Championship",
+  "season": "Outdoor",
+  "status": "duplicate",
+  "url": "https://me.milesplit.com/meets/418552-pvc-freshman-championship-2021",
+  "year": 2021
+ },
  "420019": {
   "at": "2026-11-11T09:02:43",
   "file": "backend/data/parsed_results/2021/Outdoor/ms-smaamarshwood-sanford-2021.json",
@@ -15434,30 +15469,115 @@
   "year": 2021
  },
  "420021": {
-  "at": "2026-11-11T09:02:50",
-  "file": "backend/data/milesplit_bulk/staged/2021/Outdoor/ms-smaabonny-eagle-biddeford-2021.json",
+  "at": "2026-11-13T11:38:19",
+  "file": "backend/data/parsed_results/2021/Outdoor/ms-smaabonny-eagle-biddeford-2021.json",
   "name": "SMAA:Bonny Eagle @ Biddeford",
   "rows": 178,
   "season": "Outdoor",
-  "status": "review",
+  "status": "accepted",
   "url": "https://me.milesplit.com/meets/420021-smaabonny-eagle-biddeford-2021",
-  "why": [
-   "78 rows with an unidentified school"
-  ],
+  "year": 2021
+ },
+ "420029": {
+  "at": "2026-11-13T11:20:06",
+  "match": "portland-windham-1",
+  "name": "SMAA:Windham @ Portland",
+  "season": "Outdoor",
+  "status": "duplicate",
+  "url": "https://me.milesplit.com/meets/420029-smaawindham-portland-2021",
+  "year": 2021
+ },
+ "420032": {
+  "at": "2026-11-13T11:20:55",
+  "match": "Resultsscarb",
+  "name": "SMAA:Thornton @ Scarborough",
+  "season": "Outdoor",
+  "status": "duplicate",
+  "url": "https://me.milesplit.com/meets/420032-smaathornton-scarborough-2021",
+  "year": 2021
+ },
+ "420042": {
+  "at": "2026-11-13T11:21:25",
+  "file": "backend/data/parsed_results/2021/Outdoor/ms-smaanoble-marshwood-2021.json",
+  "name": "SMAA:Noble @ Marshwood",
+  "rows": 232,
+  "season": "Outdoor",
+  "status": "accepted",
+  "url": "https://me.milesplit.com/meets/420042-smaanoble-marshwood-2021",
   "year": 2021
  },
  "420533": {
-  "at": "2026-11-11T09:03:38",
-  "file": "backend/data/milesplit_bulk/staged/2021/Outdoor/ms-kvacmt-ararat-mt-blue-leavitt-2021.json",
+  "at": "2026-11-13T11:38:19",
+  "file": "backend/data/parsed_results/2021/Outdoor/ms-kvacmt-ararat-mt-blue-leavitt-2021.json",
   "name": "KVAC:Mt Ararat, Mt. Blue @Leavitt",
-  "rows": 213,
+  "rows": 214,
   "season": "Outdoor",
-  "status": "review",
+  "status": "accepted",
   "url": "https://me.milesplit.com/meets/420533-kvacmt-ararat-mt-blue-leavitt-2021",
-  "why": [
-   "13 incomplete rows",
-   "100 rows with an unidentified school"
-  ],
+  "year": 2021
+ },
+ "420537": {
+  "at": "2026-11-13T11:19:53",
+  "match": "results_2021_05_07",
+  "name": "KVAC:Lewiston @ Leavitt",
+  "season": "Outdoor",
+  "status": "duplicate",
+  "url": "https://me.milesplit.com/meets/420537-kvac-lewiston-leavitt-2021",
+  "year": 2021
+ },
+ "420538": {
+  "at": "2026-11-13T11:21:18",
+  "match": "ResultsCCC",
+  "name": "KVAC:Erskine Academy, MCI@Lawrence",
+  "season": "Outdoor",
+  "status": "duplicate",
+  "url": "https://me.milesplit.com/meets/420538-kvacerskine-academy-mcilawrence-2021",
+  "year": 2021
+ },
+ "420543": {
+  "at": "2026-11-13T11:38:20",
+  "file": "backend/data/parsed_results/2021/Outdoor/ms-kvacgardiner-mt-ararat-brunswick-2021.json",
+  "name": "KVAC:Gardiner, Mt Ararat @Brunswick",
+  "rows": 277,
+  "season": "Outdoor",
+  "status": "accepted",
+  "url": "https://me.milesplit.com/meets/420543-kvacgardiner-mt-ararat-brunswick-2021",
+  "year": 2021
+ },
+ "420861": {
+  "at": "2026-11-13T11:21:03",
+  "match": "Nokomis-5-11-21",
+  "name": "KVAC:Lawrence, MCI @ Nokomis",
+  "season": "Outdoor",
+  "status": "duplicate",
+  "url": "https://me.milesplit.com/meets/420861-kvaclawrence-mci-nokomis-2021",
+  "year": 2021
+ },
+ "420869": {
+  "at": "2026-11-13T11:21:51",
+  "match": "Results-cony-boys",
+  "name": "Captial City Classic",
+  "season": "Outdoor",
+  "status": "duplicate",
+  "url": "https://me.milesplit.com/meets/420869-captial-city-classic-2021",
+  "year": 2021
+ },
+ "420871": {
+  "at": "2026-11-13T11:21:41",
+  "match": "Resultsoxf",
+  "name": "Agricultural  Classic",
+  "season": "Outdoor",
+  "status": "duplicate",
+  "url": "https://me.milesplit.com/meets/420871-agricultural-track-and-field-classic-2021",
+  "year": 2021
+ },
+ "420874": {
+  "at": "2026-11-13T11:22:28",
+  "match": "Edward-Little-5-22-21",
+  "name": "River Rivals",
+  "season": "Outdoor",
+  "status": "duplicate",
+  "url": "https://me.milesplit.com/meets/420874-river-rivals-2021",
   "year": 2021
  },
  "422615": {
@@ -15499,6 +15619,16 @@
   "url": "https://me.milesplit.com/meets/42619-2006-maine-xc-championships-2006",
   "year": 2006
  },
+ "426822": {
+  "at": "2026-11-13T11:19:14",
+  "file": "backend/data/parsed_results/2021/Outdoor/ms-wmcfryeburg-lake-region-poland-sacopee-valley-2021.json",
+  "name": "WMC:Fryeburg, Lake Region, Poland @ Sacopee Valley",
+  "rows": 208,
+  "season": "Outdoor",
+  "status": "accepted",
+  "url": "https://me.milesplit.com/meets/426822-wmcfryeburg-lake-region-poland-sacopee-valley-2021",
+  "year": 2021
+ },
  "426824": {
   "at": "2026-11-11T09:03:45",
   "match": "ResultsGREELY",
@@ -15506,6 +15636,72 @@
   "season": "Outdoor",
   "status": "duplicate",
   "url": "https://me.milesplit.com/meets/426824-wmc-gng-freeport-st-doms-yarmouth-2021",
+  "year": 2021
+ },
+ "426838": {
+  "at": "2026-11-13T11:38:20",
+  "file": "backend/data/parsed_results/2021/Outdoor/ms-wmcgreely-yarmouth-cape-2021.json",
+  "name": "WMC:Greely, Yarmouth @ Cape",
+  "rows": 275,
+  "season": "Outdoor",
+  "status": "accepted",
+  "url": "https://me.milesplit.com/meets/426838-wmcgreely-yarmouth-cape-2021",
+  "year": 2021
+ },
+ "426843": {
+  "at": "2026-11-13T11:21:10",
+  "match": "ResultsYARM-1",
+  "name": "WMC: Yarmouth, Gre, Cape, Fre, GNG, St. Doms @ NYA",
+  "season": "Outdoor",
+  "status": "duplicate",
+  "url": "https://me.milesplit.com/meets/426843-wmc-yarmouth-gre-cape-fre-gng-st-doms-nya-2021",
+  "year": 2021
+ },
+ "426847": {
+  "at": "2026-11-13T11:21:33",
+  "file": "backend/data/parsed_results/2021/Outdoor/ms-wmc-oob-traip-wells-york-2021.json",
+  "name": "WMC: OOB, Traip, Wells @ York",
+  "rows": 320,
+  "season": "Outdoor",
+  "status": "accepted",
+  "url": "https://me.milesplit.com/meets/426847-wmc-oob-traip-wells-york-2021",
+  "year": 2021
+ },
+ "426856": {
+  "at": "2026-11-13T11:23:46",
+  "match": "WMC-boys",
+  "name": "WMC Championship",
+  "season": "Outdoor",
+  "status": "duplicate",
+  "url": "https://me.milesplit.com/meets/426856-wmc-championship-2021",
+  "year": 2021
+ },
+ "428248": {
+  "at": "2026-11-13T11:19:21",
+  "match": "Results-Wiscasett",
+  "name": "MVC: BOOTHBAY-WINTHROP-RICHMOND @ Wiscasset",
+  "season": "Outdoor",
+  "status": "duplicate",
+  "url": "https://me.milesplit.com/meets/428248-mvc-boothbay-winthrop-richmond-wiscasset-2021",
+  "year": 2021
+ },
+ "428671": {
+  "at": "2026-11-13T11:19:28",
+  "match": "Reeds-Brook-5-3-21",
+  "name": "EMMSTL @ Hampden #1",
+  "season": "Outdoor",
+  "status": "duplicate",
+  "url": "https://me.milesplit.com/meets/428671-emmstl-hampden-1-2021",
+  "year": 2021
+ },
+ "429369": {
+  "at": "2026-11-13T11:19:35",
+  "file": "backend/data/parsed_results/2021/Outdoor/ms-mvc-boothbay-monmouth-mt-valleywiscasset-2021.json",
+  "name": "MVC: BOOTHBAY-MONMOUTH-MT VALLEY@WISCASSET",
+  "rows": 62,
+  "season": "Outdoor",
+  "status": "accepted",
+  "url": "https://me.milesplit.com/meets/429369-mvc-boothbay-monmouth-mt-valleywiscasset-2021",
   "year": 2021
  },
  "43073": {
@@ -15517,18 +15713,23 @@
   "url": "https://me.milesplit.com/meets/43073-scarborough-middle-school-invitational-2008",
   "year": 2008
  },
- "431205": {
-  "at": "2026-11-11T09:02:36",
-  "file": "backend/data/milesplit_bulk/staged/2021/Outdoor/ms-maisadmpa-meet-2021.json",
-  "name": "MAISAD/MPA meet",
-  "rows": 38,
+ "430745": {
+  "at": "2026-11-13T11:20:31",
+  "match": "wagner_ms_meet_results_5.10.21",
+  "name": "EMMSTL @ Hampden #2",
   "season": "Outdoor",
-  "status": "review",
+  "status": "duplicate",
+  "url": "https://me.milesplit.com/meets/430745-emmstl-hampden-2-2021",
+  "year": 2021
+ },
+ "431205": {
+  "at": "2026-11-13T11:38:19",
+  "file": "backend/data/parsed_results/2021/Outdoor/ms-maisadmpa-meet-2021.json",
+  "name": "MAISAD/MPA meet",
+  "rows": 87,
+  "season": "Outdoor",
+  "status": "accepted",
   "url": "https://me.milesplit.com/meets/431205-maisadmpa-meet-2021",
-  "why": [
-   "3 incomplete rows",
-   "3 rows with an unidentified school"
-  ],
   "year": 2021
  },
  "431339": {
@@ -15539,6 +15740,26 @@
   "season": "Outdoor",
   "status": "accepted",
   "url": "https://me.milesplit.com/meets/431339-maisad-kents-hill-hyde-2021",
+  "year": 2021
+ },
+ "431374": {
+  "at": "2026-11-13T11:38:20",
+  "file": "backend/data/parsed_results/2021/Outdoor/ms-maisad-kents-hill-hyde-2021-2021-05-07.json",
+  "name": "MAISAD: Kents Hill, Hyde",
+  "rows": 71,
+  "season": "Outdoor",
+  "status": "accepted",
+  "url": "https://me.milesplit.com/meets/431374-maisad-kents-hill-hyde-2021",
+  "year": 2021
+ },
+ "431508": {
+  "at": "2026-11-13T11:38:20",
+  "file": "backend/data/parsed_results/2021/Outdoor/ms-lawrence-jh-meet-1-2021.json",
+  "name": "Lawrence JH Meet #1",
+  "rows": 227,
+  "season": "Outdoor",
+  "status": "accepted",
+  "url": "https://me.milesplit.com/meets/431508-lawrence-jh-meet-1-2021",
   "year": 2021
  },
  "43228": {
@@ -15554,6 +15775,108 @@
   ],
   "year": 2008
  },
+ "432770": {
+  "at": "2026-11-13T11:22:59",
+  "match": "Results-CHS",
+  "name": "SMAA: South Portland, Noble @Cheverus",
+  "season": "Outdoor",
+  "status": "duplicate",
+  "url": "https://me.milesplit.com/meets/432770-smaa-south-portland-noble-cheverus-2021",
+  "year": 2021
+ },
+ "432771": {
+  "at": "2026-11-13T11:23:21",
+  "match": "ResultsWEST-2",
+  "name": "SMAA: Windham @ Westbrook",
+  "season": "Outdoor",
+  "status": "duplicate",
+  "url": "https://me.milesplit.com/meets/432771-smaa-windham-westbrook-2021",
+  "year": 2021
+ },
+ "432773": {
+  "at": "2026-11-13T11:23:35",
+  "match": "ResultsTHORN-1",
+  "name": "SMAA: Falmouth, Bonny Eagle, Massabesic @ Thornton Academy",
+  "season": "Outdoor",
+  "status": "duplicate",
+  "url": "https://me.milesplit.com/meets/432773-smaa-falmouth-bonny-eagle-massabesic-thornton-academy-2021",
+  "year": 2021
+ },
+ "433474": {
+  "at": "2026-11-13T11:20:48",
+  "file": "backend/data/parsed_results/2021/Outdoor/ms-mvcbuckfield-telstar-mt-abram-dirigomt-valley-2021.json",
+  "name": "MVC:BUCKFIELD-TELSTAR-MT ABRAM-DIRIGO@MT VALLEY",
+  "rows": 240,
+  "season": "Outdoor",
+  "status": "accepted",
+  "url": "https://me.milesplit.com/meets/433474-mvcbuckfield-telstar-mt-abram-dirigomt-valley-2021",
+  "year": 2021
+ },
+ "434306": {
+  "at": "2026-11-13T11:22:21",
+  "match": "ResultsCCC",
+  "name": "Community Cup",
+  "season": "Outdoor",
+  "status": "duplicate",
+  "url": "https://me.milesplit.com/meets/434306-community-cup-2021",
+  "year": 2021
+ },
+ "434817": {
+  "at": "2026-11-13T11:22:36",
+  "file": "backend/data/parsed_results/2021/Outdoor/ms-jefferson-village-school-virtual-meet-2-2021.json",
+  "name": "Jefferson Village School Virtual Meet 2",
+  "rows": 83,
+  "season": "Outdoor",
+  "status": "accepted",
+  "url": "https://me.milesplit.com/meets/434817-jefferson-village-school-virtual-meet-2-2021",
+  "year": 2021
+ },
+ "435104": {
+  "at": "2026-11-13T11:22:51",
+  "match": "pvcjv2",
+  "name": "PVC JV Championship",
+  "season": "Outdoor",
+  "status": "duplicate",
+  "url": "https://me.milesplit.com/meets/435104-pvc-jv-championship-2021",
+  "year": 2021
+ },
+ "435112": {
+  "at": "2026-11-13T11:22:43",
+  "match": "ResultsCALMeet",
+  "name": "CAL MS MEET",
+  "season": "Outdoor",
+  "status": "duplicate",
+  "url": "https://me.milesplit.com/meets/435112-cal-ms-meet-2021",
+  "year": 2021
+ },
+ "435210": {
+  "at": "2026-11-13T11:23:13",
+  "match": "Deering-Portland-52721",
+  "name": "SMAA: Deering @ Portland",
+  "season": "Outdoor",
+  "status": "duplicate",
+  "url": "https://me.milesplit.com/meets/435210-smaa-deering-portland-2021",
+  "year": 2021
+ },
+ "435235": {
+  "at": "2026-11-13T11:23:28",
+  "match": "ResultsWJHS-2",
+  "name": "Winslow JH Meet",
+  "season": "Outdoor",
+  "status": "duplicate",
+  "url": "https://me.milesplit.com/meets/435235-winslow-jh-meet-2021",
+  "year": 2021
+ },
+ "435623": {
+  "at": "2026-11-13T11:23:06",
+  "file": "backend/data/parsed_results/2021/Outdoor/ms-kennebunk-last-chance-meet-2021.json",
+  "name": "Kennebunk Last Chance Meet",
+  "rows": 6,
+  "season": "Outdoor",
+  "status": "accepted",
+  "url": "https://me.milesplit.com/meets/435623-kennebunk-last-chance-meet-2021",
+  "year": 2021
+ },
  "43701": {
   "at": "2026-10-18T05:39:07",
   "file": "backend/data/parsed_results/2008/XC/ms-smaa-2nd-7-championship-2008.json",
@@ -15563,6 +15886,250 @@
   "status": "accepted",
   "url": "https://me.milesplit.com/meets/43701-smaa-2nd-7-championship-2008",
   "year": 2008
+ },
+ "437273": {
+  "at": "2026-11-13T11:24:00",
+  "match": "summer/2021/ms-437273",
+  "name": "MAINE USATF YOUTH GROUP A Wk #1",
+  "season": "Outdoor",
+  "status": "duplicate",
+  "url": "https://me.milesplit.com/meets/437273-maine-usatf-youth-group-a-wk-1-2021",
+  "why": [
+   "USATF youth club meet, held in the summer data"
+  ],
+  "year": 2021
+ },
+ "437274": {
+  "at": "2026-11-13T11:24:14",
+  "match": "summer/2021/ms-437274",
+  "name": "MAINE USATF YOUTH Group C Wk #1",
+  "season": "Outdoor",
+  "status": "duplicate",
+  "url": "https://me.milesplit.com/meets/437274-maine-usatf-youth-group-c-wk-1-2021",
+  "why": [
+   "USATF youth club meet, held in the summer data"
+  ],
+  "year": 2021
+ },
+ "437275": {
+  "at": "2026-11-13T11:24:07",
+  "match": "summer/2021/ms-437275",
+  "name": "MAINE USATF YOUTH Group B WK #1",
+  "season": "Outdoor",
+  "status": "duplicate",
+  "url": "https://me.milesplit.com/meets/437275-maine-usatf-youth-group-b-wk-1-2021",
+  "why": [
+   "USATF youth club meet, held in the summer data"
+  ],
+  "year": 2021
+ },
+ "437276": {
+  "at": "2026-11-13T11:24:21",
+  "match": "summer/2021/ms-437276",
+  "name": "MAINE USATF YOUTH Group D Wk #1",
+  "season": "Outdoor",
+  "status": "duplicate",
+  "url": "https://me.milesplit.com/meets/437276-maine-usatf-youth-group-d-wk-1-2021",
+  "why": [
+   "USATF youth club meet, held in the summer data"
+  ],
+  "year": 2021
+ },
+ "437804": {
+  "at": "2026-11-13T11:25:00",
+  "match": "summer/2021/ms-437804",
+  "name": "MAINE USATF YOUTH GROUP B Wk #3",
+  "season": "Outdoor",
+  "status": "duplicate",
+  "url": "https://me.milesplit.com/meets/437804-maine-usatf-youth-group-b-wk-3-2021",
+  "why": [
+   "USATF youth club meet, held in the summer data"
+  ],
+  "year": 2021
+ },
+ "437805": {
+  "at": "2026-11-13T11:25:17",
+  "match": "summer/2021/ms-437805",
+  "name": "MAINE USATF YOUTH GROUP D Wk #3",
+  "rows": 651,
+  "season": "Outdoor",
+  "status": "duplicate",
+  "url": "https://me.milesplit.com/meets/437805-maine-usatf-youth-group-d-wk-3-2021",
+  "why": [
+   "USATF youth club meet, held in the summer data"
+  ],
+  "year": 2021
+ },
+ "437806": {
+  "at": "2026-11-13T11:24:53",
+  "match": "summer/2021/ms-437806",
+  "name": "MAINE USATF YOUTH GROUP D Wk #2",
+  "rows": 653,
+  "season": "Outdoor",
+  "status": "duplicate",
+  "url": "https://me.milesplit.com/meets/437806-maine-usatf-youth-group-d-wk-2-2021",
+  "why": [
+   "USATF youth club meet, held in the summer data"
+  ],
+  "year": 2021
+ },
+ "437807": {
+  "at": "2026-11-13T11:24:28",
+  "match": "summer/2021/ms-437807",
+  "name": "MAINE USATF YOUTH GROUP A Wk #2",
+  "season": "Outdoor",
+  "status": "duplicate",
+  "url": "https://me.milesplit.com/meets/437807-maine-usatf-youth-group-a-wk-2-2021",
+  "why": [
+   "USATF youth club meet, held in the summer data"
+  ],
+  "year": 2021
+ },
+ "437808": {
+  "at": "2026-11-13T11:24:35",
+  "match": "summer/2021/ms-437808",
+  "name": "MAINE USATF YOUTH GROUP B Wk #2",
+  "season": "Outdoor",
+  "status": "duplicate",
+  "url": "https://me.milesplit.com/meets/437808-maine-usatf-youth-group-b-wk-2-2021",
+  "why": [
+   "USATF youth club meet, held in the summer data"
+  ],
+  "year": 2021
+ },
+ "437809": {
+  "at": "2026-11-13T11:24:42",
+  "match": "summer/2021/ms-437809",
+  "name": "MAINE USATF YOUTH GROUP C Wk #2",
+  "season": "Outdoor",
+  "status": "duplicate",
+  "url": "https://me.milesplit.com/meets/437809-maine-usatf-youth-group-c-wk-2-2021",
+  "why": [
+   "USATF youth club meet, held in the summer data"
+  ],
+  "year": 2021
+ },
+ "437827": {
+  "at": "2026-11-13T11:25:07",
+  "match": "summer/2021/ms-437827",
+  "name": "MAINE USATF YOUTH GROUP C Wk #3",
+  "season": "Outdoor",
+  "status": "duplicate",
+  "url": "https://me.milesplit.com/meets/437827-maine-usatf-youth-group-c-wk-3-2021",
+  "why": [
+   "USATF youth club meet, held in the summer data"
+  ],
+  "year": 2021
+ },
+ "438256": {
+  "at": "2026-11-13T11:25:24",
+  "match": "summer/2021/ms-438256",
+  "name": "MAINE USATF YOUTH GROUP A Wk #4",
+  "season": "Outdoor",
+  "status": "duplicate",
+  "url": "https://me.milesplit.com/meets/438256-maine-usatf-youth-group-a-wk-4-2021",
+  "why": [
+   "USATF youth club meet, held in the summer data"
+  ],
+  "year": 2021
+ },
+ "438263": {
+  "at": "2026-11-13T11:25:49",
+  "match": "summer/2021/ms-438263",
+  "name": "MAINE USATF YOUTH GROUP D Wk #4",
+  "rows": 654,
+  "season": "Outdoor",
+  "status": "duplicate",
+  "url": "https://me.milesplit.com/meets/438263-maine-usatf-youth-group-d-wk-4-2021",
+  "why": [
+   "USATF youth club meet, held in the summer data"
+  ],
+  "year": 2021
+ },
+ "438441": {
+  "at": "2026-11-13T11:25:39",
+  "match": "summer/2021/ms-438441",
+  "name": "MAINE USATF YOUTH GROUP C Wk #4",
+  "season": "Outdoor",
+  "status": "duplicate",
+  "url": "https://me.milesplit.com/meets/438441-maine-usatf-youth-group-c-wk-4-2021",
+  "why": [
+   "USATF youth club meet, held in the summer data"
+  ],
+  "year": 2021
+ },
+ "438446": {
+  "at": "2026-11-13T11:25:32",
+  "match": "summer/2021/ms-438446",
+  "name": "MAINE USATF YOUTH GROUP B Wk #4",
+  "season": "Outdoor",
+  "status": "duplicate",
+  "url": "https://me.milesplit.com/meets/438446-maine-usatf-youth-group-b-wk-4-2021",
+  "why": [
+   "USATF youth club meet, held in the summer data"
+  ],
+  "year": 2021
+ },
+ "439332": {
+  "at": "2026-11-13T11:26:28",
+  "match": "summer/2021/ms-439332",
+  "name": "Maine USATF Youth Championship",
+  "season": "Outdoor",
+  "status": "duplicate",
+  "url": "https://me.milesplit.com/meets/439332-maine-usatf-youth-championship-2021",
+  "why": [
+   "USATF youth club meet, held in the summer data"
+  ],
+  "year": 2021
+ },
+ "439589": {
+  "at": "2026-11-13T11:25:56",
+  "match": "summer/2021/ms-439589",
+  "name": "MAINE USATF YOUTH GROUP A QUALIFIER",
+  "season": "Outdoor",
+  "status": "duplicate",
+  "url": "https://me.milesplit.com/meets/439589-maine-usatf-youth-group-a-qualifier-2021",
+  "why": [
+   "USATF youth club meet, held in the summer data"
+  ],
+  "year": 2021
+ },
+ "439590": {
+  "at": "2026-11-13T11:26:03",
+  "match": "summer/2021/ms-439590",
+  "name": "MAINE USATF YOUTH GROUP B QUALIFIER",
+  "season": "Outdoor",
+  "status": "duplicate",
+  "url": "https://me.milesplit.com/meets/439590-maine-usatf-youth-group-b-qualifier-2021",
+  "why": [
+   "USATF youth club meet, held in the summer data"
+  ],
+  "year": 2021
+ },
+ "439591": {
+  "at": "2026-11-13T11:26:10",
+  "match": "summer/2021/ms-439591",
+  "name": "MAINE USATF YOUTH GROUP C QUALIFIER",
+  "season": "Outdoor",
+  "status": "duplicate",
+  "url": "https://me.milesplit.com/meets/439591-maine-usatf-youth-group-c-qualifier-2021",
+  "why": [
+   "USATF youth club meet, held in the summer data"
+  ],
+  "year": 2021
+ },
+ "439592": {
+  "at": "2026-11-13T11:26:21",
+  "match": "summer/2021/ms-439592",
+  "name": "MAINE USATF YOUTH GROUP D QUALIFIER",
+  "rows": 613,
+  "season": "Outdoor",
+  "status": "duplicate",
+  "url": "https://me.milesplit.com/meets/439592-maine-usatf-youth-group-d-qualifier-2021",
+  "why": [
+   "USATF youth club meet, held in the summer data"
+  ],
+  "year": 2021
  },
  "440354": {
   "at": "2026-10-19T19:39:24",
@@ -16470,21 +17037,21 @@
  },
  "44809": {
   "at": "2026-11-09T00:44:51",
+  "match": "USMJumpMeet2",
   "name": "USM Jump Meet #2",
   "season": "Indoor",
   "status": "duplicate",
   "url": "https://me.milesplit.com/meets/44809-usm-jump-meet-2-2009",
-  "year": 2009,
-  "match": "USMJumpMeet2"
+  "year": 2009
  },
  "44811": {
   "at": "2026-11-09T00:45:29",
+  "match": "usmjumpmeet_jan21",
   "name": "USM Jump Meet #3",
   "season": "Indoor",
   "status": "duplicate",
   "url": "https://me.milesplit.com/meets/44811-usm-jump-meet-3-2009",
-  "year": 2009,
-  "match": "usmjumpmeet_jan21"
+  "year": 2009
  },
  "448217": {
   "at": "2026-10-17T07:46:07",
@@ -17393,36 +17960,33 @@
   "year": 2022
  },
  "474458": {
-  "at": "2026-11-11T08:49:57",
+  "at": "2026-11-13T11:38:23",
+  "file": "backend/data/parsed_results/2022/Outdoor/ms-maisad-meet-1-hyde-2022.json",
   "name": "MAISAD Meet #1 @ Hyde",
+  "rows": 152,
   "season": "Outdoor",
-  "status": "review",
+  "status": "accepted",
   "url": "https://me.milesplit.com/meets/474458-maisad-meet-1-hyde-2022",
-  "why": [
-   "converter read no events: NO EVENTS [] TABROW? '\\t6\\tAidan Beatty\\tKents Hill\\t37-00'"
-  ],
   "year": 2022
  },
  "474459": {
-  "at": "2026-11-11T08:50:11",
+  "at": "2026-11-13T11:38:23",
+  "file": "backend/data/parsed_results/2022/Outdoor/ms-maisad-meet-2-hyde-2022.json",
   "name": "MAISAD Meet #2 @ Hyde",
+  "rows": 221,
   "season": "Outdoor",
-  "status": "review",
+  "status": "accepted",
   "url": "https://me.milesplit.com/meets/474459-maisad-meet-2-hyde-2022",
-  "why": [
-   "converter read no events: NO EVENTS [] TABROW? '\\t17\\tAidan Beatty\\tKents Hill\\t43-03'"
-  ],
   "year": 2022
  },
  "474461": {
-  "at": "2026-11-11T08:50:46",
+  "at": "2026-11-13T11:38:23",
+  "file": "backend/data/parsed_results/2022/Outdoor/ms-maisad-meet-3-hyde-2022.json",
   "name": "MAISAD Meet #3 @ Hyde",
+  "rows": 179,
   "season": "Outdoor",
-  "status": "review",
+  "status": "accepted",
   "url": "https://me.milesplit.com/meets/474461-maisad-meet-3-hyde-2022",
-  "why": [
-   "converter read no events: NO EVENTS [] TABROW? '\\t12\\tHowie Wu\\tHebron Academy\\t44-01'"
-  ],
   "year": 2022
  },
  "474462": {
@@ -17525,29 +18089,23 @@
   "year": 2022
  },
  "475056": {
-  "at": "2026-11-11T08:53:28",
-  "file": "backend/data/milesplit_bulk/staged/2022/Outdoor/ms-smaa-thornton-academy-falmouth-marshwood-2022.json",
+  "at": "2026-11-13T11:19:01",
+  "file": "backend/data/parsed_results/2022/Outdoor/ms-smaa-thornton-academy-falmouth-marshwood-2022.json",
   "name": "SMAA: Thornton Academy, Falmouth @ Marshwood",
-  "rows": 338,
+  "rows": 336,
   "season": "Outdoor",
-  "status": "review",
+  "status": "accepted",
   "url": "https://me.milesplit.com/meets/475056-smaa-thornton-academy-falmouth-marshwood-2022",
-  "why": [
-   "result sheet dated 2021, MileSplit lists 2022-05-03"
-  ],
   "year": 2022
  },
  "475061": {
-  "at": "2026-11-11T08:54:11",
-  "file": "backend/data/milesplit_bulk/staged/2022/Outdoor/ms-smaa-scarborough-gorham-kennebunk-noble-2022.json",
+  "at": "2026-11-13T11:19:02",
+  "file": "backend/data/parsed_results/2022/Outdoor/ms-smaa-scarborough-gorham-kennebunk-noble-2022.json",
   "name": "SMAA: Scarborough, Gorham, Kennebunk @ Noble",
-  "rows": 552,
+  "rows": 544,
   "season": "Outdoor",
-  "status": "review",
+  "status": "accepted",
   "url": "https://me.milesplit.com/meets/475061-smaa-scarborough-gorham-kennebunk-noble-2022",
-  "why": [
-   "result sheet dated 2021, MileSplit lists 2022-05-05"
-  ],
   "year": 2022
  },
  "475063": {
@@ -17561,16 +18119,13 @@
   "year": 2022
  },
  "475064": {
-  "at": "2026-11-11T08:54:50",
-  "file": "backend/data/milesplit_bulk/staged/2022/Outdoor/ms-wmc-gng-cape-traip-st-d-oob-poland-2022.json",
+  "at": "2026-11-13T11:19:02",
+  "file": "backend/data/parsed_results/2022/Outdoor/ms-wmc-gng-cape-traip-st-d-oob-poland-2022.json",
   "name": "WMC: GNG, Cape, Traip, St D, OOB @ Poland",
   "rows": 482,
   "season": "Outdoor",
-  "status": "review",
+  "status": "accepted",
   "url": "https://me.milesplit.com/meets/475064-wmc-gng-cape-traip-st-d-oob-poland-2022",
-  "why": [
-   "result sheet dated 2021, MileSplit lists 2022-05-06"
-  ],
   "year": 2022
  },
  "475066": {
@@ -17583,16 +18138,13 @@
   "year": 2022
  },
  "475067": {
-  "at": "2026-11-11T08:54:57",
-  "file": "backend/data/milesplit_bulk/staged/2022/Outdoor/ms-wmc-lr-yarmouth-wells-freeport-2022.json",
+  "at": "2026-11-13T11:19:03",
+  "file": "backend/data/parsed_results/2022/Outdoor/ms-wmc-lr-yarmouth-wells-freeport-2022.json",
   "name": "WMC: LR, Yarmouth, Wells @ Freeport",
   "rows": 381,
   "season": "Outdoor",
-  "status": "review",
+  "status": "accepted",
   "url": "https://me.milesplit.com/meets/475067-wmc-lr-yarmouth-wells-freeport-2022",
-  "why": [
-   "result sheet dated 2019, MileSplit lists 2022-05-07"
-  ],
   "year": 2022
  },
  "475096": {
@@ -17646,16 +18198,13 @@
   "year": 2022
  },
  "475120": {
-  "at": "2026-11-11T08:56:33",
-  "file": "backend/data/milesplit_bulk/staged/2022/Outdoor/ms-smaa-marshwood-windham-gorham-bonny-eagle-2022.json",
+  "at": "2026-11-13T11:19:03",
+  "file": "backend/data/parsed_results/2022/Outdoor/ms-smaa-marshwood-windham-gorham-bonny-eagle-2022.json",
   "name": "SMAA: Marshwood, Windham, Gorham @ Bonny Eagle",
-  "rows": 469,
+  "rows": 456,
   "season": "Outdoor",
-  "status": "review",
+  "status": "accepted",
   "url": "https://me.milesplit.com/meets/475120-smaa-marshwood-windham-gorham-bonny-eagle-2022",
-  "why": [
-   "result sheet dated 2021, MileSplit lists 2022-05-12"
-  ],
   "year": 2022
  },
  "475123": {
@@ -18109,24 +18658,24 @@
   "year": 2022
  },
  "48591": {
-  "at": "2026-11-09T00:47:54",
+  "at": "2026-11-13T11:38:08",
   "name": "CCC  meet #1",
   "season": "Indoor",
-  "status": "review",
+  "status": "skipped",
   "url": "https://me.milesplit.com/meets/48591-ccc-meet-1-2009",
   "why": [
-   "converter read no events: NO EVENTS [] TABLINE? '3 Falmouth                                              2:25.7\\r'"
+   "middle-school sheet printing surnames only (no first names): no runner identifiable"
   ],
   "year": 2009
  },
  "48592": {
-  "at": "2026-11-09T00:48:04",
+  "at": "2026-11-13T11:38:08",
   "name": "CCC  meet #2",
   "season": "Indoor",
-  "status": "review",
+  "status": "skipped",
   "url": "https://me.milesplit.com/meets/48592-ccc-meet-2-2009",
   "why": [
-   "converter read no events: NO EVENTS [] TABLINE? '2  St. James                                              2:19.4\\r'"
+   "middle-school sheet printing surnames only (no first names): no runner identifiable"
   ],
   "year": 2009
  },
@@ -18141,68 +18690,68 @@
   "year": 2009
  },
  "48595": {
-  "at": "2026-11-09T00:48:25",
+  "at": "2026-11-13T11:38:08",
   "name": "CCC  meet #4",
   "season": "Indoor",
-  "status": "review",
+  "status": "skipped",
   "url": "https://me.milesplit.com/meets/48595-ccc-meet-4-2009",
   "why": [
-   "converter read no events: NO EVENTS [] TABLINE? '===================================================================\\r'"
+   "middle-school sheet printing surnames only (no first names): no runner identifiable"
   ],
   "year": 2009
  },
  "48596": {
-  "at": "2026-11-09T00:48:35",
+  "at": "2026-11-13T11:38:08",
   "name": "CCC  meet #5",
   "season": "Indoor",
-  "status": "review",
+  "status": "skipped",
   "url": "https://me.milesplit.com/meets/48596-ccc-meet-5-2009",
   "why": [
-   "converter read no events: NO EVENTS [] TABLINE? '3 Scarborough                                           2:15.9\\r'"
+   "middle-school sheet printing surnames only (no first names): no runner identifiable"
   ],
   "year": 2009
  },
  "48598": {
-  "at": "2026-11-09T00:48:45",
+  "at": "2026-11-13T11:38:08",
   "name": "CCC  meet #6",
   "season": "Indoor",
-  "status": "review",
+  "status": "skipped",
   "url": "https://me.milesplit.com/meets/48598-ccc-meet-6-2009",
   "why": [
-   "converter read no events: NO EVENTS [] TABROW? '4   Cape\\t\\t\\t\\t\\t\\t  2:15dq\\t\\t\\t\\t\\t\\t\\r'"
+   "middle-school sheet printing surnames only (no first names): no runner identifiable"
   ],
   "year": 2009
  },
  "48599": {
-  "at": "2026-11-09T00:48:55",
+  "at": "2026-11-13T11:38:08",
   "name": "CCC  meet #7",
   "season": "Indoor",
-  "status": "review",
+  "status": "skipped",
   "url": "https://me.milesplit.com/meets/48599-ccc-meet-7-2009",
   "why": [
-   "converter read no events: NO EVENTS [] TABLINE? '2   SMC                                                   2:15.0\\r'"
+   "middle-school sheet printing surnames only (no first names): no runner identifiable"
   ],
   "year": 2009
  },
  "48600": {
-  "at": "2026-11-09T00:49:05",
+  "at": "2026-11-13T11:38:08",
   "name": "CCC  meet #8",
   "season": "Indoor",
-  "status": "review",
+  "status": "skipped",
   "url": "https://me.milesplit.com/meets/48600-ccc-meet-8-2009",
   "why": [
-   "converter read no events: NO EVENTS [] TABLINE? '3   Poland                                                2:15.4\\r'"
+   "middle-school sheet printing surnames only (no first names): no runner identifiable"
   ],
   "year": 2009
  },
  "48601": {
-  "at": "2026-11-09T00:49:16",
+  "at": "2026-11-13T11:38:08",
   "name": "CCC  meet #9",
   "season": "Indoor",
-  "status": "review",
+  "status": "skipped",
   "url": "https://me.milesplit.com/meets/48601-ccc-meet-9-2009",
   "why": [
-   "converter read no events: NO EVENTS [] TABLINE? '2   Scarborough                                           1:56.9\\r'"
+   "middle-school sheet printing surnames only (no first names): no runner identifiable"
   ],
   "year": 2009
  },
@@ -18217,24 +18766,24 @@
   "year": 2022
  },
  "48604": {
-  "at": "2026-11-09T00:49:26",
+  "at": "2026-11-13T11:38:08",
   "name": "CCC  meet #10",
   "season": "Indoor",
-  "status": "review",
+  "status": "skipped",
   "url": "https://me.milesplit.com/meets/48604-ccc-meet-10-2009",
   "why": [
-   "converter read no events: NO EVENTS [] TABLINE? '3   SMC                                                   2:13.6\\r'"
+   "middle-school sheet printing surnames only (no first names): no runner identifiable"
   ],
   "year": 2009
  },
  "48605": {
-  "at": "2026-11-09T00:49:36",
+  "at": "2026-11-13T11:38:08",
   "name": "CCC  meet #11",
   "season": "Indoor",
-  "status": "review",
+  "status": "skipped",
   "url": "https://me.milesplit.com/meets/48605-ccc-meet-11-2009",
   "why": [
-   "converter read no events: NO EVENTS [] TABLINE? '3   Greely                                                2:14.6\\r'"
+   "middle-school sheet printing surnames only (no first names): no runner identifiable"
   ],
   "year": 2009
  },
@@ -18248,13 +18797,13 @@
   "year": 2022
  },
  "48607": {
-  "at": "2026-11-09T00:49:46",
+  "at": "2026-11-13T11:38:08",
   "name": "CCC  meet #12",
   "season": "Indoor",
-  "status": "review",
+  "status": "skipped",
   "url": "https://me.milesplit.com/meets/48607-ccc-meet-12-2009",
   "why": [
-   "converter read no events: NO EVENTS [] TABLINE? '3   St. James                                             2:25.0\\r'"
+   "middle-school sheet printing surnames only (no first names): no runner identifiable"
   ],
   "year": 2009
  },
@@ -18268,24 +18817,24 @@
   "year": 2022
  },
  "48610": {
-  "at": "2026-11-09T00:49:53",
+  "at": "2026-11-13T11:38:08",
   "name": "CCC Girls Festival",
   "season": "Indoor",
-  "status": "review",
+  "status": "skipped",
   "url": "https://me.milesplit.com/meets/48610-ccc-girls-festival-2009",
   "why": [
-   "converter read no events: NO EVENTS [] MS-MODE names (no high-school expansion)"
+   "middle-school sheet printing surnames only (no first names): no runner identifiable"
   ],
   "year": 2009
  },
  "48611": {
-  "at": "2026-11-09T00:49:59",
+  "at": "2026-11-13T11:38:08",
   "name": "CCC Boys Festival",
   "season": "Indoor",
-  "status": "review",
+  "status": "skipped",
   "url": "https://me.milesplit.com/meets/48611-ccc-boys-festival-2009",
   "why": [
-   "converter read no events: NO EVENTS [] MS-MODE names (no high-school expansion)"
+   "middle-school sheet printing surnames only (no first names): no runner identifiable"
   ],
   "year": 2009
  },
@@ -19385,16 +19934,13 @@
   "year": 2023
  },
  "520960": {
-  "at": "2026-11-11T08:45:39",
-  "file": "backend/data/milesplit_bulk/staged/2023/Outdoor/ms-waterville-invitational-2023.json",
+  "at": "2026-11-13T11:18:56",
+  "file": "backend/data/parsed_results/2023/Outdoor/ms-waterville-invitational-2023.json",
   "name": "Waterville Invitational",
   "rows": 612,
   "season": "Outdoor",
-  "status": "review",
+  "status": "accepted",
   "url": "https://me.milesplit.com/meets/520960-waterville-invitational-2023",
-  "why": [
-   "result sheet dated 2022, MileSplit lists 2023-05-14"
-  ],
   "year": 2023
  },
  "531733": {
@@ -20039,13 +20585,13 @@
   "year": 2023
  },
  "547696": {
-  "at": "2026-11-11T08:44:49",
+  "at": "2026-11-13T11:38:08",
   "name": "Greely Outdoor Track Meet #1",
   "season": "Outdoor",
-  "status": "review",
+  "status": "skipped",
   "url": "https://me.milesplit.com/meets/547696-greely-outdoor-track-meet-1-2023",
   "why": [
-   "converter read no events: NO EVENTS [] MS-MODE names (no high-school expansion)"
+   "only a Google Sheet of the top six per event, surnames only: no runner identifiable"
   ],
   "year": 2023
  },
@@ -20079,16 +20625,13 @@
   "year": 2023
  },
  "548978": {
-  "at": "2026-11-11T08:43:25",
-  "file": "backend/data/milesplit_bulk/staged/2023/Outdoor/ms-wmc-at-greely-with-york-sv-cape-lake-region-traip-2023.json",
+  "at": "2026-11-13T11:18:55",
+  "file": "backend/data/parsed_results/2023/Outdoor/ms-wmc-at-greely-with-york-sv-cape-lake-region-traip-2023.json",
   "name": "WMC at Greely, with York, SV, Cape, Lake Region, traip",
-  "rows": 528,
+  "rows": 521,
   "season": "Outdoor",
-  "status": "review",
+  "status": "accepted",
   "url": "https://me.milesplit.com/meets/548978-wmc-at-greely-with-york-sv-cape-lake-region-traip-2023",
-  "why": [
-   "result sheet dated 2022, MileSplit lists 2023-05-05"
-  ],
   "year": 2023
  },
  "549950": {
@@ -20141,16 +20684,13 @@
   "year": 2023
  },
  "552262": {
-  "at": "2026-11-11T08:44:32",
-  "file": "backend/data/milesplit_bulk/staged/2023/Outdoor/ms-ccc-ms-gng-sd-mo-sv-at-lr-2023.json",
+  "at": "2026-11-13T11:18:56",
+  "file": "backend/data/parsed_results/2023/Outdoor/ms-ccc-ms-gng-sd-mo-sv-at-lr-2023.json",
   "name": "CCC MS GNG, SD, MO, SV at LR",
-  "rows": 308,
+  "rows": 265,
   "season": "Outdoor",
-  "status": "review",
+  "status": "accepted",
   "url": "https://me.milesplit.com/meets/552262-ccc-ms-gng-sd-mo-sv-at-lr-2023",
-  "why": [
-   "result sheet dated 2019, MileSplit lists 2023-05-11"
-  ],
   "year": 2023
  },
  "552853": {
@@ -20210,7 +20750,6 @@
  },
  "55383": {
   "at": "2026-10-19T19:47:10",
-  "file": "backend/data/milesplit_bulk/staged/2005/XC/ms-2005-maine-xc-championships-2005.json",
   "name": "Maine XC Championships",
   "rows": 215,
   "season": "XC",
@@ -22552,6 +23091,15 @@
   "url": "https://me.milesplit.com/meets/595680-biddeford-whittier-smcsjs-loranger-massabesic-2024",
   "year": 2024
  },
+ "595685": {
+  "at": "2026-11-13T11:18:50",
+  "match": "Fleet-Meet",
+  "name": "Fleet Feet Maine Elite Invitational",
+  "season": "Outdoor",
+  "status": "duplicate",
+  "url": "https://me.milesplit.com/meets/595685-fleet-feet-maine-elite-invitational-2024",
+  "year": 2024
+ },
  "59576": {
   "at": "2026-10-18T05:38:50",
   "file": "backend/data/parsed_results/2009/XC/ms-fryeburg-vs-kennent-2009.json",
@@ -23203,16 +23751,23 @@
   "year": 2024
  },
  "613403": {
-  "at": "2026-11-11T08:28:16",
-  "file": "backend/data/milesplit_bulk/staged/2024/Outdoor/ms-thornton-academy-york-presque-isle-biddeford-kennebunk-2024.json",
+  "at": "2026-11-13T11:39:03",
+  "file": "backend/data/parsed_results/2024/Outdoor/ms-thornton-academy-york-presque-isle-biddeford-kennebunk-2024.json",
   "name": "THORNTON ACADEMY-YORK-PRESQUE ISLE-BIDDEFORD @ KENNEBUNK",
-  "rows": 492,
+  "rows": 488,
   "season": "Outdoor",
-  "status": "review",
+  "status": "accepted",
   "url": "https://me.milesplit.com/meets/613403-thornton-academy-york-presque-isle-biddeford-kennebunk-2024",
-  "why": [
-   "11 incomplete rows"
-  ],
+  "year": 2024
+ },
+ "613576": {
+  "at": "2026-11-13T11:18:40",
+  "file": "backend/data/parsed_results/2024/Outdoor/ms-mvc-meet-1-lisbon-telstar-monmouth-hall-dale-boothbaywisca-2024.json",
+  "name": "MVC Meet 1@ Lisbon (Telstar, Monmouth, Hall-Dale, Boothbay/Wisca",
+  "rows": 333,
+  "season": "Outdoor",
+  "status": "accepted",
+  "url": "https://me.milesplit.com/meets/613576-mvc-meet-1-lisbon-telstar-monmouth-hall-dale-boothbaywisca-2024",
   "year": 2024
  },
  "61362": {
@@ -23281,7 +23836,6 @@
  },
  "61373": {
   "at": "2026-11-08T15:31:31",
-  "file": "backend/data/milesplit_bulk/staged/2010/Indoor/ms-smaa-biddeford-deering-and-gorham-2010.json",
   "name": "SMAA: Biddeford, Deering, & Gorham",
   "rows": 291,
   "season": "Indoor",
@@ -23459,16 +24013,13 @@
   "year": 2024
  },
  "616692": {
-  "at": "2026-11-11T08:29:40",
-  "file": "backend/data/milesplit_bulk/staged/2024/Outdoor/ms-spms-king-smc-2024.json",
+  "at": "2026-11-13T11:18:41",
+  "file": "backend/data/parsed_results/2024/Outdoor/ms-spms-king-smc-2024.json",
   "name": "SPMS-KING-SMC",
-  "rows": 336,
+  "rows": 320,
   "season": "Outdoor",
-  "status": "review",
+  "status": "accepted",
   "url": "https://me.milesplit.com/meets/616692-spms-king-smc-2024",
-  "why": [
-   "16 incomplete rows"
-  ],
   "year": 2024
  },
  "61707": {
@@ -23522,30 +24073,23 @@
   "year": 2024
  },
  "617483": {
-  "at": "2026-11-11T08:30:34",
-  "file": "backend/data/milesplit_bulk/staged/2024/Outdoor/ms-ms-thornton-noble-wells-noble-2024.json",
+  "at": "2026-11-13T11:18:41",
+  "file": "backend/data/parsed_results/2024/Outdoor/ms-ms-thornton-noble-wells-noble-2024.json",
   "name": "MS-THORNTON-NOBLE-WELLS @NOBLE",
-  "rows": 294,
+  "rows": 276,
   "season": "Outdoor",
-  "status": "review",
+  "status": "accepted",
   "url": "https://me.milesplit.com/meets/617483-ms-thornton-noble-wells-noble-2024",
-  "why": [
-   "18 incomplete rows",
-   "18 rows with an unidentified school"
-  ],
   "year": 2024
  },
  "617866": {
-  "at": "2026-11-11T08:31:24",
-  "file": "backend/data/milesplit_bulk/staged/2024/Outdoor/ms-ms-lewiston-gorham-lyman-moore-kinglewiston-2024.json",
+  "at": "2026-11-13T11:18:42",
+  "file": "backend/data/parsed_results/2024/Outdoor/ms-ms-lewiston-gorham-lyman-moore-kinglewiston-2024.json",
   "name": "MS-LEWISTON-GORHAM-LYMAN MOORE-KING@LEWISTON",
-  "rows": 595,
+  "rows": 574,
   "season": "Outdoor",
-  "status": "review",
+  "status": "accepted",
   "url": "https://me.milesplit.com/meets/617866-ms-lewiston-gorham-lyman-moore-kinglewiston-2024",
-  "why": [
-   "21 incomplete rows"
-  ],
   "year": 2024
  },
  "617894": {
@@ -23588,7 +24132,6 @@
  },
  "61809": {
   "at": "2026-11-08T15:30:56",
-  "file": "backend/data/milesplit_bulk/staged/2010/Indoor/ms-wmc-york-nya-poland-fryeburg-lake-region-greely-andfalmouth-2010.json",
   "name": "WMC: York, NYA, Poland, Fryeburg, Lake Region, Greely, &Falmouth",
   "rows": 230,
   "season": "Indoor",
@@ -23643,14 +24186,13 @@
   "year": 2024
  },
  "618985": {
-  "at": "2026-11-11T08:29:19",
+  "at": "2026-11-13T11:38:26",
+  "file": "backend/data/parsed_results/2024/Outdoor/ms-ccc-opener-at-lake-region-2024.json",
   "name": "CCC opener at Lake Region",
+  "rows": 273,
   "season": "Outdoor",
-  "status": "review",
+  "status": "accepted",
   "url": "https://me.milesplit.com/meets/618985-ccc-opener-at-lake-region-2024",
-  "why": [
-   "converter read no events: NO EVENTS [] MS-MODE names (no high-school expansion)"
-  ],
   "year": 2024
  },
  "619414": {
@@ -24009,31 +24551,22 @@
   "year": 2024
  },
  "622396": {
-  "at": "2026-11-11T08:36:39",
-  "file": "backend/data/milesplit_bulk/staged/2024/Outdoor/ms-ms-shapleigh-noble-marshwood-2024.json",
+  "at": "2026-11-13T11:18:50",
+  "match": "Resultsmarsh",
   "name": "MS-SHAPLEIGH-NOBLE @ MARSHWOOD",
-  "rows": 18,
   "season": "Outdoor",
-  "status": "review",
+  "status": "duplicate",
   "url": "https://me.milesplit.com/meets/622396-ms-shapleigh-noble-marshwood-2024",
-  "why": [
-   "17 incomplete rows",
-   "17 rows with an unidentified school"
-  ],
   "year": 2024
  },
  "622406": {
-  "at": "2026-11-11T08:37:22",
-  "file": "backend/data/milesplit_bulk/staged/2024/Outdoor/ms-ms-biddeford-saco-thornton-academy-2024.json",
+  "at": "2026-11-13T11:18:50",
+  "file": "backend/data/parsed_results/2024/Outdoor/ms-ms-biddeford-saco-thornton-academy-2024.json",
   "name": "MS-BIDDEFORD-SACO @THORNTON ACADEMY",
-  "rows": 285,
+  "rows": 267,
   "season": "Outdoor",
-  "status": "review",
+  "status": "accepted",
   "url": "https://me.milesplit.com/meets/622406-ms-biddeford-saco-thornton-academy-2024",
-  "why": [
-   "18 incomplete rows",
-   "18 rows with an unidentified school"
-  ],
   "year": 2024
  },
  "622408": {
@@ -24106,13 +24639,14 @@
   "year": 2024
  },
  "627924": {
-  "at": "2026-11-11T08:39:04",
+  "at": "2026-11-13T11:38:08",
+  "match": "summer/2024/ms-627924",
   "name": "GROUP A MEET 3 -A MEET",
   "season": "Outdoor",
-  "status": "review",
+  "status": "duplicate",
   "url": "https://me.milesplit.com/meets/627924-group-a-meet-3-a-meet-2024",
   "why": [
-   "converter read no events: NO EVENTS [] MS-MODE names (no high-school expansion)"
+   "USATF youth club meet, held in the summer data"
   ],
   "year": 2024
  },
@@ -25057,7 +25591,6 @@
  },
  "64841": {
   "at": "2026-11-11T08:27:45",
-  "file": "backend/data/milesplit_bulk/staged/2010/Indoor/ms-expo-week-5-converted-times-2010.json",
   "match": "smaaw5m1boys",
   "name": "Expo Week 5 Converted times",
   "note": "converted (55 m equivalent) copy of SMAA week 5, held from sub5 w5m1/w5m2/w5m3",
@@ -25092,7 +25625,6 @@
  },
  "648575": {
   "at": "2026-11-05T19:57:29",
-  "file": "backend/data/milesplit_bulk/staged/2025/Indoor/ms-6pm-cheverus-marshwood-scarborough-thornton-academy-2025.json",
   "name": "6pm Cheverus-Marshwood-Scarborough-Thornton Academy",
   "rows": 408,
   "season": "Indoor",
@@ -25212,7 +25744,6 @@
  },
  "651004": {
   "at": "2026-11-05T19:58:18",
-  "file": "backend/data/milesplit_bulk/staged/2025/Indoor/ms-3pm-massabesic-south-portland-thornton-windham-2025.json",
   "name": "3PM-Massabesic-South Portland-Thornton-Windham",
   "rows": 554,
   "season": "Indoor",
@@ -25354,7 +25885,6 @@
  },
  "651512": {
   "at": "2026-11-05T19:58:25",
-  "file": "backend/data/milesplit_bulk/staged/2025/Indoor/ms-6pm-cheverus-falmouth-kennebunk-sanford-westbrook-2025.json",
   "name": "6pm CHEVERUS-FALMOUTH-KENNEBUNK-SANFORD-WESTBROOK",
   "rows": 399,
   "season": "Indoor",
@@ -25454,7 +25984,6 @@
  },
  "66326": {
   "at": "2026-11-08T15:38:39",
-  "file": "backend/data/milesplit_bulk/staged/2010/Indoor/ms-triple-c-cape-elizabeth-smc-and-scarborough-2010.json",
   "name": "Triple C: Cape Elizabeth, SMC, & Scarborough",
   "rows": 260,
   "season": "Indoor",
@@ -25464,7 +25993,6 @@
  },
  "66327": {
   "at": "2026-11-08T15:38:50",
-  "file": "backend/data/milesplit_bulk/staged/2010/Indoor/ms-triple-c-boys-and-girls-fesitval-2010.json",
   "name": "Triple C: Boys & Girls Fesitval",
   "rows": 960,
   "season": "Indoor",
@@ -25886,16 +26414,13 @@
   "year": 2025
  },
  "672310": {
-  "at": "2026-11-11T08:27:50",
-  "file": "backend/data/milesplit_bulk/staged/2025/Outdoor/ms-10th-annual-husky-throwdown-2025.json",
+  "at": "2026-11-13T11:29:22",
+  "file": "backend/data/parsed_results/2025/Outdoor/ms-10th-annual-husky-throwdown-2025.json",
   "name": "Husky Throwdown",
   "rows": 715,
   "season": "Outdoor",
-  "status": "review",
+  "status": "accepted",
   "url": "https://me.milesplit.com/meets/672310-10th-annual-husky-throwdown-2025",
-  "why": [
-   "result sheet dated 2024, MileSplit lists 2025-05-03"
-  ],
   "year": 2025
  },
  "674359": {
@@ -26563,16 +27088,13 @@
   "year": 2025
  },
  "684852": {
-  "at": "2026-11-11T07:57:13",
-  "file": "backend/data/milesplit_bulk/staged/2025/Outdoor/ms-ms-lincoln-bonny-eagle-smc-auburnwindham-2025.json",
+  "at": "2026-11-13T11:18:20",
+  "file": "backend/data/parsed_results/2025/Outdoor/ms-ms-lincoln-bonny-eagle-smc-auburnwindham-2025.json",
   "name": "MS-LINCOLN-BONNY EAGLE-SMC-AUBURN@WINDHAM",
-  "rows": 562,
+  "rows": 530,
   "season": "Outdoor",
-  "status": "review",
+  "status": "accepted",
   "url": "https://me.milesplit.com/meets/684852-ms-lincoln-bonny-eagle-smc-auburnwindham-2025",
-  "why": [
-   "26 incomplete rows"
-  ],
   "year": 2025
  },
  "684854": {
@@ -26656,42 +27178,33 @@
   "year": 2025
  },
  "686029": {
-  "at": "2026-11-11T07:59:10",
-  "file": "backend/data/milesplit_bulk/staged/2025/Outdoor/ms-ms-auburn-bonny-eagle-lewistonoxford-hills-2025.json",
+  "at": "2026-11-13T11:18:21",
+  "file": "backend/data/parsed_results/2025/Outdoor/ms-ms-auburn-bonny-eagle-lewistonoxford-hills-2025.json",
   "name": "MS-AUBURN-BONNY EAGLE-LEWISTON@OXFORD HILLS",
-  "rows": 529,
+  "rows": 508,
   "season": "Outdoor",
-  "status": "review",
+  "status": "accepted",
   "url": "https://me.milesplit.com/meets/686029-ms-auburn-bonny-eagle-lewistonoxford-hills-2025",
-  "why": [
-   "18 incomplete rows"
-  ],
   "year": 2025
  },
  "686030": {
-  "at": "2026-11-11T07:59:17",
-  "file": "backend/data/milesplit_bulk/staged/2025/Outdoor/ms-ms-biddeford-massabesic-saco-sanford-2025.json",
+  "at": "2026-11-13T11:18:21",
+  "file": "backend/data/parsed_results/2025/Outdoor/ms-ms-biddeford-massabesic-saco-sanford-2025.json",
   "name": "MS-BIDDEFORD-MASSABESIC-SACO @ SANFORD",
-  "rows": 564,
+  "rows": 540,
   "season": "Outdoor",
-  "status": "review",
+  "status": "accepted",
   "url": "https://me.milesplit.com/meets/686030-ms-biddeford-massabesic-saco-sanford-2025",
-  "why": [
-   "24 incomplete rows"
-  ],
   "year": 2025
  },
  "686253": {
-  "at": "2026-11-11T07:59:50",
-  "file": "backend/data/milesplit_bulk/staged/2025/Outdoor/ms-ms-marshwood-shapleigh-york-kennebunk-2025.json",
+  "at": "2026-11-13T11:29:23",
+  "file": "backend/data/parsed_results/2025/Outdoor/ms-ms-marshwood-shapleigh-york-kennebunk-2025.json",
   "name": "MS-MARSHWOOD-SHAPLEIGH-YORK @ KENNEBUNK",
-  "rows": 761,
+  "rows": 756,
   "season": "Outdoor",
-  "status": "review",
+  "status": "accepted",
   "url": "https://me.milesplit.com/meets/686253-ms-marshwood-shapleigh-york-kennebunk-2025",
-  "why": [
-   "result sheet dated 2024, MileSplit lists 2025-05-13"
-  ],
   "year": 2025
  },
  "686261": {
@@ -26775,16 +27288,13 @@
   "year": 2025
  },
  "687234": {
-  "at": "2026-11-11T08:02:58",
-  "file": "backend/data/milesplit_bulk/staged/2025/Outdoor/ms-ms-lincoln-gorham-lewiston-auburnedward-little-2025.json",
+  "at": "2026-11-13T11:18:22",
+  "file": "backend/data/parsed_results/2025/Outdoor/ms-ms-lincoln-gorham-lewiston-auburnedward-little-2025.json",
   "name": "MS-LINCOLN-GORHAM-LEWISTON-AUBURN@EDWARD LITTLE",
-  "rows": 670,
+  "rows": 652,
   "season": "Outdoor",
-  "status": "review",
+  "status": "accepted",
   "url": "https://me.milesplit.com/meets/687234-ms-lincoln-gorham-lewiston-auburnedward-little-2025",
-  "why": [
-   "18 incomplete rows"
-  ],
   "year": 2025
  },
  "687265": {
@@ -26858,17 +27368,13 @@
   "year": 2025
  },
  "687633": {
-  "at": "2026-11-11T08:04:31",
-  "file": "backend/data/milesplit_bulk/staged/2025/Outdoor/ms-ms-york-thornton-saco-marshwood-2025.json",
+  "at": "2026-11-13T11:18:23",
+  "file": "backend/data/parsed_results/2025/Outdoor/ms-ms-york-thornton-saco-marshwood-2025.json",
   "name": "MS-YORK-THORNTON-SACO @ MARSHWOOD",
-  "rows": 455,
+  "rows": 431,
   "season": "Outdoor",
-  "status": "review",
+  "status": "accepted",
   "url": "https://me.milesplit.com/meets/687633-ms-york-thornton-saco-marshwood-2025",
-  "why": [
-   "24 incomplete rows",
-   "24 rows with an unidentified school"
-  ],
   "year": 2025
  },
  "688204": {
@@ -26902,16 +27408,13 @@
   "year": 2025
  },
  "688839": {
-  "at": "2026-11-11T08:06:29",
-  "file": "backend/data/milesplit_bulk/staged/2025/Outdoor/ms-ms-windham-auburn-lewiston-oxford-hills-2025.json",
+  "at": "2026-11-13T11:18:24",
+  "file": "backend/data/parsed_results/2025/Outdoor/ms-ms-windham-auburn-lewiston-oxford-hills-2025.json",
   "name": "MS-WINDHAM-AUBURN-LEWISTON @OXFORD HILLS",
-  "rows": 548,
+  "rows": 522,
   "season": "Outdoor",
-  "status": "review",
+  "status": "accepted",
   "url": "https://me.milesplit.com/meets/688839-ms-windham-auburn-lewiston-oxford-hills-2025",
-  "why": [
-   "16 incomplete rows"
-  ],
   "year": 2025
  },
  "688974": {
@@ -26925,31 +27428,23 @@
   "year": 2025
  },
  "688975": {
-  "at": "2026-11-11T08:27:50",
-  "file": "backend/data/milesplit_bulk/staged/2025/Outdoor/ms-ms-biddeford-saco-york-shapleigh-2025.json",
+  "at": "2026-11-13T11:18:25",
+  "file": "backend/data/parsed_results/2025/Outdoor/ms-ms-biddeford-saco-york-shapleigh-2025.json",
   "name": "MS-BIDDEFORD-SACO-YORK @SHAPLEIGH",
-  "rows": 458,
+  "rows": 434,
   "season": "Outdoor",
-  "status": "review",
+  "status": "accepted",
   "url": "https://me.milesplit.com/meets/688975-ms-biddeford-saco-york-shapleigh-2025",
-  "why": [
-   "24 incomplete rows",
-   "24 rows with an unidentified school"
-  ],
   "year": 2025
  },
  "688976": {
-  "at": "2026-11-11T08:07:05",
-  "file": "backend/data/milesplit_bulk/staged/2025/Outdoor/ms-ms-sanford-wells-marshwood-2025.json",
+  "at": "2026-11-13T11:38:29",
+  "file": "backend/data/parsed_results/2025/Outdoor/ms-ms-sanford-wells-marshwood-2025.json",
   "name": "MS-SANFORD-WELLS @ MARSHWOOD",
-  "rows": 488,
+  "rows": 460,
   "season": "Outdoor",
-  "status": "review",
+  "status": "accepted",
   "url": "https://me.milesplit.com/meets/688976-ms-sanford-wells-marshwood-2025",
-  "why": [
-   "24 incomplete rows",
-   "122 rows with an unidentified school"
-  ],
   "year": 2025
  },
  "688977": {
@@ -26963,31 +27458,23 @@
   "year": 2025
  },
  "688978": {
-  "at": "2026-11-11T08:07:35",
-  "file": "backend/data/milesplit_bulk/staged/2025/Outdoor/ms-ms-kennebunk-noble-thornton-massabesic-2025.json",
+  "at": "2026-11-13T11:18:26",
+  "file": "backend/data/parsed_results/2025/Outdoor/ms-ms-kennebunk-noble-thornton-massabesic-2025.json",
   "name": "MS-KENNEBUNK-NOBLE-THORNTON-@ MASSABESIC",
-  "rows": 416,
+  "rows": 375,
   "season": "Outdoor",
-  "status": "review",
+  "status": "accepted",
   "url": "https://me.milesplit.com/meets/688978-ms-kennebunk-noble-thornton-massabesic-2025",
-  "why": [
-   "24 incomplete rows",
-   "24 rows with an unidentified school"
-  ],
   "year": 2025
  },
  "688979": {
-  "at": "2026-11-11T08:07:42",
-  "file": "backend/data/milesplit_bulk/staged/2025/Outdoor/ms-ms-scarborough-smc-westbrook-king-gorham-2025.json",
+  "at": "2026-11-13T11:18:26",
+  "file": "backend/data/parsed_results/2025/Outdoor/ms-ms-scarborough-smc-westbrook-king-gorham-2025.json",
   "name": "MS-SCARBOROUGH-SMC-WESTBROOK-KING @ GORHAM",
-  "rows": 528,
+  "rows": 492,
   "season": "Outdoor",
-  "status": "review",
+  "status": "accepted",
   "url": "https://me.milesplit.com/meets/688979-ms-scarborough-smc-westbrook-king-gorham-2025",
-  "why": [
-   "28 incomplete rows",
-   "28 rows with an unidentified school"
-  ],
   "year": 2025
  },
  "688980": {
@@ -27011,29 +27498,23 @@
   "year": 2025
  },
  "688984": {
-  "at": "2026-11-11T08:09:08",
-  "file": "backend/data/milesplit_bulk/staged/2025/Outdoor/ms-ms-shapleigh-marshwood-noble-2025.json",
+  "at": "2026-11-13T11:18:27",
+  "file": "backend/data/parsed_results/2025/Outdoor/ms-ms-shapleigh-marshwood-noble-2025.json",
   "name": "MS-SHAPLEIGH-MARSHWOOD @NOBLE",
-  "rows": 354,
+  "rows": 328,
   "season": "Outdoor",
-  "status": "review",
+  "status": "accepted",
   "url": "https://me.milesplit.com/meets/688984-ms-shapleigh-marshwood-noble-2025",
-  "why": [
-   "17 incomplete rows"
-  ],
   "year": 2025
  },
  "688986": {
-  "at": "2026-11-11T08:09:46",
-  "file": "backend/data/milesplit_bulk/staged/2025/Outdoor/ms-ms-gorham-lewiston-moorewindham-2025.json",
+  "at": "2026-11-13T11:18:27",
+  "file": "backend/data/parsed_results/2025/Outdoor/ms-ms-gorham-lewiston-moorewindham-2025.json",
   "name": "MS-GORHAM-LEWISTON-MOORE@WINDHAM",
-  "rows": 618,
+  "rows": 587,
   "season": "Outdoor",
-  "status": "review",
+  "status": "accepted",
   "url": "https://me.milesplit.com/meets/688986-ms-gorham-lewiston-moorewindham-2025",
-  "why": [
-   "22 incomplete rows"
-  ],
   "year": 2025
  },
  "688987": {
@@ -27047,17 +27528,13 @@
   "year": 2025
  },
  "688994": {
-  "at": "2026-11-11T08:09:53",
-  "file": "backend/data/milesplit_bulk/staged/2025/Outdoor/ms-ms-wells-york-kennebunk-2025.json",
+  "at": "2026-11-13T11:18:28",
+  "file": "backend/data/parsed_results/2025/Outdoor/ms-ms-wells-york-kennebunk-2025.json",
   "name": "MS-WELLS-YORK @KENNEBUNK",
-  "rows": 305,
+  "rows": 283,
   "season": "Outdoor",
-  "status": "review",
+  "status": "accepted",
   "url": "https://me.milesplit.com/meets/688994-ms-wells-york-kennebunk-2025",
-  "why": [
-   "18 incomplete rows",
-   "18 rows with an unidentified school"
-  ],
   "year": 2025
  },
  "689003": {
@@ -27071,14 +27548,12 @@
   "year": 2025
  },
  "689248": {
-  "at": "2026-11-11T08:01:20",
+  "at": "2026-11-13T11:43:47",
+  "file": "backend/data/parsed_results/2025/Outdoor/ms-ms-cape-freeport-mt-a-sv-at-lake-region-2025.json",
   "name": "MS Cape, Freeport, Mt. A, SV at Lake Region",
   "season": "Outdoor",
-  "status": "empty",
+  "status": "accepted",
   "url": "https://me.milesplit.com/meets/689248-ms-cape-freeport-mt-a-sv-at-lake-region-2025",
-  "why": [
-   "no readable results: NO EVENTS ['Results (no text)'] MS-MODE names (no high-school expansion)"
-  ],
   "year": 2025
  },
  "689270": {
@@ -27142,27 +27617,23 @@
   "year": 2025
  },
  "692228": {
-  "at": "2026-11-11T08:05:34",
-  "file": "backend/data/milesplit_bulk/staged/2025/Outdoor/ms-sanford-wells-massabesic-noble-2025.json",
+  "at": "2026-11-13T11:18:23",
+  "file": "backend/data/parsed_results/2025/Outdoor/ms-sanford-wells-massabesic-noble-2025.json",
   "name": "SANFORD-WELLS-MASSABESIC @ NOBLE",
-  "rows": 497,
+  "rows": 463,
   "season": "Outdoor",
-  "status": "review",
+  "status": "accepted",
   "url": "https://me.milesplit.com/meets/692228-sanford-wells-massabesic-noble-2025",
-  "why": [
-   "24 incomplete rows"
-  ],
   "year": 2025
  },
  "692851": {
-  "at": "2026-11-11T08:06:11",
+  "at": "2026-11-13T11:38:28",
+  "file": "backend/data/parsed_results/2025/Outdoor/ms-lewiston-edward-little-javelin-meet-2025.json",
   "name": "Lewiston-Edward Little Javelin meet",
+  "rows": 31,
   "season": "Outdoor",
-  "status": "review",
+  "status": "accepted",
   "url": "https://me.milesplit.com/meets/692851-lewiston-edward-little-javelin-meet-2025",
-  "why": [
-   "converter read no events: NO EVENTS []"
-  ],
   "year": 2025
  },
  "693932": {
@@ -27176,14 +27647,12 @@
   "year": 2025
  },
  "694886": {
-  "at": "2026-11-11T08:08:26",
+  "at": "2026-11-13T11:38:08",
+  "file": "backend/data/parsed_results/2025/Outdoor/ms-last-chance-meet-2025.json",
   "name": "Last Chance Meet",
   "season": "Outdoor",
-  "status": "review",
+  "status": "accepted",
   "url": "https://me.milesplit.com/meets/694886-last-chance-meet-2025",
-  "why": [
-   "converter read no events: NO EVENTS []"
-  ],
   "year": 2025
  },
  "697511": {
@@ -28631,13 +29100,14 @@
   "year": 2026
  },
  "726010": {
-  "at": "2026-11-05T11:26:05",
+  "at": "2026-11-13T11:43:47",
+  "file": "backend/data/parsed_results/2026/Indoor/ms-kvac-meet-5a-2026.json",
   "name": "KVAC Meet 5A",
   "season": "Indoor",
-  "status": "empty",
+  "status": "accepted",
   "url": "https://me.milesplit.com/meets/726010-kvac-meet-5a-2026",
   "why": [
-   "no readable results: NO EVENTS ['Results (no text)']"
+   "held from the timer's live team pages (milesplit.live); the formatted view's 356 rows agree"
   ],
   "year": 2026
  },
@@ -28755,13 +29225,13 @@
   "year": 2026
  },
  "728738": {
-  "at": "2026-11-05T14:21:47",
+  "at": "2026-11-13T11:38:08",
   "name": "Meet 7AB - DELETE",
   "season": "Indoor",
-  "status": "review",
+  "status": "skipped",
   "url": "https://me.milesplit.com/meets/728738-meet-7ab-delete-2026",
   "why": [
-   "converter read no events: NO EVENTS []"
+   "listing titled 'DELETE' with no results"
   ],
   "year": 2026
  },
@@ -28796,16 +29266,13 @@
   "year": 2026
  },
  "734285": {
-  "at": "2026-11-11T07:39:18",
-  "file": "backend/data/milesplit_bulk/staged/2026/Outdoor/ms-falmouth-middle-school-2026.json",
+  "at": "2026-11-13T11:18:07",
+  "file": "backend/data/parsed_results/2026/Outdoor/ms-falmouth-middle-school-2026.json",
   "name": "Falmouth Middle School",
-  "rows": 483,
+  "rows": 461,
   "season": "Outdoor",
-  "status": "review",
+  "status": "accepted",
   "url": "https://me.milesplit.com/meets/734285-falmouth-middle-school-2026",
-  "why": [
-   "22 incomplete rows"
-  ],
   "year": 2026
  },
  "734286": {
@@ -28839,16 +29306,13 @@
   "year": 2026
  },
  "734289": {
-  "at": "2026-11-11T07:37:53",
-  "file": "backend/data/milesplit_bulk/staged/2026/Outdoor/ms-bonny-eagle-home-meet-1-2026.json",
+  "at": "2026-11-13T11:29:18",
+  "file": "backend/data/parsed_results/2026/Outdoor/ms-bonny-eagle-home-meet-1-2026.json",
   "name": "Bonny Eagle Home Meet 1",
-  "rows": 555,
+  "rows": 538,
   "season": "Outdoor",
-  "status": "review",
+  "status": "accepted",
   "url": "https://me.milesplit.com/meets/734289-bonny-eagle-home-meet-1-2026",
-  "why": [
-   "result sheet dated 2025, MileSplit lists 2026-04-23"
-  ],
   "year": 2026
  },
  "734291": {
@@ -28892,16 +29356,13 @@
   "year": 2026
  },
  "734295": {
-  "at": "2026-11-11T07:47:03",
-  "file": "backend/data/milesplit_bulk/staged/2026/Outdoor/ms-westbrook-middle-school-2026.json",
+  "at": "2026-11-13T11:18:12",
+  "file": "backend/data/parsed_results/2026/Outdoor/ms-westbrook-middle-school-2026.json",
   "name": "Westbrook Middle School",
-  "rows": 877,
+  "rows": 829,
   "season": "Outdoor",
-  "status": "review",
+  "status": "accepted",
   "url": "https://me.milesplit.com/meets/734295-westbrook-middle-school-2026",
-  "why": [
-   "26 incomplete rows"
-  ],
   "year": 2026
  },
  "735306": {
@@ -30090,17 +30551,13 @@
   "year": 2026
  },
  "751457": {
-  "at": "2026-11-11T07:38:17",
-  "file": "backend/data/milesplit_bulk/staged/2026/Outdoor/ms-ms-kennebunk-saco-sanford-thornton-academy-2026.json",
+  "at": "2026-11-13T11:18:06",
+  "file": "backend/data/parsed_results/2026/Outdoor/ms-ms-kennebunk-saco-sanford-thornton-academy-2026.json",
   "name": "MS-KENNEBUNK-SACO-SANFORD @THORNTON ACADEMY",
-  "rows": 405,
+  "rows": 380,
   "season": "Outdoor",
-  "status": "review",
+  "status": "accepted",
   "url": "https://me.milesplit.com/meets/751457-ms-kennebunk-saco-sanford-thornton-academy-2026",
-  "why": [
-   "24 incomplete rows",
-   "24 rows with an unidentified school"
-  ],
   "year": 2026
  },
  "751472": {
@@ -30468,16 +30925,13 @@
   "year": 2026
  },
  "753756": {
-  "at": "2026-11-11T07:40:08",
-  "file": "backend/data/milesplit_bulk/staged/2026/Outdoor/ms-yarmouth-oob-grteely-seacoast-sacopee-valley-2026.json",
+  "at": "2026-11-13T11:29:18",
+  "file": "backend/data/parsed_results/2026/Outdoor/ms-yarmouth-oob-grteely-seacoast-sacopee-valley-2026.json",
   "name": "YARMOUTH-OOB-GRTEELY-SEACOAST @SACOPEE VALLEY",
-  "rows": 309,
+  "rows": 292,
   "season": "Outdoor",
-  "status": "review",
+  "status": "accepted",
   "url": "https://me.milesplit.com/meets/753756-yarmouth-oob-grteely-seacoast-sacopee-valley-2026",
-  "why": [
-   "result sheet dated 2025, MileSplit lists 2026-04-30"
-  ],
   "year": 2026
  },
  "753765": {
@@ -30563,16 +31017,13 @@
   "year": 2004
  },
  "754684": {
-  "at": "2026-11-11T07:41:13",
-  "file": "backend/data/milesplit_bulk/staged/2026/Outdoor/ms-ms-biddeford-massabesicsanford-2026.json",
+  "at": "2026-11-13T11:18:08",
+  "file": "backend/data/parsed_results/2026/Outdoor/ms-ms-biddeford-massabesicsanford-2026.json",
   "name": "MS-BIDDEFORD-MASSABESIC@SANFORD",
-  "rows": 425,
+  "rows": 397,
   "season": "Outdoor",
-  "status": "review",
+  "status": "accepted",
   "url": "https://me.milesplit.com/meets/754684-ms-biddeford-massabesicsanford-2026",
-  "why": [
-   "18 incomplete rows"
-  ],
   "year": 2026
  },
  "754686": {
@@ -30606,17 +31057,13 @@
   "year": 2026
  },
  "754757": {
-  "at": "2026-11-11T07:41:35",
-  "file": "backend/data/milesplit_bulk/staged/2026/Outdoor/ms-ms-noble-thornton-saco-wells-2026.json",
+  "at": "2026-11-13T11:18:08",
+  "file": "backend/data/parsed_results/2026/Outdoor/ms-ms-noble-thornton-saco-wells-2026.json",
   "name": "MS-NOBLE-THORNTON-SACO @ WELLS",
-  "rows": 450,
+  "rows": 422,
   "season": "Outdoor",
-  "status": "review",
+  "status": "accepted",
   "url": "https://me.milesplit.com/meets/754757-ms-noble-thornton-saco-wells-2026",
-  "why": [
-   "24 incomplete rows",
-   "24 rows with an unidentified school"
-  ],
   "year": 2026
  },
  "754822": {
@@ -30797,16 +31244,13 @@
   "year": 2026
  },
  "757938": {
-  "at": "2026-11-11T07:50:00",
-  "file": "backend/data/milesplit_bulk/staged/2026/Outdoor/ms-kennebunk-middle-school-2026.json",
+  "at": "2026-11-13T11:18:12",
+  "file": "backend/data/parsed_results/2026/Outdoor/ms-kennebunk-middle-school-2026.json",
   "name": "Kennebunk Middle School",
-  "rows": 506,
+  "rows": 474,
   "season": "Outdoor",
-  "status": "review",
+  "status": "accepted",
   "url": "https://me.milesplit.com/meets/757938-kennebunk-middle-school-2026",
-  "why": [
-   "23 incomplete rows"
-  ],
   "year": 2026
  },
  "75847": {
@@ -30939,17 +31383,13 @@
   "year": 2026
  },
  "759090": {
-  "at": "2026-11-11T07:44:00",
-  "file": "backend/data/milesplit_bulk/staged/2026/Outdoor/ms-ms-sanford-noble-wells-thornton-noble-2026.json",
+  "at": "2026-11-13T11:18:09",
+  "file": "backend/data/parsed_results/2026/Outdoor/ms-ms-sanford-noble-wells-thornton-noble-2026.json",
   "name": "MS-SANFORD-NOBLE-WELLS-THORNTON @NOBLE",
-  "rows": 473,
+  "rows": 446,
   "season": "Outdoor",
-  "status": "review",
+  "status": "accepted",
   "url": "https://me.milesplit.com/meets/759090-ms-sanford-noble-wells-thornton-noble-2026",
-  "why": [
-   "24 incomplete rows",
-   "24 rows with an unidentified school"
-  ],
   "year": 2026
  },
  "759093": {
@@ -30963,17 +31403,13 @@
   "year": 2026
  },
  "759098": {
-  "at": "2026-11-11T07:44:18",
-  "file": "backend/data/milesplit_bulk/staged/2026/Outdoor/ms-ms-biddeford-kennebunk-marshwood-2026.json",
+  "at": "2026-11-13T11:18:09",
+  "file": "backend/data/parsed_results/2026/Outdoor/ms-ms-biddeford-kennebunk-marshwood-2026.json",
   "name": "MS-BIDDEFORD-KENNEBUNK-@MARSHWOOD",
-  "rows": 354,
+  "rows": 336,
   "season": "Outdoor",
-  "status": "review",
+  "status": "accepted",
   "url": "https://me.milesplit.com/meets/759098-ms-biddeford-kennebunk-marshwood-2026",
-  "why": [
-   "18 incomplete rows",
-   "18 rows with an unidentified school"
-  ],
   "year": 2026
  },
  "759099": {
@@ -31047,29 +31483,23 @@
   "year": 2026
  },
  "759117": {
-  "at": "2026-11-11T07:51:40",
-  "file": "backend/data/milesplit_bulk/staged/2026/Outdoor/ms-ms-mt-val-dirigo-spruce-day-mtn-lisbon-buck-maratelstar-2026.json",
+  "at": "2026-11-13T11:29:19",
+  "file": "backend/data/parsed_results/2026/Outdoor/ms-ms-mt-val-dirigo-spruce-day-mtn-lisbon-buck-maratelstar-2026.json",
   "name": "MS-MT VAL-DIRIGO-SPRUCE-DAY MTN--LISBON-BUCK-MARA@TELSTAR",
-  "rows": 682,
+  "rows": 667,
   "season": "Outdoor",
-  "status": "review",
+  "status": "accepted",
   "url": "https://me.milesplit.com/meets/759117-ms-mt-val-dirigo-spruce-day-mtn-lisbon-buck-maratelstar-2026",
-  "why": [
-   "result sheet dated 2025, MileSplit lists 2026-05-28"
-  ],
   "year": 2026
  },
  "759124": {
-  "at": "2026-11-11T07:46:23",
-  "file": "backend/data/milesplit_bulk/staged/2026/Outdoor/ms-sacopee-valley-yarmouth-traip-greely-oob-gray-new-gloucester-2026.json",
+  "at": "2026-11-13T11:29:19",
+  "file": "backend/data/parsed_results/2026/Outdoor/ms-sacopee-valley-yarmouth-traip-greely-oob-gray-new-gloucester-2026.json",
   "name": "SACOPEE VALLEY-YARMOUTH-TRAIP-GREELY-OOB@ GRAY NEW GLOUCESTER",
-  "rows": 636,
+  "rows": 591,
   "season": "Outdoor",
-  "status": "review",
+  "status": "accepted",
   "url": "https://me.milesplit.com/meets/759124-sacopee-valley-yarmouth-traip-greely-oob-gray-new-gloucester-2026",
-  "why": [
-   "result sheet dated 2024, MileSplit lists 2026-05-15"
-  ],
   "year": 2026
  },
  "759126": {
@@ -31083,16 +31513,13 @@
   "year": 2026
  },
  "759135": {
-  "at": "2026-11-11T07:46:44",
-  "file": "backend/data/milesplit_bulk/staged/2026/Outdoor/ms-ms-marshwood-sanford-wells-2026.json",
+  "at": "2026-11-13T11:18:10",
+  "file": "backend/data/parsed_results/2026/Outdoor/ms-ms-marshwood-sanford-wells-2026.json",
   "name": "MS- MARSHWOOD-SANFORD@ WELLS",
-  "rows": 493,
+  "rows": 467,
   "season": "Outdoor",
-  "status": "review",
+  "status": "accepted",
   "url": "https://me.milesplit.com/meets/759135-ms-marshwood-sanford-wells-2026",
-  "why": [
-   "18 incomplete rows"
-  ],
   "year": 2026
  },
  "759137": {
@@ -31329,16 +31756,13 @@
   "year": 2026
  },
  "762825": {
-  "at": "2026-11-11T07:50:39",
-  "file": "backend/data/milesplit_bulk/staged/2026/Outdoor/ms-ms-so-portland-windham-lyman-moore-kingauburn-2026.json",
+  "at": "2026-11-13T11:18:13",
+  "file": "backend/data/parsed_results/2026/Outdoor/ms-ms-so-portland-windham-lyman-moore-kingauburn-2026.json",
   "name": "MS--SO PORTLAND-WINDHAM-LYMAN MOORE-KING@AUBURN",
-  "rows": 667,
+  "rows": 631,
   "season": "Outdoor",
-  "status": "review",
+  "status": "accepted",
   "url": "https://me.milesplit.com/meets/762825-ms-so-portland-windham-lyman-moore-kingauburn-2026",
-  "why": [
-   "27 incomplete rows"
-  ],
   "year": 2026
  },
  "762831": {
@@ -31362,16 +31786,13 @@
   "year": 2026
  },
  "763138": {
-  "at": "2026-11-11T07:51:11",
-  "file": "backend/data/milesplit_bulk/staged/2026/Outdoor/ms-ms-marshwood-saco-noble-2026.json",
+  "at": "2026-11-13T11:18:13",
+  "file": "backend/data/parsed_results/2026/Outdoor/ms-ms-marshwood-saco-noble-2026.json",
   "name": "MS-MARSHWOOD-SACO @NOBLE",
-  "rows": 432,
+  "rows": 403,
   "season": "Outdoor",
-  "status": "review",
+  "status": "accepted",
   "url": "https://me.milesplit.com/meets/763138-ms-marshwood-saco-noble-2026",
-  "why": [
-   "18 incomplete rows"
-  ],
   "year": 2026
  },
  "763140": {
@@ -32049,14 +32470,14 @@
  },
  "82044": {
   "at": "2026-11-11T09:37:59",
+  "match": "SMAA%20Boys%20Meet%201%20Week%201",
   "name": "SMAA: Noble, Deering Westbrook",
+  "note": "sub5 SMAA Boys/Girls Meet 1 Week 1 hold this meet; MileSplit's postings are the boys with initials converted to metric plus the girls twice (raw and converted)",
   "rows": 264,
   "season": "Indoor",
   "status": "duplicate",
   "url": "https://me.milesplit.com/meets/82044-smaa-noble-deering-westbrook-2011",
-  "year": 2011,
-  "match": "SMAA%20Boys%20Meet%201%20Week%201",
-  "note": "sub5 SMAA Boys/Girls Meet 1 Week 1 hold this meet; MileSplit's postings are the boys with initials converted to metric plus the girls twice (raw and converted)"
+  "year": 2011
  },
  "82046": {
   "at": "2026-11-08T07:07:23",
@@ -32133,7 +32554,9 @@
  },
  "82060": {
   "at": "2026-11-11T09:37:59",
+  "match": "smaaboyschamps",
   "name": "SMAA Southwestern Championship",
+  "note": "sub5 smaaboyschamps / smaachampsgirlsresults hold this meet raw; MileSplit's pages add the Boys Entries list (seed marks) and Converted copies",
   "rows": 660,
   "season": "Indoor",
   "status": "duplicate",
@@ -32141,9 +32564,7 @@
   "why": [
    "Boys Boys 600 Yard Run OPEN DIV: times out of place order (4) or over 90 minutes"
   ],
-  "year": 2011,
-  "note": "sub5 smaaboyschamps / smaachampsgirlsresults hold this meet raw; MileSplit's pages add the Boys Entries list (seed marks) and Converted copies",
-  "match": "smaaboyschamps"
+  "year": 2011
  },
  "82061": {
   "at": "2026-11-08T07:15:31",
@@ -32561,7 +32982,6 @@
  },
  "83540": {
   "at": "2026-11-11T08:27:42",
-  "file": "backend/data/milesplit_bulk/staged/2011/Indoor/ms-kvac-championship-2011.json",
   "match": "Results%20-%20KVAC%20Class%20A",
   "name": "KVAC Championship",
   "rows": 16,
