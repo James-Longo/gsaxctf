@@ -1729,7 +1729,7 @@ class Model:
         """leg rows with pleg, the chance each runner is on the relay if it runs."""
         if self.legs is None or L is None or not len(L):
             return None
-        out = L[['champ', 'cutoff', 'label', 'team', 'event', 'aid']].copy()
+        out = L[['champ', 'cutoff', 'label', 'team', 'event', 'aid'] + (['leg_gap'] if 'leg_gap' in L else [])].copy()
         out['pleg'] = self.legs.predict_proba(L[LEG_FEATS])[:, 1]
         return out
 
@@ -2116,14 +2116,22 @@ def next_edition(champ, year):
     return c
 
 
-def predict_season(year, asof, sims=5000, quiet=False, entries=None):
+SB_LINE = 0.95       # a state meet's line: this quantile of its entrants' season bests
+
+
+def predict_season(year, asof, sims=5000, quiet=False, entries=None, only=None):
     """Predict every championship of academic year `year` (named by its
     spring) from results before `asof`. Championships already on file use
     their real teams and date; the rest are copied from their last edition.
 
     entries: {championship id: entry-list path or list of rows}. Those meets
     are simulated with known entries (see apply_entries), the rest with
-    unknown entries."""
+    unknown entries. only: predict just these championship ids.
+
+    Each prediction's rows also carry what the entry optimizer needs
+    (track_entries): races this season in the event (cur_same_n), season
+    best (sb), rank in the field; and `lines`, a state meet's line per event
+    (the SB_LINE quantile of its last edition's entrants' season bests)."""
     import pandas as pd
     fz, champs, tr = setup()
     _G.update(fz=fz, tr=tr)
@@ -2138,9 +2146,12 @@ def predict_season(year, asof, sims=5000, quiet=False, entries=None):
             continue          # a meet not held lately
         have = next((x for x in champs if x['year'] == year and
                      (x['season'], x['kind'], x.get('conference'), x['division'], x['gender']) == k), None)
-        targets.append((have or next_edition(c, year), tr[c['id']], have is not None))
+        nxt = have or next_edition(c, year)
+        if only is None or nxt['id'] in only:
+            targets.append((nxt, tr[c['id']], have is not None))
     A0 = pd.read_pickle(os.path.join(CACHE_DIR, 'athletes.pkl'))
     set_lines(A0)
+    lines95 = qual_lines(A0, SB_LINE)
     A = add_columns(A0)
     R = add_columns(pd.read_pickle(os.path.join(CACHE_DIR, 'relays.pkl')))
     L = leg_columns(pd.read_pickle(os.path.join(CACHE_DIR, 'legs.pkl')))
@@ -2167,6 +2178,12 @@ def predict_season(year, asof, sims=5000, quiet=False, entries=None):
         Adf = add_columns(pd.DataFrame(a).assign(aid=lambda d: d.aid.astype(str)))
         Rdf = add_columns(pd.DataFrame(r).assign(aid=lambda d: d.aid.astype(str))) if r else Adf.iloc[:0]
         pred = model.predict(Adf, Rdf)
+        extra = Adf[['aid', 'event', 'cur_same_n', 'field_rank']].assign(
+            sb=np.where(Adf.cur_sig == 0, Adf.anchor + Adf.cur_d, np.nan))
+        pred = pred.merge(extra.drop_duplicates(['aid', 'event']), on=['aid', 'event'], how='left')
+        key = champ['id'][5:]
+        prev = [y_ for (k_, _, y_) in lines95 if k_ == key and y_ < year]
+        lines = {e: v for (k_, e, y_), v in lines95.items() if prev and k_ == key and y_ == max(prev)}
         lp = model.predict_legs(leg_columns(pd.DataFrame(lg)).assign(aid=lambda d: d.aid.astype(str))) if lg else None
         dropped = 0
         if ent is not None:
@@ -2177,7 +2194,8 @@ def predict_season(year, asof, sims=5000, quiet=False, entries=None):
                                   legs=None if ent else lp)
         out.append(dict(champ=champ, cutoff=cutoff, held=held, pred=pred.assign(**{k: v for k, v in st.items() if k != 'legs'}),
                         legs=None if ent else lp,
-                        teams=team_summary(pts, teams), table=table,
+                        teams=team_summary(pts, teams), table=table, lines=lines,
+                        last_truth=last_truth,
                         entries='known' if ent else 'unknown',
                         entry_stats=dict(listed=len(ent), unmatched=ent.unmatched,
                                          no_results=sum(k.startswith('entry:') for k, _ in ent.items),
