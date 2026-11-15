@@ -2567,6 +2567,8 @@ FILE_RULES += [
     (['Farmington'], 'Outdoor', (2026, 2026), r'^NE-(boys|girls)-results$', 'oos-auto-ct-farmington'),
     (['Cranston East'], 'Outdoor', (2026, 2026), r'^NE-boys-results$', 'oos-auto-ri-cranston-e'),
     (['Greater Lawrance'], 'Outdoor', (2026, 2026), r'^NE-boys-results$', 'oos-auto-ma-greater-lawrence-tech'),
+    # pole vaulter Franklin Feliz 'Lawrence' is in no Maine meet (row set to 'Lawrence MA'; Romeo Goodwin's 'Lawrence' is Maine)
+    (['Lawrence MA'], 'Outdoor', (2026, 2026), r'^NE-boys-results$', '?'),
     (['North Haven'], 'Outdoor', (2026, 2026), r'^NE-girls-results$', 'oos-auto-ct-north-haven'),
     (['Exeter-West'], 'Outdoor', (2026, 2026), r'^NE-girls-results$', 'oos-auto-ri-exeter-w-gr'),
     (['Scituate'], 'Outdoor', (2026, 2026), r'^NE-girls-results$', 'oos-auto-ri-scituate'),

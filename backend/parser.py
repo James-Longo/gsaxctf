@@ -1139,8 +1139,12 @@ class Sub5ColumnParser:
                 parts += self.parse_headerless_block(dict(g, bib_first=bib)) or []
             # (same rows both ways: the reading that cuts fewer marks - under the first page's columns a
             # continuation page's marks lose their last digits, '18.28' -> '18.', ALMS 2026)
-            cut = lambda rs: sum(1 for r in rs or [] if re.search(r'\.$|-\d{2}\.\d$', str(r.get('result') or '')))
-            better = len(parts) > len(whole or []) or (len(parts) == len(whole or []) and cut(parts) < cut(whole))
+            # ('1:19.56' -> '1:', '4-10' -> '4-', '3:57.74' -> '3:57.7' too, Aroostook/ALMS 2026: then the
+            # reading that keeps more digits)
+            cut = lambda rs: sum(1 for r in rs or [] if re.search(r'[.:-]$|-\d{2}\.\d$', str(r.get('result') or '')))
+            digits = lambda rs: sum(len(re.sub(r'\D', '', str(r.get('result') or ''))) for r in rs or [])
+            better = len(parts) > len(whole or []) or (len(parts) == len(whole or []) and
+                                                         (cut(parts), -digits(parts)) < (cut(whole), -digits(whole)))
             parsed_blocks.append((base, parts if better else whole))
 
         parsed_events = []
@@ -1387,7 +1391,9 @@ class Sub5ColumnParser:
                 if mb:
                     start += mb.end()
             rows.append((line, start, body_end, (mark, exhib, place, team_place)))
-        if len(rows) < 3:
+        # (a track continuation page may hold only the last one or two finishers:
+        # "....Event 9 Girls 100 Meter Hurdles" / "20 Saphira Hanning ... 27.97", ALMS 2026)
+        if len(rows) < (1 if ev.get('continuation') and all(r[3][0] for r in rows) else 3):
             return self._untimed_rows(ev)
 
         # vote for the grade column (right edge: "9" and "12" right-align)

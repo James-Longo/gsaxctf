@@ -2887,6 +2887,23 @@ def test_continuation_page_marks_not_cut():
     assert not [r for r in ev['results'] if str(r['result']).endswith('.')]
     assert ('Harper Pearson', '18.28') in [(r.get('athlete'), r['result']) for r in ev['results']]
 
+
+def test_continuation_page_with_two_rows_is_kept():
+    """A continuation page holding only an event's last two finishers ('....Event 9 Girls 100 Meter Hurdles',
+    places 20-21) was dropped: fewer than 3 rows were read as no rows. ALMS meet 2, 5/13/2026."""
+    src = os.path.join(ROOT, 'backend', 'data', 'sub5_archive', '2026', 'Outdoor', '2026-alms-tf-meet2-pims-results.pdf')
+    if not os.path.exists(src):
+        return
+    import json, tempfile
+    from backend import scraper_v2 as sv
+    with tempfile.TemporaryDirectory() as td:
+        out = os.path.join(td, 'p.json')
+        sv._parse_one_file((src, out, 'Outdoor'))
+        d = json.load(open(out))
+    ev = next(e for e in d['events'] if e['event'].startswith('100 Meter Hurdles') and e['gender'] == 'Girls')
+    got = [(r.get('place'), r.get('athlete'), r['result']) for r in ev['results']]
+    assert (20, 'Saphira Hanning', '27.97') in got and (21, 'Harper Pearson', '32.44') in got, got[-3:]
+
 def test_flagged_feet_mark_beats_its_metric_conversion():
     # NYI-results 2026: 'J5-06.00      1.67m' (jump-off) and '18-01.00R     5.51m'
     # (record) were stored as 1.67 and 5.51
