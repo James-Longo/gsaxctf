@@ -3979,22 +3979,6 @@ def test_milesplit_track_grade_division_headers():
     assert all(r.get('athlete') for e in events for r in e['results'])
 
 
-if __name__ == '__main__':
-    qaqc._ensure_team_mapping()
-    failed = 0
-    for name, fn in sorted(globals().items()):
-        if name.startswith('test_') and callable(fn):
-            try:
-                fn()
-                print('PASS', name)
-            except Exception as e:  # noqa: BLE001
-                failed += 1
-                import traceback
-                traceback.print_exc()
-                print('FAIL', name, e)
-    sys.exit(1 if failed else 0)
-
-
 def test_milesplit_racetab_division_headers_not_merged():
     """A RaceTab sheet with 'Junior Boys ...' division headers (WMC 2010): parse_race reads no such
     header and would run the section into the race before; the writer reads the sheet with parse()."""
@@ -4209,3 +4193,32 @@ def test_milesplit_high_jump_miss_note_after_name():
     assert [drop_nickname(MISSES.sub('', a).strip()) for a in
             ["Elena Owen (1 miss at 4-4)", "Justin Williams(1 miss at 3'10)", "Lydia Tanguay ( no misses)"]] == \
         ['Elena Owen', 'Justin Williams', 'Lydia Tanguay']
+
+
+def test_store_drops_tags_after_names():
+    """Sheets print a co-op or school tag after the name (KVAC: "Miles Fleming (H)", "Nolan Circo (H";
+    Hampden "(U)"; 2019 KVAC 'Attieri (Osorio), Yabeth') and a '"' for the apostrophe. A nickname
+    between the names ("Hung (Brian) Dang") stays: the athlete catalog joins Hung and Brian through it."""
+    from backend.scraper_v2 import strip_nickname
+    assert [strip_nickname(n) for n in ['Miles Fleming (H)', 'Nolan Circo (H', 'Brianna Leneski (U)',
+            'Colin Harrington(U)', 'Colin Harrington - U', 'Attieri (Osorio), Yabeth', 'Jennifer L"Hommedieu', "D'Angelo O'Brien",
+            'Hung (Brian) Dang', "James 'jeb' Boksanski", 'Brunswick/Hyde (B) Relay']] == \
+        ['Miles Fleming', 'Nolan Circo', 'Brianna Leneski', 'Colin Harrington', 'Colin Harrington', 'Attieri, Yabeth',
+         "Jennifer L'Hommedieu", "D'Angelo O'Brien", 'Hung (Brian) Dang', "James 'jeb' Boksanski",
+         'Brunswick/Hyde (B) Relay']
+
+
+if __name__ == '__main__':
+    qaqc._ensure_team_mapping()
+    failed = 0
+    for name, fn in sorted(globals().items()):
+        if name.startswith('test_') and callable(fn):
+            try:
+                fn()
+                print('PASS', name)
+            except Exception as e:  # noqa: BLE001
+                failed += 1
+                import traceback
+                traceback.print_exc()
+                print('FAIL', name, e)
+    sys.exit(1 if failed else 0)

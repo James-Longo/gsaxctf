@@ -706,6 +706,21 @@ _LEG_GRADE = re.compile(r'\s+(?:FR|SO|JR|SR|Fr|So|Jr|Sr|[5-9]|1[0-2])$')
 _LEG_GRADE_CAPS = re.compile(r'\s+(?:FR|SO|JR|SR)$')
 
 
+def strip_nickname(name):
+    """A tag printed after a runner's name dropped: "Nolan Circo (H)" (a co-op member's home
+    school, also cut short "(H"), "Brianna Leneski (U)", "Rachel Kerr (Lee)"; a '"' typed for
+    the apostrophe ('Jennifer L"Hommedieu') becomes "'". A nickname between first and last
+    name ("Hung (Brian) Dang", "James 'Jeb' Boksanski") stays: it is what joins the runner's
+    two printed first names. Relay team names ("Brunswick/Hyde (B) Relay") are left alone."""
+    if not name or '/' in name or re.search(r'(?i)\brelay\b', name):
+        return name
+    s = re.sub(r'(?<=[A-Za-z])"(?=[A-Za-z])', "'", name)
+    s = re.sub(r"(?<=[a-z])\s*\((?:[A-Z][A-Za-z'-]{0,11})\)?(?=\s*(?:,|$))", '', s)
+    s = re.sub(r'\s*\([A-Z]\)?(?=\s|,|$)', '', s)   # a one-letter co-op tag anywhere: 'Fleming, Miles (H)'
+    s = re.sub(r'(?<=[a-z])\s+-\s?[A-Z]$', '', s)    # ... or after a dash: 'Colin Harrington - U', 'Liz Jones - V'
+    return re.sub(r'\s+', ' ', s).strip() or name
+
+
 def clean_leg_grades(legs):
     """Relay legs printed with their class year ("1) Norah Garvey FR
     2) Willow Whitten FR"): the year is not part of the name. A capital
@@ -2476,7 +2491,7 @@ class Sub5ScraperV2:
         if not name: return ""
         name = re.sub(r'\s+', ' ', name.replace('\ufffd', ' ')).strip()   # (an undecodable byte: 'Laakkonen, Otto \ufffd', 2018 Phillips Exeter; a double space, 'Anthony  Quintiliani', 2010 Triple C, splits a runner)
         name = re.sub(r'^[\s#\-]*\d+[\s.\-]*', '', name).strip()
-        
+
         # Check manual fixes on the raw cleaned name first
         for ac in self.manual_fixes.get('athlete_corrections', []):
             if ac['old_name'].lower() == name.lower():
@@ -2519,6 +2534,8 @@ class Sub5ScraperV2:
                     else:
                         name = f"{first_name} {last_name}"
                         
+        # (after 'Last, First' is turned round: in 'Kivova, Makanda (Edna)' the nickname sits at the end)
+        name = strip_nickname(name)
         # Check manual fixes again on the normalized name
         for ac in self.manual_fixes.get('athlete_corrections', []):
             if ac['old_name'].lower() == name.lower():
