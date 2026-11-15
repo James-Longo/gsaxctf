@@ -2904,6 +2904,40 @@ def test_continuation_page_with_two_rows_is_kept():
     got = [(r.get('place'), r.get('athlete'), r['result']) for r in ev['results']]
     assert (20, 'Saphira Hanning', '27.97') in got and (21, 'Harper Pearson', '32.44') in got, got[-3:]
 
+
+def test_milesplit_second_sheet_of_a_race_in_other_units_is_one_race():
+    """A meet posted as two sheets (MAISAD 2026, Wells/York/Traip 2026): the second prints tenths, half inches,
+    names cut short, relays by a longer school name and the event by another name; its rows are the first's,
+    and the copy that prints grades lends them."""
+    import sys
+    sys.argv = ['x', 'write', 's', '2026', 'Outdoor']
+    from backend import milesplit as ms
+    first = [dict(event='Boys 100 Meter Dash', gender='Boys', results=[
+        dict(place=1, athlete='Ben Edelblut', school='Hyde', result='11.31', type='Finals'),
+        dict(place=2, athlete='Tamarr Washington', school='KHS', result='11.56', type='Finals'),
+        dict(place=3, athlete='Lillain Courtois', school='Wells', result='12.03', type='Finals')]),
+        dict(event='Boys Discus Throw', gender='Boys', results=[
+        dict(place=4, athlete='Nathaniel Simmons', school='Hyde', result='103-7', type='Finals'),
+        dict(place=5, athlete='Carlos Montes de Oca Moreta', school='Hyde', result='99-8', type='Finals')]),
+        dict(event='Boys 4x800 Meter Relay', gender='Boys', is_relay=True, results=[
+        dict(place=1, school='Poland Regional High School', result='9:09.76', type='Finals')])]
+    second = [dict(event='Boys Varsity 100 Meters', gender='Boys', results=[
+        dict(place=1, athlete='Ben Edelblut', school='Hyde', result='11.3', type='Finals', grade='12'),
+        dict(place=2, athlete='Tamarr Washington', school='KHS', result='11.6', type='Finals'),
+        dict(place=3, athlete='Lillian Courtois', school='Wells', result='12.03', type='Finals')]),
+        dict(event='Boys Varsity 200 Meters', gender='Boys', results=[
+        dict(place=1, athlete='New Runner', school='Wells', result='26.20', type='Finals')]),
+        dict(event='Boys Varsity Discus', gender='Boys', results=[
+        dict(place=4, athlete='Nathaniel Simmons', school='Hyde', result='103-07.50', type='Finals'),
+        dict(place=5, athlete='Carlos Montes de O', school='Hyde', result='99-08', type='Finals')]),
+        dict(event='Boys Varsity 4x800 Relay', gender='Boys', is_relay=True, results=[
+        dict(place=1, school='Poland Regional', result='9:09.76', type='Finals')])]
+    left = ms.drop_reposted(first, second)
+    assert [(e['event'], [x['athlete'] for x in e['results']]) for e in left] == [('Boys Varsity 200 Meters', ['New Runner'])], left
+    assert first[0]['results'][0]['grade'] == '12'
+    assert first[1]['results'][0]['result'] == '103-07.50'
+
+
 def test_flagged_feet_mark_beats_its_metric_conversion():
     # NYI-results 2026: 'J5-06.00      1.67m' (jump-off) and '18-01.00R     5.51m'
     # (record) were stored as 1.67 and 5.51

@@ -190,8 +190,9 @@ def parse(text):
             ln = ln.replace('NAME', 'Name').replace('YR', 'Yr').replace('TEAM', 'Team').replace('MARK', 'Mark')
         # (a bib column heads the table: "Comp#  Name  Year School  Finals", 2019 New England Indoor)
         # (a place and bib column ahead: "Pl     Bib   Name   Yr   Team   Mark   Score", KVAC 2021 Brunswick)
-        if re.match(r'\s*(?:Pl\s+(?:Bib\s+)?)?(?:Comp#\s+)?(Name|School|Team)\s', ln) and re.search(r'Finals|Prelims|Mark|Time|Result|Points',ln):   # relay tables headed "Team ... Finals" (2014-15 MS meets)
-            hdr = ln; cur['is_relay']=(cur['is_relay'] and ms_own) or not re.match(r'\s*(?:Pl\s+(?:Bib\s+)?)?(?:Comp#\s+)?Name',ln); i+=1
+        # ("Athlete  Yr Team  Mark  H#": a MileSplit-typed varsity sheet, Wells/York/Traip 2026)
+        if re.match(r'\s*(?:Pl\s+(?:Bib\s+)?)?(?:Comp#\s+)?(Name|Athlete|School|Team)\s', ln) and re.search(r'Finals|Prelims|Mark|Time|Result|Points',ln):   # relay tables headed "Team ... Finals" (2014-15 MS meets)
+            hdr = ln; cur['is_relay']=(cur['is_relay'] and ms_own) or not re.match(r'\s*(?:Pl\s+(?:Bib\s+)?)?(?:Comp#\s+)?(?:Name|Athlete)',ln); i+=1
             if 'Prelim' in ln and 'Finals' not in ln: sec='Prelims'
             continue
         rm = re.match(r'\s*(\d+|--)\s+(\S.*)$', ln)
@@ -1278,7 +1279,11 @@ def drop_reposted(events, e):
         if fm: return round(int(fm.group(1)) * 12 + float(fm.group(2)), 2)
         tm = re.fullmatch(r'(?:(\d+):)?(\d+(?:\.\d+)?)', m or '')
         return round(int(tm.group(1) or 0) * 60 + float(tm.group(2)), 2) if tm else m
-    def _rk(ev, x): return (re.sub(r'\W', '', ev['event'].lower()), ' '.join(sorted(re.sub(r'[^a-z ]', '', (x.get('athlete') or x.get('school') or '').lower().replace(',', ' ')).split())), _mv(x.get('result')))
+    def _ek(name):   # one race under both pages' names: "Boys Varsity 100 Meters" / "Boys 100 Meter Dash", "Girls Middle School
+        # 100 Meter" / "Girls 100 Meter Dash", "Boys 6th 100 Meter" / "Boys 100 Meter Dash 6th grade", "Boys Varsity Discus" / "Boys Discus Throw"
+        n = re.sub(r'race\s+walk', 'racewalk', re.sub(r'(?<=\d)\s*m\b', ' ', name.lower()))
+        return ' '.join(sorted(w for w in re.findall(r'[a-z0-9]+', n) if w not in ('varsity', 'meter', 'meters', 'dash', 'run', 'throw', 'middle', 'school', 'grade', 'division')))
+    def _rk(ev, x): return (_ek(ev['event']), ' '.join(sorted(re.sub(r'[^a-z ]', '', (x.get('athlete') or x.get('school') or '').lower().replace(',', ' ')).split())), _mv(x.get('result')))
     held = defaultdict(list)
     for ev in events:
         for x in ev['results']:
@@ -1288,9 +1293,46 @@ def drop_reposted(events, e):
         if any(same_runner(k[1], n) for n, _ in held[(k[0], k[2])]): return True
         return near and isinstance(k[2], float) and '-' not in (x.get('result') or '-') and any(
             same_runner(k[1], n) and p == (x.get('place'), x.get('type')) for m in (round(k[2] - 0.01, 2), round(k[2] + 0.01, 2)) for n, p in held[(k[0], m)])
+    # a second sheet of the same race in other units (MAISAD meet 4 2026: Hy-Tek tenths '11.3', '4:34.3' beside
+    # '11.31', '4:34.26'; the championship's '103-07.50' beside '103-7', names cut at 18 letters 'Carlos Montes
+    # de O'): same place and round, the same runner or a name cut from theirs, a mark within 0.1 s or 1 inch
+    rows_ev = defaultdict(list)
+    for ev in events:
+        for x in ev['results']:
+            rows_ev[_rk(ev, x)[0]].append(x)
+    def _twin(ev, x):
+        k = _rk(ev, x)
+        if not isinstance(k[2], float) or x.get('place') is None:
+            return None
+        tol = 1.0 if '-' in (x.get('result') or '') else 0.1
+        nm = (x.get('athlete') or x.get('school') or '').lower()
+        for y in rows_ev[k[0]]:
+            yk = _rk(ev, y); ym = (y.get('athlete') or y.get('school') or '').lower()
+            if (y.get('place'), y.get('type')) == (x.get('place'), x.get('type')) and isinstance(yk[2], float) \
+                    and abs(yk[2] - k[2]) <= tol + 1e-9 and ('-' in (y.get('result') or '')) == (tol == 1.0) \
+                    and (same_runner(k[1], yk[1]) or (min(len(nm), len(ym)) >= 12 and (nm.startswith(ym) or ym.startswith(nm)))
+                         # a relay is its school, printed two ways ('York' / 'York High School', 'Robert W Traip' / 'Traip Academ')
+                         or (not x.get('athlete') and not y.get('athlete')
+                             and set(re.findall(r'[a-z]{4,}', nm)) & set(re.findall(r'[a-z]{4,}', ym)) - {'high', 'school', 'schoo', 'academy', 'academ', 'regional'})
+                         # the same mark at the same place, the name typed two ways ('Lillain' / 'Lillian Courtois')
+                         or (yk[2] == k[2] and set(re.findall(r'[a-z]{4,}', nm)) & set(re.findall(r'[a-z]{4,}', ym)))):
+                return y
+        return None
+    _dig = lambda m: len(re.sub(r'\D', '', m or ''))
     for ev in e:   # a race the earlier posting already holds nearly row for row (2026 So. Portland MS): its 0.01-off times are the same marks
+        for x in ev['results']:   # the copy that prints grades lends them to the kept row (Wells/York/Traip 2026: the Hy-Tek page has none)
+            y = _twin(ev, x) if x.get('grade') else None
+            if y is not None and not y.get('grade'):
+                y['grade'] = x['grade']
         near = sum(_held(ev, x, True) for x in ev['results']) >= 0.5 * len(ev['results'])   # (one row is enough: the rest of the race was an exact repeat)
         ev['results'] = [x for x in ev['results'] if not _held(ev, x, near)]
+        twins = [(x, _twin(ev, x)) for x in ev['results']]
+        nt = sum(1 for _, y in twins if y)
+        if twins and (nt == len(twins) or (len(twins) >= 3 and nt >= 0.8 * len(twins))):
+            for x, y in twins:
+                if y and _dig(x.get('result')) > _dig(y.get('result')):
+                    y['result'] = x['result']   # the kept row takes the mark printed to more digits
+            ev['results'] = [x for x, y in twins if not y]
     return [ev for ev in e if ev['results']]
 
 
@@ -1363,6 +1405,7 @@ def main():
         # seeds were stored as marks (2023 Tripp MS, 2024 MVC at Hall-Dale, 2014 Bowdoin Relays)
         if re.search(r'(?m)^\s*(?:Meet Program|Heat Sheet|Psych Sheet)\s*$', '\n'.join(t.splitlines()[:12])):
             print('meet program, not results:', f['name']); programs.append(f['name']); continue
+        t=re.sub(r'(?m)(?<=\d\.\d\d)a(?=[ \t]|$)','',t)   # '11.48a', '1:06.83a': a fully automatic time's flag (Wells/York/Traip 2026 varsity page)
         t=re.sub(r"(?<=[\w.)])((?:Mt\. )?[A-Z][\w.]*(?: [A-Z][\w.]*)* Track Hy-Tek's MEET MANAGER\t)",r'\n\1',t)   # page header glued to the last row/leg before the page break
         if sys.argv[4]!='XC' and '\t' not in t and len(re.findall(r'(?m)^\d{1,3}\s*$',t))>=10 and len(re.findall(r'(?m)^[ \t]*\d{1,3}[ \t]+\S',t))<3: t=cells_to_tab(t)
         global XC_HINT
