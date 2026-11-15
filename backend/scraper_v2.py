@@ -3113,6 +3113,11 @@ class Sub5ScraperV2:
                         # the place column was empty, so the class slid into the school's. The school map already
                         # reads the whole string; only the class is recovered)
                         row_grade = r.get("grade", "")
+                        zp = re.fullmatch(r'0([5-9])', row_grade.strip()) if isinstance(row_grade, str) else None
+                        if zp and 2000 + int(zp.group(1)) < int(year):
+                            # zero-padded Hy-Tek grade ('09 Mt Ararat ME', Dartmouth 2016): a class of 2009
+                            # can't run in 2016, so it is grade 9; '06' in 2004 is a class year, left as printed
+                            row_grade = zp.group(1)
                         if season == 'XC' and not row_grade:
                             m_gs = XC_GRADE_SCHOOL.match(str(school))
                             if m_gs:

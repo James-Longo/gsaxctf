@@ -12,7 +12,7 @@
   ]
  },
  "team_rankings": [],
- "notes": "Maine athletes/relays only, read from the Hy-Tek results with the meet's own parser. A row was kept when its school resolves to a Maine school and the athlete appears for that school in our data the same school year, or when at least three of the school's athletes in this meet do (team evidence). Relays kept only for schools with matched individuals. Events outside the Maine indoor program (weight throw, 3000 m, 5000 m) not copied. No-height rows (Bridger, Labonte) left out.",
+ "notes": "Maine athletes/relays only, read from the Hy-Tek results with the meet's own parser (every round: prelims, semi-finals, finals). A row was kept when its school resolves to a Maine school and the athlete appears for that school in our data the same school year, when at least three of the school's athletes in this meet do (team evidence), or when the sheet tags the school ' ME'; a relay when its school is such a Maine school or tagged ' ME'. Schools tagged with another state (Windham NH) left out. Names printed first-name-first swapped back when the swap matches the roster. Events outside the Maine indoor program (weight throw) not copied. No-height rows (Bridger, Labonte) left out.",
  "events": [
   {
    "event": "55 Meter Dash",
@@ -228,6 +228,24 @@
      "grade": "10",
      "type": "Prelims",
      "place": 42
+    }
+   ]
+  },
+  {
+   "event": "55 Meter Hurdles",
+   "gender": "Boys",
+   "is_relay": false,
+   "results": [
+    {
+     "athlete": "Horner, Travis",
+     "school": "Waterville ME",
+     "result": "8.04",
+     "grade": "12",
+     "type": "Prelims",
+     "place": 4,
+     "warnings": [
+      "Original result: 8.04Q"
+     ]
     }
    ]
   },

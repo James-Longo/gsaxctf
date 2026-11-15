@@ -12,7 +12,7 @@
   ]
  },
  "team_rankings": [],
- "notes": "Maine athletes/relays only, read from the Hy-Tek results with the meet's own parser. A row was kept when its school resolves to a Maine school and the athlete appears for that school in our data the same school year, when at least three of the school's athletes in this meet do (team evidence), or when the sheet tags the school ' ME'. Names printed first-name-first swapped back when the swap matches the roster. Out-of-state namesakes (St. Thomas Aquinas NH etc.) left out. Events outside the Maine indoor program (weight throw) not copied.",
+ "notes": "Maine athletes/relays only, read from the Hy-Tek results with the meet's own parser (every round: prelims, semi-finals, finals). A row was kept when its school resolves to a Maine school and the athlete appears for that school in our data the same school year, when at least three of the school's athletes in this meet do (team evidence), or when the sheet tags the school ' ME'; a relay when its school is such a Maine school or tagged ' ME'. Schools tagged with another state (Windham NH) left out. Names printed first-name-first swapped back when the swap matches the roster. Events outside the Maine indoor program (weight throw) not copied.",
  "events": [
   {
    "event": "55 Meter Dash",
@@ -37,6 +37,21 @@
      "grade": "11",
      "type": "Prelims",
      "place": 53
+    }
+   ]
+  },
+  {
+   "event": "55 Meter Dash",
+   "gender": "Girls",
+   "is_relay": false,
+   "results": [
+    {
+     "athlete": "Costa, Morgan",
+     "school": "Bonny Eagle",
+     "result": "7.63",
+     "grade": "11",
+     "type": "Prelims",
+     "place": 10
     }
    ]
   },
@@ -275,14 +290,6 @@
      "grade": "11",
      "type": "Finals",
      "place": 18
-    },
-    {
-     "athlete": "Harringtom, Kather",
-     "school": "Greely ME",
-     "result": "31-06.75",
-     "grade": "11",
-     "type": "Finals",
-     "place": 19
     }
    ]
   },
@@ -314,6 +321,42 @@
      "grade": "11",
      "type": "Finals",
      "place": 15
+    },
+    {
+     "athlete": "Harringtom, Kather",
+     "school": "Greely ME",
+     "result": "31-06.75",
+     "grade": "11",
+     "type": "Finals",
+     "place": 19
+    }
+   ]
+  },
+  {
+   "event": "4x400 Meter Relay",
+   "gender": "Girls",
+   "is_relay": true,
+   "results": [
+    {
+     "school": "Mt. Ararat ME",
+     "result": "4:28.12",
+     "athletes": [],
+     "type": "Finals",
+     "place": 14
+    }
+   ]
+  },
+  {
+   "event": "4x400 Meter Relay",
+   "gender": "Girls",
+   "is_relay": true,
+   "results": [
+    {
+     "school": "Mt. Ararat ME",
+     "result": "4:28.12",
+     "athletes": [],
+     "type": "Finals",
+     "place": 14
     }
    ]
   },
@@ -340,6 +383,21 @@
      "grade": "12",
      "type": "Prelims",
      "place": 29
+    }
+   ]
+  },
+  {
+   "event": "55 Meter Dash",
+   "gender": "Boys",
+   "is_relay": false,
+   "results": [
+    {
+     "athlete": "Clarke, Cory",
+     "school": "Cony ME",
+     "result": "6.81",
+     "grade": "12",
+     "type": "Prelims",
+     "place": 14
     }
    ]
   },
@@ -419,6 +477,14 @@
    "is_relay": false,
    "results": [
     {
+     "athlete": "Reifman-Packett, A",
+     "school": "Mt. Ararat ME",
+     "result": "4:55.63",
+     "grade": "10",
+     "type": "Finals",
+     "place": 22
+    },
+    {
      "athlete": "Williams, Jamie",
      "school": "Waterville ME",
      "result": "5:04.04",
@@ -433,14 +499,6 @@
      "grade": "12",
      "type": "Finals",
      "place": 58
-    },
-    {
-     "athlete": "Reifman-Packett, A",
-     "school": "Mt. Ararat ME",
-     "result": "4:55.63",
-     "grade": "10",
-     "type": "Finals",
-     "place": 22
     }
    ]
   },
@@ -509,10 +567,36 @@
    ]
   },
   {
+   "event": "Long Jump",
+   "gender": "Boys",
+   "is_relay": false,
+   "results": [
+    {
+     "athlete": "Bickford, Timothy",
+     "school": "Mt. Ararat ME",
+     "result": "20-06.75",
+     "grade": "12",
+     "type": "Finals",
+     "place": 7,
+     "warnings": [
+      "Original result: J20-06.75"
+     ]
+    }
+   ]
+  },
+  {
    "event": "Triple Jump",
    "gender": "Boys",
    "is_relay": false,
    "results": [
+    {
+     "athlete": "Bickford, Timothy",
+     "school": "Mt. Ararat ME",
+     "result": "42-02.75",
+     "grade": "12",
+     "type": "Finals",
+     "place": 4
+    },
     {
      "athlete": "Gary, McKenzie",
      "school": "Mt. Ararat ME",
@@ -539,14 +623,6 @@
      "grade": "11",
      "type": "Finals",
      "place": 12
-    },
-    {
-     "athlete": "Bickford, Timothy",
-     "school": "Mt. Ararat ME",
-     "result": "42-02.75",
-     "grade": "12",
-     "type": "Finals",
-     "place": 4
     }
    ]
   },
@@ -597,20 +673,30 @@
    ]
   },
   {
-   "event": "Long Jump",
+   "event": "4x200 Meter Relay",
    "gender": "Boys",
-   "is_relay": false,
+   "is_relay": true,
    "results": [
     {
-     "athlete": "Bickford, Timothy",
-     "school": "Mt. Ararat ME",
-     "result": "20-06.75",
-     "grade": "12",
+     "school": "Cony ME",
+     "result": "1:38.73",
+     "athletes": [],
      "type": "Finals",
-     "place": 7,
-     "warnings": [
-      "Original result: J20-06.75"
-     ]
+     "place": 14
+    }
+   ]
+  },
+  {
+   "event": "4x200 Meter Relay",
+   "gender": "Boys",
+   "is_relay": true,
+   "results": [
+    {
+     "school": "Cony ME",
+     "result": "1:38.73",
+     "athletes": [],
+     "type": "Finals",
+     "place": 14
     }
    ]
   }

@@ -12,7 +12,7 @@
   ]
  },
  "team_rankings": [],
- "notes": "Maine athletes/relays only, read from the Hy-Tek results with the meet's own parser. A row was kept when its school resolves to a Maine school and the athlete appears for that school in our data the same school year, when at least three of the school's athletes in this meet do (team evidence), or when the sheet tags the school ' ME'. Names printed first-name-first swapped back when the swap matches the roster. Out-of-state namesakes (St. Thomas Aquinas NH etc.) left out. Events outside the Maine indoor program (weight throw) not copied. Wiegand and Heggarty printed 'Gorham ME' but ran for Sanford all season (SMAA meets, Class A): filed under Sanford.",
+ "notes": "Maine athletes/relays only, read from the Hy-Tek results with the meet's own parser (every round: prelims, semi-finals, finals). A row was kept when its school resolves to a Maine school and the athlete appears for that school in our data the same school year, when at least three of the school's athletes in this meet do (team evidence), or when the sheet tags the school ' ME'; a relay when its school is such a Maine school or tagged ' ME'. Schools tagged with another state (Windham NH) left out. Names printed first-name-first swapped back when the swap matches the roster. Events outside the Maine indoor program (weight throw) not copied. Wiegand and Heggarty printed 'Gorham ME' but ran for Sanford all season (SMAA meets, Class A): filed under Sanford.",
  "events": [
   {
    "event": "55 Meter Dash",
@@ -29,6 +29,21 @@
      "warnings": [
       "Original result: 7.55q"
      ]
+    }
+   ]
+  },
+  {
+   "event": "55 Meter Dash",
+   "gender": "Girls",
+   "is_relay": false,
+   "results": [
+    {
+     "athlete": "Pettaway, Alexandr",
+     "school": "Thornton Acad ME",
+     "result": "7.61",
+     "grade": "12",
+     "type": "Prelims",
+     "place": 12
     }
    ]
   },
@@ -65,7 +80,7 @@
      "athlete": "Pressman, Sadie",
      "school": "Mt Ararat ME",
      "result": "50.09",
-     "grade": "",
+     "grade": "9",
      "type": "Finals",
      "place": 80
     },
@@ -94,6 +109,14 @@
      "points": 1.0
     },
     {
+     "athlete": "Arsenault, Brittne",
+     "school": "Westbrook ME",
+     "result": "1:02.42",
+     "grade": "12",
+     "type": "Finals",
+     "place": 7
+    },
+    {
      "athlete": "Turner, Emily",
      "school": "Cheverus ME",
      "result": "1:03.17",
@@ -116,14 +139,6 @@
      "grade": "11",
      "type": "Finals",
      "place": 29
-    },
-    {
-     "athlete": "Arsenault, Brittne",
-     "school": "Westbrook ME",
-     "result": "1:02.42",
-     "grade": "12",
-     "type": "Finals",
-     "place": 7
     }
    ]
   },
@@ -144,7 +159,7 @@
      "athlete": "SARACENO, SAMANTHA",
      "school": "Scarborough ME",
      "result": "2:42.82",
-     "grade": "",
+     "grade": "9",
      "type": "Finals",
      "place": 34
     }
@@ -159,7 +174,7 @@
      "athlete": "Slager, Anna",
      "school": "Gorham ME",
      "result": "5:21.17",
-     "grade": "",
+     "grade": "9",
      "type": "Finals",
      "place": 8
     },
@@ -304,7 +319,7 @@
      "athlete": "Pressman, Sadie",
      "school": "Mt Ararat ME",
      "result": "10.20",
-     "grade": "",
+     "grade": "9",
      "type": "Prelims",
      "place": 51
     },
@@ -323,6 +338,48 @@
      "grade": "12",
      "type": "Prelims",
      "place": 68
+    }
+   ]
+  },
+  {
+   "event": "55 Meter Hurdles",
+   "gender": "Girls",
+   "is_relay": false,
+   "results": [
+    {
+     "athlete": "Daigle, Tori",
+     "school": "Thornton Acad ME",
+     "result": "8.83",
+     "grade": "12",
+     "type": "Prelims",
+     "place": 7,
+     "warnings": [
+      "Original result: 8.83Q"
+     ]
+    },
+    {
+     "athlete": "Shoulta, Sarah",
+     "school": "Waterville ME",
+     "result": "8.91",
+     "grade": "12",
+     "type": "Prelims",
+     "place": 10
+    },
+    {
+     "athlete": "Bolduc, Kellie",
+     "school": "Waterville ME",
+     "result": "9.20",
+     "grade": "12",
+     "type": "Prelims",
+     "place": 13
+    },
+    {
+     "athlete": "SHAW, ELLEN",
+     "school": "Scarborough ME",
+     "result": "9.21",
+     "grade": "10",
+     "type": "Prelims",
+     "place": 14
     }
    ]
   },
@@ -660,6 +717,130 @@
    ]
   },
   {
+   "event": "4x200 Meter Relay",
+   "gender": "Girls",
+   "is_relay": true,
+   "results": [
+    {
+     "school": "Westbrook ME",
+     "result": "1:54.53",
+     "athletes": [
+      "2077 Cavanaugh, Kelsey",
+      "2079 Lebeau, Maddison",
+      "2074 Arsenault, Courtney",
+      "2073 Arsenault, Brittney"
+     ],
+     "type": "Finals",
+     "place": 12
+    },
+    {
+     "school": "Cheverus ME",
+     "result": "1:54.55",
+     "athletes": [
+      "523 Goodrich, Abby",
+      "528 Turner, Emily",
+      "527 Opielowski, Milena",
+      "526 Mount, Sarah"
+     ],
+     "type": "Finals",
+     "place": 13
+    },
+    {
+     "school": "Scarborough ME",
+     "result": "1:55.71",
+     "athletes": [
+      "1780 RINALDI, SARAH",
+      "1783 SHAW, ELLEN",
+      "1775 ATHERTON, ALY",
+      "1777 GRIFFIS, KAYLA"
+     ],
+     "type": "Finals",
+     "place": 15
+    },
+    {
+     "school": "Mt. Ararat ME",
+     "result": "2:00.73",
+     "athletes": [
+      "1399 Whitney, Priscilla",
+      "1392 Becker, Summer",
+      "1397 Pressman, Sadie",
+      "1398 Volk, Kaitlyn"
+     ],
+     "type": "Finals",
+     "place": 22
+    }
+   ]
+  },
+  {
+   "event": "4x400 Meter Relay",
+   "gender": "Girls",
+   "is_relay": true,
+   "results": [
+    {
+     "school": "Mt. Ararat ME",
+     "result": "4:31.83",
+     "athletes": [
+      "1393 Chase, Jordan",
+      "1394 Grant, Lauren",
+      "1396 Kinkade, Colette",
+      "1395 Gray, Summer"
+     ],
+     "type": "Finals",
+     "place": 12
+    }
+   ]
+  },
+  {
+   "event": "4x800 Meter Relay",
+   "gender": "Girls",
+   "is_relay": true,
+   "results": [
+    {
+     "school": "Westbrook ME",
+     "result": "10:36.83",
+     "athletes": [
+      "2083 Rayner, Mackenzie",
+      "2081 Pabst, Gabbi",
+      "2076 Breunig, Danielle",
+      "2082 Phelps, Halee"
+     ],
+     "type": "Finals",
+     "place": 12
+    }
+   ]
+  },
+  {
+   "event": "1600 Meter Sprint Medley Relay",
+   "gender": "Girls",
+   "is_relay": true,
+   "results": [
+    {
+     "school": "Gorham ME",
+     "result": "4:33.89",
+     "athletes": [
+      "863 Smith, Kayleigh",
+      "861 Perkins, Abby",
+      "859 Benson, Kristin",
+      "862 Slager, Anna"
+     ],
+     "type": "Finals",
+     "place": 10
+    },
+    {
+     "school": "Mt. Ararat ME",
+     "result": "4:44.41",
+     "athletes": [
+      "1399 Whitney, Priscilla",
+      "1393 Chase, Jordan",
+      "1395 Gray, Summer",
+      "1396 Kinkade, Colette"
+     ],
+     "type": "Finals",
+     "place": 19
+    }
+   ]
+  },
+  {
    "event": "55 Meter Dash",
    "gender": "Boys",
    "is_relay": false,
@@ -676,20 +857,35 @@
      ]
     },
     {
-     "athlete": "Trickey, Luke",
-     "school": "Cheverus ME",
-     "result": "7.05",
-     "grade": "11",
-     "type": "Prelims",
-     "place": 41
-    },
-    {
      "athlete": "Wiegand, Peyton",
      "school": "Sanford High School",
      "result": "6.88",
      "grade": "12",
      "type": "Prelims",
      "place": 19
+    },
+    {
+     "athlete": "Trickey, Luke",
+     "school": "Cheverus ME",
+     "result": "7.05",
+     "grade": "11",
+     "type": "Prelims",
+     "place": 41
+    }
+   ]
+  },
+  {
+   "event": "55 Meter Dash",
+   "gender": "Boys",
+   "is_relay": false,
+   "results": [
+    {
+     "athlete": "Boissonnault, Dere",
+     "school": "Thornton Acad ME",
+     "result": "6.88",
+     "grade": "12",
+     "type": "Prelims",
+     "place": 15
     }
    ]
   },
@@ -944,15 +1140,35 @@
      "warnings": [
       "Original result: 8.09q"
      ]
+    }
+   ]
+  },
+  {
+   "event": "55 Meter Hurdles",
+   "gender": "Boys",
+   "is_relay": false,
+   "results": [
+    {
+     "athlete": "Madden, Griffin",
+     "school": "Scarborough ME",
+     "result": "7.95",
+     "grade": "11",
+     "type": "Prelims",
+     "place": 3,
+     "warnings": [
+      "Original result: 7.95Q"
+     ]
     },
     {
      "athlete": "DeMarco, Gianpaolo",
      "school": "Deering ME",
-     "result": "8.12",
+     "result": "8.01",
      "grade": "11",
-     "type": "Finals",
-     "place": 6,
-     "points": 1.0
+     "type": "Prelims",
+     "place": 5,
+     "warnings": [
+      "Original result: 8.01Q"
+     ]
     }
    ]
   },
@@ -969,6 +1185,15 @@
      "type": "Finals",
      "place": 2,
      "points": 8.0
+    },
+    {
+     "athlete": "DeMarco, Gianpaolo",
+     "school": "Deering ME",
+     "result": "8.12",
+     "grade": "11",
+     "type": "Finals",
+     "place": 6,
+     "points": 1.0
     }
    ]
   },
@@ -1009,14 +1234,6 @@
      ]
     },
     {
-     "athlete": "McCracken, Andrew",
-     "school": "Mt Ararat ME",
-     "result": "12-00.00",
-     "grade": "12",
-     "type": "Finals",
-     "place": 11
-    },
-    {
      "athlete": "Heggarty, Peter",
      "school": "Sanford High School",
      "result": "12-06.00",
@@ -1026,6 +1243,14 @@
      "warnings": [
       "Original result: J12-06.00"
      ]
+    },
+    {
+     "athlete": "McCracken, Andrew",
+     "school": "Mt Ararat ME",
+     "result": "12-00.00",
+     "grade": "12",
+     "type": "Finals",
+     "place": 11
     }
    ]
   },
@@ -1051,20 +1276,20 @@
      "place": 13
     },
     {
-     "athlete": "Arnold, Alex",
-     "school": "Thornton Acad ME",
-     "result": "18-09.25",
-     "grade": "11",
-     "type": "Finals",
-     "place": 20
-    },
-    {
      "athlete": "Wiegand, Peyton",
      "school": "Sanford High School",
      "result": "19-01.25",
      "grade": "12",
      "type": "Finals",
      "place": 17
+    },
+    {
+     "athlete": "Arnold, Alex",
+     "school": "Thornton Acad ME",
+     "result": "18-09.25",
+     "grade": "11",
+     "type": "Finals",
+     "place": 20
     }
    ]
   },
@@ -1122,6 +1347,64 @@
      "grade": "12",
      "type": "Finals",
      "place": 12
+    }
+   ]
+  },
+  {
+   "event": "4x200 Meter Relay",
+   "gender": "Boys",
+   "is_relay": true,
+   "results": [
+    {
+     "school": "Cheverus ME",
+     "result": "1:36.73",
+     "athletes": [
+      "533 Trickey, Luke",
+      "534 Wagner, Gerry",
+      "530 Hannigan, James",
+      "529 Dixon, Jake"
+     ],
+     "type": "Finals",
+     "place": 7
+    }
+   ]
+  },
+  {
+   "event": "4x400 Meter Relay",
+   "gender": "Boys",
+   "is_relay": true,
+   "results": [
+    {
+     "school": "Deering ME",
+     "result": "3:36.99",
+     "athletes": [
+      "748 DeMarco, Gianpaolo",
+      "749 Hussein, Yahye",
+      "750 Mathew, David",
+      "751 Ramadan, Hany"
+     ],
+     "type": "Finals",
+     "place": 4,
+     "points": 4.0
+    }
+   ]
+  },
+  {
+   "event": "4x800 Meter Relay",
+   "gender": "Boys",
+   "is_relay": true,
+   "results": [
+    {
+     "school": "Westbrook ME",
+     "result": "8:48.99",
+     "athletes": [
+      "2089 Richards, Josh",
+      "2088 Phelps, James",
+      "2085 Childs, Nick",
+      "2087 Lombardo, Josh"
+     ],
+     "type": "Finals",
+     "place": 11
     }
    ]
   },

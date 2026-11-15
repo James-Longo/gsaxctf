@@ -12,7 +12,7 @@
   ]
  },
  "team_rankings": [],
- "notes": "Maine athletes/relays only, read from the Hy-Tek results with the meet's own parser. A row was kept when its school resolves to a Maine school and the athlete appears for that school in our data the same school year, when at least three of the school's athletes in this meet do (team evidence), or when the sheet tags the school ' ME'. Names printed first-name-first swapped back when the swap matches the roster. Out-of-state namesakes (St. Thomas Aquinas NH etc.) left out. Events outside the Maine indoor program (weight throw) not copied.",
+ "notes": "Maine athletes/relays only, read from the Hy-Tek results with the meet's own parser (every round: prelims, semi-finals, finals). A row was kept when its school resolves to a Maine school and the athlete appears for that school in our data the same school year, when at least three of the school's athletes in this meet do (team evidence), or when the sheet tags the school ' ME'; a relay when its school is such a Maine school or tagged ' ME'. Schools tagged with another state (Windham NH) left out. Names printed first-name-first swapped back when the swap matches the roster. Events outside the Maine indoor program (weight throw) not copied.",
  "events": [
   {
    "event": "55 Meter Dash",
@@ -62,7 +62,7 @@
      "athlete": "Shulta, Sarah",
      "school": "Waterville ME",
      "result": "45.13",
-     "grade": "",
+     "grade": "9",
      "type": "Finals",
      "place": 29
     },
@@ -70,7 +70,7 @@
      "athlete": "Roy, Lydia",
      "school": "Waterville ME",
      "result": "45.86",
-     "grade": "",
+     "grade": "9",
      "type": "Finals",
      "place": 41
     },
@@ -206,7 +206,7 @@
      "athlete": "Daigle, Tori",
      "school": "Thornton Acad ME",
      "result": "9.11",
-     "grade": "",
+     "grade": "9",
      "type": "Prelims",
      "place": 18
     },
@@ -257,6 +257,24 @@
      "grade": "12",
      "type": "Prelims",
      "place": 39
+    }
+   ]
+  },
+  {
+   "event": "55 Meter Hurdles",
+   "gender": "Girls",
+   "is_relay": false,
+   "results": [
+    {
+     "athlete": "Perkins, Sarah",
+     "school": "Gorham ME",
+     "result": "8.54",
+     "grade": "12",
+     "type": "Prelims",
+     "place": 7,
+     "warnings": [
+      "Original result: 8.54q"
+     ]
     }
    ]
   },
@@ -356,7 +374,7 @@
      "athlete": "Bolduc, Kellie",
      "school": "Waterville ME",
      "result": "35-04.75",
-     "grade": "",
+     "grade": "9",
      "type": "Finals",
      "place": 8
     }
@@ -391,6 +409,18 @@
    "is_relay": true,
    "results": [
     {
+     "school": "Waterville ME",
+     "result": "1:52.63",
+     "athletes": [
+      "1349 Bolduc, Georgia",
+      "1355 Roy, Lydia",
+      "1353 Frame, Alexa",
+      "1357 Thurston, Olivia"
+     ],
+     "type": "Finals",
+     "place": 7
+    },
+    {
      "school": "Thornton Academy ME",
      "result": "1:56.28",
      "athletes": [
@@ -401,6 +431,99 @@
      ],
      "type": "Finals",
      "place": 22
+    }
+   ]
+  },
+  {
+   "event": "1600 Meter Sprint Medley Relay",
+   "gender": "Girls",
+   "is_relay": true,
+   "results": [
+    {
+     "school": "Mt Ararat ME",
+     "result": "4:32.86",
+     "athletes": [
+      "986 Lynch, Kelly",
+      "988 Prescott, Maddison",
+      "989 Ross, Nicole",
+      "987 Oneal, Lizzie"
+     ],
+     "type": "Finals",
+     "place": 12
+    },
+    {
+     "school": "Waterville ME",
+     "result": "4:43.51",
+     "athletes": [
+      "1356 Shulta, Sarah",
+      "1352 Downer, Phoebe",
+      "1350 Bolduc, Kellie",
+      "1348 Bluhm, Lara"
+     ],
+     "type": "Finals",
+     "place": 21
+    }
+   ]
+  },
+  {
+   "event": "4x200 Meter Relay",
+   "gender": "Girls",
+   "is_relay": true,
+   "results": [
+    {
+     "school": "Waterville ME",
+     "result": "1:52.63",
+     "athletes": [
+      "1349 Bolduc, Georgia",
+      "1355 Roy, Lydia",
+      "1353 Frame, Alexa",
+      "1357 Thurston, Olivia"
+     ],
+     "type": "Finals",
+     "place": 7
+    },
+    {
+     "school": "Thornton Academy ME",
+     "result": "1:56.28",
+     "athletes": [
+      "1325 Daigle, Tori",
+      "1326 Madore, Anna",
+      "1327 McKenna, Carly",
+      "1324 Arnold, Amanda"
+     ],
+     "type": "Finals",
+     "place": 22
+    }
+   ]
+  },
+  {
+   "event": "1600 Meter Sprint Medley Relay",
+   "gender": "Girls",
+   "is_relay": true,
+   "results": [
+    {
+     "school": "Mt Ararat ME",
+     "result": "4:32.86",
+     "athletes": [
+      "986 Lynch, Kelly",
+      "988 Prescott, Maddison",
+      "989 Ross, Nicole",
+      "987 Oneal, Lizzie"
+     ],
+     "type": "Finals",
+     "place": 12
+    },
+    {
+     "school": "Waterville ME",
+     "result": "4:43.51",
+     "athletes": [
+      "1356 Shulta, Sarah",
+      "1352 Downer, Phoebe",
+      "1350 Bolduc, Kellie",
+      "1348 Bluhm, Lara"
+     ],
+     "type": "Finals",
+     "place": 21
     }
    ]
   },
@@ -435,6 +558,21 @@
      "grade": "12",
      "type": "Prelims",
      "place": 60
+    }
+   ]
+  },
+  {
+   "event": "55 Meter Dash",
+   "gender": "Boys",
+   "is_relay": false,
+   "results": [
+    {
+     "athlete": "Gary, McKenzie",
+     "school": "Mt Ararat ME",
+     "result": "6.80",
+     "grade": "12",
+     "type": "Prelims",
+     "place": 9
     }
    ]
   },
@@ -630,6 +768,14 @@
      "place": 3
     },
     {
+     "athlete": "Holt-Andrews, Jose",
+     "school": "Telstar ME",
+     "result": "10:17.31",
+     "grade": "10",
+     "type": "Finals",
+     "place": 14
+    },
+    {
      "athlete": "Gervais, Nate",
      "school": "Gorham ME",
      "result": "10:20.63",
@@ -641,17 +787,9 @@
      "athlete": "Cote, Chris",
      "school": "Waterville ME",
      "result": "11:00.51",
-     "grade": "",
+     "grade": "9",
      "type": "Finals",
      "place": 51
-    },
-    {
-     "athlete": "Holt-Andrews, Jose",
-     "school": "Telstar ME",
-     "result": "10:17.31",
-     "grade": "10",
-     "type": "Finals",
-     "place": 14
     }
    ]
   },
@@ -678,6 +816,21 @@
      "grade": "12",
      "type": "Prelims",
      "place": 31
+    }
+   ]
+  },
+  {
+   "event": "55 Meter Hurdles",
+   "gender": "Boys",
+   "is_relay": false,
+   "results": [
+    {
+     "athlete": "Nijkamp, Julian",
+     "school": "Gorham ME",
+     "result": "8.34",
+     "grade": "11",
+     "type": "Prelims",
+     "place": 14
     }
    ]
   },
@@ -801,6 +954,108 @@
      "grade": "12",
      "type": "Finals",
      "place": 17
+    }
+   ]
+  },
+  {
+   "event": "4x200 Meter Relay",
+   "gender": "Boys",
+   "is_relay": true,
+   "results": [
+    {
+     "school": "Waterville ME",
+     "result": "1:42.16",
+     "athletes": [
+      "2368 Pham, Danny",
+      "2365 Levine, Jordhan",
+      "2360 Bellavia, Anthony",
+      "2362 Burgess, Devin"
+     ],
+     "type": "Finals",
+     "place": 25
+    }
+   ]
+  },
+  {
+   "event": "1600 Meter Sprint Medley Relay",
+   "gender": "Boys",
+   "is_relay": true,
+   "results": [
+    {
+     "school": "Mt Ararat ME",
+     "result": "3:42.54",
+     "athletes": [
+      "2064 Gary, McKenzie",
+      "2062 Burne, Colton",
+      "2067 Smith, Ryan",
+      "2065 Hirnak, Will"
+     ],
+     "type": "Finals",
+     "place": 4,
+     "points": 4.0
+    },
+    {
+     "school": "Waterville ME",
+     "result": "4:15.12",
+     "athletes": [
+      "2359 Acero, Darien",
+      "2364 Danner, Nick",
+      "2362 Burgess, Devin",
+      "2361 Bellavia, Joseph"
+     ],
+     "type": "Finals",
+     "place": 31
+    }
+   ]
+  },
+  {
+   "event": "4x200 Meter Relay",
+   "gender": "Boys",
+   "is_relay": true,
+   "results": [
+    {
+     "school": "Waterville ME",
+     "result": "1:42.16",
+     "athletes": [
+      "2368 Pham, Danny",
+      "2365 Levine, Jordhan",
+      "2360 Bellavia, Anthony",
+      "2362 Burgess, Devin"
+     ],
+     "type": "Finals",
+     "place": 25
+    }
+   ]
+  },
+  {
+   "event": "1600 Meter Sprint Medley Relay",
+   "gender": "Boys",
+   "is_relay": true,
+   "results": [
+    {
+     "school": "Mt Ararat ME",
+     "result": "3:42.54",
+     "athletes": [
+      "2064 Gary, McKenzie",
+      "2062 Burne, Colton",
+      "2067 Smith, Ryan",
+      "2065 Hirnak, Will"
+     ],
+     "type": "Finals",
+     "place": 4,
+     "points": 4.0
+    },
+    {
+     "school": "Waterville ME",
+     "result": "4:15.12",
+     "athletes": [
+      "2359 Acero, Darien",
+      "2364 Danner, Nick",
+      "2362 Burgess, Devin",
+      "2361 Bellavia, Joseph"
+     ],
+     "type": "Finals",
+     "place": 31
     }
    ]
   }

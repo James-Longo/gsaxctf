@@ -12,7 +12,7 @@
   ]
  },
  "team_rankings": [],
- "notes": "Maine athletes/relays only, read from the Hy-Tek results with the meet's own parser. A row was kept when its school resolves to a Maine school and the athlete appears for that school in our data the same school year, when at least three of the school's athletes in this meet do (team evidence), or when the sheet tags the school ' ME'. Edward Little names printed first-name-first ('Garrett, Wyman') swapped back when the swap matches the roster. St. Thomas Aquinas (NH) left out. Events outside the Maine indoor program (weight throw) not copied.",
+ "notes": "Maine athletes/relays only, read from the Hy-Tek results with the meet's own parser (every round: prelims, semi-finals, finals). A row was kept when its school resolves to a Maine school and the athlete appears for that school in our data the same school year, when at least three of the school's athletes in this meet do (team evidence), or when the sheet tags the school ' ME'; a relay when its school is such a Maine school or tagged ' ME'. Schools tagged with another state (Windham NH) left out. Names printed first-name-first swapped back when the swap matches the roster. Events outside the Maine indoor program (weight throw) not copied.",
  "events": [
   {
    "event": "55 Meter Dash",
@@ -67,6 +67,40 @@
      "grade": "11",
      "type": "Prelims",
      "place": 58
+    }
+   ]
+  },
+  {
+   "event": "55 Meter Dash",
+   "gender": "Girls",
+   "is_relay": false,
+   "results": [
+    {
+     "athlete": "Cederna, Hillary",
+     "school": "Greely ME",
+     "result": "7.54",
+     "grade": "12",
+     "type": "Prelims",
+     "place": 3,
+     "warnings": [
+      "Original result: 7.54Q"
+     ]
+    },
+    {
+     "athlete": "Costa, Morgan",
+     "school": "Bonny Eagle ME",
+     "result": "7.74",
+     "grade": "10",
+     "type": "Prelims",
+     "place": 12
+    },
+    {
+     "athlete": "Merritt, Rebecca",
+     "school": "Mt Ararat ME",
+     "result": "7.80",
+     "grade": "11",
+     "type": "Prelims",
+     "place": 14
     }
    ]
   },
@@ -323,6 +357,35 @@
     {
      "athlete": "Tuttle, Shelby",
      "school": "Waterville ME",
+     "result": "8.61",
+     "grade": "12",
+     "type": "Prelims",
+     "place": 2,
+     "warnings": [
+      "Original result: 8.61Q"
+     ]
+    },
+    {
+     "athlete": "Diehl, Abby",
+     "school": "Greely ME",
+     "result": "8.84",
+     "grade": "11",
+     "type": "Prelims",
+     "place": 6,
+     "warnings": [
+      "Original result: 8.84Q"
+     ]
+    }
+   ]
+  },
+  {
+   "event": "55 Meter Hurdles",
+   "gender": "Girls",
+   "is_relay": false,
+   "results": [
+    {
+     "athlete": "Tuttle, Shelby",
+     "school": "Waterville ME",
      "result": "8.65",
      "grade": "12",
      "type": "Finals",
@@ -498,6 +561,34 @@
      "grade": "10",
      "type": "Finals",
      "place": 22
+    }
+   ]
+  },
+  {
+   "event": "4x200 Meter Relay",
+   "gender": "Girls",
+   "is_relay": true,
+   "results": [
+    {
+     "school": "Edward Little ME",
+     "result": "1:57.29",
+     "athletes": [],
+     "type": "Finals",
+     "place": 16
+    }
+   ]
+  },
+  {
+   "event": "4x200 Meter Relay",
+   "gender": "Girls",
+   "is_relay": true,
+   "results": [
+    {
+     "school": "Edward Little ME",
+     "result": "1:57.29",
+     "athletes": [],
+     "type": "Finals",
+     "place": 16
     }
    ]
   },
@@ -696,20 +787,20 @@
      ]
     },
     {
-     "athlete": "Loomis, Brad",
-     "school": "Waterville ME",
-     "result": "11-00.00",
-     "grade": "12",
-     "type": "Finals",
-     "place": 15
-    },
-    {
      "athlete": "Slovenski, Michael",
      "school": "Brunswick ME",
      "result": "12-00.00",
      "grade": "10",
      "type": "Finals",
      "place": 7
+    },
+    {
+     "athlete": "Loomis, Brad",
+     "school": "Waterville ME",
+     "result": "11-00.00",
+     "grade": "12",
+     "type": "Finals",
+     "place": 15
     }
    ]
   },
@@ -802,6 +893,34 @@
      "grade": "12",
      "type": "Finals",
      "place": 18
+    }
+   ]
+  },
+  {
+   "event": "4x200 Meter Relay",
+   "gender": "Boys",
+   "is_relay": true,
+   "results": [
+    {
+     "school": "Waterville ME",
+     "result": "1:42.17",
+     "athletes": [],
+     "type": "Finals",
+     "place": 19
+    }
+   ]
+  },
+  {
+   "event": "4x200 Meter Relay",
+   "gender": "Boys",
+   "is_relay": true,
+   "results": [
+    {
+     "school": "Waterville ME",
+     "result": "1:42.17",
+     "athletes": [],
+     "type": "Finals",
+     "place": 19
     }
    ]
   }

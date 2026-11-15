@@ -12,7 +12,7 @@
   ]
  },
  "team_rankings": [],
- "notes": "Maine athletes/relays only, read from the Hy-Tek results with the meet's own parser. A row was kept when its school resolves to a Maine school and the athlete appears for that school in our data the same school year, when at least three of the school's athletes in this meet do (team evidence), or when the sheet tags the school ' ME'. Names printed first-name-first swapped back when the swap matches the roster. Out-of-state namesakes (St. Thomas Aquinas NH etc.) left out. Events outside the Maine indoor program (weight throw) not copied. Milford (NH) and St. Thomas Aquinas (Dover NH) rows left out.",
+ "notes": "Maine athletes/relays only, read from the Hy-Tek results with the meet's own parser (every round: prelims, semi-finals, finals). A row was kept when its school resolves to a Maine school and the athlete appears for that school in our data the same school year, when at least three of the school's athletes in this meet do (team evidence), or when the sheet tags the school ' ME'; a relay when its school is such a Maine school or tagged ' ME'. Schools tagged with another state (Windham NH) left out. Names printed first-name-first swapped back when the swap matches the roster. Events outside the Maine indoor program (weight throw) not copied. Milford (NH) and St. Thomas Aquinas (Dover NH) rows left out.",
  "events": [
   {
    "event": "55 Meter Dash",
@@ -134,6 +134,51 @@
      "grade": "12",
      "type": "Prelims",
      "place": 102
+    }
+   ]
+  },
+  {
+   "event": "55 Meter Dash",
+   "gender": "Girls",
+   "is_relay": false,
+   "results": [
+    {
+     "athlete": "Bossong, Victoria",
+     "school": "Cheverus ME",
+     "result": "7.34",
+     "grade": "10",
+     "type": "Prelims",
+     "place": 1,
+     "warnings": [
+      "Original result: 7.34Q"
+     ]
+    },
+    {
+     "athlete": "Gallant, Emma",
+     "school": "Cheverus ME",
+     "result": "7.52",
+     "grade": "11",
+     "type": "Prelims",
+     "place": 5,
+     "warnings": [
+      "Original result: 7.52Q"
+     ]
+    },
+    {
+     "athlete": "Page, Katherine",
+     "school": "Marshwood ME",
+     "result": "7.72",
+     "grade": "12",
+     "type": "Prelims",
+     "place": 14
+    },
+    {
+     "athlete": "Coomey, Rori",
+     "school": "Marshwood ME",
+     "result": "7.75",
+     "grade": "10",
+     "type": "Prelims",
+     "place": 15
     }
    ]
   },
@@ -525,6 +570,43 @@
     {
      "athlete": "Labbe, Emily",
      "school": "Scarborough ME",
+     "result": "8.46",
+     "grade": "11",
+     "type": "Prelims",
+     "place": 3,
+     "warnings": [
+      "Original result: 8.46Q"
+     ]
+    },
+    {
+     "athlete": "Cochran, Darcy",
+     "school": "Cape ElizabethME",
+     "result": "8.67",
+     "grade": "11",
+     "type": "Prelims",
+     "place": 4,
+     "warnings": [
+      "Original result: 8.67Q"
+     ]
+    },
+    {
+     "athlete": "Montano, Sara",
+     "school": "Thornton Acad ME",
+     "result": "9.26",
+     "grade": "10",
+     "type": "Prelims",
+     "place": 14
+    }
+   ]
+  },
+  {
+   "event": "55 Meter Hurdles",
+   "gender": "Girls",
+   "is_relay": false,
+   "results": [
+    {
+     "athlete": "Labbe, Emily",
+     "school": "Scarborough ME",
      "result": "8.42",
      "grade": "11",
      "type": "Finals",
@@ -893,6 +975,95 @@
    ]
   },
   {
+   "event": "4x400 Meter Relay",
+   "gender": "Girls",
+   "is_relay": true,
+   "results": [
+    {
+     "school": "Bonny Eagle ME",
+     "result": "4:40.06",
+     "athletes": [
+      "#367 Biegel, Gretchen",
+      "#372 Pendleton, Emmaline",
+      "#365 Alexander, Mia",
+      "#370 Nelson, Abigail"
+     ],
+     "type": "Finals",
+     "place": 20
+    }
+   ]
+  },
+  {
+   "event": "4x800 Meter Relay",
+   "gender": "Girls",
+   "is_relay": true,
+   "results": [
+    {
+     "school": "Bonny Eagle ME",
+     "result": "9:49.81",
+     "athletes": [
+      "#368 Hesler, Delaney",
+      "#374 Stevens, Hannah",
+      "#366 Beaumier, Ami",
+      "#373 Raymond, Kayla"
+     ],
+     "type": "Finals",
+     "place": 2,
+     "points": 8.0
+    }
+   ]
+  },
+  {
+   "event": "1600 Meter Sprint Medley Relay",
+   "gender": "Girls",
+   "is_relay": true,
+   "results": [
+    {
+     "school": "Gorham ME",
+     "result": "4:27.18",
+     "athletes": [
+      "#748 Connolly, Sydney",
+      "#747 Caruso, Alyvia",
+      "#749 Germond, Avery",
+      "#753 Tugman, Kate"
+     ],
+     "type": "Finals",
+     "place": 9
+    },
+    {
+     "school": "Bonny Eagle ME",
+     "result": "4:27.85",
+     "athletes": [
+      "#369 Kasperreen, Hannah",
+      "#371 Noonan, Emma",
+      "#367 Biegel, Gretchen",
+      "#373 Raymond, Kayla"
+     ],
+     "type": "Finals",
+     "place": 10
+    }
+   ]
+  },
+  {
+   "event": "Distance Medley Relay",
+   "gender": "Girls",
+   "is_relay": true,
+   "results": [
+    {
+     "school": "Bonny Eagle ME",
+     "result": "14:00.24",
+     "athletes": [
+      "#366 Beaumier, Ami",
+      "#370 Nelson, Abigail",
+      "#372 Pendleton, Emmaline",
+      "#365 Alexander, Mia"
+     ],
+     "type": "Finals",
+     "place": 11
+    }
+   ]
+  },
+  {
    "event": "55 Meter Dash",
    "gender": "Boys",
    "is_relay": false,
@@ -915,6 +1086,24 @@
      "grade": "12",
      "type": "Prelims",
      "place": 27
+    }
+   ]
+  },
+  {
+   "event": "55 Meter Dash",
+   "gender": "Boys",
+   "is_relay": false,
+   "results": [
+    {
+     "athlete": "Farr, Andrew",
+     "school": "Gorham ME",
+     "result": "6.69",
+     "grade": "9",
+     "type": "Prelims",
+     "place": 5,
+     "warnings": [
+      "Original result: 6.69Q"
+     ]
     }
    ]
   },
@@ -1264,6 +1453,83 @@
      ],
      "type": "Finals",
      "place": 12
+    }
+   ]
+  },
+  {
+   "event": "4x400 Meter Relay",
+   "gender": "Boys",
+   "is_relay": true,
+   "results": [
+    {
+     "school": "Bonny Eagle ME",
+     "result": "3:43.76",
+     "athletes": [
+      "#377 Pendleton, Andrew",
+      "#376 Hart, Kyler",
+      "#378 Willey, Aiden",
+      "#375 Allocca, Zack"
+     ],
+     "type": "Finals",
+     "place": 13
+    }
+   ]
+  },
+  {
+   "event": "4x800 Meter Relay",
+   "gender": "Boys",
+   "is_relay": true,
+   "results": [
+    {
+     "school": "Brunswick ME",
+     "result": "8:37.28",
+     "athletes": [
+      "#415 Valliere, Joey",
+      "#412 Chingos, Andrew",
+      "#413 Patterson, Tyler",
+      "#414 Shaughnessy, Will"
+     ],
+     "type": "Finals",
+     "place": 5,
+     "points": 2.0
+    }
+   ]
+  },
+  {
+   "event": "1600 Meter Sprint Medley Relay",
+   "gender": "Boys",
+   "is_relay": true,
+   "results": [
+    {
+     "school": "Bonny Eagle ME",
+     "result": "3:52.41",
+     "athletes": [
+      "#377 Pendleton, Andrew",
+      "#376 Hart, Kyler",
+      "#375 Allocca, Zack",
+      "#378 Willey, Aiden"
+     ],
+     "type": "Finals",
+     "place": 12
+    }
+   ]
+  },
+  {
+   "event": "Distance Medley Relay",
+   "gender": "Boys",
+   "is_relay": true,
+   "results": [
+    {
+     "school": "Noble ME",
+     "result": "11:55.86",
+     "athletes": [
+      "#1347 Holt-Fitzgerald, Caleb",
+      "#1349 Shettler, Tyler",
+      "#1346 Gorman, Matthew",
+      "#1345 Abbott, Devin"
+     ],
+     "type": "Finals",
+     "place": 15
     }
    ]
   }

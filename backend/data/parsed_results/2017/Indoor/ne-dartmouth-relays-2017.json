@@ -12,7 +12,7 @@
   ]
  },
  "team_rankings": [],
- "notes": "Maine athletes/relays only, read from the Hy-Tek results with the meet's own parser. A row was kept when its school resolves to a Maine school and the athlete appears for that school in our data the same school year, when at least three of the school's athletes in this meet do (team evidence), or when the sheet tags the school ' ME'. Names printed first-name-first swapped back when the swap matches the roster. Out-of-state namesakes (St. Thomas Aquinas NH etc.) left out. Events outside the Maine indoor program (weight throw) not copied.",
+ "notes": "Maine athletes/relays only, read from the Hy-Tek results with the meet's own parser (every round: prelims, semi-finals, finals). A row was kept when its school resolves to a Maine school and the athlete appears for that school in our data the same school year, when at least three of the school's athletes in this meet do (team evidence), or when the sheet tags the school ' ME'; a relay when its school is such a Maine school or tagged ' ME'. Schools tagged with another state (Windham NH) left out. Names printed first-name-first swapped back when the swap matches the roster. Events outside the Maine indoor program (weight throw) not copied.",
  "events": [
   {
    "event": "55 Meter Dash",
@@ -23,7 +23,7 @@
      "athlete": "Labbe, Emily",
      "school": "Scarborough ME",
      "result": "7.61",
-     "grade": "",
+     "grade": "9",
      "type": "Prelims",
      "place": 8,
      "warnings": [
@@ -34,7 +34,7 @@
      "athlete": "Gallant, Emma",
      "school": "Cheverus ME",
      "result": "7.61",
-     "grade": "",
+     "grade": "9",
      "type": "Prelims",
      "place": 9,
      "warnings": [
@@ -45,7 +45,7 @@
      "athlete": "Taranko, Mia",
      "school": "Thornton Acad ME",
      "result": "7.78",
-     "grade": "",
+     "grade": "9",
      "type": "Prelims",
      "place": 18
     },
@@ -69,7 +69,7 @@
      "athlete": "Callahan, Sarah",
      "school": "Scarborough ME",
      "result": "7.97",
-     "grade": "",
+     "grade": "9",
      "type": "Prelims",
      "place": 47
     }
@@ -83,8 +83,34 @@
     {
      "athlete": "Labbe, Emily",
      "school": "Scarborough ME",
+     "result": "7.58",
+     "grade": "9",
+     "type": "Prelims",
+     "place": 8,
+     "warnings": [
+      "Original result: 7.58Q"
+     ]
+    },
+    {
+     "athlete": "Gallant, Emma",
+     "school": "Cheverus ME",
+     "result": "7.58",
+     "grade": "9",
+     "type": "Prelims",
+     "place": 9
+    }
+   ]
+  },
+  {
+   "event": "55 Meter Dash",
+   "gender": "Girls",
+   "is_relay": false,
+   "results": [
+    {
+     "athlete": "Labbe, Emily",
+     "school": "Scarborough ME",
      "result": "7.61",
-     "grade": "",
+     "grade": "9",
      "type": "Finals",
      "place": 8
     }
@@ -156,7 +182,7 @@
      "athlete": "Marinko, Madison",
      "school": "Scarborough ME",
      "result": "1:07.01",
-     "grade": "",
+     "grade": "9",
      "type": "Finals",
      "place": 29
     },
@@ -195,7 +221,7 @@
      "athlete": "Moynihan, Erin",
      "school": "Marshwood ME",
      "result": "1:54.27",
-     "grade": "",
+     "grade": "9",
      "type": "Finals",
      "place": 62
     }
@@ -274,7 +300,7 @@
      "athlete": "Kitchen, Iris",
      "school": "Gorham ME",
      "result": "3:12.32",
-     "grade": "",
+     "grade": "9",
      "type": "Finals",
      "place": 16
     },
@@ -297,7 +323,7 @@
      "athlete": "Cox, Ryanne",
      "school": "Scarborough ME",
      "result": "5:59.12",
-     "grade": "",
+     "grade": "9",
      "type": "Finals",
      "place": 31
     }
@@ -359,7 +385,7 @@
      "athlete": "Tugman, Kate",
      "school": "Gorham ME",
      "result": "12:29.46",
-     "grade": "",
+     "grade": "9",
      "type": "Finals",
      "place": 9
     },
@@ -382,7 +408,7 @@
      "athlete": "Labbe, Emily",
      "school": "Scarborough ME",
      "result": "9.19",
-     "grade": "",
+     "grade": "9",
      "type": "Prelims",
      "place": 7,
      "warnings": [
@@ -438,6 +464,37 @@
    ]
   },
   {
+   "event": "55 Meter Hurdles",
+   "gender": "Girls",
+   "is_relay": false,
+   "results": [
+    {
+     "athlete": "Shaw, Ellen",
+     "school": "Scarborough ME",
+     "result": "9.21",
+     "grade": "12",
+     "type": "Prelims",
+     "place": 11
+    },
+    {
+     "athlete": "Labbe, Emily",
+     "school": "Scarborough ME",
+     "result": "9.27",
+     "grade": "9",
+     "type": "Prelims",
+     "place": 13
+    },
+    {
+     "athlete": "Tasker, Nina",
+     "school": "Noble ME",
+     "result": "9.47",
+     "grade": "11",
+     "type": "Prelims",
+     "place": 15
+    }
+   ]
+  },
+  {
    "event": "High Jump",
    "gender": "Girls",
    "is_relay": false,
@@ -461,7 +518,7 @@
      "athlete": "Gardner, Anna",
      "school": "Scarborough ME",
      "result": "9-00.00",
-     "grade": "",
+     "grade": "9",
      "type": "Finals",
      "place": 9,
      "warnings": [
@@ -570,7 +627,7 @@
      "athlete": "Taranko, Mia",
      "school": "Thornton Acad ME",
      "result": "33-01.50",
-     "grade": "",
+     "grade": "9",
      "type": "Finals",
      "place": 3
     }
@@ -705,6 +762,64 @@
    ]
   },
   {
+   "event": "4x200 Meter Relay",
+   "gender": "Girls",
+   "is_relay": true,
+   "results": [
+    {
+     "school": "Scarborough ME",
+     "result": "1:52.01",
+     "athletes": [
+      "Panagakos, Gaby",
+      "Rusak, Sydney",
+      "Shaw, Ellen",
+      "Labbe, Emily"
+     ],
+     "type": "Finals",
+     "place": 7
+    }
+   ]
+  },
+  {
+   "event": "4x400 Meter Relay",
+   "gender": "Girls",
+   "is_relay": true,
+   "results": [
+    {
+     "school": "Cheverus ME",
+     "result": "4:15.69",
+     "athletes": [
+      "White, Emma",
+      "Gendron, Katelyn",
+      "Gallant, Emma",
+      "Turner, Emily"
+     ],
+     "type": "Finals",
+     "place": 4,
+     "points": 4.0
+    }
+   ]
+  },
+  {
+   "event": "1600 Meter Sprint Medley Relay",
+   "gender": "Girls",
+   "is_relay": true,
+   "results": [
+    {
+     "school": "Gorham ME",
+     "result": "4:31.18",
+     "athletes": [
+      "McGouldrick, Grace",
+      "Rossignol, Maddie",
+      "Rossignol, Bridget",
+      "Slager, Anna"
+     ],
+     "type": "Finals",
+     "place": 10
+    }
+   ]
+  },
+  {
    "event": "55 Meter Dash",
    "gender": "Boys",
    "is_relay": false,
@@ -721,7 +836,7 @@
      "athlete": "Hatch, Ben",
      "school": "Scarborough ME",
      "result": "6.90",
-     "grade": "",
+     "grade": "9",
      "type": "Prelims",
      "place": 26
     },
@@ -752,7 +867,7 @@
      "athlete": "Flaker, Jarett",
      "school": "Scarborough ME",
      "result": "37.05",
-     "grade": "",
+     "grade": "9",
      "type": "Finals",
      "place": 9
     },
@@ -998,9 +1113,27 @@
      "athlete": "Flaker, Jarett",
      "school": "Scarborough ME",
      "result": "8.39",
-     "grade": "",
+     "grade": "9",
      "type": "Prelims",
      "place": 17
+    }
+   ]
+  },
+  {
+   "event": "55 Meter Hurdles",
+   "gender": "Boys",
+   "is_relay": false,
+   "results": [
+    {
+     "athlete": "Rusak, Sam",
+     "school": "Scarborough ME",
+     "result": "8.21",
+     "grade": "12",
+     "type": "Prelims",
+     "place": 8,
+     "warnings": [
+      "Original result: 8.21Q"
+     ]
     }
    ]
   },
@@ -1209,6 +1342,57 @@
      "grade": "12",
      "type": "Finals",
      "place": 18
+    }
+   ]
+  },
+  {
+   "event": "4x200 Meter Relay",
+   "gender": "Boys",
+   "is_relay": true,
+   "results": [
+    {
+     "school": "Scarborough ME",
+     "result": "1:33.89",
+     "athletes": [
+      "Hatch, Ben",
+      "Batoosingh, Ben",
+      "Flaker, Jarett",
+      "Rusak, Sam"
+     ],
+     "type": "Finals",
+     "place": 3,
+     "points": 6.0
+    },
+    {
+     "school": "Noble ME",
+     "result": "1:40.65",
+     "athletes": [
+      "Chambers, Matt",
+      "Pomerleau, Logan",
+      "Santeusanio, Lance",
+      "Farwell, Justin"
+     ],
+     "type": "Finals",
+     "place": 22
+    }
+   ]
+  },
+  {
+   "event": "1600 Meter Sprint Medley Relay",
+   "gender": "Boys",
+   "is_relay": true,
+   "results": [
+    {
+     "school": "Gorham ME",
+     "result": "3:51.43",
+     "athletes": [
+      "Drew, David",
+      "Benson, James",
+      "Ousback, Alex",
+      "Orach, Ethan"
+     ],
+     "type": "Finals",
+     "place": 15
     }
    ]
   },

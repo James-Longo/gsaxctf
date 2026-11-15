@@ -354,38 +354,48 @@ _SEASON_MARKS = {}
 
 
 def season_marks(year, season):
-    """{(runner, event, mark): stem} over every file held for the season (Indoor: the neighbouring
-    winters too -- a December meet sits under either year depending on the source)."""
+    """({(runner, event, mark): {stems}}, {stem: date}) over every file held for the season (Indoor: the
+    neighbouring winters too -- a December meet sits under either year depending on the source)."""
     if (year, season) not in _SEASON_MARKS:
-        out = {}
+        out, dates = collections.defaultdict(set), {}
         years = (year - 1, year, year + 1) if season == 'Indoor' else (year,)
         for y in years:
             for p in glob.glob(os.path.join(DATA, 'parsed_results', str(y), season, '*.json')):
                 try:
-                    keys = _mark_keys(json.load(open(p)))
+                    d = json.load(open(p))
+                    keys = _mark_keys(d)
                 except Exception:  # noqa: BLE001
                     continue
                 st = os.path.splitext(os.path.basename(p))[0]
+                dates[st] = day(d.get('date'))
                 for k in keys:
-                    out.setdefault(k, st)
-        _SEASON_MARKS[(year, season)] = out
+                    out[k].add(st)
+        _SEASON_MARKS[(year, season)] = (out, dates)
     return _SEASON_MARKS[(year, season)]
 
 
-def track_event_homes(doc, year, season):
-    """Per event of a staged track meet: the held file with half or more of its marks (the same
-    runners -- relays: teams -- at the same marks), else None; events of fewer than 3 marks: the
-    file holding any of them, else 'small'."""
-    held = season_marks(year, season)
+HELD_DAYS = 4
+
+
+def track_event_homes(doc, year, season, skip=()):
+    """Per event of a staged track meet: the ONE held file, dated within HELD_DAYS of the meet, with
+    half or more of its marks (the same runners -- relays: teams -- at the same marks), else None;
+    events of fewer than 3 marks: that file must hold all of them, else 'small'. Marks were once
+    counted over all the season's files together, so a jumper clearing the same height at three
+    other meets made a whole event 'held' (2024 SMAA Bonny Eagle-Noble-Portland-Scarborough lost
+    96 rows to winners-only sub5 sheets and meets of another week)."""
+    held, dates = season_marks(year, season)
+    d0 = day(doc.get('date'))
+    near = lambda st: st not in skip and (d0 is None or dates.get(st) is None or abs((dates[st] - d0).days) <= HELD_DAYS)
     out = []
     for e in doc.get('events', []):
         ks = _mark_keys(dict(events=[e]))
-        if len(ks) < 3:   # (a two-team relay: held if any of its marks is)
-            hit = next((held[k] for k in ks if k in held), None)
-            out.append(hit or 'small')
+        hits = collections.Counter(st for k in ks for st in held.get(k, ()) if near(st))
+        top = hits.most_common(1)[0] if hits else None
+        if len(ks) < 3:
+            out.append(top[0] if top and top[1] == len(ks) else 'small')
             continue
-        hits = collections.Counter(held[k] for k in ks if k in held)
-        out.append(hits.most_common(1)[0][0] if hits and sum(hits.values()) >= 0.5 * len(ks) else None)
+        out.append(top[0] if top and top[1] >= 0.5 * len(ks) else None)
     return out
 
 

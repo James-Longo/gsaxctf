@@ -4208,6 +4208,59 @@ def test_store_drops_tags_after_names():
          'Brunswick/Hyde (B) Relay']
 
 
+SEMIS_TXT = """Event 3  Girls 60 Yard Hurdles
+===================================================================
+    Name                    Year School                 Prelims  H#
+===================================================================
+Preliminaries
+  1 MacKenzie Rawcliffe          Hampden                   9.26Q  1 
+  2 Danielle Lainez              Brewer                    9.28Q  2 
+ 
+Event 3  Girls 60 Yard Hurdles
+===================================================================
+    Name                    Year School                   Semis  H#
+===================================================================
+Semi-Finals
+  1 MacKenzie Rawcliffe          Hampden                   9.23Q  1 
+  2 Danielle Lainez              Brewer                    9.32Q  2 
+ 
+Event 3  Girls 60 Yard Hurdles
+=======================================================================
+    Name                    Year School                  Finals  Points
+=======================================================================
+Finals
+  1 Danielle Lainez              Brewer                    8.91    10  
+  2 MacKenzie Rawcliffe       09 Hampden                   9.10     8
+"""
+
+
+def test_semifinal_round_on_its_own():
+    """A semi-final section on its own ('Semis  H#', 2003 Eastern Maine, Dartmouth Relays) was dropped whole."""
+    res = Sub5ColumnParser('easterns03.htm', text=SEMIS_TXT).parse()
+    marks = sorted(r['result'] for e in res['events'] for r in e['results'] if r['athlete'] == 'Danielle Lainez')
+    assert marks == ['8.91', '9.28', '9.32'], marks
+
+
+def test_milesplit_held_event_needs_one_file_near_the_date():
+    """An event is 'already held' only when ONE file dated within days of the meet holds half its marks:
+    counted over every file of the season, a jumper's usual height at other meets made whole events
+    'held' (2024 SMAA week 3 lost 96 rows to winners-only sheets)."""
+    from backend import milesplit_bulk as mb
+    ev = lambda n: dict(event='High Jump', gender='Girls', results=[dict(athlete=f'Ann {c}ay', school='X', result='5-00') for c in 'BCDEFG'[:n]])
+    keys = lambda d: mb._mark_keys(dict(events=[d]))
+    e = ev(4); ks = sorted(keys(e))
+    import datetime as dt
+    held = {k: {f'other{i}'} for i, k in enumerate(ks)}   # each mark in a different meet
+    mb._SEASON_MARKS[(1999, 'Outdoor')] = (held, {f'other{i}': dt.date(1999, 5, 1) for i in range(4)})
+    assert mb.track_event_homes(dict(date='1999-05-01', events=[e]), 1999, 'Outdoor') == [None]
+    held = {k: {'same'} for k in ks[:2]}
+    mb._SEASON_MARKS[(1999, 'Outdoor')] = (held, {'same': dt.date(1999, 5, 2)})
+    assert mb.track_event_homes(dict(date='1999-05-01', events=[e]), 1999, 'Outdoor') == ['same']
+    mb._SEASON_MARKS[(1999, 'Outdoor')] = (held, {'same': dt.date(1999, 5, 20)})   # weeks away: another meet
+    assert mb.track_event_homes(dict(date='1999-05-01', events=[e]), 1999, 'Outdoor') == [None]
+    mb._SEASON_MARKS.pop((1999, 'Outdoor'))
+
+
 if __name__ == '__main__':
     qaqc._ensure_team_mapping()
     failed = 0

@@ -12,7 +12,7 @@
   ]
  },
  "team_rankings": [],
- "notes": "Maine athletes/relays only, read from the Hy-Tek results with the meet's own parser. A row was kept when its school resolves to a Maine school and the athlete appears for that school in our data the same school year, when at least three of the school's athletes in this meet do (team evidence), or when the sheet tags the school ' ME'. Names printed first-name-first swapped back when the swap matches the roster. Out-of-state namesakes (St. Thomas Aquinas NH etc.) left out. Events outside the Maine indoor program (weight throw) not copied. Milford (NH) and St. Thomas Aquinas (Dover NH) rows left out.",
+ "notes": "Maine athletes/relays only, read from the Hy-Tek results with the meet's own parser (every round: prelims, semi-finals, finals). A row was kept when its school resolves to a Maine school and the athlete appears for that school in our data the same school year, when at least three of the school's athletes in this meet do (team evidence), or when the sheet tags the school ' ME'; a relay when its school is such a Maine school or tagged ' ME'. Schools tagged with another state (Windham NH) left out. Names printed first-name-first swapped back when the swap matches the roster. Events outside the Maine indoor program (weight throw) not copied. Milford (NH) and St. Thomas Aquinas (Dover NH) rows left out.",
  "events": [
   {
    "event": "55 Meter Dash",
@@ -37,6 +37,21 @@
      "grade": "12",
      "type": "Prelims",
      "place": 24
+    }
+   ]
+  },
+  {
+   "event": "55 Meter Dash",
+   "gender": "Girls",
+   "is_relay": false,
+   "results": [
+    {
+     "athlete": "Bolduc, Georgia",
+     "school": "Waterville",
+     "result": "7.63",
+     "grade": "12",
+     "type": "Prelims",
+     "place": 12
     }
    ]
   },
@@ -243,6 +258,40 @@
     {
      "athlete": "Shulta, Sarah",
      "school": "Waterville",
+     "result": "9.10",
+     "grade": "10",
+     "type": "Prelims",
+     "place": 7,
+     "warnings": [
+      "Original result: 9.10q"
+     ]
+    },
+    {
+     "athlete": "Oneal, Lizzie",
+     "school": "Mt. Ararat",
+     "result": "9.37",
+     "grade": "12",
+     "type": "Prelims",
+     "place": 10
+    },
+    {
+     "athlete": "Bolduc, Erin",
+     "school": "Cony",
+     "result": "10.10",
+     "grade": "12",
+     "type": "Prelims",
+     "place": 15
+    }
+   ]
+  },
+  {
+   "event": "55 Meter Hurdles",
+   "gender": "Girls",
+   "is_relay": false,
+   "results": [
+    {
+     "athlete": "Shulta, Sarah",
+     "school": "Waterville",
      "result": "9.13",
      "grade": "10",
      "type": "Finals",
@@ -366,6 +415,35 @@
      "grade": "11",
      "type": "Finals",
      "place": 11
+    }
+   ]
+  },
+  {
+   "event": "4x200 Meter Relay",
+   "gender": "Girls",
+   "is_relay": true,
+   "results": [
+    {
+     "school": "Waterville ME",
+     "result": "1:49.63",
+     "athletes": [],
+     "type": "Finals",
+     "place": 4,
+     "points": 4.0
+    }
+   ]
+  },
+  {
+   "event": "1600 Meter Sprint Medley Relay",
+   "gender": "Girls",
+   "is_relay": true,
+   "results": [
+    {
+     "school": "Mt. Ararat ME",
+     "result": "4:41.76",
+     "athletes": [],
+     "type": "Finals",
+     "place": 16
     }
    ]
   },
@@ -588,12 +666,56 @@
    "is_relay": false,
    "results": [
     {
+     "athlete": "Fitzgerald, Patric",
+     "school": "Windham",
+     "result": "8.32",
+     "grade": "12",
+     "type": "Prelims",
+     "place": 10,
+     "warnings": [
+      "Original result: 8.32q"
+     ]
+    },
+    {
      "athlete": "Levine, Jordhan",
      "school": "Waterville",
      "result": "8.62",
      "grade": "11",
      "type": "Prelims",
      "place": 18
+    }
+   ]
+  },
+  {
+   "event": "55 Meter Hurdles",
+   "gender": "Boys",
+   "is_relay": false,
+   "results": [
+    {
+     "athlete": "Fitzgerald, Patric",
+     "school": "Windham",
+     "result": "8.17",
+     "grade": "12",
+     "type": "Prelims",
+     "place": 7,
+     "warnings": [
+      "Original result: 8.17q"
+     ]
+    }
+   ]
+  },
+  {
+   "event": "55 Meter Hurdles",
+   "gender": "Boys",
+   "is_relay": false,
+   "results": [
+    {
+     "athlete": "Fitzgerald, Patric",
+     "school": "Windham",
+     "result": "8.24",
+     "grade": "12",
+     "type": "Finals",
+     "place": 8
     }
    ]
   },
@@ -641,6 +763,14 @@
    "gender": "Boys",
    "is_relay": false,
    "results": [
+    {
+     "athlete": "Fitzgerald, Patric",
+     "school": "Windham",
+     "result": "19-01.00",
+     "grade": "12",
+     "type": "Finals",
+     "place": 14
+    },
     {
      "athlete": "Burgess, Devin",
      "school": "Waterville",
@@ -715,7 +845,7 @@
      "athlete": "Gray, Trever",
      "school": "Waterville",
      "result": "37-05.75",
-     "grade": "",
+     "grade": "9",
      "type": "Finals",
      "place": 26
     },
@@ -726,6 +856,42 @@
      "grade": "12",
      "type": "Finals",
      "place": 40
+    }
+   ]
+  },
+  {
+   "event": "4x200 Meter Relay",
+   "gender": "Boys",
+   "is_relay": true,
+   "results": [
+    {
+     "school": "Mt. Ararat ME",
+     "result": "1:37.58",
+     "athletes": [],
+     "type": "Finals",
+     "place": 10
+    },
+    {
+     "school": "Waterville ME",
+     "result": "1:41.51",
+     "athletes": [],
+     "type": "Finals",
+     "place": 18
+    }
+   ]
+  },
+  {
+   "event": "1600 Meter Sprint Medley Relay",
+   "gender": "Boys",
+   "is_relay": true,
+   "results": [
+    {
+     "school": "Mt. Ararat ME",
+     "result": "3:43.09",
+     "athletes": [],
+     "type": "Finals",
+     "place": 3,
+     "points": 6.0
     }
    ]
   },

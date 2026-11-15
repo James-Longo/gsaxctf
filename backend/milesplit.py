@@ -1333,7 +1333,7 @@ def main():
     date, files, title, h = meetinfo(slug)
     if cmd=='info':
         print(slug, date, title[:80], [(f['name'],f['id'],f['isMeetPro']) for f in files]); return
-    events=[]; rank=[]; urls=[]; paywalled=[]; head=['','']; HEADYEARS=set()
+    events=[]; rank=[]; urls=[]; paywalled=[]; head=['','']; HEADYEARS=set(); programs=[]
     files=superseded(files)
     for f in files:
         if str(f['id']) in os.environ.get('EXCLUDE','').split(','): continue
@@ -1359,6 +1359,10 @@ def main():
         # (docs/agents/missing-meets.md), never listed as Pro only
         if not pre: print('no <pre> for',f['name'],'- read its formatted view in a browser'); paywalled.append(f['name']+' (no text)'); continue
         t=html.unescape(re.sub(r'<[^>]+>','',pre[0]))
+        # a Hy-Tek meet program (entries with seed marks, printed before the meet) is not results: its
+        # seeds were stored as marks (2023 Tripp MS, 2024 MVC at Hall-Dale, 2014 Bowdoin Relays)
+        if re.search(r'(?m)^\s*(?:Meet Program|Heat Sheet|Psych Sheet)\s*$', '\n'.join(t.splitlines()[:12])):
+            print('meet program, not results:', f['name']); programs.append(f['name']); continue
         t=re.sub(r"(?<=[\w.)])((?:Mt\. )?[A-Z][\w.]*(?: [A-Z][\w.]*)* Track Hy-Tek's MEET MANAGER\t)",r'\n\1',t)   # page header glued to the last row/leg before the page break
         if sys.argv[4]!='XC' and '\t' not in t and len(re.findall(r'(?m)^\d{1,3}\s*$',t))>=10 and len(re.findall(r'(?m)^[ \t]*\d{1,3}[ \t]+\S',t))<3: t=cells_to_tab(t)
         global XC_HINT
@@ -1548,7 +1552,7 @@ def main():
     out={'meet_name':mname,'date':date,'venue':venue,**({'date_conflict':'result sheet dated %s, MileSplit lists %s'%('/'.join(sorted(HEADYEARS)),date)} if HEADYEARS else {}),
          'meet_level':'hs','parser':'milesplit-manual','source':{'site':'milesplit','url':urls},
          'events':events,'team_rankings':[x for i_,x in enumerate(rank) if x['teams'] and x not in rank[:i_]],
-         'notes':'Transcribed from MileSplit raw result text (me.milesplit.com). Schools kept as MileSplit prints them. Prelim/final/heat rows as printed; points column not copied; exhibition marks (x) flagged.'+dnote+(' Result file(s) %s skipped: duplicate of another meet\'s results.'%os.environ['EXCLUDE'] if os.environ.get('EXCLUDE') else '')+(' Abbreviated or mascot school names (LAC, MTB, Dragons ...) expanded to full names.' if os.environ.get('CANON') else '')+(' Schools printed as mascots in the source mapped: %s.'%os.environ['MASC'] if MASC else '')+(' '+os.environ['NOTES'] if os.environ.get('NOTES') else '')+(' School codes of this meet read from the meet itself (backend/data/milesplit_codes.json): %s.'%'; '.join('%s = %s'%kv for kv in sorted(MEETCODES.items())) if MEETCODES else '')+sub_note+(' Raw page without text (read the formatted view): %s.'%paywalled if paywalled else '')+(' Rows not transcribed (unreadable mark or status): %s.'%'; '.join(UNP) if UNP else '')}
+         'notes':'Transcribed from MileSplit raw result text (me.milesplit.com). Schools kept as MileSplit prints them. Prelim/final/heat rows as printed; points column not copied; exhibition marks (x) flagged.'+dnote+(' Result file(s) %s skipped: duplicate of another meet\'s results.'%os.environ['EXCLUDE'] if os.environ.get('EXCLUDE') else '')+(' Abbreviated or mascot school names (LAC, MTB, Dragons ...) expanded to full names.' if os.environ.get('CANON') else '')+(' Schools printed as mascots in the source mapped: %s.'%os.environ['MASC'] if MASC else '')+(' '+os.environ['NOTES'] if os.environ.get('NOTES') else '')+(' School codes of this meet read from the meet itself (backend/data/milesplit_codes.json): %s.'%'; '.join('%s = %s'%kv for kv in sorted(MEETCODES.items())) if MEETCODES else '')+sub_note+(' Raw page without text (read the formatted view): %s.'%paywalled if paywalled else '')+(' Meet program (entries and seed marks, not results) not read: %s.'%'; '.join(programs) if programs else '')+(' Rows not transcribed (unreadable mark or status): %s.'%'; '.join(UNP) if UNP else '')}
     if not events: print('NO EVENTS', paywalled); return
     path=OUT+'ms-%s.json'%re.sub(r'^\d+-','',slug)
     if os.path.exists(path):   # same meet name on another date (two "Portland High School" home meets): keep both

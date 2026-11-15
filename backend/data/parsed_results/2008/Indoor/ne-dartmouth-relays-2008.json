@@ -12,7 +12,7 @@
   ]
  },
  "team_rankings": [],
- "notes": "Maine athletes/relays only, read from the Hy-Tek results with the meet's own parser. A row was kept when its school resolves to a Maine school and the athlete appears for that school in our data the same school year, when at least three of the school's athletes in this meet do (team evidence), or when the sheet tags the school ' ME'. Edward Little names printed first-name-first ('Garrett, Wyman') swapped back when the swap matches the roster. St. Thomas Aquinas (NH) left out. Events outside the Maine indoor program (weight throw) not copied. Kibler and Kaake printed 'Mt Ararat ME' but ran for Morse all of 2007-08 (XC, outdoor, KVAC indoor): filed under Morse.",
+ "notes": "Maine athletes/relays only, read from the Hy-Tek results with the meet's own parser (every round: prelims, semi-finals, finals). A row was kept when its school resolves to a Maine school and the athlete appears for that school in our data the same school year, when at least three of the school's athletes in this meet do (team evidence), or when the sheet tags the school ' ME'; a relay when its school is such a Maine school or tagged ' ME'. Schools tagged with another state (Windham NH) left out. Names printed first-name-first swapped back when the swap matches the roster. Events outside the Maine indoor program (weight throw) not copied. Kibler and Kaake printed 'Mt Ararat ME' but ran for Morse all of 2007-08 (XC, outdoor, KVAC indoor): filed under Morse.",
  "events": [
   {
    "event": "1 Mile Run",
@@ -127,6 +127,51 @@
     {
      "athlete": "Labreck, Jessie",
      "school": "Messalonskee",
+     "result": "8.50",
+     "grade": "12",
+     "type": "Prelims",
+     "place": 2,
+     "warnings": [
+      "Original result: 8.50Q"
+     ]
+    },
+    {
+     "athlete": "Tewell, Chelsey",
+     "school": "York ME",
+     "result": "8.98",
+     "grade": "11",
+     "type": "Prelims",
+     "place": 8,
+     "warnings": [
+      "Original result: 8.98Q"
+     ]
+    },
+    {
+     "athlete": "Williams, Ci'ara",
+     "school": "Waterville",
+     "result": "9.04",
+     "grade": "12",
+     "type": "Prelims",
+     "place": 11
+    },
+    {
+     "athlete": "Dodge, Emily",
+     "school": "Edward Little",
+     "result": "9.10",
+     "grade": "11",
+     "type": "Prelims",
+     "place": 12
+    }
+   ]
+  },
+  {
+   "event": "55 Meter Hurdles",
+   "gender": "Girls",
+   "is_relay": false,
+   "results": [
+    {
+     "athlete": "Labreck, Jessie",
+     "school": "Messalonskee",
      "result": "8.38",
      "grade": "12",
      "type": "Finals",
@@ -184,6 +229,29 @@
      "grade": "11",
      "type": "Prelims",
      "place": 53
+    }
+   ]
+  },
+  {
+   "event": "55 Meter Dash",
+   "gender": "Girls",
+   "is_relay": false,
+   "results": [
+    {
+     "athlete": "Tewell, Chelsey",
+     "school": "York ME",
+     "result": "7.66",
+     "grade": "11",
+     "type": "Prelims",
+     "place": 12
+    },
+    {
+     "athlete": "Merritt, Rebecca",
+     "school": "Mt Ararat ME",
+     "result": "7.75",
+     "grade": "10",
+     "type": "Prelims",
+     "place": 14
     }
    ]
   },
@@ -558,6 +626,188 @@
    ]
   },
   {
+   "event": "4x400 Meter Relay",
+   "gender": "Girls",
+   "is_relay": true,
+   "results": [
+    {
+     "school": "Mt Ararat ME",
+     "result": "4:23.64",
+     "athletes": [],
+     "type": "Finals",
+     "place": 14
+    },
+    {
+     "school": "Edward Little ME",
+     "result": "4:46.46",
+     "athletes": [],
+     "type": "Finals",
+     "place": 25
+    }
+   ]
+  },
+  {
+   "event": "4x200 Meter Relay",
+   "gender": "Girls",
+   "is_relay": true,
+   "results": [
+    {
+     "school": "Edward Little ME",
+     "result": "1:53.96",
+     "athletes": [],
+     "type": "Finals",
+     "place": 14
+    },
+    {
+     "school": "Waterville ME",
+     "result": "1:55.02",
+     "athletes": [],
+     "type": "Finals",
+     "place": 17
+    }
+   ]
+  },
+  {
+   "event": "4x800 Meter Relay",
+   "gender": "Girls",
+   "is_relay": true,
+   "results": [
+    {
+     "school": "Mt Ararat ME",
+     "result": "10:23.44",
+     "athletes": [],
+     "type": "Finals",
+     "place": 13
+    },
+    {
+     "school": "Edward Little ME",
+     "result": "10:54.43",
+     "athletes": [],
+     "type": "Finals",
+     "place": 22
+    }
+   ]
+  },
+  {
+   "event": "Distance Medley Relay",
+   "gender": "Girls",
+   "is_relay": true,
+   "results": [
+    {
+     "school": "Edward Little ME",
+     "result": "15:21.54",
+     "athletes": [],
+     "type": "Finals",
+     "place": 16
+    }
+   ]
+  },
+  {
+   "event": "1600 Meter Sprint Medley Relay",
+   "gender": "Girls",
+   "is_relay": true,
+   "results": [
+    {
+     "school": "Edward Little ME",
+     "result": "5:07.10",
+     "athletes": [],
+     "type": "Finals",
+     "place": 20
+    }
+   ]
+  },
+  {
+   "event": "4x400 Meter Relay",
+   "gender": "Girls",
+   "is_relay": true,
+   "results": [
+    {
+     "school": "Mt Ararat ME",
+     "result": "4:23.64",
+     "athletes": [],
+     "type": "Finals",
+     "place": 14
+    },
+    {
+     "school": "Edward Little ME",
+     "result": "4:46.46",
+     "athletes": [],
+     "type": "Finals",
+     "place": 25
+    }
+   ]
+  },
+  {
+   "event": "4x200 Meter Relay",
+   "gender": "Girls",
+   "is_relay": true,
+   "results": [
+    {
+     "school": "Edward Little ME",
+     "result": "1:53.96",
+     "athletes": [],
+     "type": "Finals",
+     "place": 14
+    },
+    {
+     "school": "Waterville ME",
+     "result": "1:55.02",
+     "athletes": [],
+     "type": "Finals",
+     "place": 17
+    }
+   ]
+  },
+  {
+   "event": "4x800 Meter Relay",
+   "gender": "Girls",
+   "is_relay": true,
+   "results": [
+    {
+     "school": "Mt Ararat ME",
+     "result": "10:23.44",
+     "athletes": [],
+     "type": "Finals",
+     "place": 13
+    },
+    {
+     "school": "Edward Little ME",
+     "result": "10:54.43",
+     "athletes": [],
+     "type": "Finals",
+     "place": 22
+    }
+   ]
+  },
+  {
+   "event": "Distance Medley Relay",
+   "gender": "Girls",
+   "is_relay": true,
+   "results": [
+    {
+     "school": "Edward Little ME",
+     "result": "15:21.54",
+     "athletes": [],
+     "type": "Finals",
+     "place": 16
+    }
+   ]
+  },
+  {
+   "event": "1600 Meter Sprint Medley Relay",
+   "gender": "Girls",
+   "is_relay": true,
+   "results": [
+    {
+     "school": "Edward Little ME",
+     "result": "5:07.10",
+     "athletes": [],
+     "type": "Finals",
+     "place": 20
+    }
+   ]
+  },
+  {
    "event": "1 Mile Run",
    "gender": "Boys",
    "is_relay": false,
@@ -592,14 +842,6 @@
      "grade": "12",
      "type": "Finals",
      "place": 43
-    },
-    {
-     "athlete": "Kaake, Jason",
-     "school": "Morse High School",
-     "result": "10:05.01",
-     "grade": "11",
-     "type": "Finals",
-     "place": 14
     }
    ]
   },
@@ -626,6 +868,21 @@
      "grade": "11",
      "type": "Prelims",
      "place": 18
+    }
+   ]
+  },
+  {
+   "event": "55 Meter Hurdles",
+   "gender": "Boys",
+   "is_relay": false,
+   "results": [
+    {
+     "athlete": "Alexis, Dominik",
+     "school": "Waterville",
+     "result": "8.54",
+     "grade": "11",
+     "type": "Prelims",
+     "place": 16
     }
    ]
   },
@@ -674,20 +931,20 @@
      "place": 15
     },
     {
-     "athlete": "Christensen, Nick",
-     "school": "Waterville",
-     "result": "55.93",
-     "grade": "11",
-     "type": "Finals",
-     "place": 36
-    },
-    {
      "athlete": "Kibler, Chris",
      "school": "Morse High School",
      "result": "54.65",
      "grade": "11",
      "type": "Finals",
      "place": 26
+    },
+    {
+     "athlete": "Christensen, Nick",
+     "school": "Waterville",
+     "result": "55.93",
+     "grade": "11",
+     "type": "Finals",
+     "place": 36
     }
    ]
   },
@@ -776,6 +1033,21 @@
    ]
   },
   {
+   "event": "2 Mile Run",
+   "gender": "Boys",
+   "is_relay": false,
+   "results": [
+    {
+     "athlete": "Kaake, Jason",
+     "school": "Morse High School",
+     "result": "10:05.01",
+     "grade": "11",
+     "type": "Finals",
+     "place": 14
+    }
+   ]
+  },
+  {
    "event": "Long Jump",
    "gender": "Boys",
    "is_relay": false,
@@ -810,14 +1082,6 @@
      "grade": "12",
      "type": "Finals",
      "place": 12
-    },
-    {
-     "athlete": "Wyman, Garrett",
-     "school": "Edward Little",
-     "result": "38-03.50",
-     "grade": "12",
-     "type": "Finals",
-     "place": 14
     }
    ]
   },
@@ -861,6 +1125,14 @@
      ]
     },
     {
+     "athlete": "Nakanishi, Bradley",
+     "school": "Scarborough",
+     "result": "13-06.00",
+     "grade": "11",
+     "type": "Finals",
+     "place": 3
+    },
+    {
      "athlete": "Loomis, Brad",
      "school": "Waterville",
      "result": "11-06.00",
@@ -875,14 +1147,6 @@
      "grade": "9",
      "type": "Finals",
      "place": 18
-    },
-    {
-     "athlete": "Gruver, Brandon",
-     "school": "Edward Little",
-     "result": "11-06.00",
-     "grade": "11",
-     "type": "Finals",
-     "place": 11
     }
    ]
   },
@@ -913,6 +1177,64 @@
      "grade": "11",
      "type": "Finals",
      "place": 10
+    }
+   ]
+  },
+  {
+   "event": "4x200 Meter Relay",
+   "gender": "Boys",
+   "is_relay": true,
+   "results": [
+    {
+     "school": "Waterville ME",
+     "result": "1:38.84",
+     "athletes": [],
+     "type": "Finals",
+     "place": 11
+    }
+   ]
+  },
+  {
+   "event": "4x200 Meter Relay",
+   "gender": "Boys",
+   "is_relay": true,
+   "results": [
+    {
+     "school": "Waterville ME",
+     "result": "1:38.84",
+     "athletes": [],
+     "type": "Finals",
+     "place": 11
+    }
+   ]
+  },
+  {
+   "event": "Triple Jump",
+   "gender": "Boys",
+   "is_relay": false,
+   "results": [
+    {
+     "athlete": "Wyman, Garrett",
+     "school": "Edward Little",
+     "result": "38-03.50",
+     "grade": "12",
+     "type": "Finals",
+     "place": 14
+    }
+   ]
+  },
+  {
+   "event": "Pole Vault",
+   "gender": "Boys",
+   "is_relay": false,
+   "results": [
+    {
+     "athlete": "Gruver, Brandon",
+     "school": "Edward Little",
+     "result": "11-06.00",
+     "grade": "11",
+     "type": "Finals",
+     "place": 11
     }
    ]
   }

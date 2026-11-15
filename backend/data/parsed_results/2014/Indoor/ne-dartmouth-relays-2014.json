@@ -12,13 +12,21 @@
   ]
  },
  "team_rankings": [],
- "notes": "Maine athletes/relays only, read from the Hy-Tek results with the meet's own parser. A row was kept when its school resolves to a Maine school and the athlete appears for that school in our data the same school year, when at least three of the school's athletes in this meet do (team evidence), or when the sheet tags the school ' ME'. Names printed first-name-first swapped back when the swap matches the roster. Out-of-state namesakes (St. Thomas Aquinas NH etc.) left out. Events outside the Maine indoor program (weight throw) not copied. Milford (NH) and St. Thomas Aquinas (Dover NH) rows left out.",
+ "notes": "Maine athletes/relays only, read from the Hy-Tek results with the meet's own parser (every round: prelims, semi-finals, finals). A row was kept when its school resolves to a Maine school and the athlete appears for that school in our data the same school year, when at least three of the school's athletes in this meet do (team evidence), or when the sheet tags the school ' ME'; a relay when its school is such a Maine school or tagged ' ME'. Schools tagged with another state (Windham NH) left out. Names printed first-name-first swapped back when the swap matches the roster. Events outside the Maine indoor program (weight throw) not copied. Milford (NH) and St. Thomas Aquinas (Dover NH) rows left out.",
  "events": [
   {
    "event": "55 Meter Dash",
    "gender": "Girls",
    "is_relay": false,
    "results": [
+    {
+     "athlete": "Pettaway, Alexandr",
+     "school": "Thornton",
+     "result": "7.78",
+     "grade": "11",
+     "type": "Prelims",
+     "place": 17
+    },
     {
      "athlete": "Bridger, Gabby",
      "school": "Waterville",
@@ -77,7 +85,7 @@
      "athlete": "Morin, Cecilia",
      "school": "Waterville",
      "result": "12:36.85",
-     "grade": "",
+     "grade": "9",
      "type": "Finals",
      "place": 22
     }
@@ -136,6 +144,35 @@
     {
      "athlete": "Shulta, Sarah",
      "school": "Waterville",
+     "result": "9.07",
+     "grade": "11",
+     "type": "Prelims",
+     "place": 5,
+     "warnings": [
+      "Original result: 9.07Q"
+     ]
+    },
+    {
+     "athlete": "Bolduc, Kellie",
+     "school": "Waterville",
+     "result": "9.18",
+     "grade": "11",
+     "type": "Prelims",
+     "place": 8,
+     "warnings": [
+      "Original result: 9.18q"
+     ]
+    }
+   ]
+  },
+  {
+   "event": "55 Meter Hurdles",
+   "gender": "Girls",
+   "is_relay": false,
+   "results": [
+    {
+     "athlete": "Shulta, Sarah",
+     "school": "Waterville",
      "result": "9.01",
      "grade": "11",
      "type": "Finals",
@@ -161,7 +198,7 @@
      "athlete": "Lopes, Katie",
      "school": "Waterville",
      "result": "4-10.00",
-     "grade": "",
+     "grade": "9",
      "type": "Finals",
      "place": 11
     }
@@ -210,6 +247,15 @@
      "type": "Finals",
      "place": 3,
      "points": 6.0
+    },
+    {
+     "athlete": "Pettaway, Alexandr",
+     "school": "Thornton",
+     "result": "32-11.50",
+     "grade": "11",
+     "type": "Finals",
+     "place": 6,
+     "points": 1.0
     }
    ]
   },
@@ -343,6 +389,21 @@
      "grade": "12",
      "type": "Prelims",
      "place": 87
+    }
+   ]
+  },
+  {
+   "event": "55 Meter Dash",
+   "gender": "Boys",
+   "is_relay": false,
+   "results": [
+    {
+     "athlete": "Boissonnault, Dere",
+     "school": "Thornton",
+     "result": "6.93",
+     "grade": "11",
+     "type": "Prelims",
+     "place": 14
     }
    ]
   },
@@ -503,7 +564,7 @@
      "athlete": "Cooper, Chris",
      "school": "Mt. Ararat",
      "result": "5:05.31",
-     "grade": "",
+     "grade": "9",
      "type": "Finals",
      "place": 49
     }
@@ -596,6 +657,21 @@
      "warnings": [
       "Original result: 8.31q"
      ]
+    }
+   ]
+  },
+  {
+   "event": "55 Meter Hurdles",
+   "gender": "Boys",
+   "is_relay": false,
+   "results": [
+    {
+     "athlete": "Levine, Jordhan",
+     "school": "Waterville",
+     "result": "8.20",
+     "grade": "12",
+     "type": "Prelims",
+     "place": 10
     }
    ]
   },

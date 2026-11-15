@@ -12,7 +12,7 @@
   ]
  },
  "team_rankings": [],
- "notes": "Maine athletes/relays only, read from the Hy-Tek results with the meet's own parser. A row was kept when its school resolves to a Maine school and the athlete appears for that school in our data the same school year, when at least three of the school's athletes in this meet do (team evidence), or when the sheet tags the school ' ME'. Names printed first-name-first swapped back when the swap matches the roster. Out-of-state namesakes (St. Thomas Aquinas NH etc.) left out. Events outside the Maine indoor program (weight throw) not copied.",
+ "notes": "Maine athletes/relays only, read from the Hy-Tek results with the meet's own parser (every round: prelims, semi-finals, finals). A row was kept when its school resolves to a Maine school and the athlete appears for that school in our data the same school year, when at least three of the school's athletes in this meet do (team evidence), or when the sheet tags the school ' ME'; a relay when its school is such a Maine school or tagged ' ME'. Schools tagged with another state (Windham NH) left out. Names printed first-name-first swapped back when the swap matches the roster. Events outside the Maine indoor program (weight throw) not copied.",
  "events": [
   {
    "event": "55 Meter Dash",
@@ -37,6 +37,21 @@
      "grade": "11",
      "type": "Prelims",
      "place": 78
+    }
+   ]
+  },
+  {
+   "event": "55 Meter Dash",
+   "gender": "Girls",
+   "is_relay": false,
+   "results": [
+    {
+     "athlete": "Prescott, Maddison",
+     "school": "Mt Ararat ME",
+     "result": "7.66",
+     "grade": "10",
+     "type": "Prelims",
+     "place": 10
     }
    ]
   },
@@ -215,6 +230,21 @@
    ]
   },
   {
+   "event": "55 Meter Hurdles",
+   "gender": "Girls",
+   "is_relay": false,
+   "results": [
+    {
+     "athlete": "Thurston, Olivia",
+     "school": "Waterville ME",
+     "result": "9.03",
+     "grade": "11",
+     "type": "Prelims",
+     "place": 13
+    }
+   ]
+  },
+  {
    "event": "High Jump",
    "gender": "Girls",
    "is_relay": false,
@@ -284,20 +314,82 @@
      "points": 1.0
     },
     {
-     "athlete": "Sakal, Emily",
-     "school": "Waterville ME",
-     "result": "33-09.00",
-     "grade": "12",
-     "type": "Finals",
-     "place": 16
-    },
-    {
      "athlete": "Harrington, Kather",
      "school": "Greely ME",
      "result": "34-08.00",
      "grade": "12",
      "type": "Finals",
      "place": 11
+    },
+    {
+     "athlete": "Sakal, Emily",
+     "school": "Waterville ME",
+     "result": "33-09.00",
+     "grade": "12",
+     "type": "Finals",
+     "place": 16
+    }
+   ]
+  },
+  {
+   "event": "4x200 Meter Relay",
+   "gender": "Girls",
+   "is_relay": true,
+   "results": [
+    {
+     "school": "Mt Ararat ME",
+     "result": "1:54.06",
+     "athletes": [
+      "1362 Michaud, Haley",
+      "1365 Smith, Carrie",
+      "1356 Gail, Colby",
+      "1363 Prescott, Maddison"
+     ],
+     "type": "Finals",
+     "place": 13
+    },
+    {
+     "school": "Waterville ME",
+     "result": "1:57.35",
+     "athletes": [
+      "2101 Thurston, Olivia",
+      "2095 LeClair, Anna",
+      "2090 Downer, Phoebe",
+      "2092 Frame, Alexa"
+     ],
+     "type": "Finals",
+     "place": 22
+    }
+   ]
+  },
+  {
+   "event": "4x200 Meter Relay",
+   "gender": "Girls",
+   "is_relay": true,
+   "results": [
+    {
+     "school": "Mt Ararat ME",
+     "result": "1:54.06",
+     "athletes": [
+      "1362 Michaud, Haley",
+      "1365 Smith, Carrie",
+      "1356 Gail, Colby",
+      "1363 Prescott, Maddison"
+     ],
+     "type": "Finals",
+     "place": 13
+    },
+    {
+     "school": "Waterville ME",
+     "result": "1:57.35",
+     "athletes": [
+      "2101 Thurston, Olivia",
+      "2095 LeClair, Anna",
+      "2090 Downer, Phoebe",
+      "2092 Frame, Alexa"
+     ],
+     "type": "Finals",
+     "place": 22
     }
    ]
   },
@@ -315,6 +407,24 @@
      "place": 3,
      "warnings": [
       "Original result: 6.69q"
+     ]
+    }
+   ]
+  },
+  {
+   "event": "55 Meter Dash",
+   "gender": "Boys",
+   "is_relay": false,
+   "results": [
+    {
+     "athlete": "Spofford, Isaiah",
+     "school": "Waterville ME",
+     "result": "6.68",
+     "grade": "12",
+     "type": "Prelims",
+     "place": 4,
+     "warnings": [
+      "Original result: 6.68Q"
      ]
     }
    ]
@@ -425,20 +535,20 @@
    "is_relay": false,
    "results": [
     {
+     "athlete": "Holt-Andrews, Jose",
+     "school": "Telstar ME",
+     "result": "10:30.27",
+     "grade": "9",
+     "type": "Finals",
+     "place": 26
+    },
+    {
      "athlete": "Hale, Jeff",
      "school": "Waterville ME",
      "result": "10:43.55",
      "grade": "12",
      "type": "Finals",
      "place": 38
-    },
-    {
-     "athlete": "Holt-Andrews, Jose",
-     "school": "Telstar ME",
-     "result": "10:30.27",
-     "grade": "",
-     "type": "Finals",
-     "place": 26
     }
    ]
   },

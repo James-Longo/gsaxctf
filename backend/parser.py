@@ -1767,7 +1767,7 @@ class Sub5ColumnParser:
             else:
                 # (RaceTab: "    Team                    Time   Pts")
                 if ("School" in line or "Team" in line) and ("Finals" in line or "Prelims" in line or "Seed" in line
-                                                             or re.search(r'\bTime\b', line)):
+                                                             or re.search(r'\bSemis\b', line) or re.search(r'\bTime\b', line)):
                     school_idx = line.find("School") if "School" in line else line.find("Team")
                     header_row_idx = i
 
@@ -1777,6 +1777,11 @@ class Sub5ColumnParser:
                     anchor_type = "Finals"
                 elif "Prelims" in line:
                     anchor_col = line.find("Prelims") + len("Prelims")
+                    anchor_type = "Prelims"
+                elif re.search(r'\bSemis\b', line):
+                    # a semi-final round on its own ("Name Year School  Semis  H#"): Dartmouth
+                    # Relays, 2003 Eastern Maine, SMMSAC festivals; it was dropped whole
+                    anchor_col = line.find("Semis") + len("Semis")
                     anchor_type = "Prelims"
                 elif "Seed" in line:
                     anchor_col = line.find("Seed") + len("Seed")
