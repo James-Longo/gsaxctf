@@ -113,7 +113,7 @@ After ingesting, rebuild each one the new data touches, and check it:
 
 | Product | Rebuild | Check |
 |---|---|---|
-| Team store, manifest, meet links | `python3 -m backend.scraper_v2 --resync-only` | `python3 -m backend.store_drift 25`: every big drop explained |
+| Team store, manifest, meet links | `python3 -m backend.scraper_v2 --resync-only` (add `--years Y --season S` to rebuild only the seasons a change touched; a global alias change needs the full one) | `python3 -m backend.store_drift 25`: every big drop explained |
 | School catalog (when seeds, rules or new school names change) | `python3 -m backend.build_school_catalog`, then the resync | new schools resolve to the right level (middle school vs high school) |
 | Athlete catalog (who is the same runner) | `python3 -m backend.athlete_catalog build` and `apply` | same-team spelling pairs in the new meets (see the roster review) |
 | Team-score verification, QAQC, ledger sign-offs | `python3 -m backend.routine qaqc`, `python3 -m backend.track_verify`, `python3 -m backend.meet_ledger build` and `signoff --auto` | mismatches in the new meets read and settled |

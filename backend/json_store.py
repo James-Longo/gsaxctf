@@ -364,7 +364,7 @@ def load_team(team_name: str) -> list:
     return _load_json(team_path(team_name), [])
 
 
-def save_team(team_name: str, performances: list):
+def save_team(team_name: str, performances: list, only_chunks=None):
     """Save a team's performances as slimmed per-season chunk files:
     teams/{TeamSlug}/{year}_{season}.json — small enough for the UI to
     lazy-load only the seasons it needs. Stale chunks and the legacy flat
@@ -376,6 +376,9 @@ def save_team(team_name: str, performances: list):
         by_chunk.setdefault(_chunk_key(p), []).append(slim_row(p))
     for key, perfs in by_chunk.items():
         _atomic_write(os.path.join(d, key + '.json.gz'), perfs)
+    if only_chunks is not None:
+        # (a scoped rebuild writes its own seasons and leaves the others as stored)
+        return
     wanted = {key + '.json.gz' for key in by_chunk}
     for fn in os.listdir(d):
         if (fn.endswith('.json') or fn.endswith('.json.gz')) and fn not in wanted:
@@ -436,7 +439,7 @@ def list_teams() -> list:
 # ---------------------------------------------------------------------------
 
 def add_performances_for_team(team_name: str, new_perfs: list,
-                               athletes: dict) -> tuple:
+                               athletes: dict, only_chunks=None) -> tuple:
     """
     Merge new_perfs into the existing team file.
     Handles deduplication and recalculates all PR flags after the merge.
@@ -447,7 +450,17 @@ def add_performances_for_team(team_name: str, new_perfs: list,
       date, season, year, meet_name, splits
     (id will be generated here if missing)
     """
-    existing = load_team(team_name)
+    if only_chunks is None:
+        existing = load_team(team_name)
+    else:
+        # only these season chunks are read and written; PR flags over a whole
+        # career are set by the athlete catalog's apply step afterwards
+        d = team_dir(team_name)
+        existing = []
+        for key, fn in (_chunk_files(d) if os.path.isdir(d) else []):
+            if key in only_chunks:
+                existing.extend(enrich_rows(team_name, key, _load_json(os.path.join(d, fn), [])))
+        new_perfs = [p for p in new_perfs if _chunk_key(p) in only_chunks]
     existing_ids = {p['id'] for p in existing}
 
     inserted = 0
@@ -473,7 +486,7 @@ def add_performances_for_team(team_name: str, new_perfs: list,
 
     if inserted > 0:
         recalculate_prs(existing)
-        save_team(team_name, existing)
+        save_team(team_name, existing, only_chunks)
 
     return athletes, inserted
 

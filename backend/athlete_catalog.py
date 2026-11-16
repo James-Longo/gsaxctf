@@ -1614,7 +1614,7 @@ def _write_registry(catalog):
     it covers and its other spellings) plus relay teams, marked kind='relay'."""
     out = []
     seen = {}
-    for a in sorted(catalog.get('athletes', []), key=lambda a: -a['rows']):
+    for a in sorted(catalog.get('athletes', []), key=lambda a: (-a['rows'], a['id'], a['name'], a['primary_team'])):
         if a['id'] in seen:
             # two runners on one store id that the catalog could not join
             # (they share a race: "HERMAN" and "Herman" on one list); the
@@ -1639,7 +1639,7 @@ def _write_registry(catalog):
         if any(r.get('legs') or ()):
             e['legs'] = r['legs']
         out.append(e)
-    out.sort(key=lambda e: (e.get('kind') == 'relay', e['name']))
+    out.sort(key=lambda e: (e.get('kind') == 'relay', e['name'], e['id']))
     js._atomic_write(js.ATHLETES_PATH, out)
 
 

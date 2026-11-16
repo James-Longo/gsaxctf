@@ -644,7 +644,7 @@ class _MostRowsParser:
 # rows the sync leaves out, by (meet, reason): a rebuild writes them to
 # backend/data/sync_drops.json for QAQC
 SYNC_DROPS = __import__('collections').Counter()
-SYNC_DROP_WHAT = __import__('collections').Counter()   # (kind, season, raw label) -> rows
+SYNC_DROP_WHAT = __import__('collections').Counter()   # (kind, 'YEAR_Season', raw label) -> rows
 
 _LABEL_BOYS = re.compile(r"\b(?:men|boys|male)'?s?\b", re.I)
 _LABEL_GIRLS = re.compile(r"\b(?:women|girls|female)'?s?\b", re.I)
@@ -3099,7 +3099,7 @@ class Sub5ScraperV2:
                         canon = (canon[0], 'Cross Country')
                     if canon is None:
                         SYNC_DROPS[(meet_key, 'event out of scope / unreadable')] += len(results_list)
-                        SYNC_DROP_WHAT[('event', season, str(event_name)[:60])] += len(results_list)
+                        SYNC_DROP_WHAT[('event', f'{year}_{season}', str(event_name)[:60])] += len(results_list)
                         continue
                     gender, event_canon_name = canon
                     # (a field-event relay -- 'Boys Long Jump Relay' at the EMITL, Bowdoin, Black Bear and MDI
@@ -3107,7 +3107,7 @@ class Sub5ScraperV2:
                     if season != 'XC' and is_relay and re.search(
                             r'Jump|Vault|Put|Weight Throw|Hammer|Discus|Javelin', event_canon_name):
                         SYNC_DROPS[(meet_key, 'field-event relay (team total)')] += len(results_list)
-                        SYNC_DROP_WHAT[('event', season, str(event_name)[:60])] += len(results_list)
+                        SYNC_DROP_WHAT[('event', f'{year}_{season}', str(event_name)[:60])] += len(results_list)
                         continue
                     full_event = f"{gender} {event_canon_name}"
                     # (a row or two of the other sex inside a race -- 'Alexa Brown  F 6 Windham' in the 6th-grade
@@ -3270,14 +3270,14 @@ class Sub5ScraperV2:
                                     break
                         if maine_only and not (unit and unit.startswith(('me-', 'coop-', 'club-'))):
                             SYNC_DROPS[(meet_key, 'not a Maine school (Maine-only meet)')] += 1
-                            SYNC_DROP_WHAT[('maine-only', season, str(school)[:80])] += 1
+                            SYNC_DROP_WHAT[('maine-only', f'{year}_{season}', str(school)[:80])] += 1
                             continue
                         if team_norm is None and school.strip().lower() in school_catalog.shared_codes():
                             # a code two schools print ('BRHS', 'FA', 'OHS') that this meet's evidence
                             # did not place: never guessed (the fuzzy matcher made Foxcroft of
                             # Fryeburg's 'FA' and teams named 'MTV')
                             SYNC_DROPS[(meet_key, 'shared school code unplaced')] += 1
-                            SYNC_DROP_WHAT[('school', season, school[:80])] += 1
+                            SYNC_DROP_WHAT[('school', f'{year}_{season}', school[:80])] += 1
                             continue
                         if not unit and re.search(r'\balumni\b', school, re.I):
                             # graduates' exhibition races at a school meet ('Brewer High Alumni',
@@ -3290,7 +3290,7 @@ class Sub5ScraperV2:
                         # name looks like: "Union 122 (combined middle-school team)")
                         if (not unit) and (not self.team_name_is_sane(team_norm) or self.is_likely_athlete_name(team_norm)):
                             SYNC_DROPS[(meet_key, 'school unresolved')] += 1
-                            SYNC_DROP_WHAT[('school', season, f'{school} -> {team_norm}'[:80])] += 1
+                            SYNC_DROP_WHAT[('school', f'{year}_{season}', f'{school} -> {team_norm}'[:80])] += 1
                             continue
                         if is_relay and athlete_name == f"{school} Relay":
                             athlete_name = f"{team_norm} Relay"
@@ -3450,20 +3450,57 @@ class Sub5ScraperV2:
                         p.get('meet_name'), set()).add(dup_row_key(p))
         return out
 
-    def run_full_scrape(self, wipe=False, seasons=None, download=True, parse=True):
+    def run_full_scrape(self, wipe=False, seasons=None, download=True, parse=True, scoped=False):
         """Full pipeline: download -> parse -> sync -> manifest.
 
         download=False / parse=False skip those stages and rebuild the store
         from the existing parsed_results JSONs (fast path for iterating on
         sync/normalization logic without re-parsing 6000 HTML files).
+
+        scoped=True (with wipe) rebuilds only the given seasons: their chunks,
+        synced meets, corrections and drop records are replaced and every other
+        season is left as stored. Valid for changes inside those seasons (parse
+        edits, meet_scope, per-meet school rules); a global alias change needs
+        the full rebuild.
         """
         seasons_to_scrape = seasons if seasons is not None else SEASONS
+        base_dir = os.path.dirname(os.path.dirname(__file__))
+        slices = {(c['year'], c['season']) for c in seasons_to_scrape}
+        scoped = bool(scoped and wipe and slices != {(c['year'], c['season']) for c in SEASONS})
+        known_path = os.path.join(base_dir, 'backend', 'data', 'sync_known_teams.json')
+        drops_path = os.path.join(base_dir, 'backend', 'data', 'sync_drops.json')
+        known_adds = {}
+        if scoped:
+            # (a scoped rebuild needs what the last full rebuild recorded: the team
+            # names each season added to the name matcher, and per-season drop labels)
+            known_adds = json.load(open(known_path)) if os.path.exists(known_path) else None
+            old_drops = json.load(open(drops_path)) if os.path.exists(drops_path) else {}
+            if known_adds is None or any('_' not in str(r[1]) for r in old_drops.get('by_label', [])):
+                raise SystemExit('scoped resync: run one full --resync-only first '
+                                 '(no sync_known_teams.json / old sync_drops format)')
+            seasons_to_scrape = [c for c in SEASONS if (c['year'], c['season']) in slices]
 
         scrape_state = load_scrape_state()
         athletes = load_athletes()
-        base_dir = os.path.dirname(os.path.dirname(__file__))
-        
-        if wipe:
+
+        if wipe and scoped:
+            self.report_progress(f"Wiping {len(slices)} season(s) for a scoped re-sync...")
+            prefixes = tuple(f'{y}_{s_}_' for y, s_ in slices)
+            scrape_state['synced_meets'] = {k: v for k, v in scrape_state.get('synced_meets', {}).items()
+                                            if not k.startswith(prefixes)}
+            athletes = {}    # (the athlete catalog rewrites the registry at the end)
+            teams_dir = os.path.join(base_dir, 'ui', 'public', 'data', 'teams')
+            chunk_names = {f'{y}_{s_}{ext}' for y, s_ in slices for ext in ('.json', '.json.gz')}
+            for d in (os.listdir(teams_dir) if os.path.isdir(teams_dir) else []):
+                full = os.path.join(teams_dir, d)
+                if not os.path.isdir(full):
+                    continue
+                for fn in os.listdir(full):
+                    if fn in chunk_names:
+                        os.remove(os.path.join(full, fn))
+                if not os.listdir(full):
+                    os.rmdir(full)
+        elif wipe:
             self.report_progress("Wiping scrape state and athletes for full re-sync...")
             scrape_state['synced_meets'] = {}
             athletes = {}
@@ -3483,8 +3520,23 @@ class Sub5ScraperV2:
         # team file is written (and PR-recalculated) exactly once at the end.
         collector = {}
         all_known_teams = set(TEAM_MAPPING.values()) | set(list_teams())
+        # The name matcher learns each season's team names in SEASONS order, so a
+        # season resolves against the names of the seasons before it. A rebuild
+        # records what each season added; a scoped rebuild starts each of its
+        # seasons from the seasons before it, as the full rebuild would.
+        if wipe:
+            all_known_teams = set(TEAM_MAPPING.values())
+        order = [(c['year'], c['season']) for c in SEASONS]
+        new_adds = {}
+        changed_adds = []
 
         for config in seasons_to_scrape:
+            if scoped:
+                here = order.index((config['year'], config['season']))
+                all_known_teams = set(TEAM_MAPPING.values())
+                for k in order[:here]:
+                    all_known_teams |= set(new_adds.get(f'{k[0]}_{k[1]}', known_adds.get(f'{k[0]}_{k[1]}', [])))
+            before = set(all_known_teams)
             year, season, index_url = config["year"], config["season"], config["url"]
             self.report_progress(f"Processing {season} {year}...")
             archive_dir = os.path.join(base_dir, f'backend/data/sub5_archive/{year}/{season}')
@@ -3496,10 +3548,16 @@ class Sub5ScraperV2:
             self.sync_json_to_store(json_dir, season=season, year=year, athletes=athletes,
                                     scrape_state=scrape_state, collector=collector,
                                     all_known_teams=all_known_teams)
+            skey = f'{year}_{season}'
+            new_adds[skey] = sorted(all_known_teams - before)
+            if scoped and new_adds[skey] != known_adds.get(skey) and order.index((year, season)) < len(order) - 1:
+                changed_adds.append(skey)
 
         # Apply manual performance corrections / injections
         self.report_progress("Applying manual performance corrections...")
         for pc in self.manual_fixes.get('performance_corrections', []):
+            if scoped and (str(pc.get('year', '2026')), pc.get('season', 'Outdoor')) not in slices:
+                continue
             team_name = pc['team_name']
             athlete_name = pc['athlete_name']
             athlete_id = slugify_athlete(athlete_name, team_name)
@@ -3656,7 +3714,7 @@ class Sub5ScraperV2:
                                 twins[pair_key] += 1
                             SYNC_DROPS[(f"{perfs[loser]['year']}_XC_{perfs[loser]['meet_name']}", 'same runner and time in another file of the race (kept there)')] += 1
                             if pa['athlete_name'] != pb['athlete_name']:
-                                SYNC_DROP_WHAT[('xc-twice' if names_needed else 'xc-twice-misnamed', 'XC',
+                                SYNC_DROP_WHAT[('xc-twice' if names_needed else 'xc-twice-misnamed', f"{perfs[loser]['year']}_XC",
                                                 f"{d_} {team}: {perfs[loser]['athlete_name']} {perfs[loser]['mark']} "
                                                 f"[{perfs[loser]['meet_name']}] = {keep['athlete_name']} [{keep['meet_name']}]"[:160])] += 1
         _twin_pass(True)
@@ -3690,7 +3748,7 @@ class Sub5ScraperV2:
                     loser = i if _rank(q, tq) >= _rank(p, tp) else j
                     dup_drop.add((team, loser))
                     SYNC_DROPS[(f"{perfs[loser]['year']}_XC_{perfs[loser]['meet_name']}", 'same runner and time in another file of the race (kept there)')] += 1
-                    SYNC_DROP_WHAT[('xc-twice-retimed', 'XC', f"{d_} {team}: {perfs[loser]['athlete_name']} {perfs[loser]['mark']} [{perfs[loser]['meet_name']}] vs {perfs[i if loser == j else j]['mark']}"[:160])] += 1
+                    SYNC_DROP_WHAT[('xc-twice-retimed', f"{perfs[loser]['year']}_XC", f"{d_} {team}: {perfs[loser]['athlete_name']} {perfs[loser]['mark']} [{perfs[loser]['meet_name']}] vs {perfs[i if loser == j else j]['mark']}"[:160])] += 1
                     break
                 seen.setdefault(k, []).append(i)
         # (a runner of the other sex inside a race who also ran her own race that day -- Alexa Brown 11:08 in
@@ -3709,7 +3767,7 @@ class Sub5ScraperV2:
                        and str(perfs[j]['event']).split(' ', 1)[0] == sex for j in same):
                     dup_drop.add((team, i))
                     SYNC_DROPS[(f"{p['year']}_XC_{p['meet_name']}", 'XC other-sex row; ran own race that day')] += 1
-                    SYNC_DROP_WHAT[('xc-cross-sex', 'XC', f"{str(p.get('date'))[:10]} {team}: {p['athlete_name']} {p['mark']} [{p['meet_name']}]"[:160])] += 1
+                    SYNC_DROP_WHAT[('xc-cross-sex', f"{p['year']}_XC", f"{str(p.get('date'))[:10]} {team}: {p['athlete_name']} {p['mark']} [{p['meet_name']}]"[:160])] += 1
         for perfs in collector.values():
             for p in perfs:
                 p.pop('_cross_sex', None)
@@ -3721,19 +3779,36 @@ class Sub5ScraperV2:
         # Single commit: one load + dedup + PR recalc + write per team.
         self.report_progress(f"Committing {sum(len(v) for v in collector.values()):,} performances to {len(collector)} team files...")
         for i, (team_name, perfs) in enumerate(sorted(collector.items())):
-            athletes, count = add_performances_for_team(team_name, perfs, athletes)
+            athletes, count = add_performances_for_team(
+                team_name, perfs, athletes,
+                only_chunks={f'{y}_{s_}' for y, s_ in slices} if scoped else None)
             total_count += count
             if (i + 1) % 50 == 0:
                 self.report_progress(f"Committed {i+1}/{len(collector)} teams")
 
+        scrape_state['synced_meets'] = dict(sorted(scrape_state.get('synced_meets', {}).items()))
         save_scrape_state(scrape_state)
         save_athletes(athletes)
         if wipe:
-            with open(os.path.join(base_dir, 'backend', 'data', 'sync_drops.json'), 'w') as f:
-                json.dump(dict(by_meet=sorted([[k, r, n] for (k, r), n in SYNC_DROPS.items()],
-                                              key=lambda x: -x[2]),
-                               by_label=sorted([[k, s_, l, n] for (k, s_, l), n in SYNC_DROP_WHAT.items()],
-                                               key=lambda x: -x[3])), f, indent=0)
+            by_meet = [[k, r, n] for (k, r), n in SYNC_DROPS.items()]
+            by_label = [[k, s_, l, n] for (k, s_, l), n in SYNC_DROP_WHAT.items()]
+            if scoped:
+                keys = {f'{y}_{s_}' for y, s_ in slices}
+                by_meet += [r for r in old_drops.get('by_meet', [])
+                            if not str(r[0]).startswith(tuple(k + '_' for k in keys))]
+                by_label += [r for r in old_drops.get('by_label', []) if r[1] not in keys]
+                known_adds.update(new_adds)
+            else:
+                known_adds = new_adds
+            with open(drops_path, 'w') as f:
+                json.dump(dict(by_meet=sorted(by_meet, key=lambda x: (-x[2], x[0], x[1])),
+                               by_label=sorted(by_label, key=lambda x: (-x[3], x[0], x[1], x[2]))), f, indent=0)
+            with open(known_path, 'w') as f:
+                json.dump(dict(sorted(known_adds.items(), key=lambda kv: order.index(tuple(kv[0].split('_', 1)))
+                                      if tuple(kv[0].split('_', 1)) in order else 10**6)), f, indent=0)
+            if changed_adds:
+                self.report_progress(f'WARNING: {changed_adds} now add different team names to the matcher; '
+                                     'later seasons may resolve differently: run a full --resync-only')
         rebuild_manifest()
         write_meet_links(self.web_url_mapping)
         # athlete identity: code layer + reviewed decisions -> one id per
@@ -3753,7 +3828,8 @@ if __name__ == "__main__":
     parser.add_argument('--season', choices=['Indoor', 'Outdoor', 'XC'],
                         help="Limit to one season type (default: all).")
     parser.add_argument('--resync-only', action='store_true',
-                        help="Skip download and parse; wipe and rebuild the store from existing parsed_results JSONs.")
+                        help="Skip download and parse; rebuild the store from existing parsed_results JSONs "
+                             "(all seasons, or only those named by --years/--season).")
     parser.add_argument('--record-urls', action='store_true',
                         help="Read the season index pages and record each result file's source URL (no downloads).")
     parser.add_argument('--repair-framesets', action='store_true',
@@ -3775,6 +3851,7 @@ if __name__ == "__main__":
     elif args.repair_framesets:
         scraper.repair_frameset_stubs(seasons=selected)
     elif args.resync_only:
-        scraper.run_full_scrape(wipe=True, seasons=selected, download=False, parse=False)
+        # (--years/--season rebuild only those seasons; the rest of the store stays)
+        scraper.run_full_scrape(wipe=True, seasons=selected, download=False, parse=False, scoped=True)
     else:
         scraper.run_full_scrape(wipe=args.wipe, seasons=selected)
