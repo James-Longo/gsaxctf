@@ -237,6 +237,100 @@ def test_four_high_school_years_name_the_class():
     assert ac.settle_class('a', Counter(), [dict(unit='me-hs-x', ays={2017, 2018, 2019})], {}) == (None, None)
 
 
+SURRY = dict(unit='me-ms-surry', team='Surry Elementary School')
+GSA = dict(unit='me-hs-gsa', team='George Stevens Academy')
+BROOKSVILLE = dict(unit='me-ms-brooksville', team='Brooksville Elementary School')
+PENBROOK = dict(unit='me-ms-penbrook', team='Penbrook Middle unidentified')
+
+
+def _graded(row, grade):
+    return row[:10] + (grade,) + row[11:]
+
+
+def _with_feeder_min(n, fn):
+    keep, ac.FEEDER_MIN = ac.FEEDER_MIN, n
+    try:
+        return fn()
+    finally:
+        ac.FEEDER_MIN = keep
+
+
+def test_nickname_at_middle_school_formal_name_at_high_school():
+    # Charlie Bach ran for Surry 2021-24; Charles Bach for GSA from 2026
+    rows = [_row('Charlie Bach', y, 'Coastal MS', '13:10', **SURRY) for y in (2021, 2022, 2023, 2024)] + \
+           [_row('Charles Bach', 2026, 'PVC Champs', '22:37', event='Boys 5K Run CC', **GSA)]
+    assert _with_feeder_min(1, lambda: len(_runners(rows))) == 1
+    assert ac.formal_name('charlie bach', 'Girls') == 'charlotte bach'
+    assert ac.formal_name('max bach', 'Boys') == 'max bach'
+
+
+def test_one_team_printed_under_two_school_names():
+    # fall 2022: most of Brooksville's runners also ran as 'Penbrook'; Mae Schultz ran for
+    # both, then Penbrook through 2025 and GSA in 2026
+    g = 'Girls 2 Mile Run CC'
+    kids = ['Mae Schultz', 'Zoe Dow', 'Penny Lowry', 'Grace Nevells']
+    rows = [_row(k, 2022, 'Small School MS', '15:00', event=g, **BROOKSVILLE) for k in kids] + \
+           [_row(k, 2022, 'Coastal MS', '14:50', event=g, **PENBROOK) for k in kids] + \
+           [_row('Mae Schultz', y, 'Coastal MS', '14:00', event=g, **PENBROOK) for y in (2023, 2024, 2025)] + \
+           [_row('Mae Schultz', 2026, 'PVC Meet', '23:53', event='Girls 5K Run CC', **GSA)]
+    groups = _with_feeder_min(1, lambda: _runners(rows))
+    # (one entity per school: Mae at Brooksville, Penbrook and GSA; the others at both lists)
+    assert sorted(len(g) for g in groups) == [2, 2, 2, 3]
+    assert all(len(set(g)) == 1 for g in groups)
+
+
+def test_one_runner_shared_by_two_schools_one_fall_is_still_two_runners():
+    g = 'Girls 2 Mile Run CC'
+    rows = [_row('Mae Schultz', 2022, 'Small School MS', '15:00', event=g, **BROOKSVILLE),
+            _row('Zoe Dow', 2022, 'Small School MS', '15:10', event=g, **BROOKSVILLE),
+            _row('Mae Schultz', 2022, 'Coastal MS', '14:50', event=g, **PENBROOK)]
+    assert len([r for r in _with_feeder_min(1, lambda: _runners(rows)) if 'Mae Schultz' in r]) == 2
+
+
+def test_most_of_a_small_schools_leavers_make_a_route():
+    # 2 of Sedgwick's 2 runners who move on go to GSA: a route below FEEDER_MIN
+    s = dict(unit='me-ms-sedgwick', team='Sedgwick Elementary School')
+    rows = []
+    for k in ('Clyde Haskell', 'Paige Carter'):
+        rows += [_row(k, 2026, 'Bucksport MS', '6:20', event='Boys 1600 Meter Run', **s),
+                 _row(k, 2026, 'PVC Meet', '21:30', event='Boys 5K Run CC', **GSA)]
+        rows[-2] = rows[-2][:4] + ('Outdoor', 2026) + rows[-2][6:]
+    assert len(_runners(rows)) == 2
+
+
+def test_runners_on_the_same_teams_other_list_are_not_leavers():
+    # four Brooksville girls also listed as Penbrook in fall 2022 have not left Brooksville:
+    # the two boys who went on to GSA are all its leavers, a route
+    g = 'Girls 2 Mile Run CC'
+    kids = ['Mae Schultz', 'Zoe Dow', 'Penny Lowry', 'Grace Nevells']
+    rows = [_row(k, 2022, 'Small School MS', '15:00', event=g, **BROOKSVILLE) for k in kids] + \
+           [_row(k, 2022, 'Coastal MS', '14:50', event=g, **PENBROOK) for k in kids]
+    for k in ('Owen Cannon', 'Nick Laszlo'):
+        rows += [_row(k, 2021, 'Coastal MS', '12:30', **BROOKSVILLE),
+                 _row(k, 2023, 'PVC Meet', '18:00', event='Boys 5K Run CC', **GSA)]
+    assert len([r for r in _runners(rows) if 'Owen Cannon' in r]) == 1
+
+
+def test_long_gap_only_from_middle_school_to_high_school():
+    # Owen Cannon: Brooksville XC 2018-19, then nothing until GSA in 2023 (four school years)
+    ms = [_row('Owen Cannon', y, 'Coastal MS', '12:30', **BROOKSVILLE) for y in (2018, 2019)]
+    hs = [_row('Owen Cannon', y, 'PVC Meet', '18:00', event='Boys 5K Run CC', **GSA) for y in (2023, 2024)]
+    assert _with_feeder_min(1, lambda: len(_runners(ms + hs))) == 1
+    # a high school to another four years on is not the same allowance
+    mdi = [_row('Owen Cannon', y, 'PVC Meet', '18:00', event='Boys 5K Run CC', unit='me-hs-mdi',
+                team='Mount Desert Island High School') for y in (2027, 2028)]
+    groups = _with_feeder_min(1, lambda: _runners(hs + mdi))
+    assert len(groups) == 2
+
+
+def test_printed_grades_in_two_classes_are_two_runners():
+    # 8th grade in 2019 (class of 2023) and 9th grade in 2024 (class of 2028)
+    ms = [_graded(_row('Owen Cannon', y, 'Coastal MS', '12:30', **BROOKSVILLE), 8 - (2019 - y)) for y in (2018, 2019)]
+    hs = [_graded(_row('Owen Cannon', y, 'PVC Meet', '18:00', event='Boys 5K Run CC', **GSA), 9 + y - 2023)
+          for y in (2023, 2024)]
+    assert _with_feeder_min(1, lambda: len(_runners(ms + hs))) == 2
+
+
 if __name__ == '__main__':
     for name, fn in sorted(globals().items()):
         if name.startswith('test_'):

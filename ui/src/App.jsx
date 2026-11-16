@@ -19,6 +19,7 @@ import SearchSelect from './SearchSelect'
 import Tip from './Tip'
 import XCCourseExplorer from './XCCourseExplorer'
 import SummerTrack from './SummerTrack'
+import { loadSummer, profileRows } from './summerData'
 import XCPostseasonSim from './XCPostseasonSim'
 import RecordBoard from './RecordBoard'
 // the two chart views (recharts) load when first opened, not with the page
@@ -38,6 +39,8 @@ const SPORTS = {
 }
 // Athlete Profiles opens on this runner when no athlete is chosen
 const DEFAULT_PROFILE_ATHLETE = 'owen-cannon-george-stevens-academy'
+// Athlete Profiles shows a runner's track seasons and summer series together, on every tab
+const PROFILE_SEASONS = ['Indoor', 'Outdoor']
 const sportTabs = (sp) => [...SPORTS[sp].tabs, ...SPORTS[sp].team]
 const TAB_LABELS = {
   history: 'Results', records: 'Records', sim: 'Postseason Simulator', 'pr-pop': 'PR Pop', 'athlete-profile': 'Athlete Profiles',
@@ -92,6 +95,7 @@ function App() {
   const [dataLoaded, setDataLoaded] = useState(false)
   const [manifest, setManifest] = useState([])
   const [allAthletes, setAllAthletes] = useState([])
+  const [summer, setSummer] = useState(null)   // summer series rows and runners (summerData.js)
   const [loadedSeasons, setLoadedSeasons] = useState({}) // key -> data array
   const [meetLinks, setMeetLinks] = useState({}) // '<year>_<season>' -> meet_name -> source url
   
@@ -289,12 +293,14 @@ function App() {
   const LEVEL_LABELS = { hs: 'High School', ms: 'Middle School', college: 'College' }
   // Every picker lists only what exists in the sport being viewed.
   const sportSeason = SPORTS[sport].season
+  const profileTab = activeTab === 'athlete-profile'
+  const pickSeasons = profileTab ? PROFILE_SEASONS : [sportSeason]
   const teamOptions = useMemo(() => {
     const opts = [{ value: 'All', label: 'All Teams' }]
     const order = { hs: 0, ms: 1, college: 2 }
-    const n = t => t.counts?.[sportSeason] ?? 0
+    const n = t => pickSeasons.reduce((s, k) => s + (t.counts?.[k] ?? 0), 0)
     const sorted = (manifest.teams || [])
-      .filter(t => (t.seasons || []).some(k => k.endsWith(`_${sportSeason}`)))
+      .filter(t => (t.seasons || []).some(k => pickSeasons.some(ps => k.endsWith(`_${ps}`))))
       .sort((a, b) => (order[a.level] ?? 3) - (order[b.level] ?? 3) || n(b) - n(a))
     for (const t of sorted) {
       opts.push({
@@ -304,21 +310,31 @@ function App() {
       })
     }
     return opts
-  }, [manifest, sportSeason])
+  }, [manifest, pickSeasons.join()])
+
+  // summer series runners the catalog could not place on a school team
+  const summerOnly = useMemo(() => {
+    const linked = new Set(allAthletes.flatMap(a => a.summer || []))
+    // (a registry built before the summer links would list every school runner twice)
+    if (!summer || !linked.size) return []
+    return [...summer.runners.values()].filter(r => !linked.has(r.id)).map(r => ({
+      id: `summer:${r.id}`, name: r.name, primary_team: [...r.clubs].join(', '), summer: [r.id], kind: 'summer' }))
+  }, [summer, allAthletes])
 
   const athleteOptions = useMemo(() => {
     const base = [{ value: 'all', label: 'All Athletes' }]
     const source = allAthletes.filter(a =>
       (selectedTeam === 'All' || a.primary_team === selectedTeam || a.teams?.includes(selectedTeam)) &&
-      (!a.sports || a.sports.includes(sportSeason)))
+      (!a.sports || a.sports.some(s => pickSeasons.includes(s)) || (profileTab && a.summer)))
+      .concat(profileTab && selectedTeam === 'All' ? summerOnly : [])
     return base.concat(source.map(a => ({
       value: a.id, label: a.name,
       // relay teams after the runners, under their own heading
-      group: a.kind === 'relay' ? 'Relay teams' : undefined,
+      group: a.kind === 'relay' ? 'Relay teams' : a.kind === 'summer' ? 'Summer series only' : undefined,
       secondary: selectedTeam === 'All' ? a.primary_team : (a.aka?.length ? `also ${a.aka.join(', ')}` : undefined),
       search: a.aka?.join(' '),
     })))
-  }, [allAthletes, selectedTeam, sportSeason])
+  }, [allAthletes, selectedTeam, pickSeasons.join(), profileTab, summerOnly])
 
   // Derived: Athletes for the current view
   const filteredAthletes = useMemo(() => {
@@ -338,6 +354,15 @@ function App() {
     const relays = new Set(selectedAthlete.relays || [])
     return allPerformances.filter(p => { const r = runnerId(p); return r === selectedAthlete.id || relays.has(r) })
   }, [allPerformances, selectedAthlete, selectedTeam, dataLoaded, runnerId])
+
+  // The profile: Indoor and Outdoor rows (each with its school's level, so a
+  // high-school PR outranks a middle-school mark) and the runner's summer series
+  const teamLevel = useMemo(() => Object.fromEntries((manifest.teams || []).map(t => [t.name, t.level])), [manifest])
+  const profilePerformances = useMemo(() => {
+    if (activeTab !== 'athlete-profile') return []
+    const school = performances.filter(p => PROFILE_SEASONS.includes(p.season)).map(p => ({ ...p, level: teamLevel[p.team] }))
+    return school.concat((selectedAthlete.summer || []).flatMap(rid => profileRows(summer, rid)))
+  }, [activeTab, performances, selectedAthlete, summer, teamLevel])
 
   // Rest of the logic (Stats, filtering, sorting) is the same...
   const { filteredPerformances, years, seasonTypes, events, meets, grades } = useMemo(() => {
@@ -463,6 +488,10 @@ function App() {
     setFilterYear('All'); setFilterEvent('All'); setFilterMeet('All'); setFilterGrade('All')
   }, [selectedAthlete])
 
+  useEffect(() => {
+    if (activeTab === 'athlete-profile' && !summer) loadSummer().then(setSummer).catch(() => {})
+  }, [activeTab, summer])
+
   // Opening Athlete Profiles with no athlete chosen shows the default
   // runner, in every sport (switching sport keeps whoever is selected).
   useEffect(() => {
@@ -542,7 +571,7 @@ function App() {
             </div>
           ) : (
           <>
-          {sport === 'summer' ? (
+          {sport === 'summer' && activeTab !== 'athlete-profile' ? (
             <SummerTrack view={activeTab} />
           ) : activeTab === 'sim' ? (
             sport === 'xc'
@@ -585,7 +614,7 @@ function App() {
                     onChange={(val) => {
                       if (val === 'all') setSelectedAthlete(ALL_ATHLETES)
                       else {
-                        const ath = allAthletes.find(a => String(a.id) === String(val))
+                        const ath = allAthletes.find(a => String(a.id) === String(val)) || summerOnly.find(a => a.id === val)
                         if (ath) setSelectedAthlete(ath)
                       }
                     }}
@@ -698,7 +727,7 @@ function App() {
                   loadTeamData={loadTeamData} season={SPORTS[sport].season} runnerId={runnerId} athletes={allAthletes} meetLinks={meetLinks} />
               ) : (
                 <Suspense fallback={null}>
-                  <AthleteProfile performances={sportPerformances(performances)} selectedAthlete={selectedAthlete} />
+                  <AthleteProfile performances={profilePerformances} selectedAthlete={selectedAthlete} />
                 </Suspense>
               )}
             </>

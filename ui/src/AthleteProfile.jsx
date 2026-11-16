@@ -38,13 +38,19 @@ function classOf(d, yearGrade) {
     return { key: '?', label: '?', order: 999, color: '#a0aec0' };
 }
 
+// Indoor, Outdoor and Summer marks in one profile: one card per season and
+// event (an indoor 200m is not an outdoor one; summer hurdles and implements
+// are youth sizes), the events run most recently first.
 const AthleteProfile = ({ performances, selectedAthlete }) => {
+    const one = selectedAthlete && selectedAthlete.id !== 'all';
     const eventGroups = useMemo(() => {
         if (!performances) return {};
 
         const groups = {};
         performances.forEach(p => {
-            const groupKey = normalizeEvent(p.event);
+            // (one runner's cards drop the gender; All Athletes keeps boys and girls apart)
+            const ev = normalizeEvent(p.event);
+            const groupKey = `${p.season ? p.season + ' ' : ''}${one ? ev.replace(/^(Boys|Girls) /, '') : ev}`;
 
             if (!groups[groupKey]) groups[groupKey] = [];
 
@@ -78,9 +84,13 @@ const AthleteProfile = ({ performances, selectedAthlete }) => {
 
             const values = data.map(d => d.numericValue);
             const isTime = data[0].isTime;
+            // the PR is a high-school mark once there is one: a middle-school mark
+            // (lighter implements, younger fields) stays on the chart, not as the PR
+            const prData = data.some(d => d.level === 'hs') ? data.filter(d => d.level === 'hs') : data;
+            const prValues = prData.map(d => d.numericValue);
 
             // Basic Stats
-            const best = isTime ? Math.min(...values) : Math.max(...values);
+            const best = isTime ? Math.min(...prValues) : Math.max(...prValues);
             const sortedValues = [...values].sort((a, b) => a - b);
             const median = sortedValues[Math.floor(sortedValues.length / 2)];
 
@@ -104,7 +114,7 @@ const AthleteProfile = ({ performances, selectedAthlete }) => {
 
             // PR progression: each mark that beat everything before it
             const progression = [];
-            data.forEach(d => {
+            prData.forEach(d => {
                 const prev = progression[progression.length - 1];
                 if (!prev || (d.isTime ? d.numericValue < prev.numericValue : d.numericValue > prev.numericValue)) {
                     progression.push({
@@ -128,8 +138,9 @@ const AthleteProfile = ({ performances, selectedAthlete }) => {
                 prLine,
                 classes,
                 yearTicks,
+                latest: lastTs,
                 stats: {
-                    best: data.find(d => d.numericValue === best)?.mark,
+                    best: prData.find(d => d.numericValue === best)?.mark,
                     median: isTime ? formatTime(median) : formatDistance(median),
                     sd: sd.toFixed(2),
                     count: data.length
@@ -138,8 +149,9 @@ const AthleteProfile = ({ performances, selectedAthlete }) => {
             };
         });
 
-        return processedGroups;
-    }, [performances, selectedAthlete]);
+        // most recently run first
+        return Object.fromEntries(Object.entries(processedGroups).sort(([, a], [, b]) => b.latest - a.latest));
+    }, [performances, selectedAthlete, one]);
 
     function formatTime(seconds) {
         if (seconds < 60) return seconds.toFixed(2);

@@ -1007,11 +1007,46 @@ def cluster(ents, pairs, decisions):
 # ---------------------------------------------------------------------------
 
 FEEDER_MIN = 5      # different runners who make a school-to-school move before it counts as a route
-CHAIN_GAP = 2       # academic years a career may pause between schools
+FEEDER_SHARE = 0.5  # ... or at least half (and 2+) of the runners who leave a small school take it
+CHAIN_GAP = 4       # academic years a career may pause between schools (middle-school seasons are often missing)
 CHAIN_SPAN = 8      # grades 5-12
+SAME_TEAM_MIN = 3   # runners on both schools' lists one season before two schools are one team printed two ways
+SAME_TEAM_SHARE = 0.6
+CO_FEEDERS = True    # two middle schools that feed one high school are one route
+GRAD_CHECK = True    # parts whose printed grades put them in different classes stay apart
+
+# a first name and the formal name it is short for, by sex: 'Charlie Bach' at Surry is 'Charles Bach'
+# at GSA. Only names short for one formal name (not 'Max', 'Nate', 'Izzy').
+NICKNAMES = {
+    'Boys': {'charlie': 'charles', 'chuck': 'charles', 'will': 'william', 'willie': 'william', 'billy': 'william',
+             'bill': 'william', 'bob': 'robert', 'bobby': 'robert', 'rob': 'robert', 'robbie': 'robert',
+             'mike': 'michael', 'mikey': 'michael', 'matt': 'matthew', 'nick': 'nicholas', 'ben': 'benjamin',
+             'benny': 'benjamin', 'sam': 'samuel', 'sammy': 'samuel', 'jake': 'jacob', 'alex': 'alexander',
+             'andy': 'andrew', 'drew': 'andrew', 'tom': 'thomas', 'tommy': 'thomas', 'joe': 'joseph',
+             'joey': 'joseph', 'dan': 'daniel', 'danny': 'daniel', 'dave': 'david', 'jim': 'james',
+             'jimmy': 'james', 'jon': 'jonathan', 'zach': 'zachary', 'zack': 'zachary', 'josh': 'joshua',
+             'chris': 'christopher', 'tony': 'anthony', 'eddie': 'edward', 'greg': 'gregory', 'jeff': 'jeffrey',
+             'teddy': 'theodore', 'theo': 'theodore', 'pete': 'peter', 'steve': 'steven', 'tim': 'timothy',
+             'timmy': 'timothy', 'ken': 'kenneth', 'kenny': 'kenneth', 'rick': 'richard', 'ricky': 'richard',
+             'pat': 'patrick', 'ron': 'ronald', 'larry': 'lawrence', 'gus': 'august'},
+    'Girls': {'abby': 'abigail', 'abbie': 'abigail', 'liz': 'elizabeth', 'lizzie': 'elizabeth',
+              'lizzy': 'elizabeth', 'beth': 'elizabeth', 'sam': 'samantha', 'sammy': 'samantha',
+              'alex': 'alexandra', 'charlie': 'charlotte', 'jenny': 'jennifer', 'jen': 'jennifer',
+              'becca': 'rebecca', 'becky': 'rebecca', 'mandy': 'amanda', 'josie': 'josephine', 'tori': 'victoria',
+              'nikki': 'nicole', 'steph': 'stephanie', 'cassie': 'cassandra', 'maggie': 'margaret',
+              'peggy': 'margaret', 'liv': 'olivia', 'livvy': 'olivia', 'jess': 'jessica', 'jessie': 'jessica',
+              'kim': 'kimberly', 'chrissy': 'christina', 'debbie': 'deborah', 'sue': 'susan', 'susie': 'susan'},
+}
 
 
-def link_across_schools(groups, ents):
+def formal_name(name, gender):
+    """'charlie bach' -> 'charles bach' (Boys); a name with no listed nickname comes back as it is."""
+    first, _, rest = name.partition(' ')
+    f = NICKNAMES.get(gender, {}).get(first)
+    return f'{f} {rest}' if f and rest else name
+
+
+def link_across_schools(groups, ents, debug=None):
     """One runner at several schools: the same full name and sex at a middle school and then a high
     school (Bay School -> George Stevens Academy), or a transfer, joins into one runner when
       - the careers follow one another: each starts the year after the last ends or later, at most CHAIN_GAP
@@ -1054,13 +1089,31 @@ def link_across_schools(groups, ents):
             info.append(None)
             continue
         info.append(dict(name=names.most_common(1)[0][0], names=set(names), g=gs.pop(), unit=unit,
-                         lo=ays[0], hi=ays[-1], sports=sports, races=set().union(*(e['races'] for e in es))))
+                         lo=ays[0], hi=ays[-1], sports=sports, races=set().union(*(e['races'] for e in es)),
+                         grads=sum((e['grads'] for e in es), collections.Counter())))
     # (every spelling a runner has: 'Ariana' at Blue Hill, 'Arianna' at Bay School and GSA)
+    # (and the formal name of a nickname: 'Charlie Bach' at Surry, 'Charles Bach' at GSA)
     by_name = collections.defaultdict(set)
     for i, x in enumerate(info):
         if x:
             for n in x['names']:
                 by_name[(n, x['g'])].add(i)
+                if formal_name(n, x['g']) != n:
+                    by_name[(formal_name(n, x['g']), x['g'])].add(i)
+    # one team printed under two school names a season: most of the smaller list on both
+    # (Brooksville and 'Penbrook' in the fall of 2022, 11 of Brooksville's 12)
+    roster = collections.defaultdict(set)
+    for x in info:
+        if x:
+            for ay, sps in x['sports'].items():
+                for sp in sps:
+                    roster[(x['unit'], ay, sp)].add(x['name'])
+
+    def same_team(u, v, ay, sp):
+        a, b = roster.get((u, ay, sp), set()), roster.get((v, ay, sp), set())
+        both = len(a & b)
+        return both >= SAME_TEAM_MIN and both >= SAME_TEAM_SHARE * min(len(a), len(b))
+    one_team = set()       # school pairs seen as one team in some season
 
     def chain(ix):
         # (two careers starting one year: the one that also ends that year comes first -- Woodland
@@ -1074,8 +1127,19 @@ def link_across_schools(groups, ents):
             # one school year at both is one sport at each (Bay School XC in the fall, Blue Hill
             # track in the spring), never the same sport at two schools
             shared = set(A['sports']) & set(B['sports'])
-            if any(A['sports'][y] & B['sports'][y] for y in shared) or len(shared) > 1 or \
-                    B['lo'] < A['hi'] or B['lo'] - A['hi'] > CHAIN_GAP or level(B['unit']) < level(A['unit']):
+            # (the same sport at both in one year is one team printed two ways, or two runners)
+            clash = {(y, sp) for y in shared for sp in A['sports'][y] & B['sports'][y]}
+            if clash and all(same_team(A['unit'], B['unit'], y, sp) for y, sp in clash):
+                one_team.add((A['unit'], B['unit']))
+            elif clash or len(shared) > 1:
+                return None
+            # (a gap of more than two years only from middle school to high school, where middle-school
+            # seasons are often missing: Brooksville XC 2019-20, then GSA from 2024)
+            gap = CHAIN_GAP if (level(A['unit']), level(B['unit'])) == (0, 1) else min(CHAIN_GAP, 2)
+            if B['lo'] < A['hi'] or B['lo'] - A['hi'] > gap or level(B['unit']) < level(A['unit']):
+                return None
+            # printed grades that put the two in different classes are two runners
+            if GRAD_CHECK and _grad_check(A, B)[0] == 'conflict':
                 return None
         if info[ix[-1]]['hi'] - info[ix[0]]['lo'] > CHAIN_SPAN:
             return None
@@ -1103,14 +1167,38 @@ def link_across_schools(groups, ents):
 
     def town(u):
         return (schools.get(u) or {}).get('town')
+    leavers = collections.defaultdict(set)      # runners who move on from a school, anywhere
+    for (u, v), who in routes.items():
+        # (not to the same team under its other name: Brooksville's runners also listed as Penbrook)
+        if (u, v) not in one_team and (v, u) not in one_team:
+            leavers[u] |= who
+
+    def route(u, v):
+        # a route FEEDER_MIN runners take, or most of a small school's leavers: 2 of Sedgwick's 2 go to GSA
+        n = len(routes[(u, v)])
+        return n >= FEEDER_MIN or (n >= 2 and n >= FEEDER_SHARE * len(leavers[u]))
+    # a middle school's main high school: where most of its runners go (not a private school that
+    # draws from everywhere: Bonny Eagle and Scarborough both send runners to Cheverus)
+    feeds = {}
+    for (u, v) in list(routes):
+        if level(u) == 0 and level(v) == 1 and route(u, v) and \
+                (u not in feeds or len(routes[(u, v)]) > len(routes[(u, feeds[u])])):
+            feeds[u] = v
+
+    def supported(u, v):
+        if u == v or (town(u) and town(u) == town(v)) or route(u, v):
+            return True
+        if (u, v) in one_team or (v, u) in one_team:
+            return True
+        # two middle schools that feed one high school (Surry and Blue Hill, both to GSA)
+        return CO_FEEDERS and level(u) == 0 and level(v) == 0 and u in feeds and feeds.get(v) == feeds[u]
     # (a chain is cut at a move nothing supports, and its supported runs still join: Owen Bean at
     # Hall-Dale MS and then Hall-Dale HS, after an Owen Bean at a South Portland middle school)
     joined = set()
     for c in chains:
         run = [c[0]]
         for a, b in zip(c, c[1:]):
-            if info[a]['unit'] == info[b]['unit'] or (town(info[a]['unit']) and town(info[a]['unit']) == town(info[b]['unit'])) \
-                    or len(routes[(info[a]['unit'], info[b]['unit'])]) >= FEEDER_MIN:
+            if supported(info[a]['unit'], info[b]['unit']):
                 run.append(b)
                 continue
             if len(run) > 1:
@@ -1118,6 +1206,8 @@ def link_across_schools(groups, ents):
             run = [b]
         if len(run) > 1:
             joined.add(tuple(run))
+    if debug is not None:
+        debug.update(info=info, chains=chains, routes=routes, joined=joined, one_team=one_team, feeds={k: {v} for k, v in feeds.items()})
     used = {i for c in joined for i in c}
     out = [g for i, g in enumerate(groups) if i not in used]
     for c in joined:
@@ -1609,11 +1699,103 @@ def _read_json(path, default):
         return default
 
 
+SUMMER_PATH = os.path.join(os.path.dirname(js.ATHLETES_PATH), 'summer.json.gz')
+# USATF age groups by name (Junior Olympic meets): ages they cover
+NAMED_AGE_GROUPS = {'bantam': (0, 10), 'midget': (11, 12), 'youth': (13, 14), 'intermediate': (15, 16),
+                    'young': (17, 18)}
+
+
+def _age_range(group):
+    g = (group or '').strip().lower()
+    if g in NAMED_AGE_GROUPS:
+        return NAMED_AGE_GROUPS[g]
+    m = re.fullmatch(r'(\d+)\s*&\s*under', g)
+    if m:
+        return 0, int(m.group(1))
+    m = re.fullmatch(r'(\d+)\s*&\s*over', g)
+    if m:
+        return int(m.group(1)), 99
+    m = re.fullmatch(r'(\d+)(?:\s*-\s*(\d+))?', g)
+    if m:
+        return int(m.group(1)), int(m.group(2) or m.group(1))
+    return None
+
+
+def _name_key(name):
+    return ' '.join(re.sub(r"[^a-z ]", '', (name or '').lower().replace('-', ' ')).split())
+
+
+def summer_runners(path=SUMMER_PATH):
+    """Summer series runners the way the site keys them (SummerTrack.jsx): athletic.net id, else
+    the first id printed for that name, gender and club, else 'name|gender|club'.
+    Returns {rid: {name, gender, ages: [(year, (lo, hi))]}}."""
+    try:
+        d = _read_gz(path)
+    except (OSError, ValueError):
+        return {}
+    if not d:
+        return {}
+    c = {k: i for i, k in enumerate(d['cols'])}
+    key = lambda r: f"{r[c['name']]}|{r[c['gender']]}|{r[c['club']]}"
+    aid_of = {}
+    for r in d['rows']:
+        if r[c['aid']] and r[c['name']]:
+            aid_of.setdefault(key(r), r[c['aid']])
+    out = {}
+    for r in d['rows']:
+        if r[c['legs']] or not r[c['name']]:
+            continue
+        rid = r[c['aid']] or aid_of.get(key(r)) or key(r)
+        x = out.setdefault(rid, dict(name=r[c['name']], gender=r[c['gender']], ages=[]))
+        year = int((d['meets'][r[c['meet']]].get('date') or '0')[:4] or 0)
+        age = r[c['age']]
+        rng = (age, age) if isinstance(age, int) else _age_range(r[c['age_group']])
+        if year and rng:
+            x['ages'].append((year, rng))
+    return out
+
+
+def summer_links(athletes, runners):
+    """Summer runner -> the school runner they are: the same name (or a spelling the catalog
+    has) and sex, and summer ages that fit the runner's class year (a USATF age is the school
+    grade just finished + 6 or 7). A summer runner links only when exactly one school runner
+    fits, and only on age evidence, never on a name alone. Returns {catalog id: [rid, ...]}."""
+    by_name = collections.defaultdict(list)
+    for a in athletes:
+        if a.get('relay_only') or a.get('gender') not in ('Boys', 'Girls'):
+            continue
+        classes = a.get('class_years') or ([a['class_of']] if a.get('class_of') and not a.get('class_issue') else [])
+        for n in {a['name'], *a.get('aka', [])}:
+            by_name[(_name_key(n), a['gender'])].append((a['id'], classes, a.get('years') or [0, 0]))
+
+    def fits(ages, classes):
+        for cls in classes:
+            # expected age the summer after the school year ending `year`: 18.5 - (class - year)
+            ok = [lo <= 18.5 - (cls - y) + 2 and hi >= 18.5 - (cls - y) - 2 for y, (lo, hi) in ages]
+            if ok and sum(ok) >= max(1, len(ok) - len(ok) // 10):      # (one sheet in ten may misprint an age)
+                return True
+        return False
+    out = collections.defaultdict(list)
+    for rid, x in runners.items():
+        if not x['ages']:
+            continue
+        same = by_name.get((_name_key(x['name']), x['gender']), [])
+        cands = {cid for cid, classes, _ in same if classes and fits(x['ages'], classes)}
+        lo, hi = min(y for y, _ in x['ages']), max(y for y, _ in x['ages'])
+        # (a runner of that name with no class year to check, racing in those years, may be the one)
+        unsure = any(not classes and ys[0] <= hi + 1 and ys[1] >= lo - 1 for cid, classes, ys in same if cid not in cands)
+        if len(cands) == 1 and not unsure:
+            out[cands.pop()].append(rid)
+    return {k: sorted(v) for k, v in out.items()}
+
+
 def _write_registry(catalog):
     """athletes.json.gz for the site: one entry per runner (with the store ids
     it covers and its other spellings) plus relay teams, marked kind='relay'."""
     out = []
     seen = {}
+    # the runner's summer series profile (summer_track.py), linked by name and age
+    summer = summer_links(catalog.get('athletes', []), summer_runners())
     for a in sorted(catalog.get('athletes', []), key=lambda a: (-a['rows'], a['id'], a['name'], a['primary_team'])):
         if a['id'] in seen:
             # two runners on one store id that the catalog could not join
@@ -1632,6 +1814,8 @@ def _write_registry(catalog):
             e['teams'] = a['teams']
         if a.get('relays'):
             e['relays'] = a['relays']
+        if summer.get(a['id']):
+            e['summer'] = summer[a['id']]
         out.append(e)
     for r in catalog.get('relays', []):
         e = dict(id=r['id'], name=r['name'], primary_team=r['primary_team'],

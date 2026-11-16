@@ -1,62 +1,25 @@
-import React, { useState, useEffect, useMemo, lazy, Suspense } from 'react'
-import { asset, fetchGz } from './utils'
+import React, { useState, useEffect, useMemo } from 'react'
+import { FIELD, ageRank, loadSummer } from './summerData'
 import SearchSelect from './SearchSelect'
 import Tip from './Tip'
-
-// charts (recharts) load when a profile is first opened
-const AthleteProfile = lazy(() => import('./AthleteProfile'))
 
 /**
  * Summer track: the USATF Maine Youth Developmental Summer Series (14 & under).
  * Kids race for summer clubs in two-year age groups, so this tab has its own
  * data (ui/public/data/summer.json.gz from backend/summer_track.py): results
- * and athlete profiles laid out like the school seasons', and a record board
+ * laid out like the school seasons', and a record board
  * by club, age group and event, kept apart from the school records.
  */
 
 const HOME_CLUB = 'Blue Hill Peninsula'   // GSA's summer program
-const FIELD = /jump|vault|put|shot|discus|javelin|throw|turbo|softball|hammer/i
-// throws the school store prints to the whole inch; other field marks to the quarter
-const WHOLE_INCH = /discus|javelin|hammer|turbo|softball/i
 // field marks and multi-event point totals ('Pentathlon'; its legs read as the leg)
 const higher = (e) => FIELD.test(e) || /^(tri|pent|hept|dec)athlon$/i.test(e)
 const SHOW = 2000   // rows rendered for all clubs at once (~140k rows); one club shows all
-// two-year groups, then the older USATF division names (2004-2008 Junior Olympic meets
-// from sub5), then masters ranges ('40-49') last
-const AGE_ORDER = ['8 & Under', '9-10', '11-12', '13-14', '15', '15-16', '17-18',
-  'Bantam', 'Midget', 'Youth', 'Intermediate', 'Young']
-const ageRank = (a) => (AGE_ORDER.indexOf(a) + 1) || (/^\d{2}-\d{2}$/.test(a) ? 100 + parseInt(a) : 99)
 const evRank = (e) => {
   const m = e.match(/^(\d+)/)
   if (FIELD.test(e)) return 10000 + e.charCodeAt(0)
   if (/relay/i.test(e)) return 9000 + (m ? +m[1] : 0)
   return (m ? +m[1] : 5000) + (/hurdle/i.test(e) ? 0.5 : 0) + (/walk/i.test(e) ? 0.7 : 0)
-}
-
-// Summer event names in the school seasons' wording ("100 Meters" -> "100m Dash")
-const eventLabel = (e) => e
-  .replace(/^(\d+) Meters$/, (_, n) => +n <= 400 ? `${n}m Dash` : `${n}m Run`)
-  .replace(/^(\d+)m Racewalk$/, '$1m Race Walk')
-  .replace(/^(4x\d+) Relay$/, '$1m Relay')
-  .replace(/^(\d+) Meters Steeplechase$/, '$1m Steeplechase')
-  .replace(/^Shot Put Girls$/, 'Shot Put')
-
-const pad2 = (n) => String(n).padStart(2, '0')
-// A field mark in feet as the school store prints it ("14-03.25", "92-00"),
-// and its length in inches. Results print feet or meters; a meter mark is
-// converted from the stored value and rounded down (to the quarter inch, the
-// whole inch for throws).
-function feet(r) {
-  const whole = WHOLE_INCH.test(r.event)
-  const m = r.mark.match(/^(\d+)-(\d+)(\.\d+)?$/)
-  if (m) return [`${m[1]}-${pad2(m[2])}${m[3] ? m[3].padEnd(3, '0') : whole ? '' : '.00'}`, +m[1] * 12 + +(m[2] + (m[3] || ''))]
-  if (r.value && /^\d+(\.\d+)?m?$/.test(r.mark)) {
-    const q = whole ? 1 : 4
-    const ins = Math.floor(r.value / 0.0254 * q + 1e-6) / q
-    const ft = Math.floor(ins / 12), rest = ins - ft * 12, ii = Math.floor(rest)
-    return [`${ft}-${pad2(ii)}${whole ? '' : '.' + pad2(Math.round((rest - ii) * 100))}`, ins]
-  }
-  return [r.mark, r.value != null ? r.value / 0.0254 : null]
 }
 
 // the age group, like the grade beside a school result; the printed age on
@@ -77,54 +40,10 @@ export default function SummerTrack({ view }) {
   const [sortDir, setSortDir] = useState('desc')
 
   useEffect(() => {
-    fetchGz(asset('/data/summer.json.gz')).then(setData).catch(e => setError(String(e)))
+    loadSummer().then(setData).catch(e => setError(String(e)))
   }, [])
-
-  // Rows with their meet, school-style event names, field marks in feet, the
-  // runner they belong to (rid) and whether each is that runner's PR.
-  // One runner: the athletic.net id where printed; otherwise name, gender and
-  // club (a common name in another club is another kid). Rows without the id
-  // join the id'd runner with the same name, gender and club.
-  const { rows, runners } = useMemo(() => {
-    if (!data) return { rows: [], runners: new Map() }
-    const c = Object.fromEntries(data.cols.map((k, i) => [k, i]))
-    const rows = data.rows.map((x, i) => {
-      const r = Object.fromEntries(Object.entries(c).map(([k, j]) => [k, x[j]]))
-      const m = data.meets[r.meet]
-      r.i = i
-      r.event = eventLabel(r.event)
-      r.ev = `${r.gender} ${r.event}`
-      r.field = FIELD.test(r.event)
-      if (r.field) [r.mark, r.inches] = feet(r)
-      r.date = m.date || ''
-      r.year = r.date.slice(0, 4)
-      r.meetName = m.name
-      r.url = m.url
-      return r
-    })
-    const key = (r) => `${r.name}|${r.gender}|${r.club}`
-    const aidOf = {}
-    rows.forEach(r => { if (r.aid && r.name) aidOf[key(r)] ||= r.aid })
-    const runners = new Map()
-    rows.forEach(r => {
-      if (r.legs || !r.name) return
-      r.rid = r.aid || aidOf[key(r)] || key(r)
-      let a = runners.get(r.rid)
-      if (!a) runners.set(r.rid, a = { id: r.rid, name: r.name, gender: r.gender, clubs: new Set(), rows: [] })
-      a.clubs.add(r.club)
-      a.rows.push(r.i)
-    })
-    // PR: the runner's best in the event (the earliest, on a tie); points events have none
-    const best = {}
-    const better = (a, b) => a.field ? a.value > b.value : a.value < b.value
-    ;[...rows].sort((a, b) => a.date.localeCompare(b.date)).forEach(r => {
-      if (!r.rid || r.value == null || /athlon/i.test(r.event)) return
-      const k = `${r.rid}|${r.ev}`
-      if (!best[k] || better(r, best[k])) best[k] = r
-    })
-    Object.values(best).forEach(r => { r.isPr = true })
-    return { rows, runners }
-  }, [data])
+  const rows = data?.rows || []
+  const runners = data?.runners || new Map()
 
   // Maine series clubs first; clubs seen only at Junior Olympic / regional meets after
   const clubOptions = useMemo(() => {
@@ -166,30 +85,6 @@ export default function SummerTrack({ view }) {
         placeholder="Search athletes..." minSearch={club === 'All' ? 2 : 0} />
     </div>
   )
-
-  if (view === 'athlete-profile') {
-    // opens on the club's runner with the most marks
-    const cur = runners.get(athlete)
-      || clubRunners.reduce((b, a) => (!b || a.rows.length > b.rows.length ? a : b), null)
-    const perfs = cur ? cur.rows.map(i => rows[i])
-      // points events (pentathlon) don't chart as a time or a distance
-      .filter(r => r.value != null && !/athlon/i.test(r.event))
-      .map(r => ({
-        id: r.i, event: r.event, mark: r.mark, date: r.date, year: r.year,
-        meet_name: r.meetName, age: r.age, age_group: r.age_group, ageRank: ageRank(r.age_group),
-        numericValue: r.field ? r.inches : r.value, isTime: !r.field,
-      })) : []
-    return (
-      <div className="summer-track">
-        <div className="filter-bar">
-          {clubPicker}
-          {athletePicker(false, cur?.id ?? '')}
-        </div>
-        {cur ? <Suspense fallback={null}><AthleteProfile performances={perfs} selectedAthlete={cur} /></Suspense>
-          : <p>No athletes for this club.</p>}
-      </div>
-    )
-  }
 
   if (view === 'records') {
     // best mark per runner, top 10 per gender / age group / event
