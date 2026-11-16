@@ -2521,6 +2521,9 @@ class Sub5ScraperV2:
         if not name: return ""
         name = re.sub(r'\s+', ' ', name.replace('\ufffd', ' ')).strip()   # (an undecodable byte: 'Laakkonen, Otto \ufffd', 2018 Phillips Exeter; a double space, 'Anthony  Quintiliani', 2010 Triple C, splits a runner)
         name = re.sub(r'^[\s#\-]*\d+[\s.\-]*', '', name).strip()
+        # (a hyphenated name typed with a space on one side, 'Lorelei Crossman- King', 'Alan -Michael Fogg',
+        # splits a runner; spaces on both sides, 'Wilcox - A', are a relay squad letter, handled below)
+        name = re.sub(r'(?<=[a-z])- (?=[A-Za-z][a-z])|(?<=[a-z]) -(?=[A-Za-z][a-z])', '-', name)
 
         # Check manual fixes on the raw cleaned name first
         for ac in self.manual_fixes.get('athlete_corrections', []):

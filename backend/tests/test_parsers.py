@@ -4371,6 +4371,15 @@ def test_middle_school_team_names():
         [True, True, True, True, False, False, False]
 
 
+def test_hyphen_with_one_space_joins_the_name():
+    """'Crossman- King' and 'Alan -Michael' are one hyphenated name; ' - A' stays a squad letter."""
+    from backend.scraper_v2 import Sub5ScraperV2
+    s = Sub5ScraperV2(progress_callback=lambda *a, **k: None)
+    assert s.normalize_athlete_name('Lorelei Crossman- King') == 'Lorelei Crossman-King'
+    assert s.normalize_athlete_name('Alan -Michael Fogg') == 'Alan-Michael Fogg'
+    assert s.normalize_athlete_name('Wilcox - A, Jessie') == s.normalize_athlete_name('Wilcox, Jessie')
+
+
 if __name__ == '__main__':
     qaqc._ensure_team_mapping()
     failed = 0
