@@ -1952,7 +1952,7 @@ def check_gender_bleed(all_perfs, flags_out):
     for p in all_perfs:
         ev = p.get('event', '')
         g = 'Girls' if ev.startswith('Girls') else 'Boys' if ev.startswith('Boys') else None
-        if not g or ',' in (p.get('athlete_name') or ''):  # skip relay rosters
+        if not g or 'relay' in ev.lower():   # (a relay is a team: one school runs boys' and girls' relays)
             continue
         seen[(p.get('athlete_id'), p.get('year'), p.get('season'), p.get('meet_name'))].add(g)
 
