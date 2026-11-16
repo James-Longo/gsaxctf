@@ -4313,6 +4313,15 @@ def test_milesplit_held_event_needs_one_file_near_the_date():
     mb._SEASON_MARKS.pop((1999, 'Outdoor'))
 
 
+
+def test_heading_grade_fills_only_from_one_named_grade():
+    """A middle-school race split by grade names it in the heading; a range or 'and under' names none."""
+    from backend.scraper_v2 import heading_grade
+    assert [heading_grade(e) for e in ['100 Meter Dash 7th grade', '6th 100 Meter', 'Grade 8 Shot Put', '7th Grade Boys 4x100',
+            '100 Meter Dash 5th/6th grade', '7th & 8th Long Jump', '6th and under 400', '100 Meter Dash', 'Open 800',
+            '100 Meter Dash 6th-8th', '1600 Meter Run 7th to 8th']] == \
+        ['7', '6', '8', '7', None, None, None, None, None, None, None]
+
 if __name__ == '__main__':
     qaqc._ensure_team_mapping()
     failed = 0

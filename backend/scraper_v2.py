@@ -706,6 +706,18 @@ _LEG_GRADE = re.compile(r'\s+(?:FR|SO|JR|SR|Fr|So|Jr|Sr|[5-9]|1[0-2])$')
 _LEG_GRADE_CAPS = re.compile(r'\s+(?:FR|SO|JR|SR)$')
 
 
+def heading_grade(event_name):
+    """The one grade a race heading names ('Boys 100 Meter Dash 7th grade', 'Girls 6th 100 Meter',
+    'Grade 8 Shot Put'), or None: a range ('5th/6th', '7th & 8th', '6th and under', 'open') names none.
+    Where both are printed the heading agrees with the runner's year 97% of the time (20,621 of 21,226
+    Outdoor/Indoor rows, 2026-11-15), so it fills a blank grade; a printed grade is never replaced."""
+    ev = str(event_name or '')
+    if re.search(r'(?i)\d\s*(?:st|nd|rd|th)?\s*(?:[/&+-]|to)\s*\d|\band\b|\bunder\b|\bopen\b|\bover\b', ev):
+        return None
+    nums = set(re.findall(r'(?i)\b([4-8])(?:st|nd|rd|th)\b', ev)) | set(re.findall(r'(?i)\bgrade\s*([4-8])\b', ev))
+    return nums.pop() if len(nums) == 1 else None
+
+
 def strip_nickname(name):
     """A tag printed after a runner's name dropped: "Nolan Circo (H)" (a co-op member's home
     school, also cut short "(H"), "Brianna Leneski (U)", "Rachel Kerr (Lee)"; a '"' typed for
@@ -3046,6 +3058,16 @@ class Sub5ScraperV2:
                 xc_dist = None
                 if season == 'XC' and not xc_course and meet_level == 'hs' and not relay_meet:
                     xc_dist = xc_sibling_distance(json_dir, filename)
+                # a runner's heading grades in this meet: one value is their grade; two ('Elijah McLean' in the
+                # 8th-grade shot put and the 7th-grade 100) mean they raced up a division, so none fills
+                head_grades = collections.defaultdict(set)
+                if season != 'XC':
+                    for eb in parsed_events:
+                        if isinstance(eb, dict) and not eb.get('is_relay'):
+                            hg = heading_grade(eb.get('event'))
+                            for r in eb.get('results') or [] if hg else []:
+                                if isinstance(r, dict):
+                                    head_grades[(r.get('athlete') or r.get('athlete_name') or '', r.get('school') or r.get('team') or '')].add(hg)
                 for event_block in parsed_events:
                     if isinstance(event_block, dict) and "results" in event_block:
                         gender = event_block.get("gender", "")
@@ -3103,6 +3125,7 @@ class Sub5ScraperV2:
                     # where each runner runs two legs -- Mt Blue Relays 2007 -- and not an initial, 'S. Eastman',
                     # which can be two teammates)
                     seen_in_race = set()
+                    head_grade = heading_grade(event_name) if season != 'XC' and not is_relay else None
 
                     for r in results_list:
                         # Seed-type rows come from entry/heat sheets, not results
@@ -3119,6 +3142,11 @@ class Sub5ScraperV2:
                             # zero-padded Hy-Tek grade ('09 Mt Ararat ME', Dartmouth 2016): a class of 2009
                             # can't run in 2016, so it is grade 9; '06' in 2004 is a class year, left as printed
                             row_grade = zp.group(1)
+                        if isinstance(row_grade, str) and re.fullmatch(r'\s*[-\u2013\u2014]+\s*', row_grade):
+                            row_grade = ''   # a dash for 'no year' (Marshwood/Sanford/Wells MS 2026, second sheet)
+                        if head_grade and not str(row_grade or '').strip() and \
+                                head_grades.get((athlete_name, school)) == {head_grade}:
+                            row_grade = head_grade   # (a grade-division race: 'Girls 100 Meter Dash 7th grade')
                         if season == 'XC' and not row_grade:
                             m_gs = XC_GRADE_SCHOOL.match(str(school))
                             if m_gs:

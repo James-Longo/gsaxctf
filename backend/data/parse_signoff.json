@@ -68550,6 +68550,13 @@
   "by": "2026-10-26 sonnet audit (routine) (audit: confirmed)",
   "evidence": "Row-by-row comparison of all source result rows to the parse (name, mark, place, grade, school, event order and per-event row counts) found no missing/extra/misread rows; 653 rows; 14 team scores match. Bangor Chris->me-hs-bangor-christian, Jonesport Be->me-hs-jonesport-beals, Foxcroft, Hampden, John Bapst, Narraguagus, Orono HS correct."
  },
+ "backend/data/parsed_results/2026/Outdoor/Orono-results.json": {
+  "parse_sha": "8e3faf100c7dfd05",
+  "source_sha": "1683c59754fd8043",
+  "date": "2026-11-15",
+  "by": "o26f reviewers A+B",
+  "evidence": "2 reviewers compared every stored row to its local source: complete, marks/names/schools/dates clean; the blank and dash grades they found are filled from the race heading by the store (scraper_v2.heading_grade)"
+ },
  "backend/data/parsed_results/2026/Outdoor/Pine-Tree-Mens-results.json": {
   "parse_sha": "dac075b53be29fec",
   "source_sha": "bedf5653f3907e15",
@@ -68570,6 +68577,20 @@
   "date": "2026-10-26",
   "by": "2026-10-26 sonnet audit (routine) (audit: confirmed)",
   "evidence": "Row-by-row comparison of all source result rows to the parse (name, mark, place, grade, school, event order and per-event row counts) found no missing/extra/misread rows; 440 rows. MS league meet: Bangor Chris->me-ms-bangor-christian, Piscataquis->me-ms-piscataquis (MS overrides correct here), Reeds Brooks, Sedomocha, Wagner, Central MS, Orono MS correct. Row 'Shorey, Elyse DQ 1 OUTSIDE LANE' kept as DQ status. The source event 'Boys 55 Meter Hurdles JV' is parsed as a separate event entry that is named plain 'Boys 55 Meter Hurdles' (JV suffix dropped; parser pattern, rows themselves are right)."
+ },
+ "backend/data/parsed_results/2026/Outdoor/Results-Boys2-.05.18.26.json": {
+  "parse_sha": "0a1d0a528fe39405",
+  "source_sha": "01e26050a80c2760",
+  "date": "2026-11-15",
+  "by": "o26f reviewers A+B",
+  "evidence": "2 reviewers compared every stored row to its local source: complete, marks/names/schools/dates clean; the blank and dash grades they found are filled from the race heading by the store (scraper_v2.heading_grade)"
+ },
+ "backend/data/parsed_results/2026/Outdoor/Results-Girls-.05.18.26.json": {
+  "parse_sha": "788985312cf02802",
+  "source_sha": "7509f6f9e171a757",
+  "date": "2026-11-15",
+  "by": "o26f reviewers A+B",
+  "evidence": "2 reviewers compared every stored row to its local source: complete, marks/names/schools/dates clean; the blank and dash grades they found are filled from the race heading by the store (scraper_v2.heading_grade)"
  },
  "backend/data/parsed_results/2026/Outdoor/Results.json": {
   "parse_sha": "92c0be19b783b2f1",
@@ -68606,6 +68627,13 @@
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
  },
+ "backend/data/parsed_results/2026/Outdoor/ResultsMtBlueMiddleSchMeet.json": {
+  "parse_sha": "47a83f24488b9282",
+  "source_sha": "f84a4687f9848005",
+  "date": "2026-11-15",
+  "by": "o26f reviewers A+B",
+  "evidence": "2 reviewers compared every stored row to its local source: complete, marks/names/schools/dates clean; the blank and dash grades they found are filled from the race heading by the store (scraper_v2.heading_grade)"
+ },
  "backend/data/parsed_results/2026/Outdoor/ResultsSAHSHomeMeet2.json": {
   "parse_sha": "be208e42f9b2adec",
   "source_sha": "fe78cfbd8d12a48e",
@@ -68626,6 +68654,13 @@
   "date": "2026-10-16",
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
+ },
+ "backend/data/parsed_results/2026/Outdoor/ResultsWHS.json": {
+  "parse_sha": "5ee52531bfb08541",
+  "source_sha": "3c3338bc26fa1d6e",
+  "date": "2026-11-15",
+  "by": "o26f reviewers A+B",
+  "evidence": "2 reviewers compared every stored row to its local source: complete, marks/names/schools/dates clean; the blank and dash grades they found are filled from the race heading by the store (scraper_v2.heading_grade)"
  },
  "backend/data/parsed_results/2026/Outdoor/Small-school-boys-results.json": {
   "parse_sha": "8b7fc2f8a7c9e254",
@@ -68683,6 +68718,13 @@
   "by": "o26c reviewers A+B",
   "evidence": "2 reviewers compared every row to its source; fixes applied (re-conversions of Bonny Eagle HS, Marshwood/Kennebunk MS; mojibake; Loire O'roak and Rasmey grades); college meets GNAC/NAC hold 0 rows by design"
  },
+ "backend/data/parsed_results/2026/Outdoor/camdenms19may2026.json": {
+  "parse_sha": "ca53bd2de34570bb",
+  "source_sha": "868a07871c923e24",
+  "date": "2026-11-15",
+  "by": "o26f reviewers A+B",
+  "evidence": "2 reviewers compared every stored row to its local source: complete, marks/names/schools/dates clean; the blank and dash grades they found are filled from the race heading by the store (scraper_v2.heading_grade)"
+ },
  "backend/data/parsed_results/2026/Outdoor/camdenms9may2026.json": {
   "parse_sha": "3755167761aeec14",
   "source_sha": "dd6c37f4bf966fd9",
@@ -68710,6 +68752,13 @@
   "date": "2026-10-26",
   "by": "2026-10-26 sonnet audit (routine) (audit: confirmed)",
   "evidence": "Machine-compared every parse row with the source text (name, mark, place, grade, event heading/order, relay members, per-event row counts): 401 rows, 19 events, all match; relays 56 entries with members match; team scores 'verified' vs printed 'Men - Team Rankings'. 5 implausible flags are marks the source prints. School strings map consistently (e.g. 'Maine Centra'->me-hs-mci, 'Cony' absent, 'Lisbon/Oak H'->coop-ot-lisbon-oak-hill)."
+ },
+ "backend/data/parsed_results/2026/Outdoor/ellsworth14may2026.json": {
+  "parse_sha": "a24dc6429c95288b",
+  "source_sha": "ca98c9780d841160",
+  "date": "2026-11-15",
+  "by": "o26f reviewers A+B",
+  "evidence": "2 reviewers compared every stored row to its local source: complete, marks/names/schools/dates clean; the blank and dash grades they found are filled from the race heading by the store (scraper_v2.heading_grade)"
  },
  "backend/data/parsed_results/2026/Outdoor/hampden15may2026.json": {
   "parse_sha": "08c1b1398d9532a4",
@@ -68802,6 +68851,13 @@
   "by": "re-signed 2026-11-15: signed-off file changed only by the milesplit two-sheet twin rule",
   "evidence": "every removed row has a surviving twin (same event, place, round, mark within 0.1 s / 1 in), scratchpad lost.py; old-vs-new converter regress over 1528 cached meets"
  },
+ "backend/data/parsed_results/2026/Outdoor/ms-busline-wiscasset-ms-2026.json": {
+  "parse_sha": "1ed56495bcffb9ab",
+  "source_sha": "2bd2ba36bd955c72",
+  "date": "2026-11-15",
+  "by": "o26f reviewers A+B",
+  "evidence": "2 reviewers compared every stored row to its local source: complete, marks/names/schools/dates clean; the blank and dash grades they found are filled from the race heading by the store (scraper_v2.heading_grade)"
+ },
  "backend/data/parsed_results/2026/Outdoor/ms-cape-elizabeth-hs-meet-2026.json": {
   "parse_sha": "7e4901ab843eb7f0",
   "source_sha": "948dec813b25e11b",
@@ -68850,6 +68906,13 @@
   "date": "2026-11-15",
   "by": "re-signed 2026-11-15: signed-off file changed only by the milesplit two-sheet twin rule",
   "evidence": "every removed row has a surviving twin (same event, place, round, mark within 0.1 s / 1 in), scratchpad lost.py; old-vs-new converter regress over 1528 cached meets"
+ },
+ "backend/data/parsed_results/2026/Outdoor/ms-edward-little-hs-meet-2026.json": {
+  "parse_sha": "b43d5787ade7f1a8",
+  "source_sha": "d064ff1fbf21b560",
+  "date": "2026-11-15",
+  "by": "o26f reviewers A+B",
+  "evidence": "2 reviewers compared every stored row to its local source: complete, marks/names/schools/dates clean; the blank and dash grades they found are filled from the race heading by the store (scraper_v2.heading_grade)"
  },
  "backend/data/parsed_results/2026/Outdoor/ms-edward-little-lawrence-mt-blue-oceanside-messalonskee-oxford-hi-2026.json": {
   "parse_sha": "5fd6a7531019124e",
@@ -68907,6 +68970,13 @@
   "by": "o26e reviewers A+B",
   "evidence": "2 reviewers compared every stored row to its local source; fixed: leading nickname (Smithner, Santos), Aben Israelaa grade 7 from his 7th-grade race; the one store-collapsed Lyman Moore relay is identical to its twin"
  },
+ "backend/data/parsed_results/2026/Outdoor/ms-hs-biddeford-gorham-so-portland-marshwood-2026.json": {
+  "parse_sha": "e4761427d0dfdb5b",
+  "source_sha": "a24c98e0ed27c46d",
+  "date": "2026-11-15",
+  "by": "o26f reviewers A+B",
+  "evidence": "2 reviewers compared every stored row to its local source: complete, marks/names/schools/dates clean; the blank and dash grades they found are filled from the race heading by the store (scraper_v2.heading_grade)"
+ },
  "backend/data/parsed_results/2026/Outdoor/ms-hs-biddeford-westbrooknoble-2026.json": {
   "parse_sha": "df9d188ad3a89835",
   "source_sha": "7a4facda62b242d1",
@@ -68920,6 +68990,13 @@
   "date": "2026-11-15",
   "by": "two reviewers 2026-11-15 (o26b): every stored row compared to its source; two-sheet duplicates removed by milesplit drop_reposted twins, typos fixed",
   "evidence": "score gaps are the sheets own scoring"
+ },
+ "backend/data/parsed_results/2026/Outdoor/ms-hs-bonny-eagle-scarboroughnoble-2026.json": {
+  "parse_sha": "afa8bd35e274d7e7",
+  "source_sha": "87e9b7419fc83e19",
+  "date": "2026-11-15",
+  "by": "o26f reviewers A+B",
+  "evidence": "2 reviewers compared every stored row to its local source: complete, marks/names/schools/dates clean; the blank and dash grades they found are filled from the race heading by the store (scraper_v2.heading_grade)"
  },
  "backend/data/parsed_results/2026/Outdoor/ms-hs-dirigo-monmouth-mt-abram-madison-carrabec-telstarlisbon-2026.json": {
   "parse_sha": "a92dccc4691e5d47",
@@ -68935,12 +69012,26 @@
   "by": "two reviewers 2026-11-15 (o26b): every stored row compared to its source; two-sheet duplicates removed by milesplit drop_reposted twins, typos fixed",
   "evidence": "score gaps are the sheets own scoring"
  },
+ "backend/data/parsed_results/2026/Outdoor/ms-hs-falmouth-so-portland-kennebunk-2026.json": {
+  "parse_sha": "e58777f5ba1f45be",
+  "source_sha": "e09be2710cf6043d",
+  "date": "2026-11-15",
+  "by": "o26f reviewers A+B",
+  "evidence": "2 reviewers compared every stored row to its local source: complete, marks/names/schools/dates clean; the blank and dash grades they found are filled from the race heading by the store (scraper_v2.heading_grade)"
+ },
  "backend/data/parsed_results/2026/Outdoor/ms-hs-gng-sac-val-lake-region-fryeburgpoland-2026.json": {
   "parse_sha": "96c05b2885567b5d",
   "source_sha": "9495e4990e870f14",
   "date": "2026-11-13",
   "by": "claude",
   "evidence": "Second posting's repeated races (times 0.01 off, same place and round) dropped; first posting kept, per drop_reposted rule."
+ },
+ "backend/data/parsed_results/2026/Outdoor/ms-hs-gorham-marshwood-sanford-westbrook-2026.json": {
+  "parse_sha": "d29eb1ef89c7897a",
+  "source_sha": "526e48965a21b9a2",
+  "date": "2026-11-15",
+  "by": "o26f reviewers A+B",
+  "evidence": "2 reviewers compared every stored row to its local source: complete, marks/names/schools/dates clean; the blank and dash grades they found are filled from the race heading by the store (scraper_v2.heading_grade)"
  },
  "backend/data/parsed_results/2026/Outdoor/ms-hs-kennebunk-thornton-westbrook-2026.json": {
   "parse_sha": "f1289ee938acf5bb",
@@ -68990,6 +69081,13 @@
   "date": "2026-11-15",
   "by": "o26c reviewers A+B",
   "evidence": "2 reviewers compared every row to its source; fixes applied (re-conversions of Bonny Eagle HS, Marshwood/Kennebunk MS; mojibake; Loire O'roak and Rasmey grades); college meets GNAC/NAC hold 0 rows by design"
+ },
+ "backend/data/parsed_results/2026/Outdoor/ms-lisbon-hall-d-spruce-carra-madis-wiscas-lisbon-mt-valley-2026.json": {
+  "parse_sha": "a429f4aec1ffb944",
+  "source_sha": "962ac2579d23042a",
+  "date": "2026-11-15",
+  "by": "o26f reviewers A+B",
+  "evidence": "2 reviewers compared every stored row to its local source: complete, marks/names/schools/dates clean; the blank and dash grades they found are filled from the race heading by the store (scraper_v2.heading_grade)"
  },
  "backend/data/parsed_results/2026/Outdoor/ms-loranger-dcs-st-doms-nya-cape-freeport-2026.json": {
   "parse_sha": "60f2293c127933d3",
@@ -69047,6 +69145,13 @@
   "by": "two reviewers 2026-11-15 (o26b): every stored row compared to its source; two-sheet duplicates removed by milesplit drop_reposted twins, typos fixed",
   "evidence": "score gaps are the sheets own scoring"
  },
+ "backend/data/parsed_results/2026/Outdoor/ms-ms-biddeford-kennebunk-marshwood-2026.json": {
+  "parse_sha": "2f3ea5b8fd86b389",
+  "source_sha": "8744d1d455dc4363",
+  "date": "2026-11-15",
+  "by": "o26f reviewers A+B",
+  "evidence": "2 reviewers compared every stored row to its local source: complete, marks/names/schools/dates clean; the blank and dash grades they found are filled from the race heading by the store (scraper_v2.heading_grade)"
+ },
  "backend/data/parsed_results/2026/Outdoor/ms-ms-biddeford-massabesicsanford-2026.json": {
   "parse_sha": "7e23cbd29da10a78",
   "source_sha": "9cbc19fc3d2e3078",
@@ -69089,12 +69194,26 @@
   "by": "o26c reviewers A+B",
   "evidence": "2 reviewers compared every row to its source; fixes applied (re-conversions of Bonny Eagle HS, Marshwood/Kennebunk MS; mojibake; Loire O'roak and Rasmey grades); college meets GNAC/NAC hold 0 rows by design"
  },
+ "backend/data/parsed_results/2026/Outdoor/ms-ms-marshwood-sanford-wells-2026.json": {
+  "parse_sha": "7b98d468471a9c20",
+  "source_sha": "7c4fa29f27110dd2",
+  "date": "2026-11-15",
+  "by": "o26f reviewers A+B",
+  "evidence": "2 reviewers compared every stored row to its local source: complete, marks/names/schools/dates clean; the blank and dash grades they found are filled from the race heading by the store (scraper_v2.heading_grade)"
+ },
  "backend/data/parsed_results/2026/Outdoor/ms-ms-noble-thornton-saco-wells-2026.json": {
   "parse_sha": "bf34704aff9b7cd8",
   "source_sha": "902555a58d29a12a",
   "date": "2026-11-15",
   "by": "o26e reviewers A+B",
   "evidence": "2 reviewers compared every stored row to its local source; fixed: leading nickname (Smithner, Santos), Aben Israelaa grade 7 from his 7th-grade race; the one store-collapsed Lyman Moore relay is identical to its twin"
+ },
+ "backend/data/parsed_results/2026/Outdoor/ms-ms-saco-york-massabesic-shapleigh-2026.json": {
+  "parse_sha": "e6ff93815a0a10ae",
+  "source_sha": "7ffb0607bea28859",
+  "date": "2026-11-15",
+  "by": "o26f reviewers A+B",
+  "evidence": "2 reviewers compared every stored row to its local source: complete, marks/names/schools/dates clean; the blank and dash grades they found are filled from the race heading by the store (scraper_v2.heading_grade)"
  },
  "backend/data/parsed_results/2026/Outdoor/ms-ms-sanford-noble-wells-thornton-noble-2026.json": {
   "parse_sha": "87d3147cb0333de7",
@@ -69109,6 +69228,20 @@
   "date": "2026-11-15",
   "by": "o26c reviewers A+B",
   "evidence": "2 reviewers compared every row to its source; fixes applied (re-conversions of Bonny Eagle HS, Marshwood/Kennebunk MS; mojibake; Loire O'roak and Rasmey grades); college meets GNAC/NAC hold 0 rows by design"
+ },
+ "backend/data/parsed_results/2026/Outdoor/ms-ms-south-portland-westbrook-lincoln-smclewiston-2026.json": {
+  "parse_sha": "92e12ab0ae38a933",
+  "source_sha": "432d93600387818d",
+  "date": "2026-11-15",
+  "by": "o26f reviewers A+B",
+  "evidence": "2 reviewers compared every stored row to its local source: complete, marks/names/schools/dates clean; the blank and dash grades they found are filled from the race heading by the store (scraper_v2.heading_grade)"
+ },
+ "backend/data/parsed_results/2026/Outdoor/ms-ms-tripp-freeport-molly-ockett-nya-lake-region-2026.json": {
+  "parse_sha": "e8e972e7e37c605c",
+  "source_sha": "7dd39ddaed5d69c4",
+  "date": "2026-11-15",
+  "by": "o26f reviewers A+B",
+  "evidence": "2 reviewers compared every stored row to its local source: complete, marks/names/schools/dates clean; the blank and dash grades they found are filled from the race heading by the store (scraper_v2.heading_grade)"
  },
  "backend/data/parsed_results/2026/Outdoor/ms-ms-wells-york-massabesic-2026.json": {
   "parse_sha": "cdfa8e85ece6e47c",
@@ -69200,6 +69333,13 @@
   "date": "2026-11-15",
   "by": "re-signed 2026-11-15: signed-off file changed only by the milesplit two-sheet twin rule",
   "evidence": "every removed row has a surviving twin (same event, place, round, mark within 0.1 s / 1 in), scratchpad lost.py; old-vs-new converter regress over 1528 cached meets"
+ },
+ "backend/data/parsed_results/2026/Outdoor/ms-sacopee-valley-yarmouth-traip-greely-oob-gray-new-gloucester-2026.json": {
+  "parse_sha": "0321c23730c3c982",
+  "source_sha": "56433d54b1b14a33",
+  "date": "2026-11-15",
+  "by": "o26f reviewers A+B",
+  "evidence": "2 reviewers compared every stored row to its local source: complete, marks/names/schools/dates clean; the blank and dash grades they found are filled from the race heading by the store (scraper_v2.heading_grade)"
  },
  "backend/data/parsed_results/2026/Outdoor/ms-smaa-kennebunk-cheverus-so-portland-marshwood-2026.json": {
   "parse_sha": "7a78e5d02a01fcd7",
