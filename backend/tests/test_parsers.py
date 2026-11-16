@@ -4353,6 +4353,16 @@ def test_judged_tie_takes_the_tied_mark_not_the_tie_break_throw():
     assert [got[n] for n in ['Paradis, Chris', 'Labonte, Christian', 'Binette, Brandon']] == ['11-00.00', '11-00.00', '10-00.00'], got
 
 
+def test_relay_alternates_are_not_legs():
+    """Legs 5-8 of a relay entry are alternates; more than 8 is two entries glued (left alone)."""
+    from backend.scraper_v2 import running_legs
+    eight = ['A a', 'B b', 'C c', 'D d', 'E e', 'F f', 'G g', 'H h']
+    assert running_legs(eight) == eight[:4]
+    assert running_legs(eight[:6]) == eight[:4]
+    assert running_legs(eight[:4]) == eight[:4]
+    assert running_legs(eight + eight) == eight + eight
+
+
 if __name__ == '__main__':
     qaqc._ensure_team_mapping()
     failed = 0

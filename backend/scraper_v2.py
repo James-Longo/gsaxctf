@@ -747,6 +747,13 @@ def clean_leg_grades(legs):
     return [_LEG_GRADE_CAPS.sub('', x).strip() for x in legs]
 
 
+def running_legs(legs):
+    """A relay entry lists up to 8 names: legs 1-4 ran, 5-8 are alternates
+    (Hy-Tek "5) Lamontagne, Katherine ... 8) Kmack, Eleanor", SMAA 2026).
+    More than 8 is two entries run together: left as it is."""
+    return legs[:4] if 5 <= len(legs) <= 8 else legs
+
+
 def strip_leg_grades(data):
     for e in data.get('events') or []:
         for r in (e.get('results') or []) if isinstance(e, dict) else []:
@@ -3167,6 +3174,7 @@ class Sub5ScraperV2:
                                     leg = re.sub(r'\s+(Relay|[A-D])$', '', leg).strip()
                                     if leg and not re.search(r'\d+[:.]\d+|\d{3,}', leg):
                                         clean_legs.append(leg)
+                                clean_legs = running_legs(clean_legs)
                                 athlete_name = ", ".join(clean_legs) if clean_legs else f"{school} Relay"
                             elif not athlete_name: athlete_name = f"{school} Relay"
                             # Reject relay records whose school field looks like "LastName, FirstName ..."
