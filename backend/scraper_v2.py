@@ -747,6 +747,16 @@ def clean_leg_grades(legs):
     return [_LEG_GRADE_CAPS.sub('', x).strip() for x in legs]
 
 
+_MS_TEAM = re.compile(r'(?i)\b(middle|junior high|jr\.? high|jhs?|ms|elementary|intermediate|grammar)\b')
+
+
+def is_middle_school(team):
+    """A middle-school team name ('Gardiner Regional Middle School', 'Waterville JH'),
+    not a combined school that has high-school grades ('Katahdin Middle/High School')."""
+    t = str(team or '')
+    return bool(_MS_TEAM.search(t)) and not re.search(r'(?i)middle[/ -]+high|\bhigh school\b(?<!junior high school)', t)
+
+
 def running_legs(legs):
     """A relay entry lists up to 8 names: legs 1-4 ran, 5-8 are alternates
     (Hy-Tek "5) Lamontagne, Katherine ... 8) Kmack, Eleanor", SMAA 2026).
@@ -3303,6 +3313,8 @@ class Sub5ScraperV2:
                         if is_relay and athlete_name == f"{school} Relay":
                             athlete_name = f"{team_norm} Relay"
                         
+                        if not is_relay and str(row_grade).isdigit() and int(row_grade) > 8 and is_middle_school(team_norm):
+                            row_grade = ''   # a high-school grade on a middle-school runner is the sheet's (Winthrop MS 2026: '12', '10')
                         # (a surname-only or initial name: one id per season and sex)
                         athlete_id = store_athlete_id(athlete_name, team_norm, year, season, full_event, is_relay)
                         performance_date = f"{date}T12:00:00" if date != "Unknown" else "Unknown"

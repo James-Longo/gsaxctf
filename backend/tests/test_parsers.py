@@ -4363,6 +4363,14 @@ def test_relay_alternates_are_not_legs():
     assert running_legs(eight + eight) == eight + eight
 
 
+def test_middle_school_team_names():
+    """High-school grades on a middle-school runner are the sheet's; combined 7-12 schools keep theirs."""
+    from backend.scraper_v2 import is_middle_school
+    assert [is_middle_school(t) for t in ['Gardiner Regional Middle School', 'Waterville JH', 'Waterville Junior High School',
+            'Maranacook Community Middle School', 'Katahdin Middle/High School', 'Gardiner Area High School', 'Messalonskee High School']] == \
+        [True, True, True, True, False, False, False]
+
+
 if __name__ == '__main__':
     qaqc._ensure_team_mapping()
     failed = 0
