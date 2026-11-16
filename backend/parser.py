@@ -1847,7 +1847,7 @@ class Sub5ColumnParser:
         if start_idx < len(lines) and "====" in lines[start_idx]:
             start_idx += 1
             
-        for line in lines[start_idx:]:
+        for _li, line in enumerate(lines[start_idx:], start_idx):
             if not line.strip() or "---" in line: continue
             
             if "Team Rankings" in line:
@@ -2005,6 +2005,24 @@ class Sub5ColumnParser:
                                       if re.fullmatch(r'\d{1,3}-\d{1,2}(?:\.\d+)?', parts[k])]
                                 if fi:
                                     res_idx = fi[-1]
+                            # (a judged tie, "54-07   50-02" above "J54-07   44-07":
+                            # the sheet prints the tie-break throw after the tied
+                            # mark; the tied mark is the result. Brewer CS 2026)
+                            # (not a Seed/Finals sheet, where the J is on the Finals
+                            # mark: the J mark must be followed by a smaller one)
+                            if res_idx > 1:
+                                _fi = lambda t: re.fullmatch(r'(\d{1,3})-(\d{1,2}(?:\.\d+)?)', t)
+                                _in = lambda m: int(m.group(1)) * 12 + float(m.group(2))
+                                _a, _b = _fi(parts[res_idx - 1].lstrip('Jj')), _fi(parts[res_idx])
+                                if _a and _b and _in(_b) < _in(_a):
+                                    tied = parts[res_idx - 1].lstrip('Jj')
+                                    def _jtie(l):
+                                        m = re.search(r'(?<!\S)[Jj]' + re.escape(tied) + r'\s+(\d{1,3}-\d{1,2}(?:\.\d+)?|foul|f|x)(?!\S)', l, re.I)
+                                        return bool(m) and (not _fi(m.group(1)) or _in(_fi(m.group(1))) < _in(_a))
+                                    if parts[res_idx - 1][:1] in 'Jj' or any(
+                                            _jtie(lines[j]) for j in (_li - 1, _li + 1) if 0 <= j < len(lines)):
+                                        res_idx -= 1
+                                        parts[res_idx] = tied
 
                             if res_idx != -1:
                                 res_val = parts[res_idx]

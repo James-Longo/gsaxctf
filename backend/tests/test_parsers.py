@@ -4322,6 +4322,37 @@ def test_heading_grade_fills_only_from_one_named_grade():
             '100 Meter Dash 6th-8th', '1600 Meter Run 7th to 8th']] == \
         ['7', '6', '8', '7', None, None, None, None, None, None, None]
 
+TIE_TXT = """Event 22  Girls Discus Throw
+================================================================
+    Name                    Year School                  Finals 
+================================================================
+  1 Nevells, Audria              Bucksport               60-01  
+  2 Dean, Paisley                Reeds Brooks             54-07   50-02
+  3 Fitch, Joanna                Mattanawcook            J54-07   44-07
+  4 Shearer, Anna                Reeds Brooks             41-06   38-02
+  5 Biter, Ellie                 Reeds Brooks            J41-06   f
+  6 Baker, Aubrey                Reeds Brooks             30-02  
+ 
+Event 38  Boys Pole Vault
+================================================================================
+    Name                    Year School                  Seed     Finals  Points
+================================================================================
+  1 Paradis, Chris            JR Cony                10-00.00   11-00.00   10   
+  2 Labonte, Christian        SR Lewiston            11-00.00  J11-00.00    8   
+  3 Binette, Brandon          SO Edward Little       11-00.00   10-00.00    6   
+"""
+
+
+def test_judged_tie_takes_the_tied_mark_not_the_tie_break_throw():
+    """A judged tie prints the tie-break throw after the tied mark (Brewer CS 2026, Hampden MS 2018);
+    a Seed/Finals sheet with its J on the Finals mark keeps the Finals mark."""
+    res = Sub5ColumnParser('Brewer-CS-results.htm', text=TIE_TXT).parse()
+    got = {r['athlete']: r['result'] for e in res['events'] for r in e['results']}
+    assert [got[n] for n in ['Nevells, Audria', 'Dean, Paisley', 'Fitch, Joanna', 'Shearer, Anna', 'Biter, Ellie', 'Baker, Aubrey']] == \
+        ['60-01', '54-07', '54-07', '41-06', '41-06', '30-02'], got
+    assert [got[n] for n in ['Paradis, Chris', 'Labonte, Christian', 'Binette, Brandon']] == ['11-00.00', '11-00.00', '10-00.00'], got
+
+
 if __name__ == '__main__':
     qaqc._ensure_team_mapping()
     failed = 0
