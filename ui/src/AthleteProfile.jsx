@@ -15,6 +15,8 @@ import { parseMark, isDistanceEvent, normalizeEvent, gradeLabel } from './utils'
 import './App.css';
 import Tip from './Tip'
 
+// the tooltip and its cursor line on devices with a mouse only: on a phone a tap opened it over the chart
+const canHover = typeof window !== 'undefined' && !!window.matchMedia?.('(hover: hover)').matches;
 const COLORS = ['#3182ce', '#38a169', '#d53f8c', '#805ad5', '#dd6b20', '#319795', '#e53e3e'];
 // grade colors are fixed so FR..SR read the same on every profile
 const GRADE_COLORS = { 5: '#319795', 6: '#dd6b20', 7: '#e53e3e', 8: '#805ad5', MS: '#805ad5', 9: '#3182ce', 10: '#38a169', 11: '#d53f8c', 12: '#d69e2e' };
@@ -41,16 +43,15 @@ function classOf(d, yearGrade) {
 // Indoor, Outdoor and Summer marks in one profile: one card per season and
 // event (an indoor 200m is not an outdoor one; summer hurdles and implements
 // are youth sizes), the events run most recently first.
+// One runner at a time: All Athletes would load and chart every runner.
 const AthleteProfile = ({ performances, selectedAthlete }) => {
-    const one = selectedAthlete && selectedAthlete.id !== 'all';
     const eventGroups = useMemo(() => {
         if (!performances) return {};
 
         const groups = {};
         performances.forEach(p => {
-            // (one runner's cards drop the gender; All Athletes keeps boys and girls apart)
-            const ev = normalizeEvent(p.event);
-            const groupKey = `${p.season ? p.season + ' ' : ''}${one ? ev.replace(/^(Boys|Girls) /, '') : ev}`;
+            const ev = normalizeEvent(p.event).replace(/^(Boys|Girls) /, '');
+            const groupKey = `${p.season ? p.season + ' ' : ''}${ev}`;
 
             if (!groups[groupKey]) groups[groupKey] = [];
 
@@ -69,9 +70,8 @@ const AthleteProfile = ({ performances, selectedAthlete }) => {
 
         // Calculate stats and prepare chart data for each event
         const processedGroups = {};
-        // one runner only: All Athletes mixes runners
         const yearGrade = {};
-        if (selectedAthlete && selectedAthlete.id !== 'all') performances.forEach(p => {
+        performances.forEach(p => {
             const g = gradeOf(p);
             if (g != null && p.year && !(p.year in yearGrade)) yearGrade[p.year] = g;
         });
@@ -151,7 +151,7 @@ const AthleteProfile = ({ performances, selectedAthlete }) => {
 
         // most recently run first
         return Object.fromEntries(Object.entries(processedGroups).sort(([, a], [, b]) => b.latest - a.latest));
-    }, [performances, selectedAthlete, one]);
+    }, [performances]);
 
     function formatTime(seconds) {
         if (seconds < 60) return seconds.toFixed(2);
@@ -173,16 +173,9 @@ const AthleteProfile = ({ performances, selectedAthlete }) => {
     }
 
 
-    if (!selectedAthlete) {
-        return (
-            <div className="empty-state">
-                <p>Please select a specific athlete to view their profile.</p>
-            </div>
-        );
+    if (!selectedAthlete || selectedAthlete.id === 'all') {
+        return <div className="empty-state"><p>Pick an athlete</p></div>;
     }
-
-    // one runner's progression only (All Athletes mixes runners)
-    const showProgression = selectedAthlete.id !== 'all';
 
     return (
         <div className="athlete-profile">
@@ -235,11 +228,11 @@ const AthleteProfile = ({ performances, selectedAthlete }) => {
                                     stroke="#718096"
                                     fontSize={12}
                                 />
-                                <Tooltip
+                                {canHover && <Tooltip
                                     formatter={(value, name) => [group.isTime ? formatTime(value) : formatDistance(value), name]}
                                     labelFormatter={(label) => `Date: ${new Date(label).toLocaleDateString()}`}
                                     contentStyle={{ borderRadius: '8px', border: 'none', boxShadow: '0 4px 6px -1px rgba(0,0,0,0.1)' }}
-                                />
+                                />}
                                 <Legend itemSorter={(item) => group.classes.find(c => c.label === item.value)?.order ?? 9999} />
                                 {group.classes.map(c => (
                                     <Line
@@ -251,49 +244,45 @@ const AthleteProfile = ({ performances, selectedAthlete }) => {
                                         stroke={c.color}
                                         strokeWidth={0}
                                         dot={{ r: 4, fill: c.color, strokeWidth: 0 }}
-                                        activeDot={{ r: 6 }}
+                                        activeDot={canHover && { r: 6 }}
                                         legendType="circle"
                                     />
                                 ))}
-                                {showProgression && (
-                                    <Line
-                                        data={group.prLine}
-                                        type="stepAfter"
-                                        dataKey="numericValue"
-                                        name="PR"
-                                        stroke="#1a202c"
-                                        strokeWidth={2}
-                                        dot={(props) => props.payload.isHold
-                                            ? <g key={props.key} />
-                                            : <circle key={props.key} cx={props.cx} cy={props.cy} r={4} fill={props.payload.color} stroke="#1a202c" strokeWidth={2} />}
-                                        activeDot={false}
-                                        isAnimationActive={false}
-                                    />
-                                )}
+                                <Line
+                                    data={group.prLine}
+                                    type="stepAfter"
+                                    dataKey="numericValue"
+                                    name="PR"
+                                    stroke="#1a202c"
+                                    strokeWidth={2}
+                                    dot={(props) => props.payload.isHold
+                                        ? <g key={props.key} />
+                                        : <circle key={props.key} cx={props.cx} cy={props.cy} r={4} fill={props.payload.color} stroke="#1a202c" strokeWidth={2} />}
+                                    activeDot={false}
+                                    isAnimationActive={false}
+                                />
                             </LineChart>
                         </ResponsiveContainer>
                     </div>
 
-                    {showProgression && (
-                        <div className="pr-progression">
-                            <h4>PR progression</h4>
-                            <table className="performance-table">
-                                <thead>
-                                    <tr><th>Date</th><th>Result</th><th><Tip tip="Gain on the previous PR">+/−</Tip></th><th>Meet</th></tr>
-                                </thead>
-                                <tbody>
-                                    {group.progression.map(p => (
-                                        <tr key={p.id}>
-                                            <td>{p.date.split('T')[0]}{p.grade ? <span className="xs-gr"> {gradeLabel(p.grade)}</span> : p.age ? <span className="xs-gr"> age {p.age}</span> : null}</td>
-                                            <td>{p.mark}</td>
-                                            <td className="pr-gain">{p.gain == null ? '' : formatGain(p.gain, group.isTime)}</td>
-                                            <td>{p.meet_name}</td>
-                                        </tr>
-                                    ))}
-                                </tbody>
-                            </table>
-                        </div>
-                    )}
+                    <div className="pr-progression">
+                        <h4>PR progression</h4>
+                        <table className="performance-table">
+                            <thead>
+                                <tr><th>Date</th><th>Result</th><th><Tip tip="Gain on the previous PR">+/−</Tip></th><th>Meet</th></tr>
+                            </thead>
+                            <tbody>
+                                {group.progression.map(p => (
+                                    <tr key={p.id}>
+                                        <td>{p.date.split('T')[0]}{p.grade ? <span className="xs-gr"> {gradeLabel(p.grade)}</span> : p.age ? <span className="xs-gr"> age {p.age}</span> : null}</td>
+                                        <td>{p.mark}</td>
+                                        <td className="pr-gain">{p.gain == null ? '' : formatGain(p.gain, group.isTime)}</td>
+                                        <td>{p.meet_name}</td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             ))}
         </div>

@@ -322,7 +322,8 @@ function App() {
   }, [summer, allAthletes])
 
   const athleteOptions = useMemo(() => {
-    const base = [{ value: 'all', label: 'All Athletes' }]
+    // (no All Athletes on a profile: one runner at a time)
+    const base = profileTab ? [] : [{ value: 'all', label: 'All Athletes' }]
     const source = allAthletes.filter(a =>
       (selectedTeam === 'All' || a.primary_team === selectedTeam || a.teams?.includes(selectedTeam)) &&
       (!a.sports || a.sports.some(s => pickSeasons.includes(s)) || (profileTab && a.summer)))
@@ -359,7 +360,7 @@ function App() {
   // high-school PR outranks a middle-school mark) and the runner's summer series
   const teamLevel = useMemo(() => Object.fromEntries((manifest.teams || []).map(t => [t.name, t.level])), [manifest])
   const profilePerformances = useMemo(() => {
-    if (activeTab !== 'athlete-profile') return []
+    if (activeTab !== 'athlete-profile' || selectedAthlete.id === 'all') return []
     const school = performances.filter(p => PROFILE_SEASONS.includes(p.season)).map(p => ({ ...p, level: teamLevel[p.team] }))
     return school.concat((selectedAthlete.summer || []).flatMap(rid => profileRows(summer, rid)))
   }, [activeTab, performances, selectedAthlete, summer, teamLevel])
@@ -481,7 +482,9 @@ function App() {
   useEffect(() => {
     setFilterYear('All'); setFilterEvent('All'); setFilterMeet('All')
     setSortField('date'); setSortDirection('desc'); setExpandedSplits(new Set())
-    if (selectedTeam !== 'All' && selectedAthlete.id !== 'all') setSelectedAthlete(ALL_ATHLETES)
+    // (a profile keeps its runner when the new team is one of theirs)
+    const onTeam = selectedAthlete.primary_team === selectedTeam || selectedAthlete.teams?.includes(selectedTeam)
+    if (selectedTeam !== 'All' && selectedAthlete.id !== 'all' && !(activeTab === 'athlete-profile' && onTeam)) setSelectedAthlete(ALL_ATHLETES)
   }, [selectedTeam])
 
   useEffect(() => {
