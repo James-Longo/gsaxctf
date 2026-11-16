@@ -26,6 +26,8 @@ OUTDOOR_ONLY = re.compile(r'\b(100 Meter Dash|110 Meter Hurdles|100 Meter Hurdle
 INDOOR_ONLY = re.compile(r'\b(55 Meter|60 Meter|Weight Throw|600 Yard|300 Meter Dash|1000 Meter Run)\b')
 FIELD = re.compile(r'Jump|Vault|Put|Throw\b|Discus|Javelin|Hammer')   # (not 'Throwers Relay', a race; EMITL runs it indoors)
 FIELD_MARK = re.compile(r'^\d{1,3}-\d{1,2}(\.\d+)?$|^\d{1,2}\.\d{2}m?$')
+FT_IN = re.compile(r'^\d{1,3}-\d{1,2}(\.\d+)?$')
+BARE = re.compile(r'^\d{1,2}\.\d{2}$')
 TIME_MARK = re.compile(r'^(\d{1,2}:)?\d{1,2}:\d{2}(\.\d+)?$|^\d{1,3}\.\d{1,3}$')
 BAD_NAME = re.compile(r'\d|\bunknown\b|\bcoach\b|^\W|\(|\)|,|\b(relay|team|school|academy|high)\b', re.I)
 
@@ -59,6 +61,18 @@ def counts(rows, year, season):
     for r in rows:
         by_meet[r['meet_name']].append(r)
     for meet, rs in by_meet.items():
+        # a bare number ("2.75") in a field section the sheet otherwise prints in
+        # feet-inches is junk (FIELD_MARK takes it for metres, as metric meets print)
+        sections = defaultdict(list)
+        for r in rs:
+            if FIELD.search(r['event']) and not re.search(r'athlon', r['event']):
+                sections[r['event']].append(r)
+        for ev, sec in sections.items():
+            ft = sum(1 for r in sec if FT_IN.match(str(r['mark']).strip()))
+            for r in sec:
+                m = str(r['mark']).strip()
+                if BARE.match(m) and ft >= 3 and ft >= 0.8 * len(sec):
+                    hits['bare number among feet-inches'].append((meet, ev, r['athlete_name'], m))
         sexes = {r['event'].split()[0] for r in rs}
         if len({'Boys', 'Girls'} & sexes) == 1 and not re.search(r'boy|girl|men|women', meet, re.I):
             hits['one-gender meet'].append((meet, sorted(sexes), len(rs)))

@@ -94,7 +94,35 @@ def xc_sim_due(today=None):
     return True, f'championship meets through {last}'
 
 
+def checkout_problem(base=None):
+    """Why this checkout must not run the routine, or None. The routine runs in
+    the main checkout on main, fast-forwarded to origin/main. Never in a folder
+    under .claude/worktrees/: those are other sessions' checkouts with work in
+    progress (on 2026-11-16 the routine ran inside one, because the main
+    checkout was stale, and its files mixed with that session's edits)."""
+    base = base or BASE
+    if '/.claude/worktrees/' in os.path.realpath(base) + '/':
+        return f'{base} is a session worktree, not the main checkout'
+    def git(*a):
+        return subprocess.run(['git', *a], cwd=base, capture_output=True, text=True).stdout.strip()
+    branch = git('rev-parse', '--abbrev-ref', 'HEAD')
+    if branch != 'main':
+        return f'on branch {branch!r}, not main'
+    git('fetch', '-q', 'origin')
+    behind = git('rev-list', '--count', 'HEAD..origin/main')
+    if behind not in ('', '0'):
+        return f'{behind} commits behind origin/main (git merge --ff-only origin/main)'
+    return None
+
+
+def _require_checkout():
+    why = checkout_problem()
+    if why:
+        raise SystemExit(f'routine: refusing to run: {why}')
+
+
 def plan():
+    _require_checkout()
     today = date.today()
     seasons = in_season(today)
     due, why = xc_sim_due(today)
@@ -143,6 +171,9 @@ def scrape():
     return n
 
 
+OUTLIER_REPORT = 1.6   # ratio to the runner's own median at which a new mark is read on its sheet
+
+
 def qaqc():
     """Score verification for every meet, then a report of the meets added
     since the last routine run: verified / mismatch / no rankings."""
@@ -163,6 +194,7 @@ def qaqc():
         del all_perfs, _by_file
         with open(os.path.join(DATA, 'qaqc_flags.json'), 'w', encoding='utf-8') as f:
             json.dump(flags, f, indent=1, ensure_ascii=False)
+        entry_flags = flags
         # indoor/outdoor: printed points / fitted tables through the school
         # catalog (backend/track_verify.py) replace the legacy track check
         from backend import track_verify
@@ -196,6 +228,12 @@ def qaqc():
                mismatches=[k for k, v in report.items() if v == 'mismatch'],
                odd_sections=[f for f in odd if f['check'] == 'event-section'],
                unreadable_times=[f for f in odd if f['check'] == 'malformed-time'],
+               # a mark 1.6x+ better than the runner's own median in that event:
+               # read each on its sheet (docs/agents/update-routine.md, "Outlier marks")
+               outliers=sorted((f for f in entry_flags if f['check'] == 'athlete-outlier'
+                                and f.get('ratio', 0) >= OUTLIER_REPORT
+                                and f"{f['year']}_{f['season']}_{f['meet']}" in new_set),
+                               key=lambda f: -f['ratio']),
                report=report)
     print(json.dumps(out, indent=1))
     return out
@@ -261,12 +299,13 @@ def publish(message, yes=False):
     Code changes the agent committed earlier in the run go out with it."""
     if not yes:
         raise SystemExit('publish needs --yes')
+    _require_checkout()
     subprocess.run(['git', 'add', '--'] + [p for p in PUBLISH_PATHS if os.path.exists(os.path.join(BASE, p))],
                    cwd=BASE, check=True)
     staged = subprocess.run(['git', 'diff', '--cached', '--quiet'], cwd=BASE)
     if staged.returncode:
         subprocess.run(['git', 'commit', '-m', message], cwd=BASE, check=True)
-    subprocess.run(['git', 'push'], cwd=BASE, check=True)
+    subprocess.run(['git', 'push', 'origin', 'main'], cwd=BASE, check=True)
     mark_reported()
     print('pushed; GitHub Pages is deploying (gh run list --workflow deploy-pages.yml)')
 

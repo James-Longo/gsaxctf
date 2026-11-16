@@ -36,8 +36,15 @@ results' own season windows), whether Five K Sport applies (cross country),
 how many Five K Sport files are pending, and whether the XC postseason
 predictions are due.
 
-Start from a clean, current checkout: `git status` (only data changes from a
-previous unfinished run are acceptable) and `git pull --ff-only`.
+Start from a clean, current checkout: the main checkout
+(/home/james-longo/Projects/gsaxctf) on `main`, `git fetch origin` and
+`git merge --ff-only origin/main`. Never work in a folder under
+`.claude/worktrees/`: those are other sessions' checkouts with work in
+progress (on 2026-11-16 the routine ran inside one because the main checkout
+was stale, and its files mixed with that session's edits). `routine plan` and
+`routine publish` refuse to run anywhere else, or behind origin/main. If the
+merge refuses (local changes, diverged history), stop and report
+`git status --short` and the error; change nothing.
 
 ## 2. Scrape and parse
 
@@ -91,6 +98,29 @@ England finals), so never drop or relabel rows because of a flag alone:
 `unreadable_times` lists marks such as "7:70" (seconds over 59), always a
 parse or source error: find the right time in the source.
 
+**Outlier marks** (`outliers` in the same report): a new mark at least 1.6
+times better than the same runner's median in that event (faster or
+farther). Most are real (middle-school runners improve fast, beginner
+throws jump), but a 2026-11-16 review of 35 such marks found 7 errors that
+the sheets themselves print: a 6th-grade 800 at 1:40.26 (his others 3:32-3:43),
+7th-grade long jumps of 23-02 and 21-08 in a field under 14 feet, a shot put
+line copied from the athlete tied with her, and two name swaps between
+teammates. Read each one on its sheet together with its section (places,
+neighbours, heading, the runner's other events that day) and decide:
+1. real (printed, and in order in its section): keep it;
+2. a parse error: fix the parse;
+3. two teammates' names swapped (each one's marks elsewhere fit the other's
+   line): swap the names back, with a note in the file;
+4. impossible on the sheet: look for the meet's other copy (MileSplit page,
+   the timer's own file) for the right mark; if none prints it, drop the row
+   and say why in the file's notes.
+Never drop a mark only because it is a big improvement.
+
+`python3 -m backend.track_sanity --season <Indoor|Outdoor> --show "bare number
+among feet-inches" <year>` lists field marks printed as a bare number ("2.75")
+in a section otherwise in feet-inches: sheet junk, usually last place. Drop
+those in this week's files, with a note.
+
 **Parse confidence** (backend/meet_ledger.py): after the QAQC steps,
 `python3 -m backend.meet_ledger signoff --auto` signs off the new files whose
 team scores verify exactly with every school identified and nothing
@@ -121,7 +151,18 @@ one season at a time):
    Elizabeth and Greely meets showed a single stray result line for weeks,
    then their race files. An entry that says "Pro only" or "no text" is read
    from MileSplit's formatted view in the built-in browser (missing-meets.md,
-   "MileSplit rules").
+   "MileSplit rules"). Check a `match` by meet name, not by the weekend: the
+   ledger once matched the KVAC championships' listings to the PVC
+   championship files of the same weekend, which hid two missing meets.
+   Convert a MileSplit meet with `MSMODE=1` only when it is a middle-school
+   meet; on a high-school meet it files runners under the middle schools.
+   MileSplit sheets cut names at a fixed column ("Elizabet Massaga Luzolo",
+   "Stevens-McCadney, Jazmin"); restore a cut name from the same runner's
+   other meets that season (same school), relay legs included.
+   For a track season in progress, `python3 -m backend.track_qualifiers
+   --season <Indoor|Outdoor> --list <year>` lists state-meet entrants with no
+   season mark: each one is a missing meet to find (sub5, MileSplit,
+   athletic.net), or an entrant in an event they never ran in-season.
 2. *New school records*: every record-board change this run (a new best in
    an event for any team, `ui/src/records.js`) is checked against the
    meet's MileSplit page. A disagreement is settled by the procedure's
@@ -182,7 +223,8 @@ conference membership and divisions) and record the source in its
 4. `python3 -m backend.routine publish --yes -m "data: routine update <date>"`
    commits the data and pushes. The push is the deploy: GitHub Pages
    rebuilds the site (.github/workflows/deploy-pages.yml). Confirm it with
-   `gh run watch $(gh run list --workflow deploy-pages.yml -L1 --json databaseId -q '.[0].databaseId')`.
+   the run of this commit, not just the newest run (that can be an earlier
+   push): `gh run watch --exit-status $(gh run list --workflow deploy-pages.yml -L5 --json databaseId,headSha -q ".[] | select(.headSha == \"$(git rev-parse HEAD)\") | .databaseId")`.
 5. Report to James (the run's final message): new meets and performances,
    QAQC results (mismatches, odd sections and unreadable times, and what was
    done), Five K Sport files added, the athlete catalog stats line,
