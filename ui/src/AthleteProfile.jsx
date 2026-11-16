@@ -15,6 +15,29 @@ import { parseMark, isDistanceEvent, normalizeEvent, gradeLabel } from './utils'
 import './App.css';
 import Tip from './Tip'
 
+const COLORS = ['#3182ce', '#38a169', '#d53f8c', '#805ad5', '#dd6b20', '#319795', '#e53e3e'];
+// grade colors are fixed so FR..SR read the same on every profile
+const GRADE_COLORS = { 5: '#319795', 6: '#dd6b20', 7: '#e53e3e', 8: '#805ad5', MS: '#805ad5', 9: '#3182ce', 10: '#38a169', 11: '#d53f8c', 12: '#d69e2e' };
+
+// A mark's chart category: grade as printed, else estimated from the runner's
+// other years; summer rows have an age group instead.
+const CLASS_NUM = { FR: 9, SO: 10, JR: 11, SR: 12 };
+const gradeOf = (d) => {
+    const p = String(d.grade ?? '').trim().toUpperCase();
+    if (/^\d{1,2}$/.test(p)) return +p;
+    if (CLASS_NUM[p]) return CLASS_NUM[p];
+    if (d.grade_est) return +d.grade_est;
+    return p === 'MS' ? 'MS' : null;
+};
+
+// relay rows carry no grade: take the runner's grade that school year
+function classOf(d, yearGrade) {
+    const g = gradeOf(d) ?? yearGrade[d.year] ?? null;
+    if (g != null) return { key: 'g' + g, label: gradeLabel(String(g)), order: g === 'MS' ? 8.5 : g, color: GRADE_COLORS[g] || '#718096' };
+    if (d.age_group) return { key: 'a' + d.age_group, label: d.age_group, order: 100 + d.ageRank, color: COLORS[d.ageRank % COLORS.length] };
+    return { key: '?', label: '?', order: 999, color: '#a0aec0' };
+}
+
 const AthleteProfile = ({ performances, selectedAthlete }) => {
     const eventGroups = useMemo(() => {
         if (!performances) return {};
@@ -40,6 +63,13 @@ const AthleteProfile = ({ performances, selectedAthlete }) => {
 
         // Calculate stats and prepare chart data for each event
         const processedGroups = {};
+        // one runner only: All Athletes mixes runners
+        const yearGrade = {};
+        if (selectedAthlete && selectedAthlete.id !== 'all') performances.forEach(p => {
+            const g = gradeOf(p);
+            if (g != null && p.year && !(p.year in yearGrade)) yearGrade[p.year] = g;
+        });
+
         Object.keys(groups).forEach(event => {
             // undated marks can't be placed in time: left out of the chart and progression
             const data = groups[event].filter(d => !isNaN(Date.parse(d.date)))
@@ -57,15 +87,14 @@ const AthleteProfile = ({ performances, selectedAthlete }) => {
             const mean = values.reduce((a, b) => a + b, 0) / values.length;
             const sd = Math.sqrt(values.map(x => Math.pow(x - mean, 2)).reduce((a, b) => a + b, 0) / values.length);
 
-            // Group by year for multi-line chart
-            const yearGroups = {};
+            // dots colored by grade (summer: age group), youngest first
+            const byClass = {};
             data.forEach(d => {
-                const year = d.derivedYear || d.year;
-                if (!yearGroups[year]) yearGroups[year] = { points: [] };
-
-                const ts = new Date(d.date).getTime();
-                yearGroups[year].points.push({ ...d, timestamp: ts });
+                const c = classOf(d, yearGrade);
+                if (!byClass[c.key]) byClass[c.key] = { ...c, points: [] };
+                byClass[c.key].points.push({ ...d, timestamp: new Date(d.date).getTime() });
             });
+            const classes = Object.values(byClass).sort((a, b) => a.order - b.order);
 
             // unique year ticks for XAxis
             const yearTicks = Array.from(new Set(data.map(d => {
@@ -96,7 +125,7 @@ const AthleteProfile = ({ performances, selectedAthlete }) => {
                 data,
                 progression,
                 prLine,
-                yearGroups,
+                classes,
                 yearTicks,
                 stats: {
                     best: data.find(d => d.numericValue === best)?.mark,
@@ -109,7 +138,7 @@ const AthleteProfile = ({ performances, selectedAthlete }) => {
         });
 
         return processedGroups;
-    }, [performances]);
+    }, [performances, selectedAthlete]);
 
     function formatTime(seconds) {
         if (seconds < 60) return seconds.toFixed(2);
@@ -130,7 +159,6 @@ const AthleteProfile = ({ performances, selectedAthlete }) => {
         return '+' + formatDistance(v);
     }
 
-    const COLORS = ['#3182ce', '#38a169', '#d53f8c', '#805ad5', '#dd6b20', '#319795', '#e53e3e'];
 
     if (!selectedAthlete) {
         return (
@@ -199,17 +227,17 @@ const AthleteProfile = ({ performances, selectedAthlete }) => {
                                     labelFormatter={(label) => `Date: ${new Date(label).toLocaleDateString()}`}
                                     contentStyle={{ borderRadius: '8px', border: 'none', boxShadow: '0 4px 6px -1px rgba(0,0,0,0.1)' }}
                                 />
-                                <Legend />
-                                {Object.keys(group.yearGroups).sort((a, b) => Number(a) - Number(b)).map((year, i) => (
+                                <Legend itemSorter={(item) => group.classes.find(c => c.label === item.value)?.order ?? 9999} />
+                                {group.classes.map(c => (
                                     <Line
-                                        key={year}
-                                        data={group.yearGroups[year].points}
+                                        key={c.key}
+                                        data={c.points}
                                         type="monotone"
                                         dataKey="numericValue"
-                                        name={year}
-                                        stroke={COLORS[i % COLORS.length]}
+                                        name={c.label}
+                                        stroke={c.color}
                                         strokeWidth={0}
-                                        dot={{ r: 4, fill: COLORS[i % COLORS.length], strokeWidth: 0 }}
+                                        dot={{ r: 4, fill: c.color, strokeWidth: 0 }}
                                         activeDot={{ r: 6 }}
                                         legendType="circle"
                                     />

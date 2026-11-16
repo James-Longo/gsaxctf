@@ -176,7 +176,7 @@ export default function SummerTrack({ view }) {
       .filter(r => r.value != null && !/athlon/i.test(r.event))
       .map(r => ({
         id: r.i, event: r.event, mark: r.mark, date: r.date, year: r.year,
-        meet_name: r.meetName, age: r.age,
+        meet_name: r.meetName, age: r.age, age_group: r.age_group, ageRank: ageRank(r.age_group),
         numericValue: r.field ? r.inches : r.value, isTime: !r.field,
       })) : []
     return (
