@@ -111,6 +111,7 @@ const AthleteProfile = ({ performances, selectedAthlete }) => {
                         ...d,
                         timestamp: Date.parse(d.date),
                         gain: prev ? Math.abs(d.numericValue - prev.numericValue) : null,
+                        color: classOf(d, yearGrade).color,
                     });
                 }
             });
@@ -252,7 +253,7 @@ const AthleteProfile = ({ performances, selectedAthlete }) => {
                                         strokeWidth={2}
                                         dot={(props) => props.payload.isHold
                                             ? <g key={props.key} />
-                                            : <circle key={props.key} cx={props.cx} cy={props.cy} r={4} fill="#fff" stroke="#1a202c" strokeWidth={2} />}
+                                            : <circle key={props.key} cx={props.cx} cy={props.cy} r={4} fill={props.payload.color} stroke="#1a202c" strokeWidth={2} />}
                                         activeDot={false}
                                         isAnimationActive={false}
                                     />
