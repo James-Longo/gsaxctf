@@ -4253,10 +4253,11 @@ def test_store_drops_tags_after_names():
     from backend.scraper_v2 import strip_nickname
     assert [strip_nickname(n) for n in ['Miles Fleming (H)', 'Nolan Circo (H', 'Brianna Leneski (U)',
             'Colin Harrington(U)', 'Colin Harrington - U', 'Attieri (Osorio), Yabeth', 'Jennifer L"Hommedieu', "D'Angelo O'Brien",
-            'Hung (Brian) Dang', "James 'jeb' Boksanski", 'Brunswick/Hyde (B) Relay']] == \
+            'Hung (Brian) Dang', "James 'jeb' Boksanski", 'Brunswick/Hyde (B) Relay',
+            '(Cody) Kaitlyn Smithner', '( Ace) Mariah Santos', '(tie) Gibbons', '(T)']] == \
         ['Miles Fleming', 'Nolan Circo', 'Brianna Leneski', 'Colin Harrington', 'Colin Harrington', 'Attieri, Yabeth',
          "Jennifer L'Hommedieu", "D'Angelo O'Brien", 'Hung (Brian) Dang', "James 'jeb' Boksanski",
-         'Brunswick/Hyde (B) Relay']
+         'Brunswick/Hyde (B) Relay', 'Kaitlyn Smithner', 'Mariah Santos', '(tie) Gibbons', '(T)']
 
 
 SEMIS_TXT = """Event 3  Girls 60 Yard Hurdles

@@ -64862,11 +64862,11 @@
   "evidence": "Hy-Tek sheet checked row by row by script (event title incl. gender, place, name, mark with J/X/q/R flags stripped, school string present on the source line, grade) plus relay legs: zero differences. 34 events / 208 rows. 'Medomak Meet #1 - 5/20/2025' date printed. Team rankings (4 teams per sex) match. Ties and J-flagged HJ marks, FOUL row (Evan Rush) kept as status. Oceanside Relay row with no legs printed has no athletes (as source). Schools Medomak Vall, Camden Hills, Oceanside Hi, Islesboro Ce correct. Ledger warning (transcribed/verified but unsigned) cleared. gender-bleed flag: no athlete appears in both genders inside this file (name or name+school), so it comes from athlete-id merging across meets, not the parse."
  },
  "backend/data/parsed_results/2025/Outdoor/Morse-results.json": {
-  "parse_sha": "1fa3424852204c15",
+  "parse_sha": "6f9328558c49390a",
   "source_sha": "f3bb172ecd574952",
-  "date": "2026-10-28",
-  "by": "sonnet audit (second read, 2026-10-28) (audit: confirmed)",
-  "evidence": "Hy-Tek sheet checked row by row by script (event title incl. gender, place, name, mark with J/X/q/R flags stripped, school string present on the source line, grade) plus relay legs: zero differences. 38 events / 446 rows. 'Morse Meet #1 - 4/25/2025' date printed. Team rankings (5 teams per sex) match. Schools Morse High S, Belfast Area, Erskine Acad, Oxford Hills, Skowhegan Ar correct. Ledger warning (3 implausible): Hovencamp discus 109-11, Kelley javelin 107-09, Berry discus 59-09 printed; real."
+  "date": "2026-11-15",
+  "by": "o26e reviewers A+B",
+  "evidence": "2 reviewers compared every stored row to its local source; fixed: leading nickname (Smithner, Santos), Aben Israelaa grade 7 from his 7th-grade race; the one store-collapsed Lyman Moore relay is identical to its twin"
  },
  "backend/data/parsed_results/2025/Outdoor/Mt-Blue-results.json": {
   "parse_sha": "1d6db7a14d3a9da1",
@@ -65322,6 +65322,13 @@
   "date": "2026-11-13",
   "by": "claude",
   "evidence": "Second posting's repeated races (times 0.01 off, same place and round) dropped; first posting kept, per drop_reposted rule."
+ },
+ "backend/data/parsed_results/2025/Outdoor/ms-lewiston-meet-1-2025.json": {
+  "parse_sha": "9b79f233035003b7",
+  "source_sha": "172fcb987ea17e63",
+  "date": "2026-11-15",
+  "by": "o26e reviewers A+B",
+  "evidence": "2 reviewers compared every stored row to its local source; fixed: leading nickname (Smithner, Santos), Aben Israelaa grade 7 from his 7th-grade race; the one store-collapsed Lyman Moore relay is identical to its twin"
  },
  "backend/data/parsed_results/2025/Outdoor/ms-maisad-meet-4-hyde-2025.json": {
   "parse_sha": "a3ea9667c030f90b",
@@ -68508,6 +68515,13 @@
   "by": "o26c reviewers A+B",
   "evidence": "2 reviewers compared every row to its source; fixes applied (re-conversions of Bonny Eagle HS, Marshwood/Kennebunk MS; mojibake; Loire O'roak and Rasmey grades); college meets GNAC/NAC hold 0 rows by design"
  },
+ "backend/data/parsed_results/2026/Outdoor/Nokomis-results.json": {
+  "parse_sha": "898e82f1c796cf7b",
+  "source_sha": "50ffffba435025c9",
+  "date": "2026-11-15",
+  "by": "o26e reviewers A+B",
+  "evidence": "2 reviewers compared every stored row to its local source; fixed: leading nickname (Smithner, Santos), Aben Israelaa grade 7 from his 7th-grade race; the one store-collapsed Lyman Moore relay is identical to its twin"
+ },
  "backend/data/parsed_results/2026/Outdoor/Old-Town-MS-results.json": {
   "parse_sha": "02e7c697368c0a60",
   "source_sha": "fb050f48b1983ec9",
@@ -68634,6 +68648,13 @@
   "by": "2026-10-26 sonnet audit (routine) (audit: confirmed)",
   "evidence": "Row-by-row comparison of all source result rows to the parse (name, mark, place, grade, school, event order and per-event row counts) found no missing/extra/misread rows; 632 rows. MS league: Piscataquis->me-ms-piscataquis, James Dought->me-ms-doughty, Wagner MS, Sedomocha MS, Reeds Brooks, Ridge View, Central MS, Lewis Libby correct. The source event 'Boys 55 Meter Hurdles JV' is parsed as a separate event entry that is named plain 'Boys 55 Meter Hurdles' (JV suffix dropped; parser pattern, rows themselves are right)."
  },
+ "backend/data/parsed_results/2026/Outdoor/Waterville-JH-results.json": {
+  "parse_sha": "738daa0029db2352",
+  "source_sha": "481c3b383c5f5ab8",
+  "date": "2026-11-15",
+  "by": "o26e reviewers A+B",
+  "evidence": "2 reviewers compared every stored row to its local source; fixed: leading nickname (Smithner, Santos), Aben Israelaa grade 7 from his 7th-grade race; the one store-collapsed Lyman Moore relay is identical to its twin"
+ },
  "backend/data/parsed_results/2026/Outdoor/Waterville-results.json": {
   "parse_sha": "10d6b1f032fb2e48",
   "source_sha": "ef6837e04d666f39",
@@ -68739,6 +68760,13 @@
   "by": "claude",
   "evidence": "Second posting's repeated races (times 0.01 off, same place and round) dropped; first posting kept, per drop_reposted rule."
  },
+ "backend/data/parsed_results/2026/Outdoor/ms-biddeford-hs-home-meet-2026.json": {
+  "parse_sha": "858beb349e1c9db0",
+  "source_sha": "7ef99ec4f3209e16",
+  "date": "2026-11-15",
+  "by": "o26e reviewers A+B",
+  "evidence": "2 reviewers compared every stored row to its local source; fixed: leading nickname (Smithner, Santos), Aben Israelaa grade 7 from his 7th-grade race; the one store-collapsed Lyman Moore relay is identical to its twin"
+ },
  "backend/data/parsed_results/2026/Outdoor/ms-bob-morse-invitational-2026.json": {
   "parse_sha": "5b2f53678734f77e",
   "source_sha": "644e649671740889",
@@ -68760,6 +68788,13 @@
   "by": "re-signed 2026-11-15: signed-off file changed only by the milesplit two-sheet twin rule",
   "evidence": "every removed row has a surviving twin (same event, place, round, mark within 0.1 s / 1 in), scratchpad lost.py; old-vs-new converter regress over 1528 cached meets"
  },
+ "backend/data/parsed_results/2026/Outdoor/ms-brunswick-lake-region-sacopee-poland-greely-2026.json": {
+  "parse_sha": "363c145583e5e4fb",
+  "source_sha": "c09fbce07a7483e6",
+  "date": "2026-11-15",
+  "by": "o26e reviewers A+B",
+  "evidence": "2 reviewers compared every stored row to its local source; fixed: leading nickname (Smithner, Santos), Aben Israelaa grade 7 from his 7th-grade race; the one store-collapsed Lyman Moore relay is identical to its twin"
+ },
  "backend/data/parsed_results/2026/Outdoor/ms-busline-wiscasset-ms-2026-2026-05-18.json": {
   "parse_sha": "c9e2daee45964c91",
   "source_sha": "c52c96fb8005e2ad",
@@ -68773,6 +68808,13 @@
   "date": "2026-11-15",
   "by": "re-signed 2026-11-15: signed-off file changed only by the milesplit two-sheet twin rule",
   "evidence": "every removed row has a surviving twin (same event, place, round, mark within 0.1 s / 1 in), scratchpad lost.py; old-vs-new converter regress over 1528 cached meets"
+ },
+ "backend/data/parsed_results/2026/Outdoor/ms-cape-elizabeth-ms-2026.json": {
+  "parse_sha": "031330527128b86b",
+  "source_sha": "f08a69910205c4e9",
+  "date": "2026-11-15",
+  "by": "o26e reviewers A+B",
+  "evidence": "2 reviewers compared every stored row to its local source; fixed: leading nickname (Smithner, Santos), Aben Israelaa grade 7 from his 7th-grade race; the one store-collapsed Lyman Moore relay is identical to its twin"
  },
  "backend/data/parsed_results/2026/Outdoor/ms-capital-area-league-championships-2026.json": {
   "parse_sha": "0f6afae7a33eb358",
@@ -68809,6 +68851,13 @@
   "by": "re-signed 2026-11-15: signed-off file changed only by the milesplit two-sheet twin rule",
   "evidence": "every removed row has a surviving twin (same event, place, round, mark within 0.1 s / 1 in), scratchpad lost.py; old-vs-new converter regress over 1528 cached meets"
  },
+ "backend/data/parsed_results/2026/Outdoor/ms-edward-little-lawrence-mt-blue-oceanside-messalonskee-oxford-hi-2026.json": {
+  "parse_sha": "5fd6a7531019124e",
+  "source_sha": "f801a113b1d5c2fc",
+  "date": "2026-11-15",
+  "by": "o26e reviewers A+B",
+  "evidence": "2 reviewers compared every stored row to its local source; fixed: leading nickname (Smithner, Santos), Aben Israelaa grade 7 from his 7th-grade race; the one store-collapsed Lyman Moore relay is identical to its twin"
+ },
  "backend/data/parsed_results/2026/Outdoor/ms-falmouth-middle-school-2026.json": {
   "parse_sha": "97b33dd545de889a",
   "source_sha": "93883e1ffc0e32ec",
@@ -68830,6 +68879,13 @@
   "by": "re-signed 2026-11-15: signed-off file changed only by the milesplit two-sheet twin rule",
   "evidence": "every removed row has a surviving twin (same event, place, round, mark within 0.1 s / 1 in), scratchpad lost.py; old-vs-new converter regress over 1528 cached meets"
  },
+ "backend/data/parsed_results/2026/Outdoor/ms-greely-seacoast-lake-reg-nyayork-2026.json": {
+  "parse_sha": "de5001eaec2db505",
+  "source_sha": "115124e2e5b5250b",
+  "date": "2026-11-15",
+  "by": "o26e reviewers A+B",
+  "evidence": "2 reviewers compared every stored row to its local source; fixed: leading nickname (Smithner, Santos), Aben Israelaa grade 7 from his 7th-grade race; the one store-collapsed Lyman Moore relay is identical to its twin"
+ },
  "backend/data/parsed_results/2026/Outdoor/ms-hall-dale-monmouth-madison-telstar-mt-valley-wiscboothblisbon-2026.json": {
   "parse_sha": "671113772daa0725",
   "source_sha": "a86961fd7dc5afd3",
@@ -68843,6 +68899,13 @@
   "date": "2026-11-15",
   "by": "two reviewers 2026-11-15 (o26a): every stored row compared to its source; page-break marks fixed by parser, Lawrence MA vaulter excluded",
   "evidence": "score gaps are the sheets own scoring (exhibition/unscored entries, sheet arithmetic)"
+ },
+ "backend/data/parsed_results/2026/Outdoor/ms-hs-biddeford-cheverus-portlandmassabesic-2026.json": {
+  "parse_sha": "ae2ebacc17dafc74",
+  "source_sha": "4866fde92c85e61a",
+  "date": "2026-11-15",
+  "by": "o26e reviewers A+B",
+  "evidence": "2 reviewers compared every stored row to its local source; fixed: leading nickname (Smithner, Santos), Aben Israelaa grade 7 from his 7th-grade race; the one store-collapsed Lyman Moore relay is identical to its twin"
  },
  "backend/data/parsed_results/2026/Outdoor/ms-hs-biddeford-westbrooknoble-2026.json": {
   "parse_sha": "df9d188ad3a89835",
@@ -68900,12 +68963,26 @@
   "by": "two reviewers 2026-11-15 (o26b): every stored row compared to its source; two-sheet duplicates removed by milesplit drop_reposted twins, typos fixed",
   "evidence": "score gaps are the sheets own scoring"
  },
+ "backend/data/parsed_results/2026/Outdoor/ms-hs-oob-traip-fryeburg-capewells-2026.json": {
+  "parse_sha": "30c61b2997495645",
+  "source_sha": "ed00169f556bcea6",
+  "date": "2026-11-15",
+  "by": "o26e reviewers A+B",
+  "evidence": "2 reviewers compared every stored row to its local source; fixed: leading nickname (Smithner, Santos), Aben Israelaa grade 7 from his 7th-grade race; the one store-collapsed Lyman Moore relay is identical to its twin"
+ },
  "backend/data/parsed_results/2026/Outdoor/ms-hs-oob-wells-seacoast-yorktraip-2026.json": {
   "parse_sha": "416e370ba8a7fdb6",
   "source_sha": "cecf863e6b4c999d",
   "date": "2026-11-15",
   "by": "two reviewers 2026-11-15 (o26b): every stored row compared to its source; two-sheet duplicates removed by milesplit drop_reposted twins, typos fixed",
   "evidence": "score gaps are the sheets own scoring"
+ },
+ "backend/data/parsed_results/2026/Outdoor/ms-hs-yarmouth-poland-gng-sac-val-lisbonfreeport-2026.json": {
+  "parse_sha": "daa5925876172eaf",
+  "source_sha": "3e1bec18be035217",
+  "date": "2026-11-15",
+  "by": "o26e reviewers A+B",
+  "evidence": "2 reviewers compared every stored row to its local source; fixed: leading nickname (Smithner, Santos), Aben Israelaa grade 7 from his 7th-grade race; the one store-collapsed Lyman Moore relay is identical to its twin"
  },
  "backend/data/parsed_results/2026/Outdoor/ms-kennebunk-middle-school-2026.json": {
   "parse_sha": "a2653ede45a9092f",
@@ -68970,12 +69047,26 @@
   "by": "two reviewers 2026-11-15 (o26b): every stored row compared to its source; two-sheet duplicates removed by milesplit drop_reposted twins, typos fixed",
   "evidence": "score gaps are the sheets own scoring"
  },
+ "backend/data/parsed_results/2026/Outdoor/ms-ms-biddeford-massabesicsanford-2026.json": {
+  "parse_sha": "7e23cbd29da10a78",
+  "source_sha": "9cbc19fc3d2e3078",
+  "date": "2026-11-15",
+  "by": "o26e reviewers A+B",
+  "evidence": "2 reviewers compared every stored row to its local source; fixed: leading nickname (Smithner, Santos), Aben Israelaa grade 7 from his 7th-grade race; the one store-collapsed Lyman Moore relay is identical to its twin"
+ },
  "backend/data/parsed_results/2026/Outdoor/ms-ms-freep-molly-poland-cape-sv-lrtripp-2026.json": {
   "parse_sha": "bab4ce224029240c",
   "source_sha": "7b97d61bc9c3be0b",
   "date": "2026-11-15",
   "by": "two reviewers 2026-11-15 (o26b): every stored row compared to its source; two-sheet duplicates removed by milesplit drop_reposted twins, typos fixed",
   "evidence": "score gaps are the sheets own scoring"
+ },
+ "backend/data/parsed_results/2026/Outdoor/ms-ms-gorham-lincoln-scarborough-lyman-moorebonny-eagle-2026.json": {
+  "parse_sha": "38355d0687a004b0",
+  "source_sha": "498d284377b10d05",
+  "date": "2026-11-15",
+  "by": "o26e reviewers A+B",
+  "evidence": "2 reviewers compared every stored row to its local source; fixed: leading nickname (Smithner, Santos), Aben Israelaa grade 7 from his 7th-grade race; the one store-collapsed Lyman Moore relay is identical to its twin"
  },
  "backend/data/parsed_results/2026/Outdoor/ms-ms-kennebunk-saco-sanford-thornton-academy-2026.json": {
   "parse_sha": "aad48acbceb15ce2",
@@ -68998,6 +69089,20 @@
   "by": "o26c reviewers A+B",
   "evidence": "2 reviewers compared every row to its source; fixes applied (re-conversions of Bonny Eagle HS, Marshwood/Kennebunk MS; mojibake; Loire O'roak and Rasmey grades); college meets GNAC/NAC hold 0 rows by design"
  },
+ "backend/data/parsed_results/2026/Outdoor/ms-ms-noble-thornton-saco-wells-2026.json": {
+  "parse_sha": "bf34704aff9b7cd8",
+  "source_sha": "902555a58d29a12a",
+  "date": "2026-11-15",
+  "by": "o26e reviewers A+B",
+  "evidence": "2 reviewers compared every stored row to its local source; fixed: leading nickname (Smithner, Santos), Aben Israelaa grade 7 from his 7th-grade race; the one store-collapsed Lyman Moore relay is identical to its twin"
+ },
+ "backend/data/parsed_results/2026/Outdoor/ms-ms-sanford-noble-wells-thornton-noble-2026.json": {
+  "parse_sha": "87d3147cb0333de7",
+  "source_sha": "c2c2859cc92a8011",
+  "date": "2026-11-15",
+  "by": "o26e reviewers A+B",
+  "evidence": "2 reviewers compared every stored row to its local source; fixed: leading nickname (Smithner, Santos), Aben Israelaa grade 7 from his 7th-grade race; the one store-collapsed Lyman Moore relay is identical to its twin"
+ },
  "backend/data/parsed_results/2026/Outdoor/ms-ms-so-portland-windham-lyman-moore-kingauburn-2026.json": {
   "parse_sha": "c3b213578a83e74e",
   "source_sha": "bef7d37d5b089911",
@@ -69012,12 +69117,26 @@
   "by": "o26d reviewers A+B",
   "evidence": "2 reviewers compared every stored row to its local source: complete, 0 errors; printed team scores reproduced or explained by the sheets own scoring"
  },
+ "backend/data/parsed_results/2026/Outdoor/ms-ms-westbrook-king-lewiston-windhamoxford-hills-2026.json": {
+  "parse_sha": "5957346cf6cb49a5",
+  "source_sha": "234871f1f1888692",
+  "date": "2026-11-15",
+  "by": "o26e reviewers A+B",
+  "evidence": "2 reviewers compared every stored row to its local source; fixed: leading nickname (Smithner, Santos), Aben Israelaa grade 7 from his 7th-grade race; the one store-collapsed Lyman Moore relay is identical to its twin"
+ },
  "backend/data/parsed_results/2026/Outdoor/ms-mt-ararat-home-meet-1-2026.json": {
   "parse_sha": "f4f3bb536f94d16b",
   "source_sha": "b5520022e6d56bf1",
   "date": "2026-11-15",
   "by": "o26d reviewers A+B",
   "evidence": "2 reviewers compared every stored row to its local source: complete, 0 errors; printed team scores reproduced or explained by the sheets own scoring"
+ },
+ "backend/data/parsed_results/2026/Outdoor/ms-mt-ararat-home-meet-2-2026.json": {
+  "parse_sha": "a737fbc2b1a119ec",
+  "source_sha": "3f7f9ea6294a020f",
+  "date": "2026-11-15",
+  "by": "o26e reviewers A+B",
+  "evidence": "2 reviewers compared every stored row to its local source; fixed: leading nickname (Smithner, Santos), Aben Israelaa grade 7 from his 7th-grade race; the one store-collapsed Lyman Moore relay is identical to its twin"
  },
  "backend/data/parsed_results/2026/Outdoor/ms-mt-ararat-middle-school-home-meet-2026.json": {
   "parse_sha": "22a2a020d13bb225",
@@ -69047,6 +69166,13 @@
   "by": "claude",
   "evidence": "Second posting's repeated races (times 0.01 off, same place and round) dropped; first posting kept, per drop_reposted rule."
  },
+ "backend/data/parsed_results/2026/Outdoor/ms-mvc-pole-vault-invitational-2026.json": {
+  "parse_sha": "7fdce1652b07d79c",
+  "source_sha": "b12c1ea4640f8709",
+  "date": "2026-11-15",
+  "by": "o26e reviewers A+B",
+  "evidence": "2 reviewers compared every stored row to its local source; fixed: leading nickname (Smithner, Santos), Aben Israelaa grade 7 from his 7th-grade race; the one store-collapsed Lyman Moore relay is identical to its twin"
+ },
  "backend/data/parsed_results/2026/Outdoor/ms-mvc-wiscasset-2026-2026-05-12.json": {
   "parse_sha": "50dd83e7572d1cdd",
   "source_sha": "6c06768390f0cdff",
@@ -69060,6 +69186,13 @@
   "date": "2026-11-15",
   "by": "o26d reviewers A+B",
   "evidence": "2 reviewers compared every stored row to its local source: complete, 0 errors; printed team scores reproduced or explained by the sheets own scoring"
+ },
+ "backend/data/parsed_results/2026/Outdoor/ms-portland-hs-home-meet-1-2026.json": {
+  "parse_sha": "1f3c892bd8fabefe",
+  "source_sha": "d07f618334951037",
+  "date": "2026-11-15",
+  "by": "o26e reviewers A+B",
+  "evidence": "2 reviewers compared every stored row to its local source; fixed: leading nickname (Smithner, Santos), Aben Israelaa grade 7 from his 7th-grade race; the one store-collapsed Lyman Moore relay is identical to its twin"
  },
  "backend/data/parsed_results/2026/Outdoor/ms-portland-hs-home-meet-2-2026.json": {
   "parse_sha": "aaef62f42d681aad",
@@ -69103,6 +69236,13 @@
   "by": "o26d reviewers A+B",
   "evidence": "2 reviewers compared every stored row to its local source: complete, 0 errors; printed team scores reproduced or explained by the sheets own scoring"
  },
+ "backend/data/parsed_results/2026/Outdoor/ms-waterville-invitational-2026.json": {
+  "parse_sha": "e27ec166f8e26953",
+  "source_sha": "2c890f418d8ae756",
+  "date": "2026-11-15",
+  "by": "o26e reviewers A+B",
+  "evidence": "2 reviewers compared every stored row to its local source; fixed: leading nickname (Smithner, Santos), Aben Israelaa grade 7 from his 7th-grade race; the one store-collapsed Lyman Moore relay is identical to its twin"
+ },
  "backend/data/parsed_results/2026/Outdoor/ms-wells-york-traip-poland-gray-new-gloucester-2026.json": {
   "parse_sha": "d5765edca168f8e9",
   "source_sha": "db00831cf9696a4e",
@@ -69116,6 +69256,13 @@
   "date": "2026-11-15",
   "by": "re-signed 2026-11-15: signed-off file changed only by the milesplit two-sheet twin rule",
   "evidence": "every removed row has a surviving twin (same event, place, round, mark within 0.1 s / 1 in), scratchpad lost.py; old-vs-new converter regress over 1528 cached meets"
+ },
+ "backend/data/parsed_results/2026/Outdoor/ms-winthrop-middle-school-meet-2026.json": {
+  "parse_sha": "c8a94ae89e3ef1fc",
+  "source_sha": "601f3e09f05b8613",
+  "date": "2026-11-15",
+  "by": "o26e reviewers A+B",
+  "evidence": "2 reviewers compared every stored row to its local source; fixed: leading nickname (Smithner, Santos), Aben Israelaa grade 7 from his 7th-grade race; the one store-collapsed Lyman Moore relay is identical to its twin"
  },
  "backend/data/parsed_results/2026/Outdoor/ms-yarmouth-oob-grteely-seacoast-sacopee-valley-2026.json": {
   "parse_sha": "2975820307ae05ef",
