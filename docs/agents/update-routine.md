@@ -48,6 +48,12 @@ merge refuses (local changes, diverged history), stop and report
 
 ## 2. Scrape and parse
 
+**Nothing new, nothing more.** Between seasons (no season in progress and
+none in its late-postings window) and in any week the scrape prints
+`new_performances: 0` with no Five K Sport files pending, the run is a
+check for recent results and nothing else: report "no new results" and
+stop. No MileSplit gap check, QAQC, sims, check, rebuild or publish.
+
 1. `python3 -m backend.routine scrape` -- sub5 index pages for the season(s)
    in progress; new result files are downloaded, parsed and synced into the store; the
    manifest, meet links and athlete catalog are rebuilt. A new youth/USATF
