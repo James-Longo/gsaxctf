@@ -2631,5 +2631,13 @@ FILE_RULES += [
      'me-ms-carrie-ricker'),
 ]
 
+# 2026-11-16 routine, 2026 New England XC Championship (sub5 copy of every state, no state tags; meet_scope maine_only):
+# three strings that read as Maine schools belong to out-of-state teams, none of whose runners is in a Maine meet in 2026
+FILE_RULES += [
+    (['Uthirtytwo'], 'XC', (2026, 2026), r'^ne(boys|girls)2026\.txt$', 'oos-vt-u-32-high-school'),   # U-32 (Vermont), scored as a full team in both races
+    (['Windsor'], 'XC', (2026, 2026), r'^negirls2026\.txt$', 'oos-auto-ct-windsor'),             # Maya Donzella
+    (['Oxford'], 'XC', (2026, 2026), r'^negirls2026\.txt$', 'oos-auto-ct-oxford'),               # Callie DeLuise (not Oxford Hills)
+]
+
 FILE_RULES += [([raw], season, (year, year), '^' + _re.escape(stem) + '$', sid)
                for (season, year, stem), codes in FILE_CODES.items() for raw, sid in codes.items()]
