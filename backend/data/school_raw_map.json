@@ -1,7 +1,7 @@
 {
 "_meta": {
 "methods_by_rows": {
-"exact/alias": 2080828,
+"exact/alias": 2081989,
 "code": 260264,
 "truncation": 123495,
 "athlete-continuity": 53874,
@@ -819,9 +819,9 @@
 "how": "exact/alias"
 },
 "Lincoln Academy": {
-"rows": 12390,
+"rows": 12437,
 "seasons": {
-"Outdoor": 5913,
+"Outdoor": 5960,
 "XC": 5176,
 "Indoor": 1301
 },
@@ -1545,6 +1545,21 @@
 ],
 "how": "exact/alias"
 },
+"Lewiston High School": {
+"rows": 8117,
+"seasons": {
+"Indoor": 2968,
+"Outdoor": 4259,
+"XC": 890
+},
+"years": [
+2003,
+2026
+],
+"id": "me-hs-lewiston",
+"method": "exact",
+"how": "exact/alias"
+},
 "Brewer High School": {
 "rows": 8075,
 "seasons": {
@@ -1557,21 +1572,6 @@
 2026
 ],
 "id": "me-hs-brewer",
-"method": "exact",
-"how": "exact/alias"
-},
-"Lewiston High School": {
-"rows": 8051,
-"seasons": {
-"Indoor": 2968,
-"Outdoor": 4193,
-"XC": 890
-},
-"years": [
-2003,
-2026
-],
-"id": "me-hs-lewiston",
 "method": "exact",
 "how": "exact/alias"
 },
@@ -1600,10 +1600,10 @@
 "how": "exact/alias"
 },
 "Brunswick High School": {
-"rows": 7681,
+"rows": 7747,
 "seasons": {
 "Indoor": 2827,
-"Outdoor": 3773,
+"Outdoor": 3839,
 "XC": 1081
 },
 "years": [
@@ -1855,6 +1855,21 @@
 "method": "exact",
 "how": "exact/alias"
 },
+"Leavitt Area High School": {
+"rows": 7212,
+"seasons": {
+"Outdoor": 6175,
+"XC": 416,
+"Indoor": 621
+},
+"years": [
+2003,
+2026
+],
+"id": "me-hs-leavitt",
+"method": "exact",
+"how": "exact/alias"
+},
 "NYA": {
 "rows": 7198,
 "seasons": {
@@ -1897,25 +1912,10 @@
 "method": "exact",
 "how": "exact/alias"
 },
-"Leavitt Area High School": {
-"rows": 7131,
-"seasons": {
-"Outdoor": 6094,
-"XC": 416,
-"Indoor": 621
-},
-"years": [
-2003,
-2026
-],
-"id": "me-hs-leavitt",
-"method": "exact",
-"how": "exact/alias"
-},
 "Erskine Academy": {
-"rows": 7118,
+"rows": 7174,
 "seasons": {
-"Outdoor": 2790,
+"Outdoor": 2846,
 "XC": 2663,
 "Indoor": 1665
 },
@@ -1996,6 +1996,26 @@
 "method": "exact",
 "how": "exact/alias"
 },
+"Cony High School": {
+"rows": 6874,
+"seasons": {
+"Indoor": 976,
+"Outdoor": 3238,
+"XC": 2660
+},
+"years": [
+2003,
+2026
+],
+"id": "me-hs-cony",
+"method": "exact",
+"by_id": {
+"me-hs-cony": 6868,
+"coop-it-cony-halldale-winthrop": 6
+},
+"context_dependent": true,
+"how": "exact/alias"
+},
 "Wells High School": {
 "rows": 6830,
 "seasons": {
@@ -2009,26 +2029,6 @@
 ],
 "id": "me-hs-wells",
 "method": "exact",
-"how": "exact/alias"
-},
-"Cony High School": {
-"rows": 6821,
-"seasons": {
-"Indoor": 976,
-"Outdoor": 3185,
-"XC": 2660
-},
-"years": [
-2003,
-2026
-],
-"id": "me-hs-cony",
-"method": "exact",
-"by_id": {
-"me-hs-cony": 6815,
-"coop-it-cony-halldale-winthrop": 6
-},
-"context_dependent": true,
 "how": "exact/alias"
 },
 "Maranacook": {
@@ -2085,6 +2085,21 @@
 "method": "exact",
 "how": "exact/alias"
 },
+"Edward Little High School": {
+"rows": 6562,
+"seasons": {
+"Indoor": 1540,
+"Outdoor": 4425,
+"XC": 597
+},
+"years": [
+2003,
+2026
+],
+"id": "me-hs-edward-little",
+"method": "exact",
+"how": "exact/alias"
+},
 "South Portla": {
 "rows": 6498,
 "seasons": {
@@ -2108,21 +2123,6 @@
 "ms": "me-ms-south-portland"
 },
 "how": "truncation"
-},
-"Edward Little High School": {
-"rows": 6497,
-"seasons": {
-"Indoor": 1540,
-"Outdoor": 4360,
-"XC": 597
-},
-"years": [
-2003,
-2026
-],
-"id": "me-hs-edward-little",
-"method": "exact",
-"how": "exact/alias"
 },
 "Camden Rockp": {
 "rows": 6477,
@@ -2325,6 +2325,28 @@
 },
 "how": "code"
 },
+"Mount Ararat High School": {
+"rows": 6068,
+"seasons": {
+"Indoor": 1600,
+"XC": 853,
+"Outdoor": 3615
+},
+"years": [
+2003,
+2026
+],
+"id": "me-hs-mt-ararat",
+"method": "exact",
+"flags": [
+"athletes contradict name match (me-hs-mt-ararat -> me-hs-mt-abram, 2/10)",
+"athletes contradict name match (me-hs-mt-ararat -> me-hs-mt-abram, 26/37)",
+"athletes contradict name match (me-hs-mt-ararat -> me-hs-mt-abram, 34/37)",
+"athletes contradict name match (me-hs-mt-ararat -> me-hs-mt-abram, 7/10)",
+"athletes contradict name match (me-hs-mt-ararat -> me-hs-mt-abram, 7/7)"
+],
+"how": "exact/alias"
+},
 "Sanford": {
 "rows": 6030,
 "seasons": {
@@ -2367,28 +2389,6 @@
 ],
 "how": "exact/alias"
 },
-"Mount Ararat High School": {
-"rows": 5994,
-"seasons": {
-"Indoor": 1600,
-"XC": 853,
-"Outdoor": 3541
-},
-"years": [
-2003,
-2026
-],
-"id": "me-hs-mt-ararat",
-"method": "exact",
-"flags": [
-"athletes contradict name match (me-hs-mt-ararat -> me-hs-mt-abram, 2/10)",
-"athletes contradict name match (me-hs-mt-ararat -> me-hs-mt-abram, 26/37)",
-"athletes contradict name match (me-hs-mt-ararat -> me-hs-mt-abram, 34/37)",
-"athletes contradict name match (me-hs-mt-ararat -> me-hs-mt-abram, 7/10)",
-"athletes contradict name match (me-hs-mt-ararat -> me-hs-mt-abram, 7/7)"
-],
-"how": "exact/alias"
-},
 "Medomak": {
 "rows": 5968,
 "seasons": {
@@ -2414,9 +2414,9 @@
 "how": "exact/alias"
 },
 "Morse High School": {
-"rows": 5921,
+"rows": 5955,
 "seasons": {
-"Outdoor": 2459,
+"Outdoor": 2493,
 "XC": 2832,
 "Indoor": 630
 },
@@ -2479,6 +2479,29 @@
 ],
 "how": "exact/alias"
 },
+"Messalonskee High School": {
+"rows": 5642,
+"seasons": {
+"Outdoor": 2969,
+"XC": 534,
+"Indoor": 2139
+},
+"years": [
+2003,
+2026
+],
+"id": "me-hs-messalonskee",
+"method": "exact",
+"by_id": {
+"me-hs-messalonskee": 5638,
+"me-ms-messalonskee": 4
+},
+"context_dependent": true,
+"flags": [
+"athletes contradict name match (me-hs-messalonskee -> me-ms-messalonskee, 4/4)"
+],
+"how": "exact/alias"
+},
 "Greely Middle School": {
 "rows": 5637,
 "seasons": {
@@ -2515,29 +2538,6 @@
 "flags": [
 "athletes contradict name match (me-hs-gray-ng -> me-ms-gray-ng, 10/11)",
 "athletes contradict name match (me-hs-gray-ng -> me-ms-gray-ng, 2/2)"
-],
-"how": "exact/alias"
-},
-"Messalonskee High School": {
-"rows": 5593,
-"seasons": {
-"Outdoor": 2920,
-"XC": 534,
-"Indoor": 2139
-},
-"years": [
-2003,
-2026
-],
-"id": "me-hs-messalonskee",
-"method": "exact",
-"by_id": {
-"me-hs-messalonskee": 5589,
-"me-ms-messalonskee": 4
-},
-"context_dependent": true,
-"flags": [
-"athletes contradict name match (me-hs-messalonskee -> me-ms-messalonskee, 4/4)"
 ],
 "how": "exact/alias"
 },
@@ -2776,6 +2776,21 @@
 },
 "how": "exact/alias"
 },
+"Waterville High School": {
+"rows": 5202,
+"seasons": {
+"Indoor": 1726,
+"Outdoor": 3002,
+"XC": 474
+},
+"years": [
+2003,
+2026
+],
+"id": "me-hs-waterville",
+"method": "exact",
+"how": "exact/alias"
+},
 "George Stevens": {
 "rows": 5202,
 "seasons": {
@@ -2806,25 +2821,10 @@
 "method": "truncation",
 "how": "truncation"
 },
-"Waterville High School": {
-"rows": 5141,
-"seasons": {
-"Indoor": 1726,
-"Outdoor": 2941,
-"XC": 474
-},
-"years": [
-2003,
-2026
-],
-"id": "me-hs-waterville",
-"method": "exact",
-"how": "exact/alias"
-},
 "Belfast Area High School": {
-"rows": 5120,
+"rows": 5164,
 "seasons": {
-"Outdoor": 3504,
+"Outdoor": 3548,
 "XC": 332,
 "Indoor": 1284
 },
@@ -2852,11 +2852,11 @@
 "how": "exact/alias"
 },
 "Winslow High School": {
-"rows": 4911,
+"rows": 4970,
 "seasons": {
 "XC": 1745,
 "Indoor": 889,
-"Outdoor": 2277
+"Outdoor": 2336
 },
 "years": [
 2003,
@@ -2865,7 +2865,7 @@
 "id": "me-hs-winslow",
 "method": "exact",
 "by_id": {
-"me-hs-winslow": 4805,
+"me-hs-winslow": 4864,
 "me-ms-winslow": 106
 },
 "context_dependent": true,
@@ -2961,9 +2961,9 @@
 "how": "exact/alias"
 },
 "Maine Central Institute": {
-"rows": 4745,
+"rows": 4777,
 "seasons": {
-"Outdoor": 3317,
+"Outdoor": 3349,
 "XC": 270,
 "Indoor": 1158
 },
@@ -3105,6 +3105,21 @@
 "method": "exact",
 "how": "exact/alias"
 },
+"Lawrence High School": {
+"rows": 4516,
+"seasons": {
+"Outdoor": 2977,
+"XC": 338,
+"Indoor": 1201
+},
+"years": [
+2003,
+2026
+],
+"id": "me-hs-lawrence",
+"method": "exact",
+"how": "exact/alias"
+},
 "Winthrop High School": {
 "rows": 4471,
 "seasons": {
@@ -3117,21 +3132,6 @@
 2026
 ],
 "id": "me-hs-winthrop",
-"method": "exact",
-"how": "exact/alias"
-},
-"Lawrence High School": {
-"rows": 4455,
-"seasons": {
-"Outdoor": 2916,
-"XC": 338,
-"Indoor": 1201
-},
-"years": [
-2003,
-2026
-],
-"id": "me-hs-lawrence",
 "method": "exact",
 "how": "exact/alias"
 },
@@ -3382,6 +3382,36 @@
 "method": "exact",
 "how": "exact/alias"
 },
+"Skowhegan Area High School": {
+"rows": 3937,
+"seasons": {
+"Indoor": 898,
+"Outdoor": 2711,
+"XC": 328
+},
+"years": [
+2003,
+2026
+],
+"id": "me-hs-skowhegan",
+"method": "exact",
+"how": "exact/alias"
+},
+"Oxford Hills High School": {
+"rows": 3912,
+"seasons": {
+"Outdoor": 3115,
+"XC": 646,
+"Indoor": 151
+},
+"years": [
+2003,
+2026
+],
+"id": "me-hs-oxford-hills",
+"method": "exact",
+"how": "exact/alias"
+},
 "Bangor Chris": {
 "rows": 3901,
 "seasons": {
@@ -3435,21 +3465,6 @@
 },
 "how": "exact/alias"
 },
-"Skowhegan Area High School": {
-"rows": 3885,
-"seasons": {
-"Indoor": 898,
-"Outdoor": 2659,
-"XC": 328
-},
-"years": [
-2003,
-2026
-],
-"id": "me-hs-skowhegan",
-"method": "exact",
-"how": "exact/alias"
-},
 "CONY": {
 "rows": 3883,
 "seasons": {
@@ -3477,21 +3492,6 @@
 "Indoor": "me-hs-cony",
 "XC": "me-ms-cony"
 },
-"how": "exact/alias"
-},
-"Oxford Hills High School": {
-"rows": 3871,
-"seasons": {
-"Outdoor": 3074,
-"XC": 646,
-"Indoor": 151
-},
-"years": [
-2003,
-2026
-],
-"id": "me-hs-oxford-hills",
-"method": "exact",
 "how": "exact/alias"
 },
 "George Steve": {
@@ -3927,6 +3927,21 @@
 "method": "exact",
 "how": "exact/alias"
 },
+"Gardiner Area High School": {
+"rows": 3208,
+"seasons": {
+"Outdoor": 2381,
+"Indoor": 438,
+"XC": 389
+},
+"years": [
+2003,
+2026
+],
+"id": "me-hs-gardiner",
+"method": "exact",
+"how": "exact/alias"
+},
 "Bates": {
 "rows": 3207,
 "seasons": {
@@ -4048,21 +4063,6 @@
 "flags": [
 "athletes contradict name match (me-ms-searsport -> me-hs-searsport, 1/1)"
 ],
-"how": "exact/alias"
-},
-"Gardiner Area High School": {
-"rows": 3166,
-"seasons": {
-"Outdoor": 2339,
-"Indoor": 438,
-"XC": 389
-},
-"years": [
-2003,
-2026
-],
-"id": "me-hs-gardiner",
-"method": "exact",
 "how": "exact/alias"
 },
 "Mt. Ararat High School": {
@@ -4517,6 +4517,36 @@
 "method": "exact",
 "how": "exact/alias"
 },
+"Camden Hills Regional High School": {
+"rows": 2859,
+"seasons": {
+"XC": 1032,
+"Outdoor": 1708,
+"Indoor": 119
+},
+"years": [
+2003,
+2026
+],
+"id": "me-hs-camden-hills",
+"method": "exact",
+"how": "exact/alias"
+},
+"Mount Blue High School": {
+"rows": 2845,
+"seasons": {
+"XC": 735,
+"Outdoor": 2086,
+"Indoor": 24
+},
+"years": [
+2003,
+2026
+],
+"id": "me-hs-mt-blue",
+"method": "exact",
+"how": "exact/alias"
+},
 "Hall-Dale High School": {
 "rows": 2826,
 "seasons": {
@@ -4529,36 +4559,6 @@
 2026
 ],
 "id": "me-hs-hall-dale",
-"method": "exact",
-"how": "exact/alias"
-},
-"Mount Blue High School": {
-"rows": 2825,
-"seasons": {
-"XC": 735,
-"Outdoor": 2066,
-"Indoor": 24
-},
-"years": [
-2003,
-2026
-],
-"id": "me-hs-mt-blue",
-"method": "exact",
-"how": "exact/alias"
-},
-"Camden Hills Regional High School": {
-"rows": 2824,
-"seasons": {
-"XC": 1032,
-"Outdoor": 1673,
-"Indoor": 119
-},
-"years": [
-2003,
-2026
-],
-"id": "me-hs-camden-hills",
 "method": "exact",
 "how": "exact/alias"
 },
@@ -5370,6 +5370,21 @@
 },
 "how": "exact/alias"
 },
+"Medomak Valley High School": {
+"rows": 2325,
+"seasons": {
+"XC": 557,
+"Indoor": 194,
+"Outdoor": 1574
+},
+"years": [
+2003,
+2026
+],
+"id": "me-hs-medomak",
+"method": "exact",
+"how": "exact/alias"
+},
 "Westbrook MS": {
 "rows": 2325,
 "seasons": {
@@ -5485,21 +5500,6 @@
 2026
 ],
 "id": "me-ms-gardiner",
-"method": "exact",
-"how": "exact/alias"
-},
-"Medomak Valley High School": {
-"rows": 2283,
-"seasons": {
-"XC": 557,
-"Indoor": 194,
-"Outdoor": 1532
-},
-"years": [
-2003,
-2026
-],
-"id": "me-hs-medomak",
 "method": "exact",
 "how": "exact/alias"
 },
@@ -5921,6 +5921,21 @@
 "method": "exact",
 "how": "exact/alias"
 },
+"Nokomis Regional High School": {
+"rows": 2009,
+"seasons": {
+"Outdoor": 1556,
+"XC": 117,
+"Indoor": 336
+},
+"years": [
+2003,
+2026
+],
+"id": "me-hs-nokomis",
+"method": "exact",
+"how": "exact/alias"
+},
 "Skowhegan JH": {
 "rows": 2008,
 "seasons": {
@@ -5991,21 +6006,6 @@
 "flags": [
 "athletes contradict name match (me-ms-bath -> me-ms-bucksport, 17/17)"
 ],
-"how": "exact/alias"
-},
-"Nokomis Regional High School": {
-"rows": 1981,
-"seasons": {
-"Outdoor": 1528,
-"XC": 117,
-"Indoor": 336
-},
-"years": [
-2003,
-2026
-],
-"id": "me-hs-nokomis",
-"method": "exact",
 "how": "exact/alias"
 },
 "Holham": {
@@ -6604,6 +6604,29 @@
 },
 "how": "exact/alias"
 },
+"Oceanside High School": {
+"rows": 1723,
+"seasons": {
+"XC": 214,
+"Indoor": 502,
+"Outdoor": 1007
+},
+"years": [
+2011,
+2026
+],
+"id": "me-hs-oceanside",
+"method": "exact",
+"by_id": {
+"me-hs-oceanside": 1713,
+"me-ms-oceanside": 10
+},
+"context_dependent": true,
+"flags": [
+"athletes contradict name match (me-hs-oceanside -> me-ms-oceanside, 4/4)"
+],
+"how": "exact/alias"
+},
 "Telstar": {
 "rows": 1719,
 "seasons": {
@@ -6626,29 +6649,6 @@
 "hs": "me-hs-telstar",
 "ms": "me-ms-telstar"
 },
-"how": "exact/alias"
-},
-"Oceanside High School": {
-"rows": 1701,
-"seasons": {
-"XC": 214,
-"Indoor": 502,
-"Outdoor": 985
-},
-"years": [
-2011,
-2026
-],
-"id": "me-hs-oceanside",
-"method": "exact",
-"by_id": {
-"me-hs-oceanside": 1691,
-"me-ms-oceanside": 10
-},
-"context_dependent": true,
-"flags": [
-"athletes contradict name match (me-hs-oceanside -> me-ms-oceanside, 4/4)"
-],
 "how": "exact/alias"
 },
 "Wells Middle School": {
@@ -7469,6 +7469,21 @@
 "method": "truncation",
 "how": "truncation"
 },
+"Mount View High School": {
+"rows": 1396,
+"seasons": {
+"Outdoor": 1298,
+"Indoor": 95,
+"XC": 3
+},
+"years": [
+2003,
+2026
+],
+"id": "me-hs-mt-view",
+"method": "exact",
+"how": "exact/alias"
+},
 "Central MS": {
 "rows": 1392,
 "seasons": {
@@ -7622,21 +7637,6 @@
 },
 "context_dependent": true,
 "how": "code"
-},
-"Mount View High School": {
-"rows": 1365,
-"seasons": {
-"Outdoor": 1267,
-"Indoor": 95,
-"XC": 3
-},
-"years": [
-2003,
-2026
-],
-"id": "me-hs-mt-view",
-"method": "exact",
-"how": "exact/alias"
 },
 "Warsaw JH": {
 "rows": 1358,
@@ -32830,7 +32830,7 @@
 "flags": [
 "athletes contradict name match (me-hs-mountain-valley -> me-hs-mt-view, 7/8)",
 "athletes contradict name match (me-hs-mt-view -> me-hs-mountain-valley, 8/8)",
-"company: me-hs-mt-view (0.69) -> me-hs-mountain-valley (3.87)"
+"company: me-hs-mt-view (0.68) -> me-hs-mountain-valley (3.87)"
 ],
 "how": "athlete-continuity"
 },
@@ -237399,6 +237399,14 @@
 "Gray-New Gloucester High School": "me-hs-gray-ng",
 "Lisbon/Oak Hill": "coop-ot-lisbon-oak-hill",
 "Yarmouth High School": "me-hs-yarmouth"
+},
+"2026/Outdoor/ms-kvac-large-school-championship-2026": {
+"Cony High School": "me-hs-cony",
+"Messalonskee High School": "me-hs-messalonskee"
+},
+"2026/Outdoor/ms-kvac-small-school-championship-2026": {
+"Oceanside High School": "me-hs-oceanside",
+"Winslow High School": "me-hs-winslow"
 },
 "2026/Outdoor/ms-lisbon-hall-d-spruce-carra-madis-wiscas-lisbon-mt-valley-2026": {
 "Lisbon/Oak Hill": "coop-ot-lisbon-oak-hill"
