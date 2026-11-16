@@ -30885,10 +30885,10 @@
  },
  "backend/data/parsed_results/2014/XC/ms-kvac-belfast-erskine-cony-morse-camden-hills-winslow-2014.json": {
   "parse_sha": "76dfd6226377b190",
-  "source_sha": "c5ec58daaea28fce",
-  "date": "2026-10-28",
-  "by": "MileSplit second read 2026-10-28 (batch 35): checked against all cached pages of the meet",
-  "evidence": "reader compared every row with every cached MileSplit page (Triple C 2012 sub5: places 52-72 checked against the sheet)"
+  "source_sha": "7f36435bf01a45a6",
+  "date": "2026-11-15",
+  "by": "o26c reviewers A+B",
+  "evidence": "2 reviewers compared every row to its source; fixes applied (re-conversions of Bonny Eagle HS, Marshwood/Kennebunk MS; mojibake; Loire O'roak and Rasmey grades); college meets GNAC/NAC hold 0 rows by design"
  },
  "backend/data/parsed_results/2014/XC/ms-kvac-brewer-hampden-waterville-bangor-skowhegan-2014.json": {
   "parse_sha": "aa91fe714865042d",
@@ -60900,11 +60900,11 @@
   "evidence": "untitled MS relay sections (header 'Girls  JR GIRLS', no event name) filed as 4x140yd (JR/INT) / 4x210yd (SR): the same GPC/SMMSAC sheets print those names in 2025 and every time fits; 2024 counts match both reviewers' missing rows; all other rows unchanged"
  },
  "backend/data/parsed_results/2024/Indoor/ms-biddeford-whittier-smcsjs-loranger-massabesic-2024.json": {
-  "parse_sha": "49fe2b09d72ae5f5",
-  "source_sha": "cea74599bf2fa224",
-  "date": "2026-11-05",
-  "by": "2 Sonnet reviewers (2024 batch 4) + loop",
-  "evidence": "untitled MS relay sections (header 'Girls  JR GIRLS', no event name) filed as 4x140yd (JR/INT) / 4x210yd (SR): the same GPC/SMMSAC sheets print those names in 2025 and every time fits; 2024 counts match both reviewers' missing rows; all other rows unchanged"
+  "parse_sha": "ae9b38dffe5eb943",
+  "source_sha": "8800bb98b1c0683a",
+  "date": "2026-11-15",
+  "by": "o26c reviewers A+B",
+  "evidence": "2 reviewers compared every row to its source; fixes applied (re-conversions of Bonny Eagle HS, Marshwood/Kennebunk MS; mojibake; Loire O'roak and Rasmey grades); college meets GNAC/NAC hold 0 rows by design"
  },
  "backend/data/parsed_results/2024/Indoor/ms-cape-eizabeth-greely-thornton-academy-saco-2024.json": {
   "parse_sha": "e72e6ed7cf638144",
@@ -61612,6 +61612,13 @@
   "date": "2026-10-29",
   "by": "sonnet audit (second read, 2026-10-29) (audit: confirmed)",
   "evidence": "Middle School Meet at Telstar, 5/16/2024 (title 'TELSTAR MS - 5/16/2024'; index May 16). Middle-school entries: Lisbon MS, Gardiner MS, Telstar Middle School, Spruce Mountain MS, Mt Valley MS, Day Mountain School, Dirigo MS, Buckfield MS -> me-ms-*. Printed team scores reproduce and equal the parse (Women: Lisbon MS 119.50, Gardiner MS 115, Telstar 79.75, Spruce Mountain MS 66.50, Mt Valley MS 39.25, Day Mountain 30, Dirigo MS 12; Men: Mt Valley MS 119, Lisbon MS 110, Spruce Mountain MS 65, Telstar 62, Gardiner MS 57, Day Mountain 36, Dirigo MS 12, Buckfield MS 2). 6 implausible flags are real printed marks (Young boys discus 78-05.50 and shot 30-10.50, Betts discus 60-00.50, Jamison discus 61-07.50, Reithofer girls shot 18-04.50 ...). The one source row without a mark ('21 Geleide, Greyson Gardiner MS  No Data', Boys Long Jump) is not in the parse - correct (no mark printed); 'ND' rows with '--' place are kept as status rows as the parser does. Compared every event and row of the source Hy-Tek text with the parse (event/gender/order, place incl. ties, name, school, mark incl. q/J/x flags, relay legs, exhibition 'B'/'C' relay teams, DNF/DQ/NH status rows) with a script plus eyeballing: no row missing or extra, none swapped. The Year column is empty in the source (grade blank in the parse is right)."
+ },
+ "backend/data/parsed_results/2024/Outdoor/Resultstriple-c.json": {
+  "parse_sha": "cad5a4f6029a3a6d",
+  "source_sha": "969f4d2d8bce390c",
+  "date": "2026-11-15",
+  "by": "o26c reviewers A+B",
+  "evidence": "2 reviewers compared every row to its source; fixes applied (re-conversions of Bonny Eagle HS, Marshwood/Kennebunk MS; mojibake; Loire O'roak and Rasmey grades); college meets GNAC/NAC hold 0 rows by design"
  },
  "backend/data/parsed_results/2024/Outdoor/ScoresOXF.json": {
   "parse_sha": "36830ff4d4659616",
@@ -64309,11 +64316,11 @@
   "evidence": "every individual row matches the MileSplit sheet; relays (4x140y/4x210y) were dropped by event_canon and restored by 7fa760da0, now stored"
  },
  "backend/data/parsed_results/2025/Indoor/ms-630pm-biddeford-saco-thornton-loranger-2025.json": {
-  "parse_sha": "f3e94c6007eaa995",
-  "source_sha": "920cc136ba34d7c1",
-  "date": "2026-11-05",
-  "by": "2 Sonnet reviewers (2024 batch 4) + loop",
-  "evidence": "untitled MS relay sections (header 'Girls  JR GIRLS', no event name) filed as 4x140yd (JR/INT) / 4x210yd (SR): the same GPC/SMMSAC sheets print those names in 2025 and every time fits; 2024 counts match both reviewers' missing rows; all other rows unchanged"
+  "parse_sha": "1919a9b97a96b902",
+  "source_sha": "9f197500b0e6c6e0",
+  "date": "2026-11-15",
+  "by": "o26c reviewers A+B",
+  "evidence": "2 reviewers compared every row to its source; fixes applied (re-conversions of Bonny Eagle HS, Marshwood/Kennebunk MS; mojibake; Loire O'roak and Rasmey grades); college meets GNAC/NAC hold 0 rows by design"
  },
  "backend/data/parsed_results/2025/Indoor/ms-630pm-freeportdurham-scarborough-yarmouth-noble-massabesic-2025.json": {
   "parse_sha": "9413029a5bbf7874",
@@ -64568,11 +64575,11 @@
   "evidence": "Row-by-row vs the cached MileSplit raw page: every row matches; WMC championship's 8 extra file rows are prelims equal to the final (stored once)"
  },
  "backend/data/parsed_results/2025/Indoor/neresults2025.json": {
-  "parse_sha": "0de0d144568a4436",
+  "parse_sha": "44cea02c8993183e",
   "source_sha": "3e47d70ba32858f2",
-  "date": "2026-10-29",
-  "by": "Indoor second read 2026-10-29 (t5, 2024-2025): read against the source",
-  "evidence": "reader compared every row with the source; fixes by override, school rule or index fix"
+  "date": "2026-11-15",
+  "by": "o26c reviewers A+B",
+  "evidence": "2 reviewers compared every row to its source; fixes applied (re-conversions of Bonny Eagle HS, Marshwood/Kennebunk MS; mojibake; Loire O'roak and Rasmey grades); college meets GNAC/NAC hold 0 rows by design"
  },
  "backend/data/parsed_results/2025/Indoor/smaa-champ.json": {
   "parse_sha": "86bbbc531feb3a27",
@@ -65303,11 +65310,11 @@
   "evidence": "Checked every event/row of the parse against the source (19 events, 251 rows): event, gender, place/ties, name, raw school, grade, mark, DQ/NH/ND status rows and relay legs all agree; no extra or missing rows. Ledger warning ('transcribed/verified but never signed off by a reader') only means no reader had signed off; nothing wrong found. Printed team scores match the parse exactly (score=verified)."
  },
  "backend/data/parsed_results/2025/Outdoor/ms-cape-elizabeth-ms-track-meet-2025.json": {
-  "parse_sha": "c012c38aa314aa25",
-  "source_sha": "31f59b12b24b72e6",
-  "date": "2026-11-13",
-  "by": "claude",
-  "evidence": "Second posting's repeated races (times 0.01 off, same place and round) dropped; first posting kept, per drop_reposted rule."
+  "parse_sha": "8eeaff2285ae47f1",
+  "source_sha": "7b93244aba42276c",
+  "date": "2026-11-15",
+  "by": "o26c reviewers A+B",
+  "evidence": "2 reviewers compared every row to its source; fixes applied (re-conversions of Bonny Eagle HS, Marshwood/Kennebunk MS; mojibake; Loire O'roak and Rasmey grades); college meets GNAC/NAC hold 0 rows by design"
  },
  "backend/data/parsed_results/2025/Outdoor/ms-kvac-leavitt-2025.json": {
   "parse_sha": "138e169e2e3e35d5",
@@ -68214,6 +68221,13 @@
   "by": "two reviewers 2026-11-15 (o26a): every stored row compared to its source; page-break marks fixed by parser, Lawrence MA vaulter excluded",
   "evidence": "score gaps are the sheets own scoring (exhibition/unscored entries, sheet arithmetic)"
  },
+ "backend/data/parsed_results/2026/Outdoor/2026-pvc-week-3-caribou-boys-results.json": {
+  "parse_sha": "0138da35ad702d92",
+  "source_sha": "54749696691e8f0b",
+  "date": "2026-11-15",
+  "by": "o26c reviewers A+B",
+  "evidence": "2 reviewers compared every row to its source; fixes applied (re-conversions of Bonny Eagle HS, Marshwood/Kennebunk MS; mojibake; Loire O'roak and Rasmey grades); college meets GNAC/NAC hold 0 rows by design"
+ },
  "backend/data/parsed_results/2026/Outdoor/2026-pvc-week-3-caribou-girls-results.json": {
   "parse_sha": "b9740c6ed262ee07",
   "source_sha": "8b5cdec7e0cb5a52",
@@ -68248,6 +68262,13 @@
   "date": "2026-10-26",
   "by": "2026-10-26 sonnet audit (routine) (audit: confirmed)",
   "evidence": "Machine-compared every parse row with the source text (name, mark, place, grade, event heading/order, relay members, per-event row counts): 386 rows, 26 events all match: FOUL/NH status rows kept, 'J4-04.00' judged-tie field marks read as 4-04.00, relays (A-E teams) match. Middle-school strings ('Indian Islan', 'Reeds Brooks MS') -> me-ms ids. 'Boys 55 Meter Hurdles JV' (1 row, source line 52) keeps the name of the varsity block - label only. Meet date 2026-05-12 matches title."
+ },
+ "backend/data/parsed_results/2026/Outdoor/Brewer-results.json": {
+  "parse_sha": "7f59b27108a3134b",
+  "source_sha": "4460a19667847367",
+  "date": "2026-11-15",
+  "by": "o26c reviewers A+B",
+  "evidence": "2 reviewers compared every row to its source; fixes applied (re-conversions of Bonny Eagle HS, Marshwood/Kennebunk MS; mojibake; Loire O'roak and Rasmey grades); college meets GNAC/NAC hold 0 rows by design"
  },
  "backend/data/parsed_results/2026/Outdoor/Brunswick-results.json": {
   "parse_sha": "0cb43029f5722f80",
@@ -68284,6 +68305,13 @@
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
  },
+ "backend/data/parsed_results/2026/Outdoor/Camden-Hills-results.json": {
+  "parse_sha": "3cc9dd2d7d0cc45a",
+  "source_sha": "d6c406ea27e18a76",
+  "date": "2026-11-15",
+  "by": "o26c reviewers A+B",
+  "evidence": "2 reviewers compared every row to its source; fixes applied (re-conversions of Bonny Eagle HS, Marshwood/Kennebunk MS; mojibake; Loire O'roak and Rasmey grades); college meets GNAC/NAC hold 0 rows by design"
+ },
  "backend/data/parsed_results/2026/Outdoor/Class-B-boys-results.json": {
   "parse_sha": "3e14f168e3bc1c86",
   "source_sha": "d446305f4c213ead",
@@ -68319,12 +68347,33 @@
   "by": "two reviewers 2026-11-15 (o26a): every stored row compared to its source; page-break marks fixed by parser, Lawrence MA vaulter excluded",
   "evidence": "score gaps are the sheets own scoring (exhibition/unscored entries, sheet arithmetic)"
  },
+ "backend/data/parsed_results/2026/Outdoor/Falmouth-results.json": {
+  "parse_sha": "5f2d54cb020073b6",
+  "source_sha": "f61b32dbb29d1be6",
+  "date": "2026-11-15",
+  "by": "o26c reviewers A+B",
+  "evidence": "2 reviewers compared every row to its source; fixes applied (re-conversions of Bonny Eagle HS, Marshwood/Kennebunk MS; mojibake; Loire O'roak and Rasmey grades); college meets GNAC/NAC hold 0 rows by design"
+ },
+ "backend/data/parsed_results/2026/Outdoor/Falmouth.json": {
+  "parse_sha": "fb205a1ce0efa542",
+  "source_sha": "93a22bf7988f48f5",
+  "date": "2026-11-15",
+  "by": "o26c reviewers A+B",
+  "evidence": "2 reviewers compared every row to its source; fixes applied (re-conversions of Bonny Eagle HS, Marshwood/Kennebunk MS; mojibake; Loire O'roak and Rasmey grades); college meets GNAC/NAC hold 0 rows by design"
+ },
  "backend/data/parsed_results/2026/Outdoor/GNAC-men-results.json": {
   "parse_sha": "2512e8d67dd42064",
   "source_sha": "baa89286b3e52b6d",
   "date": "2026-10-16",
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
+ },
+ "backend/data/parsed_results/2026/Outdoor/GNAC-women-results.json": {
+  "parse_sha": "6c94a605d69935a2",
+  "source_sha": "617b1efde41e5860",
+  "date": "2026-11-15",
+  "by": "o26c reviewers A+B",
+  "evidence": "2 reviewers compared every row to its source; fixes applied (re-conversions of Bonny Eagle HS, Marshwood/Kennebunk MS; mojibake; Loire O'roak and Rasmey grades); college meets GNAC/NAC hold 0 rows by design"
  },
  "backend/data/parsed_results/2026/Outdoor/Hermon-MS-results.json": {
   "parse_sha": "0ff57641ca1c326b",
@@ -68333,12 +68382,33 @@
   "by": "2026-10-26 sonnet audit (routine) (audit: confirmed)",
   "evidence": "Row-by-row comparison of all source result rows to the parse (name, mark, place, grade, school, event order and per-event row counts) found no missing/extra/misread rows; 738 rows = 738 rows. Eastern Maine MS league, all schools map to me-ms-* correctly (Old Town MS->Leonard MS, William S Co->Cohen MS). 5 implausible flags are marks the source prints. No team scores printed. The source event 'Boys 55 Meter Hurdles JV' is parsed as a separate event entry that is named plain 'Boys 55 Meter Hurdles' (JV suffix dropped; parser pattern, rows themselves are right)."
  },
+ "backend/data/parsed_results/2026/Outdoor/Lake-Region-results.json": {
+  "parse_sha": "6cf481a9492741e2",
+  "source_sha": "ea0288433d82c108",
+  "date": "2026-11-15",
+  "by": "o26c reviewers A+B",
+  "evidence": "2 reviewers compared every row to its source; fixes applied (re-conversions of Bonny Eagle HS, Marshwood/Kennebunk MS; mojibake; Loire O'roak and Rasmey grades); college meets GNAC/NAC hold 0 rows by design"
+ },
+ "backend/data/parsed_results/2026/Outdoor/Lewiston-Results.json": {
+  "parse_sha": "f5de2e19c335a3bf",
+  "source_sha": "7762d5030b4ba527",
+  "date": "2026-11-15",
+  "by": "o26c reviewers A+B",
+  "evidence": "2 reviewers compared every row to its source; fixes applied (re-conversions of Bonny Eagle HS, Marshwood/Kennebunk MS; mojibake; Loire O'roak and Rasmey grades); college meets GNAC/NAC hold 0 rows by design"
+ },
  "backend/data/parsed_results/2026/Outdoor/MDI-MS-results.json": {
   "parse_sha": "aca6cb6ec9aaf5fd",
   "source_sha": "9435d2c7b57d612c",
   "date": "2026-10-26",
   "by": "2026-10-26 sonnet audit (routine) (audit: confirmed)",
   "evidence": "Row-by-row comparison of all source result rows to the parse (name, mark, place, grade, school, event order and per-event row counts) found no missing/extra/misread rows; 495 rows. All teams map to me-ms-* (MDI Elementa->MDI Elementary Schools, Sedgwick Ele, Sumner Middl, Blue Hill MS, Bucksport MS, Center Drive). No team scores printed. The source event 'Boys 55 Meter Hurdles JV' is parsed as a separate event entry that is named plain 'Boys 55 Meter Hurdles' (JV suffix dropped; parser pattern, rows themselves are right)."
+ },
+ "backend/data/parsed_results/2026/Outdoor/MDI-Meet-2-results.json": {
+  "parse_sha": "2fee72779ab17fde",
+  "source_sha": "64716c69e03b1c28",
+  "date": "2026-11-15",
+  "by": "o26c reviewers A+B",
+  "evidence": "2 reviewers compared every row to its source; fixes applied (re-conversions of Bonny Eagle HS, Marshwood/Kennebunk MS; mojibake; Loire O'roak and Rasmey grades); college meets GNAC/NAC hold 0 rows by design"
  },
  "backend/data/parsed_results/2026/Outdoor/MDI-results.json": {
   "parse_sha": "06eb0cc0fd6fd92f",
@@ -68360,6 +68430,13 @@
   "date": "2026-11-15",
   "by": "two reviewers 2026-11-15 (o26a): every stored row compared to its source; page-break marks fixed by parser, Lawrence MA vaulter excluded",
   "evidence": "score gaps are the sheets own scoring (exhibition/unscored entries, sheet arithmetic)"
+ },
+ "backend/data/parsed_results/2026/Outdoor/Mdi-results.json": {
+  "parse_sha": "97186b312cec26ce",
+  "source_sha": "43614a21e358df6a",
+  "date": "2026-11-15",
+  "by": "o26c reviewers A+B",
+  "evidence": "2 reviewers compared every row to its source; fixes applied (re-conversions of Bonny Eagle HS, Marshwood/Kennebunk MS; mojibake; Loire O'roak and Rasmey grades); college meets GNAC/NAC hold 0 rows by design"
  },
  "backend/data/parsed_results/2026/Outdoor/Medomak-results.json": {
   "parse_sha": "db58bec3998650ca",
@@ -68389,6 +68466,27 @@
   "by": "two reviewers 2026-11-15 (o26a): every stored row compared to its source; page-break marks fixed by parser, Lawrence MA vaulter excluded",
   "evidence": "score gaps are the sheets own scoring (exhibition/unscored entries, sheet arithmetic)"
  },
+ "backend/data/parsed_results/2026/Outdoor/Mt-Blue-results.json": {
+  "parse_sha": "d4179d6eb43b9ff0",
+  "source_sha": "022abf32db7cc408",
+  "date": "2026-11-15",
+  "by": "o26c reviewers A+B",
+  "evidence": "2 reviewers compared every row to its source; fixes applied (re-conversions of Bonny Eagle HS, Marshwood/Kennebunk MS; mojibake; Loire O'roak and Rasmey grades); college meets GNAC/NAC hold 0 rows by design"
+ },
+ "backend/data/parsed_results/2026/Outdoor/NAC-men-results.json": {
+  "parse_sha": "9ea6261a1c963296",
+  "source_sha": "e139fdcf5a23bbf1",
+  "date": "2026-11-15",
+  "by": "o26c reviewers A+B",
+  "evidence": "2 reviewers compared every row to its source; fixes applied (re-conversions of Bonny Eagle HS, Marshwood/Kennebunk MS; mojibake; Loire O'roak and Rasmey grades); college meets GNAC/NAC hold 0 rows by design"
+ },
+ "backend/data/parsed_results/2026/Outdoor/NAC-women-results.json": {
+  "parse_sha": "69c2dede346f9d90",
+  "source_sha": "320333060cb1f692",
+  "date": "2026-11-15",
+  "by": "o26c reviewers A+B",
+  "evidence": "2 reviewers compared every row to its source; fixes applied (re-conversions of Bonny Eagle HS, Marshwood/Kennebunk MS; mojibake; Loire O'roak and Rasmey grades); college meets GNAC/NAC hold 0 rows by design"
+ },
  "backend/data/parsed_results/2026/Outdoor/NE-boys-results.json": {
   "parse_sha": "8839f16176e7000e",
   "source_sha": "a2a81f980649c0db",
@@ -68402,6 +68500,13 @@
   "date": "2026-11-15",
   "by": "two reviewers 2026-11-15 (o26a): every stored row compared to its source; page-break marks fixed by parser, Lawrence MA vaulter excluded",
   "evidence": "score gaps are the sheets own scoring (exhibition/unscored entries, sheet arithmetic)"
+ },
+ "backend/data/parsed_results/2026/Outdoor/Nokomis-MS-results.json": {
+  "parse_sha": "0b2ce894bf926d3f",
+  "source_sha": "87b09d7da8d86d22",
+  "date": "2026-11-15",
+  "by": "o26c reviewers A+B",
+  "evidence": "2 reviewers compared every row to its source; fixes applied (re-conversions of Bonny Eagle HS, Marshwood/Kennebunk MS; mojibake; Loire O'roak and Rasmey grades); college meets GNAC/NAC hold 0 rows by design"
  },
  "backend/data/parsed_results/2026/Outdoor/Old-Town-MS-results.json": {
   "parse_sha": "02e7c697368c0a60",
@@ -68529,6 +68634,13 @@
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
  },
+ "backend/data/parsed_results/2026/Outdoor/bucksportms29april2026.json": {
+  "parse_sha": "c4ea4948b1393ad5",
+  "source_sha": "816ed337d8c8a245",
+  "date": "2026-11-15",
+  "by": "o26c reviewers A+B",
+  "evidence": "2 reviewers compared every row to its source; fixes applied (re-conversions of Bonny Eagle HS, Marshwood/Kennebunk MS; mojibake; Loire O'roak and Rasmey grades); college meets GNAC/NAC hold 0 rows by design"
+ },
  "backend/data/parsed_results/2026/Outdoor/camdenms9may2026.json": {
   "parse_sha": "3755167761aeec14",
   "source_sha": "dd6c37f4bf966fd9",
@@ -68600,11 +68712,11 @@
   "evidence": "Second posting's repeated races (times 0.01 off, same place and round) dropped; first posting kept, per drop_reposted rule."
  },
  "backend/data/parsed_results/2026/Outdoor/ms-bonny-eagle-home-meet-1-2026.json": {
-  "parse_sha": "9b4d83b219ed9f0e",
-  "source_sha": "0a375d391e39a1c8",
-  "date": "2026-11-13",
-  "by": "claude",
-  "evidence": "Second posting's repeated races (times 0.01 off, same place and round) dropped; first posting kept, per drop_reposted rule."
+  "parse_sha": "2a58b66604ee58f1",
+  "source_sha": "cb0e52da68db2644",
+  "date": "2026-11-15",
+  "by": "o26c reviewers A+B",
+  "evidence": "2 reviewers compared every row to its source; fixes applied (re-conversions of Bonny Eagle HS, Marshwood/Kennebunk MS; mojibake; Loire O'roak and Rasmey grades); college meets GNAC/NAC hold 0 rows by design"
  },
  "backend/data/parsed_results/2026/Outdoor/ms-bonny-eagle-home-meet-2-2026.json": {
   "parse_sha": "1155647ed4ebc67f",
@@ -68740,11 +68852,11 @@
   "evidence": "score gaps are the sheets own scoring"
  },
  "backend/data/parsed_results/2026/Outdoor/ms-kennebunk-middle-school-2026.json": {
-  "parse_sha": "bb01009e210d2adb",
-  "source_sha": "396446f7c9d9c876",
-  "date": "2026-11-13",
-  "by": "claude",
-  "evidence": "Second posting's repeated races (times 0.01 off, same place and round) dropped; first posting kept, per drop_reposted rule."
+  "parse_sha": "a2653ede45a9092f",
+  "source_sha": "c26b83794dbd5858",
+  "date": "2026-11-15",
+  "by": "o26c reviewers A+B",
+  "evidence": "2 reviewers compared every row to its source; fixes applied (re-conversions of Bonny Eagle HS, Marshwood/Kennebunk MS; mojibake; Loire O'roak and Rasmey grades); college meets GNAC/NAC hold 0 rows by design"
  },
  "backend/data/parsed_results/2026/Outdoor/ms-loranger-gng-poland-sacopee-cape-yarmouth-ms-2026.json": {
   "parse_sha": "1142eb4dd087b8dd",
@@ -68803,18 +68915,18 @@
   "evidence": "score gaps are the sheets own scoring"
  },
  "backend/data/parsed_results/2026/Outdoor/ms-ms-marshwood-saco-noble-2026.json": {
-  "parse_sha": "88fe8b0ab936c0ab",
-  "source_sha": "88492277c1f5a67d",
-  "date": "2026-11-13",
-  "by": "claude",
-  "evidence": "Second posting's repeated races (times 0.01 off, same place and round) dropped; first posting kept, per drop_reposted rule."
+  "parse_sha": "1deac17f98c122a2",
+  "source_sha": "12a3dfaeae15f985",
+  "date": "2026-11-15",
+  "by": "o26c reviewers A+B",
+  "evidence": "2 reviewers compared every row to its source; fixes applied (re-conversions of Bonny Eagle HS, Marshwood/Kennebunk MS; mojibake; Loire O'roak and Rasmey grades); college meets GNAC/NAC hold 0 rows by design"
  },
  "backend/data/parsed_results/2026/Outdoor/ms-ms-so-portland-windham-lyman-moore-kingauburn-2026.json": {
-  "parse_sha": "9b6cb7774903dd4b",
-  "source_sha": "4002fe086a9c5899",
-  "date": "2026-11-13",
-  "by": "claude",
-  "evidence": "Second posting's repeated races (times 0.01 off, same place and round) dropped; first posting kept, per drop_reposted rule."
+  "parse_sha": "c3b213578a83e74e",
+  "source_sha": "bef7d37d5b089911",
+  "date": "2026-11-15",
+  "by": "o26c reviewers A+B",
+  "evidence": "2 reviewers compared every row to its source; fixes applied (re-conversions of Bonny Eagle HS, Marshwood/Kennebunk MS; mojibake; Loire O'roak and Rasmey grades); college meets GNAC/NAC hold 0 rows by design"
  },
  "backend/data/parsed_results/2026/Outdoor/ms-mt-ararat-middle-school-home-meet-2026.json": {
   "parse_sha": "22a2a020d13bb225",
@@ -68892,6 +69004,13 @@
   "date": "2026-10-26",
   "by": "2026-10-26 sonnet audit (routine) (audit: confirmed)",
   "evidence": "Machine-compared every parse row with the source text (name, mark, place, grade, event heading/order, relay members, per-event row counts): 667 rows, 27 events all match (names like 'Lulu,Yowan, Oliver' are printed so; relay lists match). 'Old Town MS'->me-ms-leonard (only Old Town middle school), 'William S Co'->me-ms-cohen, 'Mattanawcook JH'->me-ms-mattanawcook. Event names: 'Varsity' kept only on the two 50 Meter Dash events (e.g. 'Girls 50 Meter Dash Varsity') and dropped elsewhere; 'Boys 55 Meter Hurdles JV' (2 rows) shares the name of the varsity block - label-only observations, no row wrong."
+ },
+ "backend/data/parsed_results/2026/Outdoor/pvcfrosh2june2026.json": {
+  "parse_sha": "cc08baf4a4212ab9",
+  "source_sha": "db9eee8ffff4ca3c",
+  "date": "2026-11-15",
+  "by": "o26c reviewers A+B",
+  "evidence": "2 reviewers compared every row to its source; fixes applied (re-conversions of Bonny Eagle HS, Marshwood/Kennebunk MS; mojibake; Loire O'roak and Rasmey grades); college meets GNAC/NAC hold 0 rows by design"
  },
  "backend/data/parsed_results/2026/Outdoor/pvcjv27may2026.json": {
   "parse_sha": "9ea80540d5fbbde1",
