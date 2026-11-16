@@ -337,9 +337,20 @@ def row_levels(rows):
     return out
 
 
+_FILE_RULE_CACHE = {}
+
+
 def file_rule_for(g):
     """Seed FILE_RULES: per-file meanings read from the result files themselves."""
     stem_ = os.path.splitext(os.path.basename(g.rel))[0]
+    key = (g.raw, g.season, g.year, stem_)
+    if key not in _FILE_RULE_CACHE:
+        _FILE_RULE_CACHE[key] = _file_rule_for(g.raw, g.season, g.year, stem_)
+    return _FILE_RULE_CACHE[key]
+
+
+def _file_rule_for(raw, season_, year, stem_):
+    g = collections.namedtuple('G', 'raw season year')(raw, season_, year)
     for raws, season, (lo, hi), pattern, sid in seed.FILE_RULES:
         if g.raw in raws and (season is None or season == g.season) and lo <= int(g.year) <= hi \
                 and re.search(pattern, stem_, re.I):
@@ -505,20 +516,25 @@ def evidence_index(groups, schools, strong_only=True):
 def group_evidence(g, eidx, schools):
     votes = collections.Counter()
     seen = 0
+    own = g.decision if g.decision and not g.weak else None   # (its own contribution is left out)
     for a in g.athletes:
         c = eidx.get((g.ay, a))
         if not c:
             continue
-        c = collections.Counter(c)
-        if g.decision and not g.weak:
-            c[g.decision] -= 1           # remove own contribution
-            if c[g.decision] <= 0:
-                del c[g.decision]
-        if not c:
+        total, top, n = 0, None, 0
+        for k, v in c.items():
+            if k == own:
+                v -= 1
+            if v <= 0:
+                continue
+            total += v
+            if v > n:
+                top, n = k, v
+        if not total:
             continue
         seen += 1
-        top, n = c.most_common(1)[0]
-        if n / sum(c.values()) >= 0.7:
+        # (a tie at the top is under 70%, so which tied school is "top" never matters)
+        if n / total >= 0.7:
             votes[top] += 1
     # merge co-op votes into the member/host when comparing
     return votes, seen

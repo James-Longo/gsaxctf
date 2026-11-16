@@ -28,8 +28,8 @@ downstream of them. i'll have another process work on older data"). So:
 - a rebuild after a change to this season's files (a parse fix, a
   `meet_scope` entry, a per-meet school rule) is the one-season rebuild,
   `python3 -m backend.scraper_v2 --resync-only --years YEAR --season SEASON`
-  (about 6 min, most of it the athlete catalog), never the full one (about 18
-  min with the school catalog); settle the scope and school strings of every
+  (about 3 min, most of it the athlete catalog), never the full one (about 9
+  min, plus 2 for the school catalog); settle the scope and school strings of every
   new file from its parse first, so the run rebuilds once, not once per
   decision. The same drift rule applies. Only a global alias change needs the
   full `--resync-only`; a one-season rebuild that changes the team names the

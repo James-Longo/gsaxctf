@@ -13,6 +13,7 @@ from collections import defaultdict
 from datetime import date
 import re
 import hashlib
+import functools
 import tempfile
 import shutil
 
@@ -30,12 +31,31 @@ SCRAPE_STATE_PATH = os.path.join(BASE_DIR, 'backend', 'data', 'scrape_state.json
 # Slugify helpers
 # ---------------------------------------------------------------------------
 
+
+def _memo(fn):
+    """Cache a pure string helper: the catalog and the store call these
+    millions of times on the same few hundred thousand marks, names and
+    events. (Bounded, so a whole-store pass cannot exhaust memory; an
+    unhashable argument falls through to the plain call.)"""
+    cached = functools.lru_cache(maxsize=1 << 19)(fn)
+
+    @functools.wraps(fn)
+    def call(*a, **k):
+        try:
+            return cached(*a, **k)
+        except TypeError:
+            return fn(*a, **k)
+    call.cache_clear = cached.cache_clear
+    return call
+
+
 def slugify_team(name: str) -> str:
     """'George Stevens Academy' -> 'George_Stevens_Academy'"""
     name = re.sub(r'[^\w\s]', '', name)
     return re.sub(r'\s+', '_', name.strip())
 
 
+@_memo
 def slugify_athlete(name: str, team: str) -> str:
     """Stable athlete ID: 'James Longo' + 'GSA' -> 'james-longo--george-stevens-academy'"""
     raw = f"{name.lower()}--{team.lower()}"
@@ -43,6 +63,7 @@ def slugify_athlete(name: str, team: str) -> str:
     return re.sub(r'-+', '-', raw).strip('-')
 
 
+@_memo
 def is_short_name(name: str) -> bool:
     """A printed name of one surname ("Inhorn") or an initial and a surname
     ("J Smith", "Smith, J.")."""
@@ -53,6 +74,7 @@ def is_short_name(name: str) -> bool:
     return len(toks) == 2 and (len(toks[0]) == 1) != (len(toks[1]) == 1)
 
 
+@_memo
 def store_athlete_id(name: str, team: str, year, season: str, event: str = '', is_relay: bool = False) -> str:
     """The store id of a row. A surname-only or initial name can be several
     runners (siblings, a boy and a girl of one family): one id per season and
@@ -82,6 +104,7 @@ BAD_MARKS = {'DQ', 'DNS', 'DNF', 'NH', 'NM', 'FOUL', 'SCR', 'ND', 'NT', 'X', 'NW
 DISTANCE_KEYWORDS = ['jump', 'put', 'weight throw', 'hammer', 'vault', 'discus', 'javelin']   # (not 'throw': 'Throwers Relay' is a race)
 
 
+@_memo
 def is_multi_total(event_name: str) -> bool:
     """A combined event's standings ("Indoor Pentathlon"): the mark is a
     points total, higher is better. Its legs ("Indoor Pentathlon: 800 Meter
@@ -90,6 +113,7 @@ def is_multi_total(event_name: str) -> bool:
         re.search(r'triathlon|pentathlon|heptathlon|decathlon', event_name, re.I))
 
 
+@_memo
 def is_distance_event(event_name: str) -> bool:
     if not event_name:
         return False
@@ -98,6 +122,7 @@ def is_distance_event(event_name: str) -> bool:
     return any(k in event_name.lower() for k in DISTANCE_KEYWORDS)
 
 
+@_memo
 def parse_mark_value(mark: str, event_name: str = "") -> tuple:
     """
     Returns (numeric_value, is_distance) or (None, None) if unparseable/invalid.

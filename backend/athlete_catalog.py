@@ -117,6 +117,7 @@ NICKSET = {frozenset(p) for p in NICK}
 # String helpers
 # ---------------------------------------------------------------------------
 
+@js._memo
 def osa(a, b):
     """Optimal string alignment distance (Levenshtein + adjacent swap)."""
     la, lb = len(a), len(b)
@@ -153,6 +154,16 @@ def soundex(s):
 
 
 def clean_name(raw):
+    """(cached; a fresh list each call, since callers keep and change it)"""
+    return list(_clean_name(raw))
+
+
+@js._memo
+def _clean_name(raw):
+    return tuple(_clean_name_impl(raw))
+
+
+def _clean_name_impl(raw):
     """Printed name -> tokens: column bleed ('Drake Smith    LE'), punctuation,
     grade tags and generational suffixes dropped."""
     s = re.sub(r'&#39;', "'", raw or '')
@@ -225,6 +236,7 @@ def is_relay(name, event):
     return ',' in (name or '') or 'relay' in (event or '').lower()
 
 
+@js._memo
 def is_team_label(name, team):
     """'Brewer B', 'MDI  A Relay', 'a runner1' are labels, not athletes."""
     n = re.sub(r'\s+', ' ', (name or '').strip())
