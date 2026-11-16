@@ -2553,7 +2553,7 @@ FILE_RULES += [
     # 'Maine School' (Maine School of Science and Mathematics cut to its column) is not the University of Maine:
     # the same meets print 'Maine School of Science and Ma' on relays and in the team scores
     (['Maine School'], 'Outdoor', (2026, 2026),
-     r'^(2026-aroostook-league-tf-championships-results|2026-pvc-tf-week-2-@-pihs-results|2026-pvc-week-3-caribou-(girls|boys)-results)$',
+     r'^(2026-aroostook-league-tf-championships-results|2026-pvc-tf-week-2-@-pihs-results|2026-pvc-week-3-caribou-(girls|boys)-results|classcgirls6june2026-1|Old-Town-results)$',
      'me-hs-mssm'),
     (['ort Kent Community High Schoo'], 'Outdoor', (2026, 2026), r'^2026-pvc-tf-week-2-@-pihs-results$', 'me-hs-fort-kent'),  # '-- Fort Kent ...' DQ relay
     # score table 'Maranacook Community High 3'; Stevenson and the Toyes are Maranacook HS 2023-26
