@@ -1515,6 +1515,8 @@ def main():
             for k_ in ('athlete',):
                 if k_ in r: r[k_]=r[k_].replace('_','-')
             if 'athletes' in r: r['athletes']=[a.replace('_','-') for a in r['athletes']]
+            if r.get('athletes') and all(re.fullmatch(r'(?i)relay team|[A-F]', a.strip()) for a in r['athletes']):
+                r['athletes'] = []   # "1) Relay Team", "1) B": the sheet's placeholder, no runners named (Wells/York MS 2026)
     if sys.argv[4]=='XC' and any(e['gender']=='Mixed' for e in events):   # a co-ed race with nothing to tell the sexes apart: first names decide, as for sub5 files
         from backend.scraper_v2 import fix_event_gender_from_names
         mx={'events':[e for e in events if e['gender']=='Mixed']}
