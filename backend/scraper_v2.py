@@ -2184,6 +2184,11 @@ class Sub5ScraperV2:
             # a field mark under two feet (a triple jump under six) is no mark: '00-00' high jumps (MAISAD 2022),
             # a 0-5 vault, a 1-03 javelin and 1-00.50 long jump (Westbrook MS 2026: the same boys threw 92-111 ft, jumped 9-11)
             fm = re.fullmatch(r'(\d+)-\d+(?:\.\d+)?', str(mark).strip())
+            # a bare number under one ('0.25', '0.50', '0.75' discus/javelin/vault rows: ResultsGORHAM 2024, Busline MS 2025)
+            # is no mark in feet or meters; 1.50 may be a metric high jump and stays
+            bn = re.fullmatch(r'\d*\.\d+|\d+', str(mark).strip())
+            if bn and ':' not in ev and 'athlon' not in ev and float(bn.group(0)) < 1:
+                return None
             return None if fm and int(fm.group(1)) < (6 if 'triple' in ev else 2) else mark
         # "12.19.94", "4.13.74": a dot typed for the colon (BucksportMeet.pdf 2016)
         dd = re.fullmatch(r'(\d{1,2})\.(\d{2})\.(\d{1,2})', str(mark).strip())

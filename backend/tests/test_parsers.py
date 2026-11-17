@@ -4399,6 +4399,10 @@ def test_field_mark_under_two_feet_is_no_mark():
     assert s.repair_mark('10-03', 'Girls Javelin') == '10-03'
     assert s.repair_mark('1-03', 'Boys Javelin') is None and s.repair_mark('2-06.50', 'Girls Triple Jump') is None
     assert s.repair_mark('2-10.00', 'Boys Shot Put') == '2-10.00' and s.repair_mark('6-02', 'Girls Triple Jump') == '6-02'
+    # a bare number under one is no mark; 1.50 may be metric; multi-event marks are metric and stay
+    assert s.repair_mark('0.50', 'Boys Discus') is None and s.repair_mark('0.25', 'Girls Javelin') is None
+    assert s.repair_mark('1.50', 'Boys High Jump') == '1.50'
+    assert s.repair_mark('0.95', 'Girls Indoor Pentathlon: High Jump') == '0.95'
 
 
 
