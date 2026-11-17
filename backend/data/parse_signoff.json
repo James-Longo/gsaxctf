@@ -67557,11 +67557,11 @@
   "evidence": "Second posting's repeated races (times 0.01 off, same place and round) dropped; first posting kept, per drop_reposted rule."
  },
  "backend/data/parsed_results/2025/Outdoor/ms-ms-marshwood-shapleigh-york-kennebunk-2025.json": {
-  "parse_sha": "974f15ecde862131",
-  "source_sha": "e2c826d5a5ca2f7f",
-  "date": "2026-11-16",
+  "parse_sha": "363bb7f9b969c6cf",
+  "source_sha": "12eec4f265b6f23c",
+  "date": "2026-11-17",
   "by": "loop-claude",
-  "evidence": "same race posted twice under another spelling (same place, school, mark): second copy dropped"
+  "evidence": "re-sign: only change is two impossible marks dropped (Michaud 100 3:58.09, Wells 7th-grade 800 1:51.45; her 400 1:26.40)"
  },
  "backend/data/parsed_results/2025/Outdoor/ms-ms-noble-thornton-wells-2025.json": {
   "parse_sha": "e407b5c901aa98c8",
@@ -67598,6 +67598,20 @@
   "by": "loop-claude",
   "evidence": "o25d: 2 reviewers vs MileSplit cache; Noble 800 placeholders, Wise DT 7-10, Bilodeau JT 4-0 dropped; Roush girls 7th HJ added; Somersworth MS (NH) given its own school; full resync, drops/drift explained, no sanity rises"
  },
+ "backend/data/parsed_results/2025/Outdoor/ms-ms-shapleigh-kennebunk-biddeford-2025.json": {
+  "parse_sha": "5f1e4e60bcf5bdac",
+  "source_sha": "bdd462f329779085",
+  "date": "2026-11-17",
+  "by": "loop-claude",
+  "evidence": "o25f: 2 reviewers, every stored row vs the cached MileSplit sheet; 9 clean, impossible marks dropped (Boon 34.22 100, Harding 400 1.00, Soper DT 5-1.50); 2025 resync, only those rows lost, no sanity rises"
+ },
+ "backend/data/parsed_results/2025/Outdoor/ms-ms-shapleigh-marshwood-noble-2025.json": {
+  "parse_sha": "1160f278e5142ade",
+  "source_sha": "eef4cfe7fc3586a2",
+  "date": "2026-11-17",
+  "by": "loop-claude",
+  "evidence": "o25f: 2 reviewers, every stored row vs the cached MileSplit sheet; 9 clean, impossible marks dropped (Boon 34.22 100, Harding 400 1.00, Soper DT 5-1.50); 2025 resync, only those rows lost, no sanity rises"
+ },
  "backend/data/parsed_results/2025/Outdoor/ms-ms-so-portland-smc-king-scarborough-bonny-eagle-2025.json": {
   "parse_sha": "db356cc067ac5da5",
   "source_sha": "6aeb7c22500de29a",
@@ -67612,12 +67626,26 @@
   "by": "loop-claude",
   "evidence": "o25e: 2 reviewers, every stored row vs the cached MileSplit sheet; 11 files clean (score gaps are the sheets own scoring), Hall-Dale race walks (3 rows read as \"1\") fixed; 2025 resync, 0 rows lost, no sanity rises"
  },
+ "backend/data/parsed_results/2025/Outdoor/ms-ms-wells-york-kennebunk-2025.json": {
+  "parse_sha": "2b88e1078c11c575",
+  "source_sha": "839216d38136d6c8",
+  "date": "2026-11-17",
+  "by": "loop-claude",
+  "evidence": "o25f: 2 reviewers, every stored row vs the cached MileSplit sheet; 9 clean, impossible marks dropped (Boon 34.22 100, Harding 400 1.00, Soper DT 5-1.50); 2025 resync, only those rows lost, no sanity rises"
+ },
  "backend/data/parsed_results/2025/Outdoor/ms-ms-windham-auburn-lewiston-oxford-hills-2025.json": {
   "parse_sha": "adc59444db8a8fa1",
   "source_sha": "accd6b0f1bf49b0d",
   "date": "2026-11-17",
   "by": "loop-claude",
   "evidence": "o25a: two reviewers compared every stored row with the cached MileSplit source by script (name, mark, school, grade, date, legs; team scores reproduced or explained by the sheet scoring); cut names restored, 3 impossible marks dropped; rebuild verified (drops diff, store_drift, sanity)"
+ },
+ "backend/data/parsed_results/2025/Outdoor/ms-ms-york-thornton-saco-marshwood-2025.json": {
+  "parse_sha": "a16856ad3444ef98",
+  "source_sha": "d12bdd01a22948ed",
+  "date": "2026-11-17",
+  "by": "loop-claude",
+  "evidence": "o25f: 2 reviewers, every stored row vs the cached MileSplit sheet; 9 clean, impossible marks dropped (Boon 34.22 100, Harding 400 1.00, Soper DT 5-1.50); 2025 resync, only those rows lost, no sanity rises"
  },
  "backend/data/parsed_results/2025/Outdoor/ms-mt-ararat-hs-meet-1-2025.json": {
   "parse_sha": "50754476a2f16dbf",
@@ -67632,6 +67660,13 @@
   "date": "2026-11-17",
   "by": "loop-claude",
   "evidence": "o25e: 2 reviewers, every stored row vs the cached MileSplit sheet; 11 files clean (score gaps are the sheets own scoring), Hall-Dale race walks (3 rows read as \"1\") fixed; 2025 resync, 0 rows lost, no sanity rises"
+ },
+ "backend/data/parsed_results/2025/Outdoor/ms-mt-ararat-middle-school-home-meet-2025.json": {
+  "parse_sha": "58631dcb17f03524",
+  "source_sha": "058acf31a9289c12",
+  "date": "2026-11-17",
+  "by": "loop-claude",
+  "evidence": "o25f: 2 reviewers, every stored row vs the cached MileSplit sheet; 9 clean, impossible marks dropped (Boon 34.22 100, Harding 400 1.00, Soper DT 5-1.50); 2025 resync, only those rows lost, no sanity rises"
  },
  "backend/data/parsed_results/2025/Outdoor/ms-mt-ararat-relays-2025.json": {
   "parse_sha": "9b7384986b2afe0d",
@@ -67653,6 +67688,13 @@
   "date": "2026-11-17",
   "by": "loop-claude",
   "evidence": "o25e: 2 reviewers, every stored row vs the cached MileSplit sheet; 11 files clean (score gaps are the sheets own scoring), Hall-Dale race walks (3 rows read as \"1\") fixed; 2025 resync, 0 rows lost, no sanity rises"
+ },
+ "backend/data/parsed_results/2025/Outdoor/ms-mvc-championships-2025.json": {
+  "parse_sha": "d1c72e551f0e2afe",
+  "source_sha": "28c48db0078804b7",
+  "date": "2026-11-17",
+  "by": "loop-claude",
+  "evidence": "o25f: 2 reviewers, every stored row vs the cached MileSplit sheet; 9 clean, impossible marks dropped (Boon 34.22 100, Harding 400 1.00, Soper DT 5-1.50); 2025 resync, only those rows lost, no sanity rises"
  },
  "backend/data/parsed_results/2025/Outdoor/ms-mvc-maranacook-2025-2025-05-15.json": {
   "parse_sha": "7ab84a459f5adaca",
@@ -67682,6 +67724,13 @@
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
  },
+ "backend/data/parsed_results/2025/Outdoor/ms-mvc-wiscasset-2025-2025-05-20.json": {
+  "parse_sha": "fdbf46c959031662",
+  "source_sha": "378f6fe2e6979544",
+  "date": "2026-11-17",
+  "by": "loop-claude",
+  "evidence": "o25f: 2 reviewers, every stored row vs the cached MileSplit sheet; 9 clean, impossible marks dropped (Boon 34.22 100, Harding 400 1.00, Soper DT 5-1.50); 2025 resync, only those rows lost, no sanity rises"
+ },
  "backend/data/parsed_results/2025/Outdoor/ms-mvc-wiscasset-2025.json": {
   "parse_sha": "2b645117acf7c5b5",
   "source_sha": "f6c1f008f65277cc",
@@ -67703,6 +67752,20 @@
   "by": "loop-claude",
   "evidence": "o25c: two reviewers compared every stored row with the cached MileSplit postings (Last Chance: the host Google Sheet) by script; fixes: cut names, mis-decoded apostrophe, Wells MS duplicate LJ copies, impossible marks dropped; full rebuild verified (drops diff, store_drift, sanity, qualifiers)"
  },
+ "backend/data/parsed_results/2025/Outdoor/ms-portland-hs-home-meet-2-2025.json": {
+  "parse_sha": "4147941336a772e5",
+  "source_sha": "0e3d4f7d67407f94",
+  "date": "2026-11-17",
+  "by": "loop-claude",
+  "evidence": "o25f: 2 reviewers, every stored row vs the cached MileSplit sheet; 9 clean, impossible marks dropped (Boon 34.22 100, Harding 400 1.00, Soper DT 5-1.50); 2025 resync, only those rows lost, no sanity rises"
+ },
+ "backend/data/parsed_results/2025/Outdoor/ms-sanford-wells-massabesic-noble-2025.json": {
+  "parse_sha": "3cb939a395f37460",
+  "source_sha": "e707c8c6238fbb45",
+  "date": "2026-11-17",
+  "by": "loop-claude",
+  "evidence": "o25f: 2 reviewers, every stored row vs the cached MileSplit sheet; 9 clean, impossible marks dropped (Boon 34.22 100, Harding 400 1.00, Soper DT 5-1.50); 2025 resync, only those rows lost, no sanity rises"
+ },
  "backend/data/parsed_results/2025/Outdoor/ms-scarborough-seacoast-so-portland-thornton-academy-2025.json": {
   "parse_sha": "c932738ae60656c7",
   "source_sha": "15e8993b4db8470f",
@@ -67716,6 +67779,13 @@
   "date": "2026-11-17",
   "by": "loop-claude",
   "evidence": "o25c: two reviewers compared every stored row with the cached MileSplit postings (Last Chance: the host Google Sheet) by script; fixes: cut names, mis-decoded apostrophe, Wells MS duplicate LJ copies, impossible marks dropped; full rebuild verified (drops diff, store_drift, sanity, qualifiers)"
+ },
+ "backend/data/parsed_results/2025/Outdoor/ms-smaa-falmouth-gorham-windham-2025.json": {
+  "parse_sha": "7d545b5e97d07ea6",
+  "source_sha": "26efe6aa087ea458",
+  "date": "2026-11-17",
+  "by": "loop-claude",
+  "evidence": "o25f: 2 reviewers, every stored row vs the cached MileSplit sheet; 9 clean, impossible marks dropped (Boon 34.22 100, Harding 400 1.00, Soper DT 5-1.50); 2025 resync, only those rows lost, no sanity rises"
  },
  "backend/data/parsed_results/2025/Outdoor/ms-smaa-kennebunk-so-portland-marshwood-2025.json": {
   "parse_sha": "b0fa363292be120e",
@@ -67745,12 +67815,26 @@
   "by": "loop-claude",
   "evidence": "o25d: 2 reviewers vs MileSplit cache; Noble 800 placeholders, Wise DT 7-10, Bilodeau JT 4-0 dropped; Roush girls 7th HJ added; Somersworth MS (NH) given its own school; full resync, drops/drift explained, no sanity rises"
  },
+ "backend/data/parsed_results/2025/Outdoor/ms-tripp-middle-school-meet-2025.json": {
+  "parse_sha": "733d6323f07667dc",
+  "source_sha": "85cc8f732945af28",
+  "date": "2026-11-17",
+  "by": "loop-claude",
+  "evidence": "o25f: 2 reviewers, every stored row vs the cached MileSplit sheet; 9 clean, impossible marks dropped (Boon 34.22 100, Harding 400 1.00, Soper DT 5-1.50); 2025 resync, only those rows lost, no sanity rises"
+ },
  "backend/data/parsed_results/2025/Outdoor/ms-waterville-high-school-meet-2025.json": {
   "parse_sha": "a73240d318de81e0",
   "source_sha": "4d011262754deb64",
   "date": "2026-11-17",
   "by": "loop-claude",
   "evidence": "o25e: 2 reviewers, every stored row vs the cached MileSplit sheet; 11 files clean (score gaps are the sheets own scoring), Hall-Dale race walks (3 rows read as \"1\") fixed; 2025 resync, 0 rows lost, no sanity rises"
+ },
+ "backend/data/parsed_results/2025/Outdoor/ms-westbrook-middle-school-2025.json": {
+  "parse_sha": "c406194476c58d85",
+  "source_sha": "ed71d65af075f369",
+  "date": "2026-11-17",
+  "by": "loop-claude",
+  "evidence": "o25f: 2 reviewers, every stored row vs the cached MileSplit sheet; 9 clean, impossible marks dropped (Boon 34.22 100, Harding 400 1.00, Soper DT 5-1.50); 2025 resync, only those rows lost, no sanity rises"
  },
  "backend/data/parsed_results/2025/Outdoor/ms-winthrop-lisbon-mt-valley-dirigo-spruce-telstar-middle-2025.json": {
   "parse_sha": "a89683b0f7ea8a57",
