@@ -4389,6 +4389,16 @@ def test_suffix_between_names_goes_last():
     assert s.normalize_athlete_name('Mary Ann Smith') == 'Mary Ann Smith'
 
 
+def test_field_mark_under_a_foot_is_no_mark():
+    """'00-00' high jumps (MAISAD 2022) and a 0-5 vault (SMAA 2026) are not marks; 5-0 is."""
+    from backend.scraper_v2 import Sub5ScraperV2
+    s = Sub5ScraperV2(progress_callback=lambda *a, **k: None)
+    assert s.repair_mark('00-00', 'Boys High Jump') is None
+    assert s.repair_mark('0-5', 'Girls Pole Vault') is None
+    assert s.repair_mark('5-0', 'Girls Pole Vault') == '5-0'
+    assert s.repair_mark('10-03', 'Girls Javelin') == '10-03'
+
+
 if __name__ == '__main__':
     qaqc._ensure_team_mapping()
     failed = 0
