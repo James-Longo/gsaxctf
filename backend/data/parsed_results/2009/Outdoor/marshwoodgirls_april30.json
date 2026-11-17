@@ -442,7 +442,7 @@
                 {
                     "athlete": "Johnson",
                     "school": "MC",
-                    "result": "87.4",
+                    "result": "87-04",
                     "grade": "",
                     "type": "Finals"
                 },
@@ -487,5 +487,6 @@
     "date": null,
     "meet_name": null,
     "team_rankings": [],
-    "parser": "HtmlTableParser"
+    "parser": "HtmlTableParser",
+    "notes": "2026-11-17: bare-number field marks (no feet-inches dash) set from the sheet's convention (feet typed without the dash, feet.inches with a dot, points or seed column read as the mark) or dropped when no mark can be recovered (placeholders, running times merged into a field block, team scores)"
 }

@@ -326,14 +326,6 @@
                     "place": 40
                 },
                 {
-                    "athlete": "Brown, A",
-                    "school": "sanford",
-                    "result": "4.50",
-                    "grade": "",
-                    "type": "Finals",
-                    "place": 41
-                },
-                {
                     "athlete": "Alonzo, Armani",
                     "school": "CHEV",
                     "result": "FOUL",
@@ -3787,5 +3779,6 @@
     "meet_name": "SCARBOROUGH",
     "venue": null,
     "team_rankings": [],
-    "parser": "ColumnStrategyParser"
+    "parser": "ColumnStrategyParser",
+    "notes": "2026-11-17: bare-number field marks (no feet-inches dash) set from the sheet's convention (feet typed without the dash, feet.inches with a dot, points or seed column read as the mark) or dropped when no mark can be recovered (placeholders, running times merged into a field block, team scores)"
 }

@@ -1182,14 +1182,6 @@
                     "grade": "FR",
                     "type": "Finals",
                     "place": 9
-                },
-                {
-                    "athlete": "Maddie Coates",
-                    "school": "Belfast",
-                    "result": "5.50",
-                    "grade": "FR",
-                    "type": "Finals",
-                    "place": 10
                 }
             ],
             "date": "2019-04-29",
@@ -1916,5 +1908,6 @@
             ]
         }
     ],
-    "parser": "ColumnStrategyParser"
+    "parser": "ColumnStrategyParser",
+    "notes": "2026-11-17: bare-number field marks (no feet-inches dash) set from the sheet's convention (feet typed without the dash, feet.inches with a dot, points or seed column read as the mark) or dropped when no mark can be recovered (placeholders, running times merged into a field block, team scores)"
 }

@@ -3645,7 +3645,7 @@
                 {
                     "athlete": "Bisson, Reid",
                     "school": "Mahoney MS",
-                    "result": "11.00",
+                    "result": "11-00.00",
                     "grade": "",
                     "type": "Finals",
                     "place": 5,
@@ -5392,5 +5392,6 @@
         }
     ],
     "parser": "ColumnStrategyParser",
-    "team_rankings_source": "teamscores"
+    "team_rankings_source": "teamscores",
+    "notes": "2026-11-17: bare-number field marks (no feet-inches dash) set from the sheet's convention (feet typed without the dash, feet.inches with a dot, points or seed column read as the mark) or dropped when no mark can be recovered (placeholders, running times merged into a field block, team scores)"
 }

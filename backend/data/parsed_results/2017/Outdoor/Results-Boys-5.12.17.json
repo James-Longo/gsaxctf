@@ -2283,7 +2283,7 @@
                 {
                     "athlete": "Owen Booker",
                     "school": "FOX",
-                    "result": "8.00",
+                    "result": "8-00.00",
                     "grade": "",
                     "type": "Finals",
                     "place": 2,
@@ -2292,7 +2292,7 @@
                 {
                     "athlete": "Ben Nichols",
                     "school": "Hermon",
-                    "result": "7.00",
+                    "result": "7-00.00",
                     "grade": "",
                     "type": "Finals",
                     "place": 3,
@@ -2301,7 +2301,7 @@
                 {
                     "athlete": "Caleb Buerger",
                     "school": "FOX",
-                    "result": "6.00",
+                    "result": "6-00.00",
                     "grade": "",
                     "type": "Finals",
                     "place": 4,
@@ -2316,5 +2316,6 @@
     "meet_name": "PVC Regular Season Track & Field Meet #2",
     "venue": null,
     "team_rankings": [],
-    "parser": "ColumnStrategyParser"
+    "parser": "ColumnStrategyParser",
+    "notes": "2026-11-17: bare-number field marks (no feet-inches dash) set from the sheet's convention (feet typed without the dash, feet.inches with a dot, points or seed column read as the mark) or dropped when no mark can be recovered (placeholders, running times merged into a field block, team scores)"
 }

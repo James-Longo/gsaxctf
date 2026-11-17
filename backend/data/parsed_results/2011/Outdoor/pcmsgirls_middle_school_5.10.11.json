@@ -2936,7 +2936,7 @@
                 {
                     "athlete": "Hannah Philippon",
                     "school": "GLEN",
-                    "result": "11.00",
+                    "result": "11-00.00",
                     "grade": "",
                     "type": "Finals",
                     "place": 22
@@ -3373,5 +3373,6 @@
     "meet_name": "Regular Season Meet",
     "venue": null,
     "team_rankings": [],
-    "parser": "ColumnStrategyParser"
+    "parser": "ColumnStrategyParser",
+    "notes": "2026-11-17: bare-number field marks (no feet-inches dash) set from the sheet's convention (feet typed without the dash, feet.inches with a dot, points or seed column read as the mark) or dropped when no mark can be recovered (placeholders, running times merged into a field block, team scores)"
 }
