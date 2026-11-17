@@ -56805,11 +56805,25 @@
   "evidence": "Second posting's repeated races (times 0.01 off, same place and round) dropped; first posting kept, per drop_reposted rule."
  },
  "backend/data/parsed_results/2022/Outdoor/ms-kvacedward-little-leavitt-mt-ararat-2022.json": {
-  "parse_sha": "f527415cf3fb3406",
-  "source_sha": "77d07fbabdf23a03",
+  "parse_sha": "1a360fdbd117ba66",
+  "source_sha": "164021e58ccee671",
   "date": "2026-11-16",
   "by": "loop-claude",
-  "evidence": "legless relays filled from the cached MileSplit posting that prints legs (unique event+mark match, grades stripped)"
+  "evidence": "2026-11-16 round 13 fixes (names, Westbrook HJ) and HJ/PV races restored from the cached MileSplit postings; rebuilt, drops diff empty, no lost rows"
+ },
+ "backend/data/parsed_results/2022/Outdoor/ms-smaa-south-portland-windham-thornton-academy-2022.json": {
+  "parse_sha": "6717e1c7a6299991",
+  "source_sha": "7206112728a244c2",
+  "date": "2026-11-16",
+  "by": "loop-claude",
+  "evidence": "2026-11-16 round 13 fixes (names, Westbrook HJ) and HJ/PV races restored from the cached MileSplit postings; rebuilt, drops diff empty, no lost rows"
+ },
+ "backend/data/parsed_results/2022/Outdoor/ms-smaa-westbrook-windham-cheverus-massabesic-2022.json": {
+  "parse_sha": "1dfc6ef50ab8c038",
+  "source_sha": "132418774b47c070",
+  "date": "2026-11-16",
+  "by": "loop-claude",
+  "evidence": "2026-11-16 round 13 fixes (names, Westbrook HJ) and HJ/PV races restored from the cached MileSplit postings; rebuilt, drops diff empty, no lost rows"
  },
  "backend/data/parsed_results/2022/Outdoor/pims-meet-3-boys-results.json": {
   "parse_sha": "ea9988c5ede73662",
@@ -59913,18 +59927,18 @@
   "evidence": "scratch re-parse compared with the signed parse: result rows identical, only team_rankings ranks changed"
  },
  "backend/data/parsed_results/2023/Outdoor/ms-kvac-leavitt-2023.json": {
-  "parse_sha": "1ff5497f0863c38f",
-  "source_sha": "65d66bcaccb7644e",
-  "date": "2026-11-15",
-  "by": "re-signed 2026-11-15: signed-off file changed only by the milesplit two-sheet twin rule",
-  "evidence": "every removed row has a surviving twin (same event, place, round, mark within 0.1 s / 1 in), scratchpad lost.py; old-vs-new converter regress over 1528 cached meets"
+  "parse_sha": "201d41694de3a772",
+  "source_sha": "36bce6dd775d052d",
+  "date": "2026-11-16",
+  "by": "loop-claude",
+  "evidence": "2026-11-16 round 13 fixes (names, Westbrook HJ) and HJ/PV races restored from the cached MileSplit postings; rebuilt, drops diff empty, no lost rows"
  },
  "backend/data/parsed_results/2023/Outdoor/ms-kvac-maranacook-2023.json": {
-  "parse_sha": "4b20cbb248c802d7",
-  "source_sha": "fe0b5cd5c8c2d339",
-  "date": "2026-11-13",
-  "by": "claude",
-  "evidence": "Second posting's repeated races (times 0.01 off, same place and round) dropped; first posting kept, per drop_reposted rule."
+  "parse_sha": "fa028019547058f9",
+  "source_sha": "b98f8ef5f5b05f2c",
+  "date": "2026-11-16",
+  "by": "loop-claude",
+  "evidence": "2026-11-16 round 13 fixes (names, Westbrook HJ) and HJ/PV races restored from the cached MileSplit postings; rebuilt, drops diff empty, no lost rows"
  },
  "backend/data/parsed_results/2023/Outdoor/ms-maisad-meet-1-hyde-2023.json": {
   "parse_sha": "581d14b8ff432c86",
@@ -59940,12 +59954,26 @@
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
  },
+ "backend/data/parsed_results/2023/Outdoor/ms-mvc-meet-hall-dale-2023-2023-05-09.json": {
+  "parse_sha": "887c013f23e164bc",
+  "source_sha": "3529af4980a17f51",
+  "date": "2026-11-16",
+  "by": "loop-claude",
+  "evidence": "2026-11-16 round 13 fixes (names, Westbrook HJ) and HJ/PV races restored from the cached MileSplit postings; rebuilt, drops diff empty, no lost rows"
+ },
  "backend/data/parsed_results/2023/Outdoor/ms-mvc-meet-hall-dale-2023.json": {
-  "parse_sha": "8f927cc1181787eb",
-  "source_sha": "c91c7579c184f38d",
-  "date": "2026-11-13",
-  "by": "claude",
-  "evidence": "Second posting's repeated races (times 0.01 off, same place and round) dropped; first posting kept, per drop_reposted rule."
+  "parse_sha": "80b9cad4c0aad22a",
+  "source_sha": "400070e0ca283884",
+  "date": "2026-11-16",
+  "by": "loop-claude",
+  "evidence": "2026-11-16 round 13 fixes (names, Westbrook HJ) and HJ/PV races restored from the cached MileSplit postings; rebuilt, drops diff empty, no lost rows"
+ },
+ "backend/data/parsed_results/2023/Outdoor/ms-windham-field-event-only-meet-2023.json": {
+  "parse_sha": "686c492a23f724db",
+  "source_sha": "c5bbca1a18bc8e65",
+  "date": "2026-11-16",
+  "by": "loop-claude",
+  "evidence": "2026-11-16 round 13 fixes (names, Westbrook HJ) and HJ/PV races restored from the cached MileSplit postings; rebuilt, drops diff empty, no lost rows"
  },
  "backend/data/parsed_results/2023/Outdoor/ms-winthropmaranacook-middle-school-meet-2023.json": {
   "parse_sha": "7048237adc50bf8b",
@@ -69958,11 +69986,11 @@
   "evidence": "2 reviewers compared every row to its source; fixes applied (re-conversions of Bonny Eagle HS, Marshwood/Kennebunk MS; mojibake; Loire O'roak and Rasmey grades); college meets GNAC/NAC hold 0 rows by design"
  },
  "backend/data/parsed_results/2026/Outdoor/Brunswick-results.json": {
-  "parse_sha": "0cb43029f5722f80",
+  "parse_sha": "3557fbffdf2ae8c1",
   "source_sha": "5ab61be1125add72",
-  "date": "2026-10-16",
-  "by": "auto: team scores verified exactly, all schools identified, no flags",
-  "evidence": ""
+  "date": "2026-11-16",
+  "by": "loop-claude",
+  "evidence": "2026-11-16 round 13 fixes (names, Westbrook HJ) and HJ/PV races restored from the cached MileSplit postings; rebuilt, drops diff empty, no lost rows"
  },
  "backend/data/parsed_results/2026/Outdoor/Bucksport-MS-results.json": {
   "parse_sha": "a2e341be401f9bf7",
@@ -70343,11 +70371,11 @@
   "evidence": "names the sheet cut at its name-column width restored from the same runners' other 2026 meets (unique longer form at the same school); every other row unchanged"
  },
  "backend/data/parsed_results/2026/Outdoor/ResultsSAMSHommeTrackMeet1.json": {
-  "parse_sha": "a405aa018e3dd492",
+  "parse_sha": "2f471c99ec765f4c",
   "source_sha": "d8cab93556ac8c7d",
-  "date": "2026-10-16",
-  "by": "auto: team scores verified exactly, all schools identified, no flags",
-  "evidence": ""
+  "date": "2026-11-16",
+  "by": "loop-claude",
+  "evidence": "2026-11-16 round 13 fixes (names, Westbrook HJ) and HJ/PV races restored from the cached MileSplit postings; rebuilt, drops diff empty, no lost rows"
  },
  "backend/data/parsed_results/2026/Outdoor/ResultsWHS.json": {
   "parse_sha": "5ee52531bfb08541",
@@ -70560,11 +70588,11 @@
   "evidence": "every removed row has a surviving twin (same event, place, round, mark within 0.1 s / 1 in), scratchpad lost.py; old-vs-new converter regress over 1528 cached meets"
  },
  "backend/data/parsed_results/2026/Outdoor/ms-brunswick-lake-region-sacopee-poland-greely-2026.json": {
-  "parse_sha": "363c145583e5e4fb",
-  "source_sha": "c09fbce07a7483e6",
-  "date": "2026-11-15",
-  "by": "o26e reviewers A+B",
-  "evidence": "2 reviewers compared every stored row to its local source; fixed: leading nickname (Smithner, Santos), Aben Israelaa grade 7 from his 7th-grade race; the one store-collapsed Lyman Moore relay is identical to its twin"
+  "parse_sha": "cbefb02a3544b765",
+  "source_sha": "5b855374d8307e28",
+  "date": "2026-11-16",
+  "by": "loop-claude",
+  "evidence": "2026-11-16 round 13 fixes (names, Westbrook HJ) and HJ/PV races restored from the cached MileSplit postings; rebuilt, drops diff empty, no lost rows"
  },
  "backend/data/parsed_results/2026/Outdoor/ms-brunswick-middle-school-home-meet-2026.json": {
   "parse_sha": "71cb2fb2cebd08b8",
@@ -70651,18 +70679,18 @@
   "evidence": "every removed row has a surviving twin (same event, place, round, mark within 0.1 s / 1 in), scratchpad lost.py; old-vs-new converter regress over 1528 cached meets"
  },
  "backend/data/parsed_results/2026/Outdoor/ms-edward-little-hs-meet-2026.json": {
-  "parse_sha": "6550380a7383e941",
-  "source_sha": "fc8e2a56199baf31",
+  "parse_sha": "d0907f736e556463",
+  "source_sha": "320e908d7ad4cceb",
   "date": "2026-11-16",
-  "by": "o26r5",
-  "evidence": "random-sample round 5 compared every row with the sheet; Nevaeh-Rhaelynn Basaldua-Buzzel, cut at the sheets' name columns, restored from the Waterville relay legs"
+  "by": "loop-claude",
+  "evidence": "2026-11-16 round 13 fixes (names, Westbrook HJ) and HJ/PV races restored from the cached MileSplit postings; rebuilt, drops diff empty, no lost rows"
  },
  "backend/data/parsed_results/2026/Outdoor/ms-edward-little-lawrence-mt-blue-oceanside-messalonskee-oxford-hi-2026.json": {
-  "parse_sha": "f1cb5da99e76380c",
-  "source_sha": "c7dece7ead074e0c",
+  "parse_sha": "2dab85931ccdfebd",
+  "source_sha": "38c78c61d7e408f8",
   "date": "2026-11-16",
-  "by": "o26r4 + cutnames sweep",
-  "evidence": "names the sheet cut at its name-column width restored from the same runners' other 2026 meets (unique longer form at the same school); every other row unchanged"
+  "by": "loop-claude",
+  "evidence": "2026-11-16 round 13 fixes (names, Westbrook HJ) and HJ/PV races restored from the cached MileSplit postings; rebuilt, drops diff empty, no lost rows"
  },
  "backend/data/parsed_results/2026/Outdoor/ms-falmouth-middle-school-2026.json": {
   "parse_sha": "ffd87aa69a659626",
@@ -71232,11 +71260,11 @@
   "evidence": "random-sample round 7 fixes, each checked against the cached MileSplit sheets (legs from the posting that prints them; placeholder legs cleared; cut name; duplicate DQ)"
  },
  "backend/data/parsed_results/2026/Outdoor/ms-westbrook-middle-school-2026.json": {
-  "parse_sha": "a0f9a911401f55a7",
-  "source_sha": "5a4137441fa91bf3",
+  "parse_sha": "05bdf70462b0dd84",
+  "source_sha": "78a6d3a7bb589365",
   "date": "2026-11-16",
   "by": "loop-claude",
-  "evidence": "random-sample round 10 fixes against the cached postings: duplicate races under second-posting spellings, impossible LJ, cut initial name"
+  "evidence": "2026-11-16 round 13 fixes (names, Westbrook HJ) and HJ/PV races restored from the cached MileSplit postings; rebuilt, drops diff empty, no lost rows"
  },
  "backend/data/parsed_results/2026/Outdoor/ms-winthrop-middle-school-meet-2026.json": {
   "parse_sha": "c8a94ae89e3ef1fc",
@@ -71295,11 +71323,11 @@
   "evidence": "2 reviewers compared every stored row to its local source; fixed: Maine School = MSSM in Class C girls and Old Town (16 rows restored), Levi Riegel-Burbank name and Abdullah Muayad grade, Olive Beasley grade 8; identical prelim/final pairs stored once by design"
  },
  "backend/data/parsed_results/2026/Outdoor/rcr23may2026.json": {
-  "parse_sha": "05dbbc9277f7f5ac",
+  "parse_sha": "4d9490e055529c84",
   "source_sha": "447cbe7aad079e3e",
-  "date": "2026-10-26",
-  "by": "2026-10-26 sonnet audit (routine) (audit: confirmed)",
-  "evidence": "Machine-compared every parse row with the source text (name, mark, place, grade, event heading/order, relay members, per-event row counts): 613 rows, 37 events, all match; relays incl. x-exhibition rows match; team scores verified vs 'Women/Men - Team Rankings' (Bangor 144/Lewiston 102 ...)."
+  "date": "2026-11-16",
+  "by": "loop-claude",
+  "evidence": "2026-11-16 round 13 fixes (names, Westbrook HJ) and HJ/PV races restored from the cached MileSplit postings; rebuilt, drops diff empty, no lost rows"
  },
  "backend/data/parsed_results/2026/XC/Boys-10-8-2026-MileSplit-Results.txt.json": {
   "parse_sha": "f76278681eb96199",
