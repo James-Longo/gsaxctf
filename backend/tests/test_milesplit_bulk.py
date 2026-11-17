@@ -27,7 +27,7 @@ def test_throwers_meet_two_days_later_is_new():
     """2025 GNG throwers meet (6/2): the WMC schools and throwers of the 5/31 championship, other marks."""
     held = {k: 'WMC-boys-1' for k in mb._mark_keys(dict(events=[
         _ev('Boys', 'Shot Put', [('A One', 'X', '40-01'), ('B Two', 'Y', '39-00'), ('C Three', 'Z', '38-02')])]))}
-    mb._SEASON_MARKS[(1999, 'Outdoor')] = held
+    mb._SEASON_MARKS[(1999, 'Outdoor')] = ({k: {v} for k, v in held.items()}, {})
     new = dict(events=[_ev('Boys', 'Shot Put', [('A One', 'X', '41-05'), ('B Two', 'Y', '38-07'), ('C Three', 'Z', '37-11')])])
     assert mb.track_event_homes(new, 1999, 'Outdoor') == [None]
 
@@ -37,12 +37,12 @@ def test_partly_held_meet_keeps_new_events_and_drops_held_relay():
     held_doc = dict(events=[
         _ev('Girls', 'Shot Put', [('D Four', 'X', '30-01'), ('E Five', 'Y', '29-00'), ('F Six', 'Z', '28-02')]),
         _ev('Girls', '4x400 Meter Relay', [('', 'Yarmouth High School', '4:20.11')], relay=True)])
-    mb._SEASON_MARKS[(1998, 'Outdoor')] = {k: 'held' for k in mb._mark_keys(held_doc)}
+    mb._SEASON_MARKS[(1998, 'Outdoor')] = ({k: {'held'} for k in mb._mark_keys(held_doc)}, {})
     new = dict(events=[
         held_doc['events'][0],
         _ev('Girls', '4x400 Meter Relay', [('', 'Yarmouth', '4:20.11'), ('', 'York', '4:31.00')], relay=True),
         _ev('Girls', 'Long Jump', [('D Four', 'X', '15-01'), ('E Five', 'Y', '14-00'), ('F Six', 'Z', '13-02')])])
-    assert mb.track_event_homes(new, 1998, 'Outdoor') == ['held', 'held', None]
+    assert mb.track_event_homes(new, 1998, 'Outdoor') == ['held', 'small', None]   # (a 2-team relay is held only when one file has both teams)
 
 
 def test_entries_and_converted_pages_are_not_results():

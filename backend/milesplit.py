@@ -1376,7 +1376,14 @@ def main():
     if cmd=='info':
         print(slug, date, title[:80], [(f['name'],f['id'],f['isMeetPro']) for f in files]); return
     events=[]; rank=[]; urls=[]; paywalled=[]; head=['','']; HEADYEARS=set(); programs=[]
-    files=superseded(files)
+    kept=superseded(files)
+    # an "Updated" posting that is a fraction of the one it would replace adds an event, it does not replace the
+    # meet: 2025 Greely-York @ Poland "POLAND Updated" holds only the pole vault beside the 36-event "POLAND"
+    def _text(f):
+        q=SP+'%s-%s.html'%(slug,f['id'])
+        return sum(len(x) for x in re.findall(r'<pre[^>]*>(.*?)</pre>',open(q,errors='ignore').read(),re.S)) if os.path.exists(q) else None
+    upd=sum(_text(f) or 0 for f in kept if re.search(r'(?i)\b(updated|revised|corrected)\b',f['name']))
+    files=[f for f in files if f in kept or ((_text(f) or 0) > 2*upd > 0)]
     for f in files:
         if str(f['id']) in os.environ.get('EXCLUDE','').split(','): continue
         u='https://%s/meets/%s/results/%s/raw'%(HOST,slug,f['id'])
