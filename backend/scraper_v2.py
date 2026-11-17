@@ -2524,6 +2524,8 @@ class Sub5ScraperV2:
         # (a hyphenated name typed with a space on one side, 'Lorelei Crossman- King', 'Alan -Michael Fogg',
         # splits a runner; spaces on both sides, 'Wilcox - A', are a relay squad letter, handled below)
         name = re.sub(r'(?<=[a-z])- (?=[A-Za-z][a-z])|(?<=[a-z]) -(?=[A-Za-z][a-z])', '-', name)
+        # a suffix printed between first and last name ('Thomas Jr. Panciera', 'Anthony Jr Myatt') goes last, as the comma form does
+        name = re.sub(r'^([A-Z][a-z][\w\'-]*) (Jr\.?|Sr\.?|II|III|IV) ([A-Z][a-z][\w\'-]*)$', r'\1 \3 \2', name)
 
         # Check manual fixes on the raw cleaned name first
         for ac in self.manual_fixes.get('athlete_corrections', []):

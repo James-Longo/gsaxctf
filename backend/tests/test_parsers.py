@@ -4380,6 +4380,15 @@ def test_hyphen_with_one_space_joins_the_name():
     assert s.normalize_athlete_name('Wilcox - A, Jessie') == s.normalize_athlete_name('Wilcox, Jessie')
 
 
+def test_suffix_between_names_goes_last():
+    """'Thomas Jr. Panciera' (Old Town MS 2026) is the runner printed 'Panciera, Thomas Jr.' elsewhere."""
+    from backend.scraper_v2 import Sub5ScraperV2
+    s = Sub5ScraperV2(progress_callback=lambda *a, **k: None)
+    assert s.normalize_athlete_name('Thomas Jr. Panciera') == s.normalize_athlete_name('Panciera, Thomas Jr.')
+    assert s.normalize_athlete_name('Anthony Jr Myatt') == s.normalize_athlete_name('Myatt, Anthony Jr')
+    assert s.normalize_athlete_name('Mary Ann Smith') == 'Mary Ann Smith'
+
+
 if __name__ == '__main__':
     qaqc._ensure_team_mapping()
     failed = 0
