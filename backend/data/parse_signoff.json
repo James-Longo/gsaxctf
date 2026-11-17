@@ -67605,6 +67605,13 @@
   "by": "loop-claude",
   "evidence": "o25c: two reviewers compared every stored row with the cached MileSplit postings (Last Chance: the host Google Sheet) by script; fixes: cut names, mis-decoded apostrophe, Wells MS duplicate LJ copies, impossible marks dropped; full rebuild verified (drops diff, store_drift, sanity, qualifiers)"
  },
+ "backend/data/parsed_results/2025/Outdoor/ms-ms-telstar-spruce-mtn-gardiner-dirigo-hall-dale-monmouth-lisbon-2025.json": {
+  "parse_sha": "a48b1eb4a3f8942e",
+  "source_sha": "fc023dc852bd0e6c",
+  "date": "2026-11-17",
+  "by": "loop-claude",
+  "evidence": "o25e: 2 reviewers, every stored row vs the cached MileSplit sheet; 11 files clean (score gaps are the sheets own scoring), Hall-Dale race walks (3 rows read as \"1\") fixed; 2025 resync, 0 rows lost, no sanity rises"
+ },
  "backend/data/parsed_results/2025/Outdoor/ms-ms-windham-auburn-lewiston-oxford-hills-2025.json": {
   "parse_sha": "adc59444db8a8fa1",
   "source_sha": "accd6b0f1bf49b0d",
@@ -67612,12 +67619,61 @@
   "by": "loop-claude",
   "evidence": "o25a: two reviewers compared every stored row with the cached MileSplit source by script (name, mark, school, grade, date, legs; team scores reproduced or explained by the sheet scoring); cut names restored, 3 impossible marks dropped; rebuild verified (drops diff, store_drift, sanity)"
  },
+ "backend/data/parsed_results/2025/Outdoor/ms-mt-ararat-hs-meet-1-2025.json": {
+  "parse_sha": "50754476a2f16dbf",
+  "source_sha": "08ea528c849ae947",
+  "date": "2026-11-17",
+  "by": "loop-claude",
+  "evidence": "o25e: 2 reviewers, every stored row vs the cached MileSplit sheet; 11 files clean (score gaps are the sheets own scoring), Hall-Dale race walks (3 rows read as \"1\") fixed; 2025 resync, 0 rows lost, no sanity rises"
+ },
+ "backend/data/parsed_results/2025/Outdoor/ms-mt-ararat-hs-meet-2-2025.json": {
+  "parse_sha": "9325e718a86c3a8c",
+  "source_sha": "3c39955f3aed373b",
+  "date": "2026-11-17",
+  "by": "loop-claude",
+  "evidence": "o25e: 2 reviewers, every stored row vs the cached MileSplit sheet; 11 files clean (score gaps are the sheets own scoring), Hall-Dale race walks (3 rows read as \"1\") fixed; 2025 resync, 0 rows lost, no sanity rises"
+ },
  "backend/data/parsed_results/2025/Outdoor/ms-mt-ararat-relays-2025.json": {
   "parse_sha": "9b7384986b2afe0d",
   "source_sha": "ca4cd20c349b7de4",
   "date": "2026-11-13",
   "by": "claude",
   "evidence": "Re-read from MileSplit: Mixed 4x400 split out of Boys 4x1600 (checked against the formatted view)."
+ },
+ "backend/data/parsed_results/2025/Outdoor/ms-mt-blue-junior-high-meet-2025.json": {
+  "parse_sha": "d502caf68b13ba6c",
+  "source_sha": "c67f1ef613f6a49c",
+  "date": "2026-11-17",
+  "by": "loop-claude",
+  "evidence": "o25e: 2 reviewers, every stored row vs the cached MileSplit sheet; 11 files clean (score gaps are the sheets own scoring), Hall-Dale race walks (3 rows read as \"1\") fixed; 2025 resync, 0 rows lost, no sanity rises"
+ },
+ "backend/data/parsed_results/2025/Outdoor/ms-mt-view-high-school-meet-2025.json": {
+  "parse_sha": "2e0cd5794a14589b",
+  "source_sha": "7438602a31c0c5f1",
+  "date": "2026-11-17",
+  "by": "loop-claude",
+  "evidence": "o25e: 2 reviewers, every stored row vs the cached MileSplit sheet; 11 files clean (score gaps are the sheets own scoring), Hall-Dale race walks (3 rows read as \"1\") fixed; 2025 resync, 0 rows lost, no sanity rises"
+ },
+ "backend/data/parsed_results/2025/Outdoor/ms-mvc-maranacook-2025-2025-05-15.json": {
+  "parse_sha": "7ab84a459f5adaca",
+  "source_sha": "4a8733de28800b67",
+  "date": "2026-11-17",
+  "by": "loop-claude",
+  "evidence": "o25e: 2 reviewers, every stored row vs the cached MileSplit sheet; 11 files clean (score gaps are the sheets own scoring), Hall-Dale race walks (3 rows read as \"1\") fixed; 2025 resync, 0 rows lost, no sanity rises"
+ },
+ "backend/data/parsed_results/2025/Outdoor/ms-mvc-maranacook-2025.json": {
+  "parse_sha": "1b25ba86abc3b00a",
+  "source_sha": "5547a725ea09f264",
+  "date": "2026-11-17",
+  "by": "loop-claude",
+  "evidence": "o25e: 2 reviewers, every stored row vs the cached MileSplit sheet; 11 files clean (score gaps are the sheets own scoring), Hall-Dale race walks (3 rows read as \"1\") fixed; 2025 resync, 0 rows lost, no sanity rises"
+ },
+ "backend/data/parsed_results/2025/Outdoor/ms-mvc-meet-hall-dale-2025.json": {
+  "parse_sha": "18aa29b3b11738c6",
+  "source_sha": "040ba9707063d843",
+  "date": "2026-11-17",
+  "by": "loop-claude",
+  "evidence": "o25e: 2 reviewers, every stored row vs the cached MileSplit sheet; 11 files clean (score gaps are the sheets own scoring), Hall-Dale race walks (3 rows read as \"1\") fixed; 2025 resync, 0 rows lost, no sanity rises"
  },
  "backend/data/parsed_results/2025/Outdoor/ms-mvc-pole-vault-invitational-2025.json": {
   "parse_sha": "ffafb384141571f4",
@@ -67675,6 +67731,13 @@
   "by": "loop-claude",
   "evidence": "o25d: 2 reviewers vs MileSplit cache; Noble 800 placeholders, Wise DT 7-10, Bilodeau JT 4-0 dropped; Roush girls 7th HJ added; Somersworth MS (NH) given its own school; full resync, drops/drift explained, no sanity rises"
  },
+ "backend/data/parsed_results/2025/Outdoor/ms-smaa-westbrook-sanford-south-portland-gorham-2025.json": {
+  "parse_sha": "8f0d34a1ff5a0277",
+  "source_sha": "20dfd4f0978d39a6",
+  "date": "2026-11-17",
+  "by": "loop-claude",
+  "evidence": "o25e: 2 reviewers, every stored row vs the cached MileSplit sheet; 11 files clean (score gaps are the sheets own scoring), Hall-Dale race walks (3 rows read as \"1\") fixed; 2025 resync, 0 rows lost, no sanity rises"
+ },
  "backend/data/parsed_results/2025/Outdoor/ms-traip-fryeburg-nya-st-doms-seacoast-wells-2025.json": {
   "parse_sha": "f23ff04b8ea94722",
   "source_sha": "ef78b099b3a8c83e",
@@ -67682,12 +67745,33 @@
   "by": "loop-claude",
   "evidence": "o25d: 2 reviewers vs MileSplit cache; Noble 800 placeholders, Wise DT 7-10, Bilodeau JT 4-0 dropped; Roush girls 7th HJ added; Somersworth MS (NH) given its own school; full resync, drops/drift explained, no sanity rises"
  },
+ "backend/data/parsed_results/2025/Outdoor/ms-waterville-high-school-meet-2025.json": {
+  "parse_sha": "a73240d318de81e0",
+  "source_sha": "4d011262754deb64",
+  "date": "2026-11-17",
+  "by": "loop-claude",
+  "evidence": "o25e: 2 reviewers, every stored row vs the cached MileSplit sheet; 11 files clean (score gaps are the sheets own scoring), Hall-Dale race walks (3 rows read as \"1\") fixed; 2025 resync, 0 rows lost, no sanity rises"
+ },
  "backend/data/parsed_results/2025/Outdoor/ms-winthrop-lisbon-mt-valley-dirigo-spruce-telstar-middle-2025.json": {
   "parse_sha": "a89683b0f7ea8a57",
   "source_sha": "3d531d2dfe3f7d2d",
   "date": "2026-11-17",
   "by": "loop-claude",
   "evidence": "o25d: 2 reviewers vs MileSplit cache; Noble 800 placeholders, Wise DT 7-10, Bilodeau JT 4-0 dropped; Roush girls 7th HJ added; Somersworth MS (NH) given its own school; full resync, drops/drift explained, no sanity rises"
+ },
+ "backend/data/parsed_results/2025/Outdoor/ms-wmc-yarmouth-lake-region-socapee-york-gng-2025.json": {
+  "parse_sha": "0f919d0bc29ced3c",
+  "source_sha": "1e4615eca6b732db",
+  "date": "2026-11-17",
+  "by": "loop-claude",
+  "evidence": "o25e: 2 reviewers, every stored row vs the cached MileSplit sheet; 11 files clean (score gaps are the sheets own scoring), Hall-Dale race walks (3 rows read as \"1\") fixed; 2025 resync, 0 rows lost, no sanity rises"
+ },
+ "backend/data/parsed_results/2025/Outdoor/ms-yarmouth-york-traip-oob-seacoast-poland-2025.json": {
+  "parse_sha": "b5b466c0d46b1620",
+  "source_sha": "3b30d0843e3a9fa3",
+  "date": "2026-11-17",
+  "by": "loop-claude",
+  "evidence": "o25e: 2 reviewers, every stored row vs the cached MileSplit sheet; 11 files clean (score gaps are the sheets own scoring), Hall-Dale race walks (3 rows read as \"1\") fixed; 2025 resync, 0 rows lost, no sanity rises"
  },
  "backend/data/parsed_results/2025/Outdoor/neresults.json": {
   "parse_sha": "2b57017c0b1c39c9",
