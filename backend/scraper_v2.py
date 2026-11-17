@@ -2527,6 +2527,13 @@ class Sub5ScraperV2:
 
     def normalize_athlete_name(self, name):
         if not name: return ""
+        # UTF-8 read as cp1252 ('Ta\u00e2\u20ac\u2122Laja Dunn', 'Johan\u00c3\u00a9 Slate', 'Sylvester\u00c2\u00a0Larsen'): decode it back
+        if re.search('[\u00c2\u00c3\u00e2][\u0080-\u00bf\u20ac\u2122\u0153\u0161\u017e\u2018-\u201e\u2020-\u2022\u2026\u2030\u2039\u203a]', name):
+            try:
+                name = name.encode('cp1252').decode('utf-8')
+            except (UnicodeEncodeError, UnicodeDecodeError):
+                pass
+        name = name.replace('\u2019', "'")
         name = re.sub(r'\s+', ' ', name.replace('\ufffd', ' ')).strip()   # (an undecodable byte: 'Laakkonen, Otto \ufffd', 2018 Phillips Exeter; a double space, 'Anthony  Quintiliani', 2010 Triple C, splits a runner)
         name = re.sub(r'^[\s#\-]*\d+[\s.\-]*', '', name).strip()
         # (a hyphenated name typed with a space on one side, 'Lorelei Crossman- King', 'Alan -Michael Fogg',

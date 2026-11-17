@@ -4415,6 +4415,16 @@ def test_recase_names_printed_all_lower_or_capitals():
         assert not bad_case(n) and recase(n) == n
 
 
+def test_mojibake_names_are_decoded():
+    """UTF-8 read as cp1252: 'Ta\u00e2\u20ac\u2122Laja Dunn' (Loranger 2025), 'Johan\u00c3\u00a9 Slate', 'Sylvester\u00c2\u00a0Larsen' (XC 2026)."""
+    from backend.scraper_v2 import Sub5ScraperV2
+    s = Sub5ScraperV2(progress_callback=lambda *a, **k: None)
+    assert s.normalize_athlete_name('Ta\u00e2\u20ac\u2122Laja Dunn') == "Ta'Laja Dunn"
+    assert s.normalize_athlete_name('Johan\u00c3\u00a9 Slate') == 'Johan\u00e9 Slate'
+    assert s.normalize_athlete_name('Sylvester\u00c2\u00a0Larsen') == 'Sylvester Larsen'
+    assert s.normalize_athlete_name('Jos\u00e9 Dur\u00e1n') == 'Jos\u00e9 Dur\u00e1n'
+
+
 if __name__ == '__main__':
     qaqc._ensure_team_mapping()
     failed = 0

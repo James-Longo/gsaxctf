@@ -65275,11 +65275,11 @@
   "evidence": ""
  },
  "backend/data/parsed_results/2024/XC/ms-westbrook-middle-school-2024-2024-10-02.json": {
-  "parse_sha": "7e484a49eb9dd29d",
-  "source_sha": "597a4180eadd18c0",
-  "date": "2026-10-19",
-  "by": "auto: team scores verified exactly, all schools identified, no flags",
-  "evidence": ""
+  "parse_sha": "ddf3e669361a4c23",
+  "source_sha": "bcee3af487f01836",
+  "date": "2026-11-17",
+  "by": "loop-claude",
+  "evidence": "re-sign: changed only by restoring cut names Elizabet->Elizabeth Massaga Luzolo, Gisell->Giselle Blake-Sainthelmy (full forms printed for the same South Portland runners); diff = athlete names only"
  },
  "backend/data/parsed_results/2024/XC/ms-westbrook-middle-school-2024.json": {
   "parse_sha": "0e7d5d5669142600",
@@ -66129,11 +66129,11 @@
   "evidence": "every individual row matches the MileSplit sheet; relays (4x140y/4x210y) were dropped by event_canon and restored by 7fa760da0, now stored"
  },
  "backend/data/parsed_results/2025/Indoor/ms-8am-gorham-moore-so-portland-2025.json": {
-  "parse_sha": "7d3be031e650103c",
-  "source_sha": "01bd95fc3ee92153",
-  "date": "2026-11-05",
-  "by": "2 Sonnet reviewers (batch 2) + loop",
-  "evidence": "every individual row matches the MileSplit sheet; relays (4x140y/4x210y) were dropped by event_canon and restored by 7fa760da0, now stored"
+  "parse_sha": "635f25ffae1c3392",
+  "source_sha": "c1253c8209b37e6f",
+  "date": "2026-11-17",
+  "by": "loop-claude",
+  "evidence": "re-sign: changed only by restoring cut names Elizabet->Elizabeth Massaga Luzolo, Gisell->Giselle Blake-Sainthelmy (full forms printed for the same South Portland runners); diff = athlete names only"
  },
  "backend/data/parsed_results/2025/Indoor/ms-9-am-bonny-eagle-noble-portland-scarborough-2025.json": {
   "parse_sha": "643fb2e0226a0e7f",
@@ -66164,11 +66164,11 @@
   "evidence": "every individual row matches the MileSplit sheet; relays (4x140y/4x210y) were dropped by event_canon and restored by 7fa760da0, now stored"
  },
  "backend/data/parsed_results/2025/Indoor/ms-gpc-1-fal-sp-west-2025.json": {
-  "parse_sha": "997bf303f869da65",
-  "source_sha": "e41aa126ce9e8dd5",
-  "date": "2026-11-05",
-  "by": "2 Sonnet reviewers (batch 2) + loop",
-  "evidence": "every individual row matches the MileSplit sheet; relays (4x140y/4x210y) were dropped by event_canon and restored by 7fa760da0, now stored"
+  "parse_sha": "b4951d2b5d476e3d",
+  "source_sha": "4b9232a12abdf74d",
+  "date": "2026-11-17",
+  "by": "loop-claude",
+  "evidence": "re-sign: changed only by restoring cut names Elizabet->Elizabeth Massaga Luzolo, Gisell->Giselle Blake-Sainthelmy (full forms printed for the same South Portland runners); diff = athlete names only"
  },
  "backend/data/parsed_results/2025/Indoor/ms-gpc-2-fal-gor-king-2025.json": {
   "parse_sha": "7ad815b884a7bd23",
@@ -67346,6 +67346,13 @@
   "by": "loop-claude",
   "evidence": "o25b: two reviewers compared every stored row with the cached MileSplit postings by script (name, mark, school, grade, date, legs; team scores reproduced or explained by the sheet scoring); fixes: cut names, second-posting race copies, shot put rows spliced into discus, impossible marks dropped, Greely-York @ Poland main posting (1170823, 477 rows) ingested; rebuild verified (drops diff, store_drift, sanity, qualifiers)"
  },
+ "backend/data/parsed_results/2025/Outdoor/ms-kvac-large-school-championship-2025.json": {
+  "parse_sha": "b0ea5d2db8346950",
+  "source_sha": "0ba6c83fd10193ae",
+  "date": "2026-11-17",
+  "by": "loop-claude",
+  "evidence": "o25c: two reviewers compared every stored row with the cached MileSplit postings (Last Chance: the host Google Sheet) by script; fixes: cut names, mis-decoded apostrophe, Wells MS duplicate LJ copies, impossible marks dropped; full rebuild verified (drops diff, store_drift, sanity, qualifiers)"
+ },
  "backend/data/parsed_results/2025/Outdoor/ms-kvac-leavitt-2025.json": {
   "parse_sha": "c72dd628767f9017",
   "source_sha": "9b4c7600f1db49f0",
@@ -67367,12 +67374,26 @@
   "by": "loop-claude",
   "evidence": "o25b: two reviewers compared every stored row with the cached MileSplit postings by script (name, mark, school, grade, date, legs; team scores reproduced or explained by the sheet scoring); fixes: cut names, second-posting race copies, shot put rows spliced into discus, impossible marks dropped, Greely-York @ Poland main posting (1170823, 477 rows) ingested; rebuild verified (drops diff, store_drift, sanity, qualifiers)"
  },
+ "backend/data/parsed_results/2025/Outdoor/ms-last-chance-meet-2025.json": {
+  "parse_sha": "c9ba76a5f08d97aa",
+  "source_sha": "78cb8b3c4f0408fc",
+  "date": "2026-11-17",
+  "by": "loop-claude",
+  "evidence": "o25c: two reviewers compared every stored row with the cached MileSplit postings (Last Chance: the host Google Sheet) by script; fixes: cut names, mis-decoded apostrophe, Wells MS duplicate LJ copies, impossible marks dropped; full rebuild verified (drops diff, store_drift, sanity, qualifiers)"
+ },
  "backend/data/parsed_results/2025/Outdoor/ms-lawrence-junior-high-meet-2025.json": {
   "parse_sha": "5a9eb840f68c9847",
   "source_sha": "b2e44545d7f0d616",
   "date": "2026-11-17",
   "by": "loop-claude",
   "evidence": "o25b: two reviewers compared every stored row with the cached MileSplit postings by script (name, mark, school, grade, date, legs; team scores reproduced or explained by the sheet scoring); fixes: cut names, second-posting race copies, shot put rows spliced into discus, impossible marks dropped, Greely-York @ Poland main posting (1170823, 477 rows) ingested; rebuild verified (drops diff, store_drift, sanity, qualifiers)"
+ },
+ "backend/data/parsed_results/2025/Outdoor/ms-lewiston-edward-little-javelin-meet-2025.json": {
+  "parse_sha": "0762919e899d2e83",
+  "source_sha": "f15bb3ed0e8f20fe",
+  "date": "2026-11-17",
+  "by": "loop-claude",
+  "evidence": "o25c: two reviewers compared every stored row with the cached MileSplit postings (Last Chance: the host Google Sheet) by script; fixes: cut names, mis-decoded apostrophe, Wells MS duplicate LJ copies, impossible marks dropped; full rebuild verified (drops diff, store_drift, sanity, qualifiers)"
  },
  "backend/data/parsed_results/2025/Outdoor/ms-lewiston-meet-1-2025.json": {
   "parse_sha": "9b79f233035003b7",
@@ -67387,6 +67408,27 @@
   "date": "2026-11-16",
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
+ },
+ "backend/data/parsed_results/2025/Outdoor/ms-loranger-whittier-st-doms-nya-sacopee-valley-yarmouth-2025.json": {
+  "parse_sha": "b4f3fb7cebb1dd2a",
+  "source_sha": "3bb559176e7084b4",
+  "date": "2026-11-17",
+  "by": "loop-claude",
+  "evidence": "o25c: two reviewers compared every stored row with the cached MileSplit postings (Last Chance: the host Google Sheet) by script; fixes: cut names, mis-decoded apostrophe, Wells MS duplicate LJ copies, impossible marks dropped; full rebuild verified (drops diff, store_drift, sanity, qualifiers)"
+ },
+ "backend/data/parsed_results/2025/Outdoor/ms-madison-hs-meet-1-2025.json": {
+  "parse_sha": "1801fce88c8600bb",
+  "source_sha": "d8f159d76831fb50",
+  "date": "2026-11-17",
+  "by": "loop-claude",
+  "evidence": "o25c: two reviewers compared every stored row with the cached MileSplit postings (Last Chance: the host Google Sheet) by script; fixes: cut names, mis-decoded apostrophe, Wells MS duplicate LJ copies, impossible marks dropped; full rebuild verified (drops diff, store_drift, sanity, qualifiers)"
+ },
+ "backend/data/parsed_results/2025/Outdoor/ms-maisad-championships-2025.json": {
+  "parse_sha": "f83d5bd2adb49fbc",
+  "source_sha": "e4b269b1f6cd7c4d",
+  "date": "2026-11-17",
+  "by": "loop-claude",
+  "evidence": "o25c: two reviewers compared every stored row with the cached MileSplit postings (Last Chance: the host Google Sheet) by script; fixes: cut names, mis-decoded apostrophe, Wells MS duplicate LJ copies, impossible marks dropped; full rebuild verified (drops diff, store_drift, sanity, qualifiers)"
  },
  "backend/data/parsed_results/2025/Outdoor/ms-maisad-meet-1-hyde-2025.json": {
   "parse_sha": "856795eda1260889",
@@ -67409,6 +67451,62 @@
   "by": "loop-claude",
   "evidence": "2026-11-16 round 14: relay legs filled from the cached posting that prints them; impossible girls 4x100 table dropped; full rebuild, drops diff empty, only the 5 dropped rows lost"
  },
+ "backend/data/parsed_results/2025/Outdoor/ms-maranacook-middle-school-meet-2025-2025-05-28.json": {
+  "parse_sha": "93e50e6c09743680",
+  "source_sha": "61bc8cf5186643cb",
+  "date": "2026-11-17",
+  "by": "loop-claude",
+  "evidence": "o25c: two reviewers compared every stored row with the cached MileSplit postings (Last Chance: the host Google Sheet) by script; fixes: cut names, mis-decoded apostrophe, Wells MS duplicate LJ copies, impossible marks dropped; full rebuild verified (drops diff, store_drift, sanity, qualifiers)"
+ },
+ "backend/data/parsed_results/2025/Outdoor/ms-maranacook-middle-school-meet-2025.json": {
+  "parse_sha": "2f7298ce4a84c845",
+  "source_sha": "28e37cbe29f6f03a",
+  "date": "2026-11-17",
+  "by": "loop-claude",
+  "evidence": "o25c: two reviewers compared every stored row with the cached MileSplit postings (Last Chance: the host Google Sheet) by script; fixes: cut names, mis-decoded apostrophe, Wells MS duplicate LJ copies, impossible marks dropped; full rebuild verified (drops diff, store_drift, sanity, qualifiers)"
+ },
+ "backend/data/parsed_results/2025/Outdoor/ms-messalonskee-junior-high-meet-2025.json": {
+  "parse_sha": "e05c51e745aee825",
+  "source_sha": "156db61aa48e7bd7",
+  "date": "2026-11-17",
+  "by": "loop-claude",
+  "evidence": "o25c: two reviewers compared every stored row with the cached MileSplit postings (Last Chance: the host Google Sheet) by script; fixes: cut names, mis-decoded apostrophe, Wells MS duplicate LJ copies, impossible marks dropped; full rebuild verified (drops diff, store_drift, sanity, qualifiers)"
+ },
+ "backend/data/parsed_results/2025/Outdoor/ms-ms-auburn-bonny-eagle-lewistonoxford-hills-2025.json": {
+  "parse_sha": "a174d8779b4d5136",
+  "source_sha": "2603c187b74c0be5",
+  "date": "2026-11-17",
+  "by": "loop-claude",
+  "evidence": "o25c: two reviewers compared every stored row with the cached MileSplit postings (Last Chance: the host Google Sheet) by script; fixes: cut names, mis-decoded apostrophe, Wells MS duplicate LJ copies, impossible marks dropped; full rebuild verified (drops diff, store_drift, sanity, qualifiers)"
+ },
+ "backend/data/parsed_results/2025/Outdoor/ms-ms-biddeford-marshwood-noble-wells-2025.json": {
+  "parse_sha": "9503f9a7c53c94f3",
+  "source_sha": "366604024bd9b64f",
+  "date": "2026-11-17",
+  "by": "loop-claude",
+  "evidence": "o25c: two reviewers compared every stored row with the cached MileSplit postings (Last Chance: the host Google Sheet) by script; fixes: cut names, mis-decoded apostrophe, Wells MS duplicate LJ copies, impossible marks dropped; full rebuild verified (drops diff, store_drift, sanity, qualifiers)"
+ },
+ "backend/data/parsed_results/2025/Outdoor/ms-ms-biddeford-massabesic-saco-sanford-2025.json": {
+  "parse_sha": "a16d577e10d62ed3",
+  "source_sha": "0a08418712889c99",
+  "date": "2026-11-17",
+  "by": "loop-claude",
+  "evidence": "o25c: two reviewers compared every stored row with the cached MileSplit postings (Last Chance: the host Google Sheet) by script; fixes: cut names, mis-decoded apostrophe, Wells MS duplicate LJ copies, impossible marks dropped; full rebuild verified (drops diff, store_drift, sanity, qualifiers)"
+ },
+ "backend/data/parsed_results/2025/Outdoor/ms-ms-biddeford-saco-thornton-academy-2025.json": {
+  "parse_sha": "e159e341a6107a62",
+  "source_sha": "7602cba6161cb4f5",
+  "date": "2026-11-17",
+  "by": "loop-claude",
+  "evidence": "o25c: two reviewers compared every stored row with the cached MileSplit postings (Last Chance: the host Google Sheet) by script; fixes: cut names, mis-decoded apostrophe, Wells MS duplicate LJ copies, impossible marks dropped; full rebuild verified (drops diff, store_drift, sanity, qualifiers)"
+ },
+ "backend/data/parsed_results/2025/Outdoor/ms-ms-biddeford-saco-york-shapleigh-2025.json": {
+  "parse_sha": "61b81aa6440b8ced",
+  "source_sha": "60845aa128a27273",
+  "date": "2026-11-17",
+  "by": "loop-claude",
+  "evidence": "o25c: two reviewers compared every stored row with the cached MileSplit postings (Last Chance: the host Google Sheet) by script; fixes: cut names, mis-decoded apostrophe, Wells MS duplicate LJ copies, impossible marks dropped; full rebuild verified (drops diff, store_drift, sanity, qualifiers)"
+ },
  "backend/data/parsed_results/2025/Outdoor/ms-ms-lincoln-gorham-lewiston-auburnedward-little-2025.json": {
   "parse_sha": "52b05b1d730dc83a",
   "source_sha": "cfb5acf481ef3445",
@@ -67422,6 +67520,20 @@
   "date": "2026-11-16",
   "by": "loop-claude",
   "evidence": "same race posted twice under another spelling (same place, school, mark): second copy dropped"
+ },
+ "backend/data/parsed_results/2025/Outdoor/ms-ms-nya-bath-freepdurh-fryeburg-gng-2025.json": {
+  "parse_sha": "5c28d465da115b27",
+  "source_sha": "fa3389b2b811f192",
+  "date": "2026-11-17",
+  "by": "loop-claude",
+  "evidence": "o25c: two reviewers compared every stored row with the cached MileSplit postings (Last Chance: the host Google Sheet) by script; fixes: cut names, mis-decoded apostrophe, Wells MS duplicate LJ copies, impossible marks dropped; full rebuild verified (drops diff, store_drift, sanity, qualifiers)"
+ },
+ "backend/data/parsed_results/2025/Outdoor/ms-ms-so-portland-smc-king-scarborough-bonny-eagle-2025.json": {
+  "parse_sha": "db356cc067ac5da5",
+  "source_sha": "6aeb7c22500de29a",
+  "date": "2026-11-17",
+  "by": "loop-claude",
+  "evidence": "o25c: two reviewers compared every stored row with the cached MileSplit postings (Last Chance: the host Google Sheet) by script; fixes: cut names, mis-decoded apostrophe, Wells MS duplicate LJ copies, impossible marks dropped; full rebuild verified (drops diff, store_drift, sanity, qualifiers)"
  },
  "backend/data/parsed_results/2025/Outdoor/ms-ms-windham-auburn-lewiston-oxford-hills-2025.json": {
   "parse_sha": "adc59444db8a8fa1",
@@ -67450,6 +67562,34 @@
   "date": "2026-11-16",
   "by": "loop-claude",
   "evidence": "2026-11-16 round 14: relay legs filled from the cached posting that prints them; impossible girls 4x100 table dropped; full rebuild, drops diff empty, only the 5 dropped rows lost"
+ },
+ "backend/data/parsed_results/2025/Outdoor/ms-nokomis-ms-meet-2-2025.json": {
+  "parse_sha": "5b21025745b79646",
+  "source_sha": "16c910b502d50df5",
+  "date": "2026-11-17",
+  "by": "loop-claude",
+  "evidence": "o25c: two reviewers compared every stored row with the cached MileSplit postings (Last Chance: the host Google Sheet) by script; fixes: cut names, mis-decoded apostrophe, Wells MS duplicate LJ copies, impossible marks dropped; full rebuild verified (drops diff, store_drift, sanity, qualifiers)"
+ },
+ "backend/data/parsed_results/2025/Outdoor/ms-poland-nya-yarmouth-seacoast-sacopee-valley-2025.json": {
+  "parse_sha": "cb533eb2e9c36634",
+  "source_sha": "b52d7c5112409e90",
+  "date": "2026-11-17",
+  "by": "loop-claude",
+  "evidence": "o25c: two reviewers compared every stored row with the cached MileSplit postings (Last Chance: the host Google Sheet) by script; fixes: cut names, mis-decoded apostrophe, Wells MS duplicate LJ copies, impossible marks dropped; full rebuild verified (drops diff, store_drift, sanity, qualifiers)"
+ },
+ "backend/data/parsed_results/2025/Outdoor/ms-scarborough-seacoast-so-portland-thornton-academy-2025.json": {
+  "parse_sha": "c932738ae60656c7",
+  "source_sha": "15e8993b4db8470f",
+  "date": "2026-11-17",
+  "by": "loop-claude",
+  "evidence": "o25c: two reviewers compared every stored row with the cached MileSplit postings (Last Chance: the host Google Sheet) by script; fixes: cut names, mis-decoded apostrophe, Wells MS duplicate LJ copies, impossible marks dropped; full rebuild verified (drops diff, store_drift, sanity, qualifiers)"
+ },
+ "backend/data/parsed_results/2025/Outdoor/ms-skowhegan-middle-school-meet-2025.json": {
+  "parse_sha": "d7d34f4ade0cc20d",
+  "source_sha": "5724b0c28d471b9c",
+  "date": "2026-11-17",
+  "by": "loop-claude",
+  "evidence": "o25c: two reviewers compared every stored row with the cached MileSplit postings (Last Chance: the host Google Sheet) by script; fixes: cut names, mis-decoded apostrophe, Wells MS duplicate LJ copies, impossible marks dropped; full rebuild verified (drops diff, store_drift, sanity, qualifiers)"
  },
  "backend/data/parsed_results/2025/Outdoor/ms-smaa-kennebunk-so-portland-marshwood-2025.json": {
   "parse_sha": "b0fa363292be120e",
