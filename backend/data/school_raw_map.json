@@ -1,16 +1,16 @@
 {
 "_meta": {
 "methods_by_rows": {
-"exact/alias": 2083400,
+"exact/alias": 2083394,
 "code": 260264,
 "truncation": 123504,
 "athlete-continuity": 53874,
 "mascot": 28851,
 "bare name + level context": 28427,
 "manual (file rule)": 19403,
-"unresolved": 17341,
+"unresolved": 17439,
 "co-op label": 15209,
-"state-tagged (auto entry)": 9945,
+"state-tagged (auto entry)": 9847,
 "spelling (fuzzy)": 3478,
 "file-expansion": 2325,
 "debris-salvage": 1771,
@@ -23,7 +23,7 @@
 },
 "methods_by_strings": {
 "exact/alias": 4191,
-"unresolved": 2125,
+"unresolved": 2126,
 "state-tagged (auto entry)": 1571,
 "debris-salvage": 913,
 "debris": 713,
@@ -39,7 +39,7 @@
 "file-expansion": 12,
 "later-hs": 2
 },
-"distinct_strings": 11938,
+"distinct_strings": 11939,
 "note": "'raw' keys are whitespace-collapsed school strings exactly as printed. 'overrides' are per-file answers (year/season/file-stem) that differ from the string's global id."
 },
 "raw": {
@@ -3672,10 +3672,10 @@
 "how": "code"
 },
 "Noble MS": {
-"rows": 3607,
+"rows": 3602,
 "seasons": {
 "Indoor": 1403,
-"Outdoor": 1771,
+"Outdoor": 1766,
 "XC": 433
 },
 "years": [
@@ -5780,9 +5780,9 @@
 "how": "exact/alias"
 },
 "Auburn Middle School": {
-"rows": 2176,
+"rows": 2175,
 "seasons": {
-"Outdoor": 2050,
+"Outdoor": 2049,
 "XC": 126
 },
 "years": [
@@ -6096,6 +6096,21 @@
 ],
 "how": "exact/alias"
 },
+"King MS": {
+"rows": 1914,
+"seasons": {
+"XC": 320,
+"Outdoor": 839,
+"Indoor": 755
+},
+"years": [
+2022,
+2026
+],
+"id": "me-ms-king",
+"method": "exact",
+"how": "exact/alias"
+},
 "Medomak Valley": {
 "rows": 1913,
 "seasons": {
@@ -6108,21 +6123,6 @@
 2026
 ],
 "id": "me-hs-medomak",
-"method": "exact",
-"how": "exact/alias"
-},
-"King MS": {
-"rows": 1913,
-"seasons": {
-"XC": 320,
-"Outdoor": 838,
-"Indoor": 755
-},
-"years": [
-2022,
-2026
-],
-"id": "me-ms-king",
 "method": "exact",
 "how": "exact/alias"
 },
@@ -12004,10 +12004,10 @@
 "how": "exact/alias"
 },
 "Mt. Ararat Middle School": {
-"rows": 542,
+"rows": 541,
 "seasons": {
 "XC": 178,
-"Outdoor": 364
+"Outdoor": 363
 },
 "years": [
 2007,
@@ -25212,19 +25212,6 @@
 "method": "code",
 "how": "code"
 },
-"Somersworth": {
-"rows": 105,
-"seasons": {
-"Outdoor": 105
-},
-"years": [
-2015,
-2026
-],
-"id": "oos-auto-nh-somersworth",
-"method": "exact",
-"how": "state-tagged (auto entry)"
-},
 "Westbrook M.S.": {
 "rows": 105,
 "seasons": {
@@ -26047,6 +26034,19 @@
 "id": "me-ms-athens",
 "method": "exact",
 "how": "exact/alias"
+},
+"Somersworth Middle School": {
+"rows": 98,
+"seasons": {
+"Outdoor": 98
+},
+"years": [
+2025,
+2025
+],
+"id": null,
+"method": "unresolved",
+"how": "unresolved"
 },
 "Sedgwick Ele": {
 "rows": 98,
@@ -71915,6 +71915,19 @@
 2025
 ],
 "id": "oos-auto-ma-brookline",
+"method": "exact",
+"how": "state-tagged (auto entry)"
+},
+"Somersworth": {
+"rows": 7,
+"seasons": {
+"Outdoor": 7
+},
+"years": [
+2015,
+2026
+],
+"id": "oos-auto-nh-somersworth",
 "method": "exact",
 "how": "state-tagged (auto entry)"
 },
@@ -239193,7 +239206,7 @@
 "SkowheganMadison indoor track": "me-hs-skowhegan",
 "Skylar": null,
 "Smith College A": null,
-"Somersworth": "oos-auto-nh-somersworth",
+"Somersworth": null,
 "Somerville High School": "oos-ma-somerville-high-school",
 "Sopna": null,
 "Sorenson": null,
@@ -239675,6 +239688,20 @@
 "years": [
 2003,
 2016
+],
+"id": null,
+"method": "unresolved",
+"how": "unresolved"
+},
+{
+"raw": "Somersworth Middle School",
+"rows": 98,
+"seasons": {
+"Outdoor": 98
+},
+"years": [
+2025,
+2025
 ],
 "id": null,
 "method": "unresolved",
