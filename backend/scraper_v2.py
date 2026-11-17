@@ -2181,8 +2181,10 @@ class Sub5ScraperV2:
         if q:
             return f'{q.group(1)}-{int(q.group(2)):02d}{q.group(3)}'
         if any(k in ev for k in ('jump', 'put', 'vault', 'discus', 'javelin', 'weight throw', 'hammer')):   # (not 'throw': 'Throwers Relay')
-            # a field mark under a foot is no mark: '00-00' high jumps (MAISAD 2022), a 0-5 vault, a 0-0.11 long jump
-            return None if re.fullmatch(r'0+-\d+(?:\.\d+)?', str(mark).strip()) else mark
+            # a field mark under two feet (a triple jump under six) is no mark: '00-00' high jumps (MAISAD 2022),
+            # a 0-5 vault, a 1-03 javelin and 1-00.50 long jump (Westbrook MS 2026: the same boys threw 92-111 ft, jumped 9-11)
+            fm = re.fullmatch(r'(\d+)-\d+(?:\.\d+)?', str(mark).strip())
+            return None if fm and int(fm.group(1)) < (6 if 'triple' in ev else 2) else mark
         # "12.19.94", "4.13.74": a dot typed for the colon (BucksportMeet.pdf 2016)
         dd = re.fullmatch(r'(\d{1,2})\.(\d{2})\.(\d{1,2})', str(mark).strip())
         if dd:
