@@ -263,6 +263,42 @@ def tidy(name):
     return re.sub(r'\s+', ' ', BLEED.sub('', name or '')).strip()
 
 
+PARTICLES = {'de', 'da', 'van', 'von', 'la', 'le', 'del', 'della', 'di', 'du', 'der', 'den', 'dos', 'das', 'y'}
+ROMAN = {'II', 'III', 'IV', 'JR', 'SR', 'JR.', 'SR.'}
+
+
+def _bad_word(w, all_caps=False):
+    # (two capitals are initials -- 'DJ Smith', 'AJ' -- unless the whole name is in capitals)
+    letters = re.sub(r"[^A-Za-z]", '', w)
+    return bool(letters) and ((w.islower() and w not in PARTICLES)
+                              or (w.isupper() and len(letters) >= (2 if all_caps else 3) and w not in ROMAN))
+
+
+def _all_caps(name):
+    return sum(c.isalpha() for c in name or '') > 3 and (name or '').isupper()
+
+
+def bad_case(name):
+    """A name printed all lower or all capitals, wholly or in one word ('caitlin Jenkins', 'MIKHAIL EL BADRY')."""
+    return any(_bad_word(w, _all_caps(name)) for w in (name or '').split())
+
+
+def recase(name):
+    """Proper case for the words a sheet printed all lower or all capitals; other words as printed
+    ('caitlin Jenkins' -> 'Caitlin Jenkins', 'MIKHAIL EL BADRY' -> 'Mikhail El Badry', 'McKay' stays)."""
+    caps = _all_caps(name)
+
+    def word(w):
+        if not _bad_word(w, caps):
+            return w
+        return re.sub(r"[A-Za-z]+", lambda m: m.group(0)[0].upper() + m.group(0)[1:].lower(), w)
+    return ' '.join(word(w) for w in (name or '').split())
+
+
+def same_letters(a, b):
+    return re.sub(r'[^a-z]', '', (a or '').lower()) == re.sub(r'[^a-z]', '', (b or '').lower())
+
+
 def display_name(names_counts, first_freq=None, meets=None):
     """Canonical spelling for a cluster: a clean First Last in proper case,
     then the spelling with the most results (both word orders of one spelling
@@ -321,8 +357,8 @@ def display_name(names_counts, first_freq=None, meets=None):
     if len(ranked) > 1 and tidy_counts[ranked[0]] >= 3 * tidy_counts[ranked[1]]:
         lo = [t.lower() for t in ranked[0].split()]
         if len(lo) != 2 or share(lo[-1]) - share(lo[0]) < 0.6:
-            return ranked[0]
-    return max(orders, key=lambda nm: (first_first(nm), tidy_counts[nm], len(nm)))
+            return recase(ranked[0])
+    return recase(max(orders, key=lambda nm: (first_first(nm), tidy_counts[nm], len(nm))))
 
 
 # ---------------------------------------------------------------------------
@@ -1626,10 +1662,25 @@ def apply(catalog=None, quiet=False):
         other = season_pr.get((cid, ev, {'Indoor': 'Outdoor', 'Outdoor': 'Indoor'}.get(season)))
         if other and js.is_better(other[0], mark, ev):
             beaten.add(row)
+    # a row printed all lower or all capitals ('caitlin Jenkins') shows its runner's catalog name, the same letters
+    # in proper case; one id shared by two runners the catalog could not join keeps the printed name
+    proper = {a['id']: a['name'] for a in catalog.get('athletes', []) if ids[a['id']] == 1}
+    n_case = 0
     changed = 0
     for path, (team, key, rows) in chunks.items():
         dirty = False
         for i, p in enumerate(rows):
+            nm = p.get('athlete_name', '')
+            if bad_case(nm) and not is_relay(nm, p.get('event', '')):
+                aid = p.get('athlete_id') or js.slugify_athlete(nm, team)
+                good = proper.get(member_of.get(aid, aid))
+                # (a runner the catalog shows under another spelling -- 'micheel Nazaroff', Mike Nazaroff --
+                # keeps the printed letters in proper case)
+                fixed = good if good and same_letters(good, nm) and not bad_case(good) else recase(nm) if good else nm
+                if fixed != nm:
+                    p['athlete_name'] = fixed
+                    n_case += 1
+                    dirty = True
             f = flags.get((path, i))
             if f and any(bool(p.get(x)) != f[x] for x in f):
                 p.update(f)
@@ -1650,7 +1701,8 @@ def apply(catalog=None, quiet=False):
         if dirty:
             js._atomic_write(path, rows)
             changed += 1
-    say(f'PR flags and estimated grades: {changed} chunk files rewritten; {n_est:,} rows have grade_est')
+    say(f'PR flags and estimated grades: {changed} chunk files rewritten; {n_est:,} rows have grade_est; '
+        f'{n_case:,} names recased')
     _write_grade_queue(issues, evidence)
     _write_registry(catalog)
     # Owen's Predictor reads the store with these merges

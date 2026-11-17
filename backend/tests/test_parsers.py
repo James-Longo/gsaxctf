@@ -4401,6 +4401,16 @@ def test_field_mark_under_two_feet_is_no_mark():
     assert s.repair_mark('2-10.00', 'Boys Shot Put') == '2-10.00' and s.repair_mark('6-02', 'Girls Triple Jump') == '6-02'
 
 
+
+def test_recase_names_printed_all_lower_or_capitals():
+    from backend.athlete_catalog import recase, bad_case
+    assert recase('caitlin Jenkins') == 'Caitlin Jenkins'
+    assert recase('MIKHAIL EL BADRY') == 'Mikhail El Badry'
+    assert recase("O'NEIL SMITH") == "O'Neil Smith"
+    for n in ('DJ Smith', 'McKay Thibodeau', 'Juan de la Cruz', 'Thomas Panciera III'):
+        assert not bad_case(n) and recase(n) == n
+
+
 if __name__ == '__main__':
     qaqc._ensure_team_mapping()
     failed = 0
