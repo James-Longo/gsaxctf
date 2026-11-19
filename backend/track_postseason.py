@@ -287,14 +287,26 @@ def _xc_ratings():
         f = json.load(gzip.open(os.path.join(js.DATA_DIR, 'xc_courses.json.gz')))
     except Exception:  # noqa: BLE001
         return []
+    # The table names a course 'Venue (5K)', an older era 'Venue (5K, 2013-2016)';
+    # observations carry (venue, metres), an older era's venue tagged 'Venue~2013-2016'.
     fac = {c['course']: math.log(c['factor']) for c in f['courses'] if c.get('factor')}
+    eras = collections.defaultdict(list)     # (venue, distance label) -> [(years, log factor)]
+    for c in f['courses']:
+        if c.get('factor'):
+            eras[(c['venue'], c['distance'])].append((set(c.get('years') or ()), math.log(c['factor'])))
     with contextlib.redirect_stdout(io.StringIO()):
         obs = cm.clean_observations(team_filter=False)
     out = []
-    for store_aid, year, course, lt, meet, d in obs:
-        if course not in fac:
+    for store_aid, year, (venue, metres), lt, meet, d in obs:
+        base, dl = cm.base_venue(venue), cm.distance_label(metres)
+        span = venue[len(base) + len(cm.ERA_SEP):] if venue != base else None
+        lf = fac.get(f'{base} ({dl}, {span})' if span else cm.course_label(venue, metres))
+        if lf is None and span:
+            # the table splits eras over high-school races only, so a span can differ
+            lf = next((f for ys, f in eras.get((base, dl), ()) if str(year) in ys), None)
+        if lf is None:
             continue
-        out.append((store_aid, ay_of(year, 'XC'), (d or '')[:10], lt - fac[course]))
+        out.append((store_aid, ay_of(year, 'XC'), (d or '')[:10], lt - lf))
     return out
 
 
