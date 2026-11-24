@@ -63342,6 +63342,27 @@
   "by": "sonnet audit (second read, 2026-10-29) (audit: confirmed)",
   "evidence": "Middle School Meet at Telstar, 5/16/2024 (title 'TELSTAR MS - 5/16/2024'; index May 16). Middle-school entries: Lisbon MS, Gardiner MS, Telstar Middle School, Spruce Mountain MS, Mt Valley MS, Day Mountain School, Dirigo MS, Buckfield MS -> me-ms-*. Printed team scores reproduce and equal the parse (Women: Lisbon MS 119.50, Gardiner MS 115, Telstar 79.75, Spruce Mountain MS 66.50, Mt Valley MS 39.25, Day Mountain 30, Dirigo MS 12; Men: Mt Valley MS 119, Lisbon MS 110, Spruce Mountain MS 65, Telstar 62, Gardiner MS 57, Day Mountain 36, Dirigo MS 12, Buckfield MS 2). 6 implausible flags are real printed marks (Young boys discus 78-05.50 and shot 30-10.50, Betts discus 60-00.50, Jamison discus 61-07.50, Reithofer girls shot 18-04.50 ...). The one source row without a mark ('21 Geleide, Greyson Gardiner MS  No Data', Boys Long Jump) is not in the parse - correct (no mark printed); 'ND' rows with '--' place are kept as status rows as the parser does. Compared every event and row of the source Hy-Tek text with the parse (event/gender/order, place incl. ties, name, school, mark incl. q/J/x flags, relay legs, exhibition 'B'/'C' relay teams, DNF/DQ/NH status rows) with a script plus eyeballing: no row missing or extra, none swapped. The Year column is empty in the source (grade blank in the parse is right)."
  },
+ "backend/data/parsed_results/2024/Outdoor/ResultsWINDHAM-1.json": {
+  "parse_sha": "019ffe24b7d58847",
+  "source_sha": "c35374022fe865d5",
+  "date": "2026-11-24",
+  "by": "loop-claude",
+  "evidence": "o24a review 2026-11-24 (two Sonnet reviewers, every row against its source); errors found were fixed before sign-off"
+ },
+ "backend/data/parsed_results/2024/Outdoor/ResultsWINDHAM.json": {
+  "parse_sha": "0246d3ac66acef92",
+  "source_sha": "51cb053dc98a2c28",
+  "date": "2026-11-24",
+  "by": "loop-claude",
+  "evidence": "o24a review 2026-11-24 (two Sonnet reviewers, every row against its source); errors found were fixed before sign-off"
+ },
+ "backend/data/parsed_results/2024/Outdoor/Resultstelstar.json": {
+  "parse_sha": "3f5df45c3f972619",
+  "source_sha": "0bbc2559da0e239b",
+  "date": "2026-11-24",
+  "by": "loop-claude",
+  "evidence": "o24a review 2026-11-24 (two Sonnet reviewers, every row against its source); errors found were fixed before sign-off"
+ },
  "backend/data/parsed_results/2024/Outdoor/Resultstriple-c.json": {
   "parse_sha": "c036008de037779c",
   "source_sha": "969f4d2d8bce390c",
@@ -63378,11 +63399,11 @@
   "evidence": ""
  },
  "backend/data/parsed_results/2024/Outdoor/alms-tf-meet-1-boys-results.json": {
-  "parse_sha": "ac9161f87680020f",
+  "parse_sha": "0134272baa363bf4",
   "source_sha": "f798c24987143f8c",
-  "date": "2026-10-16",
-  "by": "auto: team scores verified exactly, all schools identified, no flags",
-  "evidence": ""
+  "date": "2026-11-24",
+  "by": "loop-claude",
+  "evidence": "o24a review 2026-11-24 (two Sonnet reviewers, every row against its source); errors found were fixed before sign-off"
  },
  "backend/data/parsed_results/2024/Outdoor/bangorboys11may2024.json": {
   "parse_sha": "0f97bc4f238b6ace",
@@ -63468,6 +63489,13 @@
   "by": "re-check 2026-10-28: re-parsed only for the team-rank fix (ranks 10+ were stored as 0-9)",
   "evidence": "scratch re-parse compared with the signed parse: result rows identical, only team_rankings ranks changed"
  },
+ "backend/data/parsed_results/2024/Outdoor/classbboys1june2024.json": {
+  "parse_sha": "edde342141d8d888",
+  "source_sha": "50808d943d7fad67",
+  "date": "2026-11-24",
+  "by": "loop-claude",
+  "evidence": "o24a review 2026-11-24 (two Sonnet reviewers, every row against its source); errors found were fixed before sign-off"
+ },
  "backend/data/parsed_results/2024/Outdoor/classbgirls1june2024.json": {
   "parse_sha": "b04f939c2172607c",
   "source_sha": "a539fdb0e16cab0b",
@@ -63503,12 +63531,33 @@
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
  },
+ "backend/data/parsed_results/2024/Outdoor/ms-busline-ms-wiscasset-boothbay-jefferson-oceanside-searsport-2024.json": {
+  "parse_sha": "411aec11eb3150fc",
+  "source_sha": "5a394cbe543eaaa1",
+  "date": "2026-11-24",
+  "by": "loop-claude",
+  "evidence": "o24a review 2026-11-24 (two Sonnet reviewers, every row against its source); errors found were fixed before sign-off"
+ },
  "backend/data/parsed_results/2024/Outdoor/ms-ccc-opener-at-lake-region-2024.json": {
   "parse_sha": "7c2ad8fa056b86bc",
   "source_sha": "7b69af390b9d16fa",
   "date": "2026-11-13",
   "by": "claude",
   "evidence": "Names cleaned (high-jump miss notes, 'lucas3. pedro'); two rows moved to the school of the runner's other events in the meet."
+ },
+ "backend/data/parsed_results/2024/Outdoor/ms-kennebunk-saco-sanford-thornton-2024.json": {
+  "parse_sha": "333f013129dab618",
+  "source_sha": "6cdff529fef3b8e9",
+  "date": "2026-11-24",
+  "by": "loop-claude",
+  "evidence": "o24a review 2026-11-24 (two Sonnet reviewers, every row against its source); errors found were fixed before sign-off"
+ },
+ "backend/data/parsed_results/2024/Outdoor/ms-kents-hill-maranacook-spruce-mountain-dirigo-telstar-2024.json": {
+  "parse_sha": "29a19cad9ac4f027",
+  "source_sha": "538f04cfd208b62d",
+  "date": "2026-11-24",
+  "by": "loop-claude",
+  "evidence": "o24a review 2026-11-24 (two Sonnet reviewers, every row against its source); errors found were fixed before sign-off"
  },
  "backend/data/parsed_results/2024/Outdoor/ms-maisad-meet-3-hyde-2024.json": {
   "parse_sha": "396ffe538b78d80a",
@@ -63517,12 +63566,26 @@
   "by": "loop-claude",
   "evidence": "2026-11-16 round 14: relay legs filled from the cached posting that prints them; impossible girls 4x100 table dropped; full rebuild, drops diff empty, only the 5 dropped rows lost"
  },
+ "backend/data/parsed_results/2024/Outdoor/ms-medomak-ms-meet-1-2024.json": {
+  "parse_sha": "62d0eadc26763a78",
+  "source_sha": "6d28fc2db11f4ece",
+  "date": "2026-11-24",
+  "by": "loop-claude",
+  "evidence": "o24a review 2026-11-24 (two Sonnet reviewers, every row against its source); errors found were fixed before sign-off"
+ },
  "backend/data/parsed_results/2024/Outdoor/ms-ms-biddeford-saco-thornton-academy-2024.json": {
-  "parse_sha": "8459596d6cd1c25f",
-  "source_sha": "02381fac92647a01",
-  "date": "2026-11-13",
-  "by": "claude",
-  "evidence": "Names cleaned (high-jump miss notes, 'lucas3. pedro'); two rows moved to the school of the runner's other events in the meet."
+  "parse_sha": "8ae09d8676bd22e6",
+  "source_sha": "a74763cec72da73e",
+  "date": "2026-11-24",
+  "by": "loop-claude",
+  "evidence": "o24a review 2026-11-24 (two Sonnet reviewers, every row against its source); errors found were fixed before sign-off"
+ },
+ "backend/data/parsed_results/2024/Outdoor/ms-ms-lyman-moore-lincoln-oxford-hills-westbrook-2024.json": {
+  "parse_sha": "ed6ee1561294d465",
+  "source_sha": "4d427ae2d8206f87",
+  "date": "2026-11-24",
+  "by": "loop-claude",
+  "evidence": "o24a review 2026-11-24 (two Sonnet reviewers, every row against its source); errors found were fixed before sign-off"
  },
  "backend/data/parsed_results/2024/Outdoor/mt-ararat-4-26-24.json": {
   "parse_sha": "7f0087a5b5c5070c",
@@ -63545,6 +63608,13 @@
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
  },
+ "backend/data/parsed_results/2024/Outdoor/mtviewms7may2024.json": {
+  "parse_sha": "20e186b9978d1b28",
+  "source_sha": "f4fec7345692fc22",
+  "date": "2026-11-24",
+  "by": "loop-claude",
+  "evidence": "o24a review 2026-11-24 (two Sonnet reviewers, every row against its source); errors found were fixed before sign-off"
+ },
  "backend/data/parsed_results/2024/Outdoor/oldtownboys19april2024-1.json": {
   "parse_sha": "310171aefc075772",
   "source_sha": "fac67b7c7d892af1",
@@ -63558,6 +63628,20 @@
   "date": "2026-10-28",
   "by": "re-check 2026-10-28: re-parsed only for the team-rank fix (ranks 10+ were stored as 0-9)",
   "evidence": "scratch re-parse compared with the signed parse: result rows identical, only team_rankings ranks changed"
+ },
+ "backend/data/parsed_results/2024/Outdoor/pvcfroshboys28may2024.json": {
+  "parse_sha": "476343ae6863b6d0",
+  "source_sha": "f90606892224b8ec",
+  "date": "2026-11-24",
+  "by": "loop-claude",
+  "evidence": "o24a review 2026-11-24 (two Sonnet reviewers, every row against its source); errors found were fixed before sign-off"
+ },
+ "backend/data/parsed_results/2024/Outdoor/pvcfroshgirls28may2024.json": {
+  "parse_sha": "c9620bd9f338c169",
+  "source_sha": "707d0369d87533dc",
+  "date": "2026-11-24",
+  "by": "loop-claude",
+  "evidence": "o24a review 2026-11-24 (two Sonnet reviewers, every row against its source); errors found were fixed before sign-off"
  },
  "backend/data/parsed_results/2024/Outdoor/pvclgboys25may2024.json": {
   "parse_sha": "aa7512c66408befb",

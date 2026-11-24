@@ -2639,5 +2639,19 @@ FILE_RULES += [
     (['Oxford'], 'XC', (2026, 2026), r'^negirls2026\.txt$', 'oos-auto-ct-oxford'),               # Callie DeLuise (not Oxford Hills)
 ]
 
+FILE_RULES += [
+    # 2026-11-24: middle-school meets print Southern Maine Catholic cut to the column; read as the University of
+    # Southern Maine, its rows were dropped as college rows. The same runners are on that team's other sheets.
+    (['Southern Mai'], 'Outdoor', (2024, 2024), r'^ResultsWINDHAM-1$', 'me-ms-southern-maine-catholic'),
+    (['Southern Mai'], 'Outdoor', (2023, 2023), r'^Results(SP-MS|WEST-MS|FALM)$', 'me-ms-southern-maine-catholic'),
+    (['Southern Maine C'], 'Outdoor', (2011, 2011), r'^smaaMSinvite$', 'me-ms-southern-maine-catholic'),
+    (['Southern Maine C'], 'Outdoor', (2013, 2013), r'^southernmainems$', 'me-ms-southern-maine-catholic'),
+    (['Southern Maine C'], 'Outdoor', (2014, 2014), r'^ms-southern-maine-middle-school-invitational-2014$', 'me-ms-southern-maine-catholic'),
+    # 'Maine School' in XC is the Maine School of Science and Mathematics too (Dooley, Halpern, Creamer)
+    (['Maine School'], 'XC', (2025, 2026), r'.', 'me-hs-mssm'),
+    (['Maine'], 'Indoor', (2009, 2009), r'^kvacjan2$', 'me-hs-mci'),   # Brandon Wilson, Maine Central Institute 2006-09
+    (["YORK 'C'"], 'Outdoor', (2017, 2017), r'^april-28-results$', 'me-hs-york'),   # York relay C teams in a high-school meet
+]
+
 FILE_RULES += [([raw], season, (year, year), '^' + _re.escape(stem) + '$', sid)
                for (season, year, stem), codes in FILE_CODES.items() for raw, sid in codes.items()]

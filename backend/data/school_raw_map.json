@@ -1,13 +1,13 @@
 {
 "_meta": {
 "methods_by_rows": {
-"exact/alias": 2083109,
+"exact/alias": 2082717,
 "code": 260243,
-"truncation": 123499,
+"truncation": 123496,
 "athlete-continuity": 53871,
 "mascot": 28851,
 "bare name + level context": 28426,
-"manual (file rule)": 19403,
+"manual (file rule)": 19797,
 "unresolved": 17432,
 "co-op label": 15209,
 "state-tagged (auto entry)": 9847,
@@ -22,16 +22,16 @@
 "co-op label -> host (co-op not active)": 183
 },
 "methods_by_strings": {
-"exact/alias": 4191,
+"exact/alias": 4190,
 "unresolved": 2125,
 "state-tagged (auto entry)": 1571,
 "debris-salvage": 913,
 "debris": 713,
 "code": 702,
-"truncation": 532,
+"truncation": 531,
 "athlete-continuity": 470,
 "spelling (fuzzy)": 289,
-"manual (file rule)": 192,
+"manual (file rule)": 194,
 "co-op label": 79,
 "bare name + level context": 78,
 "mascot": 40,
@@ -1290,11 +1290,11 @@
 "how": "exact/alias"
 },
 "Biddeford Middle School": {
-"rows": 9115,
+"rows": 9114,
 "seasons": {
 "XC": 286,
 "Indoor": 7706,
-"Outdoor": 1123
+"Outdoor": 1122
 },
 "years": [
 2006,
@@ -4007,13 +4007,10 @@
 "id": "col-usm",
 "method": "exact",
 "by_id": {
-"col-usm": 3137,
-"me-ms-southern-maine-catholic": 46
+"col-usm": 2880,
+"me-ms-southern-maine-catholic": 303
 },
 "context_dependent": true,
-"flags": [
-"athletes contradict name match (col-usm -> me-ms-southern-maine-catholic, 16/17)"
-],
 "how": "exact/alias"
 },
 "Cony High Sc": {
@@ -4887,6 +4884,11 @@
 ],
 "id": "col-umaine",
 "method": "exact",
+"by_id": {
+"col-umaine": 2617,
+"me-hs-mci": 2
+},
+"context_dependent": true,
 "how": "exact/alias"
 },
 "William S Co": {
@@ -9097,9 +9099,6 @@
 ],
 "id": "me-hs-mssm",
 "method": "code",
-"flags": [
-"athletes contradict name match (me-hs-mssm -> col-umaine, 2/5)"
-],
 "how": "code"
 },
 "Lynx": {
@@ -21661,18 +21660,11 @@
 "id": "me-hs-mssm",
 "method": "manual (file rule)",
 "by_id": {
-"me-hs-mssm": 129,
-"col-umaine": 21
+"me-hs-mssm": 150
 },
 "context_dependent": true,
-"by_season": {
-"XC": "col-umaine",
-"Outdoor": "me-hs-mssm"
-},
 "flags": [
-"athletes contradict name match (col-umaine -> me-hs-mssm, 2/5)",
-"athletes contradict name match (col-umaine -> me-hs-mssm, 3/4)",
-"athletes contradict name match (col-umaine -> me-hs-mssm, 3/5)",
+"athletes contradict name match (col-umaine -> me-hs-mssm, 4/4)",
 "athletes contradict name match (col-umaine -> me-hs-mssm, 5/5)"
 ],
 "how": "manual (file rule)"
@@ -24563,14 +24555,13 @@
 2011,
 2014
 ],
-"id": "col-usm",
-"method": "exact",
-"flags": [
-"athletes contradict name match (col-usm -> me-ms-southern-maine-catholic, 12/12)",
-"athletes contradict name match (col-usm -> me-ms-southern-maine-catholic, 14/14)",
-"athletes contradict name match (col-usm -> me-ms-southern-maine-catholic, 20/20)"
-],
-"how": "exact/alias"
+"id": "me-ms-southern-maine-catholic",
+"method": "manual (file rule)",
+"by_id": {
+"me-ms-southern-maine-catholic": 111
+},
+"context_dependent": true,
+"how": "manual (file rule)"
 },
 "OLD Orchard Beach": {
 "rows": 111,
@@ -31892,7 +31883,7 @@
 "context_dependent": true,
 "flags": [
 "athletes contradict name match (col-une -> col-umaine, 3/12)",
-"company: col-umaine (0.18) -> col-une (1.82)"
+"company: col-umaine (0.20) -> col-une (1.82)"
 ],
 "how": "code"
 },
@@ -72914,6 +72905,9 @@
 ],
 "id": "me-ms-st-brigid",
 "method": "exact",
+"flags": [
+"athletes contradict name match (me-ms-st-brigid -> me-ms-southern-maine-catholic, 3/4)"
+],
 "how": "exact/alias"
 },
 "Cranston West Hs-Ri": {
@@ -76706,6 +76700,9 @@
 ],
 "id": "me-ms-st-brigid",
 "method": "exact",
+"flags": [
+"athletes contradict name match (me-ms-st-brigid -> me-ms-southern-maine-catholic, 3/4)"
+],
 "how": "exact/alias"
 },
 "Woodland JH": {
@@ -94658,9 +94655,13 @@
 2017,
 2017
 ],
-"id": "col-yccc",
-"method": "truncation",
-"how": "truncation"
+"id": "me-hs-york",
+"method": "manual (file rule)",
+"by_id": {
+"me-hs-york": 3
+},
+"context_dependent": true,
+"how": "manual (file rule)"
 },
 "GrtrHltnChr": {
 "rows": 3,
@@ -170326,6 +170327,9 @@
 "Thornton Academy": "me-hs-thornton",
 "WTVL": "me-hs-waterville"
 },
+"2006/Indoor/collegestatewomen06": {
+"Maine": "col-umaine"
+},
 "2006/Indoor/emitlchampboys": {
 "Brewer": "me-hs-brewer",
 "Bucksport": "me-hs-bucksport",
@@ -171501,7 +171505,11 @@
 "Freeport": "me-hs-freeport",
 "OOB": "me-hs-old-orchard"
 },
+"2006/Outdoor/umaine4_1men": {
+"Maine": "col-umaine"
+},
 "2006/Outdoor/umaine4_1women": {
+"Maine": "col-umaine",
 "U": "col-unh"
 },
 "2006/Outdoor/westbrookgirls5_22": {
@@ -177154,6 +177162,9 @@
 "TA": "me-hs-thornton",
 "Thornton Academy": "me-hs-thornton"
 },
+"2008/Indoor/umaine12_8_07": {
+"Maine": "col-umaine"
+},
 "2008/Indoor/usmrelaysboysgrades": {
 "Bonny Eagle": "me-hs-bonny-eagle",
 "Cape Elizabeth": "me-hs-cape-elizabeth",
@@ -180640,6 +180651,7 @@
 "2009/Indoor/kvacjan2": {
 "Lawrence": "me-hs-lawrence",
 "Lewiston": "me-hs-lewiston",
+"Maine": "me-hs-mci",
 "Rockland": "me-hs-rockland",
 "WIN": "me-hs-winslow",
 "Winslow": "me-hs-winslow"
@@ -184580,10 +184592,18 @@
 "Westbrook High School": "me-hs-westbrook",
 "Windham": "me-hs-windham"
 },
+"2010/Indoor/umainemen_dec12": {
+"Maine": "col-umaine"
+},
 "2010/Indoor/umainemen_feb6": {
+"Maine": "col-umaine",
 "Unattached": "x-unattached"
 },
+"2010/Indoor/umainewomen_dec12": {
+"Maine": "col-umaine"
+},
 "2010/Indoor/umainewomen_feb6": {
+"Maine": "col-umaine",
 "Unattached": "x-unattached"
 },
 "2010/Indoor/usminvitemen": {
@@ -188111,6 +188131,7 @@
 "MTA": "me-hs-mt-ararat"
 },
 "2011/Indoor/men_results_maine_hc_2.5.11": {
+"Maine": "col-umaine",
 "Unattached": "x-unattached"
 },
 "2011/Indoor/ms-smaa-thornton-south-portland-westbrook-2011": {
@@ -188344,6 +188365,7 @@
 "Yarmouth High School": "me-hs-yarmouth"
 },
 "2011/Indoor/women_results_maine_hc_2.5.11": {
+"Maine": "col-umaine",
 "Unattached": "x-unattached"
 },
 "2011/Outdoor/2011MaineDistanceGala": {
@@ -188357,6 +188379,7 @@
 "Greely": "me-hs-greely",
 "Lake Region": "me-hs-lake-region",
 "Lawrence": "me-hs-lawrence",
+"Maine": "col-umaine",
 "Messalonskee": "me-hs-messalonskee",
 "Mt. Ararat": "me-hs-mt-ararat",
 "Mt. Blue": "me-hs-mt-blue",
@@ -189155,9 +189178,11 @@
 "Skowhegan": "me-hs-skowhegan"
 },
 "2011/Outdoor/maine_bates_men_results_4.3.11": {
+"Maine": "col-umaine",
 "Unattached": "x-unattached"
 },
 "2011/Outdoor/maine_bates_womens_results_4.3.11": {
+"Maine": "col-umaine",
 "Unattached": "x-unattached"
 },
 "2011/Outdoor/maranacookMS_may16": {
@@ -189536,6 +189561,7 @@
 "Bonny Eagle": "me-ms-bonny-eagle",
 "Lincoln": "me-ms-lincoln-portland",
 "Scarborough": "me-ms-scarborough",
+"Southern Maine C": "me-ms-southern-maine-catholic",
 "Windham": "me-ms-windham"
 },
 "2011/Outdoor/smaachamps": {
@@ -192077,6 +192103,18 @@
 "WIN": "me-hs-winslow",
 "Winslow High School": "me-hs-winslow"
 },
+"2012/Indoor/maine_holy_cross_mens_2.4.12": {
+"Maine": "col-umaine"
+},
+"2012/Indoor/maine_holy_cross_womens_2.4.12": {
+"Maine": "col-umaine"
+},
+"2012/Indoor/maine_unh_men_results_12.10.11": {
+"Maine": "col-umaine"
+},
+"2012/Indoor/maine_unh_wowen_results_12.10.11": {
+"Maine": "col-umaine"
+},
 "2012/Indoor/ms-smmsac-biddeford-saco-st-james-thornton-2012": {
 "St. James": "me-ms-st-james-biddeford"
 },
@@ -193290,6 +193328,7 @@
 "Medomak": "me-ms-medomak"
 },
 "2012/Outdoor/men_track_meet_3.31.12": {
+"Maine": "col-umaine",
 "Unattached": "col-umaine"
 },
 "2012/Outdoor/morseboys_april12": {
@@ -193746,6 +193785,7 @@
 "Yarmouth High School": "me-hs-yarmouth"
 },
 "2012/Outdoor/women_track_meet_3.31.12": {
+"Maine": "col-umaine",
 "Unattached": "col-umaine"
 },
 "2012/Outdoor/yarmouth_may11": {
@@ -197770,6 +197810,7 @@
 "LINC": "me-ms-lincoln-portland",
 "SCAR": "me-ms-scarborough",
 "Scarborough": "me-ms-scarborough",
+"Southern Maine C": "me-ms-southern-maine-catholic",
 "WEST": "me-ms-westbrook",
 "WI": null,
 "WIND": "me-ms-windham"
@@ -200340,7 +200381,8 @@
 "2014/Outdoor/ms-southern-maine-middle-school-invitational-2014": {
 "GORH": "me-ms-gorham",
 "SCAR": "me-ms-scarborough",
-"Scarborough": "me-ms-scarborough"
+"Scarborough": "me-ms-scarborough",
+"Southern Maine C": "me-ms-southern-maine-catholic"
 },
 "2014/Outdoor/ms-southwesterns-2014": {
 "Thornton Academy": "me-hs-thornton",
@@ -202999,6 +203041,18 @@
 "MO": "me-ms-molly-ockett",
 "SD": "me-ms-st-dominic"
 },
+"2015/XC/Maine-New-Hampshire-Men-XC-meet-9.18.15": {
+"Maine": "col-umaine"
+},
+"2015/XC/Maine-New-Hampshire-Women-XC-meet-9.18.15": {
+"Maine": "col-umaine"
+},
+"2015/XC/Maine-and-Army-Men-XC-results-9.5.15": {
+"Maine": "col-umaine"
+},
+"2015/XC/Maine-and-Army-Women-XC-results-9.5.15": {
+"Maine": "col-umaine"
+},
 "2015/XC/MidSeasonBoysResults": {
 "Carrabec": "me-hs-carrabec",
 "Dirigo": "me-hs-dirigo",
@@ -204937,6 +204991,9 @@
 "Orono": "me-hs-orono",
 "Sumner": "me-hs-sumner"
 },
+"2016/Indoor/corrected_maine_holycross_men_track_results_2.6.16": {
+"Maine": "col-umaine"
+},
 "2016/Indoor/corrected_pvcemitl_boys_meet_2b_1.2.16": {
 "Brewer": "me-hs-brewer",
 "Central": "me-hs-central",
@@ -204977,6 +205034,12 @@
 "Yarmouth": "me-hs-yarmouth",
 "Yarmouth High School": "me-hs-yarmouth",
 "York": "me-hs-york"
+},
+"2016/Indoor/maine_newhampshire_men_results_2.13.16": {
+"Maine": "col-umaine"
+},
+"2016/Indoor/maine_newhampshire_women_results_2.13.16": {
+"Maine": "col-umaine"
 },
 "2016/Indoor/menscollegestate16": {
 "Southern Mai": "col-usm"
@@ -207366,6 +207429,15 @@
 "FREE": "me-ms-freeport",
 "GNG": "me-ms-gray-ng"
 },
+"2016/XC/Maine-Army-West-Point-Womens-XC-results-9.2.16": {
+"Maine": "col-umaine"
+},
+"2016/XC/Maine-UNH-Mens-XC-results-9.23.16": {
+"Maine": "col-umaine"
+},
+"2016/XC/Maine-UNH-Womens-XC-Results-9.23.16": {
+"Maine": "col-umaine"
+},
 "2016/XC/Old-Town-Girls-varsity-results-9.24.16": {
 "Bangor Chr": "me-hs-bangor-christian",
 "Ellsworth": "me-hs-ellsworth",
@@ -209305,6 +209377,18 @@
 "Old Town": "me-hs-old-town",
 "Orono": "me-hs-orono"
 },
+"2017/Indoor/maine_and_newhampshire_men_results_12.3.16": {
+"Maine": "col-umaine"
+},
+"2017/Indoor/maine_and_newhampshire_women_results_12.3.16": {
+"Maine": "col-umaine"
+},
+"2017/Indoor/maine_unh_men_results_2.11.17": {
+"Maine": "col-umaine"
+},
+"2017/Indoor/maine_unh_women_results_2.11.17": {
+"Maine": "col-umaine"
+},
 "2017/Indoor/ms-scarborough-last-chance-meet-2017": {
 "Mustangs": "me-hs-massabesic",
 "Thornton Academy": "me-hs-thornton",
@@ -210539,6 +210623,7 @@
 "North Yarmouth Academy": "me-hs-nya",
 "Seacoast": "me-hs-seacoast-christian",
 "YORK": "me-hs-york",
+"YORK 'C'": "me-hs-york",
 "York": "me-hs-york"
 },
 "2017/Outdoor/bangor-girls": {
@@ -211434,6 +211519,12 @@
 "Waterville": "me-hs-waterville",
 "Winthrop": "me-hs-winthrop"
 },
+"2017/XC/Men-Maine-and-UNH-XC-results-9.15.17": {
+"Maine": "col-umaine"
+},
+"2017/XC/Men-results-Maine-and-Army-XC-9.1.17": {
+"Maine": "col-umaine"
+},
 "2017/XC/Mt.-Blue-Relays-BOYS": {
 "Brewer": "me-hs-brewer",
 "Cony": "me-hs-cony",
@@ -211559,6 +211650,12 @@
 "Belfast": "me-hs-belfast",
 "Cony High School": "me-hs-cony",
 "Winslow High School": "me-hs-winslow"
+},
+"2017/XC/Women-Maine-and-UNH-XC-results-9.15.17": {
+"Maine": "col-umaine"
+},
+"2017/XC/Women-results-Maine-and-Army-XC-9.1.17": {
+"Maine": "col-umaine"
 },
 "2017/XC/XC-race-results-Boys-@-Marshwood-Sheet1": {
 "F": "me-hs-falmouth",
@@ -213693,6 +213790,7 @@
 "Noble": "me-hs-noble"
 },
 "2018/Indoor/men_maine_unh_husson_track_meet_results_2.10.18": {
+"Maine": "col-umaine",
 "Unattached": "x-unattached"
 },
 "2018/Indoor/ms-triple-c-biddeford-cape-poland-and-ta-2018": {
@@ -213818,6 +213916,7 @@
 "York": "me-hs-york"
 },
 "2018/Indoor/women_maine_unh_husson_track_meet_2.10.18": {
+"Maine": "col-umaine",
 "Unattached": "x-unattached"
 },
 "2018/Outdoor/2018-alhs-tf-meet-1": {
@@ -214448,11 +214547,13 @@
 "Nokomis": "me-hs-nokomis"
 },
 "2018/Outdoor/NEICAAA-Mens-Final-Results": {
+"Maine": "col-umaine",
 "Sacred Heart": "col-sacred-heart",
 "Springfield": "col-springfield",
 "Trinity": "col-trinity"
 },
 "2018/Outdoor/NEICAAA-Womens-Final-Results": {
+"Maine": "col-umaine",
 "Sacred Heart": "col-sacred-heart",
 "Trinity": "col-trinity",
 "Wellesley": "col-wellesley"
@@ -216032,6 +216133,18 @@
 "MO": "me-ms-molly-ockett",
 "WMS": "me-ms-whittier"
 },
+"2018/XC/Maine-Army-XC-Men-Results-8.31.18": {
+"Maine": "col-umaine"
+},
+"2018/XC/Maine-Army-XC-Women-Results-2018": {
+"Maine": "col-umaine"
+},
+"2018/XC/Maine-New-Hampshire-Men-XC-Results-9.14.18": {
+"Maine": "col-umaine"
+},
+"2018/XC/Maine-New-Hampshire-Women-XC-Results-9.14.18": {
+"Maine": "col-umaine"
+},
 "2018/XC/Oxford-Hills-Boys-9-26-18": {
 "Brunswick": "me-ms-brunswick",
 "Lewiston": "me-ms-lewiston",
@@ -217575,6 +217688,7 @@
 },
 "2019/Indoor/2019-01-05-wti-usm-open-II": {
 "Dirigo": "me-hs-dirigo",
+"Maine": "col-umaine",
 "Southern Mai": "col-usm",
 "Unattached": "x-unattached"
 },
@@ -217932,7 +218046,11 @@
 "2019/Indoor/Thomas-College-Small-School-results-women": {
 "UNE": "col-umaine"
 },
+"2019/Indoor/UNH-ME-VT-2": {
+"Maine": "col-umaine"
+},
 "2019/Indoor/USATF-State-Indoor-meet": {
+"Maine": "col-umaine",
 "Patriot Pole": "me-hs-thornton",
 "Scarborough": "me-hs-scarborough",
 "Topsham Park": null
@@ -218064,6 +218182,9 @@
 "Yarmouth": "me-hs-yarmouth",
 "Yarmouth High School": "me-hs-yarmouth",
 "York": "me-hs-york"
+},
+"2019/Indoor/corrected_maine_new_hampshire_women_results_12.1.18": {
+"Maine": "col-umaine"
 },
 "2019/Indoor/emitl1a_dec22": {
 "Bangor Chr": "me-hs-bangor-christian",
@@ -218204,6 +218325,12 @@
 "Old Town": "me-hs-old-town",
 "Orono": "me-hs-orono"
 },
+"2019/Indoor/maine_new_hampshire_men_results_12.1.18": {
+"Maine": "col-umaine"
+},
+"2019/Indoor/mens_results_umaine_invitational_track_2.10.19": {
+"Maine": "col-umaine"
+},
 "2019/Indoor/ms-smaa-chev-no-west-gor-kenn-ta-2019": {
 "Thornton Academy": "me-hs-thornton",
 "Waynflete School": "me-hs-waynflete",
@@ -218234,6 +218361,9 @@
 },
 "2019/Indoor/ne-usatf-indoor-2019": {
 "Thornton Academy": "me-hs-thornton"
+},
+"2019/Indoor/womens_results_umaine_invitational_track_2.10.19": {
+"Maine": "col-umaine"
 },
 "2019/Outdoor/190516_MS_Boys_Individual-Results": {
 "D": "me-ms-dirigo",
@@ -220288,6 +220418,12 @@
 "JS": "me-ms-jordan-small",
 "WAYN": "me-ms-waynflete"
 },
+"2019/XC/Maine-New-Hampshire-Men-XC-9.13.19": {
+"Maine": "col-umaine"
+},
+"2019/XC/Maine-New-Hampshire-Women-XC-9.13.19": {
+"Maine": "col-umaine"
+},
 "2019/XC/Maranacook-Boys-Results": {
 "HALL DALE": "me-hs-hall-dale",
 "Lisbon": "me-hs-lisbon",
@@ -220534,6 +220670,9 @@
 "OAK HILL": "me-ms-oak-hill",
 "Spruce Mt": "me-ms-spruce-mountain",
 "Telstar": "me-ms-telstar"
+},
+"2019/XC/UM-Army-XC-results": {
+"Maine": "col-umaine"
 },
 "2019/XC/WELLS-EXTRAV-6TH-BOYS.txt": {
 "Biddeford": "me-ms-biddeford",
@@ -222448,6 +222587,7 @@
 },
 "2020/Indoor/men_umaine_invitational_trackmeet_2.8.20": {
 "Fort Kent": "col-umfk",
+"Maine": "col-umaine",
 "Unattached": "x-unattached"
 },
 "2020/Indoor/ms-kvac-meet-16-2020": {
@@ -222537,6 +222677,7 @@
 },
 "2020/Indoor/women_umaine_invitational_trackmeet_2.8.20": {
 "Fort Kent": "col-umfk",
+"Maine": "col-umaine",
 "Unattached": "x-unattached"
 },
 "2020/XC/101620FHSXCBoysResults.txt": {
@@ -223321,6 +223462,7 @@
 "YHS": "me-hs-yarmouth"
 },
 "2021/Indoor/2021-02-26-and-27-Final-Results": {
+"Maine": "col-umaine",
 "Southern Mai": "col-usm",
 "Unattached": "x-unattached"
 },
@@ -223438,6 +223580,12 @@
 "Maine-Fort K": "col-umfk",
 "Southern Mai": "col-usm",
 "Unknown": "x-unknown"
+},
+"2021/Outdoor/2021-04-03-mto-UNH-results": {
+"Maine": "col-umaine"
+},
+"2021/Outdoor/2021-04-03-wto-UNH-results": {
+"Maine": "col-umaine"
 },
 "2021/Outdoor/2021-04-10-usm-st-joes-results": {
 "Southern Mai": "col-usm"
@@ -226939,6 +227087,12 @@
 "Oxford Hills": "me-hs-oxford-hills",
 "Skowhegan": "me-hs-skowhegan"
 },
+"2022/Indoor/maine_new_hampshire_mens_results_12.3-4.21": {
+"Maine": "col-umaine"
+},
+"2022/Indoor/maine_new_hampshire_womens_results_12.3-4.21": {
+"Maine": "col-umaine"
+},
 "2022/Indoor/meet-1-b-results-with-scorespdf": {
 "Winslow High School": "me-hs-winslow"
 },
@@ -227003,9 +227157,11 @@
 "Winthrop": "me-hs-winthrop"
 },
 "2022/Indoor/umaine_invitational_men_results_1.30.22": {
+"Maine": "col-umaine",
 "Unattached": "x-unattached"
 },
 "2022/Indoor/umaine_invitational_women_results_1.30.22": {
+"Maine": "col-umaine",
 "Unattached": "x-unattached"
 },
 "2022/Indoor/usmnyinvite": {
@@ -227895,6 +228051,9 @@
 "Spruce Mt": "me-hs-spruce-mountain",
 "Telstar": "me-hs-telstar",
 "Winthrop": "me-hs-winthrop"
+},
+"2022/XC/Maine-Army-results": {
+"Maine": "col-umaine"
 },
 "2022/XC/Maranacook-9-2-22-1": {
 "Lisbon": "me-hs-lisbon",
@@ -229344,6 +229503,7 @@
 "Yarmouth High School": "me-hs-yarmouth"
 },
 "2023/Indoor/bates21ajan2023-1": {
+"Maine": "col-umaine",
 "Unattached": "x-unattached"
 },
 "2023/Indoor/classaboysindoor2023": {
@@ -229931,7 +230091,7 @@
 "Winslow High School": "me-hs-winslow"
 },
 "2023/Outdoor/ResultsFALM": {
-"Southern Mai": "col-usm"
+"Southern Mai": "me-ms-southern-maine-catholic"
 },
 "2023/Outdoor/ResultsFALM-MS": {
 "Oxford Hills": "me-ms-oxford-hills",
@@ -230001,7 +230161,7 @@
 "South Portla": "me-hs-south-portland"
 },
 "2023/Outdoor/ResultsSP-MS": {
-"Southern Mai": "col-usm"
+"Southern Mai": "me-ms-southern-maine-catholic"
 },
 "2023/Outdoor/ResultsSV": {
 "Lake Region": "me-hs-lake-region",
@@ -230023,7 +230183,7 @@
 "Thornton Academy": "me-hs-thornton"
 },
 "2023/Outdoor/ResultsWEST-MS": {
-"Southern Mai": "col-usm"
+"Southern Mai": "me-ms-southern-maine-catholic"
 },
 "2023/Outdoor/ResultsWESTBROOK": {
 "Westbrook High School": "me-hs-westbrook"
@@ -230687,6 +230847,7 @@
 "Winslow": "me-ms-winslow"
 },
 "2023/XC/Maine-Invitational": {
+"Maine": "col-umaine",
 "Unattached": "x-unattached"
 },
 "2023/XC/PHS-XC-RESULTS-20230901-BOYS": {
@@ -232348,7 +232509,7 @@
 "2024/Outdoor/ResultsWINDHAM-1": {
 "Scarborough": "me-ms-scarborough",
 "South Portla": "me-ms-south-portland",
-"Southern Mai": "col-usm"
+"Southern Mai": "me-ms-southern-maine-catholic"
 },
 "2024/Outdoor/ResultsWTVLHS2": {
 "Cony High Sc": "me-hs-cony",
@@ -233044,6 +233205,9 @@
 "Oceanside": "me-ms-oceanside",
 "Searsport": "me-ms-searsport"
 },
+"2024/XC/College-State-XC-results": {
+"Maine": "col-umaine"
+},
 "2024/XC/Girls-10-1-2024-MileSplit-Results.txt": {
 "Dirigo": "me-ms-dirigo",
 "Lisbon": "me-ms-lisbon",
@@ -233079,6 +233243,7 @@
 "Waterville": "me-ms-waterville"
 },
 "2024/XC/Maine-Army-results": {
+"Maine": "col-umaine",
 "Unattached": "col-umaine"
 },
 "2024/XC/OCT-10-RESULTS": {
@@ -234126,6 +234291,7 @@
 "Windham": "me-hs-windham"
 },
 "2025/Indoor/Umaine-results": {
+"Maine": "col-umaine",
 "OTTC": null,
 "Unattached": "col-umaine"
 },
@@ -234360,6 +234526,7 @@
 "Westbrook High School": "me-hs-westbrook"
 },
 "2025/Indoor/umaine17jan2025": {
+"Maine": "col-umaine",
 "Maine-Fort K": "col-umfk",
 "Unattached": "col-umaine"
 },
@@ -235247,7 +235414,7 @@
 "Presque Isle": "me-hs-presque-isle"
 },
 "2025/XC/2025-Caribou-Invitational-Boys-Varsity": {
-"Maine School": "col-umaine",
+"Maine School": "me-hs-mssm",
 "Presque Isle": "me-hs-presque-isle"
 },
 "2025/XC/2025-Caribou-Invitational-Girls-Varsity": {
@@ -235398,6 +235565,9 @@
 "Monmouth": "me-hs-monmouth",
 "OAK HILL": "me-hs-oak-hill",
 "Spruce Mountain": "me-hs-spruce-mountain"
+},
+"2025/XC/Maine-State-Meet": {
+"Maine": "col-umaine"
 },
 "2025/XC/Overall-Varsity-LaLiberte-2025": {
 "Belfast": "me-hs-belfast",
@@ -235769,7 +235939,7 @@
 },
 "2025/XC/ellsworthinvitevarsityboys6sept2025.txt": {
 "Bangor Christian": "me-hs-bangor-christian",
-"Maine School": "col-umaine",
+"Maine School": "me-hs-mssm",
 "Mattanawcook": "me-hs-mattanawcook",
 "Presque Isle": "me-hs-presque-isle",
 "Sumner Memor": "me-hs-sumner"
@@ -235777,7 +235947,7 @@
 "2025/XC/ellsworthinvitevarsitygirls6sept2025.txt": {
 "Bangor Christian": "me-hs-bangor-christian",
 "Deer Isle St": "me-hs-deer-isle",
-"Maine School": "col-umaine",
+"Maine School": "me-hs-mssm",
 "Mattanawcook": "me-hs-mattanawcook",
 "Presque Isle": "me-hs-presque-isle"
 },
@@ -236334,7 +236504,7 @@
 },
 "2025/XC/red-riot-boys-varsity.txt": {
 "Bangor Christian": "me-hs-bangor-christian",
-"Maine School": "col-umaine",
+"Maine School": "me-hs-mssm",
 "Mattanawcook": "me-hs-mattanawcook",
 "Sumner Memor": "me-hs-sumner"
 },
@@ -236344,7 +236514,7 @@
 "2025/XC/red-riot-girls-varsity.txt": {
 "Bangor Christian": "me-hs-bangor-christian",
 "Deer Isle St": "me-hs-deer-isle",
-"Maine School": "col-umaine",
+"Maine School": "me-hs-mssm",
 "Mattanawcook": "me-hs-mattanawcook"
 },
 "2025/XC/sectional-jv-boys.txt": {
@@ -238091,7 +238261,7 @@
 "North Haven Community School": "me-ms-north-haven"
 },
 "2026/XC/ms-greater-houlton-xc-border-bash-2026": {
-"Maine School": "col-umaine"
+"Maine School": "me-hs-mssm"
 },
 "2026/XC/ms-greely-hs-home-meet-2026": {
 "Waynflete School": "me-hs-waynflete"
