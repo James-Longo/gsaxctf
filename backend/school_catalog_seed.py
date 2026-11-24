@@ -2653,5 +2653,33 @@ FILE_RULES += [
     (["YORK 'C'"], 'Outdoor', (2017, 2017), r'^april-28-results$', 'me-hs-york'),   # York relay C teams in a high-school meet
 ]
 
+FILE_RULES += [
+    # 2026-11-24: high-school meet whose file name reads as a middle-school one; every athlete is in grades 9-12
+    (['Skowhegan Ar'], 'Outdoor', (2024, 2024), r'^nokomisms13may2024$', 'me-hs-skowhegan'),
+    (['Medomak Vall'], 'Outdoor', (2024, 2024), r'^nokomisms13may2024$', 'me-hs-medomak'),
+    (['Mt. View', 'Mt. View Hig'], 'Outdoor', (2024, 2024), r'^nokomisms13may2024$', 'me-hs-mt-view'),
+    (['Islesboro Ce'], 'Outdoor', (2024, 2024), r'^nokomisms13may2024$', 'me-hs-islesboro'),
+    # 'Limestone/MS' with grades 9-12 is the Limestone/MSSM high-school co-op, not Limestone Middle School
+    (['Limestone/MS'], 'Outdoor', (2022, 2022), r'^(Resultsoldrown23april2022|Caribou-results)$', 'coop-limestone-mssm'),
+    (['Limestone/MS'], 'Outdoor', (2023, 2023), r'^(mdi29april2023|bangor22april2023)$', 'coop-limestone-mssm'),
+    (['Limestone/MS'], 'Outdoor', (2024, 2024), r'^bangor(boys|girls)11may2024$', 'coop-limestone-mssm'),
+    (['Limestone/MS'], 'Outdoor', (2008, 2008), r'^caribou(boys|girls)_may1[03]$', 'coop-limestone-mssm'),
+    (['Limestone/MS'], 'Outdoor', (2023, 2023), r'^Class-c-(boys|girls)-results$', 'coop-limestone-mssm'),
+    (['Limestone/MS'], 'Outdoor', (2009, 2009), r'^ACresults%20(boys|girls)$', 'coop-limestone-mssm'),
+    (['Limestone/MSSM'], 'Outdoor', (2022, 2022), r'^2022-alhs-tf-championship-boys-results$', 'coop-limestone-mssm'),
+    (["Limestone/MSSM 'B'"], 'Outdoor', (2025, 2025), r'^2025-pvc-tf-week-3-caribou-results$', 'coop-limestone-mssm'),
+    # out-of-state schools matched to Maine middle schools at New England and NEPSAC meets (grades 9-12)
+    (['Uthirtytwo'], 'Outdoor', (2022, 2022), r'^newengland22$', 'oos-vt-u-32-high-school'),
+    (['Windsor'], 'Outdoor', (2022, 2022), r'^newengland22$', 'oos-auto-ct-windsor'),
+    (['Memorial'], 'Outdoor', (2022, 2022), r'^newengland22$', '?'),
+    (['Windsor'], 'Outdoor', (2012, 2019), r'^(newengland(boys|girls)|ResultsNewEngland151|NE-results-(boys|girls))$', 'oos-auto-ct-windsor'),
+    (['UThirtyTwo'], 'Outdoor', (2019, 2019), r'^NE-results-(boys|girls)$', 'oos-vt-u-32-high-school'),
+    (['Memorial'], 'Outdoor', (2005, 2019), r'^(newengland05(boys|girls)|NE-results-boys)$', '?'),
+    (['Memorial'], 'Indoor', (2023, 2023), r'^2023-New-England-Indoor-Track-Results$', '?'),
+    (['Rockland'], 'Outdoor', (2012, 2012), r'^newengland(boys|girls)$', '?'),
+    (['Milford -'], 'Indoor', (2011, 2011), r'^2011NewEnglandResults$', '?'),
+    (["St. George's"], 'Outdoor', (2014, 2014), r'^ms-nepsac-division-iii-chapionships-2014$', '?'),
+]
+
 FILE_RULES += [([raw], season, (year, year), '^' + _re.escape(stem) + '$', sid)
                for (season, year, stem), codes in FILE_CODES.items() for raw, sid in codes.items()]

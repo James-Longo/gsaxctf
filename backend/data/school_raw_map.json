@@ -1,17 +1,17 @@
 {
 "_meta": {
 "methods_by_rows": {
-"exact/alias": 2082717,
+"exact/alias": 2082317,
 "code": 260243,
-"truncation": 123496,
-"athlete-continuity": 53871,
+"truncation": 123286,
+"athlete-continuity": 53773,
 "mascot": 28851,
 "bare name + level context": 28426,
-"manual (file rule)": 19797,
-"unresolved": 17432,
-"co-op label": 15209,
-"state-tagged (auto entry)": 9847,
-"spelling (fuzzy)": 3478,
+"manual (file rule)": 20467,
+"unresolved": 17488,
+"co-op label": 15238,
+"state-tagged (auto entry)": 9842,
+"spelling (fuzzy)": 3436,
 "file-expansion": 2325,
 "debris-salvage": 1771,
 "debris": 1007,
@@ -22,16 +22,16 @@
 "co-op label -> host (co-op not active)": 183
 },
 "methods_by_strings": {
-"exact/alias": 4190,
-"unresolved": 2125,
+"exact/alias": 4187,
+"unresolved": 2127,
 "state-tagged (auto entry)": 1571,
 "debris-salvage": 913,
 "debris": 713,
 "code": 702,
 "truncation": 531,
 "athlete-continuity": 470,
-"spelling (fuzzy)": 289,
-"manual (file rule)": 194,
+"spelling (fuzzy)": 288,
+"manual (file rule)": 196,
 "co-op label": 79,
 "bare name + level context": 78,
 "mascot": 40,
@@ -3983,14 +3983,9 @@
 "id": "me-hs-skowhegan",
 "method": "truncation+athletes",
 "by_id": {
-"me-hs-skowhegan": 3189,
-"me-ms-skowhegan": 4
+"me-hs-skowhegan": 3193
 },
 "context_dependent": true,
-"by_level": {
-"hs": "me-hs-skowhegan",
-"ms": "me-ms-skowhegan"
-},
 "how": "truncation"
 },
 "Southern Mai": {
@@ -4759,17 +4754,14 @@
 "id": "me-hs-mt-view",
 "method": "exact",
 "by_id": {
-"me-hs-mt-view": 1595,
-"me-ms-mt-view": 1068
+"me-hs-mt-view": 1600,
+"me-ms-mt-view": 1063
 },
 "context_dependent": true,
 "by_level": {
 "hs": "me-hs-mt-view",
 "ms": "me-ms-mt-view"
 },
-"flags": [
-"athletes contradict name match (me-ms-mt-view -> me-hs-mt-view, 4/4)"
-],
 "how": "exact/alias"
 },
 "FREE": {
@@ -5553,14 +5545,9 @@
 "id": "coop-limestone-mssm",
 "method": "exact",
 "by_id": {
-"coop-limestone-mssm": 2152,
-"me-ms-limestone": 98
+"coop-limestone-mssm": 2250
 },
 "context_dependent": true,
-"flags": [
-"athletes contradict name match (coop-limestone-mssm -> me-ms-limestone, 17/23)",
-"athletes contradict name match (coop-limestone-mssm -> me-ms-limestone, 6/10)"
-],
 "how": "co-op label"
 },
 "Medomak Vall": {
@@ -5577,8 +5564,8 @@
 "id": "me-hs-medomak",
 "method": "truncation+athletes",
 "by_id": {
-"me-hs-medomak": 2119,
-"me-ms-medomak": 124
+"me-hs-medomak": 2121,
+"me-ms-medomak": 122
 },
 "context_dependent": true,
 "by_level": {
@@ -6212,13 +6199,15 @@
 "method": "exact",
 "by_id": {
 "me-hs-rockland": 1764,
-"me-ms-rockland": 127
+"me-ms-rockland": 126,
+"None": 1
 },
 "context_dependent": true,
 "by_level": {
 "hs": "me-hs-rockland",
 "ms": "me-ms-rockland"
 },
+"unresolved_rows": 1,
 "how": "exact/alias"
 },
 "Buckfield": {
@@ -9617,8 +9606,8 @@
 "id": "me-hs-islesboro",
 "method": "truncation",
 "by_id": {
-"me-hs-islesboro": 475,
-"me-ms-islesboro": 404
+"me-hs-islesboro": 476,
+"me-ms-islesboro": 403
 },
 "context_dependent": true,
 "by_level": {
@@ -9989,8 +9978,8 @@
 "id": "me-ms-windsor",
 "method": "exact",
 "by_id": {
-"me-ms-windsor": 796,
-"oos-auto-ct-windsor": 23
+"me-ms-windsor": 766,
+"oos-auto-ct-windsor": 53
 },
 "context_dependent": true,
 "flags": [
@@ -10258,6 +10247,12 @@
 ],
 "id": "me-ms-memorial-sp",
 "method": "exact",
+"by_id": {
+"me-ms-memorial-sp": 758,
+"None": 12
+},
+"context_dependent": true,
+"unresolved_rows": 12,
 "how": "exact/alias"
 },
 "GHCA": {
@@ -14994,21 +14989,13 @@
 2008,
 2025
 ],
-"id": "me-ms-limestone",
-"method": "exact",
+"id": "coop-limestone-mssm",
+"method": "manual (file rule)",
 "by_id": {
-"me-ms-limestone": 287,
-"coop-limestone-mssm": 51
+"coop-limestone-mssm": 338
 },
 "context_dependent": true,
-"flags": [
-"athletes contradict name match (me-ms-limestone -> coop-limestone-mssm, 15/22)",
-"athletes contradict name match (me-ms-limestone -> coop-limestone-mssm, 29/31)",
-"athletes contradict name match (me-ms-limestone -> coop-limestone-mssm, 3/3)",
-"athletes contradict name match (me-ms-limestone -> coop-limestone-mssm, 4/11)",
-"athletes contradict name match (me-ms-limestone -> coop-limestone-mssm, 4/12)"
-],
-"how": "exact/alias"
+"how": "manual (file rule)"
 },
 "Ells": {
 "rows": 337,
@@ -32020,9 +32007,8 @@
 "id": "oos-auto-vt-uthirtytwo",
 "method": "exact+level-context",
 "by_id": {
-"oos-auto-vt-uthirtytwo": 43,
-"oos-vt-u-32-high-school": 14,
-"me-ms-union-122": 2
+"oos-auto-vt-uthirtytwo": 38,
+"oos-vt-u-32-high-school": 21
 },
 "context_dependent": true,
 "by_season": {
@@ -36938,9 +36924,9 @@
 2014,
 2014
 ],
-"id": "me-ms-st-george",
-"method": "fuzzy",
-"how": "spelling (fuzzy)"
+"id": null,
+"method": "manual (file rule: unidentified)",
+"how": "unresolved"
 },
 "Cony Middle School XC": {
 "rows": 42,
@@ -47782,7 +47768,7 @@
 "context_dependent": true,
 "flags": [
 "athletes contradict name match (oos-ct-staples-high-school -> oos-auto-ct-unattached, 2/2)",
-"company: oos-auto-ct-unattached (1.40) -> oos-ct-staples-high-school (80.88)"
+"company: oos-auto-ct-unattached (1.40) -> oos-ct-staples-high-school (80.75)"
 ],
 "how": "exact/alias"
 },
@@ -87199,9 +87185,13 @@
 2019,
 2019
 ],
-"id": "me-ms-union-122",
-"method": "exact",
-"how": "exact/alias"
+"id": "oos-vt-u-32-high-school",
+"method": "manual (file rule)",
+"by_id": {
+"oos-vt-u-32-high-school": 4
+},
+"context_dependent": true,
+"how": "manual (file rule)"
 },
 "Newton North-MA": {
 "rows": 4,
@@ -131131,9 +131121,9 @@
 2011,
 2011
 ],
-"id": "me-ms-lewis-libby",
-"method": "exact",
-"how": "exact/alias"
+"id": null,
+"method": "manual (file rule: unidentified)",
+"how": "unresolved"
 },
 "Somerset - MA": {
 "rows": 1,
@@ -167289,6 +167279,7 @@
 "Gray": "me-ms-gray-ng",
 "Greely": "me-ms-greely",
 "Kennebunk": "me-ms-kennebunk",
+"Memorial": "me-ms-memorial-sp",
 "Seacoast": "me-ms-seacoast-christian",
 "Waynflete School": "me-ms-waynflete"
 },
@@ -167315,6 +167306,7 @@
 "Gray": "me-ms-gray-ng",
 "Greely": "me-ms-greely",
 "Kennebunk": "me-ms-kennebunk",
+"Memorial": "me-ms-memorial-sp",
 "Seacoast": "me-ms-seacoast-christian",
 "Waynflete School": "me-ms-waynflete"
 },
@@ -168517,11 +168509,13 @@
 },
 "2005/Outdoor/newengland05boys": {
 "Gardner": "oos-auto-ma-gardner",
+"Memorial": null,
 "Spaulding": "oos-auto-nh-spaulding",
 "Wellesley-MA": "col-wellesley"
 },
 "2005/Outdoor/newengland05girls": {
 "Cony": "me-hs-cony",
+"Memorial": null,
 "Portsmouth": "oos-auto-ri-portsmouth",
 "Spaulding": "oos-auto-nh-spaulding",
 "Trinity": "col-trinity",
@@ -169576,6 +169570,7 @@
 "Gorham": "me-ms-gorham",
 "Gray-New Gloucester": "me-ms-gray-ng",
 "Greely": "me-ms-greely",
+"Memorial": "me-ms-memorial-sp",
 "Seacoast": "me-ms-seacoast-christian",
 "Unattached": "x-unattached"
 },
@@ -169584,6 +169579,7 @@
 "Gorham": "me-ms-gorham",
 "Gray-New Gloucester": "me-ms-gray-ng",
 "Greely": "me-ms-greely",
+"Memorial": "me-ms-memorial-sp",
 "Seacoast": "me-ms-seacoast-christian"
 },
 "2005/XC/smaarelaystop15": {
@@ -177444,6 +177440,7 @@
 "Bonny Eagle": "me-ms-bonny-eagle",
 "Gorham": "me-ms-gorham",
 "Lincoln": "me-ms-lincoln-portland",
+"Memorial": "me-ms-memorial-sp",
 "Scarborough": "me-ms-scarborough",
 "Westbrook": "me-ms-westbrook",
 "Windham": "me-ms-windham"
@@ -177452,6 +177449,7 @@
 "Bonny Eagle": "me-ms-bonny-eagle",
 "Gorham": "me-ms-gorham",
 "Lincoln": "me-ms-lincoln-portland",
+"Memorial": "me-ms-memorial-sp",
 "Scarborough": "me-ms-scarborough",
 "Westbrook": "me-ms-westbrook",
 "Windham": "me-ms-windham"
@@ -177664,25 +177662,25 @@
 "2008/Outdoor/caribouboys_may10": {
 "Brewer": "me-hs-brewer",
 "Caribou": "me-hs-caribou",
-"Limestone/MS": "me-ms-limestone",
+"Limestone/MS": "coop-limestone-mssm",
 "Limestone/MSSM": "coop-limestone-mssm",
 "Old Town": "me-hs-old-town"
 },
 "2008/Outdoor/caribouboys_may13": {
 "Caribou": "me-hs-caribou",
-"Limestone/MS": "me-ms-limestone",
+"Limestone/MS": "coop-limestone-mssm",
 "Limestone/MSSM": "coop-limestone-mssm"
 },
 "2008/Outdoor/caribougirls_may10": {
 "Brewer": "me-hs-brewer",
 "Caribou": "me-hs-caribou",
-"Limestone/MS": "me-ms-limestone",
+"Limestone/MS": "coop-limestone-mssm",
 "Limestone/MSSM": "coop-limestone-mssm",
 "Old Town": "me-hs-old-town"
 },
 "2008/Outdoor/caribougirls_may13": {
 "Caribou": "me-hs-caribou",
-"Limestone/MS": "me-ms-limestone"
+"Limestone/MS": "coop-limestone-mssm"
 },
 "2008/Outdoor/centralmainefrosh": {
 "Bonny Eagle": "me-hs-bonny-eagle",
@@ -179812,6 +179810,7 @@
 "Freeport": "me-ms-freeport",
 "Greely": "me-ms-greely",
 "Marshwood": "me-ms-marshwood",
+"Memorial": "me-ms-memorial-sp",
 "Raymond": "me-ms-jordan-small",
 "Scarboro": "me-ms-scarborough",
 "Seacoast Christian": "me-ms-seacoast-christian",
@@ -179825,6 +179824,7 @@
 "Freeport": "me-ms-freeport",
 "Greely": "me-ms-greely",
 "Marshwood": "me-ms-marshwood",
+"Memorial": "me-ms-memorial-sp",
 "Raymond": "me-ms-jordan-small",
 "Scarboro": "me-ms-scarborough",
 "Seacoast Christian": "me-ms-seacoast-christian",
@@ -181037,12 +181037,12 @@
 "2009/Outdoor/ACresults%20boys": {
 "Caribou": "me-hs-caribou",
 "Fort Kent": "me-hs-fort-kent",
-"Limestone/MS": "me-ms-limestone"
+"Limestone/MS": "coop-limestone-mssm"
 },
 "2009/Outdoor/ACresults%20girls": {
 "Caribou": "me-hs-caribou",
 "Fort Kent": "me-hs-fort-kent",
-"Limestone/MS": "me-ms-limestone"
+"Limestone/MS": "coop-limestone-mssm"
 },
 "2009/Outdoor/Boys_Bangor_May_8_2009": {
 "Bangor Chr": "me-hs-bangor-christian",
@@ -181093,6 +181093,7 @@
 "Bonny Eagle": "me-ms-bonny-eagle",
 "Gorham": "me-ms-gorham",
 "Lincoln": "me-ms-lincoln-portland",
+"Memorial": "me-ms-memorial-sp",
 "Scarboro": "me-ms-scarborough",
 "Scarborough": "me-ms-scarborough",
 "Windham": "me-ms-windham"
@@ -181119,6 +181120,7 @@
 "Bonny Eagle": "me-ms-bonny-eagle",
 "Gorham": "me-ms-gorham",
 "Lincoln": "me-ms-lincoln-portland",
+"Memorial": "me-ms-memorial-sp",
 "Scarboro": "me-ms-scarborough",
 "Scarborough": "me-ms-scarborough",
 "Windham": "me-ms-windham"
@@ -185755,6 +185757,7 @@
 "Bonny Eagle": "me-ms-bonny-eagle",
 "Gorham": "me-ms-gorham",
 "Lincoln": "me-ms-lincoln-portland",
+"Memorial": "me-ms-memorial-sp",
 "Scarborough": "me-ms-scarborough",
 "Westbrook": "me-ms-westbrook",
 "Windham": "me-ms-windham"
@@ -189560,6 +189563,7 @@
 "2011/Outdoor/smaaMSinvite": {
 "Bonny Eagle": "me-ms-bonny-eagle",
 "Lincoln": "me-ms-lincoln-portland",
+"Memorial": "me-ms-memorial-sp",
 "Scarborough": "me-ms-scarborough",
 "Southern Maine C": "me-ms-southern-maine-catholic",
 "Windham": "me-ms-windham"
@@ -191093,6 +191097,7 @@
 "Gray New Gloucester": "me-ms-gray-ng",
 "Greely": "me-ms-greely",
 "Lake Region": "me-ms-lake-region",
+"Memorial": "me-ms-memorial-sp",
 "Scarboro": "me-ms-scarborough",
 "Seacoast": "me-ms-seacoast-christian",
 "Unknown": "x-unknown",
@@ -191108,6 +191113,7 @@
 "Gray New Gloucester": "me-ms-gray-ng",
 "Greely": "me-ms-greely",
 "Lake Region": "me-ms-lake-region",
+"Memorial": "me-ms-memorial-sp",
 "Scarboro": "me-ms-scarborough",
 "Seacoast": "me-ms-seacoast-christian",
 "Unattached": "x-unattached",
@@ -191117,6 +191123,7 @@
 "Bonny Eagle": "me-ms-bonny-eagle",
 "Gorham": "me-ms-gorham",
 "Lincoln": "me-ms-lincoln-portland",
+"Memorial": "me-ms-memorial-sp",
 "Scarboro": "me-ms-scarborough",
 "Westbrook": "me-ms-westbrook",
 "Windham": "me-ms-windham"
@@ -191125,6 +191132,7 @@
 "Bonny Eagle": "me-ms-bonny-eagle",
 "Gorham": "me-ms-gorham",
 "Lincoln": "me-ms-lincoln-portland",
+"Memorial": "me-ms-memorial-sp",
 "Scarboro": "me-ms-scarborough",
 "Westbrook": "me-ms-westbrook",
 "Windham": "me-ms-windham"
@@ -193404,7 +193412,7 @@
 "Thornton": "me-hs-thornton",
 "Thornton Academy": "me-hs-thornton",
 "Windham": "me-hs-windham",
-"Windsor": "me-ms-windsor",
+"Windsor": "oos-auto-ct-windsor",
 "Woodland": "me-hs-woodland",
 "York": "me-hs-york"
 },
@@ -193416,12 +193424,12 @@
 "Noble": "me-hs-noble",
 "North Haven": "me-hs-north-haven",
 "Orono": "me-hs-orono",
-"Rockland": "me-ms-rockland",
+"Rockland": null,
 "Salem": null,
 "Staples": "oos-ct-staples-high-school",
 "Thornton": "me-hs-thornton",
 "Windham": "me-hs-windham",
-"Windsor": "me-ms-windsor",
+"Windsor": "oos-auto-ct-windsor",
 "York": "me-hs-york"
 },
 "2012/Outdoor/nobleboys_april25": {
@@ -193552,6 +193560,7 @@
 "Bonny Eagle": "me-ms-bonny-eagle",
 "Gorham": "me-ms-gorham",
 "Lincoln": "me-ms-lincoln-portland",
+"Memorial": "me-ms-memorial-sp",
 "Scarborough": "me-ms-scarborough",
 "Westbrook": "me-ms-westbrook",
 "Windham": "me-ms-windham"
@@ -193886,17 +193895,20 @@
 "Bonny Eagle": "me-ms-bonny-eagle",
 "Gorham": "me-ms-gorham",
 "Lincoln": "me-ms-lincoln-portland",
+"Memorial": "me-ms-memorial-sp",
 "Westbrook": "me-ms-westbrook"
 },
 "2012/XC/6girls1": {
 "Bonny Eagle": "me-ms-bonny-eagle",
 "Gorham": "me-ms-gorham",
-"Lincoln": "me-ms-lincoln-portland"
+"Lincoln": "me-ms-lincoln-portland",
+"Memorial": "me-ms-memorial-sp"
 },
 "2012/XC/78boysl1": {
 "Bonny Eagle": "me-ms-bonny-eagle",
 "Gorham": "me-ms-gorham",
 "Lincoln": "me-ms-lincoln-portland",
+"Memorial": "me-ms-memorial-sp",
 "Scarborough": "me-ms-scarborough",
 "Westbrook": "me-ms-westbrook"
 },
@@ -193904,6 +193916,7 @@
 "Bonny Eagle": "me-ms-bonny-eagle",
 "Gorham": "me-ms-gorham",
 "Lincoln": "me-ms-lincoln-portland",
+"Memorial": "me-ms-memorial-sp",
 "Scarborough": "me-ms-scarborough",
 "Westbrook": "me-ms-westbrook"
 },
@@ -195289,6 +195302,7 @@
 "Gray New Gloucester": "me-ms-gray-ng",
 "Greely": "me-ms-greely",
 "Lake Region": "me-ms-lake-region",
+"Memorial": "me-ms-memorial-sp",
 "North Yarmouth": "me-ms-nya",
 "Scarborough": "me-ms-scarborough",
 "Seacoast": "me-ms-seacoast-christian",
@@ -195304,6 +195318,7 @@
 "Gray New Gloucester": "me-ms-gray-ng",
 "Greely": "me-ms-greely",
 "Lake Region": "me-ms-lake-region",
+"Memorial": "me-ms-memorial-sp",
 "North Yarmouth": "me-ms-nya",
 "Scarborough": "me-ms-scarborough",
 "Seacoast": "me-ms-seacoast-christian",
@@ -201002,6 +201017,7 @@
 "Bonny Eagle": "me-ms-bonny-eagle",
 "Gorham": "me-ms-gorham",
 "Lincoln": "me-ms-lincoln-portland",
+"Memorial": "me-ms-memorial-sp",
 "SMC": "me-ms-southern-maine-catholic",
 "Scarborough": "me-ms-scarborough",
 "Westbrook": "me-ms-westbrook",
@@ -202050,7 +202066,7 @@
 "Wells": "me-hs-wells",
 "Weston": null,
 "Windham": "me-hs-windham",
-"Windsor": "me-ms-windsor",
+"Windsor": "oos-auto-ct-windsor",
 "Wiscasset": "me-hs-wiscasset",
 "Worcester Te": null,
 "Yarmouth": "me-hs-yarmouth",
@@ -202776,6 +202792,7 @@
 "Bonny Eagle": "me-ms-bonny-eagle",
 "Gorham": "me-ms-gorham",
 "Lincoln": "me-ms-lincoln-portland",
+"Memorial": "me-ms-memorial-sp",
 "SMC": "me-ms-southern-maine-catholic",
 "Westbrook": "me-ms-westbrook",
 "Windham": "me-ms-windham"
@@ -202784,6 +202801,7 @@
 "Bonny Eagle": "me-ms-bonny-eagle",
 "Gorham": "me-ms-gorham",
 "Lincoln": "me-ms-lincoln-portland",
+"Memorial": "me-ms-memorial-sp",
 "SMC": "me-ms-southern-maine-catholic",
 "Westbrook": "me-ms-westbrook",
 "Windham": "me-ms-windham"
@@ -202792,6 +202810,7 @@
 "Bonny Eagle": "me-ms-bonny-eagle",
 "Gorham": "me-ms-gorham",
 "Lincoln": "me-ms-lincoln-portland",
+"Memorial": "me-ms-memorial-sp",
 "SMC": "me-ms-southern-maine-catholic",
 "Scarborough": "me-ms-scarborough",
 "Westbrook": "me-ms-westbrook",
@@ -202801,6 +202820,7 @@
 "Bonny Eagle": "me-ms-bonny-eagle",
 "Gorham": "me-ms-gorham",
 "Lincoln": "me-ms-lincoln-portland",
+"Memorial": "me-ms-memorial-sp",
 "SMC": "me-ms-southern-maine-catholic",
 "Scarborough": "me-ms-scarborough",
 "Westbrook": "me-ms-westbrook",
@@ -203964,11 +203984,13 @@
 },
 "2015/XC/lincoln-boys.txt": {
 "Bonny Eagle": "me-ms-bonny-eagle",
-"Lincoln": "me-ms-lincoln-portland"
+"Lincoln": "me-ms-lincoln-portland",
+"Memorial": "me-ms-memorial-sp"
 },
 "2015/XC/lincoln-girls.txt": {
 "Bonny Eagle": "me-ms-bonny-eagle",
-"Lincoln": "me-ms-lincoln-portland"
+"Lincoln": "me-ms-lincoln-portland",
+"Memorial": "me-ms-memorial-sp"
 },
 "2015/XC/ljhs2": {
 "Lawrence": "me-ms-lawrence",
@@ -208390,9 +208412,11 @@
 "Windham": "me-ms-windham"
 },
 "2016/XC/lyman-moore-boys.txt": {
+"Memorial": "me-ms-memorial-sp",
 "Scarborough": "me-ms-scarborough"
 },
 "2016/XC/lyman-moore-girls.txt": {
+"Memorial": "me-ms-memorial-sp",
 "Scarborough": "me-ms-scarborough"
 },
 "2016/XC/maine-girls-academy-girls-res.txt": {
@@ -212612,6 +212636,7 @@
 "Bonny Eagle": "me-ms-bonny-eagle",
 "Gorham": "me-ms-gorham",
 "Lincoln": "me-ms-lincoln-portland",
+"Memorial": "me-ms-memorial-sp",
 "Westbrook": "me-ms-westbrook",
 "Windham": "me-ms-windham"
 },
@@ -212619,6 +212644,7 @@
 "Bonny Eagle": "me-ms-bonny-eagle",
 "Gorham": "me-ms-gorham",
 "Lincoln": "me-ms-lincoln-portland",
+"Memorial": "me-ms-memorial-sp",
 "Westbrook": "me-ms-westbrook",
 "Windham": "me-ms-windham"
 },
@@ -212626,6 +212652,7 @@
 "Bonny Eagle": "me-ms-bonny-eagle",
 "Gorham": "me-ms-gorham",
 "Lincoln": "me-ms-lincoln-portland",
+"Memorial": "me-ms-memorial-sp",
 "Scarborough": "me-ms-scarborough",
 "Westbrook": "me-ms-westbrook",
 "Windham": "me-ms-windham"
@@ -212634,6 +212661,7 @@
 "Bonny Eagle": "me-ms-bonny-eagle",
 "Gorham": "me-ms-gorham",
 "Lincoln": "me-ms-lincoln-portland",
+"Memorial": "me-ms-memorial-sp",
 "Scarborough": "me-ms-scarborough",
 "Westbrook": "me-ms-westbrook",
 "Windham": "me-ms-windham"
@@ -218881,6 +218909,7 @@
 "Lincoln": "oos-auto-ri-lincoln",
 "Maranacook": "me-hs-maranacook",
 "Mattanawcook": "me-hs-mattanawcook",
+"Memorial": null,
 "Messalonskee": "me-hs-messalonskee",
 "Mount Desert": "me-hs-mdi",
 "Mt. Ararat": "me-hs-mt-ararat",
@@ -218897,11 +218926,12 @@
 "Spruce Mountain": "me-hs-spruce-mountain",
 "Staples": "oos-ct-staples-high-school",
 "Thornton": "me-hs-thornton",
+"UThirtyTwo": "oos-vt-u-32-high-school",
 "Wells": "me-hs-wells",
 "Westbrook": "me-hs-westbrook",
 "Weston": null,
 "Windham": "me-hs-windham",
-"Windsor": "me-ms-windsor",
+"Windsor": "oos-auto-ct-windsor",
 "Wiscasset": "me-hs-wiscasset",
 "Worcester Te": null,
 "Yarmouth": "me-hs-yarmouth",
@@ -218951,10 +218981,11 @@
 "South Portland": "me-hs-south-portland",
 "Spaulding": null,
 "Thornton": "me-hs-thornton",
+"UThirtyTwo": "oos-vt-u-32-high-school",
 "Wells": "me-hs-wells",
 "Weston": "oos-auto-ct-weston",
 "Windham": "me-hs-windham",
-"Windsor": "me-ms-windsor",
+"Windsor": "oos-auto-ct-windsor",
 "Winthrop": "me-hs-winthrop",
 "Woodstock Un": "oos-auto-vt-woodstock-union",
 "York": "me-hs-york"
@@ -221445,7 +221476,8 @@
 },
 "2019/XC/lincoln-girls.txt": {
 "Gorham": "me-ms-gorham",
-"Lincoln": "me-ms-lincoln-portland"
+"Lincoln": "me-ms-lincoln-portland",
+"Memorial": "me-ms-memorial-sp"
 },
 "2019/XC/lyman-moore-19-girl.txt": {
 "Lincoln": "me-ms-lincoln-portland",
@@ -224849,21 +224881,25 @@
 "2021/XC/AUB101321B": {
 "Auburn": "me-ms-auburn",
 "Lewiston": "me-ms-lewiston",
+"Memorial": "me-ms-memorial-sp",
 "Windham": "me-ms-windham"
 },
 "2021/XC/AUB101321BT": {
 "Auburn": "me-ms-auburn",
 "Lewiston": "me-ms-lewiston",
+"Memorial": "me-ms-memorial-sp",
 "Windham": "me-ms-windham"
 },
 "2021/XC/AUB101321G": {
 "Auburn": "me-ms-auburn",
 "Lewiston": "me-ms-lewiston",
+"Memorial": "me-ms-memorial-sp",
 "Windham": "me-ms-windham"
 },
 "2021/XC/AUB101321GT": {
 "Auburn": "me-ms-auburn",
 "Lewiston": "me-ms-lewiston",
+"Memorial": "me-ms-memorial-sp",
 "Windham": "me-ms-windham"
 },
 "2021/XC/Boothbay-17-21-BOYS": {
@@ -225925,6 +225961,7 @@
 "Falmouth": "me-ms-falmouth",
 "Gorham": "me-ms-gorham",
 "Lewiston": "me-ms-lewiston",
+"Memorial": "me-ms-memorial-sp",
 "Oxford Hills": "me-ms-oxford-hills",
 "Scarborough": "me-ms-scarborough",
 "Westbrook": "me-ms-westbrook",
@@ -225936,6 +225973,7 @@
 "Falmouth": "me-ms-falmouth",
 "Gorham": "me-ms-gorham",
 "Lewiston": "me-ms-lewiston",
+"Memorial": "me-ms-memorial-sp",
 "Oxford Hills": "me-ms-oxford-hills",
 "Scarborough": "me-ms-scarborough",
 "Westbrook": "me-ms-westbrook",
@@ -225945,6 +225983,7 @@
 "Bonny Eagle": "me-ms-bonny-eagle",
 "Falmouth": "me-ms-falmouth",
 "Gorham": "me-ms-gorham",
+"Memorial": "me-ms-memorial-sp",
 "Westbrook": "me-ms-westbrook",
 "Windham": "me-ms-windham"
 },
@@ -227188,7 +227227,7 @@
 "York": "me-hs-york"
 },
 "2022/Outdoor/2022-alhs-tf-championship-boys-results": {
-"Limestone/MSSM": "me-ms-limestone",
+"Limestone/MSSM": "coop-limestone-mssm",
 "Presque Isle": "me-hs-presque-isle"
 },
 "2022/Outdoor/2022-alhs-tf-championship-girls-results": {
@@ -227246,7 +227285,7 @@
 "Islesboro Central School": "me-ms-islesboro"
 },
 "2022/Outdoor/Caribou-results": {
-"Limestone/MS": "me-ms-limestone",
+"Limestone/MS": "coop-limestone-mssm",
 "Limestone/MSSM": "coop-limestone-mssm",
 "Presque Isle": "me-hs-presque-isle"
 },
@@ -227564,7 +227603,7 @@
 "2022/Outdoor/Resultsoldrown23april2022": {
 "Bangor Chris": "me-hs-bangor-christian",
 "Bangor Christian": "me-hs-bangor-christian",
-"Limestone/MS": "me-ms-limestone",
+"Limestone/MS": "coop-limestone-mssm",
 "Limestone/MSSM": "coop-limestone-mssm",
 "Mattanawcook": "me-hs-mattanawcook",
 "Mattanawcook Academy": "me-hs-mattanawcook",
@@ -227838,6 +227877,7 @@
 "Lisbon": "me-hs-lisbon",
 "Littleton": null,
 "Marshwood": "me-hs-marshwood",
+"Memorial": null,
 "Merrimack Va": "oos-auto-nh-merrimack-va",
 "Milford": null,
 "Milton": null,
@@ -227852,11 +227892,11 @@
 "Springfield": "oos-auto-vt-springfield",
 "Staples": "oos-ct-staples-high-school",
 "Unknown": "x-unknown",
-"Uthirtytwo": "me-ms-union-122",
+"Uthirtytwo": "oos-vt-u-32-high-school",
 "Wellesley": "oos-ma-wellesley-high-school",
 "Weston": null,
 "Windham": "me-hs-windham",
-"Windsor": "me-ms-windsor",
+"Windsor": "oos-auto-ct-windsor",
 "Winslow": "me-hs-winslow",
 "Woodland": "me-hs-woodland",
 "Woodstock Ac": "oos-auto-ct-woodstock-ac",
@@ -228777,6 +228817,7 @@
 "Falmouth": "me-ms-falmouth",
 "Gorham": "me-ms-gorham",
 "Lincoln": "me-ms-lincoln-portland",
+"Memorial": "me-ms-memorial-sp",
 "Westbrook": "me-ms-westbrook",
 "Windham": "me-ms-windham"
 },
@@ -228787,6 +228828,7 @@
 "Gorham": "me-ms-gorham",
 "Lewiston": "me-ms-lewiston",
 "Lincoln": "me-ms-lincoln-portland",
+"Memorial": "me-ms-memorial-sp",
 "Oxford Hills": "me-ms-oxford-hills",
 "Scarborough": "me-ms-scarborough",
 "Westbrook": "me-ms-westbrook",
@@ -228797,6 +228839,7 @@
 "Falmouth": "me-ms-falmouth",
 "Gorham": "me-ms-gorham",
 "Lincoln": "me-ms-lincoln-portland",
+"Memorial": "me-ms-memorial-sp",
 "Westbrook": "me-ms-westbrook",
 "Windham": "me-ms-windham"
 },
@@ -228807,6 +228850,7 @@
 "Gorham": "me-ms-gorham",
 "Lewiston": "me-ms-lewiston",
 "Lincoln": "me-ms-lincoln-portland",
+"Memorial": "me-ms-memorial-sp",
 "Oxford Hills": "me-ms-oxford-hills",
 "Scarborough": "me-ms-scarborough",
 "Westbrook": "me-ms-westbrook",
@@ -229198,6 +229242,7 @@
 "Framingham-MA 'A'": "oos-ma-framingham-high-school",
 "Fryeburg": "me-hs-fryeburg",
 "Lincoln": "oos-auto-ri-lincoln",
+"Memorial": null,
 "Mt. Desert": "me-hs-mdi",
 "N Smithfield": "oos-auto-ri-north-smithfield",
 "Sacred Heart": "col-sacred-heart",
@@ -229805,7 +229850,7 @@
 "Bangor Chris": "me-hs-bangor-christian",
 "Buckfield": "me-hs-buckfield",
 "Islesboro": "me-hs-islesboro",
-"Limestone/MS": "me-ms-limestone",
+"Limestone/MS": "coop-limestone-mssm",
 "Madison Area": "me-hs-madison",
 "Maranacook C": "me-hs-maranacook",
 "Mattanawcook": "me-hs-mattanawcook",
@@ -229826,7 +229871,7 @@
 "Bangor Chris": "me-hs-bangor-christian",
 "Bangor Christian": "me-hs-bangor-christian",
 "Buckfield": "me-hs-buckfield",
-"Limestone/MS": "me-ms-limestone",
+"Limestone/MS": "coop-limestone-mssm",
 "Madison Area": "me-hs-madison",
 "Maranacook C": "me-hs-maranacook",
 "Mattanawcook": "me-hs-mattanawcook",
@@ -230320,7 +230365,7 @@
 "Bangor Chris": "me-ms-bangor-christian"
 },
 "2023/Outdoor/bangor22april2023": {
-"Limestone/MS": "me-ms-limestone",
+"Limestone/MS": "coop-limestone-mssm",
 "Limestone/MSSM": "coop-limestone-mssm"
 },
 "2023/Outdoor/bangor29april2023-1": {
@@ -230385,7 +230430,7 @@
 "Messalonskee": "me-hs-messalonskee"
 },
 "2023/Outdoor/mdi29april2023": {
-"Limestone/MS": "me-ms-limestone",
+"Limestone/MS": "coop-limestone-mssm",
 "Limestone/MSSM": "coop-limestone-mssm",
 "Presque Isle": "me-hs-presque-isle"
 },
@@ -232561,7 +232606,7 @@
 "2024/Outdoor/bangorboys11may2024": {
 "Bangor Chris": "me-hs-bangor-christian",
 "Bangor Christian": "me-hs-bangor-christian",
-"Limestone/MS": "me-ms-limestone",
+"Limestone/MS": "coop-limestone-mssm",
 "Limestone/MSSM": "coop-limestone-mssm",
 "Presque Isle": "me-hs-presque-isle"
 },
@@ -232572,7 +232617,7 @@
 "2024/Outdoor/bangorgirls11may2024": {
 "Bangor Chris": "me-hs-bangor-christian",
 "Bangor Christian": "me-hs-bangor-christian",
-"Limestone/MS": "me-ms-limestone",
+"Limestone/MS": "coop-limestone-mssm",
 "Presque Isle": "me-hs-presque-isle"
 },
 "2024/Outdoor/bangorgirls27april2024": {
@@ -232844,10 +232889,10 @@
 "Piscataquis": "me-ms-piscataquis"
 },
 "2024/Outdoor/nokomisms13may2024": {
-"Islesboro Ce": "me-ms-islesboro",
-"Medomak Vall": "me-ms-medomak",
-"Mt. View": "me-ms-mt-view",
-"Skowhegan Ar": "me-ms-skowhegan"
+"Islesboro Ce": "me-hs-islesboro",
+"Medomak Vall": "me-hs-medomak",
+"Mt. View": "me-hs-mt-view",
+"Skowhegan Ar": "me-hs-skowhegan"
 },
 "2024/Outdoor/oldtownboys19april2024-1": {
 "Houlton/Hodg": "coop-houlton-hodgdon",
@@ -238987,9 +239032,8 @@
 "LimestoneMSSM": {
 "id": "coop-limestone-mssm",
 "held": {
-"coop-limestone-mssm": 2619,
+"coop-limestone-mssm": 3004,
 "me-hs-limestone": 322,
-"me-ms-limestone": 32,
 "me-hs-mssm": 21
 }
 },
@@ -240735,6 +240779,20 @@
 ],
 "id": null,
 "method": "unresolved",
+"how": "unresolved"
+},
+{
+"raw": "St. George's",
+"rows": 42,
+"seasons": {
+"Outdoor": 42
+},
+"years": [
+2014,
+2014
+],
+"id": null,
+"method": "manual (file rule: unidentified)",
 "how": "unresolved"
 },
 {
@@ -265525,6 +265583,20 @@
 ],
 "id": null,
 "method": "unresolved",
+"how": "unresolved"
+},
+{
+"raw": "Milford -",
+"rows": 1,
+"seasons": {
+"Indoor": 1
+},
+"years": [
+2011,
+2011
+],
+"id": null,
+"method": "manual (file rule: unidentified)",
 "how": "unresolved"
 },
 {

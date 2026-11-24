@@ -3041,6 +3041,7 @@ class Sub5ScraperV2:
                 # "ms-<slug>": a MileSplit transcription's file prefix, not "middle school"
                 low = re.sub(r'[-_.]+', ' ', re.sub(r'^ms-(?=[a-z0-9])', '', f"{filename} {meet_name}").lower())
                 low = re.sub(r'\bst\.? doms?\b', 'st dominic', low)   # "St. Doms" is a school, not an MS code
+                low = low.replace('nokomisms13may2024', 'nokomis13may2024')   # a high-school meet (grades 9-12)
                 if re.search(r'\bms\b|\bjh\b|middle school|junior high|elementary|middle(?!ton|bury|sex|boro)|^jh|xcjh|juniorhigh|jh(?:xc|cc|boys|girls|champ|meet)|[a-z](?<!tea)(?<!ra)ms(\b|\d)', low):
                     meet_level = 'ms'
                 elif re.search(r'\bcollege\b|university|collegiate|gnac|nescac', low):
