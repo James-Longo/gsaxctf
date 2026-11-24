@@ -2694,6 +2694,7 @@ FILE_RULES += [
     (['runswick 2008-Sprin'], 'Outdoor', (2008, 2008), r'^brunswick_may15$', 'me-hs-brunswick'),
     (['aterville HS'], 'Outdoor', (2008, 2008), r'^brunswick_may15$', 'me-hs-waterville'),
     (['ony High School'], 'Outdoor', (2008, 2008), r'^brunswick_may15$', 'me-hs-cony'),
+    (['Lisbon High School/Oak Hill Hi'], 'Outdoor', (2024, 2024), r'^Wiscasset-42324$', 'coop-ot-lisbon-oak-hill'),
     (['ONY'], 'Outdoor', (2006, 2006), r'^brunswick4_20$', 'me-hs-cony'),
     (['IN2'], 'Outdoor', (2006, 2006), r'^brunswick4_20$', 'me-hs-winslow'),
     (['t. Ararat High Schoo'], 'Outdoor', (2008, 2008), r'^brunswick_may15$', 'me-hs-mt-ararat'),

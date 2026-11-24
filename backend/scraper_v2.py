@@ -730,6 +730,8 @@ def strip_nickname(name):
     s = re.sub(r"(?<=[a-z])\s*\((?:[A-Z][A-Za-z'-]{0,11})\)?(?=\s*(?:,|$))", '', s)
     s = re.sub(r'\s*\([A-Z]\)?(?=\s|,|$)', '', s)   # a one-letter co-op tag anywhere: 'Fleming, Miles (H)'
     s = re.sub(r'(?<=[a-z])\s+-\s?[A-Z]$', '', s)    # ... or after a dash: 'Colin Harrington - U', 'Liz Jones - V'
+    if ')' not in s:                                   # a nickname cut by the sheet's column: 'Alexandra (Alli Herring'
+        s = re.sub(r'(?<=[a-z]) \([A-Za-z]+(?= [A-Z])', '', s)
     s = re.sub(r'^\(\s*[A-Z][a-z]+\)\s+(?=\S+\s+\S)', '', s)   # a nickname printed before the name: '(Cody) Kaitlyn Smithner', '( Ace) Mariah Santos'
     return re.sub(r'\s+', ' ', s).strip() or name
 

@@ -35,6 +35,9 @@ def test_squad_letter_dropped_from_surname():
     assert RS.normalize_athlete_name(me, 'Hunter - A, Cynthia') == 'Cynthia Hunter'
     assert RS.normalize_athlete_name(me, 'Penney -, Bobby') == 'Bobby Penney'
     assert RS.normalize_athlete_name(me, 'Smith-Jones, Ann') == 'Ann Smith-Jones'
+    assert RS.normalize_athlete_name(me, 'Alexandra (Alli Herring') == 'Alexandra Herring'
+    assert RS.normalize_athlete_name(me, 'Herring, Alexandra (Alli') == 'Alexandra Herring'
+    assert RS.normalize_athlete_name(me, 'Hung (Brian) Dang') == 'Hung (Brian) Dang'
     # what PDFs and web pages leave in names
     for raw, want in (("Indra\u00c2 O'Donnell", "Indra O'Donnell"), ('Aiden Ho\ufb00man', 'Aiden Hoffman'),
                       ('Ashley\u2020 Lister\u2020\u2020', 'Ashley Lister'), ('Cormier \u2013', 'Cormier'), ('Leonardi\u2010', 'Leonardi'),

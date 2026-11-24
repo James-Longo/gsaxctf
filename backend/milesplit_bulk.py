@@ -396,6 +396,19 @@ def track_event_homes(doc, year, season, skip=()):
             out.append(top[0] if top and top[1] == len(ks) else 'small')
             continue
         out.append(top[0] if top and top[1] >= 0.5 * len(ks) else None)
+    # a field event's round marks, or a race of one or two, can repeat at another meet days apart (Brown
+    # 4-00 on 5/16 and 5/20/2024; Cairns 4-2 and Remillard 4-0 on 4/30 and 5/4/2026): away from the meet's
+    # own day such an event is held only when a timed race of 3 or more, or 3 events, have that same home
+    timed, homes = set(), collections.Counter(h for h in out if h and h != 'small')
+    weak = []
+    for e, h in zip(doc.get('events', []), out):
+        field = bool(re.search(r'(?i)jump|vault|shot|discus|javelin|throw|hammer', str(e.get('event'))))
+        weak.append(field or len(_mark_keys(dict(events=[e]))) < 3)
+        if h and h != 'small' and not weak[-1]:
+            timed.add(h)
+    for i, h in enumerate(out):
+        if h and h != 'small' and weak[i] and h not in timed and homes[h] < 3 and d0 and dates.get(h) != d0:
+            out[i] = None
     return out
 
 

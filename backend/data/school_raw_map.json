@@ -1,14 +1,14 @@
 {
 "_meta": {
 "methods_by_rows": {
-"exact/alias": 2082084,
+"exact/alias": 2082082,
 "code": 260243,
 "truncation": 123286,
 "athlete-continuity": 53773,
 "mascot": 28851,
 "bare name + level context": 28406,
-"manual (file rule)": 20562,
-"unresolved": 17392,
+"manual (file rule)": 20568,
+"unresolved": 17386,
 "co-op label": 15238,
 "state-tagged (auto entry)": 9842,
 "spelling (fuzzy)": 3436,
@@ -23,7 +23,7 @@
 },
 "methods_by_strings": {
 "exact/alias": 4187,
-"unresolved": 2083,
+"unresolved": 2082,
 "state-tagged (auto entry)": 1571,
 "debris-salvage": 913,
 "debris": 713,
@@ -31,7 +31,7 @@
 "truncation": 531,
 "athlete-continuity": 470,
 "spelling (fuzzy)": 288,
-"manual (file rule)": 240,
+"manual (file rule)": 241,
 "co-op label": 79,
 "bare name + level context": 78,
 "mascot": 40,
@@ -2136,9 +2136,9 @@
 "how": "truncation"
 },
 "Falmouth Middle School": {
-"rows": 6471,
+"rows": 6469,
 "seasons": {
-"Outdoor": 1345,
+"Outdoor": 1343,
 "XC": 460,
 "Indoor": 4666
 },
@@ -4448,20 +4448,6 @@
 },
 "how": "truncation"
 },
-"Lewiston MS": {
-"rows": 2930,
-"seasons": {
-"XC": 159,
-"Outdoor": 2771
-},
-"years": [
-2009,
-2026
-],
-"id": "me-ms-lewiston",
-"method": "exact",
-"how": "exact/alias"
-},
 "Lawrence Hig": {
 "rows": 2928,
 "seasons": {
@@ -4474,6 +4460,20 @@
 2026
 ],
 "id": "me-hs-lawrence",
+"method": "exact",
+"how": "exact/alias"
+},
+"Lewiston MS": {
+"rows": 2927,
+"seasons": {
+"XC": 159,
+"Outdoor": 2768
+},
+"years": [
+2009,
+2026
+],
+"id": "me-ms-lewiston",
 "method": "exact",
 "how": "exact/alias"
 },
@@ -5438,10 +5438,10 @@
 "how": "exact/alias"
 },
 "Westbrook MS": {
-"rows": 2310,
+"rows": 2309,
 "seasons": {
 "XC": 173,
-"Outdoor": 1240,
+"Outdoor": 1239,
 "Indoor": 897
 },
 "years": [
@@ -6113,9 +6113,9 @@
 "how": "exact/alias"
 },
 "Massabesic MS": {
-"rows": 1908,
+"rows": 1911,
 "seasons": {
-"Outdoor": 888,
+"Outdoor": 891,
 "XC": 320,
 "Indoor": 700
 },
@@ -7180,10 +7180,10 @@
 "how": "exact/alias"
 },
 "Shapleigh Middle School": {
-"rows": 1493,
+"rows": 1494,
 "seasons": {
 "XC": 584,
-"Outdoor": 909
+"Outdoor": 910
 },
 "years": [
 2006,
@@ -77086,9 +77086,13 @@
 2024,
 2024
 ],
-"id": null,
-"method": "unresolved",
-"how": "unresolved"
+"id": "coop-ot-lisbon-oak-hill",
+"method": "manual (file rule)",
+"by_id": {
+"coop-ot-lisbon-oak-hill": 6
+},
+"context_dependent": true,
+"how": "manual (file rule)"
 },
 "Easton Jr/Sr": {
 "rows": 6,
@@ -232826,6 +232830,7 @@
 "Westbrook High School": "me-hs-westbrook"
 },
 "2024/Outdoor/Wiscasset-42324": {
+"Lisbon High School/Oak Hill Hi": "coop-ot-lisbon-oak-hill",
 "Maranacook C": "me-hs-maranacook",
 "Monmouth Academy": "me-hs-monmouth"
 },
@@ -246607,20 +246612,6 @@
 "years": [
 2022,
 2022
-],
-"id": null,
-"method": "unresolved",
-"how": "unresolved"
-},
-{
-"raw": "Lisbon High School/Oak Hill Hi",
-"rows": 6,
-"seasons": {
-"Outdoor": 6
-},
-"years": [
-2024,
-2024
 ],
 "id": null,
 "method": "unresolved",
