@@ -2534,6 +2534,13 @@ class Sub5ScraperV2:
             except (UnicodeEncodeError, UnicodeDecodeError):
                 pass
         name = name.replace('\u2019', "'")
+        # what a PDF or web page leaves in a name: a non-breaking space's first byte ('Indra\u00c2 O'Donnell'), joined
+        # letters ('Ho\ufb00man'), typographic hyphens and quotes, footnote daggers, a dash trailing a lone surname
+        name = re.sub('\u00c2(?=\\s)', '', name)
+        name = re.sub('[\ufb00-\ufb04]', lambda m: ('ff', 'fi', 'fl', 'ffi', 'ffl')[ord(m.group()) - 0xfb00], name)
+        name = re.sub('\\s*[\u2010\u2013]\\s*$', '', name.replace('\u2020', ' '))
+        name = re.sub('-?[\u2010\u2011]', '-', re.sub('\\s*\u2013\\s*(?=\\w\\w)', '-', name)).replace('\u2013', '-')
+        name = re.sub('[\u0080\u201c\u201d]', '"', name)
         name = re.sub(r'\s+', ' ', name.replace('\ufffd', ' ')).strip()   # (an undecodable byte: 'Laakkonen, Otto \ufffd', 2018 Phillips Exeter; a double space, 'Anthony  Quintiliani', 2010 Triple C, splits a runner)
         name = re.sub(r'^[\s#\-]*\d+[\s.\-]*', '', name).strip()
         # (a hyphenated name typed with a space on one side, 'Lorelei Crossman- King', 'Alan -Michael Fogg',

@@ -35,6 +35,13 @@ def test_squad_letter_dropped_from_surname():
     assert RS.normalize_athlete_name(me, 'Hunter - A, Cynthia') == 'Cynthia Hunter'
     assert RS.normalize_athlete_name(me, 'Penney -, Bobby') == 'Bobby Penney'
     assert RS.normalize_athlete_name(me, 'Smith-Jones, Ann') == 'Ann Smith-Jones'
+    # what PDFs and web pages leave in names
+    for raw, want in (("Indra\u00c2 O'Donnell", "Indra O'Donnell"), ('Aiden Ho\ufb00man', 'Aiden Hoffman'),
+                      ('Ashley\u2020 Lister\u2020\u2020', 'Ashley Lister'), ('Cormier \u2013', 'Cormier'), ('Leonardi\u2010', 'Leonardi'),
+                      ('Booth-\u2010Howe', 'Booth-Howe'), ('Burgess \u2013 MacDonald', 'Burgess-MacDonald'),
+                      ('Wilcox \u2013 A, Jessie', 'Jessie Wilcox'), ('Henry O\u201dShaughnessy', "Henry O'Shaughnessy"),
+                      ('Sylvester\u00c2\u00a0Larsen', 'Sylvester Larsen'), ('Jos\u00e9 Pe\u00f1a', 'Jos\u00e9 Pe\u00f1a')):
+        assert RS.normalize_athlete_name(me, raw) == want, (raw, RS.normalize_athlete_name(me, raw))
 
 
 if __name__ == '__main__':
