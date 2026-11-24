@@ -2996,22 +2996,12 @@ class Sub5ScraperV2:
                     # its own file when that names one of the days
                     if date and date in self.web_date_days(web_date_raw):
                         parsed_d = date
-                    # A file whose own date is more than a few days BEFORE
-                    # the index's keeps it: the index is keyed by file name
-                    # ("Results1.htm" is reused across a season) and lags
-                    # ("PVC meet #3 - 5/2/03" listed on 5/9). Only earlier: a
-                    # file with no title date has only its Hy-Tek print
-                    # stamp, which is on or after the meet.
-                    if date and parsed_d and season != 'XC':
-                        try:
-                            from datetime import date as _d
-                            # (not 1-3 days: files named for their day, "WMC1_JAN22", carry
-                            # a sheet date a day early; the KVAC Class B posting lags are
-                            # dated by meet_corrections from MileSplit instead)
-                            if (_d.fromisoformat(parsed_d) - _d.fromisoformat(date)).days > 3:
-                                parsed_d = date
-                        except ValueError:
-                            pass
+                    # The index's date wins over the sheet's. A title dated before the
+                    # index is a Hy-Tek meet reused by the timer (the SMAA championship
+                    # titled with the opening meet's 4/18): of 63 such files whose runners
+                    # also ran in another file that day, all 63 fit the index's date
+                    # (2026-11-24). A sheet dated AFTER the index (sub5 reused 'Results.htm'
+                    # for a later meet) is corrected one by one in meet_corrections.
                     if self.is_date_in_season(parsed_d, season, year):
                         date = parsed_d
                 if not date:
