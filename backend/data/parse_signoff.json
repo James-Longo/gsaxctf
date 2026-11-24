@@ -66374,11 +66374,11 @@
   "evidence": "reader compared every row (event, place, name, school, mark, relays, team scores) with the source; fixes by override or school rule"
  },
  "backend/data/parsed_results/2025/Outdoor/2025-pvc-tf-week-3-caribou-results.json": {
-  "parse_sha": "8ebb6eb10e4b177e",
+  "parse_sha": "86932dd94e3dc110",
   "source_sha": "78cf3df07ba343f6",
-  "date": "2026-10-28",
-  "by": "Outdoor second read 2026-10-28 (t1, 2025): read against the source",
-  "evidence": "reader compared every row (event, place, name, school, mark, relays, team scores) with the source; fixes by override or school rule"
+  "date": "2026-11-24",
+  "by": "loop-claude",
+  "evidence": "2025 coach read 2026-11-24: far-outlier marks dropped or name fixed; rest of file as signed before"
  },
  "backend/data/parsed_results/2025/Outdoor/Almquist-boys-results.json": {
   "parse_sha": "06f2e454bd89efe9",
@@ -66500,11 +66500,11 @@
   "evidence": "Hy-Tek sheet checked row by row by script (event title incl. gender, place, name, mark with J/X/q/R flags stripped, school string present on the source line, grade) plus relay legs: zero differences. 36 events / 340 rows. 'Erskine Academy - 5/1/2025', date printed. Team rankings 'Women/Men - Team Rankings - 19 Events Scored' (4 teams each) stored exactly as printed. Boys High Jump: two FAIL rows (Shedyak, Pontillo, Mt. View) stored as status FAIL with place None, J-flagged jump-off marks kept as 5-06.00/5-00.00. Schools Erskine Acad, Lincoln Acad, Mt. View->me-hs-mt-view (Mount View HS, Thorndike), Oceanside Hi. Ledger warning (3 implausible): Swartzentruber javelin/discus marks printed in source; real. gender-bleed flag: no athlete appears in both genders inside this file (name or name+school), so it comes from athlete-id merging across meets, not the parse."
  },
  "backend/data/parsed_results/2025/Outdoor/Falmouth-MS-5525-results.json": {
-  "parse_sha": "20e7e5c165d3fa71",
+  "parse_sha": "2ba02ba70d02ff34",
   "source_sha": "c2f2e861f94204aa",
-  "date": "2026-11-17",
+  "date": "2026-11-24",
   "by": "loop-claude",
-  "evidence": "re-sign: changed only by the 2025 cut-name sweep (names cut at the sheet name column restored to the unique full form printed for the same school that season; diff = athlete names only)"
+  "evidence": "2025 coach read 2026-11-24: far-outlier marks dropped or name fixed; rest of file as signed before"
  },
  "backend/data/parsed_results/2025/Outdoor/Falmouth-results.json": {
   "parse_sha": "d81ac4e8465f780f",
@@ -66724,11 +66724,11 @@
   "evidence": "Waterville Jr. High School meet 5/21/2025 (Waterville, Messalonskee, Mt. Blue, Mt. View, Skowhegan, Winslow, Lawrence, Madison, Warsaw, Carrabec JHs); 32 events, 807 rows: all agree; all schools resolve to me-ms-* entries (middle schools). Printed points reproduce all 20 team scores (checker 'verified'). The 4 'implausible' flags are printed marks (Pillsbury javelin 111-00, Barker discus 70-00, Toole javelin 69-06 ...). Events are not split by grade here. Checked every event and row against the source (place, name, school, mark, relay legs, 'x' exhibition marks); the parse has the same events in the same order with equal row counts."
  },
  "backend/data/parsed_results/2025/Outdoor/Westbrook-MS51225-results.json": {
-  "parse_sha": "00e0b94dd8e3a43a",
+  "parse_sha": "1ccef3915ccb738e",
   "source_sha": "2446d21e4b6e0dcb",
-  "date": "2026-11-17",
+  "date": "2026-11-24",
   "by": "loop-claude",
-  "evidence": "re-sign: changed only by the 2025 cut-name sweep (names cut at the sheet name column restored to the unique full form printed for the same school that season; diff = athlete names only)"
+  "evidence": "2025 coach read 2026-11-24: far-outlier marks dropped or name fixed; rest of file as signed before"
  },
  "backend/data/parsed_results/2025/Outdoor/WinsResults.json": {
   "parse_sha": "73a37e80d7f1c6dd",
@@ -67102,11 +67102,11 @@
   "evidence": "o25a: two reviewers compared every stored row with the cached MileSplit source by script (name, mark, school, grade, date, legs; team scores reproduced or explained by the sheet scoring); cut names restored, 3 impossible marks dropped; rebuild verified (drops diff, store_drift, sanity)"
  },
  "backend/data/parsed_results/2025/Outdoor/ms-brunswick-meet-1-2025.json": {
-  "parse_sha": "3b371e9dd1c0c3d2",
-  "source_sha": "c0e6629dbc085549",
-  "date": "2026-11-17",
+  "parse_sha": "7c707149dcf70987",
+  "source_sha": "81b5beae84568490",
+  "date": "2026-11-24",
   "by": "loop-claude",
-  "evidence": "o25a: two reviewers compared every stored row with the cached MileSplit source by script (name, mark, school, grade, date, legs; team scores reproduced or explained by the sheet scoring); cut names restored, 3 impossible marks dropped; rebuild verified (drops diff, store_drift, sanity)"
+  "evidence": "2025 coach read 2026-11-24: far-outlier marks dropped or name fixed; rest of file as signed before"
  },
  "backend/data/parsed_results/2025/Outdoor/ms-busline-ms-wiscasset-boothbay-gsb-oceanside-medomak-2025.json": {
   "parse_sha": "3c4cff7b98c39f13",
@@ -67277,11 +67277,11 @@
   "evidence": "o25b: two reviewers compared every stored row with the cached MileSplit postings by script (name, mark, school, grade, date, legs; team scores reproduced or explained by the sheet scoring); fixes: cut names, second-posting race copies, shot put rows spliced into discus, impossible marks dropped, Greely-York @ Poland main posting (1170823, 477 rows) ingested; rebuild verified (drops diff, store_drift, sanity, qualifiers)"
  },
  "backend/data/parsed_results/2025/Outdoor/ms-hs-biddeford-cheverus-noble-westbrook-2025.json": {
-  "parse_sha": "23c5c8460a1e63a8",
-  "source_sha": "bd3cb0c08fae3481",
-  "date": "2026-11-17",
+  "parse_sha": "b2554aed7eecadd8",
+  "source_sha": "d0140ae79cd08f86",
+  "date": "2026-11-24",
   "by": "loop-claude",
-  "evidence": "re-sign 2026-11-17: single slow/short marks sorted in place on the sheet restored as recorded attempts (rule: memory slow-marks-stay); whole heats on a faulty clock dropped (Marshwood girls 100 heat 1 places 13-17, BCS girls 50 heat 5)"
+  "evidence": "2025 coach read 2026-11-24: far-outlier marks dropped or name fixed; rest of file as signed before"
  },
  "backend/data/parsed_results/2025/Outdoor/ms-hs-biddeford-sanford-scarborough-windham-2025.json": {
   "parse_sha": "338ca090e08e6ab6",
@@ -67291,11 +67291,11 @@
   "evidence": "o25b: two reviewers compared every stored row with the cached MileSplit postings by script (name, mark, school, grade, date, legs; team scores reproduced or explained by the sheet scoring); fixes: cut names, second-posting race copies, shot put rows spliced into discus, impossible marks dropped, Greely-York @ Poland main posting (1170823, 477 rows) ingested; rebuild verified (drops diff, store_drift, sanity, qualifiers)"
  },
  "backend/data/parsed_results/2025/Outdoor/ms-hs-biddeford-thornton-kennebunk-2025.json": {
-  "parse_sha": "396ba212dcfeb6cb",
-  "source_sha": "779c5b2911b30047",
-  "date": "2026-11-17",
+  "parse_sha": "1ece33e8be0ac731",
+  "source_sha": "7ba323517dc72607",
+  "date": "2026-11-24",
   "by": "loop-claude",
-  "evidence": "o25b: two reviewers compared every stored row with the cached MileSplit postings by script (name, mark, school, grade, date, legs; team scores reproduced or explained by the sheet scoring); fixes: cut names, second-posting race copies, shot put rows spliced into discus, impossible marks dropped, Greely-York @ Poland main posting (1170823, 477 rows) ingested; rebuild verified (drops diff, store_drift, sanity, qualifiers)"
+  "evidence": "2025 coach read 2026-11-24: far-outlier marks dropped or name fixed; rest of file as signed before"
  },
  "backend/data/parsed_results/2025/Outdoor/ms-hs-kents-hill-buckfield-dirigo-spruce-mtn-telstar-2025.json": {
   "parse_sha": "8ea71b0198e9c9e8",
@@ -67305,11 +67305,11 @@
   "evidence": "o25b: two reviewers compared every stored row with the cached MileSplit postings by script (name, mark, school, grade, date, legs; team scores reproduced or explained by the sheet scoring); fixes: cut names, second-posting race copies, shot put rows spliced into discus, impossible marks dropped, Greely-York @ Poland main posting (1170823, 477 rows) ingested; rebuild verified (drops diff, store_drift, sanity, qualifiers)"
  },
  "backend/data/parsed_results/2025/Outdoor/ms-hs-marshwood-sanford-noblemassabesic-2025.json": {
-  "parse_sha": "5ddc902082ffcaa3",
-  "source_sha": "9aa1446f74460c5b",
-  "date": "2026-11-17",
+  "parse_sha": "b5fc75c4c9c3158a",
+  "source_sha": "67130078d1ad2673",
+  "date": "2026-11-24",
   "by": "loop-claude",
-  "evidence": "o25b: two reviewers compared every stored row with the cached MileSplit postings by script (name, mark, school, grade, date, legs; team scores reproduced or explained by the sheet scoring); fixes: cut names, second-posting race copies, shot put rows spliced into discus, impossible marks dropped, Greely-York @ Poland main posting (1170823, 477 rows) ingested; rebuild verified (drops diff, store_drift, sanity, qualifiers)"
+  "evidence": "2025 coach read 2026-11-24: far-outlier marks dropped or name fixed; rest of file as signed before"
  },
  "backend/data/parsed_results/2025/Outdoor/ms-hs-portland-bonny-eagle-noble-2025.json": {
   "parse_sha": "91b35433c4187d54",
@@ -67466,18 +67466,18 @@
   "evidence": "o25c: two reviewers compared every stored row with the cached MileSplit postings (Last Chance: the host Google Sheet) by script; fixes: cut names, mis-decoded apostrophe, Wells MS duplicate LJ copies, impossible marks dropped; full rebuild verified (drops diff, store_drift, sanity, qualifiers)"
  },
  "backend/data/parsed_results/2025/Outdoor/ms-messalonskee-junior-high-meet-2025.json": {
-  "parse_sha": "e05c51e745aee825",
-  "source_sha": "156db61aa48e7bd7",
-  "date": "2026-11-17",
+  "parse_sha": "9d25f5d6ddfefd4b",
+  "source_sha": "766ba858ad9c4470",
+  "date": "2026-11-24",
   "by": "loop-claude",
-  "evidence": "o25c: two reviewers compared every stored row with the cached MileSplit postings (Last Chance: the host Google Sheet) by script; fixes: cut names, mis-decoded apostrophe, Wells MS duplicate LJ copies, impossible marks dropped; full rebuild verified (drops diff, store_drift, sanity, qualifiers)"
+  "evidence": "2025 coach read 2026-11-24: far-outlier marks dropped or name fixed; rest of file as signed before"
  },
  "backend/data/parsed_results/2025/Outdoor/ms-ms-auburn-bonny-eagle-lewistonoxford-hills-2025.json": {
-  "parse_sha": "a174d8779b4d5136",
-  "source_sha": "2603c187b74c0be5",
-  "date": "2026-11-17",
+  "parse_sha": "f5b0f62d8267621c",
+  "source_sha": "af6620858f95b627",
+  "date": "2026-11-24",
   "by": "loop-claude",
-  "evidence": "o25c: two reviewers compared every stored row with the cached MileSplit postings (Last Chance: the host Google Sheet) by script; fixes: cut names, mis-decoded apostrophe, Wells MS duplicate LJ copies, impossible marks dropped; full rebuild verified (drops diff, store_drift, sanity, qualifiers)"
+  "evidence": "2025 coach read 2026-11-24: far-outlier marks dropped or name fixed; rest of file as signed before"
  },
  "backend/data/parsed_results/2025/Outdoor/ms-ms-biddeford-marshwood-noble-wells-2025.json": {
   "parse_sha": "712b22599d35de4e",
@@ -67487,11 +67487,11 @@
   "evidence": "re-sign 2026-11-17: single slow/short marks sorted in place on the sheet restored as recorded attempts (rule: memory slow-marks-stay); whole heats on a faulty clock dropped (Marshwood girls 100 heat 1 places 13-17, BCS girls 50 heat 5)"
  },
  "backend/data/parsed_results/2025/Outdoor/ms-ms-biddeford-massabesic-saco-sanford-2025.json": {
-  "parse_sha": "a16d577e10d62ed3",
-  "source_sha": "0a08418712889c99",
-  "date": "2026-11-17",
+  "parse_sha": "1126e23455b67212",
+  "source_sha": "a9ba5f43d27f1e21",
+  "date": "2026-11-24",
   "by": "loop-claude",
-  "evidence": "o25c: two reviewers compared every stored row with the cached MileSplit postings (Last Chance: the host Google Sheet) by script; fixes: cut names, mis-decoded apostrophe, Wells MS duplicate LJ copies, impossible marks dropped; full rebuild verified (drops diff, store_drift, sanity, qualifiers)"
+  "evidence": "2025 coach read 2026-11-24: far-outlier marks dropped or name fixed; rest of file as signed before"
  },
  "backend/data/parsed_results/2025/Outdoor/ms-ms-biddeford-saco-thornton-academy-2025.json": {
   "parse_sha": "e159e341a6107a62",
@@ -67536,11 +67536,11 @@
   "evidence": "o25d: 2 reviewers vs MileSplit cache; Noble 800 placeholders, Wise DT 7-10, Bilodeau JT 4-0 dropped; Roush girls 7th HJ added; Somersworth MS (NH) given its own school; full resync, drops/drift explained, no sanity rises"
  },
  "backend/data/parsed_results/2025/Outdoor/ms-ms-king-so-portland-lyman-moore-smc-bonny-eagle-2025.json": {
-  "parse_sha": "0c63d71bb7a02ca6",
-  "source_sha": "f3751b192dbc8d86",
-  "date": "2026-11-17",
+  "parse_sha": "d94065ce38f7498a",
+  "source_sha": "e38ab6de382cd42d",
+  "date": "2026-11-24",
   "by": "loop-claude",
-  "evidence": "o25d: 2 reviewers vs MileSplit cache; Noble 800 placeholders, Wise DT 7-10, Bilodeau JT 4-0 dropped; Roush girls 7th HJ added; Somersworth MS (NH) given its own school; full resync, drops/drift explained, no sanity rises"
+  "evidence": "2025 coach read 2026-11-24: far-outlier marks dropped or name fixed; rest of file as signed before"
  },
  "backend/data/parsed_results/2025/Outdoor/ms-ms-lincoln-bonny-eagle-smc-auburnwindham-2025.json": {
   "parse_sha": "7f976d9df6bf0bd0",
@@ -67557,11 +67557,11 @@
   "evidence": "Second posting's repeated races (times 0.01 off, same place and round) dropped; first posting kept, per drop_reposted rule."
  },
  "backend/data/parsed_results/2025/Outdoor/ms-ms-marshwood-shapleigh-york-kennebunk-2025.json": {
-  "parse_sha": "b6c26a58e52a7f20",
-  "source_sha": "40926de031cb614b",
-  "date": "2026-11-17",
+  "parse_sha": "c9268d7525a87630",
+  "source_sha": "d95482be0a1a2d25",
+  "date": "2026-11-24",
   "by": "loop-claude",
-  "evidence": "re-sign 2026-11-17: single slow/short marks sorted in place on the sheet restored as recorded attempts (rule: memory slow-marks-stay); whole heats on a faulty clock dropped (Marshwood girls 100 heat 1 places 13-17, BCS girls 50 heat 5)"
+  "evidence": "2025 coach read 2026-11-24: far-outlier marks dropped or name fixed; rest of file as signed before"
  },
  "backend/data/parsed_results/2025/Outdoor/ms-ms-noble-thornton-wells-2025.json": {
   "parse_sha": "e407b5c901aa98c8",
@@ -67585,11 +67585,11 @@
   "evidence": "o25d: 2 reviewers vs MileSplit cache; Noble 800 placeholders, Wise DT 7-10, Bilodeau JT 4-0 dropped; Roush girls 7th HJ added; Somersworth MS (NH) given its own school; full resync, drops/drift explained, no sanity rises"
  },
  "backend/data/parsed_results/2025/Outdoor/ms-ms-scarborough-smc-westbrook-king-gorham-2025.json": {
-  "parse_sha": "8ddcf837142021e1",
-  "source_sha": "3b3afd61580bf13f",
-  "date": "2026-11-17",
+  "parse_sha": "09617077cf502be2",
+  "source_sha": "633b068fffa14325",
+  "date": "2026-11-24",
   "by": "loop-claude",
-  "evidence": "o25d: 2 reviewers vs MileSplit cache; Noble 800 placeholders, Wise DT 7-10, Bilodeau JT 4-0 dropped; Roush girls 7th HJ added; Somersworth MS (NH) given its own school; full resync, drops/drift explained, no sanity rises"
+  "evidence": "2025 coach read 2026-11-24: far-outlier marks dropped or name fixed; rest of file as signed before"
  },
  "backend/data/parsed_results/2025/Outdoor/ms-ms-scarborough-windham-falmouth-lincoln-gorham-2025.json": {
   "parse_sha": "375cf5e4e8d04bb5",
@@ -67613,11 +67613,11 @@
   "evidence": "o25f: 2 reviewers, every stored row vs the cached MileSplit sheet; 9 clean, impossible marks dropped (Boon 34.22 100, Harding 400 1.00, Soper DT 5-1.50); 2025 resync, only those rows lost, no sanity rises"
  },
  "backend/data/parsed_results/2025/Outdoor/ms-ms-so-portland-smc-king-scarborough-bonny-eagle-2025.json": {
-  "parse_sha": "9ebe724b20961f85",
-  "source_sha": "802d0991dfe3e8e4",
-  "date": "2026-11-17",
+  "parse_sha": "d0f997c9ced49e0d",
+  "source_sha": "b9778301e3a08b2c",
+  "date": "2026-11-24",
   "by": "loop-claude",
-  "evidence": "re-sign 2026-11-17: single slow/short marks sorted in place on the sheet restored as recorded attempts (rule: memory slow-marks-stay); whole heats on a faulty clock dropped (Marshwood girls 100 heat 1 places 13-17, BCS girls 50 heat 5)"
+  "evidence": "2025 coach read 2026-11-24: far-outlier marks dropped or name fixed; rest of file as signed before"
  },
  "backend/data/parsed_results/2025/Outdoor/ms-ms-telstar-spruce-mtn-gardiner-dirigo-hall-dale-monmouth-lisbon-2025.json": {
   "parse_sha": "a48b1eb4a3f8942e",
@@ -67641,11 +67641,11 @@
   "evidence": "o25a: two reviewers compared every stored row with the cached MileSplit source by script (name, mark, school, grade, date, legs; team scores reproduced or explained by the sheet scoring); cut names restored, 3 impossible marks dropped; rebuild verified (drops diff, store_drift, sanity)"
  },
  "backend/data/parsed_results/2025/Outdoor/ms-ms-york-thornton-saco-marshwood-2025.json": {
-  "parse_sha": "a16856ad3444ef98",
-  "source_sha": "d12bdd01a22948ed",
-  "date": "2026-11-17",
+  "parse_sha": "d2f76b445d2b3d5c",
+  "source_sha": "934c83213fced0ae",
+  "date": "2026-11-24",
   "by": "loop-claude",
-  "evidence": "o25f: 2 reviewers, every stored row vs the cached MileSplit sheet; 9 clean, impossible marks dropped (Boon 34.22 100, Harding 400 1.00, Soper DT 5-1.50); 2025 resync, only those rows lost, no sanity rises"
+  "evidence": "2025 coach read 2026-11-24: far-outlier marks dropped or name fixed; rest of file as signed before"
  },
  "backend/data/parsed_results/2025/Outdoor/ms-mt-ararat-hs-meet-1-2025.json": {
   "parse_sha": "50754476a2f16dbf",
@@ -67746,11 +67746,11 @@
   "evidence": "o25c: two reviewers compared every stored row with the cached MileSplit postings (Last Chance: the host Google Sheet) by script; fixes: cut names, mis-decoded apostrophe, Wells MS duplicate LJ copies, impossible marks dropped; full rebuild verified (drops diff, store_drift, sanity, qualifiers)"
  },
  "backend/data/parsed_results/2025/Outdoor/ms-poland-nya-yarmouth-seacoast-sacopee-valley-2025.json": {
-  "parse_sha": "cb533eb2e9c36634",
-  "source_sha": "b52d7c5112409e90",
-  "date": "2026-11-17",
+  "parse_sha": "e805d5f0f536e489",
+  "source_sha": "b236caf119ec6f41",
+  "date": "2026-11-24",
   "by": "loop-claude",
-  "evidence": "o25c: two reviewers compared every stored row with the cached MileSplit postings (Last Chance: the host Google Sheet) by script; fixes: cut names, mis-decoded apostrophe, Wells MS duplicate LJ copies, impossible marks dropped; full rebuild verified (drops diff, store_drift, sanity, qualifiers)"
+  "evidence": "2025 coach read 2026-11-24: far-outlier marks dropped or name fixed; rest of file as signed before"
  },
  "backend/data/parsed_results/2025/Outdoor/ms-portland-hs-home-meet-2-2025.json": {
   "parse_sha": "4147941336a772e5",
