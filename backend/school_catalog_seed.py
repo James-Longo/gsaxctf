@@ -2760,3 +2760,25 @@ FILE_RULES += [
     (['Academy at P'], 'Outdoor', (2023, 2023), r'^results_2023_04_15$', 'oos-ma-academy-at-penguin-hall'),
     (['Providence'], 'Outdoor', (2023, 2023), r'^results_2023_04_15$', 'oos-ri-providence-country-day-school'),
 ]
+
+# New England championships: printed names shared with a Maine school, none of whose athletes there ran a Maine meet
+# (2026-11-25, loop_tools/necheck.py); rows tagged '(NH)' etc. in the parses are the mixed cases
+FILE_RULES += [
+    (['Windham', 'Woodland'], 'Outdoor', (2012, 2012), r'^newengland(boys|girls)$', '?'),
+    (['Ashland', 'North Haven'], 'Outdoor', (2012, 2012), r'^newengland(boys|girls)$', '?'),
+    (['Ashland', 'Central', 'North Haven', 'Oxford'], 'Outdoor', (2015, 2015), r'^ResultsNewEngland151$', '?'),
+    (['Central', 'North Haven', 'West'], 'Outdoor', (2019, 2019), r'^NE-results-(boys|girls)$', '?'),
+    (['Lake Region', 'Lawrence'], 'Outdoor', (2019, 2019), r'^NE-results-boys$', '?'),
+    (['Central', 'North Haven', 'Woodland', 'Windham'], 'Outdoor', (2022, 2022), r'^newengland22$', '?'),
+    (['North Haven', 'Woodland'], 'Outdoor', (2023, 2023), r'^ne(boys|girls)2023$', '?'),
+    (['Windsor'], 'Outdoor', (2023, 2023), r'^ne(boys|girls)2023$', 'oos-auto-ct-windsor'),
+    (['Windham'], 'Outdoor', (2023, 2023), r'^neboys2023$', '?'),
+    (['Man. Central'], 'Outdoor', (2023, 2023), r'^negirls2023$', '?'),
+    (['Oxford'], 'Outdoor', (2025, 2025), r'^neresults$', '?'),
+    (['Windham (NH)', 'Lawrence (MA)', 'Falmouth (MA)', 'Lake Region (VT)', 'Portland (CT)'], 'Outdoor', (2015, 2026),
+     r'^(ResultsNewEngland151|NE-results-(boys|girls)|NE-girls-results|neboys2023|neresults)$', '?'),
+    (['Gray N-Glouceste'], 'Outdoor', (2023, 2023), r'^neboys2023$', 'me-hs-gray-ng'),
+    (['Windham', 'Lawrence'], 'Outdoor', (2013, 2013), r'^haverhillinvite$', '?'),   # a Massachusetts / New Hampshire meet
+    (['Lawrence Academy'], 'Outdoor', (2014, 2014), r'^ms-nepsac-division-iii-chapionships-2014$', '?'),   # Groton MA
+    (['Cent.'], 'Indoor', (2011, 2011), r'^2011NewEnglandResults$', '?'),
+]
