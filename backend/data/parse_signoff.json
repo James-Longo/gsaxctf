@@ -105,11 +105,11 @@
   "evidence": "scratch re-parse compared with the signed parse: result rows identical, only team_rankings ranks changed"
  },
  "backend/data/parsed_results/2003/Indoor/classbresults.json": {
-  "parse_sha": "bbd9a63f857922f6",
+  "parse_sha": "50a4d56f703ae437",
   "source_sha": "f02f93446f47fb65",
-  "date": "2026-11-10",
-  "by": "rev03a",
-  "evidence": "rev03a: 2 Sonnet reviewers vs source; Bowdoin One Mile Relay -> 3x1 Mile Relay, 19:93.79 dropped, Throwers -> 4x100 Meter Throwers Relay, CO-ED -> 1800 Sprint Medley COED, 3x55 shuttle schools repaired; Black Bear 14 field-relay team totals dropped; Class B Lincoln = Lincoln Academy (Liz Robinson)"
+  "date": "2026-11-25",
+  "by": "loop-claude",
+  "evidence": "re-signed 2026-11-25: only lost last digits restored from the sheet"
  },
  "backend/data/parsed_results/2003/Indoor/cr-usm-new-years-relays-2002.json": {
   "parse_sha": "ce7c8438b304d5f3",
@@ -19712,11 +19712,11 @@
   "evidence": "rev11d: 2 Sonnet reviewers, every row checked against the source; 20 clean; feb3 jump meet dated by its title (2/3), smaaboys3_feb5 team-score line removed"
  },
  "backend/data/parsed_results/2011/Indoor/girls_bb_relays_2011.json": {
-  "parse_sha": "9af2bb2b9fdce89c",
+  "parse_sha": "ae9a99648acc589b",
   "source_sha": "15d8ce0f5cc565e9",
-  "date": "2026-11-08",
-  "by": "sonnet-review-rev11b",
-  "evidence": "rev11b: 2 Sonnet reviewers, every row checked against the source; 20 clean, fix applied (SMAA girls meet 2 HJ place-contradicting mark); field/coed relays unstored by design"
+  "date": "2026-11-25",
+  "by": "loop-claude",
+  "evidence": "re-signed 2026-11-25: only lost last digits restored from the sheet"
  },
  "backend/data/parsed_results/2011/Indoor/girls_bb_relays_fieldevents_ind_2011.json": {
   "parse_sha": "3c6dacb73bc26fca",
@@ -59415,6 +59415,20 @@
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
  },
+ "backend/data/parsed_results/2023/Outdoor/2023-alms-tf-meet-2.json": {
+  "parse_sha": "6fda6dc440b18344",
+  "source_sha": "97838f78be4d1ef7",
+  "date": "2026-11-25",
+  "by": "loop-claude",
+  "evidence": "o23c review 2026-11-25 (two Sonnet reviewers, every row against its source); errors found were fixed before sign-off"
+ },
+ "backend/data/parsed_results/2023/Outdoor/Almquist-boys.json": {
+  "parse_sha": "90bdef995c9a9678",
+  "source_sha": "2428136c96e0e4f3",
+  "date": "2026-11-25",
+  "by": "loop-claude",
+  "evidence": "o23c review 2026-11-25 (two Sonnet reviewers, every row against its source); errors found were fixed before sign-off"
+ },
  "backend/data/parsed_results/2023/Outdoor/Almquist-girls.json": {
   "parse_sha": "19a6d588b9b4ec06",
   "source_sha": "1ecafbacca034d31",
@@ -59590,12 +59604,26 @@
   "by": "loop-claude",
   "evidence": "o23b review (two Sonnet reviewers, every row against its source)"
  },
+ "backend/data/parsed_results/2023/Outdoor/Cohen-girls-results.json": {
+  "parse_sha": "5f8063a32d05bde3",
+  "source_sha": "d0c480471722f348",
+  "date": "2026-11-25",
+  "by": "loop-claude",
+  "evidence": "o23c review 2026-11-25 (two Sonnet reviewers, every row against its source); errors found were fixed before sign-off"
+ },
  "backend/data/parsed_results/2023/Outdoor/Doughty-boys.json": {
   "parse_sha": "c2df645c9ec4fbbd",
   "source_sha": "936a66d44aea22de",
   "date": "2026-11-25",
   "by": "loop-claude",
   "evidence": "o23b review (two Sonnet reviewers, every row against its source)"
+ },
+ "backend/data/parsed_results/2023/Outdoor/Doughty-girls.json": {
+  "parse_sha": "f0b8bba7c6b976f3",
+  "source_sha": "1ed1edbbc7b6c694",
+  "date": "2026-11-25",
+  "by": "loop-claude",
+  "evidence": "o23c review 2026-11-25 (two Sonnet reviewers, every row against its source); errors found were fixed before sign-off"
  },
  "backend/data/parsed_results/2023/Outdoor/EAResults.json": {
   "parse_sha": "a14bcd6d86473462",
@@ -59631,6 +59659,13 @@
   "date": "2026-11-25",
   "by": "loop-claude",
   "evidence": "o23a review 2026-11-25 (two Sonnet reviewers, every row against its source); errors found were fixed before sign-off"
+ },
+ "backend/data/parsed_results/2023/Outdoor/Ellsworth-MS-boys.json": {
+  "parse_sha": "614096aedb58e705",
+  "source_sha": "eccc78ca2be46543",
+  "date": "2026-11-25",
+  "by": "loop-claude",
+  "evidence": "o23c review 2026-11-25 (two Sonnet reviewers, every row against its source); errors found were fixed before sign-off"
  },
  "backend/data/parsed_results/2023/Outdoor/Ellsworth-MS-girls-1.json": {
   "parse_sha": "e0a8f81470abe2bf",
@@ -59743,6 +59778,13 @@
   "date": "2026-11-25",
   "by": "loop-claude",
   "evidence": "o23b review (two Sonnet reviewers, every row against its source)"
+ },
+ "backend/data/parsed_results/2023/Outdoor/MDI-MS-girls-results.json": {
+  "parse_sha": "5e29a3b4904a7363",
+  "source_sha": "79739ce95aef9d61",
+  "date": "2026-11-25",
+  "by": "loop-claude",
+  "evidence": "o23c review 2026-11-25 (two Sonnet reviewers, every row against its source); errors found were fixed before sign-off"
  },
  "backend/data/parsed_results/2023/Outdoor/MDI-boys.json": {
   "parse_sha": "13be8f08ddcb206d",
@@ -59926,6 +59968,13 @@
   "by": "loop-claude",
   "evidence": "o23b review (two Sonnet reviewers, every row against its source)"
  },
+ "backend/data/parsed_results/2023/Outdoor/PVC-JV-boys.json": {
+  "parse_sha": "032beb286457ea9d",
+  "source_sha": "fb3d4dfdfb68fa17",
+  "date": "2026-11-25",
+  "by": "loop-claude",
+  "evidence": "o23c review 2026-11-25 (two Sonnet reviewers, every row against its source); errors found were fixed before sign-off"
+ },
  "backend/data/parsed_results/2023/Outdoor/PVC-Meet-2-Results-4.27.23.json": {
   "parse_sha": "0e41946b93e139e3",
   "source_sha": "c6457f3134041ae5",
@@ -59974,6 +60023,13 @@
   "date": "2026-11-25",
   "by": "loop-claude",
   "evidence": "o23b review (two Sonnet reviewers, every row against its source)"
+ },
+ "backend/data/parsed_results/2023/Outdoor/ResultsSV.json": {
+  "parse_sha": "efee9e8e12f63255",
+  "source_sha": "715adda7c9a4f2b4",
+  "date": "2026-11-25",
+  "by": "loop-claude",
+  "evidence": "o23c review 2026-11-25 (two Sonnet reviewers, every row against its source); errors found were fixed before sign-off"
  },
  "backend/data/parsed_results/2023/Outdoor/ResultsTHORN.json": {
   "parse_sha": "53b089eb1cb2bdf6",
@@ -60073,6 +60129,13 @@
   "by": "loop-claude",
   "evidence": "o23b review (two Sonnet reviewers, every row against its source)"
  },
+ "backend/data/parsed_results/2023/Outdoor/Wagner-MS-girls-results.json": {
+  "parse_sha": "7dbb75b17e053416",
+  "source_sha": "6d82d9cb80fc3b2c",
+  "date": "2026-11-25",
+  "by": "loop-claude",
+  "evidence": "o23c review 2026-11-25 (two Sonnet reviewers, every row against its source); errors found were fixed before sign-off"
+ },
  "backend/data/parsed_results/2023/Outdoor/bangor29april2023-1.json": {
   "parse_sha": "a0dc9a2fd99a4583",
   "source_sha": "a17e07993e878357",
@@ -60164,6 +60227,13 @@
   "by": "loop-claude",
   "evidence": "2026-11-16 round 14: relay legs filled from the cached posting that prints them; impossible girls 4x100 table dropped; full rebuild, drops diff empty, only the 5 dropped rows lost"
  },
+ "backend/data/parsed_results/2023/Outdoor/ms-troy-howard-ms-meet-1-2023.json": {
+  "parse_sha": "3d98e92e3aa1e3b0",
+  "source_sha": "7e7e2b9b89b65d2d",
+  "date": "2026-11-25",
+  "by": "loop-claude",
+  "evidence": "o23c review 2026-11-25 (two Sonnet reviewers, every row against its source); errors found were fixed before sign-off"
+ },
  "backend/data/parsed_results/2023/Outdoor/ms-western-maine-conference-gng-home-v-cape-elizabeth-york-2023.json": {
   "parse_sha": "220dd645940d8be9",
   "source_sha": "1de00ee5674196f6",
@@ -60185,12 +60255,26 @@
   "by": "loop-claude",
   "evidence": "2026-11-16 round 14: relay legs filled from the cached posting that prints them; impossible girls 4x100 table dropped; full rebuild, drops diff empty, only the 5 dropped rows lost"
  },
+ "backend/data/parsed_results/2023/Outdoor/ms-wiscasset-ms-meet-2-2023.json": {
+  "parse_sha": "70060621ca22c661",
+  "source_sha": "d15a5494380d4a7e",
+  "date": "2026-11-25",
+  "by": "loop-claude",
+  "evidence": "o23c review 2026-11-25 (two Sonnet reviewers, every row against its source); errors found were fixed before sign-off"
+ },
  "backend/data/parsed_results/2023/Outdoor/ms-wmc-at-greely-with-york-sv-cape-lake-region-traip-2023.json": {
   "parse_sha": "e57bf10c5871d62e",
   "source_sha": "c5567e5f082f8a84",
   "date": "2026-11-16",
   "by": "loop-claude",
   "evidence": "2026-11-16 round 14: relay legs filled from the cached posting that prints them; impossible girls 4x100 table dropped; full rebuild, drops diff empty, only the 5 dropped rows lost"
+ },
+ "backend/data/parsed_results/2023/Outdoor/oldtown20may2023.json": {
+  "parse_sha": "eb77cd2b961733d8",
+  "source_sha": "125e2b6812333864",
+  "date": "2026-11-25",
+  "by": "loop-claude",
+  "evidence": "o23c review 2026-11-25 (two Sonnet reviewers, every row against its source); errors found were fixed before sign-off"
  },
  "backend/data/parsed_results/2023/Outdoor/oldtown21april2023.json": {
   "parse_sha": "7211aa6afbe2519b",
