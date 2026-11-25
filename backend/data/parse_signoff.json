@@ -59485,6 +59485,13 @@
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
  },
+ "backend/data/parsed_results/2023/Outdoor/Bucksport-MS-boys.json": {
+  "parse_sha": "5ec5f9575c818fb9",
+  "source_sha": "fd72a941ab269a7d",
+  "date": "2026-11-25",
+  "by": "loop-claude",
+  "evidence": "o23b review (two Sonnet reviewers, every row against its source)"
+ },
  "backend/data/parsed_results/2023/Outdoor/Bucksport-boys-results-1.json": {
   "parse_sha": "a9b75b8265d9feff",
   "source_sha": "28f34caebabb5f33",
@@ -59576,6 +59583,20 @@
   "by": "re-check 2026-10-28: re-parsed only for the team-rank fix (ranks 10+ were stored as 0-9)",
   "evidence": "scratch re-parse compared with the signed parse: result rows identical, only team_rankings ranks changed"
  },
+ "backend/data/parsed_results/2023/Outdoor/Cohen-boys-results.json": {
+  "parse_sha": "7db97c6ba7a3e661",
+  "source_sha": "56e750283db14a8c",
+  "date": "2026-11-25",
+  "by": "loop-claude",
+  "evidence": "o23b review (two Sonnet reviewers, every row against its source)"
+ },
+ "backend/data/parsed_results/2023/Outdoor/Doughty-boys.json": {
+  "parse_sha": "c2df645c9ec4fbbd",
+  "source_sha": "936a66d44aea22de",
+  "date": "2026-11-25",
+  "by": "loop-claude",
+  "evidence": "o23b review (two Sonnet reviewers, every row against its source)"
+ },
  "backend/data/parsed_results/2023/Outdoor/EAResults.json": {
   "parse_sha": "a14bcd6d86473462",
   "source_sha": "d2282742993117ed",
@@ -59617,6 +59638,13 @@
   "date": "2026-11-25",
   "by": "loop-claude",
   "evidence": "o23a review 2026-11-25 (two Sonnet reviewers, every row against its source); errors found were fixed before sign-off"
+ },
+ "backend/data/parsed_results/2023/Outdoor/Ellsworth-MS-girls.json": {
+  "parse_sha": "a4371560e7725c30",
+  "source_sha": "5bb9a6afa8a9165c",
+  "date": "2026-11-25",
+  "by": "loop-claude",
+  "evidence": "o23b review (two Sonnet reviewers, every row against its source)"
  },
  "backend/data/parsed_results/2023/Outdoor/Ellsworth-boys-results.json": {
   "parse_sha": "162506891e328b1a",
@@ -59708,6 +59736,13 @@
   "date": "2026-10-16",
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
+ },
+ "backend/data/parsed_results/2023/Outdoor/MDI-MS-boys-results.json": {
+  "parse_sha": "ae1f638754e62f89",
+  "source_sha": "164ed0d47e1a025f",
+  "date": "2026-11-25",
+  "by": "loop-claude",
+  "evidence": "o23b review (two Sonnet reviewers, every row against its source)"
  },
  "backend/data/parsed_results/2023/Outdoor/MDI-boys.json": {
   "parse_sha": "13be8f08ddcb206d",
@@ -59821,6 +59856,13 @@
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
  },
+ "backend/data/parsed_results/2023/Outdoor/Nokomis-MS-boys-results.json": {
+  "parse_sha": "0b5590519fbc2739",
+  "source_sha": "78ea53c35a95916f",
+  "date": "2026-11-25",
+  "by": "loop-claude",
+  "evidence": "o23b review (two Sonnet reviewers, every row against its source)"
+ },
  "backend/data/parsed_results/2023/Outdoor/Nokomis-MS-girls-results.json": {
   "parse_sha": "b5c72adcbbc5e29e",
   "source_sha": "60954dbc67f14956",
@@ -59877,6 +59919,13 @@
   "by": "loop-claude",
   "evidence": "o23a review 2026-11-25 (two Sonnet reviewers, every row against its source); errors found were fixed before sign-off"
  },
+ "backend/data/parsed_results/2023/Outdoor/PVC-JV-Girls.json": {
+  "parse_sha": "dd6c10cd03a4eacb",
+  "source_sha": "525b5d85e569ab65",
+  "date": "2026-11-25",
+  "by": "loop-claude",
+  "evidence": "o23b review (two Sonnet reviewers, every row against its source)"
+ },
  "backend/data/parsed_results/2023/Outdoor/PVC-Meet-2-Results-4.27.23.json": {
   "parse_sha": "0e41946b93e139e3",
   "source_sha": "c6457f3134041ae5",
@@ -59918,6 +59967,20 @@
   "date": "2026-10-16",
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
+ },
+ "backend/data/parsed_results/2023/Outdoor/ResultsRELAYS.json": {
+  "parse_sha": "9f5df950b28f9781",
+  "source_sha": "3ef75a4e5dcab3d1",
+  "date": "2026-11-25",
+  "by": "loop-claude",
+  "evidence": "o23b review (two Sonnet reviewers, every row against its source)"
+ },
+ "backend/data/parsed_results/2023/Outdoor/ResultsTHORN.json": {
+  "parse_sha": "53b089eb1cb2bdf6",
+  "source_sha": "d2b5680ab5352f1f",
+  "date": "2026-11-25",
+  "by": "loop-claude",
+  "evidence": "o23b review (two Sonnet reviewers, every row against its source)"
  },
  "backend/data/parsed_results/2023/Outdoor/ResultsWinslowHigh-School.json": {
   "parse_sha": "bb052cebec91f159",
@@ -60002,6 +60065,13 @@
   "date": "2026-11-17",
   "by": "loop-claude",
   "evidence": "re-sign: only change is names cut at the sheet's name-column width restored to the full form printed at the same school (loop_tools/cutnames.py sweep 2026-11-17); full resync 0 rows lost, no sanity rises"
+ },
+ "backend/data/parsed_results/2023/Outdoor/Wagner-MS-boys-results.json": {
+  "parse_sha": "cd9bf46da5e820f3",
+  "source_sha": "8b42db4698d4b9a6",
+  "date": "2026-11-25",
+  "by": "loop-claude",
+  "evidence": "o23b review (two Sonnet reviewers, every row against its source)"
  },
  "backend/data/parsed_results/2023/Outdoor/bangor29april2023-1.json": {
   "parse_sha": "a0dc9a2fd99a4583",
@@ -60164,6 +60234,13 @@
   "by": "loop-claude",
   "evidence": "o23a review 2026-11-25 (two Sonnet reviewers, every row against its source); errors found were fixed before sign-off"
  },
+ "backend/data/parsed_results/2023/Outdoor/reedsbrookgirls.json": {
+  "parse_sha": "b08bf718a7803b8d",
+  "source_sha": "f6fd6e27364e0665",
+  "date": "2026-11-25",
+  "by": "loop-claude",
+  "evidence": "o23b review (two Sonnet reviewers, every row against its source)"
+ },
  "backend/data/parsed_results/2023/Outdoor/results_2023_04_15.json": {
   "parse_sha": "8a5dac11edd7961e",
   "source_sha": "812744d387ca62d9",
@@ -60177,6 +60254,13 @@
   "date": "2026-11-16",
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
+ },
+ "backend/data/parsed_results/2023/Outdoor/yorkboys.json": {
+  "parse_sha": "535c5b95ec5e92fc",
+  "source_sha": "680114eac5986ad5",
+  "date": "2026-11-25",
+  "by": "loop-claude",
+  "evidence": "o23b review (two Sonnet reviewers, every row against its source)"
  },
  "backend/data/parsed_results/2023/XC/10-11-23-Oxford-Hills-MS.json": {
   "parse_sha": "e7dcefd0dc830f68",
