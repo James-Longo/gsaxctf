@@ -548,7 +548,8 @@ COOPS = [
          members=['me-hs-boothbay', 'me-hs-wiscasset'], seasons=['XC', 'Indoor', 'Outdoor'], genders=['Boys', 'Girls'],
          years=[None, None],
          labels=['Boothbay/Wiscasset', 'BoothbayWiscasset', 'Boothbay Wiscasset', 'Boothbay-Wiscasset',
-                 'Boothbay/Wis', 'Boothbay-Wisc', 'Wiscasset/Boothbay', 'BBWHS', 'Boothbay Wiscasset HS'],
+                 'Boothbay/Wis', 'Boothbay-Wisc', 'Wiscasset/Boothbay', 'BBWHS', 'Boothbay Wiscasset HS',
+                 'Boothbay/Wiscasset/Richmond', 'Bthby/Wisc/Rchmd'],   # the 2024 state meet's label for this team (every runner there is on its 2024 sheets)
          evidence=['MPA XC 2026-27 C South', 'MPA IT 2026-27 B', 'MPA OT 2025-26 C "Wiscasset/Boothbay"']),
     dict(id='coop-it-sumner-narraguagus', label='Sumner/Narraguagus (indoor track)', host='me-hs-sumner',
          members=['me-hs-sumner', 'me-hs-narraguagus'], seasons=['Indoor'], genders=['Boys', 'Girls'],
@@ -612,9 +613,6 @@ COOPS = [
          genders=['Boys', 'Girls'], years=[None, None],
          labels=['Houlton/Hodg', 'Houlton/Hodgdon', 'Houlton/Hodgdon/GHCA', 'Hltn/GHCA/Hdgdn'],   # 'Houlton/Hodg' is this co-op cut at 12 characters (the same sheets print 'Houlton/Hodgdon/GHCA' in full)
          evidence=['observed label only']),
-    dict(id='coop-boothbay-wiscasset-richmond', label='Boothbay/Wiscasset/Richmond', host='me-hs-boothbay',
-         members=['me-hs-boothbay', 'me-hs-wiscasset', 'me-hs-richmond'], seasons=['Indoor', 'Outdoor'],
-         genders=['Boys', 'Girls'], years=[None, None], labels=['Bthby/Wisc/Rchmd'], evidence=['observed label only']),
     dict(id='coop-mattanawcook-penobscot', label='Mattanawcook/Penobscot Valley', host='me-hs-mattanawcook',
          members=['me-hs-mattanawcook', 'me-hs-penobscot-valley'], seasons=['XC', 'Outdoor'], genders=['Boys', 'Girls'],
          years=[None, None], labels=['Mattan/Penob'], evidence=['observed label only']),
