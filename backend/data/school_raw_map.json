@@ -3,12 +3,12 @@
 "methods_by_rows": {
 "exact/alias": 2081989,
 "code": 260230,
-"truncation": 123284,
-"athlete-continuity": 53771,
+"truncation": 123421,
+"athlete-continuity": 53735,
 "mascot": 28851,
-"bare name + level context": 28406,
-"manual (file rule)": 20564,
-"unresolved": 17383,
+"bare name + level context": 28072,
+"manual (file rule)": 21023,
+"unresolved": 17155,
 "co-op label": 15239,
 "state-tagged (auto entry)": 9842,
 "spelling (fuzzy)": 3436,
@@ -23,15 +23,15 @@
 },
 "methods_by_strings": {
 "exact/alias": 4187,
-"unresolved": 2081,
+"unresolved": 2067,
 "state-tagged (auto entry)": 1571,
 "debris-salvage": 913,
 "debris": 713,
 "code": 702,
-"truncation": 531,
+"truncation": 539,
 "athlete-continuity": 470,
 "spelling (fuzzy)": 288,
-"manual (file rule)": 241,
+"manual (file rule)": 245,
 "co-op label": 79,
 "bare name + level context": 78,
 "mascot": 40,
@@ -39,7 +39,7 @@
 "file-expansion": 12,
 "later-hs": 2
 },
-"distinct_strings": 11936,
+"distinct_strings": 11934,
 "note": "'raw' keys are whitespace-collapsed school strings exactly as printed. 'overrides' are per-file answers (year/season/file-stem) that differ from the string's global id."
 },
 "raw": {
@@ -7372,21 +7372,14 @@
 "id": "me-ms-penobscot-christian",
 "method": "truncation",
 "by_id": {
-"me-ms-penobscot-christian": 1179,
-"me-hs-penobscot-christian": 212,
-"me-ms-penobscot": 36
+"me-ms-penobscot-christian": 1215,
+"me-hs-penobscot-christian": 212
 },
 "context_dependent": true,
 "by_level": {
 "ms": "me-ms-penobscot-christian",
 "hs": "me-hs-penobscot-christian"
 },
-"flags": [
-"athletes contradict name match (me-ms-penobscot-christian -> me-ms-penobscot, 7/9)",
-"athletes contradict name match (me-ms-penobscot-christian -> me-ms-penobscot, 8/11)",
-"athletes contradict name match (me-ms-penobscot-christian -> me-ms-penobscot, 9/11)",
-"file expansion: me-ms-penobscot -> me-ms-penobscot-christian"
-],
 "how": "truncation"
 },
 "FOX": {
@@ -14306,9 +14299,14 @@
 2008,
 2023
 ],
-"id": "me-ms-penobscot",
-"method": "bare-name",
-"how": "bare name + level context"
+"id": "me-ms-penobscot-christian",
+"method": "manual (file rule)",
+"by_id": {
+"me-ms-penobscot-christian": 346,
+"me-ms-penobscot": 20
+},
+"context_dependent": true,
+"how": "manual (file rule)"
 },
 "Maranacook M": {
 "rows": 366,
@@ -26353,9 +26351,9 @@
 2008,
 2009
 ],
-"id": null,
-"method": "unresolved",
-"how": "unresolved"
+"id": "oos-ri-providence-country-day-school",
+"method": "truncation",
+"how": "truncation"
 },
 "Maine Central In": {
 "rows": 95,
@@ -36095,9 +36093,13 @@
 2023,
 2023
 ],
-"id": null,
-"method": "unresolved",
-"how": "unresolved"
+"id": "oos-ma-covenant-christian-academy",
+"method": "manual (file rule)",
+"by_id": {
+"oos-ma-covenant-christian-academy": 44
+},
+"context_dependent": true,
+"how": "manual (file rule)"
 },
 "LakeRegionHi": {
 "rows": 44,
@@ -49148,9 +49150,13 @@
 2023,
 2023
 ],
-"id": null,
-"method": "unresolved",
-"how": "unresolved"
+"id": "oos-ri-providence-country-day-school",
+"method": "manual (file rule)",
+"by_id": {
+"oos-ri-providence-country-day-school": 21
+},
+"context_dependent": true,
+"how": "manual (file rule)"
 },
 "Brunswick HIGH": {
 "rows": 21,
@@ -51523,9 +51529,9 @@
 2015,
 2026
 ],
-"id": null,
-"method": "unresolved",
-"how": "unresolved"
+"id": "oos-ri-providence-country-day-school",
+"method": "truncation",
+"how": "truncation"
 },
 "Baa Masconom": {
 "rows": 18,
@@ -60000,9 +60006,9 @@
 2014,
 2014
 ],
-"id": null,
-"method": "unresolved",
-"how": "unresolved"
+"id": "oos-ri-providence-country-day-school",
+"method": "bare-name",
+"how": "bare name + level context"
 },
 "Lisbon Christian": {
 "rows": 12,
@@ -60735,9 +60741,13 @@
 2023,
 2023
 ],
-"id": null,
-"method": "unresolved",
-"how": "unresolved"
+"id": "oos-ma-academy-at-penguin-hall",
+"method": "manual (file rule)",
+"by_id": {
+"oos-ma-academy-at-penguin-hall": 12
+},
+"context_dependent": true,
+"how": "manual (file rule)"
 },
 "St Raphael-RI": {
 "rows": 12,
@@ -68422,9 +68432,9 @@
 2010,
 2011
 ],
-"id": null,
-"method": "unresolved",
-"how": "unresolved"
+"id": "oos-ri-providence-country-day-school",
+"method": "truncation",
+"how": "truncation"
 },
 "Cheshire - CT": {
 "rows": 8,
@@ -74457,9 +74467,9 @@
 2008,
 2009
 ],
-"id": null,
-"method": "unresolved",
-"how": "unresolved"
+"id": "oos-ri-providence-country-day-school",
+"method": "truncation+literal+mascot-tail",
+"how": "truncation"
 },
 "Leavitt Area High school": {
 "rows": 6,
@@ -77345,9 +77355,9 @@
 2003,
 2003
 ],
-"id": null,
-"method": "unresolved",
-"how": "unresolved"
+"id": "oos-ri-providence-country-day-school",
+"method": "truncation+lead-num+mascot-tail",
+"how": "truncation"
 },
 "Granite State Fl": {
 "rows": 5,
@@ -97780,9 +97790,9 @@
 2004,
 2004
 ],
-"id": null,
-"method": "unresolved",
-"how": "unresolved"
+"id": "oos-ri-providence-country-day-school",
+"method": "truncation+deglue+mascot-tail",
+"how": "truncation"
 },
 "SouthernMaine": {
 "rows": 2,
@@ -101779,9 +101789,9 @@
 2009,
 2009
 ],
-"id": null,
-"method": "unresolved",
-"how": "unresolved"
+"id": "oos-ri-providence-country-day-school",
+"method": "truncation+literal+mascot-tail",
+"how": "truncation"
 },
 "- Central MA": {
 "rows": 2,
@@ -137537,9 +137547,9 @@
 2012,
 2012
 ],
-"id": null,
-"method": "unresolved",
-"how": "unresolved"
+"id": "oos-ri-providence-country-day-school",
+"method": "truncation+lead-num",
+"how": "truncation"
 },
 "05-Greenwich": {
 "rows": 1,
@@ -137836,19 +137846,6 @@
 "how": "unresolved"
 },
 "R Old Town": {
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2013,
-2013
-],
-"id": null,
-"method": "unresolved",
-"how": "unresolved"
-},
-"ACADEMY": {
 "rows": 1,
 "seasons": {
 "Outdoor": 1
@@ -160552,19 +160549,6 @@
 "method": "exact",
 "how": "state-tagged (auto entry)"
 },
-"Rachel Runge 12 4)": {
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2023,
-2023
-],
-"id": null,
-"method": "unresolved",
-"how": "unresolved"
-},
 "t Kent Community High Schoo": {
 "rows": 1,
 "seasons": {
@@ -179913,12 +179897,14 @@
 "2008/XC/pvmscclboys_oct9.txt": {
 "Blue Hill": "me-ms-blue-hill",
 "Milford": "me-ms-lewis-libby",
-"Mt. Desert": "me-ms-mt-desert-elementary"
+"Mt. Desert": "me-ms-mt-desert-elementary",
+"Penobscot": "me-ms-penobscot-christian"
 },
 "2008/XC/pvmscclgirls_oct9.txt": {
 "Blue Hill": "me-ms-blue-hill",
 "Milford": "me-ms-lewis-libby",
-"Mt. Desert": "me-ms-mt-desert-elementary"
+"Mt. Desert": "me-ms-mt-desert-elementary",
+"Penobscot": "me-ms-penobscot-christian"
 },
 "2008/XC/pvmscoastalboys.txt": {
 "Blue Hill": "me-ms-blue-hill",
@@ -182559,7 +182545,8 @@
 },
 "2009/XC/airlineinviteboys.txt": {
 "Bangor Christian": "me-ms-bangor-christian",
-"Brewer": "me-ms-brewer"
+"Brewer": "me-ms-brewer",
+"Penobscot": "me-ms-penobscot-christian"
 },
 "2009/XC/bangorboys_sept4": {
 "Brewer": "me-hs-brewer",
@@ -183385,11 +183372,13 @@
 },
 "2009/XC/pvmscclsmallschoolboys.txt": {
 "Blue Hill": "me-ms-blue-hill",
-"Mt. Desert": "me-ms-mt-desert-elementary"
+"Mt. Desert": "me-ms-mt-desert-elementary",
+"Penobscot": "me-ms-penobscot-christian"
 },
 "2009/XC/pvmscclsmallschoolgirls.txt": {
 "Blue Hill": "me-ms-blue-hill",
-"Mt. Desert": "me-ms-mt-desert-elementary"
+"Mt. Desert": "me-ms-mt-desert-elementary",
+"Penobscot": "me-ms-penobscot-christian"
 },
 "2009/XC/pvmslboys.txt": {
 "Bangor Christian": "me-ms-bangor-christian",
@@ -186340,7 +186329,8 @@
 "Rich": "me-hs-richmond"
 },
 "2010/XC/airlineboys.txt": {
-"Brewer": "me-ms-brewer"
+"Brewer": "me-ms-brewer",
+"Penobscot": "me-ms-penobscot-christian"
 },
 "2010/XC/airlinegirls.txt": {
 "Bangor Christian": "me-ms-bangor-christian",
@@ -190184,6 +190174,9 @@
 "Sentine": "oos-auto-ri-smithfield",
 "Watervi": "me-ms-waterville"
 },
+"2011/XC/Small%20school%20results%20boys.txt": {
+"Penobscot": "me-ms-penobscot-christian"
+},
 "2011/XC/Tripp10-17boys.txt": {
 "Oak Hill": "me-ms-oak-hill"
 },
@@ -191221,6 +191214,9 @@
 "Old Town": "me-hs-old-town",
 "Orono": "me-hs-orono",
 "Presque Isle": "me-hs-presque-isle"
+},
+"2011/XC/pvmlsmallgirls.txt": {
+"Penobscot": "me-ms-penobscot-christian"
 },
 "2011/XC/sanfordboys_sept23": {
 "B": "me-hs-biddeford",
@@ -215946,10 +215942,12 @@
 "Oxford Hills": "me-ms-oxford-hills"
 },
 "2018/XC/Bay-School-Meet-9-20-Boys": {
-"Blue Hill": "me-ms-blue-hill"
+"Blue Hill": "me-ms-blue-hill",
+"Penobscot": "me-ms-penobscot"
 },
 "2018/XC/Bay-School-Meet-9-20-Girls": {
-"Blue Hill": "me-ms-blue-hill"
+"Blue Hill": "me-ms-blue-hill",
+"Penobscot": "me-ms-penobscot"
 },
 "2018/XC/Boys-10-Results.txt": {
 "Biddeford": "me-hs-biddeford",
@@ -216128,6 +216126,9 @@
 "Thornton Academy": "me-ms-thornton",
 "Wells": "me-ms-wells",
 "YORK": "me-ms-york"
+},
+"2018/XC/Ellsworth-meet": {
+"Penobscot": "me-ms-penobscot"
 },
 "2018/XC/GRAY1": {
 "GNG": "me-hs-gray-ng",
@@ -217053,14 +217054,16 @@
 "Brewer": "me-ms-brewer",
 "Bucksport": "me-ms-bucksport",
 "Deer Isle St": "me-ms-dis-elementary",
-"Ellsworth": "me-ms-ellsworth"
+"Ellsworth": "me-ms-ellsworth",
+"Penobscot": "me-ms-penobscot"
 },
 "2018/XC/coastal-girls.txt": {
 "Blue Hill": "me-ms-blue-hill",
 "Brewer": "me-ms-brewer",
 "Bucksport": "me-ms-bucksport",
 "Deer Isle St": "me-ms-dis-elementary",
-"Ellsworth": "me-ms-ellsworth"
+"Ellsworth": "me-ms-ellsworth",
+"Penobscot": "me-ms-penobscot"
 },
 "2018/XC/ellsworth-jv-boys.txt": {
 "Ellsworth": "me-hs-ellsworth",
@@ -217700,11 +217703,13 @@
 },
 "2018/XC/small-school-boys.txt": {
 "Blue Hill": "me-ms-blue-hill",
-"Deer Isle St": "me-ms-dis-elementary"
+"Deer Isle St": "me-ms-dis-elementary",
+"Penobscot": "me-ms-penobscot"
 },
 "2018/XC/small-school-girls.txt": {
 "Blue Hill": "me-ms-blue-hill",
-"Deer Isle St": "me-ms-dis-elementary"
+"Deer Isle St": "me-ms-dis-elementary",
+"Penobscot": "me-ms-penobscot"
 },
 "2018/XC/smc-boys-results-2.txt": {
 "Biddeford": "me-hs-biddeford",
@@ -229920,13 +229925,13 @@
 "2023/Outdoor/Almquist-boys": {
 "Bangor Chris": "me-ms-bangor-christian",
 "Mattanawcook": "me-ms-mattanawcook",
-"Penobscot Ch": "me-ms-penobscot",
+"Penobscot Ch": "me-ms-penobscot-christian",
 "Piscataquis": "me-ms-piscataquis"
 },
 "2023/Outdoor/Almquist-girls": {
 "Bangor Chris": "me-ms-bangor-christian",
 "Mattanawcook": "me-ms-mattanawcook",
-"Penobscot Ch": "me-ms-penobscot",
+"Penobscot Ch": "me-ms-penobscot-christian",
 "Piscataquis": "me-ms-piscataquis"
 },
 "2023/Outdoor/Bangor-boys-results": {
@@ -229972,6 +229977,9 @@
 "Islesboro Ce": "me-hs-islesboro",
 "Islesboro Central School": "me-hs-islesboro",
 "Oceanside High School": "me-hs-oceanside"
+},
+"2023/Outdoor/Buckpsort-MS-results": {
+"Penobscot": "me-ms-penobscot-christian"
 },
 "2023/Outdoor/Bucksport-boys-results-1": {
 "Bangor Chris": "me-hs-bangor-christian",
@@ -230091,6 +230099,12 @@
 "Sumner Memorial High School": "me-hs-sumner",
 "Winslow High School": "me-hs-winslow"
 },
+"2023/Outdoor/Cohen-boys-results": {
+"Penobscot": "me-ms-penobscot-christian"
+},
+"2023/Outdoor/Cohen-girls-results": {
+"Penobscot": "me-ms-penobscot-christian"
+},
 "2023/Outdoor/EAResults": {
 "Medomak Vall": "me-hs-medomak"
 },
@@ -230105,6 +230119,12 @@
 "2023/Outdoor/Ellsworth-HS-girls-results": {
 "Sumner Memor": "me-hs-sumner",
 "Sumner Memorial High School": "me-hs-sumner"
+},
+"2023/Outdoor/Ellsworth-MS-boys-1": {
+"Penobscot": "me-ms-penobscot-christian"
+},
+"2023/Outdoor/Ellsworth-MS-girls-1": {
+"Penobscot": "me-ms-penobscot-christian"
 },
 "2023/Outdoor/Ellsworth-boys-results": {
 "Sumner Memor": "me-hs-sumner",
@@ -230558,10 +230578,12 @@
 "Sacopee Vall": "me-hs-sacopee"
 },
 "2023/Outdoor/Wagner-MS-boys-results": {
-"Bangor Chris": "me-ms-bangor-christian"
+"Bangor Chris": "me-ms-bangor-christian",
+"Penobscot": "me-ms-penobscot-christian"
 },
 "2023/Outdoor/Wagner-MS-girls-results": {
-"Bangor Chris": "me-ms-bangor-christian"
+"Bangor Chris": "me-ms-bangor-christian",
+"Penobscot": "me-ms-penobscot-christian"
 },
 "2023/Outdoor/bangor22april2023": {
 "Limestone/MS": "coop-limestone-mssm",
@@ -230847,6 +230869,9 @@
 "Sumner Memorial High School": "me-hs-sumner"
 },
 "2023/Outdoor/results_2023_04_15": {
+"Academy at P": "oos-ma-academy-at-penguin-hall",
+"Covenant Chr": "oos-ma-covenant-christian-academy",
+"Providence": "oos-ri-providence-country-day-school",
 "Seacoast Chr": "me-hs-seacoast-christian"
 },
 "2023/Outdoor/tfmm4results1colnorecords": {
@@ -238772,7 +238797,7 @@
 "store_teams": {
 "AR Gould School": "me-hs-ar-gould",
 "ASEA": null,
-"Academy at P": null,
+"Academy at Penguin Hall": "oos-ma-academy-at-penguin-hall",
 "Acadia Christian": "me-hs-acadia-christian",
 "Adams School": "me-ms-adams-castine",
 "Airline Community School": "me-ms-airline",
@@ -238945,6 +238970,7 @@
 }
 },
 "Corden": null,
+"Covenant Christian Academy": "oos-ma-covenant-christian-academy",
 "Coy": null,
 "Csu": null,
 "CtTrackClub": null,
@@ -239503,7 +239529,7 @@
 "Portsmouth RI": "oos-auto-ri-portsmouth",
 "Presque Isle High School": "me-hs-presque-isle",
 "Presque Isle Middle School": "me-ms-presque-isle",
-"Providence": null,
+"Providence Country Day School": "oos-ri-providence-country-day-school",
 "Put": null,
 "R Old Town": null,
 "R W Traip Academy": {
@@ -240010,20 +240036,6 @@
 "oos-nh-nashua-high-school-south"
 ],
 "how": "ambiguous"
-},
-{
-"raw": "Providence Co",
-"rows": 95,
-"seasons": {
-"Outdoor": 95
-},
-"years": [
-2008,
-2009
-],
-"id": null,
-"method": "unresolved",
-"how": "unresolved"
 },
 {
 "raw": "Amherst TC",
@@ -240740,20 +240752,6 @@
 "oos-auto-ct-fairfield-warde"
 ],
 "how": "ambiguous"
-},
-{
-"raw": "Covenant Chr",
-"rows": 44,
-"seasons": {
-"Outdoor": 44
-},
-"years": [
-2023,
-2023
-],
-"id": null,
-"method": "unresolved",
-"how": "unresolved"
 },
 {
 "raw": "06-Ruff Kutz Tr",
@@ -242153,20 +242151,6 @@
 "how": "unresolved"
 },
 {
-"raw": "Providence",
-"rows": 21,
-"seasons": {
-"Outdoor": 21
-},
-"years": [
-2023,
-2023
-],
-"id": null,
-"method": "unresolved",
-"how": "unresolved"
-},
-{
 "raw": "New Fairfield TC",
 "rows": 20,
 "seasons": {
@@ -242470,21 +242454,6 @@
 "years": [
 2013,
 2014
-],
-"id": null,
-"method": "unresolved",
-"how": "unresolved"
-},
-{
-"raw": "Providence C",
-"rows": 18,
-"seasons": {
-"Outdoor": 14,
-"XC": 4
-},
-"years": [
-2015,
-2026
 ],
 "id": null,
 "method": "unresolved",
@@ -243565,20 +243534,6 @@
 "how": "unresolved"
 },
 {
-"raw": "Providence Country Day",
-"rows": 12,
-"seasons": {
-"Outdoor": 12
-},
-"years": [
-2014,
-2014
-],
-"id": null,
-"method": "unresolved",
-"how": "unresolved"
-},
-{
 "raw": "Old Town Tra",
 "rows": 12,
 "seasons": {
@@ -243660,20 +243615,6 @@
 "years": [
 2021,
 2021
-],
-"id": null,
-"method": "unresolved",
-"how": "unresolved"
-},
-{
-"raw": "Academy at P",
-"rows": 12,
-"seasons": {
-"Outdoor": 12
-},
-"years": [
-2023,
-2023
 ],
 "id": null,
 "method": "unresolved",
@@ -245087,20 +245028,6 @@
 "how": "unresolved"
 },
 {
-"raw": "Provide",
-"rows": 8,
-"seasons": {
-"XC": 8
-},
-"years": [
-2010,
-2011
-],
-"id": null,
-"method": "unresolved",
-"how": "unresolved"
-},
-{
 "raw": "Adironda",
 "rows": 8,
 "seasons": {
@@ -246084,20 +246011,6 @@
 "how": "unresolved"
 },
 {
-"raw": "Providence Cobras",
-"rows": 6,
-"seasons": {
-"Outdoor": 6
-},
-"years": [
-2008,
-2009
-],
-"id": null,
-"method": "unresolved",
-"how": "unresolved"
-},
-{
 "raw": "Needham TC",
 "rows": 6,
 "seasons": {
@@ -246635,20 +246548,6 @@
 },
 {
 "raw": "WarrenSAC",
-"rows": 5,
-"seasons": {
-"Outdoor": 5
-},
-"years": [
-2003,
-2003
-],
-"id": null,
-"method": "unresolved",
-"how": "unresolved"
-},
-{
-"raw": "01-Providence Cobras",
 "rows": 5,
 "seasons": {
 "Outdoor": 5
@@ -251657,20 +251556,6 @@
 "how": "unresolved"
 },
 {
-"raw": "ProvidenceCobras",
-"rows": 2,
-"seasons": {
-"XC": 2
-},
-"years": [
-2004,
-2004
-],
-"id": null,
-"method": "unresolved",
-"how": "unresolved"
-},
-{
 "raw": "ConnTC",
 "rows": 2,
 "seasons": {
@@ -252820,20 +252705,6 @@
 },
 {
 "raw": "- Sugarloaf",
-"rows": 2,
-"seasons": {
-"XC": 2
-},
-"years": [
-2009,
-2009
-],
-"id": null,
-"method": "unresolved",
-"how": "unresolved"
-},
-{
-"raw": "- Prov Cobras",
 "rows": 2,
 "seasons": {
 "XC": 2
@@ -268388,20 +268259,6 @@
 "how": "unresolved"
 },
 {
-"raw": "02-Providenc",
-"rows": 1,
-"seasons": {
-"XC": 1
-},
-"years": [
-2012,
-2012
-],
-"id": null,
-"method": "unresolved",
-"how": "unresolved"
-},
-{
 "raw": "59-Bellmore",
 "rows": 1,
 "seasons": {
@@ -268529,20 +268386,6 @@
 },
 {
 "raw": "R Old Town",
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2013,
-2013
-],
-"id": null,
-"method": "unresolved",
-"how": "unresolved"
-},
-{
-"raw": "ACADEMY",
 "rows": 1,
 "seasons": {
 "Outdoor": 1
@@ -278659,20 +278502,6 @@
 },
 {
 "raw": "St. Bernard",
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2023,
-2023
-],
-"id": null,
-"method": "unresolved",
-"how": "unresolved"
-},
-{
-"raw": "Rachel Runge 12 4)",
 "rows": 1,
 "seasons": {
 "Outdoor": 1

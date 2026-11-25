@@ -1342,6 +1342,9 @@ _OOS_SIMPLE = [
     ('MA', 'Wellesley High School', ['Wellesley High School']),     # New England HS meets print 'Wellesley-MA' (not Wellesley College)
     ('MA', 'Westfield High School', ['Westfield High School']),
     ('MA', 'Framingham High School', ['Framingham High School']),
+    ('MA', 'Covenant Christian Academy', ['Covenant Christian Academy']),     # Peabody; MAISAD meet at Hyde 2023
+    ('MA', 'Academy at Penguin Hall', ['Academy at Penguin Hall']),
+    ('RI', 'Providence Country Day School', ['Providence Country Day School']),
 ]
 
 
@@ -2739,3 +2742,21 @@ FILE_RULES += [
 
 FILE_RULES += [([raw], season, (year, year), '^' + _re.escape(stem) + '$', sid)
                for (season, year, stem), codes in FILE_CODES.items() for raw, sid in codes.items()]
+
+# Penobscot Christian (Bangor) cut to 'Penobscot' / 'Penobscot Ch': the sheets print 'Penobscot C' with 'Penobscot
+# Christian' on their relays or team scores (2026-11-25 review), and the 2010-11 runners are the 2008-09 ones
+FILE_RULES += [
+    (['Penobscot', 'Penobscot Ch'], 'Outdoor', (2023, 2023),
+     r'^(Almquist-(boys|girls)|Buckpsort-MS-results|(Cohen|Wagner-MS)-(boys|girls)-results|Ellsworth-MS-(boys|girls)-1)$',
+     'me-ms-penobscot-christian'),
+    (['Penobscot'], 'XC', (2008, 2011),
+     r'^(pvmsccl(smallschool)?(boys|girls)(_oct9)?\.txt|airline(invite)?boys\.txt|Small%20school%20results%20boys\.txt|pvmlsmallgirls\.txt)$',
+     'me-ms-penobscot-christian'),
+]
+
+# MAISAD meet at Hyde, 2023: cut names; the sheet's team rankings print them in full
+FILE_RULES += [
+    (['Covenant Chr'], 'Outdoor', (2023, 2023), r'^results_2023_04_15$', 'oos-ma-covenant-christian-academy'),
+    (['Academy at P'], 'Outdoor', (2023, 2023), r'^results_2023_04_15$', 'oos-ma-academy-at-penguin-hall'),
+    (['Providence'], 'Outdoor', (2023, 2023), r'^results_2023_04_15$', 'oos-ri-providence-country-day-school'),
+]
