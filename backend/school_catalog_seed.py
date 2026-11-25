@@ -2782,3 +2782,8 @@ FILE_RULES += [
     (['Lawrence Academy'], 'Outdoor', (2014, 2014), r'^ms-nepsac-division-iii-chapionships-2014$', '?'),   # Groton MA
     (['Cent.'], 'Indoor', (2011, 2011), r'^2011NewEnglandResults$', '?'),
 ]
+
+# A co-op of both genders runs its co-ed relays together too.
+for _c in COOPS:
+    if {'Boys', 'Girls'} <= set(_c.get('genders') or ()) and 'Mixed' not in _c['genders']:
+        _c['genders'] = list(_c['genders']) + ['Mixed']
