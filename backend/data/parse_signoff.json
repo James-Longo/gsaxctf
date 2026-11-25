@@ -63196,11 +63196,11 @@
   "evidence": "Second read, row by row (event, gender, place, name, school, mark, relay legs, grade where printed, exhibition) against the source: 37 events, 467 rows, none missing or extra; independent source-line scan matched every row. Lisbon meet 5/14/2024 (Lisbon, Mt. Abram, Winthrop, Buckfield, Mountain Valley, Carrabec; matches the index). All 467 rows match (ND/NH status rows kept); tied team places (Buckfield and Mt. Abram, 72) match; verified."
  },
  "backend/data/parsed_results/2024/Outdoor/ResultsLawrence.json": {
-  "parse_sha": "7d24aea70df3183f",
+  "parse_sha": "4b04999083ca888f",
   "source_sha": "a643f8f7c88cc53e",
-  "date": "2026-10-29",
-  "by": "sonnet audit (second read, 2026-10-29) (audit: source-error)",
-  "evidence": "Lawrence HS Meet 1, 4/19/2024 (title 'Lawrence High School Meet 1 - 4/19/2024'; Hy-Tek print 4/19/2024; index April 19 agrees). Ledger warning 'transcribed/verified but never signed off': the printed team scores reproduce (Women: Lawrence 85.50, Medomak Valley 73.50, Messalonskee 69, Gardiner 61; Men: Lawrence 93, Gardiner 68, Messalonskee 64, Medomak Valley 52) and this read is the sign-off. The one QA flag (event-section, Boys 110 Meter Hurdles looks like a 600m) is a SOURCE error: the section prints '1 Gingras, Henry Gardiner Hig 1:41.36 ... 6 Richards, Ethen Gardiner Hig 1:50.63' (six rows 1:41-1:50, impossible for 110H; Letourneau runs 53.90 in the 300H of the same meet and 1:46.73 in this section). Parse equals the source; no true values recoverable, rows left as printed. 'J' high jump/vault/triple marks (J4-04.00 etc.) are jump-off flags, kept as the mark with the original in warnings. DNF/NH rows kept. Compared every event and row of the source Hy-Tek text with the parse (event/gender/order, place incl. ties, name, school, mark incl. q/J/x flags, relay legs, exhibition 'B'/'C' relay teams, DNF/DQ/NH status rows) with a script plus eyeballing: no row missing or extra, none swapped. The Year column is empty in the source (grade blank in the parse is right)."
+  "date": "2026-11-24",
+  "by": "loop-claude",
+  "evidence": "re-signed 2026-11-25: only the running-clock heat dropped"
  },
  "backend/data/parsed_results/2024/Outdoor/ResultsMARSH.json": {
   "parse_sha": "240dfd24e929a538",
@@ -63280,11 +63280,11 @@
   "evidence": "reader compared every row with the source; fixes by override, school rule or index fix"
  },
  "backend/data/parsed_results/2024/Outdoor/ResultsOXFORD.json": {
-  "parse_sha": "e5c94a9f5ce5a611",
+  "parse_sha": "fb5ba2b48fc5a6e9",
   "source_sha": "c1362cfe74bf0b80",
-  "date": "2026-10-29",
-  "by": "sonnet audit (second read, 2026-10-29) (audit: confirmed)",
-  "evidence": "Oxford Hills, Leavitt, Edward Little, Oceanside at Oxford Hills, 4/17/2024 (title 'OXFORD HILLS - 4/17/2024', Hy-Tek print 4/18 05:33 AM = the morning after; index April 17). Ledger warning 'unverified: never read by a reviewer': no team-score block is printed in the source (the file has Points columns but no 'Team Rankings'), so nothing to verify; parse has none, correct. Schools: Oxford Hills Comprehensive High School/Leavitt/Edward Little/Oceanside -> me-hs-oxford-hills/-leavitt/-edward-little/-oceanside. 2 flags: Twitchell (Leavitt) boys javelin 113-00 is a real printed mark; gender-bleed = same-name athletes only. Compared every event and row of the source Hy-Tek text with the parse (event/gender/order, place incl. ties, name, school, mark incl. q/J/x flags, relay legs, exhibition 'B'/'C' relay teams, DNF/DQ/NH status rows) with a script plus eyeballing: no row missing or extra, none swapped. The Year column is empty in the source (grade blank in the parse is right)."
+  "date": "2026-11-24",
+  "by": "loop-claude",
+  "evidence": "re-signed 2026-11-25: only the running-clock heat dropped"
  },
  "backend/data/parsed_results/2024/Outdoor/ResultsSAMS.json": {
   "parse_sha": "0b8f9852ceed0527",
