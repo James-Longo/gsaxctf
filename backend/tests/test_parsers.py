@@ -4439,3 +4439,14 @@ if __name__ == '__main__':
                 traceback.print_exc()
                 print('FAIL', name, e)
     sys.exit(1 if failed else 0)
+
+
+def test_walk_and_hurdle_relays_are_not_the_flat_relay():
+    """Walked and hurdled relays had merged with the flat ones, and a 2-2-4-8 medley with the distance medley."""
+    from backend.event_canon import canonical_event
+    assert canonical_event('Girls 4x800 Meter Relay RACEWALK', 'Girls') == ('Girls', '4x800 Meter Race Walk Relay')
+    assert canonical_event('3x300 Meter Relay 900 M HURDLE', 'Girls') == ('Girls', '3x300 Meter Hurdle Relay')
+    assert canonical_event('Distance Medley MDR-2-2-4-8', 'Boys') == ('Boys', '1600 Meter Sprint Medley Relay')
+    assert canonical_event('Distance Medley 8M-4F-12M-16', 'Mixed') == ('Mixed', 'Distance Medley Relay')
+    for n in ('4x800 Meter Race Walk Relay', '3x300 Meter Hurdle Relay', '1600 Meter Sprint Medley Relay', '4x400 Meter Relay'):
+        assert canonical_event(n, 'Boys') == ('Boys', n)

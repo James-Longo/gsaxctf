@@ -151,6 +151,9 @@ def canonical_event(raw, gender, season=None, level=None, relay=False):
             # (an 800, 1200 and 1600 sprint medley are different races: each its own event; 1320 and
             # 1760 are yards -- 220-220-440-440, the 'Long' mile medley)
             d = re.search(r'\b(800|880|1000|1200|1320|1600|1760|1800)\b', s) if name == 'Sprint Medley Relay' else None
+            # ('Distance Medley MDR-2-2-4-8', SMAA Relays: 200-200-400-800 is the 1600 sprint medley)
+            if re.search(r'\b2-2-4-8\b', s) and not d:
+                name = '1600 Meter Sprint Medley Relay'
             if d:
                 unit = 'Yard' if d.group(1) in ('880', '1320', '1760') or re.search(r'y(ar)?d', s, re.I) else 'Meter'
                 name = f'{d.group(1)} {unit} Sprint Medley Relay'
@@ -172,7 +175,11 @@ def canonical_event(raw, gender, season=None, level=None, relay=False):
             if leg == '8':
                 leg = '800'
             # (EMITL's '4x100/4x200 Meter Throwers Relay': its own event, not the sprint relay)
-            kind = 'Throwers Relay' if re.search(r'thrower', s, re.I) else 'Relay'
+            # (a walked or hurdled relay is not the flat one: '4x800 Meter Relay RACEWALK' 17:44,
+            # '3x300 Meter Relay 900 M HURDLE')
+            kind = 'Throwers Relay' if re.search(r'thrower', s, re.I) else \
+                   'Race Walk Relay' if TYPE_WALK.search(s) else \
+                   'Hurdle Relay' if TYPE_HURDLES.search(s) else 'Relay'
             return gender, f'{legs}x{leg} {unit} {kind}'
         # bare "... Relay" with a distance elsewhere: "1600 Relay" = 4x400
         d = DIST_RE.search(s)
