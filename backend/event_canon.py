@@ -44,7 +44,7 @@ RELAY_RE = re.compile(r'([43])\s*[xX]\s*(\d{2,4}|880|1?\s*mile|8)(?=\b|y)', re.I
 TYPE_HURDLES = re.compile(r'hurd|\bhh\b|\bih\b|\blh\b|\bh\b$', re.I)
 TYPE_WALK = re.compile(r'race\s*walk|racewalk|\brw\b', re.I)
 TYPE_STEEPLE = re.compile(r'steeple', re.I)
-WHEELCHAIR = re.compile(r'wheelchair', re.I)
+WHEELCHAIR = re.compile(r"wheel\s*chair", re.I)   # "Wheel chair" too (Morse 2016, Caribou 2011)
 # (an ambulatory para division: "Boys Shot Put Para Ambulatory", neresults.pdf)
 PARA = re.compile(r'\bpara\b|ambulatory', re.I)
 MILE_RE = re.compile(r'\b(1|2|one|two)?\s*miles?\b', re.I)

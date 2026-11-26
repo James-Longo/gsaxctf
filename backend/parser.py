@@ -313,7 +313,7 @@ class Sub5ColumnParser:
         # an adaptive division is its own event ("Boys Shot Put Wheelchair",
         # "Girls Shot Put Para Ambulatory"): event_canon files it apart
         if max_len:
-            if re.search(r'wheelchair', low):
+            if re.search(r'wheel\s*chair', low):
                 best_match += ' Wheelchair'
             elif re.search(r'\bpara\b|ambulatory', low):
                 best_match += ' Para Ambulatory'

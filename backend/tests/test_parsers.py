@@ -3088,6 +3088,15 @@ def test_multi_event_legs_and_standings():
     assert [r['athlete'] for r in got[('High Jump', 'Girls')]] == ['Ada Quill']
 
 
+def test_wheel_chair_in_two_words_is_the_wheelchair_division():
+    """"400 Meter Run Wheel chair" (Morse 2016) and "100 Yard Dash Wheel Chair" (Caribou 2011) are the
+    wheelchair races, filed apart from the open event like "Wheelchair"."""
+    from backend.event_canon import canonical_event
+    assert canonical_event('400 Meter Run Wheel chair', 'Boys') == ('Boys', '400 Meter Dash (Wheelchair)')
+    assert canonical_event('Boys Shot Put wheel chair', 'Boys') == ('Boys', 'Shot Put (Wheelchair)')
+    assert canonical_event('Shot Put', 'Boys') == ('Boys', 'Shot Put')
+
+
 def test_multi_event_canonical_names():
     """A leg canonicalises as "<multi>: <leg>"; the multi alone keeps its name."""
     from backend.event_canon import canonical_event
