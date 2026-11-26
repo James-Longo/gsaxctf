@@ -1,17 +1,17 @@
 {
 "_meta": {
 "methods_by_rows": {
-"exact/alias": 2081806,
+"exact/alias": 2081668,
 "code": 260232,
 "truncation": 123437,
-"athlete-continuity": 53684,
+"athlete-continuity": 53651,
 "mascot": 28851,
 "bare name + level context": 28072,
 "manual (file rule)": 21035,
 "unresolved": 17313,
 "co-op label": 15238,
 "state-tagged (auto entry)": 9842,
-"spelling (fuzzy)": 3432,
+"spelling (fuzzy)": 3428,
 "file-expansion": 2325,
 "debris-salvage": 1771,
 "debris": 1007,
@@ -203,11 +203,11 @@
 "how": "bare name + level context"
 },
 "Scarborough": {
-"rows": 19872,
+"rows": 19793,
 "seasons": {
-"Indoor": 9306,
+"Indoor": 9392,
 "XC": 3362,
-"Outdoor": 7204
+"Outdoor": 7039
 },
 "years": [
 2003,
@@ -217,7 +217,7 @@
 "method": "exact",
 "by_id": {
 "me-hs-scarborough": 17819,
-"me-ms-scarborough": 2053
+"me-ms-scarborough": 1974
 },
 "context_dependent": true,
 "by_level": {
@@ -1222,8 +1222,8 @@
 "Biddeford": {
 "rows": 9610,
 "seasons": {
-"Indoor": 5283,
-"Outdoor": 2915,
+"Indoor": 5286,
+"Outdoor": 2912,
 "XC": 1412
 },
 "years": [
@@ -1972,10 +1972,10 @@
 "how": "exact/alias"
 },
 "Scarborough Middle School": {
-"rows": 6959,
+"rows": 6955,
 "seasons": {
-"Indoor": 5896,
-"Outdoor": 822,
+"Indoor": 5900,
+"Outdoor": 814,
 "XC": 241
 },
 "years": [
@@ -9320,8 +9320,8 @@
 "BIDD": {
 "rows": 931,
 "seasons": {
-"Indoor": 789,
-"Outdoor": 142
+"Indoor": 871,
+"Outdoor": 60
 },
 "years": [
 2006,
@@ -9334,6 +9334,10 @@
 "me-hs-biddeford": 289
 },
 "context_dependent": true,
+"by_season": {
+"Indoor": "me-ms-biddeford",
+"Outdoor": "me-hs-biddeford"
+},
 "flags": [
 "athletes contradict name match (me-hs-biddeford -> me-ms-biddeford, 6/6)"
 ],
@@ -10220,8 +10224,7 @@
 "rows": 773,
 "seasons": {
 "XC": 266,
-"Indoor": 438,
-"Outdoor": 69
+"Indoor": 507
 },
 "years": [
 2012,
@@ -12410,21 +12413,6 @@
 },
 "how": "athlete-continuity"
 },
-"Noble Middle School": {
-"rows": 497,
-"seasons": {
-"XC": 321,
-"Indoor": 121,
-"Outdoor": 55
-},
-"years": [
-2006,
-2025
-],
-"id": "me-ms-noble",
-"method": "exact",
-"how": "exact/alias"
-},
 "Unknown": {
 "rows": 496,
 "seasons": {
@@ -13037,6 +13025,20 @@
 "hs": "me-hs-mt-view",
 "ms": "me-ms-mt-view"
 },
+"how": "exact/alias"
+},
+"Noble Middle School": {
+"rows": 442,
+"seasons": {
+"XC": 321,
+"Indoor": 121
+},
+"years": [
+2006,
+2025
+],
+"id": "me-ms-noble",
+"method": "exact",
 "how": "exact/alias"
 },
 "Geo Stevens": {
@@ -14598,8 +14600,7 @@
 "FRDU": {
 "rows": 355,
 "seasons": {
-"Indoor": 291,
-"Outdoor": 64
+"Indoor": 355
 },
 "years": [
 2022,
@@ -15182,8 +15183,7 @@
 "Southern ME Cath": {
 "rows": 332,
 "seasons": {
-"Indoor": 329,
-"Outdoor": 3
+"Indoor": 332
 },
 "years": [
 2022,
@@ -18610,8 +18610,7 @@
 "rows": 218,
 "seasons": {
 "XC": 85,
-"Indoor": 130,
-"Outdoor": 3
+"Indoor": 133
 },
 "years": [
 2005,
@@ -20770,8 +20769,7 @@
 "rows": 166,
 "seasons": {
 "XC": 112,
-"Indoor": 53,
-"Outdoor": 1
+"Indoor": 54
 },
 "years": [
 2015,
@@ -25205,8 +25203,7 @@
 "Freeport/Durham": {
 "rows": 105,
 "seasons": {
-"Indoor": 102,
-"Outdoor": 3
+"Indoor": 105
 },
 "years": [
 2020,
@@ -30007,31 +30004,6 @@
 "id": "me-ms-brunswick",
 "method": "exact",
 "how": "exact/alias"
-},
-"Thorton": {
-"rows": 71,
-"seasons": {
-"Indoor": 33,
-"Outdoor": 33,
-"XC": 5
-},
-"years": [
-2022,
-2025
-],
-"id": "me-ms-thornton",
-"method": "athlete-continuity (name suggested me-hs-thornton)",
-"by_id": {
-"me-ms-thornton": 66,
-"me-hs-thornton": 5
-},
-"context_dependent": true,
-"by_season": {
-"Indoor": "me-ms-thornton",
-"Outdoor": "me-ms-thornton",
-"XC": "me-hs-thornton"
-},
-"how": "athlete-continuity"
 },
 "Greater Houlton Christian Acad 'A'": {
 "rows": 71,
@@ -38598,6 +38570,29 @@
 "id": "me-ms-dirigo",
 "method": "code+season-words",
 "how": "code"
+},
+"Thorton": {
+"rows": 38,
+"seasons": {
+"Indoor": 33,
+"XC": 5
+},
+"years": [
+2022,
+2025
+],
+"id": "me-ms-thornton",
+"method": "athlete-continuity (name suggested me-hs-thornton)",
+"by_id": {
+"me-ms-thornton": 33,
+"me-hs-thornton": 5
+},
+"context_dependent": true,
+"by_season": {
+"Indoor": "me-ms-thornton",
+"XC": "me-hs-thornton"
+},
+"how": "athlete-continuity"
 },
 "GRAY NEW Gloucester HS": {
 "rows": 38,
@@ -69654,20 +69649,6 @@
 "method": "stem",
 "how": "exact/alias"
 },
-"Thorton Academy Middle School": {
-"rows": 8,
-"seasons": {
-"Indoor": 4,
-"Outdoor": 4
-},
-"years": [
-2022,
-2022
-],
-"id": "me-ms-thornton",
-"method": "fuzzy",
-"how": "spelling (fuzzy)"
-},
 "Cambridge Ri": {
 "rows": 8,
 "seasons": {
@@ -87860,6 +87841,19 @@
 "id": "x-unattached",
 "method": "exact+comma-tail",
 "how": "exact/alias"
+},
+"Thorton Academy Middle School": {
+"rows": 4,
+"seasons": {
+"Indoor": 4
+},
+"years": [
+2022,
+2022
+],
+"id": "me-ms-thornton",
+"method": "fuzzy",
+"how": "spelling (fuzzy)"
 },
 "Portsmouth High School": {
 "rows": 4,
@@ -227421,6 +227415,12 @@
 "2022/Indoor/ms-smmsitcl-meet-1-wk-3-2022": {
 "Thornton Academy": "me-ms-thornton"
 },
+"2022/Indoor/ms-smmsitcl-meet-3-wk-2-2022": {
+"BIDD": "me-ms-biddeford",
+"Biddeford": "me-ms-biddeford",
+"Saco": "me-ms-saco",
+"Scarborough": "me-ms-scarborough"
+},
 "2022/Indoor/ms-smmsitcl-meet-3-wk-4-2022": {
 "Falmouth": "me-ms-falmouth",
 "Greely": "me-ms-greely"
@@ -228061,16 +228061,6 @@
 },
 "2022/Outdoor/ms-smaa-westbrook-windham-cheverus-massabesic-2022": {
 "Westbrook High School": "me-hs-westbrook"
-},
-"2022/Outdoor/ms-smmsitcl-meet-2-wk-1-2022": {
-"Scarborough": "me-ms-scarborough",
-"Thorton": "me-ms-thornton"
-},
-"2022/Outdoor/ms-smmsitcl-meet-3-wk-2-2022": {
-"BIDD": "me-ms-biddeford",
-"Biddeford": "me-ms-biddeford",
-"Saco": "me-ms-saco",
-"Scarborough": "me-ms-scarborough"
 },
 "2022/Outdoor/ms-waterville-invitational-2022": {
 "Messalonskee High School": "me-hs-messalonskee",
