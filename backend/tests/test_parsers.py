@@ -4306,7 +4306,7 @@ def test_milesplit_held_event_needs_one_file_near_the_date():
     mb._SEASON_MARKS[(1999, 'Outdoor')] = (held, {f'other{i}': dt.date(1999, 5, 1) for i in range(4)})
     assert mb.track_event_homes(dict(date='1999-05-01', events=[e]), 1999, 'Outdoor') == [None]
     held = {k: {'same'} for k in ks[:2]}
-    mb._SEASON_MARKS[(1999, 'Outdoor')] = (held, {'same': dt.date(1999, 5, 2)})
+    mb._SEASON_MARKS[(1999, 'Outdoor')] = (held, {'same': dt.date(1999, 5, 1)})   # a field event: same day
     assert mb.track_event_homes(dict(date='1999-05-01', events=[e]), 1999, 'Outdoor') == ['same']
     mb._SEASON_MARKS[(1999, 'Outdoor')] = (held, {'same': dt.date(1999, 5, 20)})   # weeks away: another meet
     assert mb.track_event_homes(dict(date='1999-05-01', events=[e]), 1999, 'Outdoor') == [None]
@@ -4413,6 +4413,16 @@ def test_recase_names_printed_all_lower_or_capitals():
     assert recase("O'NEIL SMITH") == "O'Neil Smith"
     for n in ('DJ Smith', 'McKay Thibodeau', 'Juan de la Cruz', 'Thomas Panciera III'):
         assert not bad_case(n) and recase(n) == n
+
+
+def test_relay_legs_printed_lower_are_recased_one_by_one():
+    """Leonard MS 2022: 'Sophie Neville, Clara White, carmen Doe, Avery Moeykens' (her own rows read Carmen Doe)."""
+    from backend.athlete_catalog import recase_legs
+    known = {'carmen Doe': 'Carmen Doe', 'gabe LEACH': 'Gabe Leach'}.get
+    assert (recase_legs('Sophie Neville, Clara White, carmen Doe, Avery Moeykens', known)
+            == 'Sophie Neville, Clara White, Carmen Doe, Avery Moeykens')
+    assert recase_legs('Ann Lee, ben smith', known) == 'Ann Lee, ben smith'  # catalog does not know him
+    assert recase_legs('Shurtleff, miranda', known) == 'Shurtleff, miranda'  # surname-first: left as printed
 
 
 def test_mojibake_names_are_decoded():

@@ -295,6 +295,23 @@ def recase(name):
     return ' '.join(word(w) for w in (name or '').split())
 
 
+def recase_legs(legs, good_name):
+    """A relay's leg list ('Sophie Neville, carmen Doe') with each badly cased leg recased the way a
+    single row is: its catalog name when it has the same letters, else proper case when the catalog knows
+    the runner (good_name(leg) -> catalog name or None). A list whose parts are not all full names
+    ('Shurtleff, miranda', surname-first) stays as printed."""
+    parts = (legs or '').split(', ')
+    if len(parts) < 2 or any(len(p.split()) < 2 for p in parts):
+        return legs
+    out = []
+    for p in parts:
+        if bad_case(p):
+            good = good_name(p)
+            p = good if good and same_letters(good, p) and not bad_case(good) else recase(p) if good else p
+        out.append(p)
+    return ', '.join(out)
+
+
 def same_letters(a, b):
     return re.sub(r'[^a-z]', '', (a or '').lower()) == re.sub(r'[^a-z]', '', (b or '').lower())
 
@@ -1677,10 +1694,17 @@ def apply(catalog=None, quiet=False):
                 # (a runner the catalog shows under another spelling -- 'micheel Nazaroff', Mike Nazaroff --
                 # keeps the printed letters in proper case)
                 fixed = good if good and same_letters(good, nm) and not bad_case(good) else recase(nm) if good else nm
-                if fixed != nm:
-                    p['athlete_name'] = fixed
-                    n_case += 1
-                    dirty = True
+            elif bad_case(nm):  # a relay's legs, each recased on its own
+                def leg_name(leg, team=team):
+                    a = js.slugify_athlete(leg, team)
+                    return proper.get(member_of.get(a, a))
+                fixed = recase_legs(nm, leg_name)
+            else:
+                fixed = nm
+            if fixed != nm:
+                p['athlete_name'] = fixed
+                n_case += 1
+                dirty = True
             f = flags.get((path, i))
             if f and any(bool(p.get(x)) != f[x] for x in f):
                 p.update(f)
