@@ -2,7 +2,7 @@
 "_meta": {
 "methods_by_rows": {
 "exact/alias": 2082270,
-"code": 260242,
+"code": 260247,
 "truncation": 123443,
 "athlete-continuity": 53613,
 "mascot": 28851,
@@ -783,10 +783,10 @@
 "how": "exact/alias"
 },
 "South Portland High School": {
-"rows": 13755,
+"rows": 13756,
 "seasons": {
 "Indoor": 4049,
-"Outdoor": 7757,
+"Outdoor": 7758,
 "XC": 1949
 },
 "years": [
@@ -2773,9 +2773,9 @@
 "how": "exact/alias"
 },
 "Hall-Dale": {
-"rows": 5236,
+"rows": 5235,
 "seasons": {
-"Outdoor": 3508,
+"Outdoor": 3507,
 "XC": 1691,
 "Indoor": 37
 },
@@ -2786,7 +2786,7 @@
 "id": "me-hs-hall-dale",
 "method": "exact",
 "by_id": {
-"me-hs-hall-dale": 4625,
+"me-hs-hall-dale": 4624,
 "me-ms-hall-dale": 611
 },
 "context_dependent": true,
@@ -7048,6 +7048,30 @@
 "method": "exact",
 "how": "exact/alias"
 },
+"SP": {
+"rows": 1548,
+"seasons": {
+"XC": 705,
+"Indoor": 421,
+"Outdoor": 422
+},
+"years": [
+2003,
+2024
+],
+"id": "me-hs-south-portland",
+"method": "code",
+"by_id": {
+"me-hs-south-portland": 1547,
+"me-ms-south-portland": 1
+},
+"context_dependent": true,
+"by_level": {
+"hs": "me-hs-south-portland",
+"ms": "me-ms-south-portland"
+},
+"how": "code"
+},
 "Mattanawcook Academy": {
 "rows": 1547,
 "seasons": {
@@ -7071,30 +7095,6 @@
 "ms": "me-ms-mattanawcook"
 },
 "how": "exact/alias"
-},
-"SP": {
-"rows": 1545,
-"seasons": {
-"XC": 705,
-"Indoor": 421,
-"Outdoor": 419
-},
-"years": [
-2003,
-2024
-],
-"id": "me-hs-south-portland",
-"method": "code",
-"by_id": {
-"me-hs-south-portland": 1544,
-"me-ms-south-portland": 1
-},
-"context_dependent": true,
-"by_level": {
-"hs": "me-hs-south-portland",
-"ms": "me-ms-south-portland"
-},
-"how": "code"
 },
 "Old Orchard": {
 "rows": 1541,
@@ -8893,20 +8893,20 @@
 "how": "exact/alias"
 },
 "BE": {
-"rows": 1044,
+"rows": 1045,
 "seasons": {
 "XC": 452,
 "Indoor": 122,
-"Outdoor": 470
+"Outdoor": 471
 },
 "years": [
 2003,
-2020
+2021
 ],
 "id": "me-hs-bonny-eagle",
 "method": "code",
 "by_id": {
-"me-hs-bonny-eagle": 976,
+"me-hs-bonny-eagle": 977,
 "me-ms-bonny-eagle": 68
 },
 "context_dependent": true,
@@ -38353,6 +38353,20 @@
 "method": "code",
 "how": "code"
 },
+"GOR": {
+"rows": 38,
+"seasons": {
+"XC": 37,
+"Outdoor": 1
+},
+"years": [
+2008,
+2021
+],
+"id": "me-hs-gorham",
+"method": "code",
+"how": "code"
+},
 "Cony High School Indoor Track": {
 "rows": 38,
 "seasons": {
@@ -38739,19 +38753,6 @@
 ],
 "id": "me-hs-brunswick",
 "method": "code+season-words",
-"how": "code"
-},
-"GOR": {
-"rows": 37,
-"seasons": {
-"XC": 37
-},
-"years": [
-2008,
-2009
-],
-"id": "me-hs-gorham",
-"method": "code",
 "how": "code"
 },
 "Gardiner High Sc": {
@@ -223424,6 +223425,10 @@
 },
 "2021/Outdoor/ms-maisadmpa-meet-2021": {
 "Hebron Academy": "me-hs-hebron"
+},
+"2021/Outdoor/ms-vacation-invitational-2021": {
+"BE": "me-hs-bonny-eagle",
+"SP": "me-hs-south-portland"
 },
 "2021/Outdoor/ms-wmcgreely-yarmouth-cape-2021": {
 "Yarmouth High School": "me-hs-yarmouth"
