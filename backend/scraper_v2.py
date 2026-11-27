@@ -2563,6 +2563,8 @@ class Sub5ScraperV2:
             except (UnicodeEncodeError, UnicodeDecodeError):
                 pass
         name = name.replace('\u2019', "'")
+        # (a backtick typed beside a letter key: 'Fred Beem`', 'Emma` Gaul', 'Jordan`` McLeod' -- no name has one)
+        name = name.replace('`', '')
         # what a PDF or web page leaves in a name: a non-breaking space's first byte ('Indra\u00c2 O'Donnell'), joined
         # letters ('Ho\ufb00man'), typographic hyphens and quotes, footnote daggers, a dash trailing a lone surname
         name = re.sub('\u00c2(?=\\s)', '', name)

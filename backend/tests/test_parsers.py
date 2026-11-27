@@ -4429,6 +4429,13 @@ def test_hyphen_with_one_space_joins_the_name():
     assert s.normalize_athlete_name('Wilcox - A, Jessie') == s.normalize_athlete_name('Wilcox, Jessie')
 
 
+def test_backtick_in_a_name_is_dropped():
+    from backend.scraper_v2 import Sub5ScraperV2
+    s = Sub5ScraperV2(progress_callback=lambda *a, **k: None)
+    assert s.normalize_athlete_name('Fred Beem`') == 'Fred Beem'
+    assert s.normalize_athlete_name('Jordan`` McLeod') == 'Jordan McLeod'
+
+
 def test_suffix_between_names_goes_last():
     """'Thomas Jr. Panciera' (Old Town MS 2026) is the runner printed 'Panciera, Thomas Jr.' elsewhere."""
     from backend.scraper_v2 import Sub5ScraperV2
