@@ -1,20 +1,20 @@
 {
 "_meta": {
 "methods_by_rows": {
-"exact/alias": 2081647,
-"code": 260232,
+"exact/alias": 2082128,
+"code": 260183,
 "truncation": 123436,
-"athlete-continuity": 53651,
+"athlete-continuity": 53583,
 "mascot": 28851,
 "bare name + level context": 28072,
 "manual (file rule)": 21035,
-"unresolved": 17312,
+"unresolved": 17213,
 "co-op label": 15238,
 "state-tagged (auto entry)": 9842,
-"spelling (fuzzy)": 3428,
+"spelling (fuzzy)": 3427,
 "file-expansion": 2325,
 "debris-salvage": 1771,
-"debris": 1007,
+"debris": 948,
 "ambiguous": 838,
 "later-hs": 597,
 "company": 430,
@@ -22,15 +22,15 @@
 "co-op label -> host (co-op not active)": 183
 },
 "methods_by_strings": {
-"exact/alias": 4183,
-"unresolved": 2074,
+"exact/alias": 4182,
+"unresolved": 2024,
 "state-tagged (auto entry)": 1571,
 "debris-salvage": 913,
-"debris": 713,
 "code": 702,
+"debris": 654,
 "truncation": 539,
-"athlete-continuity": 471,
-"spelling (fuzzy)": 286,
+"athlete-continuity": 470,
+"spelling (fuzzy)": 285,
 "manual (file rule)": 246,
 "co-op label": 79,
 "bare name + level context": 78,
@@ -39,7 +39,7 @@
 "file-expansion": 12,
 "later-hs": 2
 },
-"distinct_strings": 11937,
+"distinct_strings": 11825,
 "note": "'raw' keys are whitespace-collapsed school strings exactly as printed. 'overrides' are per-file answers (year/season/file-stem) that differ from the string's global id."
 },
 "raw": {
@@ -149,10 +149,10 @@
 "how": "exact/alias"
 },
 "York": {
-"rows": 21092,
+"rows": 21028,
 "seasons": {
 "Indoor": 11562,
-"Outdoor": 7210,
+"Outdoor": 7146,
 "XC": 2320
 },
 "years": [
@@ -162,7 +162,7 @@
 "id": "me-hs-york",
 "method": "exact",
 "by_id": {
-"me-hs-york": 20791,
+"me-hs-york": 20727,
 "me-ms-york": 301
 },
 "context_dependent": true,
@@ -694,9 +694,9 @@
 "how": "exact/alias"
 },
 "York High School": {
-"rows": 14875,
+"rows": 15128,
 "seasons": {
-"Outdoor": 4684,
+"Outdoor": 4937,
 "XC": 4002,
 "Indoor": 6189
 },
@@ -971,10 +971,10 @@
 "how": "exact/alias"
 },
 "Greely High School": {
-"rows": 10688,
+"rows": 10693,
 "seasons": {
 "Indoor": 4090,
-"Outdoor": 3343,
+"Outdoor": 3348,
 "XC": 3255
 },
 "years": [
@@ -1190,35 +1190,6 @@
 "method": "exact",
 "how": "exact/alias"
 },
-"Marshwood": {
-"rows": 9617,
-"seasons": {
-"Outdoor": 4152,
-"XC": 2682,
-"Indoor": 2783
-},
-"years": [
-2003,
-2026
-],
-"id": "me-hs-marshwood",
-"method": "exact",
-"by_id": {
-"me-hs-marshwood": 9204,
-"me-ms-marshwood": 413
-},
-"context_dependent": true,
-"by_level": {
-"hs": "me-hs-marshwood",
-"ms": "me-ms-marshwood"
-},
-"flags": [
-"athletes contradict name match (me-hs-marshwood -> me-hs-maranacook, 4/5)",
-"athletes contradict name match (me-ms-marshwood -> me-hs-marshwood, 6/6)",
-"athletes contradict name match (me-ms-marshwood -> me-hs-marshwood, 9/10)"
-],
-"how": "exact/alias"
-},
 "Biddeford": {
 "rows": 9610,
 "seasons": {
@@ -1256,6 +1227,35 @@
 ],
 "id": "me-hs-erskine",
 "method": "exact",
+"how": "exact/alias"
+},
+"Marshwood": {
+"rows": 9582,
+"seasons": {
+"Outdoor": 4117,
+"XC": 2682,
+"Indoor": 2783
+},
+"years": [
+2003,
+2026
+],
+"id": "me-hs-marshwood",
+"method": "exact",
+"by_id": {
+"me-hs-marshwood": 9169,
+"me-ms-marshwood": 413
+},
+"context_dependent": true,
+"by_level": {
+"hs": "me-hs-marshwood",
+"ms": "me-ms-marshwood"
+},
+"flags": [
+"athletes contradict name match (me-hs-marshwood -> me-hs-maranacook, 4/5)",
+"athletes contradict name match (me-ms-marshwood -> me-hs-marshwood, 6/6)",
+"athletes contradict name match (me-ms-marshwood -> me-hs-marshwood, 9/10)"
+],
 "how": "exact/alias"
 },
 "Scarboro": {
@@ -1394,33 +1394,6 @@
 "method": "exact",
 "how": "exact/alias"
 },
-"GNG": {
-"rows": 8746,
-"seasons": {
-"Outdoor": 4211,
-"XC": 1748,
-"Indoor": 2787
-},
-"years": [
-2004,
-2026
-],
-"id": "me-hs-gray-ng",
-"method": "code",
-"by_id": {
-"me-hs-gray-ng": 7868,
-"me-ms-gray-ng": 878
-},
-"context_dependent": true,
-"by_level": {
-"hs": "me-hs-gray-ng",
-"ms": "me-ms-gray-ng"
-},
-"flags": [
-"athletes contradict name match (me-hs-gray-ng -> me-ms-gray-ng, 8/12)"
-],
-"how": "code"
-},
 "Nokomis": {
 "rows": 8737,
 "seasons": {
@@ -1444,6 +1417,33 @@
 "ms": "me-ms-nokomis"
 },
 "how": "exact/alias"
+},
+"GNG": {
+"rows": 8704,
+"seasons": {
+"Outdoor": 4169,
+"XC": 1748,
+"Indoor": 2787
+},
+"years": [
+2004,
+2026
+],
+"id": "me-hs-gray-ng",
+"method": "code",
+"by_id": {
+"me-hs-gray-ng": 7826,
+"me-ms-gray-ng": 878
+},
+"context_dependent": true,
+"by_level": {
+"hs": "me-hs-gray-ng",
+"ms": "me-ms-gray-ng"
+},
+"flags": [
+"athletes contradict name match (me-hs-gray-ng -> me-ms-gray-ng, 8/12)"
+],
+"how": "code"
 },
 "Wells": {
 "rows": 8531,
@@ -1657,6 +1657,29 @@
 "method": "exact",
 "how": "exact/alias"
 },
+"Freeport High School": {
+"rows": 7536,
+"seasons": {
+"XC": 2042,
+"Indoor": 2952,
+"Outdoor": 2542
+},
+"years": [
+2003,
+2026
+],
+"id": "me-hs-freeport",
+"method": "exact",
+"by_id": {
+"me-hs-freeport": 7533,
+"me-ms-freeport": 3
+},
+"context_dependent": true,
+"flags": [
+"athletes contradict name match (me-hs-freeport -> me-ms-freeport, 2/2)"
+],
+"how": "exact/alias"
+},
 "Deering High School": {
 "rows": 7519,
 "seasons": {
@@ -1685,29 +1708,6 @@
 ],
 "id": "me-hs-sanford",
 "method": "exact",
-"how": "exact/alias"
-},
-"Freeport High School": {
-"rows": 7516,
-"seasons": {
-"XC": 2042,
-"Indoor": 2952,
-"Outdoor": 2522
-},
-"years": [
-2003,
-2026
-],
-"id": "me-hs-freeport",
-"method": "exact",
-"by_id": {
-"me-hs-freeport": 7513,
-"me-ms-freeport": 3
-},
-"context_dependent": true,
-"flags": [
-"athletes contradict name match (me-hs-freeport -> me-ms-freeport, 2/2)"
-],
 "how": "exact/alias"
 },
 "CAPE": {
@@ -1774,9 +1774,9 @@
 "how": "exact/alias"
 },
 "Kennebunk": {
-"rows": 7376,
+"rows": 7375,
 "seasons": {
-"Outdoor": 3596,
+"Outdoor": 3595,
 "XC": 2683,
 "Indoor": 1097
 },
@@ -1787,7 +1787,7 @@
 "id": "me-hs-kennebunk",
 "method": "exact",
 "by_id": {
-"me-hs-kennebunk": 6863,
+"me-hs-kennebunk": 6862,
 "me-ms-kennebunk": 513
 },
 "context_dependent": true,
@@ -1795,6 +1795,24 @@
 "hs": "me-hs-kennebunk",
 "ms": "me-ms-kennebunk"
 },
+"how": "exact/alias"
+},
+"Marshwood High School": {
+"rows": 7368,
+"seasons": {
+"Indoor": 1252,
+"Outdoor": 4312,
+"XC": 1804
+},
+"years": [
+2003,
+2026
+],
+"id": "me-hs-marshwood",
+"method": "exact",
+"flags": [
+"athletes contradict name match (me-hs-marshwood -> me-hs-north-haven, 5/5)"
+],
 "how": "exact/alias"
 },
 "Fryeburg Academy": {
@@ -1828,10 +1846,10 @@
 "how": "exact/alias"
 },
 "Poland Regional High School": {
-"rows": 7295,
+"rows": 7302,
 "seasons": {
 "XC": 1576,
-"Outdoor": 3071,
+"Outdoor": 3078,
 "Indoor": 2648
 },
 "years": [
@@ -1840,24 +1858,6 @@
 ],
 "id": "me-hs-poland",
 "method": "exact",
-"how": "exact/alias"
-},
-"Marshwood High School": {
-"rows": 7270,
-"seasons": {
-"Indoor": 1252,
-"Outdoor": 4214,
-"XC": 1804
-},
-"years": [
-2003,
-2026
-],
-"id": "me-hs-marshwood",
-"method": "exact",
-"flags": [
-"athletes contradict name match (me-hs-marshwood -> me-hs-north-haven, 5/5)"
-],
 "how": "exact/alias"
 },
 "Portland": {
@@ -1948,9 +1948,9 @@
 "how": "exact/alias"
 },
 "YORK": {
-"rows": 7071,
+"rows": 7064,
 "seasons": {
-"Outdoor": 1655,
+"Outdoor": 1648,
 "Indoor": 4045,
 "XC": 1371
 },
@@ -1961,7 +1961,7 @@
 "id": "me-hs-york",
 "method": "exact",
 "by_id": {
-"me-hs-york": 6710,
+"me-hs-york": 6703,
 "me-ms-york": 361
 },
 "context_dependent": true,
@@ -2076,9 +2076,9 @@
 "how": "exact/alias"
 },
 "Kennebunk High School": {
-"rows": 6570,
+"rows": 6650,
 "seasons": {
-"Outdoor": 3733,
+"Outdoor": 3813,
 "XC": 2112,
 "Indoor": 725
 },
@@ -2484,6 +2484,30 @@
 ],
 "how": "exact/alias"
 },
+"Gray-New Gloucester High School": {
+"rows": 5643,
+"seasons": {
+"Indoor": 1920,
+"XC": 1155,
+"Outdoor": 2568
+},
+"years": [
+2003,
+2026
+],
+"id": "me-hs-gray-ng",
+"method": "exact",
+"by_id": {
+"me-hs-gray-ng": 5559,
+"me-ms-gray-ng": 84
+},
+"context_dependent": true,
+"flags": [
+"athletes contradict name match (me-hs-gray-ng -> me-ms-gray-ng, 10/11)",
+"athletes contradict name match (me-hs-gray-ng -> me-ms-gray-ng, 2/2)"
+],
+"how": "exact/alias"
+},
 "Messalonskee High School": {
 "rows": 5642,
 "seasons": {
@@ -2520,30 +2544,6 @@
 ],
 "id": "me-ms-greely",
 "method": "exact",
-"how": "exact/alias"
-},
-"Gray-New Gloucester High School": {
-"rows": 5601,
-"seasons": {
-"Indoor": 1920,
-"XC": 1155,
-"Outdoor": 2526
-},
-"years": [
-2003,
-2026
-],
-"id": "me-hs-gray-ng",
-"method": "exact",
-"by_id": {
-"me-hs-gray-ng": 5517,
-"me-ms-gray-ng": 84
-},
-"context_dependent": true,
-"flags": [
-"athletes contradict name match (me-hs-gray-ng -> me-ms-gray-ng, 10/11)",
-"athletes contradict name match (me-hs-gray-ng -> me-ms-gray-ng, 2/2)"
-],
 "how": "exact/alias"
 },
 "Traip": {
@@ -5358,10 +5358,10 @@
 "how": "exact/alias"
 },
 "St. Dominic Academy": {
-"rows": 2329,
+"rows": 2331,
 "seasons": {
 "XC": 668,
-"Outdoor": 1004,
+"Outdoor": 1006,
 "Indoor": 657
 },
 "years": [
@@ -5371,7 +5371,7 @@
 "id": "me-hs-st-dominic",
 "method": "exact",
 "by_id": {
-"me-hs-st-dominic": 2311,
+"me-hs-st-dominic": 2313,
 "me-ms-st-dominic": 18
 },
 "context_dependent": true,
@@ -7120,26 +7120,6 @@
 },
 "how": "exact/alias"
 },
-"POL": {
-"rows": 1533,
-"seasons": {
-"Indoor": 1299,
-"Outdoor": 167,
-"XC": 67
-},
-"years": [
-2005,
-2022
-],
-"id": "me-hs-poland",
-"method": "code",
-"by_id": {
-"me-hs-poland": 1502,
-"me-ms-whittier": 31
-},
-"context_dependent": true,
-"how": "code"
-},
 "Cheverus Hig": {
 "rows": 1527,
 "seasons": {
@@ -7154,6 +7134,26 @@
 "id": "me-hs-cheverus",
 "method": "exact",
 "how": "exact/alias"
+},
+"POL": {
+"rows": 1526,
+"seasons": {
+"Indoor": 1299,
+"Outdoor": 160,
+"XC": 67
+},
+"years": [
+2005,
+2022
+],
+"id": "me-hs-poland",
+"method": "code",
+"by_id": {
+"me-hs-poland": 1495,
+"me-ms-whittier": 31
+},
+"context_dependent": true,
+"how": "code"
 },
 "Blue Hill MS": {
 "rows": 1518,
@@ -8175,6 +8175,20 @@
 "method": "truncation",
 "how": "truncation"
 },
+"Seacoast Christian School": {
+"rows": 1230,
+"seasons": {
+"Outdoor": 1148,
+"XC": 82
+},
+"years": [
+2003,
+2026
+],
+"id": "me-hs-seacoast-christian",
+"method": "exact",
+"how": "exact/alias"
+},
 "Hebron Academy": {
 "rows": 1229,
 "seasons": {
@@ -8350,20 +8364,6 @@
 "XC": "me-hs-westbrook"
 },
 "how": "athlete-continuity"
-},
-"Seacoast Christian School": {
-"rows": 1187,
-"seasons": {
-"Outdoor": 1105,
-"XC": 82
-},
-"years": [
-2003,
-2026
-],
-"id": "me-hs-seacoast-christian",
-"method": "exact",
-"how": "exact/alias"
 },
 "Milford": {
 "rows": 1180,
@@ -9220,6 +9220,20 @@
 },
 "how": "athlete-continuity"
 },
+"Oxford Hills Middle School": {
+"rows": 943,
+"seasons": {
+"XC": 195,
+"Outdoor": 748
+},
+"years": [
+2007,
+2026
+],
+"id": "me-ms-oxford-hills",
+"method": "exact",
+"how": "exact/alias"
+},
 "WSCS": {
 "rows": 938,
 "seasons": {
@@ -9493,20 +9507,6 @@
 "id": "me-hs-winslow",
 "method": "athlete-continuity",
 "how": "athlete-continuity"
-},
-"Oxford Hills Middle School": {
-"rows": 896,
-"seasons": {
-"XC": 195,
-"Outdoor": 701
-},
-"years": [
-2007,
-2026
-],
-"id": "me-ms-oxford-hills",
-"method": "exact",
-"how": "exact/alias"
 },
 "Sumner Memorial High School": {
 "rows": 891,
@@ -9858,28 +9858,6 @@
 "context_dependent": true,
 "how": "code"
 },
-"K": {
-"rows": 837,
-"seasons": {
-"XC": 642,
-"Outdoor": 195
-},
-"years": [
-2003,
-2021
-],
-"id": "me-hs-kennebunk",
-"method": "manual (file rule)",
-"by_id": {
-"me-hs-kennebunk": 464,
-"None": 181,
-"me-ms-kennebunk": 176,
-"me-ms-king": 16
-},
-"context_dependent": true,
-"unresolved_rows": 181,
-"how": "manual (file rule)"
-},
 "King": {
 "rows": 834,
 "seasons": {
@@ -9966,6 +9944,28 @@
 "athletes contradict name match (me-ms-islesboro -> me-hs-islesboro, 4/5)"
 ],
 "how": "exact/alias"
+},
+"K": {
+"rows": 822,
+"seasons": {
+"XC": 642,
+"Outdoor": 180
+},
+"years": [
+2003,
+2019
+],
+"id": "me-hs-kennebunk",
+"method": "manual (file rule)",
+"by_id": {
+"me-hs-kennebunk": 449,
+"None": 181,
+"me-ms-kennebunk": 176,
+"me-ms-king": 16
+},
+"context_dependent": true,
+"unresolved_rows": 181,
+"how": "manual (file rule)"
 },
 "Windsor": {
 "rows": 819,
@@ -19798,25 +19798,6 @@
 "method": "truncation",
 "how": "truncation"
 },
-"YO": {
-"rows": 191,
-"seasons": {
-"Outdoor": 107,
-"XC": 84
-},
-"years": [
-2012,
-2021
-],
-"id": "me-hs-york",
-"method": "athlete-continuity",
-"by_id": {
-"me-hs-york": 165,
-"None": 26
-},
-"unresolved_rows": 26,
-"how": "athlete-continuity"
-},
 "Islesboro Central School": {
 "rows": 190,
 "seasons": {
@@ -21873,6 +21854,25 @@
 "id": "me-ms-rose-gaffney",
 "method": "exact",
 "how": "exact/alias"
+},
+"YO": {
+"rows": 147,
+"seasons": {
+"Outdoor": 63,
+"XC": 84
+},
+"years": [
+2012,
+2012
+],
+"id": "me-hs-york",
+"method": "athlete-continuity",
+"by_id": {
+"me-hs-york": 121,
+"None": 26
+},
+"unresolved_rows": 26,
+"how": "athlete-continuity"
 },
 "UMass Dartmouth": {
 "rows": 147,
@@ -26680,27 +26680,6 @@
 "method": "exact",
 "how": "exact/alias"
 },
-"SC": {
-"rows": 92,
-"seasons": {
-"Outdoor": 25,
-"XC": 67
-},
-"years": [
-2005,
-2023
-],
-"id": "me-hs-scarborough",
-"method": "manual (file rule)",
-"by_id": {
-"me-hs-scarborough": 66,
-"None": 15,
-"me-hs-seacoast-christian": 11
-},
-"context_dependent": true,
-"unresolved_rows": 15,
-"how": "manual (file rule)"
-},
 "Cumberland RI": {
 "rows": 92,
 "seasons": {
@@ -27810,6 +27789,27 @@
 "id": "me-hs-cony",
 "method": "exact",
 "how": "exact/alias"
+},
+"SC": {
+"rows": 83,
+"seasons": {
+"Outdoor": 16,
+"XC": 67
+},
+"years": [
+2005,
+2023
+],
+"id": "me-hs-scarborough",
+"method": "manual (file rule)",
+"by_id": {
+"me-hs-scarborough": 66,
+"None": 13,
+"me-hs-seacoast-christian": 4
+},
+"context_dependent": true,
+"unresolved_rows": 13,
+"how": "manual (file rule)"
 },
 "Ric": {
 "rows": 83,
@@ -35042,19 +35042,6 @@
 "id": "col-regis",
 "method": "exact",
 "how": "exact/alias"
-},
-"Msoh": {
-"rows": 47,
-"seasons": {
-"Outdoor": 47
-},
-"years": [
-2021,
-2021
-],
-"id": null,
-"method": "unresolved",
-"how": "unresolved"
 },
 "Hawks (Hermon)": {
 "rows": 47,
@@ -66418,19 +66405,6 @@
 "method": "exact+season-words",
 "how": "exact/alias"
 },
-"KENNEBUNK": {
-"rows": 9,
-"seasons": {
-"Outdoor": 9
-},
-"years": [
-2016,
-2021
-],
-"id": "me-hs-kennebunk",
-"method": "exact",
-"how": "exact/alias"
-},
 "E Grand": {
 "rows": 9,
 "seasons": {
@@ -75904,6 +75878,19 @@
 ],
 "id": "me-hs-biddeford",
 "method": "exact+season-words",
+"how": "exact/alias"
+},
+"KENNEBUNK": {
+"rows": 6,
+"seasons": {
+"Outdoor": 6
+},
+"years": [
+2016,
+2016
+],
+"id": "me-hs-kennebunk",
+"method": "exact",
 "how": "exact/alias"
 },
 "Lisbon HIgh School": {
@@ -87673,19 +87660,6 @@
 "method": "exact+level-context+season-words",
 "how": "exact/alias"
 },
-"MARSHWOOD": {
-"rows": 4,
-"seasons": {
-"Outdoor": 4
-},
-"years": [
-2021,
-2021
-],
-"id": "me-hs-marshwood",
-"method": "exact",
-"how": "exact/alias"
-},
 "Houlton High / Ghca": {
 "rows": 4,
 "seasons": {
@@ -93787,19 +93761,6 @@
 2016
 ],
 "id": "me-hs-old-orchard",
-"method": "exact",
-"how": "exact/alias"
-},
-"SEACOAST": {
-"rows": 3,
-"seasons": {
-"Outdoor": 3
-},
-"years": [
-2016,
-2021
-],
-"id": "me-hs-seacoast-christian",
 "method": "exact",
 "how": "exact/alias"
 },
@@ -110489,32 +110450,6 @@
 },
 "context_dependent": true,
 "how": "manual (file rule)"
-},
-"YO 56.4": {
-"rows": 2,
-"seasons": {
-"Outdoor": 2
-},
-"years": [
-2021,
-2021
-],
-"id": null,
-"method": "unresolved",
-"how": "unresolved"
-},
-"YO 12.2 12.44": {
-"rows": 2,
-"seasons": {
-"Outdoor": 2
-},
-"years": [
-2021,
-2021
-],
-"id": "me-hs-york",
-"method": "athlete-continuity",
-"how": "athlete-continuity"
 },
 "Saint Domininc Academy": {
 "rows": 2,
@@ -141310,6 +141245,19 @@
 "method": "debris",
 "how": "debris"
 },
+"SEACOAST": {
+"rows": 1,
+"seasons": {
+"Outdoor": 1
+},
+"years": [
+2016,
+2016
+],
+"id": "me-hs-seacoast-christian",
+"method": "exact",
+"how": "exact/alias"
+},
 "O 4-02": {
 "rows": 1,
 "seasons": {
@@ -157303,1410 +157251,6 @@
 },
 "context_dependent": true,
 "how": "manual (file rule)"
-},
-"YO 9:13.4": {
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2021,
-2021
-],
-"id": null,
-"method": "debris",
-"how": "debris"
-},
-"YO 17.4": {
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2021,
-2021
-],
-"id": null,
-"method": "unresolved",
-"how": "unresolved"
-},
-"YO 17.5": {
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2021,
-2021
-],
-"id": null,
-"method": "unresolved",
-"how": "unresolved"
-},
-"YO 19.9": {
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2021,
-2021
-],
-"id": null,
-"method": "unresolved",
-"how": "unresolved"
-},
-"YO 20.3": {
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2021,
-2021
-],
-"id": null,
-"method": "unresolved",
-"how": "unresolved"
-},
-"M 11.9": {
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2021,
-2021
-],
-"id": null,
-"method": "unresolved",
-"how": "unresolved"
-},
-"M 12.0": {
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2021,
-2021
-],
-"id": null,
-"method": "unresolved",
-"how": "unresolved"
-},
-"YO 12.1": {
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2021,
-2021
-],
-"id": null,
-"method": "unresolved",
-"how": "unresolved"
-},
-"M 12.3": {
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2021,
-2021
-],
-"id": null,
-"method": "unresolved",
-"how": "unresolved"
-},
-"YO 5:01.0": {
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2021,
-2021
-],
-"id": null,
-"method": "debris",
-"how": "debris"
-},
-"M 5:08.0": {
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2021,
-2021
-],
-"id": null,
-"method": "debris",
-"how": "debris"
-},
-"M 5:20.0": {
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2021,
-2021
-],
-"id": null,
-"method": "debris",
-"how": "debris"
-},
-"YO 5:20.7": {
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2021,
-2021
-],
-"id": null,
-"method": "debris",
-"how": "debris"
-},
-"SC 57.6": {
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2021,
-2021
-],
-"id": null,
-"method": "unresolved",
-"how": "unresolved"
-},
-"SC 1:01.0": {
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2021,
-2021
-],
-"id": null,
-"method": "debris",
-"how": "debris"
-},
-"M 1:07.0": {
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2021,
-2021
-],
-"id": null,
-"method": "debris",
-"how": "debris"
-},
-"YO 2:17.6": {
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2021,
-2021
-],
-"id": null,
-"method": "debris",
-"how": "debris"
-},
-"YO 2:19.4": {
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2021,
-2021
-],
-"id": null,
-"method": "debris",
-"how": "debris"
-},
-"YO 2:20.0": {
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2021,
-2021
-],
-"id": null,
-"method": "debris",
-"how": "debris"
-},
-"M 2:25.5": {
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2021,
-2021
-],
-"id": null,
-"method": "debris",
-"how": "debris"
-},
-"YO 45.3": {
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2021,
-2021
-],
-"id": null,
-"method": "unresolved",
-"how": "unresolved"
-},
-"YO 48.2": {
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2021,
-2021
-],
-"id": null,
-"method": "unresolved",
-"how": "unresolved"
-},
-"YO 23.8": {
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2021,
-2021
-],
-"id": null,
-"method": "unresolved",
-"how": "unresolved"
-},
-"M 23.9": {
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2021,
-2021
-],
-"id": null,
-"method": "unresolved",
-"how": "unresolved"
-},
-"M 24.5": {
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2021,
-2021
-],
-"id": null,
-"method": "unresolved",
-"how": "unresolved"
-},
-"M 24.8": {
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2021,
-2021
-],
-"id": null,
-"method": "unresolved",
-"how": "unresolved"
-},
-"SC 12:29.9": {
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2021,
-2021
-],
-"id": null,
-"method": "debris",
-"how": "debris"
-},
-"M 13:00.7": {
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2021,
-2021
-],
-"id": null,
-"method": "debris",
-"how": "debris"
-},
-"YO 15.8": {
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2021,
-2021
-],
-"id": null,
-"method": "unresolved",
-"how": "unresolved"
-},
-"YO 17.7": {
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2021,
-2021
-],
-"id": null,
-"method": "unresolved",
-"how": "unresolved"
-},
-"YO 18.00": {
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2021,
-2021
-],
-"id": null,
-"method": "debris",
-"how": "debris"
-},
-"M 12.8": {
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2021,
-2021
-],
-"id": null,
-"method": "unresolved",
-"how": "unresolved"
-},
-"M 13.6": {
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2021,
-2021
-],
-"id": null,
-"method": "unresolved",
-"how": "unresolved"
-},
-"M 13.8": {
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2021,
-2021
-],
-"id": null,
-"method": "unresolved",
-"how": "unresolved"
-},
-"YO 14.1": {
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2021,
-2021
-],
-"id": null,
-"method": "unresolved",
-"how": "unresolved"
-},
-"M 5:45.0": {
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2021,
-2021
-],
-"id": null,
-"method": "debris",
-"how": "debris"
-},
-"YO 5:47.0": {
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2021,
-2021
-],
-"id": null,
-"method": "debris",
-"how": "debris"
-},
-"YO 5:51.0": {
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2021,
-2021
-],
-"id": null,
-"method": "debris",
-"how": "debris"
-},
-"M 5:54.0": {
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2021,
-2021
-],
-"id": null,
-"method": "debris",
-"how": "debris"
-},
-"YO 1:06.2": {
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2021,
-2021
-],
-"id": null,
-"method": "debris",
-"how": "debris"
-},
-"M 1:12.0": {
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2021,
-2021
-],
-"id": null,
-"method": "debris",
-"how": "debris"
-},
-"YO 1:13.0": {
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2021,
-2021
-],
-"id": null,
-"method": "debris",
-"how": "debris"
-},
-"M 1:15.0": {
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2021,
-2021
-],
-"id": null,
-"method": "debris",
-"how": "debris"
-},
-"YO 54.0": {
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2021,
-2021
-],
-"id": null,
-"method": "unresolved",
-"how": "unresolved"
-},
-"YO 2:22.9": {
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2021,
-2021
-],
-"id": null,
-"method": "debris",
-"how": "debris"
-},
-"YO 2:42.7": {
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2021,
-2021
-],
-"id": null,
-"method": "debris",
-"how": "debris"
-},
-"YO 2:43.0": {
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2021,
-2021
-],
-"id": null,
-"method": "debris",
-"how": "debris"
-},
-"YO 2:44.3": {
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2021,
-2021
-],
-"id": null,
-"method": "debris",
-"how": "debris"
-},
-"M 29.0": {
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2021,
-2021
-],
-"id": null,
-"method": "unresolved",
-"how": "unresolved"
-},
-"M 29.4": {
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2021,
-2021
-],
-"id": null,
-"method": "unresolved",
-"how": "unresolved"
-},
-"SC 30.0": {
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2021,
-2021
-],
-"id": null,
-"method": "unresolved",
-"how": "unresolved"
-},
-"M 30.8": {
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2021,
-2021
-],
-"id": null,
-"method": "unresolved",
-"how": "unresolved"
-},
-"MARSWOOD": {
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2021,
-2021
-],
-"id": "me-hs-marshwood",
-"method": "fuzzy",
-"how": "spelling (fuzzy)"
-},
-"M 6-06": {
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2021,
-2021
-],
-"id": null,
-"method": "debris",
-"how": "debris"
-},
-"YO 6-06": {
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2021,
-2021
-],
-"id": null,
-"method": "debris",
-"how": "debris"
-},
-"Y 9:36.2": {
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2021,
-2021
-],
-"id": null,
-"method": "debris",
-"how": "debris"
-},
-"Y 18.60": {
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2021,
-2021
-],
-"id": null,
-"method": "debris",
-"how": "debris"
-},
-"Y 19.60": {
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2021,
-2021
-],
-"id": null,
-"method": "debris",
-"how": "debris"
-},
-"K 23.10": {
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2021,
-2021
-],
-"id": null,
-"method": "debris",
-"how": "debris"
-},
-"Y 17.7": {
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2021,
-2021
-],
-"id": null,
-"method": "unresolved",
-"how": "unresolved"
-},
-"Y 17.9": {
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2021,
-2021
-],
-"id": null,
-"method": "unresolved",
-"how": "unresolved"
-},
-"YO 13.6": {
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2021,
-2021
-],
-"id": null,
-"method": "unresolved",
-"how": "unresolved"
-},
-"SC 13.8": {
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2021,
-2021
-],
-"id": null,
-"method": "unresolved",
-"how": "unresolved"
-},
-"K 14.2": {
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2021,
-2021
-],
-"id": null,
-"method": "unresolved",
-"how": "unresolved"
-},
-"YO 14.3": {
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2021,
-2021
-],
-"id": null,
-"method": "unresolved",
-"how": "unresolved"
-},
-"K 11.8": {
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2021,
-2021
-],
-"id": null,
-"method": "unresolved",
-"how": "unresolved"
-},
-"YO 11.8": {
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2021,
-2021
-],
-"id": null,
-"method": "unresolved",
-"how": "unresolved"
-},
-"K 12.1": {
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2021,
-2021
-],
-"id": null,
-"method": "unresolved",
-"how": "unresolved"
-},
-"SC 6:41.9": {
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2021,
-2021
-],
-"id": null,
-"method": "debris",
-"how": "debris"
-},
-"YO 5:01.7": {
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2021,
-2021
-],
-"id": null,
-"method": "debris",
-"how": "debris"
-},
-"K 5:21.7": {
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2021,
-2021
-],
-"id": null,
-"method": "debris",
-"how": "debris"
-},
-"YO 5:28.5": {
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2021,
-2021
-],
-"id": null,
-"method": "debris",
-"how": "debris"
-},
-"YO 5:30.8": {
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2021,
-2021
-],
-"id": null,
-"method": "debris",
-"how": "debris"
-},
-"K 1:04.3": {
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2021,
-2021
-],
-"id": null,
-"method": "debris",
-"how": "debris"
-},
-"K 1:06.0": {
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2021,
-2021
-],
-"id": null,
-"method": "debris",
-"how": "debris"
-},
-"YO 1:11.3": {
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2021,
-2021
-],
-"id": null,
-"method": "debris",
-"how": "debris"
-},
-"YO 1:13.5": {
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2021,
-2021
-],
-"id": null,
-"method": "debris",
-"how": "debris"
-},
-"K 54.6": {
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2021,
-2021
-],
-"id": null,
-"method": "unresolved",
-"how": "unresolved"
-},
-"SC 59.1": {
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2021,
-2021
-],
-"id": null,
-"method": "unresolved",
-"how": "unresolved"
-},
-"K 1:01.0": {
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2021,
-2021
-],
-"id": null,
-"method": "debris",
-"how": "debris"
-},
-"K 1:02.1": {
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2021,
-2021
-],
-"id": null,
-"method": "debris",
-"how": "debris"
-},
-"YO 44.5": {
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2021,
-2021
-],
-"id": null,
-"method": "unresolved",
-"how": "unresolved"
-},
-"YO 47.2": {
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2021,
-2021
-],
-"id": null,
-"method": "unresolved",
-"how": "unresolved"
-},
-"YO 55.9": {
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2021,
-2021
-],
-"id": null,
-"method": "unresolved",
-"how": "unresolved"
-},
-"YO 2:37.4": {
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2021,
-2021
-],
-"id": null,
-"method": "debris",
-"how": "debris"
-},
-"K 2:50.1": {
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2021,
-2021
-],
-"id": null,
-"method": "debris",
-"how": "debris"
-},
-"YO 2:51.1": {
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2021,
-2021
-],
-"id": null,
-"method": "debris",
-"how": "debris"
-},
-"SC 3:07.2": {
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2021,
-2021
-],
-"id": null,
-"method": "debris",
-"how": "debris"
-},
-"YO 2:17.8": {
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2021,
-2021
-],
-"id": null,
-"method": "debris",
-"how": "debris"
-},
-"YO 2:20.8": {
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2021,
-2021
-],
-"id": null,
-"method": "debris",
-"how": "debris"
-},
-"SC 2:26.4": {
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2021,
-2021
-],
-"id": null,
-"method": "debris",
-"how": "debris"
-},
-"YO 2:27.4": {
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2021,
-2021
-],
-"id": null,
-"method": "debris",
-"how": "debris"
-},
-"K 29.3": {
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2021,
-2021
-],
-"id": null,
-"method": "unresolved",
-"how": "unresolved"
-},
-"K 29.9": {
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2021,
-2021
-],
-"id": null,
-"method": "unresolved",
-"how": "unresolved"
-},
-"SC 30.1": {
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2021,
-2021
-],
-"id": null,
-"method": "unresolved",
-"how": "unresolved"
-},
-"YO 30.1": {
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2021,
-2021
-],
-"id": null,
-"method": "unresolved",
-"how": "unresolved"
-},
-"YO 23.9": {
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2021,
-2021
-],
-"id": null,
-"method": "unresolved",
-"how": "unresolved"
-},
-"SC 25.3": {
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2021,
-2021
-],
-"id": null,
-"method": "unresolved",
-"how": "unresolved"
-},
-"YO 25.6": {
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2021,
-2021
-],
-"id": null,
-"method": "unresolved",
-"how": "unresolved"
-},
-"YO 26.0": {
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2021,
-2021
-],
-"id": null,
-"method": "unresolved",
-"how": "unresolved"
-},
-"YO 6-02 5 1 Leech, Ellie SC": {
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2021,
-2021
-],
-"id": null,
-"method": "debris",
-"how": "debris"
-},
-"YO 5-08 3 2 Slovenski, Phoebe YO": {
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2021,
-2021
-],
-"id": null,
-"method": "debris",
-"how": "debris"
-},
-"YO 5-02 2 3 Slovenski, Chloe YO": {
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2021,
-2021
-],
-"id": null,
-"method": "debris",
-"how": "debris"
-},
-"K 4-10 1 4 Howard, Mackenzie K": {
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2021,
-2021
-],
-"id": null,
-"method": "debris",
-"how": "debris"
-},
-"YO 125-10 5 Kellis, Jordan K": {
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2021,
-2021
-],
-"id": null,
-"method": "debris",
-"how": "debris"
-},
-"YO 115-07 3 Macolini, Dan K": {
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2021,
-2021
-],
-"id": null,
-"method": "debris",
-"how": "debris"
-},
-"YO 105-10 2 Orso, William YO": {
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2021,
-2021
-],
-"id": null,
-"method": "debris",
-"how": "debris"
-},
-"K 102-03 1 Arpino, Cohen YO": {
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2021,
-2021
-],
-"id": null,
-"method": "debris",
-"how": "debris"
 },
 "10.16m(NWI) FOUL": {
 "rows": 1,
@@ -223870,8 +222414,9 @@
 "Southern Mai": "col-usm"
 },
 "2021/Outdoor/2021-GNG-Last-Chance-Throws-Meet-Results": {
-"GNG": "me-hs-gray-ng",
-"POL": "me-hs-poland"
+"Freeport High School": "me-hs-freeport",
+"Gray-New Gloucester High School": "me-hs-gray-ng",
+"St. Dominic Academy": "me-hs-st-dominic"
 },
 "2021/Outdoor/2021-alms-meet-3-boys-results": {
 "CCS": "me-hs-calvary-chapel",
@@ -223936,19 +222481,6 @@
 "lton High / GHCA": "coop-houlton-ghca",
 "ne School of Science & Math": "me-hs-mssm",
 "sque Isle High School": "me-hs-presque-isle"
-},
-"2021/Outdoor/APRIL-15-AT-YORK": {
-"Marshwood": "me-hs-marshwood",
-"SC": "me-hs-seacoast-christian",
-"YORK": "me-hs-york",
-"York": "me-hs-york"
-},
-"2021/Outdoor/APRIL-21-AT-YORK": {
-"K": "me-hs-kennebunk",
-"Kennebunk": "me-hs-kennebunk",
-"SC": null,
-"YORK": "me-hs-york",
-"York": "me-hs-york"
 },
 "2021/Outdoor/Almquist-Invitational-Meet-2021": {
 "Bangor Chr": "me-ms-bangor-christian",
@@ -239423,7 +237955,7 @@
 "Mountain Valley High School": "me-hs-mountain-valley",
 "Mountain Valley Middle School": "me-ms-mountain-valley",
 "Mountain View School": "me-ms-mountain-view-pvmscc",
-"Msoh": null,
+"Msoh": "me-ms-oxford-hills",
 "Mt Abraham": "oos-auto-vt-mt-abraham",
 "Mt Abram High School": "me-hs-mt-abram",
 "Mt Ararat Middle School": "me-ms-mt-ararat",
@@ -240645,20 +239177,6 @@
 "years": [
 2012,
 2012
-],
-"id": null,
-"method": "unresolved",
-"how": "unresolved"
-},
-{
-"raw": "Msoh",
-"rows": 47,
-"seasons": {
-"Outdoor": 47
-},
-"years": [
-2021,
-2021
 ],
 "id": null,
 "method": "unresolved",
@@ -256114,20 +254632,6 @@
 "id": null,
 "method": "debris",
 "how": "debris"
-},
-{
-"raw": "YO 56.4",
-"rows": 2,
-"seasons": {
-"Outdoor": 2
-},
-"years": [
-2021,
-2021
-],
-"id": null,
-"method": "unresolved",
-"how": "unresolved"
 },
 {
 "raw": "Kenne MOR",
@@ -276781,1504 +275285,6 @@
 },
 {
 "raw": "Southern Mai 33.30m 19-03.00 31.26 33.30 30.24 FOUL FOUL",
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2021,
-2021
-],
-"id": null,
-"method": "debris",
-"how": "debris"
-},
-{
-"raw": "YO 9:13.4",
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2021,
-2021
-],
-"id": null,
-"method": "debris",
-"how": "debris"
-},
-{
-"raw": "YO 17.4",
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2021,
-2021
-],
-"id": null,
-"method": "unresolved",
-"how": "unresolved"
-},
-{
-"raw": "YO 17.5",
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2021,
-2021
-],
-"id": null,
-"method": "unresolved",
-"how": "unresolved"
-},
-{
-"raw": "YO 19.9",
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2021,
-2021
-],
-"id": null,
-"method": "unresolved",
-"how": "unresolved"
-},
-{
-"raw": "YO 20.3",
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2021,
-2021
-],
-"id": null,
-"method": "unresolved",
-"how": "unresolved"
-},
-{
-"raw": "M 11.9",
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2021,
-2021
-],
-"id": null,
-"method": "unresolved",
-"how": "unresolved"
-},
-{
-"raw": "M 12.0",
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2021,
-2021
-],
-"id": null,
-"method": "unresolved",
-"how": "unresolved"
-},
-{
-"raw": "YO 12.1",
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2021,
-2021
-],
-"id": null,
-"method": "unresolved",
-"how": "unresolved"
-},
-{
-"raw": "M 12.3",
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2021,
-2021
-],
-"id": null,
-"method": "unresolved",
-"how": "unresolved"
-},
-{
-"raw": "YO 5:01.0",
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2021,
-2021
-],
-"id": null,
-"method": "debris",
-"how": "debris"
-},
-{
-"raw": "M 5:08.0",
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2021,
-2021
-],
-"id": null,
-"method": "debris",
-"how": "debris"
-},
-{
-"raw": "M 5:20.0",
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2021,
-2021
-],
-"id": null,
-"method": "debris",
-"how": "debris"
-},
-{
-"raw": "YO 5:20.7",
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2021,
-2021
-],
-"id": null,
-"method": "debris",
-"how": "debris"
-},
-{
-"raw": "SC 57.6",
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2021,
-2021
-],
-"id": null,
-"method": "unresolved",
-"how": "unresolved"
-},
-{
-"raw": "SC 1:01.0",
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2021,
-2021
-],
-"id": null,
-"method": "debris",
-"how": "debris"
-},
-{
-"raw": "M 1:07.0",
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2021,
-2021
-],
-"id": null,
-"method": "debris",
-"how": "debris"
-},
-{
-"raw": "YO 2:17.6",
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2021,
-2021
-],
-"id": null,
-"method": "debris",
-"how": "debris"
-},
-{
-"raw": "YO 2:19.4",
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2021,
-2021
-],
-"id": null,
-"method": "debris",
-"how": "debris"
-},
-{
-"raw": "YO 2:20.0",
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2021,
-2021
-],
-"id": null,
-"method": "debris",
-"how": "debris"
-},
-{
-"raw": "M 2:25.5",
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2021,
-2021
-],
-"id": null,
-"method": "debris",
-"how": "debris"
-},
-{
-"raw": "YO 45.3",
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2021,
-2021
-],
-"id": null,
-"method": "unresolved",
-"how": "unresolved"
-},
-{
-"raw": "YO 48.2",
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2021,
-2021
-],
-"id": null,
-"method": "unresolved",
-"how": "unresolved"
-},
-{
-"raw": "YO 23.8",
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2021,
-2021
-],
-"id": null,
-"method": "unresolved",
-"how": "unresolved"
-},
-{
-"raw": "M 23.9",
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2021,
-2021
-],
-"id": null,
-"method": "unresolved",
-"how": "unresolved"
-},
-{
-"raw": "M 24.5",
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2021,
-2021
-],
-"id": null,
-"method": "unresolved",
-"how": "unresolved"
-},
-{
-"raw": "M 24.8",
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2021,
-2021
-],
-"id": null,
-"method": "unresolved",
-"how": "unresolved"
-},
-{
-"raw": "SC 12:29.9",
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2021,
-2021
-],
-"id": null,
-"method": "debris",
-"how": "debris"
-},
-{
-"raw": "M 13:00.7",
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2021,
-2021
-],
-"id": null,
-"method": "debris",
-"how": "debris"
-},
-{
-"raw": "YO 15.8",
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2021,
-2021
-],
-"id": null,
-"method": "unresolved",
-"how": "unresolved"
-},
-{
-"raw": "YO 17.7",
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2021,
-2021
-],
-"id": null,
-"method": "unresolved",
-"how": "unresolved"
-},
-{
-"raw": "YO 18.00",
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2021,
-2021
-],
-"id": null,
-"method": "debris",
-"how": "debris"
-},
-{
-"raw": "M 12.8",
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2021,
-2021
-],
-"id": null,
-"method": "unresolved",
-"how": "unresolved"
-},
-{
-"raw": "M 13.6",
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2021,
-2021
-],
-"id": null,
-"method": "unresolved",
-"how": "unresolved"
-},
-{
-"raw": "M 13.8",
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2021,
-2021
-],
-"id": null,
-"method": "unresolved",
-"how": "unresolved"
-},
-{
-"raw": "YO 14.1",
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2021,
-2021
-],
-"id": null,
-"method": "unresolved",
-"how": "unresolved"
-},
-{
-"raw": "M 5:45.0",
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2021,
-2021
-],
-"id": null,
-"method": "debris",
-"how": "debris"
-},
-{
-"raw": "YO 5:47.0",
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2021,
-2021
-],
-"id": null,
-"method": "debris",
-"how": "debris"
-},
-{
-"raw": "YO 5:51.0",
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2021,
-2021
-],
-"id": null,
-"method": "debris",
-"how": "debris"
-},
-{
-"raw": "M 5:54.0",
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2021,
-2021
-],
-"id": null,
-"method": "debris",
-"how": "debris"
-},
-{
-"raw": "YO 1:06.2",
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2021,
-2021
-],
-"id": null,
-"method": "debris",
-"how": "debris"
-},
-{
-"raw": "M 1:12.0",
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2021,
-2021
-],
-"id": null,
-"method": "debris",
-"how": "debris"
-},
-{
-"raw": "YO 1:13.0",
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2021,
-2021
-],
-"id": null,
-"method": "debris",
-"how": "debris"
-},
-{
-"raw": "M 1:15.0",
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2021,
-2021
-],
-"id": null,
-"method": "debris",
-"how": "debris"
-},
-{
-"raw": "YO 54.0",
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2021,
-2021
-],
-"id": null,
-"method": "unresolved",
-"how": "unresolved"
-},
-{
-"raw": "YO 2:22.9",
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2021,
-2021
-],
-"id": null,
-"method": "debris",
-"how": "debris"
-},
-{
-"raw": "YO 2:42.7",
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2021,
-2021
-],
-"id": null,
-"method": "debris",
-"how": "debris"
-},
-{
-"raw": "YO 2:43.0",
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2021,
-2021
-],
-"id": null,
-"method": "debris",
-"how": "debris"
-},
-{
-"raw": "YO 2:44.3",
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2021,
-2021
-],
-"id": null,
-"method": "debris",
-"how": "debris"
-},
-{
-"raw": "M 29.0",
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2021,
-2021
-],
-"id": null,
-"method": "unresolved",
-"how": "unresolved"
-},
-{
-"raw": "M 29.4",
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2021,
-2021
-],
-"id": null,
-"method": "unresolved",
-"how": "unresolved"
-},
-{
-"raw": "SC 30.0",
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2021,
-2021
-],
-"id": null,
-"method": "unresolved",
-"how": "unresolved"
-},
-{
-"raw": "M 30.8",
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2021,
-2021
-],
-"id": null,
-"method": "unresolved",
-"how": "unresolved"
-},
-{
-"raw": "M 6-06",
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2021,
-2021
-],
-"id": null,
-"method": "debris",
-"how": "debris"
-},
-{
-"raw": "YO 6-06",
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2021,
-2021
-],
-"id": null,
-"method": "debris",
-"how": "debris"
-},
-{
-"raw": "Y 9:36.2",
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2021,
-2021
-],
-"id": null,
-"method": "debris",
-"how": "debris"
-},
-{
-"raw": "Y 18.60",
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2021,
-2021
-],
-"id": null,
-"method": "debris",
-"how": "debris"
-},
-{
-"raw": "Y 19.60",
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2021,
-2021
-],
-"id": null,
-"method": "debris",
-"how": "debris"
-},
-{
-"raw": "K 23.10",
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2021,
-2021
-],
-"id": null,
-"method": "debris",
-"how": "debris"
-},
-{
-"raw": "Y 17.7",
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2021,
-2021
-],
-"id": null,
-"method": "unresolved",
-"how": "unresolved"
-},
-{
-"raw": "Y 17.9",
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2021,
-2021
-],
-"id": null,
-"method": "unresolved",
-"how": "unresolved"
-},
-{
-"raw": "YO 13.6",
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2021,
-2021
-],
-"id": null,
-"method": "unresolved",
-"how": "unresolved"
-},
-{
-"raw": "SC 13.8",
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2021,
-2021
-],
-"id": null,
-"method": "unresolved",
-"how": "unresolved"
-},
-{
-"raw": "K 14.2",
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2021,
-2021
-],
-"id": null,
-"method": "unresolved",
-"how": "unresolved"
-},
-{
-"raw": "YO 14.3",
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2021,
-2021
-],
-"id": null,
-"method": "unresolved",
-"how": "unresolved"
-},
-{
-"raw": "K 11.8",
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2021,
-2021
-],
-"id": null,
-"method": "unresolved",
-"how": "unresolved"
-},
-{
-"raw": "YO 11.8",
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2021,
-2021
-],
-"id": null,
-"method": "unresolved",
-"how": "unresolved"
-},
-{
-"raw": "K 12.1",
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2021,
-2021
-],
-"id": null,
-"method": "unresolved",
-"how": "unresolved"
-},
-{
-"raw": "SC 6:41.9",
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2021,
-2021
-],
-"id": null,
-"method": "debris",
-"how": "debris"
-},
-{
-"raw": "YO 5:01.7",
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2021,
-2021
-],
-"id": null,
-"method": "debris",
-"how": "debris"
-},
-{
-"raw": "K 5:21.7",
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2021,
-2021
-],
-"id": null,
-"method": "debris",
-"how": "debris"
-},
-{
-"raw": "YO 5:28.5",
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2021,
-2021
-],
-"id": null,
-"method": "debris",
-"how": "debris"
-},
-{
-"raw": "YO 5:30.8",
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2021,
-2021
-],
-"id": null,
-"method": "debris",
-"how": "debris"
-},
-{
-"raw": "K 1:04.3",
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2021,
-2021
-],
-"id": null,
-"method": "debris",
-"how": "debris"
-},
-{
-"raw": "K 1:06.0",
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2021,
-2021
-],
-"id": null,
-"method": "debris",
-"how": "debris"
-},
-{
-"raw": "YO 1:11.3",
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2021,
-2021
-],
-"id": null,
-"method": "debris",
-"how": "debris"
-},
-{
-"raw": "YO 1:13.5",
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2021,
-2021
-],
-"id": null,
-"method": "debris",
-"how": "debris"
-},
-{
-"raw": "K 54.6",
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2021,
-2021
-],
-"id": null,
-"method": "unresolved",
-"how": "unresolved"
-},
-{
-"raw": "SC 59.1",
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2021,
-2021
-],
-"id": null,
-"method": "unresolved",
-"how": "unresolved"
-},
-{
-"raw": "K 1:01.0",
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2021,
-2021
-],
-"id": null,
-"method": "debris",
-"how": "debris"
-},
-{
-"raw": "K 1:02.1",
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2021,
-2021
-],
-"id": null,
-"method": "debris",
-"how": "debris"
-},
-{
-"raw": "YO 44.5",
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2021,
-2021
-],
-"id": null,
-"method": "unresolved",
-"how": "unresolved"
-},
-{
-"raw": "YO 47.2",
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2021,
-2021
-],
-"id": null,
-"method": "unresolved",
-"how": "unresolved"
-},
-{
-"raw": "YO 55.9",
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2021,
-2021
-],
-"id": null,
-"method": "unresolved",
-"how": "unresolved"
-},
-{
-"raw": "YO 2:37.4",
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2021,
-2021
-],
-"id": null,
-"method": "debris",
-"how": "debris"
-},
-{
-"raw": "K 2:50.1",
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2021,
-2021
-],
-"id": null,
-"method": "debris",
-"how": "debris"
-},
-{
-"raw": "YO 2:51.1",
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2021,
-2021
-],
-"id": null,
-"method": "debris",
-"how": "debris"
-},
-{
-"raw": "SC 3:07.2",
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2021,
-2021
-],
-"id": null,
-"method": "debris",
-"how": "debris"
-},
-{
-"raw": "YO 2:17.8",
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2021,
-2021
-],
-"id": null,
-"method": "debris",
-"how": "debris"
-},
-{
-"raw": "YO 2:20.8",
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2021,
-2021
-],
-"id": null,
-"method": "debris",
-"how": "debris"
-},
-{
-"raw": "SC 2:26.4",
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2021,
-2021
-],
-"id": null,
-"method": "debris",
-"how": "debris"
-},
-{
-"raw": "YO 2:27.4",
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2021,
-2021
-],
-"id": null,
-"method": "debris",
-"how": "debris"
-},
-{
-"raw": "K 29.3",
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2021,
-2021
-],
-"id": null,
-"method": "unresolved",
-"how": "unresolved"
-},
-{
-"raw": "K 29.9",
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2021,
-2021
-],
-"id": null,
-"method": "unresolved",
-"how": "unresolved"
-},
-{
-"raw": "SC 30.1",
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2021,
-2021
-],
-"id": null,
-"method": "unresolved",
-"how": "unresolved"
-},
-{
-"raw": "YO 30.1",
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2021,
-2021
-],
-"id": null,
-"method": "unresolved",
-"how": "unresolved"
-},
-{
-"raw": "YO 23.9",
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2021,
-2021
-],
-"id": null,
-"method": "unresolved",
-"how": "unresolved"
-},
-{
-"raw": "SC 25.3",
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2021,
-2021
-],
-"id": null,
-"method": "unresolved",
-"how": "unresolved"
-},
-{
-"raw": "YO 25.6",
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2021,
-2021
-],
-"id": null,
-"method": "unresolved",
-"how": "unresolved"
-},
-{
-"raw": "YO 26.0",
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2021,
-2021
-],
-"id": null,
-"method": "unresolved",
-"how": "unresolved"
-},
-{
-"raw": "YO 6-02 5 1 Leech, Ellie SC",
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2021,
-2021
-],
-"id": null,
-"method": "debris",
-"how": "debris"
-},
-{
-"raw": "YO 5-08 3 2 Slovenski, Phoebe YO",
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2021,
-2021
-],
-"id": null,
-"method": "debris",
-"how": "debris"
-},
-{
-"raw": "YO 5-02 2 3 Slovenski, Chloe YO",
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2021,
-2021
-],
-"id": null,
-"method": "debris",
-"how": "debris"
-},
-{
-"raw": "K 4-10 1 4 Howard, Mackenzie K",
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2021,
-2021
-],
-"id": null,
-"method": "debris",
-"how": "debris"
-},
-{
-"raw": "YO 125-10 5 Kellis, Jordan K",
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2021,
-2021
-],
-"id": null,
-"method": "debris",
-"how": "debris"
-},
-{
-"raw": "YO 115-07 3 Macolini, Dan K",
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2021,
-2021
-],
-"id": null,
-"method": "debris",
-"how": "debris"
-},
-{
-"raw": "YO 105-10 2 Orso, William YO",
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2021,
-2021
-],
-"id": null,
-"method": "debris",
-"how": "debris"
-},
-{
-"raw": "K 102-03 1 Arpino, Cohen YO",
 "rows": 1,
 "seasons": {
 "Outdoor": 1
