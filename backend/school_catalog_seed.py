@@ -2783,6 +2783,17 @@ FILE_RULES += [
     (['Cent.'], 'Indoor', (2011, 2011), r'^2011NewEnglandResults$', '?'),
 ]
 
+# Aroostook League Middle School (ALMS) meets, 2026-11-27 review: 'CCS' is Caribou Community School (the same sheets
+# name its relays 'Caribou Community School' and the team scores Caribou), not Calvary Chapel (Orrington, no data
+# after 2012); 'Ghca / Houlton' and its relays 'Greater Houlton Middle School' are the Greater Houlton middle grades
+# (2021 ALMS XC: 'Ghca Middle')
+FILE_RULES += [
+    (['CCS'], 'Outdoor', (2021, 2021), r'^2021-alms-', 'me-ms-caribou'),
+    (['CCS'], 'XC', (2020, 2020), r'^2020-alms-', 'me-ms-caribou'),
+    (['Ghca / Houlton', "Greater Houlton Middle School 'A'", "Greater Houlton Middle School 'B'"], 'Outdoor', (2021, 2021),
+     r'^2021-alms-', 'me-ms-ghca'),
+]
+
 # A co-op of both genders runs its co-ed relays together too.
 for _c in COOPS:
     if {'Boys', 'Girls'} <= set(_c.get('genders') or ()) and 'Mixed' not in _c['genders']:
