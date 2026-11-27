@@ -387,6 +387,33 @@ def xc_out_of_order_times(results):
     return bad
 
 
+def _track_secs(mark):
+    m = re.fullmatch(r'\s*(?:(\d{1,2}):)?(\d{1,2}(?:\.\d+)?)[hH]?\s*', str(mark or ''))
+    return int(m.group(1) or 0) * 60 + float(m.group(2)) if m and (m.group(1) or '.' in m.group(2)) else None
+
+
+def whole_second_hand_times(results, event):
+    """ids of rows in a 100-400 m sprint or hurdle race whose time is printed as a bare whole number of
+    seconds ('15', '61': a hand time with its '.0' left off, Vacation Invitational 2021, MVC Mt Abram 2014)
+    that sits in sort order between the times around it and is no faster than the event allows. A bare
+    integer is otherwise a parser artifact (a heat or place number: '5' in a 200 after 47.68) and stays out."""
+    m = re.search(r'\b(100|110|200|300|400)\s*(?:m\b|meter)', str(event), re.I)
+    if not m or 'relay' in str(event).lower():
+        return set()
+    floor = int(m.group(1)) * 0.095
+    rows = [r for r in results or [] if isinstance(r, dict)]
+    out = set()
+    for i, r in enumerate(rows):
+        v = str(r.get('result') or r.get('mark') or '').strip()
+        if not re.fullmatch(r'\d{1,3}', v) or int(v) < floor:
+            continue
+        prev = next((t for t in (_track_secs(x.get('result') or x.get('mark')) for x in reversed(rows[:i])) if t), None)
+        nxt = next((t for t in (_track_secs(x.get('result') or x.get('mark')) for x in rows[i + 1:]) if t), None)
+        if (prev or nxt) and (prev is None or prev <= int(v) + 0.05) and (nxt is None or int(v) <= nxt + 0.05):
+            out.add(id(r))
+    return out
+
+
 _WHOLE_MINUTE = re.compile(r'\d+:00(?:\.0+)?')
 
 
@@ -3162,6 +3189,7 @@ class Sub5ScraperV2:
                     # where each runner runs two legs -- Mt Blue Relays 2007 -- and not an initial, 'S. Eastman',
                     # which can be two teammates)
                     seen_in_race = set()
+                    hand_whole = whole_second_hand_times(results_list, full_event) if season != 'XC' else set()
                     head_grade = heading_grade(event_name) if season != 'XC' and not is_relay else None
 
                     for r in results_list:
@@ -3250,6 +3278,8 @@ class Sub5ScraperV2:
                             continue
                         # a hand time cut at its column edge: "13:14.0h" -> "13:14."
                         mark = re.sub(r'(?<=\d)\.$', '', mark)
+                        if id(r) in hand_whole:
+                            mark = f'{int(mark)}.0'
                         # (a combined event's standings: the points total)
                         multi_total = is_multi_total(event_canon_name) and re.fullmatch(r'\d{3,5}', mark)
                         if not multi_total and not self.mark_is_valid_format(mark):

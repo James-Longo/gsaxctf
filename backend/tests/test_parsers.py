@@ -3499,6 +3499,24 @@ def test_bare_xc_race_too_fast_for_5k_is_not_a_5k():
     assert not xc_too_fast_for_5k([{'result': '18:21'}], 'Girls')
 
 
+def test_whole_second_sprint_time_in_sort_order_is_a_hand_time():
+    # Vacation Invitational 2021 girls 100: '15' and '16' between 14.6 and 16.1 are hand times
+    from backend.scraper_v2 import whole_second_hand_times
+    rows = [{'result': t} for t in ['14.6', '15', '15.1', '15.9', '16', '16', '16.1']]
+    assert whole_second_hand_times(rows, 'Girls 100 Meter Dash') == {id(rows[1]), id(rows[4]), id(rows[5])}
+    # a heat or place number after the last time is no time ('5' in a 200 after 47.68), nor one under the floor
+    rows = [{'result': t} for t in ['29.1', '47.68', '5']]
+    assert not whole_second_hand_times(rows, 'Girls 200 Meter Dash')
+    # out of sort order: a leaked number, not a time
+    rows = [{'result': t} for t in ['13.8', '30', '14.1']]
+    assert not whole_second_hand_times(rows, 'Boys 100 Meter Dash')
+    # 400 m: '61' after 57.6 is a hand time; relays and 55 m are left alone
+    rows = [{'result': t} for t in ['57.6', '61']]
+    assert whole_second_hand_times(rows, 'Boys 400 Meter') == {id(rows[1])}
+    assert not whole_second_hand_times([{'result': '50.1'}, {'result': '52'}], 'Boys 4x100 Meter Relay')
+    assert not whole_second_hand_times([{'result': '7.1'}, {'result': '8'}], 'Boys 55 Meter Dash')
+
+
 def test_xc_time_slower_than_the_next_places_is_a_sheet_typo():
     # Marshwood 2006: 'M. Larivee 48:00.0' placed 14th between 20:45.8 and 21:05
     from backend.scraper_v2 import xc_out_of_order_times
