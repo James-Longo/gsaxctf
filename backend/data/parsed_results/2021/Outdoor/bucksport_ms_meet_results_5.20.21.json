@@ -121,6 +121,17 @@
             "is_relay": false,
             "results": [
                 {
+                    "athlete": "Mya Madden",
+                    "school": "Reeds Brook",
+                    "result": "9.8",
+                    "grade": "MS",
+                    "type": "Finals",
+                    "place": 1,
+                    "warnings": [
+                        "Original result: 9.8h"
+                    ]
+                },
+                {
                     "athlete": "Natalia Charles",
                     "school": "Reeds Brook",
                     "result": "10.2",
@@ -336,6 +347,28 @@
             "gender": "Boys",
             "is_relay": false,
             "results": [
+                {
+                    "athlete": "Cooper Lewis",
+                    "school": "Bangor Chr",
+                    "result": "9.8",
+                    "grade": "MS",
+                    "type": "Finals",
+                    "place": 1,
+                    "warnings": [
+                        "Original result: 9.8h"
+                    ]
+                },
+                {
+                    "athlete": "Tristan Shaw",
+                    "school": "Bangor Chr",
+                    "result": "9.9",
+                    "grade": "MS",
+                    "type": "Finals",
+                    "place": 2,
+                    "warnings": [
+                        "Original result: 9.9h"
+                    ]
+                },
                 {
                     "athlete": "Ethan Leavitt",
                     "school": "Center Drive",
@@ -1507,6 +1540,105 @@
             "gender": "Girls",
             "is_relay": false,
             "results": [
+                {
+                    "athlete": "Addison Elliot",
+                    "school": "Reeds Brook",
+                    "result": "7.7",
+                    "grade": "MS",
+                    "type": "Finals",
+                    "place": 1,
+                    "warnings": [
+                        "Original result: 7.7h"
+                    ]
+                },
+                {
+                    "athlete": "Eve Wiles",
+                    "school": "Glenburn",
+                    "result": "8.0",
+                    "grade": "MS",
+                    "type": "Finals",
+                    "place": 2,
+                    "warnings": [
+                        "Original result: 8.0h"
+                    ]
+                },
+                {
+                    "athlete": "Rowan Jergenson",
+                    "school": "Bucksport",
+                    "result": "8.5",
+                    "grade": "MS",
+                    "type": "Finals",
+                    "place": 3,
+                    "warnings": [
+                        "Original result: 8.5h"
+                    ]
+                },
+                {
+                    "athlete": "Kaylee Maynard",
+                    "school": "Glenburn",
+                    "result": "8.5",
+                    "grade": "MS",
+                    "type": "Finals",
+                    "place": 3,
+                    "warnings": [
+                        "Original result: 8.5h"
+                    ]
+                },
+                {
+                    "athlete": "Mallory Lausier",
+                    "school": "Glenburn",
+                    "result": "8.6",
+                    "grade": "MS",
+                    "type": "Finals",
+                    "place": 5,
+                    "warnings": [
+                        "Original result: 8.6h"
+                    ]
+                },
+                {
+                    "athlete": "Deliah Carter",
+                    "school": "Bucksport",
+                    "result": "8.8",
+                    "grade": "MS",
+                    "type": "Finals",
+                    "place": 6,
+                    "warnings": [
+                        "Original result: 8.8h"
+                    ]
+                },
+                {
+                    "athlete": "Rosalie Beaulieu",
+                    "school": "Bangor Chr",
+                    "result": "9.0",
+                    "grade": "MS",
+                    "type": "Finals",
+                    "place": 7,
+                    "warnings": [
+                        "Original result: 9.0h"
+                    ]
+                },
+                {
+                    "athlete": "Lily Frost",
+                    "school": "Bucksport",
+                    "result": "9.4",
+                    "grade": "MS",
+                    "type": "Finals",
+                    "place": 8,
+                    "warnings": [
+                        "Original result: 9.4h"
+                    ]
+                },
+                {
+                    "athlete": "Ainsley Solari",
+                    "school": "Bangor Chr",
+                    "result": "9.7",
+                    "grade": "MS",
+                    "type": "Finals",
+                    "place": 9,
+                    "warnings": [
+                        "Original result: 9.7h"
+                    ]
+                },
                 {
                     "athlete": "Alexis Lane",
                     "school": "Glenburn",
@@ -3429,7 +3561,8 @@
     ],
     "date": "2021-05-20",
     "meet_name": "Eastern Maine Middle School Track League",
-    "venue": null,
+    "venue": "Bucksport  High School track",
     "team_rankings": [],
-    "parser": "ColumnStrategyParser"
+    "parser": "ColumnStrategyParser",
+    "notes": "2026-11-27 re-parse: one-decimal times under 10 s (\"7.7h\") had been skipped as wind readings (parser fix)."
 }

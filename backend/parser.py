@@ -1974,7 +1974,11 @@ class Sub5ColumnParser:
                                                 or (ev.get('multi_total') and re.fullmatch(r'\d{3,5}[A-Za-z#*@!$%^&+]{0,2}', p)))
                                 if not is_mark_like:
                                     continue
-                                if _is_wind_reading(p):
+                                # (a wind reading follows its mark; a hand time "9.8h"
+                                # or a lone one-decimal time is the mark itself,
+                                # bucksport_ms_meet_results_5.20.21 50 m dash)
+                                if _is_wind_reading(p) and not re.search(r'\d[hH]$', p) and any(
+                                        re.search(r'\d', q) and re.search(r'\d[.:\-]\d', q) for q in parts[1:k]):
                                     continue
                                 # (a DQ's rule note, "DQ   R.5-14-1f Hurdle Vio",
                                 # NYI-results 2026: the status is the mark)

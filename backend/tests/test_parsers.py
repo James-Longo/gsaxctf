@@ -3088,6 +3088,28 @@ def test_multi_event_legs_and_standings():
     assert [r['athlete'] for r in got[('High Jump', 'Girls')]] == ['Ada Quill']
 
 
+HAND_SHORT = """                 Bucksport Middle School meet - 5/20/2021
+                                    Results
+
+Event 21  Girls 50 Meter Dash 5th/6th grade
+================================================================
+    Name                    Year Team                    Finals
+================================================================
+Finals
+  1 Addison Elliot               Glenburn                  7.7h   1
+  2 Eve Wiles                    Glenburn                  8.0h   1
+ 10 Alexis Lane                  Glenburn                 10.1h   2
+"""
+
+
+def test_one_decimal_hand_time_under_ten_is_the_mark_not_wind():
+    # (bucksport_ms_meet_results_5.20.21: '7.7h' was skipped as a wind reading)
+    res = Sub5ColumnParser('bucksport_ms.htm', text=HAND_SHORT).parse()
+    ev = res['events'][0]
+    assert [(r['athlete'], r['result']) for r in ev['results']] == [
+        ('Addison Elliot', '7.7'), ('Eve Wiles', '8.0'), ('Alexis Lane', '10.1')]
+
+
 def test_wheel_chair_in_two_words_is_the_wheelchair_division():
     """"400 Meter Run Wheel chair" (Morse 2016) and "100 Yard Dash Wheel Chair" (Caribou 2011) are the
     wheelchair races, filed apart from the open event like "Wheelchair"."""
