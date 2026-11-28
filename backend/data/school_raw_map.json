@@ -1,14 +1,14 @@
 {
 "_meta": {
 "methods_by_rows": {
-"exact/alias": 2082264,
-"code": 259960,
+"exact/alias": 2082258,
+"code": 259959,
 "truncation": 123443,
 "athlete-continuity": 53628,
 "mascot": 28851,
 "bare name + level context": 28072,
 "manual (file rule)": 21527,
-"unresolved": 17201,
+"unresolved": 17199,
 "co-op label": 15042,
 "state-tagged (auto entry)": 9842,
 "spelling (fuzzy)": 3427,
@@ -23,7 +23,7 @@
 },
 "methods_by_strings": {
 "exact/alias": 4182,
-"unresolved": 2023,
+"unresolved": 2022,
 "state-tagged (auto entry)": 1571,
 "debris-salvage": 913,
 "code": 701,
@@ -39,7 +39,7 @@
 "file-expansion": 12,
 "later-hs": 2
 },
-"distinct_strings": 11825,
+"distinct_strings": 11824,
 "note": "'raw' keys are whitespace-collapsed school strings exactly as printed. 'overrides' are per-file answers (year/season/file-stem) that differ from the string's global id."
 },
 "raw": {
@@ -371,9 +371,9 @@
 "how": "exact/alias"
 },
 "Noble": {
-"rows": 16726,
+"rows": 16725,
 "seasons": {
-"Outdoor": 7672,
+"Outdoor": 7671,
 "XC": 665,
 "Indoor": 8389
 },
@@ -384,7 +384,7 @@
 "id": "me-hs-noble",
 "method": "exact",
 "by_id": {
-"me-hs-noble": 16384,
+"me-hs-noble": 16383,
 "me-ms-noble": 342
 },
 "context_dependent": true,
@@ -395,9 +395,9 @@
 "how": "exact/alias"
 },
 "Gorham": {
-"rows": 16527,
+"rows": 16524,
 "seasons": {
-"Outdoor": 5481,
+"Outdoor": 5478,
 "XC": 2158,
 "Indoor": 8888
 },
@@ -408,7 +408,7 @@
 "id": "me-hs-gorham",
 "method": "exact",
 "by_id": {
-"me-hs-gorham": 15483,
+"me-hs-gorham": 15480,
 "me-ms-gorham": 1044
 },
 "context_dependent": true,
@@ -1230,9 +1230,9 @@
 "how": "exact/alias"
 },
 "Marshwood": {
-"rows": 9582,
+"rows": 9580,
 "seasons": {
-"Outdoor": 4117,
+"Outdoor": 4115,
 "XC": 2682,
 "Indoor": 2783
 },
@@ -1243,7 +1243,7 @@
 "id": "me-hs-marshwood",
 "method": "exact",
 "by_id": {
-"me-hs-marshwood": 9169,
+"me-hs-marshwood": 9167,
 "me-ms-marshwood": 413
 },
 "context_dependent": true,
@@ -3279,9 +3279,9 @@
 "how": "exact/alias"
 },
 "SCAR": {
-"rows": 4193,
+"rows": 4190,
 "seasons": {
-"Outdoor": 1801,
+"Outdoor": 1798,
 "Indoor": 1765,
 "XC": 627
 },
@@ -3292,7 +3292,7 @@
 "id": "me-hs-scarborough",
 "method": "code",
 "by_id": {
-"me-hs-scarborough": 3418,
+"me-hs-scarborough": 3415,
 "me-ms-scarborough": 775
 },
 "context_dependent": true,
@@ -10843,6 +10843,21 @@
 },
 "how": "code"
 },
+"MOR": {
+"rows": 666,
+"seasons": {
+"Outdoor": 468,
+"Indoor": 156,
+"XC": 42
+},
+"years": [
+2005,
+2022
+],
+"id": "me-hs-morse",
+"method": "code",
+"how": "code"
+},
 "EEMS": {
 "rows": 665,
 "seasons": {
@@ -10853,21 +10868,6 @@
 2019
 ],
 "id": "me-ms-ellsworth",
-"method": "code",
-"how": "code"
-},
-"MOR": {
-"rows": 664,
-"seasons": {
-"Outdoor": 466,
-"Indoor": 156,
-"XC": 42
-},
-"years": [
-2005,
-2022
-],
-"id": "me-hs-morse",
 "method": "code",
 "how": "code"
 },
@@ -110467,19 +110467,6 @@
 "id": "me-hs-st-dominic",
 "method": "fuzzy",
 "how": "spelling (fuzzy)"
-},
-"Kenne MOR": {
-"rows": 2,
-"seasons": {
-"Outdoor": 2
-},
-"years": [
-2021,
-2021
-],
-"id": null,
-"method": "unresolved",
-"how": "unresolved"
 },
 "Nvu-Lyndon": {
 "rows": 2,
@@ -237787,7 +237774,10 @@
 "Kearsarge Regional High School": "oos-nh-kearsarge-regional-high-school",
 "Keene High School": "oos-auto-nh-keene",
 "Kelsey": null,
-"Kenne MOR": null,
+"Kenne MOR": {
+"id": null,
+"basis": "name only (no joined rows)"
+},
 "Kennebunk High School": "me-hs-kennebunk",
 "Kennett": "oos-auto-nh-kennett",
 "Kents Hill School": "me-hs-kents-hill",
@@ -254637,20 +254627,6 @@
 "id": null,
 "method": "debris",
 "how": "debris"
-},
-{
-"raw": "Kenne MOR",
-"rows": 2,
-"seasons": {
-"Outdoor": 2
-},
-"years": [
-2021,
-2021
-],
-"id": null,
-"method": "unresolved",
-"how": "unresolved"
 },
 {
 "raw": "Hawks (Hermon) Track Club",
