@@ -388,6 +388,14 @@ class LooseListParser(BaseParser):
                 if is_mark(parts[i].split()[0]) or is_mark(parts[i]):
                     mark_idx = i
                     break
+            # a tie's split points ("4-00.00   0.5", hampden-meet-results 2019): the mark is before them
+            if mark_idx and mark_idx >= 2 and re.fullmatch(r'\d{1,2}\.5', parts[mark_idx]) \
+                    and is_mark(parts[mark_idx - 1].split()[-1]):
+                mark_idx -= 1
+                if ' ' in parts[mark_idx]:   # ("Warriors 4-00.00": the mark typed one space from the school)
+                    sch, mk = parts[mark_idx].rsplit(' ', 1)
+                    parts = parts[:mark_idx] + [sch, mk] + parts[mark_idx + 1:]
+                    mark_idx += 1
             if mark_idx and mark_idx >= 1:
                 mark = clean_mark(parts[mark_idx].split()[0])
                 if is_relay:
@@ -422,6 +430,9 @@ class LooseListParser(BaseParser):
                 break
         if mark_idx is None or mark_idx < 1:
             return None
+        # a tie's split points after the mark ("4-00.00 0.5")
+        if mark_idx >= 2 and re.fullmatch(r'\d{1,2}\.5', toks[mark_idx]) and is_mark(toks[mark_idx - 1]):
+            mark_idx -= 1
         # "14-02.75 8 13-04.75": the Finals mark, its points, then a second (prelim) mark
         if mark_idx >= 3 and re.fullmatch(r'\d{1,2}', toks[mark_idx - 1]) and is_mark(toks[mark_idx - 2]) \
                 and '-' in toks[mark_idx] and '-' in toks[mark_idx - 2]:

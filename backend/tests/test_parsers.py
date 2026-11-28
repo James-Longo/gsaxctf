@@ -1703,6 +1703,19 @@ def test_looselist_column_title_row_is_not_an_event():
     assert ll._event_header('DISCUS   HAND FAT PT', None) is not None
 
 
+def test_looselist_tie_half_points_are_not_the_mark():
+    """A tie's split points ("4-00.00   0.5") were read as the mark and the
+    real mark glued to the school ('Warriors 4-00.00' / '0.5'; 16 rows in
+    5 files, hampden-meet-results 2019)."""
+    ll = LooseListParser()
+    r = ll._parse_row('6     Cookson, Hunter          Warriors                4-00.00   0.5', False)
+    assert (r['school'], r['result']) == ('Warriors', '4-00.00')
+    r = ll._parse_row('6 Cookson, Hunter Warriors 4-00.00 0.5', False)
+    assert r['result'] == '4-00.00'
+    r = ll._parse_row('5     Bean, Koby               CEN                     4-04.00   2', False)
+    assert (r['school'], r['result']) == ('CEN', '4-04.00')
+
+
 def test_usatf_division_headers_with_gender_last():
     """USATF Junior Olympic Hy-Tek prints "100 Meter Dash 8 & Under Division
     Girls" (no event number, sex last); only the CC form was read, so

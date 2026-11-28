@@ -1924,6 +1924,11 @@ FILE_RULES = [
     (['Warriors', 'WARRIORS'], None, (2003, 2006), r'wmc|classb|falmouth5_9|classc04', 'me-hs-wells'),
     (['Warriors', 'WARRIORS'], 'Outdoor', (2009, 2009), r'foxcroft_may1', 'me-hs-fort-kent'),
     (['Warriors', 'WARRIORS'], 'Outdoor', (2016, 2019), r'.', 'me-ms-rsu19'),
+    # 2019 Eastern Maine MS meets: the relays print the long name 'Warrior Track Club' (legs are the
+    # 'Warriors' individuals: Yang, Vardaros, Connolly, Cookson); MDI relays print 'Mount Desert Island'
+    # while its MS individuals are 'MDI' (MDI elementary schools, legs Burr, Watson, Laurendeau).
+    (['Warrior Track Club'], 'Outdoor', (2019, 2019), r'.', 'me-ms-rsu19'),
+    (['Mount Desert Island'], 'Outdoor', (2019, 2019), r'^(ellsworthms|Almquist-)', 'me-ms-mdi-elementary'),
     # 'Tigers'
     (['Tigers', 'TIGERS'], None, (2004, 2016), r'.', 'me-hs-biddeford'),
     (['Tigers', 'TIGERS'], 'Outdoor', (2017, 2017), r'KVAC-B|Gardiner|Results-girls-7|Resultsboys-2', 'me-hs-gardiner'),
