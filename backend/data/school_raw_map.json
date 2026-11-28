@@ -1,20 +1,20 @@
 {
 "_meta": {
 "methods_by_rows": {
-"exact/alias": 2082360,
-"code": 260070,
+"exact/alias": 2082399,
+"code": 260095,
 "truncation": 123443,
 "athlete-continuity": 53757,
-"mascot": 28853,
+"mascot": 28829,
 "bare name + level context": 28072,
-"manual (file rule)": 21600,
-"unresolved": 17126,
+"manual (file rule)": 21640,
+"unresolved": 17115,
 "co-op label": 15054,
 "state-tagged (auto entry)": 9842,
 "spelling (fuzzy)": 3427,
 "file-expansion": 2325,
-"debris-salvage": 1769,
-"debris": 947,
+"debris-salvage": 1719,
+"debris": 928,
 "ambiguous": 838,
 "later-hs": 597,
 "company": 430,
@@ -23,23 +23,23 @@
 },
 "methods_by_strings": {
 "exact/alias": 4182,
-"unresolved": 2014,
+"unresolved": 2013,
 "state-tagged (auto entry)": 1571,
-"debris-salvage": 911,
+"debris-salvage": 862,
 "code": 701,
-"debris": 653,
+"debris": 634,
 "truncation": 539,
 "athlete-continuity": 470,
 "spelling (fuzzy)": 285,
-"manual (file rule)": 257,
+"manual (file rule)": 259,
 "bare name + level context": 78,
 "co-op label": 78,
-"mascot": 40,
+"mascot": 39,
 "ambiguous": 28,
 "file-expansion": 12,
 "later-hs": 2
 },
-"distinct_strings": 11821,
+"distinct_strings": 11753,
 "note": "'raw' keys are whitespace-collapsed school strings exactly as printed. 'overrides' are per-file answers (year/season/file-stem) that differ from the string's global id."
 },
 "raw": {
@@ -2249,6 +2249,7 @@
 "me-hs-brunswick": 6310,
 "None": 71
 },
+"context_dependent": true,
 "unresolved_rows": 71,
 "how": "mascot"
 },
@@ -3615,9 +3616,9 @@
 "how": "exact/alias"
 },
 "Wiscasset": {
-"rows": 3649,
+"rows": 3650,
 "seasons": {
-"Outdoor": 3001,
+"Outdoor": 3002,
 "XC": 648
 },
 "years": [
@@ -3628,7 +3629,7 @@
 "method": "exact",
 "by_id": {
 "me-hs-wiscasset": 2309,
-"me-ms-wiscasset": 1340
+"me-ms-wiscasset": 1341
 },
 "context_dependent": true,
 "by_level": {
@@ -7471,9 +7472,9 @@
 "how": "truncation"
 },
 "Jefferson": {
-"rows": 1398,
+"rows": 1399,
 "seasons": {
-"Outdoor": 1398
+"Outdoor": 1399
 },
 "years": [
 2011,
@@ -26114,6 +26115,19 @@
 "method": "unresolved",
 "how": "unresolved"
 },
+"Skow,skowhegan, ME": {
+"rows": 97,
+"seasons": {
+"Outdoor": 97
+},
+"years": [
+2017,
+2022
+],
+"id": "me-hs-skowhegan",
+"method": "code+comma-tail",
+"how": "code"
+},
 "Soccopee Valley": {
 "rows": 97,
 "seasons": {
@@ -27776,19 +27790,6 @@
 "athletes contradict name match (me-ms-pemetic -> me-ms-mdi-elementary, 4/4)"
 ],
 "how": "exact/alias"
-},
-"Skow,skowhegan, ME": {
-"rows": 84,
-"seasons": {
-"Outdoor": 84
-},
-"years": [
-2017,
-2022
-],
-"id": "me-hs-skowhegan",
-"method": "code+comma-tail",
-"how": "code"
 },
 "Cony High school": {
 "rows": 83,
@@ -31260,6 +31261,19 @@
 "method": "code+glued-gender",
 "how": "code"
 },
+"Mt. Ararat,Topsham,": {
+"rows": 63,
+"seasons": {
+"Outdoor": 63
+},
+"years": [
+2007,
+2019
+],
+"id": "me-hs-mt-ararat",
+"method": "exact+comma-tail",
+"how": "exact/alias"
+},
 "Gorham Middle SC": {
 "rows": 63,
 "seasons": {
@@ -32982,6 +32996,19 @@
 "id": "me-ms-hebron",
 "method": "code",
 "how": "code"
+},
+"Scarborough,scarbor": {
+"rows": 55,
+"seasons": {
+"Outdoor": 55
+},
+"years": [
+2019,
+2022
+],
+"id": "me-hs-scarborough",
+"method": "exact+comma-tail",
+"how": "exact/alias"
 },
 "Portlandd": {
 "rows": 55,
@@ -35014,19 +35041,6 @@
 "method": "exact+season-words",
 "how": "exact/alias"
 },
-"Scarborough,scarbor": {
-"rows": 47,
-"seasons": {
-"Outdoor": 47
-},
-"years": [
-2019,
-2022
-],
-"id": "me-hs-scarborough",
-"method": "exact+comma-tail",
-"how": "exact/alias"
-},
 "Wheaton MA": {
 "rows": 47,
 "seasons": {
@@ -35139,19 +35153,6 @@
 },
 "context_dependent": true,
 "how": "code"
-},
-"Mt. Ararat,Topsham,": {
-"rows": 46,
-"seasons": {
-"Outdoor": 46
-},
-"years": [
-2007,
-2019
-],
-"id": "me-hs-mt-ararat",
-"method": "exact+comma-tail",
-"how": "exact/alias"
 },
 "Oxford hills": {
 "rows": 46,
@@ -37210,6 +37211,19 @@
 "method": "exact",
 "how": "exact/alias"
 },
+"Winthrop,Winthrop,": {
+"rows": 41,
+"seasons": {
+"Outdoor": 41
+},
+"years": [
+2011,
+2019
+],
+"id": "me-hs-winthrop",
+"method": "exact+comma-tail",
+"how": "exact/alias"
+},
 "Canton": {
 "rows": 41,
 "seasons": {
@@ -39234,19 +39248,6 @@
 ],
 "id": "me-hs-greely",
 "method": "exact",
-"how": "exact/alias"
-},
-"Winthrop,Winthrop,": {
-"rows": 36,
-"seasons": {
-"Outdoor": 36
-},
-"years": [
-2011,
-2019
-],
-"id": "me-hs-winthrop",
-"method": "exact+comma-tail",
 "how": "exact/alias"
 },
 "King Middle School": {
@@ -52742,6 +52743,19 @@
 "method": "exact+lead-gender",
 "how": "exact/alias"
 },
+"Mt. B,Farmington, M": {
+"rows": 17,
+"seasons": {
+"Outdoor": 17
+},
+"years": [
+2019,
+2022
+],
+"id": "me-hs-mt-blue",
+"method": "code+comma-tail",
+"how": "code"
+},
 "Chariho": {
 "rows": 17,
 "seasons": {
@@ -53865,6 +53879,19 @@
 "id": "me-ms-presque-isle",
 "method": "exact+season-words",
 "how": "exact/alias"
+},
+"BRHS,Boothbay Harbo": {
+"rows": 16,
+"seasons": {
+"Outdoor": 16
+},
+"years": [
+2017,
+2019
+],
+"id": "me-hs-boothbay",
+"method": "code+athletes",
+"how": "code"
 },
 "Mt View Middle School": {
 "rows": 16,
@@ -58461,6 +58488,36 @@
 "method": "stem",
 "how": "exact/alias"
 },
+"Dragons,Brunswick,": {
+"rows": 13,
+"seasons": {
+"Outdoor": 13
+},
+"years": [
+2019,
+2019
+],
+"id": "me-hs-brunswick",
+"method": "manual (file rule)",
+"by_id": {
+"me-hs-brunswick": 13
+},
+"context_dependent": true,
+"how": "manual (file rule)"
+},
+"Wiscasset,Wiscasset": {
+"rows": 13,
+"seasons": {
+"Outdoor": 13
+},
+"years": [
+2019,
+2019
+],
+"id": "me-hs-wiscasset",
+"method": "exact+comma-tail",
+"how": "exact/alias"
+},
 "Windham-NH": {
 "rows": 13,
 "seasons": {
@@ -60452,19 +60509,6 @@
 "method": "bare-name",
 "how": "bare name + level context"
 },
-"Mt. B,Farmington, M": {
-"rows": 12,
-"seasons": {
-"Outdoor": 12
-},
-"years": [
-2019,
-2022
-],
-"id": "me-hs-mt-blue",
-"method": "code+comma-tail",
-"how": "code"
-},
 "Auburn Midddle School": {
 "rows": 12,
 "seasons": {
@@ -60503,11 +60547,9 @@
 "id": "me-hs-chop-point",
 "method": "manual (file rule)",
 "by_id": {
-"None": 9,
-"me-hs-chop-point": 3
+"me-hs-chop-point": 12
 },
 "context_dependent": true,
-"unresolved_rows": 9,
 "how": "manual (file rule)"
 },
 "Phillip W Sugg Middle School": {
@@ -66439,19 +66481,6 @@
 "method": "exact",
 "how": "exact/alias"
 },
-"BRHS,Boothbay Harbo": {
-"rows": 9,
-"seasons": {
-"Outdoor": 9
-},
-"years": [
-2017,
-2019
-],
-"id": "me-hs-boothbay",
-"method": "code+athletes",
-"how": "code"
-},
 "Bhs Spring Track 2017": {
 "rows": 9,
 "seasons": {
@@ -69435,32 +69464,6 @@
 ],
 "id": "me-hs-presque-isle",
 "method": "exact+season-words",
-"how": "exact/alias"
-},
-"Dragons,Brunswick,": {
-"rows": 8,
-"seasons": {
-"Outdoor": 8
-},
-"years": [
-2019,
-2019
-],
-"id": "me-hs-brunswick",
-"method": "nickname+athletes",
-"how": "mascot"
-},
-"Wiscasset,Wiscasset": {
-"rows": 8,
-"seasons": {
-"Outdoor": 8
-},
-"years": [
-2019,
-2019
-],
-"id": "me-hs-wiscasset",
-"method": "exact+comma-tail",
 "how": "exact/alias"
 },
 "Great Salt Bay Middle School": {
@@ -72494,6 +72497,19 @@
 ],
 "id": "me-hs-easton",
 "method": "stem",
+"how": "exact/alias"
+},
+"Old Orchard,ME, ME": {
+"rows": 7,
+"seasons": {
+"Outdoor": 7
+},
+"years": [
+2019,
+2019
+],
+"id": "me-hs-old-orchard",
+"method": "exact+comma-tail",
 "how": "exact/alias"
 },
 "North Andover-MA": {
@@ -81125,19 +81141,6 @@
 ],
 "id": "me-hs-mssm",
 "method": "exact+season-words",
-"how": "exact/alias"
-},
-"Old Orchard,ME, ME": {
-"rows": 5,
-"seasons": {
-"Outdoor": 5
-},
-"years": [
-2019,
-2019
-],
-"id": "me-hs-old-orchard",
-"method": "exact+comma-tail",
 "how": "exact/alias"
 },
 "Spaulding-NH": {
@@ -95695,7 +95698,7 @@
 2019
 ],
 "id": "me-hs-chop-point",
-"method": "truncation",
+"method": "truncation+athletes",
 "how": "truncation"
 },
 "Innovation": {
@@ -109722,22 +109725,13 @@
 2019,
 2019
 ],
-"id": null,
-"method": "unresolved",
-"how": "unresolved"
+"id": "me-hs-chop-point",
+"method": "manual (file rule)",
+"by_id": {
+"me-hs-chop-point": 2
 },
-"Scarborough,scarbor 9-00.00": {
-"rows": 2,
-"seasons": {
-"Outdoor": 2
-},
-"years": [
-2019,
-2019
-],
-"id": "me-hs-scarborough",
-"method": "salvaged:exact+comma-tail",
-"how": "debris-salvage"
+"context_dependent": true,
+"how": "manual (file rule)"
 },
 "SHEA": {
 "rows": 2,
@@ -153902,357 +153896,6 @@
 "method": "exact+season-words",
 "how": "exact/alias"
 },
-"Mt. B,Farmington, M 1:06.69": {
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2019,
-2019
-],
-"id": "me-hs-mt-blue",
-"method": "salvaged:code+comma-tail",
-"how": "debris-salvage"
-},
-"Mt. Ararat,Topsham, 1:12.80": {
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2019,
-2019
-],
-"id": "me-hs-mt-ararat",
-"method": "salvaged:exact+comma-tail",
-"how": "debris-salvage"
-},
-"Mt. B,Farmington, M 2:35.86": {
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2019,
-2019
-],
-"id": "me-hs-mt-blue",
-"method": "salvaged:code+comma-tail",
-"how": "debris-salvage"
-},
-"BRHS,Boothbay Harbo 2:44.30": {
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2019,
-2019
-],
-"id": null,
-"method": "debris",
-"how": "debris"
-},
-"BRHS,Boothbay Harbo 2:49.50": {
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2019,
-2019
-],
-"id": null,
-"method": "debris",
-"how": "debris"
-},
-"Mt. Ararat,Topsham, 5:53.03": {
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2019,
-2019
-],
-"id": "me-hs-mt-ararat",
-"method": "salvaged:exact+comma-tail",
-"how": "debris-salvage"
-},
-"Mt. Ararat,Topsham, 6:07.37": {
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2019,
-2019
-],
-"id": "me-hs-mt-ararat",
-"method": "salvaged:exact+comma-tail",
-"how": "debris-salvage"
-},
-"BRHS,Boothbay Harbo 6:14.33": {
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2019,
-2019
-],
-"id": null,
-"method": "debris",
-"how": "debris"
-},
-"BRHS,Boothbay Harbo 6:14.34": {
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2019,
-2019
-],
-"id": null,
-"method": "debris",
-"how": "debris"
-},
-"Mt. B,Farmington, M 6:54.44": {
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2019,
-2019
-],
-"id": "me-hs-mt-blue",
-"method": "salvaged:code+comma-tail",
-"how": "debris-salvage"
-},
-"Mt. Ararat,Topsham, 13:35.62": {
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2019,
-2019
-],
-"id": "me-hs-mt-ararat",
-"method": "salvaged:exact+comma-tail",
-"how": "debris-salvage"
-},
-"Mt. Ararat,Topsham, 4-04.00": {
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2019,
-2019
-],
-"id": "me-hs-mt-ararat",
-"method": "salvaged:exact+comma-tail",
-"how": "debris-salvage"
-},
-"Dragons,Brunswick, 15-07.00": {
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2019,
-2019
-],
-"id": null,
-"method": "debris",
-"how": "debris"
-},
-"Winthrop,Winthrop, 13-03.00": {
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2019,
-2019
-],
-"id": "me-hs-winthrop",
-"method": "salvaged:exact+comma-tail",
-"how": "debris-salvage"
-},
-"Skow,skowhegan, ME 11-07.00": {
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2019,
-2019
-],
-"id": "me-hs-skowhegan",
-"method": "salvaged:code+comma-tail",
-"how": "debris-salvage"
-},
-"Dragons,Brunswick, 33-01.75": {
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2019,
-2019
-],
-"id": null,
-"method": "debris",
-"how": "debris"
-},
-"Mt. Ararat,Topsham, 31-11.50": {
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2019,
-2019
-],
-"id": "me-hs-mt-ararat",
-"method": "salvaged:exact+comma-tail",
-"how": "debris-salvage"
-},
-"Dragons,Brunswick, 25-01.75": {
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2019,
-2019
-],
-"id": null,
-"method": "debris",
-"how": "debris"
-},
-"Skow,skowhegan, ME 27-03.50": {
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2019,
-2019
-],
-"id": "me-hs-skowhegan",
-"method": "salvaged:code+comma-tail",
-"how": "debris-salvage"
-},
-"Skow,skowhegan, ME 26-09.00": {
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2019,
-2019
-],
-"id": "me-hs-skowhegan",
-"method": "salvaged:code+comma-tail",
-"how": "debris-salvage"
-},
-"Mt. Ararat,Topsham, 31-02.50": {
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2019,
-2019
-],
-"id": "me-hs-mt-ararat",
-"method": "salvaged:exact+comma-tail",
-"how": "debris-salvage"
-},
-"Winthrop,Winthrop, 23-07.00": {
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2019,
-2019
-],
-"id": "me-hs-winthrop",
-"method": "salvaged:exact+comma-tail",
-"how": "debris-salvage"
-},
-"BRHS,Boothbay Harbo 21-03.00": {
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2019,
-2019
-],
-"id": null,
-"method": "debris",
-"how": "debris"
-},
-"BRHS,Boothbay Harbo 55-10.50": {
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2019,
-2019
-],
-"id": null,
-"method": "debris",
-"how": "debris"
-},
-"Winthrop,Winthrop, 58-06.50": {
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2019,
-2019
-],
-"id": "me-hs-winthrop",
-"method": "salvaged:exact+comma-tail",
-"how": "debris-salvage"
-},
-"BRHS,Boothbay Harbo 9:40.67": {
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2019,
-2019
-],
-"id": null,
-"method": "debris",
-"how": "debris"
-},
-"Mt. Ararat,Topsham, 12:02.69": {
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2019,
-2019
-],
-"id": "me-hs-mt-ararat",
-"method": "salvaged:exact+comma-tail",
-"how": "debris-salvage"
-},
 "Mt. Ararat,Cundy Ha": {
 "rows": 1,
 "seasons": {
@@ -154265,500 +153908,6 @@
 "id": "me-hs-mt-ararat",
 "method": "exact+comma-tail",
 "how": "exact/alias"
-},
-"Mt. Ararat,Topsham, 1:00.25": {
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2019,
-2019
-],
-"id": "me-hs-mt-ararat",
-"method": "salvaged:exact+comma-tail",
-"how": "debris-salvage"
-},
-"Mt. Ararat,Topsham, 1:02.73": {
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2019,
-2019
-],
-"id": "me-hs-mt-ararat",
-"method": "salvaged:exact+comma-tail",
-"how": "debris-salvage"
-},
-"Mt. B,Farmington, M 1:06.67": {
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2019,
-2019
-],
-"id": "me-hs-mt-blue",
-"method": "salvaged:code+comma-tail",
-"how": "debris-salvage"
-},
-"Wiscasset,Wiscasset 1:18.81": {
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2019,
-2019
-],
-"id": null,
-"method": "debris",
-"how": "debris"
-},
-"Wiscasset,Wiscasset 1:17.18": {
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2019,
-2019
-],
-"id": null,
-"method": "debris",
-"how": "debris"
-},
-"Mt. Ararat,Topsham, 2:15.43": {
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2019,
-2019
-],
-"id": "me-hs-mt-ararat",
-"method": "salvaged:exact+comma-tail",
-"how": "debris-salvage"
-},
-"Scarborough,scarbor 2:21.28": {
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2019,
-2019
-],
-"id": "me-hs-scarborough",
-"method": "salvaged:exact+comma-tail",
-"how": "debris-salvage"
-},
-"Mt. B,Farmington, M 2:45.65": {
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2019,
-2019
-],
-"id": "me-hs-mt-blue",
-"method": "salvaged:code+comma-tail",
-"how": "debris-salvage"
-},
-"Mt. Ararat,Topsham, 4:57.51": {
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2019,
-2019
-],
-"id": "me-hs-mt-ararat",
-"method": "salvaged:exact+comma-tail",
-"how": "debris-salvage"
-},
-"Scarborough,scarbor 5:05.50": {
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2019,
-2019
-],
-"id": "me-hs-scarborough",
-"method": "salvaged:exact+comma-tail",
-"how": "debris-salvage"
-},
-"Mt. Ararat,Topsham, 5:07.86": {
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2019,
-2019
-],
-"id": "me-hs-mt-ararat",
-"method": "salvaged:exact+comma-tail",
-"how": "debris-salvage"
-},
-"Mt. Ararat,Topsham, 5:12.81": {
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2019,
-2019
-],
-"id": "me-hs-mt-ararat",
-"method": "salvaged:exact+comma-tail",
-"how": "debris-salvage"
-},
-"Scarborough,scarbor 5:36.58": {
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2019,
-2019
-],
-"id": "me-hs-scarborough",
-"method": "salvaged:exact+comma-tail",
-"how": "debris-salvage"
-},
-"Wiscasset,Wiscasset 5:55.16": {
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2019,
-2019
-],
-"id": null,
-"method": "debris",
-"how": "debris"
-},
-"Dragons,Brunswick, 10:19.67": {
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2019,
-2019
-],
-"id": null,
-"method": "debris",
-"how": "debris"
-},
-"Skow,skowhegan, ME 13:03.50": {
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2019,
-2019
-],
-"id": "me-hs-skowhegan",
-"method": "salvaged:code+comma-tail",
-"how": "debris-salvage"
-},
-"Scarborough,scarbor 11:33.67": {
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2019,
-2019
-],
-"id": "me-hs-scarborough",
-"method": "salvaged:exact+comma-tail",
-"how": "debris-salvage"
-},
-"Mt. Ararat,Topsham, 5-04.00": {
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2019,
-2019
-],
-"id": "me-hs-mt-ararat",
-"method": "salvaged:exact+comma-tail",
-"how": "debris-salvage"
-},
-"Skow,skowhegan, ME 17-01.50": {
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2019,
-2019
-],
-"id": "me-hs-skowhegan",
-"method": "salvaged:code+comma-tail",
-"how": "debris-salvage"
-},
-"Skow,skowhegan, ME 16-02.00": {
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2019,
-2019
-],
-"id": "me-hs-skowhegan",
-"method": "salvaged:code+comma-tail",
-"how": "debris-salvage"
-},
-"Mt. Ararat,Topsham, 16-02.50": {
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2019,
-2019
-],
-"id": "me-hs-mt-ararat",
-"method": "salvaged:exact+comma-tail",
-"how": "debris-salvage"
-},
-"Skow,skowhegan, ME 15-06.00": {
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2019,
-2019
-],
-"id": "me-hs-skowhegan",
-"method": "salvaged:code+comma-tail",
-"how": "debris-salvage"
-},
-"Skow,skowhegan, ME 13-11.50": {
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2019,
-2019
-],
-"id": "me-hs-skowhegan",
-"method": "salvaged:code+comma-tail",
-"how": "debris-salvage"
-},
-"Wiscasset,Wiscasset 11-00.00": {
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2019,
-2019
-],
-"id": null,
-"method": "debris",
-"how": "debris"
-},
-"Skow,skowhegan, ME 14-03.50": {
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2019,
-2019
-],
-"id": "me-hs-skowhegan",
-"method": "salvaged:code+comma-tail",
-"how": "debris-salvage"
-},
-"Old Orchard,ME, ME 12-10.00": {
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2019,
-2019
-],
-"id": "me-hs-old-orchard",
-"method": "salvaged:exact+comma-tail",
-"how": "debris-salvage"
-},
-"Mt. Ararat,Topsham, 35-03.00": {
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2019,
-2019
-],
-"id": "me-hs-mt-ararat",
-"method": "salvaged:exact+comma-tail",
-"how": "debris-salvage"
-},
-"Dragons,Brunswick, 32-02.50": {
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2019,
-2019
-],
-"id": null,
-"method": "debris",
-"how": "debris"
-},
-"Skow,skowhegan, ME 33-11.00": {
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2019,
-2019
-],
-"id": "me-hs-skowhegan",
-"method": "salvaged:code+comma-tail",
-"how": "debris-salvage"
-},
-"Skow,skowhegan, ME 30-03.50": {
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2019,
-2019
-],
-"id": "me-hs-skowhegan",
-"method": "salvaged:code+comma-tail",
-"how": "debris-salvage"
-},
-"Scarborough,scarbor 40-07.00": {
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2019,
-2019
-],
-"id": "me-hs-scarborough",
-"method": "salvaged:exact+comma-tail",
-"how": "debris-salvage"
-},
-"Wiscasset,Wiscasset 26-11.50": {
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2019,
-2019
-],
-"id": null,
-"method": "debris",
-"how": "debris"
-},
-"Skow,skowhegan, ME 27-04.00": {
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2019,
-2019
-],
-"id": "me-hs-skowhegan",
-"method": "salvaged:code+comma-tail",
-"how": "debris-salvage"
-},
-"Winthrop,Winthrop, 26-03.00": {
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2019,
-2019
-],
-"id": "me-hs-winthrop",
-"method": "salvaged:exact+comma-tail",
-"how": "debris-salvage"
-},
-"Old Orchard,ME, ME 27-02.00": {
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2019,
-2019
-],
-"id": "me-hs-old-orchard",
-"method": "salvaged:exact+comma-tail",
-"how": "debris-salvage"
-},
-"Winthrop,Winthrop, 64-01.50": {
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2019,
-2019
-],
-"id": "me-hs-winthrop",
-"method": "salvaged:exact+comma-tail",
-"how": "debris-salvage"
-},
-"Scarborough,scarbor 9:20.00": {
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2019,
-2019
-],
-"id": "me-hs-scarborough",
-"method": "salvaged:exact+comma-tail",
-"how": "debris-salvage"
-},
-"Skow,skowhegan, ME 11:33.41": {
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2019,
-2019
-],
-"id": "me-hs-skowhegan",
-"method": "salvaged:code+comma-tail",
-"how": "debris-salvage"
 },
 "Mascenic Regional-NH": {
 "rows": 1,
@@ -155296,32 +154445,6 @@
 "id": "me-ms-jefferson",
 "method": "salvaged:exact",
 "how": "debris-salvage"
-},
-"Wiscasset 16-08.00 2) Jefferson": {
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2019,
-2019
-],
-"id": null,
-"method": "debris",
-"how": "debris"
-},
-"Jefferson 13-08.00 4) Wiscasset Middle School": {
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2019,
-2019
-],
-"id": null,
-"method": "debris",
-"how": "debris"
 },
 "School Track & Fi": {
 "rows": 1,
@@ -164260,12 +163383,14 @@
 },
 "2004/Indoor/kvacboys": {
 "Cony High School": "me-hs-cony",
+"Dragons": "me-hs-brunswick",
 "Hall Dale": "me-hs-hall-dale",
 "Lin Acad": "me-hs-lincoln-academy",
 "Rockland": "me-hs-rockland"
 },
 "2004/Indoor/kvacgirls": {
 "Cony High School": "me-hs-cony",
+"Dragons": "me-hs-brunswick",
 "Hall Dale": "me-hs-hall-dale",
 "Lin Acad": "me-hs-lincoln-academy",
 "Rockland": "me-hs-rockland"
@@ -165759,16 +164884,19 @@
 "Thornton Academy": "me-hs-thornton"
 },
 "2004/XC/kvac04boys": {
+"Dragons": "me-hs-brunswick",
 "Lawrence": "me-hs-lawrence",
 "Waterville": "me-hs-waterville",
 "Winslow High School": "me-hs-winslow"
 },
 "2004/XC/kvac04girls": {
+"Dragons": "me-hs-brunswick",
 "Lawrence": "me-hs-lawrence",
 "Waterville": "me-hs-waterville",
 "Winslow High School": "me-hs-winslow"
 },
 "2004/XC/kvac04jv": {
+"Dragons": "me-hs-brunswick",
 "Waterville": "me-hs-waterville"
 },
 "2004/XC/leavitt17sept04boys": {
@@ -166048,9 +165176,11 @@
 "York": "me-hs-york"
 },
 "2004/XC/second7boys04": {
+"Dragons": "me-hs-brunswick",
 "Waterville": "me-hs-waterville"
 },
 "2004/XC/second7girls04": {
+"Dragons": "me-hs-brunswick",
 "Waterville": "me-hs-waterville"
 },
 "2004/XC/sectional04bjv.txt": {
@@ -166348,6 +165478,7 @@
 "Sumner Memorial High School": "me-hs-sumner"
 },
 "2005/Indoor/bowdoin": {
+"Dragons": "me-hs-brunswick",
 "Freeport High School": "me-hs-freeport",
 "Gorham": "me-hs-gorham",
 "Lake Region": "me-hs-lake-region",
@@ -166454,7 +165585,8 @@
 },
 "2005/Indoor/kvac1": {
 "Brhs": "me-hs-boothbay",
-"CONY": "me-hs-cony"
+"CONY": "me-hs-cony",
+"Dragons": "me-hs-brunswick"
 },
 "2005/Indoor/kvac1b": {
 "Bulldogs": "me-hs-lawrence",
@@ -166467,6 +165599,7 @@
 "2005/Indoor/kvac2a": {
 "Brhs": "me-hs-boothbay",
 "Bulldogs": "me-hs-lawrence",
+"Dragons": "me-hs-brunswick",
 "Lawrence": "me-hs-lawrence",
 "WTVL": "me-hs-waterville"
 },
@@ -166476,6 +165609,7 @@
 },
 "2005/Indoor/kvac3a": {
 "Brhs": "me-hs-boothbay",
+"Dragons": "me-hs-brunswick",
 "MTA": "me-hs-mt-ararat"
 },
 "2005/Indoor/kvac4a": {
@@ -166503,6 +165637,7 @@
 "2005/Indoor/kvac5": {
 "Brhs": "me-hs-boothbay",
 "Bulldogs": "me-hs-lawrence",
+"Dragons": "me-hs-brunswick",
 "Lawrence": "me-hs-lawrence",
 "MTB": "me-hs-mt-blue",
 "Mt. View": "me-hs-mt-view"
@@ -166514,6 +165649,7 @@
 "2005/Indoor/kvacchamps": {
 "Boothbay": "me-hs-boothbay",
 "Bulldogs": "me-hs-lawrence",
+"Dragons": "me-hs-brunswick",
 "Eagles": "me-hs-erskine",
 "Lawrence": "me-hs-lawrence",
 "MESS": "me-hs-messalonskee",
@@ -166886,8 +166022,12 @@
 "Orono": "me-hs-orono",
 "PCHS": "me-hs-piscataquis"
 },
+"2005/Outdoor/brunswick4_29": {
+"Dragons": "me-hs-brunswick"
+},
 "2005/Outdoor/brunswick5_13": {
 "Bulldogs": "me-hs-lawrence",
+"Dragons": "me-hs-brunswick",
 "Lawrence": "me-hs-lawrence"
 },
 "2005/Outdoor/bucksport4_26": {
@@ -167163,6 +166303,7 @@
 },
 "2005/Outdoor/kvaca": {
 "Bulldogs": "me-hs-lawrence",
+"Dragons": "me-hs-brunswick",
 "Lawrence": "me-hs-lawrence",
 "Mta": "me-hs-mt-ararat",
 "Oxford Hills": "me-hs-oxford-hills",
@@ -167622,9 +166763,11 @@
 "S": "me-hs-south-portland"
 },
 "2005/XC/brunswick9_23B": {
+"Dragons": "me-hs-brunswick",
 "Lawrence": "me-hs-lawrence"
 },
 "2005/XC/brunswick9_23G": {
+"Dragons": "me-hs-brunswick",
 "Lawrence": "me-hs-lawrence"
 },
 "2005/XC/camdenhills10_7B": {
@@ -167995,7 +167138,14 @@
 "Greely": "me-hs-greely",
 "Wells": "me-hs-wells"
 },
+"2005/XC/hyde9_30B": {
+"Dragons": "me-hs-brunswick"
+},
+"2005/XC/hyde9_30g": {
+"Dragons": "me-hs-brunswick"
+},
 "2005/XC/kvacbva": {
+"Dragons": "me-hs-brunswick",
 "Lawrence": "me-hs-lawrence",
 "Messalonskee": "me-hs-messalonskee"
 },
@@ -168006,6 +167156,7 @@
 },
 "2005/XC/kvacgv": {
 "Camden Hills": "me-hs-camden-hills",
+"Dragons": "me-hs-brunswick",
 "Egxc": "me-hs-erskine",
 "Lawrence": "me-hs-lawrence",
 "Messalonskee": "me-hs-messalonskee",
@@ -168014,6 +167165,7 @@
 },
 "2005/XC/kvacjva": {
 "Camden Hills": "me-hs-camden-hills",
+"Dragons": "me-hs-brunswick",
 "Egxc": "me-hs-erskine",
 "Lawrence": "me-hs-lawrence",
 "Messalonskee": "me-hs-messalonskee",
@@ -168096,9 +167248,11 @@
 "Winslow": "me-hs-winslow"
 },
 "2005/XC/mtararat9_16B": {
+"Dragons": "me-hs-brunswick",
 "Lawrence": "me-hs-lawrence"
 },
 "2005/XC/mtararat9_16G": {
+"Dragons": "me-hs-brunswick",
 "Lawrence": "me-hs-lawrence"
 },
 "2005/XC/mtbluerelaysB": {
@@ -169128,11 +168282,13 @@
 },
 "2006/Indoor/kvac1AB": {
 "Brhs": "me-hs-boothbay",
+"Dragons": "me-hs-brunswick",
 "MTB": "me-hs-mt-blue",
 "Winslow High School": "me-hs-winslow"
 },
 "2006/Indoor/kvac1AG": {
 "Brhs": "me-hs-boothbay",
+"Dragons": "me-hs-brunswick",
 "MAR": "me-hs-maranacook",
 "MTB": "me-hs-mt-blue",
 "Medomak": "me-hs-medomak",
@@ -169149,6 +168305,7 @@
 },
 "2006/Indoor/kvac3": {
 "Bulldogs": "me-hs-lawrence",
+"Dragons": "me-hs-brunswick",
 "Lawrence": "me-hs-lawrence",
 "MESS": "me-hs-messalonskee",
 "MTB": "me-hs-mt-blue",
@@ -169167,6 +168324,7 @@
 "2006/Indoor/kvac5": {
 "Belfast": "me-hs-belfast",
 "Brhs": "me-hs-boothbay",
+"Dragons": "me-hs-brunswick",
 "Eagles": "me-hs-lincoln-academy",
 "MTA": "me-hs-mt-ararat"
 },
@@ -169194,6 +168352,7 @@
 "2006/Indoor/kvac8boys": {
 "Belfast": "me-hs-belfast",
 "Bulldogs": "me-hs-lawrence",
+"Dragons": "me-hs-brunswick",
 "Eagles": "me-hs-lincoln-academy",
 "Lawrence": "me-hs-lawrence",
 "Mustangs": "me-hs-mt-view",
@@ -169202,6 +168361,7 @@
 "2006/Indoor/kvac8girls": {
 "Belfast": "me-hs-belfast",
 "Bulldogs": "me-hs-lawrence",
+"Dragons": "me-hs-brunswick",
 "Eagles": "me-hs-lincoln-academy",
 "Lawrence": "me-hs-lawrence",
 "Mustangs": "me-hs-mt-view",
@@ -169211,6 +168371,7 @@
 "Belfast": "me-hs-belfast",
 "Brhs": "me-hs-boothbay",
 "Bulldogs": "me-hs-lawrence",
+"Dragons": "me-hs-brunswick",
 "Eagles": "me-hs-lincoln-academy",
 "Lawrence": "me-hs-lawrence",
 "MESS": "me-hs-messalonskee",
@@ -169247,6 +168408,7 @@
 "Belfast": "me-hs-belfast",
 "Brhs": "me-hs-boothbay",
 "Cony High School": "me-hs-cony",
+"Dragons": "me-hs-brunswick",
 "MESS": "me-hs-messalonskee",
 "MTA": "me-hs-mt-ararat",
 "WTVL": "me-hs-waterville",
@@ -169254,11 +168416,13 @@
 },
 "2006/Indoor/kvacmeet13": {
 "Brhs": "me-hs-boothbay",
+"Dragons": "me-hs-brunswick",
 "Eagles": "me-hs-lincoln-academy",
 "MTA": "me-hs-mt-ararat"
 },
 "2006/Indoor/kvacmeet9": {
 "Brhs": "me-hs-boothbay",
+"Dragons": "me-hs-brunswick",
 "MTA": "me-hs-mt-ararat",
 "MTB": "me-hs-mt-blue",
 "Mustangs": "me-hs-mt-view"
@@ -169659,6 +168823,9 @@
 "IN2": "me-hs-winslow",
 "ONY": "me-hs-cony"
 },
+"2006/Outdoor/brunswick5_4": {
+"Dragons": "me-hs-brunswick"
+},
 "2006/Outdoor/bucksport4_21boys": {
 "Bucksport": "me-hs-bucksport",
 "Ellsworth": "me-hs-ellsworth",
@@ -169727,6 +168894,7 @@
 "2006/Outdoor/centralmainefrosh": {
 "BRHS": null,
 "Bonny Eagle": "me-hs-bonny-eagle",
+"Dragons": "me-hs-brunswick",
 "Mt. Ararat": "me-hs-mt-ararat",
 "North Yarmouth Academy": "me-hs-nya",
 "Scarborough": "me-hs-scarborough",
@@ -170070,6 +169238,7 @@
 "Sumner": "me-hs-sumner"
 },
 "2006/Outdoor/mtararat5_22": {
+"Dragons": "me-hs-brunswick",
 "Eagles": "me-hs-messalonskee",
 "Lawrence": "me-hs-lawrence",
 "MTA": "me-hs-mt-ararat",
@@ -170440,10 +169609,12 @@
 "Yarmouth": "me-hs-yarmouth"
 },
 "2006/XC/brunswick9_21boys": {
+"Dragons": "me-hs-brunswick",
 "Lawrence": "me-hs-lawrence",
 "MTA": "me-hs-mt-ararat"
 },
 "2006/XC/brunswick9_21girls": {
+"Dragons": "me-hs-brunswick",
 "Lawrence": "me-hs-lawrence",
 "MTA": "me-hs-mt-ararat"
 },
@@ -171014,9 +170185,11 @@
 "Searsport": "me-hs-searsport"
 },
 "2006/XC/hydeboys9_29": {
+"Dragons": "me-hs-brunswick",
 "MTA": "me-hs-mt-ararat"
 },
 "2006/XC/hydegirls9_29": {
+"Dragons": "me-hs-brunswick",
 "MTA": "me-hs-mt-ararat"
 },
 "2006/XC/johnbapst9_19boys": {
@@ -171036,18 +170209,21 @@
 "SP": "me-hs-south-portland"
 },
 "2006/XC/kvacboys": {
+"Dragons": "me-hs-brunswick",
 "Lawrence": "me-hs-lawrence",
 "Messalonskee": "me-hs-messalonskee",
 "Winslow High School": "me-hs-winslow",
 "lewiston": "me-hs-lewiston"
 },
 "2006/XC/kvacgirls": {
+"Dragons": "me-hs-brunswick",
 "Lawrence": "me-hs-lawrence",
 "Messalonskee": "me-hs-messalonskee",
 "Winslow High School": "me-hs-winslow",
 "lewiston": "me-hs-lewiston"
 },
 "2006/XC/kvacjv": {
+"Dragons": "me-hs-brunswick",
 "Lawrence": "me-hs-lawrence",
 "lewiston": "me-hs-lewiston"
 },
@@ -171254,10 +170430,12 @@
 "Yarmouth High School": "me-hs-yarmouth"
 },
 "2006/XC/mtararat9_15boys": {
+"Dragons": "me-hs-brunswick",
 "Lawrence": "me-hs-lawrence",
 "MTA": "me-hs-mt-ararat"
 },
 "2006/XC/mtararat9_15girls": {
+"Dragons": "me-hs-brunswick",
 "Lawrence": "me-hs-lawrence",
 "MTA": "me-hs-mt-ararat"
 },
@@ -173729,9 +172907,11 @@
 "Old Town": "me-hs-old-town"
 },
 "2007/XC/brunswickboys9_20": {
+"Dragons": "me-hs-brunswick",
 "MTA": "me-hs-mt-ararat"
 },
 "2007/XC/brunswickgirls9_20": {
+"Dragons": "me-hs-brunswick",
 "MTA": "me-hs-mt-ararat"
 },
 "2007/XC/camdenhillsboys10_5": {
@@ -174300,9 +173480,11 @@
 "Lawrence": "me-hs-lawrence"
 },
 "2007/XC/hydeboys9_28": {
+"Dragons": "me-hs-brunswick",
 "MTA": "me-hs-mt-ararat"
 },
 "2007/XC/hydegirls9_28": {
+"Dragons": "me-hs-brunswick",
 "MTA": "me-hs-mt-ararat"
 },
 "2007/XC/kennebunkboys10_11": {
@@ -174702,10 +173884,12 @@
 "Seacoast": "me-ms-seacoast-christian"
 },
 "2007/XC/secondsevenboys": {
+"Dragons": "me-hs-brunswick",
 "MTA": "me-hs-mt-ararat",
 "lewiston": "me-hs-lewiston"
 },
 "2007/XC/secondsevengirls": {
+"Dragons": "me-hs-brunswick",
 "MTA": "me-hs-mt-ararat",
 "lewiston": "me-hs-lewiston"
 },
@@ -175681,6 +174865,7 @@
 "Sumner": "me-hs-sumner"
 },
 "2008/Indoor/kvac12_21_07": {
+"Dragons": "me-hs-brunswick",
 "Mustangs": "me-hs-mt-view"
 },
 "2008/Indoor/kvac2a08": {
@@ -175697,6 +174882,7 @@
 },
 "2008/Indoor/kvacchampionship": {
 "Cony": "me-hs-cony",
+"Dragons": "me-hs-brunswick",
 "Lawrence": "me-hs-lawrence",
 "Lincoln": "me-hs-lincoln-academy",
 "Messalonskee": "me-hs-messalonskee",
@@ -175724,6 +174910,7 @@
 "lewiston": "me-hs-lewiston"
 },
 "2008/Indoor/kvacmeet12": {
+"Dragons": "me-hs-brunswick",
 "Lawrence": "me-hs-lawrence",
 "MTA": "me-hs-mt-ararat",
 "Mount Blue": "me-hs-mt-blue",
@@ -177512,10 +176699,12 @@
 "Yarmouth": "me-hs-yarmouth"
 },
 "2008/XC/brunswickboys9_25": {
+"Dragons": "me-hs-brunswick",
 "MCS": "me-hs-maranacook",
 "MTA": "me-hs-mt-ararat"
 },
 "2008/XC/brunswickgirls9_25": {
+"Dragons": "me-hs-brunswick",
 "MCS": "me-hs-maranacook",
 "MTA": "me-hs-mt-ararat"
 },
@@ -178134,6 +177323,7 @@
 "Sumner": "me-hs-sumner"
 },
 "2008/XC/hydeboys10_2": {
+"Dragons": "me-hs-brunswick",
 "MTA": "me-hs-mt-ararat"
 },
 "2008/XC/hydeboys_oct18": {
@@ -178141,6 +177331,7 @@
 "R": "me-hs-richmond"
 },
 "2008/XC/hydegirls10_2": {
+"Dragons": "me-hs-brunswick",
 "MTA": "me-hs-mt-ararat"
 },
 "2008/XC/hydegirls_oct18": {
@@ -178408,10 +177599,12 @@
 "Yarmouth High School": "me-hs-yarmouth"
 },
 "2008/XC/mtararatboys9_19": {
+"Dragons": "me-hs-brunswick",
 "MTA": "me-hs-mt-ararat",
 "Winslow High School": "me-hs-winslow"
 },
 "2008/XC/mtararatgirls9_19": {
+"Dragons": "me-hs-brunswick",
 "MTA": "me-hs-mt-ararat",
 "Winslow High School": "me-hs-winslow"
 },
@@ -179336,6 +178529,7 @@
 "Winslow High School": "me-hs-winslow"
 },
 "2009/Indoor/kvac12_31": {
+"Dragons": "me-hs-brunswick",
 "Freeport High School": "me-hs-freeport",
 "MTA": "me-hs-mt-ararat"
 },
@@ -179362,6 +178556,7 @@
 },
 "2009/Indoor/kvac_jan24": {
 "Belfast": "me-hs-belfast",
+"Dragons": "me-hs-brunswick",
 "MTA": "me-hs-mt-ararat"
 },
 "2009/Indoor/kvac_jan9": {
@@ -179372,6 +178567,7 @@
 },
 "2009/Indoor/kvacchampsclassa": {
 "Cony High School": "me-hs-cony",
+"Dragons": "me-hs-brunswick",
 "Lawrence": "me-hs-lawrence",
 "Lewiston": "me-hs-lewiston",
 "Messalonskee": "me-hs-messalonskee"
@@ -179392,6 +178588,7 @@
 "Winslow": "me-hs-winslow"
 },
 "2009/Indoor/kvacjan2": {
+"Dragons": "me-hs-brunswick",
 "Lawrence": "me-hs-lawrence",
 "Lewiston": "me-hs-lewiston",
 "Maine": "me-hs-mci",
@@ -179406,6 +178603,7 @@
 },
 "2009/Indoor/kvacmeet5_jan16": {
 "Belfast": "me-hs-belfast",
+"Dragons": "me-hs-brunswick",
 "MTA": "me-hs-mt-ararat"
 },
 "2009/Indoor/ms-ccc-boys-festival-2009": {
@@ -181181,10 +180379,12 @@
 "SP": "me-hs-south-portland"
 },
 "2009/XC/brunswickboys_sept24": {
+"Dragons": "me-hs-brunswick",
 "Lawrence": "me-hs-lawrence",
 "MTA": "me-hs-mt-ararat"
 },
 "2009/XC/brunswickgirls_sept24": {
+"Dragons": "me-hs-brunswick",
 "Lawrence": "me-hs-lawrence",
 "MTA": "me-hs-mt-ararat"
 },
@@ -181694,6 +180894,7 @@
 },
 "2009/XC/lawrenceboys_sept11": {
 "Cony High School": "me-hs-cony",
+"Dragons": "me-hs-brunswick",
 "Gardiner": "me-hs-gardiner",
 "Lawrence": "me-hs-lawrence",
 "Maranacook": "me-hs-maranacook",
@@ -181701,6 +180902,7 @@
 },
 "2009/XC/lawrencegirls_sept11": {
 "Cony High School": "me-hs-cony",
+"Dragons": "me-hs-brunswick",
 "Gardiner": "me-hs-gardiner",
 "Lawrence": "me-hs-lawrence",
 "Maranacook": "me-hs-maranacook",
@@ -181814,9 +181016,11 @@
 "Win": "me-hs-winslow"
 },
 "2009/XC/morseboys_sept30": {
+"Dragons": "me-hs-brunswick",
 "MTA": "me-hs-mt-ararat"
 },
 "2009/XC/morsegirls_sept30": {
+"Dragons": "me-hs-brunswick",
 "MTA": "me-hs-mt-ararat"
 },
 "2009/XC/ms-2009-maine-xc-championships-2009": {
@@ -181872,9 +181076,11 @@
 "Gray-New Gloucester High School": "me-hs-gray-ng"
 },
 "2009/XC/mtararatboys_sept18": {
+"Dragons": "me-hs-brunswick",
 "MTA": "me-hs-mt-ararat"
 },
 "2009/XC/mtararatgirls_sept18": {
+"Dragons": "me-hs-brunswick",
 "MTA": "me-hs-mt-ararat"
 },
 "2009/XC/mtblue_sept8": {
@@ -182490,6 +181696,7 @@
 },
 "2010/Indoor/Results%20-KVAC%20Class%20A": {
 "Cony": "me-hs-cony",
+"Dragons": "me-hs-brunswick",
 "Lawrence": "me-hs-lawrence",
 "Lewiston": "me-hs-lewiston",
 "Messalonskee": "me-hs-messalonskee",
@@ -182836,6 +182043,7 @@
 "Windham": "me-hs-windham"
 },
 "2010/Indoor/kvac8": {
+"Dragons": "me-hs-brunswick",
 "Lewiston": "me-hs-lewiston",
 "MTA": "me-hs-mt-ararat",
 "Sahs": "me-hs-skowhegan",
@@ -182866,6 +182074,7 @@
 },
 "2010/Indoor/kvacmeet2": {
 "Belfast": "me-hs-belfast",
+"Dragons": "me-hs-brunswick",
 "WTVL": "me-hs-waterville"
 },
 "2010/Indoor/kvacmeet3": {
@@ -182896,6 +182105,7 @@
 "LEW": "me-hs-lewiston"
 },
 "2010/Indoor/kvacmeet7": {
+"Dragons": "me-hs-brunswick",
 "Lawrence": "me-hs-lawrence",
 "MTA": "me-hs-mt-ararat",
 "Messalonskee": "me-hs-messalonskee",
@@ -182907,6 +182117,7 @@
 "2010/Indoor/kvacmeet9": {
 "Cony": "me-hs-cony",
 "Cony High School": "me-hs-cony",
+"Dragons": "me-hs-brunswick",
 "Lewiston": "me-hs-lewiston",
 "MTA": "me-hs-mt-ararat"
 },
@@ -186162,6 +185373,7 @@
 "2011/Indoor/Results%20-%20KVAC%20Class%20A": {
 "Brunswick": "me-hs-brunswick",
 "Cony": "me-hs-cony",
+"Dragons": "me-hs-brunswick",
 "Lawrence": "me-hs-lawrence",
 "Lewiston": "me-hs-lewiston",
 "MESS": "me-hs-messalonskee",
@@ -186830,6 +186042,7 @@
 "2011/Indoor/kvac9": {
 "Brunswick": "me-hs-brunswick",
 "Cony": "me-hs-cony",
+"Dragons": "me-hs-brunswick",
 "Lewiston": "me-hs-lewiston",
 "MTA": "me-hs-mt-ararat",
 "Mvhs": "me-hs-medomak"
@@ -186839,10 +186052,12 @@
 },
 "2011/Indoor/kvac_dec29": {
 "Brunswick": "me-hs-brunswick",
-"Cony": "me-hs-cony"
+"Cony": "me-hs-cony",
+"Dragons": "me-hs-brunswick"
 },
 "2011/Indoor/kvac_feb5": {
 "Brunswick": "me-hs-brunswick",
+"Dragons": "me-hs-brunswick",
 "Indoor": "me-hs-skowhegan",
 "MTA": "me-hs-mt-ararat",
 "Mvhs": "me-hs-medomak"
@@ -186865,6 +186080,7 @@
 "2011/Indoor/kvacmeet4": {
 "Brunswick": "me-hs-brunswick",
 "Cony": "me-hs-cony",
+"Dragons": "me-hs-brunswick",
 "Lawrence": "me-hs-lawrence",
 "Lewiston": "me-hs-lewiston",
 "Mt. Blue": "me-hs-mt-blue"
@@ -186877,6 +186093,7 @@
 "Belfast": "me-hs-belfast",
 "Brunswick": "me-hs-brunswick",
 "Cony": "me-hs-cony",
+"Dragons": "me-hs-brunswick",
 "Lewiston": "me-hs-lewiston",
 "MTA": "me-hs-mt-ararat"
 },
@@ -190259,6 +189476,7 @@
 "2012/Indoor/ResultsKVACClassA": {
 "Bulldogs": "me-hs-lawrence",
 "Cony": "me-hs-cony",
+"Dragons": "me-hs-brunswick",
 "Lawrence": "me-hs-lawrence",
 "MESS": "me-hs-messalonskee",
 "MTA": "me-hs-mt-ararat",
@@ -190812,6 +190030,7 @@
 "2012/Indoor/kvac_dec29": {
 "Bulldogs": "me-hs-lawrence",
 "Cony": "me-hs-cony",
+"Dragons": "me-hs-brunswick",
 "Lawrence": "me-hs-lawrence",
 "MESS": "me-hs-messalonskee",
 "Messalonskee High School": "me-hs-messalonskee",
@@ -190830,6 +190049,7 @@
 },
 "2012/Indoor/kvac_feb4": {
 "Cony": "me-hs-cony",
+"Dragons": "me-hs-brunswick",
 "Medomak": "me-hs-medomak",
 "OSHS": "me-hs-oceanside",
 "Oceanside High School": "me-hs-oceanside",
@@ -190837,6 +190057,7 @@
 },
 "2012/Indoor/kvac_jan13": {
 "Cony": "me-hs-cony",
+"Dragons": "me-hs-brunswick",
 "MTA": "me-hs-mt-ararat",
 "WIN": "me-hs-winslow",
 "Winslow High School": "me-hs-winslow"
@@ -190852,6 +190073,7 @@
 "WTVL": "me-hs-waterville"
 },
 "2012/Indoor/kvac_jan27": {
+"Dragons": "me-hs-brunswick",
 "MTA": "me-hs-mt-ararat",
 "Medomak": "me-hs-medomak",
 "OSHS": "me-hs-oceanside",
@@ -190859,6 +190081,7 @@
 },
 "2012/Indoor/kvac_jan7": {
 "Cony": "me-hs-cony",
+"Dragons": "me-hs-brunswick",
 "MESS": "me-hs-messalonskee",
 "Messalonskee High School": "me-hs-messalonskee",
 "WIN": "me-hs-winslow",
@@ -191474,6 +190697,7 @@
 "Brewer": "me-ms-brewer"
 },
 "2012/Outdoor/brunswick_april26": {
+"Dragons": "me-hs-brunswick",
 "Lewiston": "me-hs-lewiston",
 "OSHS": "me-hs-oceanside",
 "Oceanside High School": "me-hs-oceanside"
@@ -191664,6 +190888,7 @@
 },
 "2012/Outdoor/cmfroshresults": {
 "BRHS": "me-hs-boothbay",
+"Dragons": "me-hs-brunswick",
 "Maranacook": "me-hs-maranacook",
 "Mt. Ararat": "me-hs-mt-ararat",
 "Scarborough": "me-hs-scarborough",
@@ -191748,6 +190973,7 @@
 "Windham": "me-hs-windham"
 },
 "2012/Outdoor/el_april13": {
+"Dragons": "me-hs-brunswick",
 "MESS": "me-hs-messalonskee",
 "MTA": "me-hs-mt-ararat",
 "Messalonskee High School": "me-hs-messalonskee"
@@ -192101,6 +191327,7 @@
 "Oceanside High School": "me-hs-oceanside"
 },
 "2012/Outdoor/mtararat_may18": {
+"Dragons": "me-hs-brunswick",
 "MTA": "me-hs-mt-ararat"
 },
 "2012/Outdoor/mtararat_may9": {
@@ -194473,6 +193700,7 @@
 "2013/Indoor/ColbyMeet2Results_jan12": {
 "Cony": "me-hs-cony",
 "Cony High School": "me-hs-cony",
+"Dragons": "me-hs-brunswick",
 "Lawrence": "me-hs-lawrence",
 "MESS": "me-hs-messalonskee",
 "Messalonskee": "me-hs-messalonskee",
@@ -194500,6 +193728,7 @@
 "2013/Indoor/KVACAMeet_DEC28": {
 "Cony": "me-hs-cony",
 "Cony High School": "me-hs-cony",
+"Dragons": "me-hs-brunswick",
 "Lewiston": "me-hs-lewiston",
 "MESS": "me-hs-messalonskee",
 "Messalonskee": "me-hs-messalonskee",
@@ -194941,6 +194170,7 @@
 "2013/Indoor/kvac_dec22": {
 "Cony": "me-hs-cony",
 "Cony High School": "me-hs-cony",
+"Dragons": "me-hs-brunswick",
 "Lawrence": "me-hs-lawrence",
 "Medomak": "me-hs-medomak",
 "OSHS": "me-hs-oceanside",
@@ -194966,10 +194196,12 @@
 "2013/Indoor/kvac_jan25": {
 "Cony": "me-hs-cony",
 "Cony High School": "me-hs-cony",
+"Dragons": "me-hs-brunswick",
 "MTA": "me-hs-mt-ararat",
 "Maranacook": "me-hs-maranacook"
 },
 "2013/Indoor/kvac_jan4": {
+"Dragons": "me-hs-brunswick",
 "Lewiston": "me-hs-lewiston",
 "Skowhegan": "me-hs-skowhegan"
 },
@@ -195531,6 +194763,7 @@
 "Wisc": "me-hs-wiscasset"
 },
 "2013/Outdoor/ResultsErskineMeet_april25": {
+"Dragons": "me-hs-brunswick",
 "Lawrence": "me-hs-lawrence",
 "Lewiston": "me-hs-lewiston"
 },
@@ -195779,6 +195012,7 @@
 },
 "2013/Outdoor/brunswick_may2": {
 "Boothbay": "me-hs-boothbay",
+"Dragons": "me-hs-brunswick",
 "MCS": "me-hs-maranacook",
 "MTA": "me-hs-mt-ararat",
 "Maranacook": "me-hs-maranacook",
@@ -196427,11 +195661,13 @@
 "MAMS": "me-ms-mt-ararat"
 },
 "2013/Outdoor/mtararat_april11": {
+"Dragons": "me-hs-brunswick",
 "MESS": "me-hs-messalonskee",
 "MTA": "me-hs-mt-ararat",
 "Messalonskee": "me-hs-messalonskee"
 },
 "2013/Outdoor/mtararat_may17": {
+"Dragons": "me-hs-brunswick",
 "MTA": "me-hs-mt-ararat"
 },
 "2013/Outdoor/mtviewjh_may16": {
@@ -200745,6 +199981,7 @@
 "Sumner": "me-hs-sumner"
 },
 "2015/Outdoor/Results-2015": {
+"Dragons": "me-hs-brunswick",
 "Lake Region": "me-hs-lake-region",
 "Scarborough": "me-hs-scarborough",
 "Scarborough,MA, MA": "me-hs-scarborough",
@@ -204961,6 +204198,7 @@
 "Tigers": "me-hs-biddeford"
 },
 "2016/Outdoor/ResultsBRUN": {
+"Dragons": "me-hs-brunswick",
 "Lewiston": "me-hs-lewiston",
 "Lisbon": "me-hs-lisbon"
 },
@@ -217214,6 +216452,9 @@
 "Presque Isle": "me-hs-presque-isle"
 },
 "2019/Outdoor/2019-results": {
+"C. Point,Wiscasset,": "me-hs-chop-point",
+"Dragons": "me-hs-brunswick",
+"Dragons,Brunswick,": "me-hs-brunswick",
 "Lake Region": "me-hs-lake-region",
 "Scarborough": "me-hs-scarborough",
 "Skowhegan": "me-hs-skowhegan",
@@ -217852,7 +217093,7 @@
 },
 "2019/Outdoor/Results-Girls-revised-1": {
 "Boothbay": "me-hs-boothbay",
-"C. Point": null,
+"C. Point": "me-hs-chop-point",
 "Cony": "me-hs-cony",
 "Cony High School": "me-hs-cony",
 "Dirigo": "me-hs-dirigo",
@@ -218045,7 +217286,7 @@
 "Monmouth": "me-hs-monmouth"
 },
 "2019/Outdoor/ResultsLISB": {
-"C. Point": null,
+"C. Point": "me-hs-chop-point",
 "Lisbon/Oak Hill": "coop-ot-lisbon-oak-hill",
 "Mountain Valley": "me-hs-mountain-valley",
 "Winthrop": "me-hs-winthrop",
@@ -218168,7 +217409,7 @@
 },
 "2019/Outdoor/ResultsWISC": {
 "Boothbay": "me-hs-boothbay",
-"C. Point": null,
+"C. Point": "me-hs-chop-point",
 "Monmouth": "me-hs-monmouth",
 "Winthrop": "me-hs-winthrop",
 "Wiscasset": "me-hs-wiscasset"
@@ -237458,15 +236699,13 @@
 "Bonny Eagle Middle School": "me-ms-bonny-eagle",
 "Boothbay Region Elementary School middle grades": "me-ms-boothbay",
 "Boothbay Region High School": "me-hs-boothbay",
-"Boothbay Wiscasset HS A": null,
 "BoothbayWiscasset": {
 "id": "coop-boothbay-wiscasset",
 "held": {
 "coop-boothbay-wiscasset": 3842,
 "me-hs-boothbay": 545,
 "me-hs-wiscasset": 47,
-"col-bowdoin": 7,
-"None": 1
+"col-bowdoin": 7
 }
 },
 "Bow High School": "oos-nh-bow-high-school",
@@ -237488,13 +236727,7 @@
 "Bucksport High School": "me-hs-bucksport",
 "Bucksport Middle School": "me-ms-bucksport",
 "Burrillville High School": "oos-ri-burrillville-high-school",
-"C Point": {
-"id": "me-hs-chop-point",
-"held": {
-"None": 11,
-"me-hs-chop-point": 3
-}
-},
+"C Point": "me-hs-chop-point",
 "CADL": null,
 "CH": null,
 "CJH": null,
@@ -237658,20 +236891,12 @@
 "G": null,
 "GLOV": null,
 "GPC": null,
-"Ga": {
-"id": null,
-"basis": "name only (no joined rows)"
-},
 "Gabby": null,
 "Gardiner Area High School": "me-hs-gardiner",
 "Gardiner Regional Middle School": "me-ms-gardiner",
 "GardinerHallDale indoor track 2016": "coop-it-gardiner-halldale-2016",
 "GardinerLisbonMaranacook indoor track": "me-hs-gardiner",
 "Gavin R": null,
-"Gb": {
-"id": null,
-"basis": "name only (no joined rows)"
-},
 "George Stevens Academy": "me-hs-gsa",
 "Georges Valley High School": "me-hs-georges-valley",
 "Georgetown": null,
@@ -237850,7 +237075,7 @@
 "LimestoneMSSM": {
 "id": "coop-limestone-mssm",
 "held": {
-"coop-limestone-mssm": 3004,
+"coop-limestone-mssm": 3016,
 "me-hs-limestone": 322,
 "me-hs-mssm": 21
 }
@@ -238133,19 +237358,6 @@
 "SCHK": null,
 "SHD": null,
 "SISU Project": null,
-"SM a": "me-ms-spruce-mountain",
-"SM b": {
-"id": null,
-"basis": "name only (no joined rows)"
-},
-"SMa": {
-"id": null,
-"basis": "name only (no joined rows)"
-},
-"SMb": {
-"id": null,
-"basis": "name only (no joined rows)"
-},
 "SNEEC": null,
 "SP ALUM": null,
 "STDO": null,
@@ -238319,7 +237531,6 @@
 "Woodstock High School": "oos-nb-woodstock-high-school",
 "Woolwich Central School": "me-ms-woolwich",
 "Woonsocket High School": "oos-ri-woonsocket-high-school",
-"Worcester Academy": null,
 "Y armouth": {
 "id": null,
 "basis": "name only (no joined rows)"
@@ -254268,20 +253479,6 @@
 },
 {
 "raw": "Northeastern Club Running",
-"rows": 2,
-"seasons": {
-"Outdoor": 2
-},
-"years": [
-2019,
-2019
-],
-"id": null,
-"method": "unresolved",
-"how": "unresolved"
-},
-{
-"raw": "C. Point,Wiscasset,",
 "rows": 2,
 "seasons": {
 "Outdoor": 2
@@ -273695,244 +272892,6 @@
 "how": "unresolved"
 },
 {
-"raw": "BRHS,Boothbay Harbo 2:44.30",
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2019,
-2019
-],
-"id": null,
-"method": "debris",
-"how": "debris"
-},
-{
-"raw": "BRHS,Boothbay Harbo 2:49.50",
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2019,
-2019
-],
-"id": null,
-"method": "debris",
-"how": "debris"
-},
-{
-"raw": "BRHS,Boothbay Harbo 6:14.33",
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2019,
-2019
-],
-"id": null,
-"method": "debris",
-"how": "debris"
-},
-{
-"raw": "BRHS,Boothbay Harbo 6:14.34",
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2019,
-2019
-],
-"id": null,
-"method": "debris",
-"how": "debris"
-},
-{
-"raw": "Dragons,Brunswick, 15-07.00",
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2019,
-2019
-],
-"id": null,
-"method": "debris",
-"how": "debris"
-},
-{
-"raw": "Dragons,Brunswick, 33-01.75",
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2019,
-2019
-],
-"id": null,
-"method": "debris",
-"how": "debris"
-},
-{
-"raw": "Dragons,Brunswick, 25-01.75",
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2019,
-2019
-],
-"id": null,
-"method": "debris",
-"how": "debris"
-},
-{
-"raw": "BRHS,Boothbay Harbo 21-03.00",
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2019,
-2019
-],
-"id": null,
-"method": "debris",
-"how": "debris"
-},
-{
-"raw": "BRHS,Boothbay Harbo 55-10.50",
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2019,
-2019
-],
-"id": null,
-"method": "debris",
-"how": "debris"
-},
-{
-"raw": "BRHS,Boothbay Harbo 9:40.67",
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2019,
-2019
-],
-"id": null,
-"method": "debris",
-"how": "debris"
-},
-{
-"raw": "Wiscasset,Wiscasset 1:18.81",
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2019,
-2019
-],
-"id": null,
-"method": "debris",
-"how": "debris"
-},
-{
-"raw": "Wiscasset,Wiscasset 1:17.18",
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2019,
-2019
-],
-"id": null,
-"method": "debris",
-"how": "debris"
-},
-{
-"raw": "Wiscasset,Wiscasset 5:55.16",
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2019,
-2019
-],
-"id": null,
-"method": "debris",
-"how": "debris"
-},
-{
-"raw": "Dragons,Brunswick, 10:19.67",
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2019,
-2019
-],
-"id": null,
-"method": "debris",
-"how": "debris"
-},
-{
-"raw": "Wiscasset,Wiscasset 11-00.00",
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2019,
-2019
-],
-"id": null,
-"method": "debris",
-"how": "debris"
-},
-{
-"raw": "Dragons,Brunswick, 32-02.50",
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2019,
-2019
-],
-"id": null,
-"method": "debris",
-"how": "debris"
-},
-{
-"raw": "Wiscasset,Wiscasset 26-11.50",
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2019,
-2019
-],
-"id": null,
-"method": "debris",
-"how": "debris"
-},
-{
 "raw": "Pittsfield",
 "rows": 1,
 "seasons": {
@@ -274131,34 +273090,6 @@
 "id": null,
 "method": "unresolved",
 "how": "unresolved"
-},
-{
-"raw": "Wiscasset 16-08.00 2) Jefferson",
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2019,
-2019
-],
-"id": null,
-"method": "debris",
-"how": "debris"
-},
-{
-"raw": "Jefferson 13-08.00 4) Wiscasset Middle School",
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2019,
-2019
-],
-"id": null,
-"method": "debris",
-"how": "debris"
 },
 {
 "raw": "School Track & Fi",

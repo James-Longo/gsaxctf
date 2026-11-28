@@ -2797,7 +2797,10 @@ FILE_RULES += [
     (['SM', 'SM (a)', 'SM (b)', 'SM(a)', 'SM(b)'], 'Outdoor', (2019, 2019), r'^190516_MS_', 'me-ms-spruce-mountain'),
     (['G(a)', 'G(b)'], 'Outdoor', (2019, 2019), r'^190516_MS_', 'me-ms-gardiner'),
     # Wiscasset meet 2019 (Results_pdf): 'C. Point' is Chop Point School.
-    (['C. Point', 'C Point'], 'Outdoor', (2019, 2019), r'^Results_pdf$', 'me-hs-chop-point'),
+    # 2019 Outdoor: 'C. Point' (Josie Harrington, every 2019 meet she ran) is Chop Point School.
+    (['C. Point', 'C Point', 'C. Point,Wiscasset,'], 'Outdoor', (2019, 2019), r'.', 'me-hs-chop-point'),
+    # Central Maine Freshman Champs 2019: 'Dragons' is Brunswick (printed 'Dragons,Brunswick,' on other rows).
+    (['Dragons', 'Dragons,Brunswick,'], 'Outdoor', (2019, 2019), r'^2019-results$', 'me-hs-brunswick'),
 ]
 
 # A co-op of both genders runs its co-ed relays together too.
