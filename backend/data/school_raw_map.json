@@ -1,14 +1,14 @@
 {
 "_meta": {
 "methods_by_rows": {
-"exact/alias": 2082372,
+"exact/alias": 2082364,
 "code": 260099,
 "truncation": 123443,
 "athlete-continuity": 53757,
 "mascot": 28829,
 "bare name + level context": 28072,
-"manual (file rule)": 21665,
-"unresolved": 17117,
+"manual (file rule)": 21669,
+"unresolved": 17116,
 "co-op label": 15054,
 "state-tagged (auto entry)": 9842,
 "spelling (fuzzy)": 3428,
@@ -23,7 +23,7 @@
 },
 "methods_by_strings": {
 "exact/alias": 4182,
-"unresolved": 2013,
+"unresolved": 2012,
 "state-tagged (auto entry)": 1571,
 "debris-salvage": 852,
 "code": 701,
@@ -31,7 +31,7 @@
 "truncation": 539,
 "athlete-continuity": 470,
 "spelling (fuzzy)": 285,
-"manual (file rule)": 259,
+"manual (file rule)": 260,
 "bare name + level context": 78,
 "co-op label": 78,
 "mascot": 39,
@@ -2759,10 +2759,10 @@
 "how": "exact/alias"
 },
 "Waterville High School": {
-"rows": 5252,
+"rows": 5251,
 "seasons": {
 "Indoor": 1726,
-"Outdoor": 3052,
+"Outdoor": 3051,
 "XC": 474
 },
 "years": [
@@ -3513,10 +3513,10 @@
 "how": "truncation"
 },
 "Gardiner": {
-"rows": 3842,
+"rows": 3840,
 "seasons": {
 "Indoor": 150,
-"Outdoor": 2290,
+"Outdoor": 2288,
 "XC": 1402
 },
 "years": [
@@ -3526,7 +3526,7 @@
 "id": "me-hs-gardiner",
 "method": "exact",
 "by_id": {
-"me-hs-gardiner": 3166,
+"me-hs-gardiner": 3164,
 "me-ms-gardiner": 676
 },
 "context_dependent": true,
@@ -5581,9 +5581,9 @@
 "how": "truncation"
 },
 "Wagner": {
-"rows": 2218,
+"rows": 2217,
 "seasons": {
-"Outdoor": 1761,
+"Outdoor": 1760,
 "XC": 457
 },
 "years": [
@@ -23411,8 +23411,8 @@
 "id": "me-hs-mdi",
 "method": "exact",
 "by_id": {
-"me-hs-mdi": 115,
-"me-ms-mdi-elementary": 6
+"me-hs-mdi": 113,
+"me-ms-mdi-elementary": 8
 },
 "context_dependent": true,
 "how": "exact/alias"
@@ -28987,20 +28987,6 @@
 "method": "code",
 "how": "code"
 },
-"Leavitt Area High Scool": {
-"rows": 77,
-"seasons": {
-"Indoor": 24,
-"Outdoor": 53
-},
-"years": [
-2019,
-2020
-],
-"id": "me-hs-leavitt",
-"method": "exact",
-"how": "exact/alias"
-},
 "Boys 2005": {
 "rows": 76,
 "seasons": {
@@ -29143,6 +29129,20 @@
 "athletes contradict name match (me-hs-medomak -> me-ms-medomak, 5/10)"
 ],
 "how": "athlete-continuity"
+},
+"Leavitt Area High Scool": {
+"rows": 76,
+"seasons": {
+"Indoor": 24,
+"Outdoor": 52
+},
+"years": [
+2019,
+2020
+],
+"id": "me-hs-leavitt",
+"method": "exact",
+"how": "exact/alias"
 },
 "Wash. Acad.": {
 "rows": 75,
@@ -62409,6 +62409,10 @@
 ],
 "id": "me-hs-waterville",
 "method": "exact+season-words",
+"by_id": {
+"me-hs-waterville": 11
+},
+"context_dependent": true,
 "how": "exact/alias"
 },
 "Skowhegan Middle": {
@@ -154374,9 +154378,13 @@
 2019,
 2019
 ],
-"id": null,
-"method": "unresolved",
-"how": "unresolved"
+"id": "me-hs-waterville",
+"method": "manual (file rule)",
+"by_id": {
+"me-hs-waterville": 1
+},
+"context_dependent": true,
+"how": "manual (file rule)"
 },
 "oodland School 'A'": {
 "rows": 1,
@@ -213788,10 +213796,12 @@
 },
 "2018/XC/Cony-Homecoming-2018-Boys-results": {
 "Cony XC": "me-hs-cony",
+"Waterville XC 2018": "me-hs-waterville",
 "Winslow High School": "me-hs-winslow"
 },
 "2018/XC/Cony-Homecoming-2018-Girl-results-C": {
 "Cony XC": "me-hs-cony",
+"Waterville XC 2018": "me-hs-waterville",
 "Winslow High School": "me-hs-winslow"
 },
 "2018/XC/Cony-MS-Championship-Boys-Results": {
@@ -216686,7 +216696,7 @@
 "2019/Outdoor/MDI-MS": {
 "Blue Hill": "me-ms-blue-hill",
 "MDI": "me-ms-mdi-elementary",
-"Mount Desert Island": "me-hs-mdi"
+"Mount Desert Island": "me-ms-mdi-elementary"
 },
 "2019/Outdoor/MDI-boys": {
 "Central": "me-hs-central",
@@ -217565,7 +217575,9 @@
 "GARD": "me-hs-gardiner",
 "Gardiner": "me-hs-gardiner",
 "MTA": "me-hs-mt-ararat",
-"Waterville": "me-hs-waterville"
+"Waterville": "me-hs-waterville",
+"Waterville XC 2018": "me-hs-waterville",
+"Xc2018": "me-hs-waterville"
 },
 "2019/Outdoor/Win-4-26-Results": {
 "GARD": "me-hs-gardiner",
@@ -272969,20 +272981,6 @@
 },
 {
 "raw": "TW Kelly Dirigo Middle School",
-"rows": 1,
-"seasons": {
-"Outdoor": 1
-},
-"years": [
-2019,
-2019
-],
-"id": null,
-"method": "unresolved",
-"how": "unresolved"
-},
-{
-"raw": "Xc2018",
 "rows": 1,
 "seasons": {
 "Outdoor": 1

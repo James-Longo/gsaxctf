@@ -1928,7 +1928,9 @@ FILE_RULES = [
     # 'Warriors' individuals: Yang, Vardaros, Connolly, Cookson); MDI relays print 'Mount Desert Island'
     # while its MS individuals are 'MDI' (MDI elementary schools, legs Burr, Watson, Laurendeau).
     (['Warrior Track Club'], 'Outdoor', (2019, 2019), r'.', 'me-ms-rsu19'),
-    (['Mount Desert Island'], 'Outdoor', (2019, 2019), r'^(ellsworthms|Almquist-)', 'me-ms-mdi-elementary'),
+    # Waterville Relays 5/7/2019: 'Xc2018' / 'Waterville XC 2018' is Waterville's 3x1600 team (Keya Amundsen)
+    (['Xc2018', 'Waterville XC 2018'], 'Outdoor', (2019, 2019), r'^WTV-Relay-Results$', 'me-hs-waterville'),
+    (['Mount Desert Island'], 'Outdoor', (2019, 2019), r'^(ellsworthms|Almquist-|MDI-MS$)', 'me-ms-mdi-elementary'),
     # 'Tigers'
     (['Tigers', 'TIGERS'], None, (2004, 2016), r'.', 'me-hs-biddeford'),
     (['Tigers', 'TIGERS'], 'Outdoor', (2017, 2017), r'KVAC-B|Gardiner|Results-girls-7|Resultsboys-2', 'me-hs-gardiner'),
