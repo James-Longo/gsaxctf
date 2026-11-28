@@ -49028,11 +49028,11 @@
   "evidence": ""
  },
  "backend/data/parsed_results/2019/XC/LaLiberte-JV-Race-Results.json": {
-  "parse_sha": "38ffa68c54b03c0d",
+  "parse_sha": "62707fc28b7e004a",
   "source_sha": "9dd07b6a0870bead",
-  "date": "2026-10-24",
-  "by": "sonnet audit (second read, 2026-10-24) (audit: confirmed)",
-  "evidence": "LaLiberte JV (Hy-Tek, 123 finishers, both sexes in one list). The parse splits by the 'Boys/Girls/G' suffix of the team string into 84 boys + 39 girls = 123, every place present once, times and names match. Team strings: Mt. A=Mt. Ararat, Chs=Cony (header 'Cony High School'), Elhs=Edward Little, Oxford B/G=Oxford Hills, Maranacook G, Hall Dale, Erskine, Morse. NOTE the sheet's title line still says 'LaLiberte Invitation 2016 - 8/26/2016' (stale template); the runners (Lily Cannel, Claire Holman, Dessie Murphy, Kusha Kane, Allyson Lewis, Holly Hunt ...) are 2019 Maranacook/Monmouth runners and the sheet was printed 8/30/2019, so the 2019-08-30 date is right. The 'implausible' flags are the sheet's 3800-yard JV distance; no team scores printed."
+  "date": "2026-11-27",
+  "by": "loop-claude",
+  "evidence": "o21m review 2026-11-27 (two Sonnet reviewers, every row against its source); errors found were fixed before sign-off"
  },
  "backend/data/parsed_results/2019/XC/LaLiberte-Varsity-Race-Results.json": {
   "parse_sha": "fe57548f870be42b",
@@ -50190,11 +50190,11 @@
   "evidence": "re-sign: only change is names cut at the sheet's name-column width restored to the full form printed at the same school (loop_tools/cutnames.py sweep 2026-11-17); full resync 0 rows lost, no sanity rises"
  },
  "backend/data/parsed_results/2019/XC/mta-home-meet-10-4-19.json": {
-  "parse_sha": "e83c062c28bc12f4",
+  "parse_sha": "444bb96a44dcb297",
   "source_sha": "c055f894881b6330",
-  "date": "2026-10-16",
-  "by": "auto: team scores verified exactly, all schools identified, no flags",
-  "evidence": ""
+  "date": "2026-11-27",
+  "by": "loop-claude",
+  "evidence": "o21m review 2026-11-27 (two Sonnet reviewers, every row against its source); errors found were fixed before sign-off"
  },
  "backend/data/parsed_results/2019/XC/mta-ms-boys-xc-results.json": {
   "parse_sha": "3c180f61ede21cda",
@@ -50386,11 +50386,11 @@
   "evidence": "reader compared every row with the source; no printed team scores, or scores verified"
  },
  "backend/data/parsed_results/2019/XC/q-relay-8-jv.json": {
-  "parse_sha": "64a61d8e6a7ba3aa",
+  "parse_sha": "4a3163fb1616dd89",
   "source_sha": "ae2bd9f7bab6ce44",
-  "date": "2026-10-28",
-  "by": "second read (fixed): override written from the source",
-  "evidence": "reader compared every row with the source; no printed team scores, or scores verified"
+  "date": "2026-11-27",
+  "by": "loop-claude",
+  "evidence": "o21m review 2026-11-27 (two Sonnet reviewers, every row against its source); errors found were fixed before sign-off"
  },
  "backend/data/parsed_results/2019/XC/q-relays-1.json": {
   "parse_sha": "1550e272636a1f46",
@@ -50442,11 +50442,11 @@
   "evidence": ""
  },
  "backend/data/parsed_results/2019/XC/results-with-scores-girls.json": {
-  "parse_sha": "398f56f3d230cf45",
+  "parse_sha": "e4d4698cc078b336",
   "source_sha": "dcf1a85dc2c8270c",
-  "date": "2026-10-16",
-  "by": "auto: team scores verified exactly, all schools identified, no flags",
-  "evidence": ""
+  "date": "2026-11-27",
+  "by": "loop-claude",
+  "evidence": "o21m review 2026-11-27 (two Sonnet reviewers, every row against its source); errors found were fixed before sign-off"
  },
  "backend/data/parsed_results/2019/XC/riotboysjv2019-1.txt.json": {
   "parse_sha": "61c47d223b89f45d",
@@ -53276,12 +53276,26 @@
   "by": "re-check 2026-10-28: re-parsed only for the team-rank fix (ranks 10+ were stored as 0-9)",
   "evidence": "scratch re-parse compared with the signed parse: result rows identical, only team_rankings ranks changed"
  },
+ "backend/data/parsed_results/2021/Outdoor/Class-A-State-meet-girls.json": {
+  "parse_sha": "12bc6bf2d7c38e4c",
+  "source_sha": "6d7ca01c96ff4baa",
+  "date": "2026-11-27",
+  "by": "loop-claude",
+  "evidence": "o21m review 2026-11-27 (two Sonnet reviewers, every row against its source); errors found were fixed before sign-off"
+ },
  "backend/data/parsed_results/2021/Outdoor/Class-B-State-meet-boys.json": {
   "parse_sha": "05a3154c29f83c73",
   "source_sha": "8712a149e0b6d9f2",
   "date": "2026-11-27",
   "by": "loop-claude",
   "evidence": "o21e review 2026-11-27 (two Sonnet reviewers, every row against its source); errors found were fixed before sign-off"
+ },
+ "backend/data/parsed_results/2021/Outdoor/Class-B-State-meet-girls.json": {
+  "parse_sha": "d2404e89d9c46b8e",
+  "source_sha": "c9aa6b6df5c6fe6f",
+  "date": "2026-11-27",
+  "by": "loop-claude",
+  "evidence": "o21m review 2026-11-27 (two Sonnet reviewers, every row against its source); errors found were fixed before sign-off"
  },
  "backend/data/parsed_results/2021/Outdoor/Class-C-State-meet-boys.json": {
   "parse_sha": "0a4afde1a8497f64",
@@ -53373,6 +53387,13 @@
   "date": "2026-11-27",
   "by": "loop-claude",
   "evidence": "o21f review 2026-11-27 (two Sonnet reviewers, every row against its source); errors found were fixed before sign-off"
+ },
+ "backend/data/parsed_results/2021/Outdoor/KVAC-Champ-Results.json": {
+  "parse_sha": "8e7b99bf8124e78e",
+  "source_sha": "d1fb6ca673e39ea2",
+  "date": "2026-11-27",
+  "by": "loop-claude",
+  "evidence": "o21m review 2026-11-27 (two Sonnet reviewers, every row against its source); errors found were fixed before sign-off"
  },
  "backend/data/parsed_results/2021/Outdoor/KVAC-Small-Medium-May-28-2021.json": {
   "parse_sha": "ce887e94f5d5a73d",
@@ -53759,6 +53780,13 @@
   "by": "loop-claude",
   "evidence": "o21j review 2026-11-27 (two Sonnet reviewers, every row against its source); errors found were fixed before sign-off"
  },
+ "backend/data/parsed_results/2021/Outdoor/ResultsCCC.json": {
+  "parse_sha": "c28575c093230b30",
+  "source_sha": "5c43e30d562d6074",
+  "date": "2026-11-27",
+  "by": "loop-claude",
+  "evidence": "o21m review 2026-11-27 (two Sonnet reviewers, every row against its source); errors found were fixed before sign-off"
+ },
  "backend/data/parsed_results/2021/Outdoor/ResultsFRYE.json": {
   "parse_sha": "d5e54f18ca924faf",
   "source_sha": "8a8bcfce3a2421b7",
@@ -53983,6 +54011,13 @@
   "by": "auto: team scores verified exactly, all schools identified, no flags",
   "evidence": ""
  },
+ "backend/data/parsed_results/2021/Outdoor/ResultsWJHS-1.json": {
+  "parse_sha": "e781a752f222293b",
+  "source_sha": "16fa96e5b01265ba",
+  "date": "2026-11-27",
+  "by": "loop-claude",
+  "evidence": "o21m review 2026-11-27 (two Sonnet reviewers, every row against its source); errors found were fixed before sign-off"
+ },
  "backend/data/parsed_results/2021/Outdoor/ResultsWJHS-2.json": {
   "parse_sha": "ea1fcd38005dcef1",
   "source_sha": "ae0a9b70279f3a6c",
@@ -53998,11 +54033,11 @@
   "evidence": "o21i review 2026-11-27 (two Sonnet reviewers, every row against its source); errors found were fixed before sign-off"
  },
  "backend/data/parsed_results/2021/Outdoor/ResultsWinslow.json": {
-  "parse_sha": "f2e58a302a3738dd",
+  "parse_sha": "d225aeb9e46849f8",
   "source_sha": "cddfcde6ccce136c",
-  "date": "2026-11-17",
+  "date": "2026-11-27",
   "by": "loop-claude",
-  "evidence": "re-sign: only change is names cut at the sheet's name-column width restored to the full form printed at the same school (loop_tools/cutnames.py sweep 2026-11-17); full resync 0 rows lost, no sanity rises"
+  "evidence": "o21m review 2026-11-27 (two Sonnet reviewers, every row against its source); errors found were fixed before sign-off"
  },
  "backend/data/parsed_results/2021/Outdoor/ResultsWinslowHighSchoolMeet.json": {
   "parse_sha": "6cfab32516c6c6cf",
