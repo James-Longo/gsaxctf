@@ -4429,6 +4429,18 @@ def test_hyphen_with_one_space_joins_the_name():
     assert s.normalize_athlete_name('Wilcox - A, Jessie') == s.normalize_athlete_name('Wilcox, Jessie')
 
 
+def test_whole_inch_field_mark_is_read():
+    """A throw printed in whole inches has no ':' or '.' ("106-01"); the 2019 Wiscasset Results.pdf lost 46 throws.
+    A school wide enough to touch the mark ("Spruce Mountain 86-06") still splits off."""
+    from backend.parsers.hytek import HyTekSMAAParser
+    r, _ = HyTekSMAAParser().parse_row(['   1   Curtis, Nate          RICH              106-01   10'], 0, 'Boys',
+                                       'Discus Throw', '2019', 'd', 'm', 'x Outdoor')
+    assert (r['athlete_name'], r['school'], r['mark']) == ('Curtis, Nate', 'RICH', '106-01')
+    r, _ = HyTekSMAAParser().parse_row(['   4   Phillips, Camden      Spruce Mountain 86-06      4'], 0, 'Boys',
+                                       'Discus Throw', '2019', 'd', 'm', 'x Outdoor')
+    assert (r['athlete_name'], r['school'], r['mark']) == ('Phillips, Camden', 'Spruce Mountain', '86-06')
+
+
 def test_backtick_in_a_name_is_dropped():
     from backend.scraper_v2 import Sub5ScraperV2
     s = Sub5ScraperV2(progress_callback=lambda *a, **k: None)

@@ -2792,6 +2792,12 @@ FILE_RULES += [
     (['CCS'], 'XC', (2020, 2020), r'^2020-alms-', 'me-ms-caribou'),
     (['Ghca / Houlton', "Greater Houlton Middle School 'A'", "Greater Houlton Middle School 'B'"], 'Outdoor', (2021, 2021),
      r'^2021-alms-', 'me-ms-ghca'),
+    # Telstar MS meet 5/16/2019 prints team codes only: SM is Spruce Mountain MS (its 35 athletes run for Spruce
+    # Mountain in every other meet), G(a)/G(b) are Gardiner Regional MS relays like the G individuals.
+    (['SM', 'SM (a)', 'SM (b)', 'SM(a)', 'SM(b)'], 'Outdoor', (2019, 2019), r'^190516_MS_', 'me-ms-spruce-mountain'),
+    (['G(a)', 'G(b)'], 'Outdoor', (2019, 2019), r'^190516_MS_', 'me-ms-gardiner'),
+    # Wiscasset meet 2019 (Results_pdf): 'C. Point' is Chop Point School.
+    (['C. Point', 'C Point'], 'Outdoor', (2019, 2019), r'^Results_pdf$', 'me-hs-chop-point'),
 ]
 
 # A co-op of both genders runs its co-ed relays together too.

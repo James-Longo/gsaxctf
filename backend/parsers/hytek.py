@@ -1,6 +1,14 @@
 import re
 from .base import BaseParser
 
+# A field mark printed in whole inches has neither ':' nor '.' ("106-01", "86-06"):
+# without this the row was skipped (2019 Wiscasset Results.pdf lost 46 throws).
+_FIELD_MARK = re.compile(r"(?:^|\s)\d{1,3}-\d{1,2}(?:\.\d+)?[a-zA-Z*]*$")
+
+
+def _is_mark(p):
+    return bool(re.search(r'\d', p) and (':' in p or '.' in p or _FIELD_MARK.search(p)))
+
 
 def _split_glued_mark(parts, mark_idx):
     """A school wide enough to reach its mark column leaves one space between
@@ -10,7 +18,8 @@ def _split_glued_mark(parts, mark_idx):
     # (or none at all: "Yarmouth,Yarmouth, ME36.39")
     m = re.match(r'^(.*\S)\s+([A-Za-z]?\d[\d:.\'-]*[a-zA-Z*]*)$', p) or \
         re.match(r'^(.*?[A-Za-z,])(J?\d[\d:.\'-]*[a-zA-Z*]*)$', p)
-    if m and re.search(r'[A-Za-z]{2}', m.group(1)) and (':' in m.group(2) or '.' in m.group(2)):
+    if m and re.search(r'[A-Za-z]{2}', m.group(1)) and (':' in m.group(2) or '.' in m.group(2)
+                                                        or _FIELD_MARK.search(m.group(2))):
         parts = parts[:mark_idx] + [m.group(1), m.group(2)] + parts[mark_idx + 1:]
         mark_idx += 1
     return parts, mark_idx
@@ -156,13 +165,13 @@ class HyTekStandardParser(HyTekBaseParser):
         mark_idx = -1
         for k in range(grade_idx + 1, len(parts)):
              p = parts[k]
-             if re.search(r'\d', p) and (':' in p or '.' in p) and len(p) >= 3:
+             if _is_mark(p) and len(p) >= 3:
                  mark_idx = k
                  break
-        
+
         if mark_idx == -1: return None, i
         parts, mark_idx = _split_glued_mark(parts, mark_idx)
-        
+
         mark = re.sub(r'(?<=\d)\s+\d{1,2}$', '', parts[mark_idx])   # ("35-06.00 1": the points)
         school = " ".join(parts[grade_idx+1:mark_idx])
 
@@ -212,7 +221,7 @@ class HyTekSMAAParser(HyTekBaseParser):
         for k in range(2, len(parts)):
              p = parts[k]
              # SMAA marks often have trailing chars or heat numbers separately
-             if re.search(r'\d', p) and (':' in p or '.' in p) and len(p) >= 3:
+             if _is_mark(p) and len(p) >= 3:
                  mark_idx = k
                  break
         
